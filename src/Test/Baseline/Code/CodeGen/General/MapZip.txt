@@ -1,0 +1,800 @@
+**** New globals: {T:{A:i4, B:i4}*, i1:i1, i2:i2, i4:i4, i8:i8, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> [-1, 3, -17]
+[-1, 3, -17] : i8*
+BndKind:Sequence, Type:i8*, Bnd:([-1:i8, 3:i8, -17:i8]:i8*)
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) 3
+ 2) -17
+###
+> Abs([-1, 3, -17])
+Abs([-1, 3, -17]) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [-1:i8, 3:i8, -17:i8]:i8*, Call(∂.Abs(Scope(1)):i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 17
+###
+> Abs(Wrap([-1, 3, -17]))
+Abs(Wrap([-1, 3, -17])) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([-1:i8, 3:i8, -17:i8]:i8*):i8*), Call(∂.Abs(Scope(1)):i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 17
+###
+> [-1, i4 + 3, i4 - 17]
+[-1, i4 + 3, i4 - 17] : i8*
+BndKind:Sequence, Type:i8*, Bnd:([-1:i8, Add(Num<i8>(Global(i4)), 3:i8), Add(Num<i8>(Global(i4)), [-] 17:i8)]:i8*)
+Func sig: (i4:i4) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) 3
+ 2) -17
+###
+> Abs([-1, i4 + 3, i4 - 17])
+Abs([-1, i4 + 3, i4 - 17]) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [-1:i8, Add(Num<i8>(Global(i4)), 3:i8), Add(Num<i8>(Global(i4)), [-] 17:i8)]:i8*, Call(∂.Abs(Scope(1)):i8)):i8*))
+Func sig: (i4:i4) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 17
+###
+> Abs(Wrap([-1, i4 + 3, i4 - 17]))
+Abs(Wrap([-1, i4 + 3, i4 - 17])) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([-1:i8, Add(Num<i8>(Global(i4)), 3:i8), Add(Num<i8>(Global(i4)), [-] 17:i8)]:i8*):i8*), Call(∂.Abs(Scope(1)):i8)):i8*))
+Func sig: (i4:i4) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 17
+###
+> ["hello", "A", null, "This is a test"]
+["hello", "A", null, "This is a test"] : s*
+BndKind:Sequence, Type:s*, Bnd:([str(hello), str(A), str(<null>), str(This is a test)]:s*)
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) hello
+ 1) A
+ 2) <null>
+ 3) This is a test
+###
+> Text.Len(["hello", "A", null, "This is a test"])
+Text.Len(["hello", "A", null, "This is a test"]) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, Call(∂.Text.Len(Scope(1)):i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 1
+ 2) 0
+ 3) 14
+###
+> Text.Len(Wrap(["hello", "A", null, "This is a test"]))
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), Call(∂.Text.Len(Scope(1)):i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 1
+ 2) 0
+ 3) 14
+###
+> Text.Len(["hello", "A", null, "This is a test"]) + 17
+Text.Len(["hello", "A", null, "This is a test"]) + 17 : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, Add(Call(∂.Text.Len(Scope(1)):i8), 17:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 22
+ 1) 18
+ 2) 17
+ 3) 31
+###
+> Text.Len(Wrap(["hello", "A", null, "This is a test"])) + 17
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + 17 : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), Add(Call(∂.Text.Len(Scope(1)):i8), 17:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 22
+ 1) 18
+ 2) 17
+ 3) 31
+###
+> Text.Upper(["hello", "A", null, "This is a test"])
+Text.Upper(["hello", "A", null, "This is a test"]) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, Call(∂.Text.Upper(Scope(1)):s)):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) HELLO
+ 1) A
+ 2) <null>
+ 3) THIS IS A TEST
+###
+> Text.Upper(Wrap(["hello", "A", null, "This is a test"]))
+Text.Upper(Wrap(["hello", "A", null, "This is a test"])) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), Call(∂.Text.Upper(Scope(1)):s)):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) HELLO
+ 1) A
+ 2) <null>
+ 3) THIS IS A TEST
+###
+> Text.Lower(["hello", "A", null, "This is a test"])
+Text.Lower(["hello", "A", null, "This is a test"]) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, Call(∂.Text.Lower(Scope(1)):s)):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) hello
+ 1) a
+ 2) <null>
+ 3) this is a test
+###
+> Text.Lower(Wrap(["hello", "A", null, "This is a test"]))
+Text.Lower(Wrap(["hello", "A", null, "This is a test"])) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), Call(∂.Text.Lower(Scope(1)):s)):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) hello
+ 1) a
+ 2) <null>
+ 3) this is a test
+###
+> "pre_" & Text.Upper(["hello", "A", null, "This is a test"]) & "_post"
+"pre_" & Text.Upper(["hello", "A", null, "This is a test"]) & "_post" : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, StrConcat(str(pre_), Call(∂.Text.Upper(Scope(1)):s), str(_post))):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) pre_HELLO_post
+ 1) pre_A_post
+ 2) pre__post
+ 3) pre_THIS IS A TEST_post
+###
+> "pre_" & Wrap(Text.Upper(["hello", "A", null, "This is a test"])) & "_post"
+"pre_" & Wrap(Text.Upper(["hello", "A", null, "This is a test"])) & "_post" : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.Wrap(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, Call(∂.Text.Upper(Scope(1)):s)):s*)):s*), StrConcat(str(pre_), Scope(2), str(_post))):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) pre_HELLO_post
+ 1) pre_A_post
+ 2) pre__post
+ 3) pre_THIS IS A TEST_post
+###
+> "pre_" & Text.Upper(Wrap(["hello", "A", null, "This is a test"])) & "_post"
+"pre_" & Text.Upper(Wrap(["hello", "A", null, "This is a test"])) & "_post" : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), StrConcat(str(pre_), Call(∂.Text.Upper(Scope(1)):s), str(_post))):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) pre_HELLO_post
+ 1) pre_A_post
+ 2) pre__post
+ 3) pre_THIS IS A TEST_post
+###
+> Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100]
+Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100] : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, [map:2] [3:i8, 5:i8, -1:i8, -18:i8]:i8*, Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2))):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 8
+ 1) 6
+ 2) -1
+ 3) -4
+###
+> Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100])
+Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100]) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, [map:2] Call(∂.Test.Wrap([3:i8, 5:i8, -1:i8, -18:i8, 100:i8]:i8*):i8*), Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2))):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 8
+ 1) 6
+ 2) -1
+ 3) -4
+###
+> Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100]
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100] : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), [map:2] [3:i8, 5:i8, -1:i8, -18:i8, 100:i8]:i8*, Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2))):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 8
+ 1) 6
+ 2) -1
+ 3) -4
+###
+> Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100] > 0
+Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100] $> 0 : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, [map:2] [3:i8, 5:i8, -1:i8, -18:i8]:i8*, Cmp(Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2)) @> 0:i8)):b*))
+Func sig: () to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+###
+> Wrap(Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100]) > 0
+Wrap(Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100]) $> 0 : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.Wrap(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, [map:2] [3:i8, 5:i8, -1:i8, -18:i8]:i8*, Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2))):i8*)):i8*), Cmp(Scope(3) @> 0:i8)):b*))
+Func sig: () to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+###
+> Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100]) > 0
+Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100]) $> 0 : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(A), str(<null>), str(This is a test)]:s*, [map:2] Call(∂.Test.Wrap([3:i8, 5:i8, -1:i8, -18:i8, 100:i8]:i8*):i8*), Cmp(Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2)) @> 0:i8)):b*))
+Func sig: () to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+###
+> Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100] > 0
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100] $> 0 : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([str(hello), str(A), str(<null>), str(This is a test)]:s*):s*), [map:2] [3:i8, 5:i8, -1:i8, -18:i8, 100:i8]:i8*, Cmp(Add(Call(∂.Text.Len(Scope(1)):i8), Scope(2)) @> 0:i8)):b*))
+Func sig: () to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+###
+> [[1,2,3], [-1,-2,-3], [4,5]]
+[[1, 2, 3], [-1, -2, -3], [4, 5]] : i8**
+BndKind:Sequence, Type:i8**, Bnd:([[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**)
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+ 1) Sequence: Seq<i8>
+     0) -1
+     1) -2
+     2) -3
+ 2) Sequence: Seq<i8>
+     0) 4
+     1) 5
+###
+> [[1,2,3], [-1,-2,-3], [4.5,5]]
+[[1, 2, 3], [-1, -2, -3], [4.5, 5]] : r8**
+BndKind:Sequence, Type:r8**, Bnd:([[1:r8, 2:r8, 3:r8]:r8*, [-1:r8, -2:r8, -3:r8]:r8*, [4.5:r8, 5:r8]:r8*]:r8**)
+Func sig: () to r8**
+Sequence: Seq<Seq<r8>>
+ 0) Sequence: Seq<r8>
+     0) 1
+     1) 2
+     2) 3
+ 1) Sequence: Seq<r8>
+     0) -1
+     1) -2
+     2) -3
+ 2) Sequence: Seq<r8>
+     0) 4.5
+     1) 5
+###
+> [[1,2,3], [-1,-2,-3], [4,5]] ^ 2
+[[1, 2, 3], [-1, -2, -3], [4, 5]]^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**, Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> [[1f,2,3], [-1,-2,-3], [4,5]] ^ 2
+[[1, 2, 3], [-1, -2, -3], [4, 5]]^2 : r8**
+BndKind:Call, Type:r8**, Bnd:(Call(∂.ForEach([map:1] [[1:r4, 2:r4, 3:r4]:r4*, [-1:r4, -2:r4, -3:r4]:r4*, [4:r4, 5:r4]:r4*]:r4**, Call(∂.ForEach([map:2] Scope(1), Power(Num<r8>(Scope(2)), 2:r8)):r8*)):r8**))
+Func sig: () to r8**
+Sequence: Seq<Seq<r8>>
+ 0) Sequence: Seq<r8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<r8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<r8>
+     0) 16
+     1) 25
+###
+> Wrap([[1,2,3], [-1,-2,-3], [4,5]]) ^ 2
+Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]])^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**):i8**), Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> Wrap([[1f,2,3], [-1,-2,-3], [4,5]]) ^ 2
+Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]])^2 : r8**
+BndKind:Call, Type:r8**, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([[1:r4, 2:r4, 3:r4]:r4*, [-1:r4, -2:r4, -3:r4]:r4*, [4:r4, 5:r4]:r4*]:r4**):r4**), Call(∂.ForEach([map:2] Scope(1), Power(Num<r8>(Scope(2)), 2:r8)):r8*)):r8**))
+Func sig: () to r8**
+Sequence: Seq<Seq<r8>>
+ 0) Sequence: Seq<r8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<r8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<r8>
+     0) 16
+     1) 25
+###
+> [Wrap([1,2,3]), [-1,-2,-3], [4,5]] ^ 2
+[Wrap([1, 2, 3]), [-1, -2, -3], [4, 5]]^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Test.Wrap([1:i8, 2:i8, 3:i8]:i8*):i8*), [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**, Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> [[1,2,3], Wrap([-1,-2,-3]), [4,5]] ^ 2
+[[1, 2, 3], Wrap([-1, -2, -3]), [4, 5]]^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, Call(∂.Test.Wrap([-1:i8, -2:i8, -3:i8]:i8*):i8*), [4:i8, 5:i8]:i8*]:i8**, Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> [[1,2,3], [-1,-2,-3], Wrap([4,5])] ^ 2
+[[1, 2, 3], [-1, -2, -3], Wrap([4, 5])]^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, Call(∂.Test.Wrap([4:i8, 5:i8]:i8*):i8*)]:i8**, Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> [[1,2,3], [-1,-2,-3, i4 + 7], [4,5]] ^ 2
+[[1, 2, 3], [-1, -2, -3, i4 + 7], [4, 5]]^2 : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8, Add(Num<i8>(Global(i4)), 7:i8)]:i8*, [4:i8, 5:i8]:i8*]:i8**, Call(∂.ForEach([map:2] Scope(1), Power(Scope(2), 2:i8)):i8*)):i8**))
+Func sig: (i4:i4) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+     3) 49
+ 2) Sequence: Seq<i8>
+     0) 16
+     1) 25
+###
+> [[1,2,3], [-1,-2,-3], [4,5]] ^ [2, 3, 4]
+[[1, 2, 3], [-1, -2, -3], [4, 5]]^[2, 3, 4] : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**, [map:2] [2:i8, 3:i8, 4:i8]:i8*, Call(∂.ForEach([map:3] Scope(1), Power(Scope(3), Scope(2))):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) -1
+     1) -8
+     2) -27
+ 2) Sequence: Seq<i8>
+     0) 256
+     1) 625
+###
+> Wrap([[1,2,3], [-1,-2,-3], [4,5]]) ^ [2, 3, 4] // Curried scopes NYI
+Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]])^[2, 3, 4] : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**):i8**), [map:2] [2:i8, 3:i8, 4:i8]:i8*, Call(∂.ForEach([map:3] Scope(1), Power(Scope(3), Scope(2))):i8*)):i8**))
+###
+> [Wrap([1,2,3]), [-1,-2,-3], [4,5]] ^ [2, 3, 4]
+[Wrap([1, 2, 3]), [-1, -2, -3], [4, 5]]^[2, 3, 4] : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Test.Wrap([1:i8, 2:i8, 3:i8]:i8*):i8*), [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**, [map:2] [2:i8, 3:i8, 4:i8]:i8*, Call(∂.ForEach([map:3] Scope(1), Power(Scope(3), Scope(2))):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) -1
+     1) -8
+     2) -27
+ 2) Sequence: Seq<i8>
+     0) 256
+     1) 625
+###
+> [[1,2,3], Wrap([-1,-2,-3]), [4,5]] ^ [2, 3, 4]
+[[1, 2, 3], Wrap([-1, -2, -3]), [4, 5]]^[2, 3, 4] : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, Call(∂.Test.Wrap([-1:i8, -2:i8, -3:i8]:i8*):i8*), [4:i8, 5:i8]:i8*]:i8**, [map:2] [2:i8, 3:i8, 4:i8]:i8*, Call(∂.ForEach([map:3] Scope(1), Power(Scope(3), Scope(2))):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) -1
+     1) -8
+     2) -27
+ 2) Sequence: Seq<i8>
+     0) 256
+     1) 625
+###
+> [[1,2,3], [-1,-2,-3], Wrap([4,5])] ^ [2, 3, 4]
+[[1, 2, 3], [-1, -2, -3], Wrap([4, 5])]^[2, 3, 4] : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] [[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, Call(∂.Test.Wrap([4:i8, 5:i8]:i8*):i8*)]:i8**, [map:2] [2:i8, 3:i8, 4:i8]:i8*, Call(∂.ForEach([map:3] Scope(1), Power(Scope(3), Scope(2))):i8*)):i8**))
+Func sig: () to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 4
+     2) 9
+ 1) Sequence: Seq<i8>
+     0) -1
+     1) -8
+     2) -27
+ 2) Sequence: Seq<i8>
+     0) 256
+     1) 625
+###
+> Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A: v, B: x, C: y }))
+Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A : v, B : x, C : y })) : {A:i8, B:i8, C:i8}*
+BndKind:Call, Type:{A:i8, B:i8, C:i8}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([-1:i8, Add(Num<i8>(Global(i4)), 3:i8), Add(Num<i8>(Global(i4)), [-] 17:i8)]:i8*):i8*), Call(∂.With([with:2] Mul(Scope(1), Scope(1), Scope(1)), {A:Scope(1), B:Scope(2), C:Call(∂.Abs(Scope(2)):i8)})))))
+Func sig: (i4:i4) to {A:i8, B:i8, C:i8}*
+Sequence: Seq<{i8,i8,i8}>
+ 0) { A: -1, B: -1, C: 1 }
+ 1) { A: 3, B: 27, C: 27 }
+ 2) { A: -17, B: -4913, C: 4913 }
+###
+> Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A: v, B: x, C: y, D: i2 }))
+Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A : v, B : x, C : y, D : i2 })) : {A:i8, B:i8, C:i8, D:i2}*
+BndKind:Call, Type:{A:i8, B:i8, C:i8, D:i2}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([-1:i8, Add(Num<i8>(Global(i4)), 3:i8), Add(Num<i8>(Global(i4)), [-] 17:i8)]:i8*):i8*), Call(∂.With([with:2] Mul(Scope(1), Scope(1), Scope(1)), {A:Scope(1), B:Scope(2), C:Call(∂.Abs(Scope(2)):i8), D:Global(i2)})))))
+Func sig: (i4:i4, i2:i2) to {A:i8, B:i8, C:i8, D:i2}*
+Sequence: Seq<{i8,i8,i8,i2}>
+ 0) { A: -1, B: -1, C: 1, D: 0 }
+ 1) { A: 3, B: 27, C: 27, D: 0 }
+ 2) { A: -17, B: -4913, C: 4913, D: 0 }
+###
+> Map(t : Wrap([[1,2,3], [-1,-2,-3], [4,5]]), Map(u : t, u + Count(t)))
+Map(t : Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]]), Map(u : t, u + Count(t))) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**):i8**), Call(∂.With([with:2] Call(∂.Count(Scope(1)):i8), Call(∂.ForEach([map:3] Scope(1), Add(Scope(2), Scope(3))):i8*)):i8*)):i8**))
+Func sig: (<ctx>:x) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 4
+     1) 5
+     2) 6
+ 1) Sequence: Seq<i8>
+     0) 2
+     1) 1
+     2) 0
+ 2) Sequence: Seq<i8>
+     0) 6
+     1) 7
+*** Ctx ping count: 0
+###
+> Map(t : Wrap([[1,2,3], [-1,-2,-3], [4,5]]), With(c : Count(t), Map(u : t, u + c)))
+Map(t : Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]]), With(c : Count(t), Map(u : t, u + c))) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([[1:i8, 2:i8, 3:i8]:i8*, [-1:i8, -2:i8, -3:i8]:i8*, [4:i8, 5:i8]:i8*]:i8**):i8**), Call(∂.With([with:2] Call(∂.Count(Scope(1)):i8), Call(∂.ForEach([map:3] Scope(1), Add(Scope(3), Scope(2))):i8*)):i8*)):i8**))
+Func sig: (<ctx>:x) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 4
+     1) 5
+     2) 6
+ 1) Sequence: Seq<i8>
+     0) 2
+     1) 1
+     2) 0
+ 2) Sequence: Seq<i8>
+     0) 6
+     1) 7
+*** Ctx ping count: 0
+###
+> "B" in [["B"], ["A"]]
+"B" in [["B"], ["A"]] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[str(B)]:s*, [str(A)]:s*]:s**, In(str(B), Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+*** Ctx ping count: 1
+    [0](1): In("B", *1x)
+###
+> "B" in [["B", null], ["B"], ["A"]]
+"B" in [["B", null], ["B"], ["A"]] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[str(B), str(<null>)]:s*, [str(B)]:s*, [str(A)]:s*]:s**, In(str(B), Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+*** Ctx ping count: 1
+    [0](1): In("B", *1x)
+###
+> null in [[1], [null]]
+null in [[1], [null]] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[Opt<i8?>(1:i8)]:i8?*, [null:i8?]:i8?*]:i8?**, In(null:i8?, Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+*** Ctx ping count: 1
+    [0](1): In(null, *1x)
+###
+> null in [[1, null], []]
+null in [[1, null], []] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[Opt<i8?>(1:i8), null:i8?]:i8?*, null:i8?*]:i8?**, In(null:i8?, Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+*** Ctx ping count: 1
+    [0](1): In(null, *1x)
+###
+> 1 in [[1], [2], [1,2]]
+1 in [[1], [2], [1, 2]] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[1:i8]:i8*, [2:i8]:i8*, [1:i8, 2:i8]:i8*]:i8**, In(1:i8, Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+*** Ctx ping count: 1
+    [0](1): In(1, *1x)
+###
+> 1 in [[1, null], [2], [1,2], [null]]
+1 in [[1, null], [2], [1, 2], [null]] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[Opt<i8?>(1:i8), null:i8?]:i8?*, [Opt<i8?>(2:i8)]:i8?*, [Opt<i8?>(1:i8), Opt<i8?>(2:i8)]:i8?*, [null:i8?]:i8?*]:i8?**, In(Opt<i8?>(1:i8), Scope(1))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+ 3) false
+*** Ctx ping count: 2
+    [0](2): In(Opt<i8?>(1), *1x)
+###
+> 15 in [[[Range(10), Range(20)], [Range(30)]]]
+15 in [[[Range(10), Range(20)], [Range(30)]]] : b***
+BndKind:Call, Type:b***, Bnd:(Call(∂.ForEach([map:1] [[[Call(∂.Range(10:i8):i8*), Call(∂.Range(20:i8):i8*)]:i8**, [Call(∂.Range(30:i8):i8*)]:i8**]:i8***]:i8****, Call(∂.ForEach([map:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), In(15:i8, Scope(3))):b*)):b**)):b***))
+Func sig: (<ctx>:x) to b***
+Sequence: Seq<Seq<Seq<bool>>>
+ 0) Sequence: Seq<Seq<bool>>
+     0) Sequence: Seq<bool>
+         0) false
+         1) true 
+     1) Sequence: Seq<bool>
+         0) true 
+*** Ctx ping count: 40
+    [0](40): In(15, *1x)
+###
+> [5,5,5] in [Range(1), Range(5), Range(10)]
+[5, 5, 5] in [Range(1), Range(5), Range(10)] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [5:i8, 5:i8, 5:i8]:i8*, [map:2] [Call(∂.Range(1:i8):i8*), Call(∂.Range(5:i8):i8*), Call(∂.Range(10:i8):i8*)]:i8**, In(Scope(1), Scope(2))):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) true 
+*** Ctx ping count: 11
+    [0](11): In(*1x, *2x)
+###
+> ForEachIf(s:Range(1, 11), s mod 2 = 0, s * 3)
+ForEachIf(s : Range(1, 11), s mod 2 @= 0, s * 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), Mul(Scope(1), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 12
+ 2) 18
+ 3) 24
+ 4) 30
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), [if] IntMod(*1, 2) @= 0, Mul(*1, 3))
+###
+> ForEachWhile(s:Range(1, 11), s mod 5 < 3, s * 3)
+ForEachWhile(s : Range(1, 11), s mod 5 $< 3, s * 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [while] Cmp(IntMod(Scope(1), 5:i8) @< 3:i8), Mul(Scope(1), 3:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 6
+###
+> ForEach(s:Range(1, 11), [if] s mod 2 = 0, s * 3)
+ForEach(s : Range(1, 11), [if] s mod 2 @= 0, s * 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), Mul(Scope(1), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 12
+ 2) 18
+ 3) 24
+ 4) 30
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), [if] IntMod(*1, 2) @= 0, Mul(*1, 3))
+###
+> ForEach(s:Range(1, 11), [while] s mod 5 < 3, s * 3)
+ForEach(s : Range(1, 11), [while] s mod 5 $< 3, s * 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [while] Cmp(IntMod(Scope(1), 5:i8) @< 3:i8), Mul(Scope(1), 3:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 6
+###
+> ForEachIf(s0:Range(1, 11), s1:Range(2,12), s0 mod 2 = 0 and s1 mod 3 = 0, (s0, s1))
+ForEachIf(s0 : Range(1, 11), s1 : Range(2, 12), s0 mod 2 @= 0 and s1 mod 3 @= 0, (s0, s1)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(2:i8, 12:i8):i8*), [if] And(Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), Cmp(IntMod(Scope(2), 3:i8) @= 0:i8)), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (8, 9)
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), *2: Range(2, 12), [if] And(IntMod(*1, 2) @= 0, IntMod(*2, 3) @= 0), (*1, *2))
+###
+> ForEachWhile(s0:Range(1, 11), s1:Range(2,12), s0 mod 5 < 3 and s1 mod 3 > 0, (s0, s1))
+ForEachWhile(s0 : Range(1, 11), s1 : Range(2, 12), s0 mod 5 $< 3 and s1 mod 3 $> 0, (s0, s1)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(2:i8, 12:i8):i8*), [while] And(Cmp(IntMod(Scope(1), 5:i8) @< 3:i8), Cmp(IntMod(Scope(2), 3:i8) @> 0:i8)), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)*))
+Func sig: () to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 2)
+###
+> ForEach(s0:Range(1, 11), s1:Range(2,12), [if] s0 mod 2 = 0 and s1 mod 3 = 0, (s0, s1))
+ForEach(s0 : Range(1, 11), s1 : Range(2, 12), [if] s0 mod 2 @= 0 and s1 mod 3 @= 0, (s0, s1)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(2:i8, 12:i8):i8*), [if] And(Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), Cmp(IntMod(Scope(2), 3:i8) @= 0:i8)), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (8, 9)
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), *2: Range(2, 12), [if] And(IntMod(*1, 2) @= 0, IntMod(*2, 3) @= 0), (*1, *2))
+###
+> ForEach(s0:Range(1, 11), s1:Range(2,12), [while] s0 mod 5 < 3 and s1 mod 3 > 0, (s0, s1))
+ForEach(s0 : Range(1, 11), s1 : Range(2, 12), [while] s0 mod 5 $< 3 and s1 mod 3 $> 0, (s0, s1)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(2:i8, 12:i8):i8*), [while] And(Cmp(IntMod(Scope(1), 5:i8) @< 3:i8), Cmp(IntMod(Scope(2), 3:i8) @> 0:i8)), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)*))
+Func sig: () to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 2)
+###
+> ForEach(p:ForEach(x:Range(1, 11), x * 2), [if] p < 13, p + 3)
+ForEach(p : ForEach(x : Range(1, 11), x * 2), [if] p $< 13, p + 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:2] Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), Mul(Scope(1), 2:i8)):i8*), [if] Cmp(Scope(2) @< 13:i8), Add(Scope(2), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 7
+ 2) 9
+ 3) 11
+ 4) 13
+ 5) 15
+*** Ctx ping count: 11
+    [0](11): ForEach(*2: ForEach(*1: Range(1, 11), Mul(*1, 2)), [if] *2 @< 13, Add(*2, 3))
+###
+> ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [if] it mod 3 @= 0, it + 1), j : ForEach(Range(11, 21), it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:2] Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [if] Cmp(IntMod(Scope(1), 3:i8) @= 0:i8), Add(Scope(1), 1:i8)):i8*), [map:3] Call(∂.Range(11:i8, 21:i8):i8*), (Scope(2), Add(Scope(3), [-] 1:i8)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 10)
+ 1) (7, 11)
+ 2) (10, 12)
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), [if] IntMod(*1, 3) @= 0, Add(*1, 1))
+###
+> ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), [if] it mod 2 = 0, it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [if] it mod 3 @= 0, it + 1), j : ForEach(Range(11, 21), [if] it mod 2 @= 0, it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:3] Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [if] Cmp(IntMod(Scope(1), 3:i8) @= 0:i8), Add(Scope(1), 1:i8)):i8*), [map:4] Call(∂.ForEach([map:2] Call(∂.Range(11:i8, 21:i8):i8*), [if] Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), Add(Scope(2), [-] 1:i8)):i8*), (Scope(3), Scope(4)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 11)
+ 1) (7, 13)
+ 2) (10, 15)
+*** Ctx ping count: 17
+    [0](11): ForEach(*1: Range(1, 11), [if] IntMod(*1, 3) @= 0, Add(*1, 1))
+    [1](6): ForEach(*1: Range(11, 21), [if] IntMod(*1, 2) @= 0, Add(*1, [-] 1))
+###
+> ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), [while] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [if] it mod 3 @= 0, it + 1), j : ForEach(Range(11, 21), [while] it $< 15, it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:2] Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [if] Cmp(IntMod(Scope(1), 3:i8) @= 0:i8), Add(Scope(1), 1:i8)):i8*), [map:3] Call(∂.Range(11:i8, 21:i8):i8*), [while] Cmp(Scope(3) @< 15:i8), (Scope(2), Add(Scope(3), [-] 1:i8)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 10)
+ 1) (7, 11)
+ 2) (10, 12)
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(1, 11), [if] IntMod(*1, 3) @= 0, Add(*1, 1))
+###
+> ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [while] it $< 7, it + 1), j : ForEach(Range(11, 21), it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(11:i8, 21:i8):i8*), [while] Cmp(Scope(1) @< 7:i8), (Add(Scope(1), 1:i8), Add(Scope(2), [-] 1:i8)):(i8, i8)):(i8, i8)*))
+Func sig: () to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 10)
+ 1) (3, 11)
+ 2) (4, 12)
+ 3) (5, 13)
+ 4) (6, 14)
+ 5) (7, 15)
+###
+> ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), [if] it mod 2 = 0, it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [while] it $< 7, it + 1), j : ForEach(Range(11, 21), [if] it mod 2 @= 0, it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Range(1:i8, 11:i8):i8*), [map:3] Call(∂.ForEach([map:1] Call(∂.Range(11:i8, 21:i8):i8*), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), Add(Scope(1), [-] 1:i8)):i8*), [while] Cmp(Scope(2) @< 7:i8), (Add(Scope(2), 1:i8), Scope(3)):(i8, i8)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 11)
+ 1) (3, 13)
+ 2) (4, 15)
+ 3) (5, 17)
+ 4) (6, 19)
+*** Ctx ping count: 11
+    [0](11): ForEach(*1: Range(11, 21), [if] IntMod(*1, 2) @= 0, Add(*1, [-] 1))
+###
+> ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), [while] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(Range(1, 11), [while] it $< 7, it + 1), j : ForEach(Range(11, 21), [while] it $< 15, it - 1), (i, j)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(1:i8, 11:i8):i8*), [map:2] Call(∂.Range(11:i8, 21:i8):i8*), [while] And(Cmp(Scope(1) @< 7:i8), Cmp(Scope(2) @< 15:i8)), (Add(Scope(1), 1:i8), Add(Scope(2), [-] 1:i8)):(i8, i8)):(i8, i8)*))
+Func sig: () to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 10)
+ 1) (3, 11)
+ 2) (4, 12)
+ 3) (5, 13)
+###
+
+**** New definitions: vs, type: v*
+
+> vs->ForEach({ x: it})
+vs->ForEach({ x : it }) : {x:v}*
+BndKind:Call, Type:{x:v}*, Bnd:(Call(∂.ForEach([map:1] Global(vs), {x:Scope(1)})))
+Func sig: (vs:v*) to {x:v}*
+Type: <null>, Value: <null>
+###

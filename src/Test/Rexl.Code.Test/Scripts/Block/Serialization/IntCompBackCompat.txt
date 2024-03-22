@@ -1,0 +1,80 @@
+﻿Ints := module {
+    param Exps := [ 6, 13, 20, 27, 34, 41, 48, 55, 63 ];
+    const Vals := Exps->(1 shl it);
+    const MaxPos := Vals - 1;
+    const MaxNeg := -Vals;
+    const MinPos := [0] ++ Vals->TakeIf(# < Exps->Count() - 1);
+    const MinNeg := -MinPos - 1;
+    const Seq :=
+        MinPos ++ (MinPos + 1) ++
+        MaxPos ++ (MaxPos - 1) ++
+        MinNeg ++ (MinNeg - 1) ++
+        MaxNeg ++ (MaxNeg + 1);
+};
+I8s := Ints.Seq;
+U8s := Ints.Seq->CastU8();
+
+Ints4 := Ints with { Exps: [ 6, 13, 20, 27, 31 ] };
+I4s := Ints4.Seq->CastI4();
+U4s := Ints4.Seq->CastU4();
+
+func Project(seq) := (seq, seq->(it, ~it), seq->{A:it, B:~it}, seq->Tensor.From());
+func Cmp(p1, p2) := (
+    p1->GetType(),
+    p1->GetType() = p2->GetType(),
+    p1[0]->Count(), p2[0]->Count(),
+    p1[1]->Count(), p2[1]->Count(),
+    p1[2]->Count(), p2[2]->Count(),
+    p1[3].Shape, p2[3].Shape,
+    ForEach(a:p1[0], b:p2[0], a = b)->All(),
+    ForEach(a:p1[1], b:p2[1], a[0] = b[0] and a[1] = b[1] and a[1] = ~a[0])->All(),
+    ForEach(a:p1[2], b:p2[2], a.A = b.A and a.B = b.B and a.B = ~a.A)->All(),
+    ForEach(a:p1[3].Values, b:p2[3].Values, a = b)->All(),
+);
+
+PI8s := I8s->Project();
+PU8s := U8s->Project();
+PI4s := I4s->Project();
+PU4s := U4s->Project();
+
+finish R1 as ReadRbin(_DATA_ & "I8s.0105.rbin");
+finish R2 as ReadRbin(_DATA_ & "U8s.0105.rbin");
+finish R3 as ReadRbin(_DATA_ & "I4s.0105.rbin");
+finish R4 as ReadRbin(_DATA_ & "U4s.0105.rbin");
+(R1$Failed, R1$ErrorMessage, R1$ResultNames);
+(R2$Failed, R2$ErrorMessage, R2$ResultNames);
+(R3$Failed, R3$ErrorMessage, R3$ResultNames);
+(R4$Failed, R4$ErrorMessage, R4$ResultNames);
+
+R1.RowCount;
+R2.RowCount;
+R3.RowCount;
+R4.RowCount;
+
+Cmp(R1.Data, PI8s);
+Cmp(R2.Data, PU8s);
+Cmp(R3.Data, PI4s);
+Cmp(R4.Data, PU4s);
+
+finish W1 as WriteRbin(PI8s, "temp/I8s.Cur.rbin", true, false);
+finish W2 as WriteRbin(PU8s, "temp/U8s.Cur.rbin", true, false);
+finish W3 as WriteRbin(PI4s, "temp/I4s.Cur.rbin", true, false);
+finish W4 as WriteRbin(PU4s, "temp/U4s.Cur.rbin", true, false);
+(W1$Failed, W1$ResultNames, W1.Size);
+(W2$Failed, W2$ResultNames, W2.Size);
+(W3$Failed, W3$ResultNames, W3.Size);
+(W4$Failed, W4$ResultNames, W4.Size);
+
+finish R1 as ReadRbin("temp/I8s.Cur.rbin");
+finish R2 as ReadRbin("temp/U8s.Cur.rbin");
+finish R3 as ReadRbin("temp/I4s.Cur.rbin");
+finish R4 as ReadRbin("temp/U4s.Cur.rbin");
+(R1$Failed, R1$ResultNames, R1.RowCount);
+(R2$Failed, R2$ResultNames, R2.RowCount);
+(R3$Failed, R3$ResultNames, R3.RowCount);
+(R4$Failed, R4$ResultNames, R4.RowCount);
+
+Cmp(R1.Data, PI8s);
+Cmp(R2.Data, PU8s);
+Cmp(R3.Data, PI4s);
+Cmp(R4.Data, PU4s);

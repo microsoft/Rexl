@@ -1,0 +1,62 @@
+>>> *** Source:
+    M := module {
+      param A := 3;
+      param B := A + 1;
+      param C := B + 1;
+      param D := C + 1;
+      param E := D + 1;
+    };
+    M;
+    M=>{A:100};
+    M=>{B:100};
+    M=>{C:100};
+    M=>{D:100}=>{B:200};
+
+>>> *** Instructions:
+   0) [0] Define M <- module { param A := 3; param B := A + 1; param C := B + 1; param D := C + 1; param E := D + 1 }
+   1) [0] Expr M
+   2) [0] Expr M=>{ A : 100 }
+   3) [0] Expr M=>{ B : 100 }
+   4) [0] Expr M=>{ C : 100 }
+   5) [0] Expr M=>{ D : 100 }=>{ B : 200 }
+   6) [0] End
+
+>    0) [0] Define M <- module { param A := 3; param B := A + 1; param C := B + 1; param D := C + 1; param E := D + 1 }
+Global 'M' has DType: M{param A:i8, param B:i8, param C:i8, param D:i8, param E:i8}, SysType: RuntimeModule<{i8,i8,i8,i8,i8},(i8,i8,i8,i8,i8)>
+>    1) [0] Expr M
+module symbols:
+  param A: 3
+  param B: 4
+  param C: 5
+  param D: 6
+  param E: 7
+>    2) [0] Expr M=>{ A : 100 }
+module symbols:
+  param A: 100
+  param B: 101
+  param C: 102
+  param D: 103
+  param E: 104
+>    3) [0] Expr M=>{ B : 100 }
+module symbols:
+  param A: 3
+  param B: 100
+  param C: 101
+  param D: 102
+  param E: 103
+>    4) [0] Expr M=>{ C : 100 }
+module symbols:
+  param A: 3
+  param B: 4
+  param C: 100
+  param D: 101
+  param E: 102
+>    5) [0] Expr M=>{ D : 100 }=>{ B : 200 }
+module symbols:
+  param A: 3
+  param B: 200
+  param C: 201
+  param D: 100
+  param E: 101
+>    6) [0] End
+

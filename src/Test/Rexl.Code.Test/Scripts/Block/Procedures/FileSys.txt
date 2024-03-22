@@ -1,0 +1,28 @@
+﻿func Clean(path) := Clean(path, "Data");
+func Clean(path, key) := path[path->LastIndexOf(key) : ]->Replace("\\", "/");
+
+finish T as ListFiles();
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Data->(Path->Clean("Scripts"))->Sort();
+
+finish T as ListFiles(_DATA_);
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Data->(Path->Clean())->Sort();
+
+finish T as ListFiles(Link.LocalData(_DATA_));
+(T$Failed, T$ErrorMessage, T$ResultNames);
+(T.Link.Path->Clean(), T.FullLink.Path->Clean());
+T.Data->(Path->Clean())->Sort();
+
+finish T as ListFiles("../../Junk"); // Should fail.
+(T$Failed, T$ErrorMessage, T$ResultNames);
+
+finish W as WriteRbin("Hello", "junk/Hello.rbin");
+(W$Failed, W$ErrorMessage, W$ResultNames);
+(W.Size, W.Compression);
+
+finish T as ListFiles("junk");
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Data->Count() > 0;
+T.Data->All(Path->IndexOf("XTemp") >= 0);
+T.Data->Any(Path->IndexOf("Hello.rbin") >= 0);

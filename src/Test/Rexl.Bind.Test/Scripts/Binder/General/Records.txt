@@ -1,0 +1,68 @@
+﻿::: {g:g, o:o, s:s, b:b, qb:b?, d:d, qd:d?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+::+ { R:{A:i4, B:s} }
+
+// REVIEW: Need more complete tests!
+{ A:3, B:s, C:i4, D:d, E:true, F:null }
+
+{ D:qi4, C:s, B:qb, A:s }
+
+{ A:3, A:true }
+
+// Implicit field names
+{ i4, b }
+{ i4, b, R, R.A, R.B }
+
+SetFields({A:3, B:s}, C:n, D:d)
+
+// Projection
+{A:3, B:s, C:n, D:d}->{A, C, E: D}
+{A:3, B:s, C:n, D:d}->{A, C, E: it.D}
+GuardMap({A:3, B:s, C:n, D:d}, {A, C, E: D})
+GuardMap({A:3, B:s, C:n, D:d}, {A, C, E: it.D})
+{ R }->{ R.A, R.B }
+{ R:Wrap(R) }->{ R.A, R.B }
+GuardMap({ R }, { R.A, R.B })
+GuardMap({ R:Wrap(R) }, { R.A, R.B })
+
+[[1,2,3], [4,5]]->{ A: it * 2, } // Baseline whether we expand over sequence literals.
+GuardMap([[1,2,3], [4,5]], { A: it * 2, })
+[[1,2,3], [4,5]]->{ A: it * 2, B: GetType(it$1), }
+[[1,2,3], [4,5]]->{ A: it * 2, B: Count(it$2), }
+Map(a: [[1,2,3], [4,5]], Map(b: a, b->{ A: it * 2, B: Count(a), })) // Alternative.
+GuardMap([[1,2,3], [4,5]], { A: it * 2, B: Count(it$2) })
+Map(a: [[1,2,3], [4,5]], GuardMap(b: a, { A: b * 2, B: Count(a) })) // Alternative.
+
+// Augmentation
+{A:3, B:s}+>{ C:n, D:d, E: A + 7}
+{A:3, B:s}+>{ C:n, D:d, E: it.A + 7}
+SetFields({A:3, B:s}, C:n, D:d, E: A + 7)
+SetFields({A:3, B:s}, C:n, D:d, E: it.A + 7)
+{ R }+>{ R.A, R.B }
+
+:: { A:{A:i4, B:b}? }
+
+// Implicit match comes after field match.
+A+>{ C:  A }
+AddFields(A, C: A)
+SetFields(A, C: A)
+AddFields(A, C: it)
+SetFields(A, C: it)
+AddFields(a:A, C: a)
+SetFields(a:A, C: a)
+AddFields(A:A, C: A)
+SetFields(A:A, C: A)
+AddFields(A:A, C: A.A)
+SetFields(A:A, C: A.A)
+
+{ A:5, B:false }.A
+{ A:5, B:false }.B
+
+::+ { R:{A:i4, B:b }, S:{ A:i4 } }
+
+(R if false else R).A
+(R if false else S).A
+(R if false else S).B
+
+({A:1, B:true} if false else {A:2}).B
+
+{ heißen: 7, heissen: 3 }

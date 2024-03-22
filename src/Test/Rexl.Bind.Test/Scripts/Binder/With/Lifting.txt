@@ -1,0 +1,18 @@
+:: { i8:i8, qi8:i8?, si8:i8*, i4:i4, ts:t* }
+`` func V(x) := Date.Now.Utc() + Time(x);
+
+si8 + i8
+si8 + i4
+si8 + i8 * i8
+si8 + qi8 * i8
+si8 + i8 * qi8
+(i8 * i8) + si8 + (i8 * i8)
+Mod(si8, i8 * i8)
+Mod(si8, qi8 * i8)
+Mod(i8 * i8, si8)
+Mod(i8 * qi8, si8)
+
+// Coverage of impure can't repeat.
+Date.Now.Utc() + ts // Note the doubling in "With" for the "tupled" output.
+V(3) + ts
+NowUtc() + ts // Error: proc can't be used as function.

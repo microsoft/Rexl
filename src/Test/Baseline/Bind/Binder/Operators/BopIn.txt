@@ -1,0 +1,289 @@
+**** New globals: {B:b, N:r8, X:r8, Y:r8, Z:r8, b:b?, g:g, n:r8?, o:o, s:s, ss:s*}
+
+> "B" in ""
+"B" in "" : b
+*** Error: (7,9) Node: "", Message: Need a sequence on the right of in
+Binder : In("B", Error(ErrNeedSequenceForIn))
+###
+> "B" in null
+"B" in null : b
+Binder : In("B", null)
+###
+> null in null
+null in null : b
+Binder : In(str(<null>), null)
+###
+> null !in null
+null !in null : b
+Binder : InNot(str(<null>), null)
+###
+> null not in null
+null not in null : b
+Binder : InNot(str(<null>), null)
+###
+> "" in ss
+"" in ss : b
+Binder : In("", ss)
+###
+> null in ss
+null in ss : b
+Binder : In(str(<null>), ss)
+###
+> s in ss
+s in ss : b
+Binder : In(s, ss)
+###
+> s !in ss
+s !in ss : b
+Binder : InNot(s, ss)
+###
+> s not in ss
+s not in ss : b
+Binder : InNot(s, ss)
+###
+> "B" in ss
+"B" in ss : b
+Binder : In("B", ss)
+###
+> "B" !in ss
+"B" !in ss : b
+Binder : InNot("B", ss)
+###
+> "B" ~in ss
+"B" ~in ss : b
+Binder : InCi("B", ss)
+###
+> "B" !~in ss
+"B" !~in ss : b
+Binder : InCiNot("B", ss)
+###
+> "B" not~in ss
+"B" not ~in ss : b
+Binder : InCiNot("B", ss)
+###
+> "B" not ~in ss
+"B" not ~in ss : b
+Binder : InCiNot("B", ss)
+###
+> "B" in [1]
+"B" in [1] : b
+*** Error: (4,6) Node: "B" in [1], Message: The given types are incompatible: 's' and 'i8'
+Binder : Error(ErrIncompatibleTypes_Type_Type)
+###
+> "B" in ["B"]
+"B" in ["B"] : b
+Binder : In("B", ["B"])
+###
+> "B" in ["B", null]
+"B" in ["B", null] : b
+Binder : In("B", ["B", str(<null>)])
+###
+> "B" in ["B", null, 1]
+"B" in ["B", null, 1] : b
+*** Error: (19,20) Node: 1, Message: The given types are incompatible: 's' and 'i8'
+*** Error: (7,8) Node: ["B", null, 1], Message: Equality comparison is not supported for items of type 'g'
+Binder : Error(ErrInequatableType_Type)
+###
+> "B" in [null]
+"B" in [null] : b
+Binder : In("B", [str(<null>)])
+###
+> "B" in []
+"B" in [] : b
+Binder : In("B", null)
+###
+> null in [1]
+null in [1] : b
+Binder : In(null, [Opt<i8?>(1)])
+###
+> null in [1, null]
+null in [1, null] : b
+Binder : In(null, [Opt<i8?>(1), null])
+###
+> null in ["B"]
+null in ["B"] : b
+Binder : In(str(<null>), ["B"])
+###
+> null in [1, null, "B"]
+null in [1, null, "B"] : b
+*** Error: (18,21) Node: "B", Message: The given types are incompatible: 'i8?' and 's'
+*** Error: (8,9) Node: [1, null, "B"], Message: Equality comparison is not supported for items of type 'g'
+Binder : Error(ErrInequatableType_Type)
+###
+> 1 in [1]
+1 in [1] : b
+Binder : In(1, [1])
+###
+> 1 in [1, null]
+1 in [1, null] : b
+Binder : In(Opt<i8?>(1), [Opt<i8?>(1), null])
+###
+> 1 in [1, null, "B"]
+1 in [1, null, "B"] : b
+*** Error: (15,18) Node: "B", Message: The given types are incompatible: 'i8?' and 's'
+*** Error: (5,6) Node: [1, null, "B"], Message: Equality comparison is not supported for items of type 'g'
+Binder : Error(ErrInequatableType_Type)
+###
+> 1 in [1, 3000, 1000000000]
+1 in [1, 3000, 1000000000] : b
+Binder : In(1, [1, 3000, 1000000000])
+###
+> 1000000000 in [1, 2, 3]
+1000000000 in [1, 2, 3] : b
+Binder : In(1000000000, [1, 2, 3])
+###
+> {A:1} in [{A:1}]
+{ A : 1 } in [{ A : 1 }] : b
+Binder : In({A:1}, [{A:1}])
+###
+> [{A:1}] in [[{A:1}]]
+[{ A : 1 }] in [[{ A : 1 }]] : b*
+Binder : ForEach(*1: [{A:1}], *2: [[{A:1}]], In(*1, *2))
+###
+> "B" ! in ss
+"B" !in ss : b
+Binder : InNot("B", ss)
+###
+> "B" ~ in ss
+"B" ~in ss : b
+Binder : InCi("B", ss)
+###
+> "B" ! ~in ss
+"B" !~in ss : b
+Binder : InCiNot("B", ss)
+###
+> "B" !~ in ss
+"B" !~in ss : b
+Binder : InCiNot("B", ss)
+###
+> "B" ! ~ in ss
+"B" !~in ss : b
+Binder : InCiNot("B", ss)
+###
+> {A:"hi"} ~in [{A:"HI"}]
+{ A : "hi" } ~in [{ A : "HI" }] : b
+Binder : InCi({A:"hi"}, [{A:"HI"}])
+###
+> [{A:"hi"}] ~in [[{A:"HI"}]]
+[{ A : "hi" }] ~in [[{ A : "HI" }]] : b*
+Binder : ForEach(*1: [{A:"hi"}], *2: [[{A:"HI"}]], InCi(*1, *2))
+###
+
+**** New globals: {s:s*, ss:s**}
+
+> s in ss
+s in ss : b*
+Binder : ForEach(*1: s, *2: ss, In(*1, *2))
+###
+> "B" in [[1]]
+"B" in [[1]] : b*
+*** Error: (4,6) Node: "B" in [[1]], Message: The given types are incompatible: 's' and 'i8'
+Binder : ForEach(*1: [[1]], Error(ErrIncompatibleTypes_Type_Type))
+Reducer: [Error(ErrIncompatibleTypes_Type_Type)]
+###
+> "B" in [["B"], ["A"]]
+"B" in [["B"], ["A"]] : b*
+Binder : ForEach(*1: [["B"], ["A"]], In("B", *1))
+###
+> "B" in [["B", null], ["B"], ["A"]]
+"B" in [["B", null], ["B"], ["A"]] : b*
+Binder : ForEach(*1: [["B", str(<null>)], ["B"], ["A"]], In("B", *1))
+###
+> "B" in [["B", null, 1], [1]]
+"B" in [["B", null, 1], [1]] : b*
+*** Error: (20,21) Node: 1, Message: The given types are incompatible: 's' and 'i8'
+*** Error: (7,8) Node: [["B", null, 1], [1]], Message: Equality comparison is not supported for items of type 'g'
+Binder : ForEach(*1: [[Ref<g>("B"), null, Box<g>(1)], [Box<g>(1)]], Error(ErrInequatableType_Type))
+Reducer: Repeat(Error(ErrInequatableType_Type), 2)
+###
+> "B" in [[1],[]]
+"B" in [[1], []] : b*
+*** Error: (4,6) Node: "B" in [[1], []], Message: The given types are incompatible: 's' and 'i8'
+Binder : ForEach(*1: [[1], null], Error(ErrIncompatibleTypes_Type_Type))
+Reducer: Repeat(Error(ErrIncompatibleTypes_Type_Type), 2)
+###
+> null in [[1], [null]]
+null in [[1], [null]] : b*
+Binder : ForEach(*1: [[Opt<i8?>(1)], [null]], In(null, *1))
+###
+> null in [[1, null], []]
+null in [[1, null], []] : b*
+Binder : ForEach(*1: [[Opt<i8?>(1), null], null], In(null, *1))
+###
+> null in [["B"], [1]]
+null in [["B"], [1]] : b*
+*** Error: (16,17) Node: [1], Message: The given types are incompatible: 's*' and 'i8*'
+*** Error: (8,9) Node: [["B"], [1]], Message: Equality comparison is not supported for items of type 'g'
+Binder : ForEach(*1: [Ref<g*>(["B"]), [Box<g>(1)]], Error(ErrInequatableType_Type))
+Reducer: Repeat(Error(ErrInequatableType_Type), 2)
+###
+> null in [[1, null, "B"]]
+null in [[1, null, "B"]] : b*
+*** Error: (19,22) Node: "B", Message: The given types are incompatible: 'i8?' and 's'
+*** Error: (8,9) Node: [[1, null, "B"]], Message: Equality comparison is not supported for items of type 'g'
+Binder : ForEach(*1: [[Box<g>(1), null, Ref<g>("B")]], Error(ErrInequatableType_Type))
+Reducer: [Error(ErrInequatableType_Type)]
+###
+> 1 in [[1], [2], [1,2]]
+1 in [[1], [2], [1, 2]] : b*
+Binder : ForEach(*1: [[1], [2], [1, 2]], In(1, *1))
+###
+> 1 in [[1, null], [2], [1,2], [null]]
+1 in [[1, null], [2], [1, 2], [null]] : b*
+Binder : ForEach(*1: [[Opt<i8?>(1), null], [Opt<i8?>(2)], [Opt<i8?>(1), Opt<i8?>(2)], [null]], In(Opt<i8?>(1), *1))
+###
+> 1 in [[1, null, "B"]]
+1 in [[1, null, "B"]] : b*
+*** Error: (16,19) Node: "B", Message: The given types are incompatible: 'i8?' and 's'
+*** Error: (5,6) Node: [[1, null, "B"]], Message: Equality comparison is not supported for items of type 'g'
+Binder : ForEach(*1: [[Box<g>(1), null, Ref<g>("B")]], Error(ErrInequatableType_Type))
+Reducer: [Error(ErrInequatableType_Type)]
+###
+> 1 in [[[Range(10), Range(20)], [Range(30)]]]
+1 in [[[Range(10), Range(20)], [Range(30)]]] : b***
+Binder : ForEach(*1: [[[Range(10), Range(20)], [Range(30)]]], ForEach(*2: *1, ForEach(*3: *2, In(1, *3))))
+###
+> Range(1) in [Range(1)]
+Range(1) in [Range(1)] : b*
+Binder : ForEach(*1: Range(1), *2: [Range(1)], In(*1, *2))
+###
+> 3 ~in Range(10)
+Corrected by binder: [3 in Range(10)]
+3 ~in Range(10) : b
+*** Warning: (2,3) Node: 3 ~in Range(10), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : In(3, Range(10))
+###
+> 3 !~in Range(10)
+Corrected by binder: [3 !in Range(10)]
+3 !~in Range(10) : b
+*** Warning: (3,4) Node: 3 !~in Range(10), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : InNot(3, Range(10))
+###
+> 3 ~!in Range(10)
+Corrected by binder: [3 !in Range(10)]
+3 !~in Range(10) : b
+*** Warning: (2,3) Node: 3 !~in Range(10), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : InNot(3, Range(10))
+###
+> 3 ~ not in Range(10)
+Corrected by binder: [3  not in Range(10)]
+3 not ~in Range(10) : b
+*** Warning: (2,3) Node: 3 not ~in Range(10), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : InNot(3, Range(10))
+###
+> 3 not ~ in Range(10)
+Corrected by binder: [3 not  in Range(10)]
+3 not ~in Range(10) : b
+*** Warning: (6,7) Node: 3 not ~in Range(10), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : InNot(3, Range(10))
+###
+> 3 + 5 in Range(10)
+3 + 5 in Range(10) : b
+Binder : In(Add(3, 5), Range(10))
+Reducer: In(8, Range(10))
+###
+> 14 in [ 3, 8 + 6 ]
+14 in [3, 8 + 6] : b
+Binder : In(14, [3, Add(8, 6)])
+Reducer: In(14, [3, 14])
+###

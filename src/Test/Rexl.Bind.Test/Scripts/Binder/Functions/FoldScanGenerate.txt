@@ -1,0 +1,133 @@
+﻿:: { C: i8, S:i8*, T:{N:i8, V:r8}*, s:s }
+
+// Product (factorial).
+Fold(x:S, y:1i8, x * y)
+ScanX(x:S, y:1i8, x * y)
+Generate(x: C + 1, y:1i8, (x max 1) * y)
+ScanZ(x:S, y:1i8, (x + 1) * y)
+Generate(x:C, y:1i8, (x + 1) * y)
+Fold(x:S, y:1ia, x * y)
+ScanX(x:S, y:1ia, x * y)
+Gen(x: C + 1, y:1ia, (x max 1) * y)
+Generate(x: C + 1, y:1ia, (x max 1) * y)
+ScanZ(x:S, y:1ia, (x + 1) * y)
+Generate(x:C, y:1ia, (x + 1) * y)
+Fold(x:S, y:1r8, x * y)
+ScanX(x:S, y:1r8, x * y)
+Generate(x: C + 1, y:1r8, (x max 1) * y)
+ScanZ(x:S, y:1r8, (x + 1) * y)
+Generate(x:C, y:1r8, (x + 1) * y)
+Fold(x:S, y:1, 1.0 * x * y) // Requires rewind.
+ScanX(x:S, y:1, 1.0 * x * y) // Requires rewind.
+Generate(x: C + 1, y:1, 1.0 * (x max 1) * y) // Requires rewind.
+ScanZ(x:S, y:1, 1.0 * (x + 1) * y) // Requires rewind.
+Generate(x:C, y:1, 1.0 * (x + 1) * y) // Requires rewind.
+
+// Min
+Fold(x:S, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+ScanX(x:S, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+Generate(x:C, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+
+// Fibonacci
+Fold(S, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+ScanX(S, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+Generate(C, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+Fold(S, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+ScanX(S, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+Generate(C, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Generate(c:C, y:(0ia, 1ia), (y[1], y[0] + y[1]), (c, y[1]))
+
+// Degree 3 linear recurrence
+Fold(S, y:(0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind thrice.
+Fold(S, y:(0, 0, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind twice.
+Fold(S, y:(0, 0r, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind.
+Fold(S, y:(0r, 0r, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2]))
+
+// Degree 4 linear recurrence
+Fold(S, y:(0, 0, 0, 1), (y[1], y[2], y[3], 4ia * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) // Requires rewind four times, but our limit is three.
+Fold(S, y:(0, 0, 0, 1ia), (y[1], y[2], y[3], 4ia * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) // Requires rewind thrice.
+
+// Reverse
+Fold(x:S, y:[], [x] ++ y) // Requires rewind.
+Fold(x:S, y:[0i8]->Filter(false), [x] ++ y)
+
+// ScanX via Fold
+ScanX(x:S, y:0, x + y)
+Fold(x:S, y:(0, []), (x + y[0], y[1] ++ [y[0]]))
+Fold(x:S, y:(0, []), (x + y[0], y[1] ++ [y[0]]), y[1] ++ [y[0]])
+
+// Running statistics.
+ScanZ(x:T, y:{ NS:0, VS:0r, VMax:-1/0 }, { NS: y.NS + x.N, VS: y.VS + x.V, VMax: y.VMax max x.V })
+ScanZ(x:T, y:{ NS:0, VS:0r, VMax:-1/0 }, { NS: y.NS + x.N, VS: y.VS + x.V, VMax: y.VMax max x.V }, x & y)
+
+// Reductions on empty.
+Generate(c:0, c)
+Fold(i:Range(0), s:-1, s + i)
+ScanX(i:Range(0), s:-1, s + i)
+ScanZ(i:Range(0), s:-1, s + i)
+Generate(c:0, s:-1, s + c)
+ScanZ(i:Range(0), s:-1, s + i, s + 1)
+Generate(c:0, s:-1, s + c, s + 1)
+// REVIEW: We can do better on these.
+ScanX(i:Range(0), s:-1, s + i, s + 1)
+Fold(i:Range(0), s:-1, s + i, s + 1)
+
+// Reductions with ForEach.
+ForEach(s:ScanX(x:S, y:0, y + x), s + 1)
+ForEach(s:ScanX(x:S, y:0, y + #), s + 1)
+ForEach(s:ScanZ(x:S, y:0, y + x), s + 1)
+ForEach(s:Generate(c:C, y:0, y + c), s + 1)
+ForEach(s:ScanZ(x:S, y:0, y + x), s + #)
+ForEach(s:ScanZ(x:S, y:0, y + #), s + #)
+ForEach(s:Generate(c:C, y:0, y + c), s + #)
+ForEach(s:Generate(c:C, y:0, y + #), s + #)
+ForEach(s:ScanX(x:S, y:0, y + x), s + #) // Can't reduce, 4th arg not indexed.
+ForEach(s:ScanX(x:S, y:0, y + #), s + #) // Can't reduce, 4th arg not indexed.
+ForEach(s:ScanX(x:S, y:0, y + x, y - 1), s + 1) // Can't reduce... REVIEW: Or can we?
+
+// ForEach and ForEachIf with a predicate. These shouldn't reduce because of the predicate.
+ForEach(s:Generate(x:C, y:0, y + x), [if] s mod 2 = 0, s + 1)
+ForEach(s:ScanX(x:S, y:0, y + x), [if] s mod 2 = 0, s + 1)
+ForEach(s:ScanZ(x:S, y:0, y + #), [if] s mod 2 = 0, s + 1)
+ForEach(s:Generate(x:C, y:0, y + x), [while] s mod 2 = 0, s + 1)
+ForEach(s:ScanX(x:S, y:0, y + x), [while] s mod 2 = 0, s + 1)
+ForEach(s:ScanZ(x:S, y:0, y + #), [while] s mod 2 = 0, s + 1)
+ForEachIf(s:Generate(x:C, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachIf(s:ScanX(x:S, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachIf(s:ScanZ(x:S, y:0, y + #), s mod 2 = 0, s + 1)
+ForEachWhile(s:Generate(x:C, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachWhile(s:ScanX(x:S, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachWhile(s:ScanZ(x:S, y:0, y + #), s mod 2 = 0, s + 1)
+
+// Other reductions.
+Generate(C, it)
+Generate(C, #)
+
+// Errors in the presence of rewind
+Fold(x:S, y:1r, x * y * Z) // Error.
+Fold(x:S, y:1, 1.0 * x * y * Z) // Requires rewind, with error.
+
+X * Fold(x:S, y:1r, x * y * Z) // Errors before and in the call.
+X * Fold(x:S, y:1, 1.0 * x * y * Z) // Requires rewind, with errors.
+
+// Other errors
+Fold(x:S, y:Y, x * y * Z) // Error in the seed.
+
+Generate(s, s) // Error.
+Generate(s, s, s) // Error.
+
+Fold([], b, { }) // Error suppresses rewind.
+Fold([], a:{}, { a }) // Error, unfixable with rewind.
+ScanX([], b, { }) // Error suppresses rewind.
+ScanZ([], a:{}, { a }) // Error, unfixable with rewind.
+ForEach(s3: ScanZ(s1: 1, s2: a, b*b), s3 + 2) // Error.
+Generate(C, a: {}, { a }, it) // Error, unfixable with rewind.

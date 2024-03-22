@@ -1,0 +1,102 @@
+﻿::: { s:s, r8:r8, r4:r4, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1, T:{A:i4, B:i4}*}
+
+[-1, 3, -17]
+Abs([-1, 3, -17])
+Abs(Wrap([-1, 3, -17]))
+
+[-1, i4 + 3, i4 - 17]
+Abs([-1, i4 + 3, i4 - 17])
+Abs(Wrap([-1, i4 + 3, i4 - 17]))
+
+["hello", "A", null, "This is a test"]
+Text.Len(["hello", "A", null, "This is a test"])
+Text.Len(Wrap(["hello", "A", null, "This is a test"]))
+Text.Len(["hello", "A", null, "This is a test"]) + 17
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + 17
+
+Text.Upper(["hello", "A", null, "This is a test"])
+Text.Upper(Wrap(["hello", "A", null, "This is a test"]))
+Text.Lower(["hello", "A", null, "This is a test"])
+Text.Lower(Wrap(["hello", "A", null, "This is a test"]))
+
+"pre_" & Text.Upper(["hello", "A", null, "This is a test"]) & "_post"
+"pre_" & Wrap(Text.Upper(["hello", "A", null, "This is a test"])) & "_post"
+"pre_" & Text.Upper(Wrap(["hello", "A", null, "This is a test"])) & "_post"
+
+Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100]
+Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100])
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100]
+
+Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100] > 0
+Wrap(Text.Len(["hello", "A", null, "This is a test"]) + [3, 5, -1, -18, 100]) > 0
+Text.Len(["hello", "A", null, "This is a test"]) + Wrap([3, 5, -1, -18, 100]) > 0
+Text.Len(Wrap(["hello", "A", null, "This is a test"])) + [3, 5, -1, -18, 100] > 0
+
+// Nested sequence.
+[[1,2,3], [-1,-2,-3], [4,5]]
+
+// Nested sequence requiring promotion.
+[[1,2,3], [-1,-2,-3], [4.5,5]]
+
+[[1,2,3], [-1,-2,-3], [4,5]] ^ 2
+[[1f,2,3], [-1,-2,-3], [4,5]] ^ 2
+Wrap([[1,2,3], [-1,-2,-3], [4,5]]) ^ 2
+Wrap([[1f,2,3], [-1,-2,-3], [4,5]]) ^ 2
+[Wrap([1,2,3]), [-1,-2,-3], [4,5]] ^ 2
+[[1,2,3], Wrap([-1,-2,-3]), [4,5]] ^ 2
+[[1,2,3], [-1,-2,-3], Wrap([4,5])] ^ 2
+
+[[1,2,3], [-1,-2,-3, i4 + 7], [4,5]] ^ 2
+
+[[1,2,3], [-1,-2,-3], [4,5]] ^ [2, 3, 4]
+# Wrap([[1,2,3], [-1,-2,-3], [4,5]]) ^ [2, 3, 4] // Curried scopes NYI
+[Wrap([1,2,3]), [-1,-2,-3], [4,5]] ^ [2, 3, 4]
+[[1,2,3], Wrap([-1,-2,-3]), [4,5]] ^ [2, 3, 4]
+[[1,2,3], [-1,-2,-3], Wrap([4,5])] ^ [2, 3, 4]
+
+Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A: v, B: x, C: y }))
+
+// Curried globals.
+Map(v : Wrap([-1, i4 + 3, i4 - 17]), With(x : v * v * v, y : Abs(x), { A: v, B: x, C: y, D: i2 }))
+
+// Curry scope.
+Map(t : Wrap([[1,2,3], [-1,-2,-3], [4,5]]), Map(u : t, u + Count(t)))
+
+// Curry scope from With.
+Map(t : Wrap([[1,2,3], [-1,-2,-3], [4,5]]), With(c : Count(t), Map(u : t, u + c)))
+
+"B" in [["B"], ["A"]]
+"B" in [["B", null], ["B"], ["A"]]
+//"B" in [["B", null, 1], [1]] // REVIEW: casting to g is not yet implemented
+
+null in [[1], [null]]
+null in [[1, null], []]
+//null in [[1, null, "B"]] // REVIEW: casting to g is not yet implemented
+
+1 in [[1], [2], [1,2]]
+1 in [[1, null], [2], [1,2], [null]]
+//1 in [[1, null, "B"]] // REVIEW: casting to g is not yet implemented
+
+15 in [[[Range(10), Range(20)], [Range(30)]]]
+[5,5,5] in [Range(1), Range(5), Range(10)]
+
+ForEachIf(s:Range(1, 11), s mod 2 = 0, s * 3)
+ForEachWhile(s:Range(1, 11), s mod 5 < 3, s * 3)
+ForEach(s:Range(1, 11), [if] s mod 2 = 0, s * 3)
+ForEach(s:Range(1, 11), [while] s mod 5 < 3, s * 3)
+ForEachIf(s0:Range(1, 11), s1:Range(2,12), s0 mod 2 = 0 and s1 mod 3 = 0, (s0, s1))
+ForEachWhile(s0:Range(1, 11), s1:Range(2,12), s0 mod 5 < 3 and s1 mod 3 > 0, (s0, s1))
+ForEach(s0:Range(1, 11), s1:Range(2,12), [if] s0 mod 2 = 0 and s1 mod 3 = 0, (s0, s1))
+ForEach(s0:Range(1, 11), s1:Range(2,12), [while] s0 mod 5 < 3 and s1 mod 3 > 0, (s0, s1))
+
+ForEach(p:ForEach(x:Range(1, 11), x * 2), [if] p < 13, p + 3)
+
+ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), it - 1), (i, j))
+ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), [if] it mod 2 = 0, it - 1), (i, j))
+ForEach(i: ForEach(Range(1, 11), [if] it mod 3 = 0, it + 1), j: ForEach(Range(11, 21), [while] it < 15, it - 1), (i, j))
+ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), it - 1), (i, j))
+ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), [if] it mod 2 = 0, it - 1), (i, j))
+ForEach(i: ForEach(Range(1, 11), [while] it < 7, it + 1), j: ForEach(Range(11, 21), [while] it < 15, it - 1), (i, j))
+
+``` vs := [];
+vs->ForEach({ x: it})

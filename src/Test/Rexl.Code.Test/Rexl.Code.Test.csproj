@@ -1,0 +1,131 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <DefineConstants>WITH_CODE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared.Test\BlockTestsBase.cs" Link="Shared\BlockTestsBase.cs" />
+    <Compile Include="..\..\Shared.Test\BoundTreeValidator.cs" Link="Shared\BoundTreeValidator.cs" />
+    <Compile Include="..\..\Shared.Test\RexlLineTestsBase.cs" Link="Shared\RexlLineTestsBase.cs" />
+    <Compile Include="..\..\Shared.Test\RexlTestsBase.cs" Link="Shared\RexlTestsBase.cs" />
+    <Compile Include="..\..\Shared.Test\RexlTestsBaseType.cs" Link="Shared\RexlTestsBaseType.cs" />
+    <Compile Include="..\..\Shared.Test\TestOperations.cs" Link="Shared\TestOperations.cs" />
+    <Compile Include="..\..\Shared.Test\TestOperations.Gen.cs" Link="Shared\TestOperations.Gen.cs" />
+    <Compile Include="..\..\Shared.Test\TestProcedures.cs" Link="Shared\TestProcedures.cs" />
+    <Compile Include="..\..\Shared.Test\TestProcedures.Gen.cs" Link="Shared\TestProcedures.Gen.cs" />
+    <Compile Include="..\..\Shared.Test\TestTypeManager.cs" Link="Shared\TestTypeManager.cs" />
+    <Compile Include="..\..\Shared.Test\TestTypeManager.Impls.cs" Link="Shared\TestTypeManager.Impls.cs" />
+    <Compile Include="..\..\Shared.Test\TestUtils.cs" Link="Shared\TestUtils.cs" />
+    <Compile Include="..\..\Shared\Validation.cs" Link="Shared\Validation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Baseline\Code\**\*" LinkBase="Test\Baseline" />
+    <None Include="..\XOutput\Code\**\*" LinkBase="Test\XOutput" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Rexl.Base\Rexl.Base.csproj" />
+    <ProjectReference Include="..\..\Core\Rexl.Bind\Rexl.Bind.csproj" />
+    <ProjectReference Include="..\..\Core\Rexl.Code\Rexl.Code.csproj" />
+    <ProjectReference Include="..\..\Core\Rexl.Flow\Rexl.Flow.csproj" />
+    <ProjectReference Include="..\..\Core\Rexl.Harness\Rexl.Harness.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Scripts\CodeGen\Functions\Chain.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Chain.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Functions\Chain.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Chain.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\General\ForEach.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEach.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\General\ForEach.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEach.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Operators\Generated\Compare.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Compare.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Operators\Generated\Compare.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Compare.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\BopCmp.tt">
+      <LastGenOutput>BopCmp.txt</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\BopCmp.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BopCmp.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\BopMath.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BopMath.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\BopMath.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BopMath.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\Dot\XDot.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>XDot.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\Dot\XDot.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>XDot.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\PointWise\bit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>bit.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\PointWise\bit.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>bit.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\PointWise\XPointwise.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>XPointwise.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\PointWise\XPointwise.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>XPointwise.tt</DependentUpon>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\Uop.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Uop.txt</LastGenOutput>
+    </None>
+    <None Update="Scripts\CodeGen\Tensors\Uop.txt">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Uop.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

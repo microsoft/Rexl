@@ -1,0 +1,980 @@
+**** New globals: {T:i8[*,*], b1:b, b2:b, c1:i8, c2:i8, c3:i8, c4:i8, c5:i8, f1:r8, f2:r8, qb:b?, qi1:i4?, qtup:(i8, i8, i8)?, s1:i8*, s2:i8*, s3:i8*, s4:i8*, sb:b*, sf1:r8*, sf2:r8*, si1:i*, sqb:b?*, sr:{A:i8, B:s}*, st:s*, stup:(i8, i8, i8)*, sv:v*, t1:s, t2:s, tup:(i8, i8, i8)}
+
+> Filter(s2, it > Count(s1))
+Filter(s2, it $> Count(s1)) : i8*
+Binder : TakeIf*(*1: s2, *1 @> Count(s1))
+Reducer: Take(*1: s2, [if] *1 @> Count(s1))
+Hoister: With(!1: Count(s1), Take(*2: s2, [if] *2 @> !1))
+###
+> Filter(si1, it > Count(s1))
+Filter(si1, it $> Count(s1)) : i*
+Binder : TakeIf*(*1: si1, *1 @> Num<i>(Count(s1)))
+Reducer: Take(*1: si1, [if] *1 @> Num<i>(Count(s1)))
+Hoister: With(!1: Num<i>(Count(s1)), Take(*2: si1, [if] *2 @> !1))
+###
+> Filter(s2, Count(s1) >= Count(s1))
+Filter(s2, Count(s1) $>= Count(s1)) : i8*
+Binder : TakeIf*(*1: s2, Count(s1) @>= Count(s1))
+Reducer: Take(*1: s2, [if] Count(s1) @>= Count(s1))
+Hoister: With(!1: Count(s1) @>= Count(s1), Take(*2: s2, [if] !1))
+###
+> Filter(s2, Count(Filter(s3, it > Count(s1))) >= Count(s4))
+Filter(s2, Count(Filter(s3, it $> Count(s1))) $>= Count(s4)) : i8*
+Binder : TakeIf*(*1: s2, Count(TakeIf*(*2: s3, *2 @> Count(s1))) @>= Count(s4))
+Reducer: Take(*1: s2, [if] Count(Take(*2: s3, [if] *2 @> Count(s1))) @>= Count(s4))
+Hoister: With(!1: Count(s1), !3: Count(Take(*2: s3, [if] *2 @> !1)) @>= Count(s4), Take(*4: s2, [if] !3))
+###
+> Filter(s2, Count(Filter(s3, it > Count(s1))) >= it)
+Filter(s2, Count(Filter(s3, it $> Count(s1))) $>= it) : i8*
+Binder : TakeIf*(*1: s2, Count(TakeIf*(*2: s3, *2 @> Count(s1))) @>= *1)
+Reducer: Take(*1: s2, [if] Count(Take(*2: s3, [if] *2 @> Count(s1))) @>= *1)
+Hoister: With(!1: Count(s1), !3: Count(Take(*2: s3, [if] *2 @> !1)), Take(*4: s2, [if] !3 @>= *4))
+###
+> Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count(s1))
+Filter(v2 : s2, Count(Filter(s3 ++ s3, it $> Count([v2]->Wrap()))) $>= Count(s1)) : i8*
+Binder : TakeIf*(*1: s2, Count(TakeIf*(*2: SeqConcat(s3, s3), *2 @> Count(Test.Wrap([*1])))) @>= Count(s1))
+Reducer: Take(*1: s2, [if] Count(Take(*2: SeqConcat(s3, s3), [if] *2 @> Count(Test.Wrap([*1])))) @>= Count(s1))
+Hoister: With(!1: SeqConcat(s3, s3), !2: Count(s1), Take(*3: s2, [if] Count(With(!4: Count(Test.Wrap([*3])), Take(*5: !1, [if] *5 @> !4))) @>= !2))
+Reducer: With(!1: SeqConcat(s3, s3), !2: Count(s1), Take(*3: s2, [if] With(!4: Count(Test.Wrap([*3])), Count(Take(*5: !1, [if] *5 @> !4)) @>= !2)))
+###
+> Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count([v2]->Wrap()))
+Filter(v2 : s2, Count(Filter(s3 ++ s3, it $> Count([v2]->Wrap()))) $>= Count([v2]->Wrap())) : i8*
+Binder : TakeIf*(*1: s2, Count(TakeIf*(*2: SeqConcat(s3, s3), *2 @> Count(Test.Wrap([*1])))) @>= Count(Test.Wrap([*1])))
+Reducer: Take(*1: s2, [if] Count(Take(*2: SeqConcat(s3, s3), [if] *2 @> Count(Test.Wrap([*1])))) @>= Count(Test.Wrap([*1])))
+Hoister: With(!1: SeqConcat(s3, s3), Take(*2: s2, [if] Count(With(!3: Count(Test.Wrap([*2])), Take(*4: !1, [if] *4 @> !3))) @>= Count(Test.Wrap([*2]))))
+Reducer: With(!1: SeqConcat(s3, s3), Take(*2: s2, [if] With(!3: Count(Test.Wrap([*2])), Count(Take(*4: !1, [if] *4 @> !3)) @>= Count(Test.Wrap([*2])))))
+###
+> Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count(Filter(s1++s1, it < Count([v2]->Wrap()))))
+Filter(v2 : s2, Count(Filter(s3 ++ s3, it $> Count([v2]->Wrap()))) $>= Count(Filter(s1 ++ s1, it $< Count([v2]->Wrap())))) : i8*
+Binder : TakeIf*(*1: s2, Count(TakeIf*(*2: SeqConcat(s3, s3), *2 @> Count(Test.Wrap([*1])))) @>= Count(TakeIf*(*3: SeqConcat(s1, s1), *3 @< Count(Test.Wrap([*1])))))
+Reducer: Take(*1: s2, [if] Count(Take(*2: SeqConcat(s3, s3), [if] *2 @> Count(Test.Wrap([*1])))) @>= Count(Take(*3: SeqConcat(s1, s1), [if] *3 @< Count(Test.Wrap([*1])))))
+Hoister: With(!1: SeqConcat(s3, s3), !2: SeqConcat(s1, s1), Take(*3: s2, [if] Count(With(!4: Count(Test.Wrap([*3])), Take(*5: !1, [if] *5 @> !4))) @>= Count(With(!6: Count(Test.Wrap([*3])), Take(*7: !2, [if] *7 @< !6)))))
+Reducer: With(!1: SeqConcat(s3, s3), !2: SeqConcat(s1, s1), Take(*3: s2, [if] With(!4: Count(Test.Wrap([*3])), Count(Take(*5: !1, [if] *5 @> !4)) @>= Count(Take(*6: !2, [if] *6 @< !4)))))
+###
+> Zip(v1:s1, v2:s2, v1 + Count(s1) + v2)
+Zip(v1 : s1, v2 : s2, v1 + Count(s1) + v2) : i8*
+Binder : ForEach(*1: s1, *2: s2, Add(*1, Count(s1), *2))
+Hoister: With(!1: Count(s1), ForEach(*2: s1, *3: s2, Add(!1, *2, *3)))
+###
+> Zip(v1:s1, v2:s2, v1 + Count(s1))
+Zip(v1 : s1, v2 : s2, v1 + Count(s1)) : i8*
+Binder : ForEach(*1: s1, *2: s2, Add(*1, Count(s1)))
+Hoister: With(!1: Count(s1), ForEach(*2: s1, *3: s2, Add(!1, *2)))
+###
+> Zip(v1:s1, v2:s2, v1 - Count(s1))
+Zip(v1 : s1, v2 : s2, v1 - Count(s1)) : i8*
+Binder : ForEach(*1: s1, *2: s2, Add(*1, [-] Count(s1)))
+Hoister: With(!1: Count(s1), ForEach(*2: s1, *3: s2, Add([-] !1, *2)))
+###
+> Zip(v1:s1, v2:s2, Count(Map(v3:s3, v1 > Count(s4))))
+Zip(v1 : s1, v2 : s2, Count(Map(v3 : s3, v1 $> Count(s4)))) : i8*
+Binder : ForEach(*1: s1, *2: s2, Count(ForEach(*3: s3, *1 @> Count(s4))))
+Hoister: With(!1: Count(s4), ForEach(*2: s1, *3: s2, Count(With(!4: *2 @> !1, ForEach(*5: s3, !4)))))
+Reducer: With(!1: Count(s4), ForEach(*2: s1, *3: s2, With(!4: *2 @> !1, Count(ForEach(*5: s3, !4)))))
+###
+> Filter(v3:s3, Count(Zip(v1:s1++s1, v2:s2++s2, v1 + v2 + Count(s3))) > Count(s4))
+Filter(v3 : s3, Count(Zip(v1 : s1 ++ s1, v2 : s2 ++ s2, v1 + v2 + Count(s3))) $> Count(s4)) : i8*
+Binder : TakeIf*(*1: s3, Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(*2, *3, Count(s3)))) @> Count(s4))
+Reducer: Take(*1: s3, [if] Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(*2, *3, Count(s3)))) @> Count(s4))
+Hoister: With(!1: Count(s3), !4: Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(!1, *2, *3))) @> Count(s4), Take(*5: s3, [if] !4))
+###
+> Filter(v3:s3, Count(Zip(v1:s1++s1, v2:s2++s2, v1 + v2 + Count(s3))) + v3 > Count(Zip(v1:s1, v2:s2, v1 * v2 * Count(s4))) * v3)
+Filter(v3 : s3, Count(Zip(v1 : s1 ++ s1, v2 : s2 ++ s2, v1 + v2 + Count(s3))) + v3 $> Count(Zip(v1 : s1, v2 : s2, v1 * v2 * Count(s4))) * v3) : i8*
+Binder : TakeIf*(*1: s3, Add(Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(*2, *3, Count(s3)))), *1) @> Mul(Count(ForEach(*4: s1, *5: s2, Mul(*4, *5, Count(s4)))), *1))
+Reducer: Take(*1: s3, [if] Add(Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(*2, *3, Count(s3)))), *1) @> Mul(Count(ForEach(*4: s1, *5: s2, Mul(*4, *5, Count(s4)))), *1))
+Hoister: With(!1: Count(s3), !4: Count(ForEach(*2: SeqConcat(s1, s1), *3: SeqConcat(s2, s2), Add(!1, *2, *3))), !5: Count(s4), !8: Count(ForEach(*6: s1, *7: s2, Mul(!5, *6, *7))), Take(*9: s3, [if] Add(!4, *9) @> Mul(!8, *9)))
+###
+> With(x1:c1, Map(x2: s2, x2+x1))
+With(x1 : c1, Map(x2 : s2, x2 + x1)) : i8*
+Binder : With(!1: c1, ForEach(*2: s2, Add(*2, !1)))
+Reducer: ForEach(*1: s2, Add(*1, c1))
+###
+> Guard(g:s1++s1, Map(m:g, m+Count(s1)))
+Guard(g : s1 ++ s1, Map(m : g, m + Count(s1))) : i8*
+Binder : Guard(?1: SeqConcat(s1, s1), ForEach(*2: ?1, Add(*2, Count(s1))))
+Hoister: Guard(?1: SeqConcat(s1, s1), With(!2: Count(s1), ForEach(*3: ?1, Add(!2, *3))))
+Reducer: Guard(?1: SeqConcat(s1, s1), !2: Count(s1), ForEach(*3: ?1, Add(!2, *3)))
+###
+> Map(m:s1++s1, With(w:m, w+Count(s1)))
+Map(m : s1 ++ s1, With(w : m, w + Count(s1))) : i8*
+Binder : ForEach(*1: SeqConcat(s1, s1), With(!2: *1, Add(!2, Count(s1))))
+Reducer: ForEach(*1: SeqConcat(s1, s1), Add(*1, Count(s1)))
+Hoister: With(!1: Count(s1), ForEach(*2: SeqConcat(s1, s1), Add(!1, *2)))
+###
+> With(w1:Count(s1), Map(m:s1++s1, With(w2:m, Count(s2)+w1)))
+With(w1 : Count(s1), Map(m : s1 ++ s1, With(w2 : m, Count(s2) + w1))) : i8*
+Binder : With(!1: Count(s1), ForEach(*2: SeqConcat(s1, s1), With(!3: *2, Add(Count(s2), !1))))
+Reducer: With(!1: Count(s1), ForEach(*2: SeqConcat(s1, s1), Add(Count(s2), !1)))
+Hoister: With(!1: Count(s1), With(!2: Add(Count(s2), !1), ForEach(*3: SeqConcat(s1, s1), !2)))
+Reducer: With(!1: Add(Count(s2), Count(s1)), ForEach(*2: SeqConcat(s1, s1), !1))
+###
+> Map(m1:s1, Map(m2: s2++s2, With(w3: s3, Range(m1))))
+Map(m1 : s1, Map(m2 : s2 ++ s2, With(w3 : s3, Range(m1)))) : i8***
+Binder : ForEach(*1: s1, ForEach(*2: SeqConcat(s2, s2), With(!3: s3, Range(*1))))
+Reducer: ForEach(*1: s1, ForEach(*2: SeqConcat(s2, s2), Range(*1)))
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, With(!3: Range(*2), ForEach(*4: !1, !3))))
+###
+> Map(m1:s1, Map(m2:[Count(Range(m1)) + Count(s2)], m2+1))
+Map(m1 : s1, Map(m2 : [Count(Range(m1)) + Count(s2)], m2 + 1)) : i8**
+Binder : ForEach(*1: s1, ForEach(*2: [Add(Count(Range(*1)), Count(s2))], Add(*2, 1)))
+Hoister: With(!1: Count(s2), ForEach(*2: s1, ForEach(*3: [Add(!1, Count(Range(*2)))], Add(*3, 1))))
+###
+> Map(m1:s1, With(w2: Map(m3:[Count(Range(m1)) + Count(s2)]->Wrap(), m3+1), Count(w2)))
+Map(m1 : s1, With(w2 : Map(m3 : [Count(Range(m1)) + Count(s2)]->Wrap(), m3 + 1), Count(w2))) : i8*
+Binder : ForEach(*1: s1, With(!3: ForEach(*2: Test.Wrap([Add(Count(Range(*1)), Count(s2))]), Add(*2, 1)), Count(!3)))
+Reducer: ForEach(*1: s1, Count(ForEach(*2: Test.Wrap([Add(Count(Range(*1)), Count(s2))]), Add(*2, 1))))
+Hoister: With(!1: Count(s2), ForEach(*2: s1, Count(ForEach(*3: Test.Wrap([Add(!1, Count(Range(*2)))]), Add(*3, 1)))))
+###
+> With(w1: Count(s1), w2: Count(s2), Map(m3: s3++s3, Count([w1]->Wrap())))
+With(w1 : Count(s1), w2 : Count(s2), Map(m3 : s3 ++ s3, Count([w1]->Wrap()))) : i8*
+Binder : With(!1: Count(s1), !2: Count(s2), ForEach(*3: SeqConcat(s3, s3), Count(Test.Wrap([!1]))))
+Reducer: With(!1: Count(s1), ForEach(*2: SeqConcat(s3, s3), Count(Test.Wrap([!1]))))
+Hoister: With(!1: Count(s1), With(!2: Count(Test.Wrap([!1])), ForEach(*3: SeqConcat(s3, s3), !2)))
+Reducer: With(!1: Count(Test.Wrap([Count(s1)])), ForEach(*2: SeqConcat(s3, s3), !1))
+###
+> With(w1: Count(s1), w2: w1 + Count(s2), Map(m3: s3++s3, Count([w1]->Wrap()) + Count(s4) + Count([w2]->Wrap()) + m3))
+With(w1 : Count(s1), w2 : w1 + Count(s2), Map(m3 : s3 ++ s3, Count([w1]->Wrap()) + Count(s4) + Count([w2]->Wrap()) + m3)) : i8*
+Binder : With(!1: Count(s1), !2: Add(!1, Count(s2)), ForEach(*3: SeqConcat(s3, s3), Add(Count(Test.Wrap([!1])), Count(s4), Count(Test.Wrap([!2])), *3)))
+Hoister: With(!1: Count(s1), !2: Add(!1, Count(s2)), With(!3: Add(Count(Test.Wrap([!1])), Count(s4), Count(Test.Wrap([!2]))), ForEach(*4: SeqConcat(s3, s3), Add(!3, *4))))
+Reducer: With(!1: Count(s1), !2: Add(Count(Test.Wrap([!1])), Count(s4), Count(Test.Wrap([Add(!1, Count(s2))]))), ForEach(*3: SeqConcat(s3, s3), Add(!2, *3)))
+###
+> DblMap(s1, it + c1, s2, it + c2)
+DblMap(s1, it + c1, s2, it + c2) : i8*
+Binder : Test.DblMap(*1: s1, Add(*1, c1), *2: s2, Add(*2, c2))
+###
+> DblMap(s1, s1++s1, s2, s2++s2)
+DblMap(s1, s1 ++ s1, s2, s2 ++ s2) : i8**
+Binder : Test.DblMap(*1: s1, SeqConcat(s1, s1), *2: s2, SeqConcat(s2, s2))
+Hoister: With(!1: SeqConcat(s1, s1), !2: SeqConcat(s2, s2), Test.DblMap(*3: s1, !1, *4: s2, !2))
+###
+> DblMap(x1:s1++s1, Map(x3:s3++s3, Range(c3) + Range(x1)), x2:s2++s2, Map(x4:s4++s4, Range(c4) + Range(x2)))
+DblMap(x1 : s1 ++ s1, Map(x3 : s3 ++ s3, Range(c3) + Range(x1)), x2 : s2 ++ s2, Map(x4 : s4 ++ s4, Range(c4) + Range(x2))) : i8***
+Binder : Test.DblMap(*1: SeqConcat(s1, s1), ForEach(*2: SeqConcat(s3, s3), ForEach(*3: Range(c3), *4: Range(*1), Add(*3, *4))), *5: SeqConcat(s2, s2), ForEach(*6: SeqConcat(s4, s4), ForEach(*7: Range(c4), *8: Range(*5), Add(*7, *8))))
+Hoister: With(!1: Range(c3), !2: SeqConcat(s3, s3), !3: Range(c4), !4: SeqConcat(s4, s4), Test.DblMap(*5: SeqConcat(s1, s1), With(!8: ForEach(*6: !1, *7: Range(*5), Add(*6, *7)), ForEach(*9: !2, !8)), *10: SeqConcat(s2, s2), With(!13: ForEach(*11: !3, *12: Range(*10), Add(*11, *12)), ForEach(*14: !4, !13))))
+###
+> DblMap(x1:Range(c1), Map(x3:s3++s3, Range(c3) + Range(x1)), x2:Range(c2), Map(x4:s4++s4, Range(c4) + Range(x2)))
+DblMap(x1 : Range(c1), Map(x3 : s3 ++ s3, Range(c3) + Range(x1)), x2 : Range(c2), Map(x4 : s4 ++ s4, Range(c4) + Range(x2))) : i8***
+Binder : Test.DblMap(*1: Range(c1), ForEach(*2: SeqConcat(s3, s3), ForEach(*3: Range(c3), *4: Range(*1), Add(*3, *4))), *5: Range(c2), ForEach(*6: SeqConcat(s4, s4), ForEach(*7: Range(c4), *8: Range(*5), Add(*7, *8))))
+Hoister: With(!1: Range(c3), !2: SeqConcat(s3, s3), !3: Range(c4), !4: SeqConcat(s4, s4), Test.DblMap(*5: Range(c1), With(!8: ForEach(*6: !1, *7: Range(*5), Add(*6, *7)), ForEach(*9: !2, !8)), *10: Range(c2), With(!13: ForEach(*11: !3, *12: Range(*10), Add(*11, *12)), ForEach(*14: !4, !13))))
+###
+> DblMap(x1:s1++s1, Map(x3:s3++s3, Range(c1) ++ Range(x1)), x2:s2++s2, Map(x4:s4++s4, Range(c2) ++ Range(x2)))
+DblMap(x1 : s1 ++ s1, Map(x3 : s3 ++ s3, Range(c1) ++ Range(x1)), x2 : s2 ++ s2, Map(x4 : s4 ++ s4, Range(c2) ++ Range(x2))) : i8***
+Binder : Test.DblMap(*1: SeqConcat(s1, s1), ForEach(*2: SeqConcat(s3, s3), SeqConcat(Range(c1), Range(*1))), *3: SeqConcat(s2, s2), ForEach(*4: SeqConcat(s4, s4), SeqConcat(Range(c2), Range(*3))))
+Hoister: With(!1: Range(c1), !2: SeqConcat(s3, s3), !3: Range(c2), !4: SeqConcat(s4, s4), Test.DblMap(*5: SeqConcat(s1, s1), With(!6: SeqConcat(!1, Range(*5)), ForEach(*7: !2, !6)), *8: SeqConcat(s2, s2), With(!9: SeqConcat(!3, Range(*8)), ForEach(*10: !4, !9))))
+###
+> Map(x1:s1++s1, Map(x2: s2++s2, DblMap(x3:s3++s3, Range(c1), x4:s4++s4, Range(x1))))
+Map(x1 : s1 ++ s1, Map(x2 : s2 ++ s2, DblMap(x3 : s3 ++ s3, Range(c1), x4 : s4 ++ s4, Range(x1)))) : i8****
+Binder : ForEach(*1: SeqConcat(s1, s1), ForEach(*2: SeqConcat(s2, s2), Test.DblMap(*3: SeqConcat(s3, s3), Range(c1), *4: SeqConcat(s4, s4), Range(*1))))
+Hoister: With(!1: SeqConcat(s3, s3), !2: Range(c1), !3: SeqConcat(s4, s4), !4: SeqConcat(s2, s2), ForEach(*5: SeqConcat(s1, s1), With(!6: Range(*5), !9: Test.DblMap(*7: !1, !2, *8: !3, !6), ForEach(*10: !4, !9))))
+###
+> Map(x1:s1++s1, Map(x2: s2++s2, DblMap(x3:s3++s3, Range(c1) ++ Range(x2), x4:s4++s4, Range(x1) ++ Range(x4))))
+Map(x1 : s1 ++ s1, Map(x2 : s2 ++ s2, DblMap(x3 : s3 ++ s3, Range(c1) ++ Range(x2), x4 : s4 ++ s4, Range(x1) ++ Range(x4)))) : i8****
+Binder : ForEach(*1: SeqConcat(s1, s1), ForEach(*2: SeqConcat(s2, s2), Test.DblMap(*3: SeqConcat(s3, s3), SeqConcat(Range(c1), Range(*2)), *4: SeqConcat(s4, s4), SeqConcat(Range(*1), Range(*4)))))
+Hoister: With(!1: Range(c1), !2: SeqConcat(s3, s3), !3: SeqConcat(s4, s4), !4: SeqConcat(s2, s2), ForEach(*5: SeqConcat(s1, s1), With(!6: Range(*5), ForEach(*7: !4, With(!8: SeqConcat(!1, Range(*7)), Test.DblMap(*9: !2, !8, *10: !3, SeqConcat(!6, Range(*10))))))))
+###
+> { A: Filter(s2, it > Count(s1)), B: s2 }
+{ A : Filter(s2, it $> Count(s1)), B : s2 } : {A:i8*, B:i8*}
+Binder : {A:TakeIf*(*1: s2, *1 @> Count(s1)), B:s2}
+Reducer: {A:Take(*1: s2, [if] *1 @> Count(s1)), B:s2}
+Hoister: {A:With(!1: Count(s1), Take(*2: s2, [if] *2 @> !1)), B:s2}
+Reducer: With(!1: Count(s1), {A:Take(*2: s2, [if] *2 @> !1), B:s2})
+###
+> Map(x1:s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 })
+Map(x1 : s1, { A : Filter(x2 : s2 ++ s2, x2 $> Count([x1]->Wrap())), B : s2 ++ s2 }) : {A:i8*, B:i8*}*
+Binder : ForEach(*1: s1, {A:TakeIf*(*2: SeqConcat(s2, s2), *2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)})
+Reducer: ForEach(*1: s1, {A:Take(*2: SeqConcat(s2, s2), [if] *2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)})
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, {A:With(!3: Count(Test.Wrap([*2])), Take(*4: !1, [if] *4 @> !3)), B:!1}))
+Reducer: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, With(!3: Count(Test.Wrap([*2])), {A:Take(*4: !1, [if] *4 @> !3), B:!1})))
+###
+> Map(x1:s1, { A: Filter(x2:s2++s2, 2 > Count([x1]->Wrap())), B: s2++s2 })
+Map(x1 : s1, { A : Filter(x2 : s2 ++ s2, 2 $> Count([x1]->Wrap())), B : s2 ++ s2 }) : {A:i8*, B:i8*}*
+Binder : ForEach(*1: s1, {A:TakeIf*(*2: SeqConcat(s2, s2), 2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)})
+Reducer: ForEach(*1: s1, {A:Take(*2: SeqConcat(s2, s2), [if] 2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)})
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, {A:With(!3: 2 @> Count(Test.Wrap([*2])), Take(*4: !1, [if] !3)), B:!1}))
+Reducer: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, With(!3: 2 @> Count(Test.Wrap([*2])), {A:Take(*4: !1, [if] !3), B:!1})))
+###
+> { A: Map(x1:s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 }), B: Map(x1:s1++s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 }) }
+{ A : Map(x1 : s1, { A : Filter(x2 : s2 ++ s2, x2 $> Count([x1]->Wrap())), B : s2 ++ s2 }), B : Map(x1 : s1 ++ s1, { A : Filter(x2 : s2 ++ s2, x2 $> Count([x1]->Wrap())), B : s2 ++ s2 }) } : {A:{A:i8*, B:i8*}*, B:{A:i8*, B:i8*}*}
+Binder : {A:ForEach(*1: s1, {A:TakeIf*(*2: SeqConcat(s2, s2), *2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)}), B:ForEach(*3: SeqConcat(s1, s1), {A:TakeIf*(*4: SeqConcat(s2, s2), *4 @> Count(Test.Wrap([*3]))), B:SeqConcat(s2, s2)})}
+Reducer: {A:ForEach(*1: s1, {A:Take(*2: SeqConcat(s2, s2), [if] *2 @> Count(Test.Wrap([*1]))), B:SeqConcat(s2, s2)}), B:ForEach(*3: SeqConcat(s1, s1), {A:Take(*4: SeqConcat(s2, s2), [if] *4 @> Count(Test.Wrap([*3]))), B:SeqConcat(s2, s2)})}
+Hoister: {A:With(!1: SeqConcat(s2, s2), ForEach(*2: s1, {A:With(!3: Count(Test.Wrap([*2])), Take(*4: !1, [if] *4 @> !3)), B:!1})), B:With(!5: SeqConcat(s2, s2), ForEach(*6: SeqConcat(s1, s1), {A:With(!7: Count(Test.Wrap([*6])), Take(*8: !5, [if] *8 @> !7)), B:!5}))}
+Reducer: With(!1: SeqConcat(s2, s2), {A:ForEach(*2: s1, With(!3: Count(Test.Wrap([*2])), {A:Take(*4: !1, [if] *4 @> !3), B:!1})), B:ForEach(*5: SeqConcat(s1, s1), With(!6: Count(Test.Wrap([*5])), {A:Take(*7: !1, [if] *7 @> !6), B:!1}))})
+###
+> (First(Map(x1:s1, { A: 1, B: 2}))).A
+First(Map(x1 : s1, { A : 1, B : 2 })).A : i8?
+Binder : Guard(?2: First*(ForEach(*1: s1, {A:1, B:2})), ?2.A)
+Reducer: Guard(?2: TakeOne(ForEach(*1: s1, {A:1, B:2}), [else] null), ?2.A)
+Hoister: Guard(?3: TakeOne(With(!1: {A:1, B:2}, ForEach(*2: s1, !1)), [else] null), ?3.A)
+Reducer: Guard(!1: {A:1, B:2}, ?3: TakeOne(ForEach(*2: s1, !1), [else] null), ?3.A)
+###
+> (TakeOne(Map(x1:s1, { A: 1, B: 2}))).A
+TakeOne(Map(x1 : s1, { A : 1, B : 2 })).A : i8
+Binder : TakeOne(ForEach(*1: s1, {A:1, B:2})).A
+Hoister: TakeOne(With(!1: {A:1, B:2}, ForEach(*2: s1, !1))).A
+Reducer: With(!1: {A:1, B:2}, TakeOne(ForEach(*2: s1, !1)).A)
+###
+> (First(Map(x1:s1, { A: x1, B: s2}))).A
+First(Map(x1 : s1, { A : x1, B : s2 })).A : i8?
+Binder : Guard(?2: First*(ForEach(*1: s1, {A:*1, B:s2})), ?2.A)
+Reducer: Guard(?2: TakeOne(ForEach(*1: s1, {A:*1, B:s2}), [else] null), ?2.A)
+###
+> (TakeOne(Map(x1:s1, { A: x1, B: s2}))).A
+TakeOne(Map(x1 : s1, { A : x1, B : s2 })).A : i8
+Binder : TakeOne(ForEach(*1: s1, {A:*1, B:s2})).A
+###
+> Map(x1:s1, {A: x1, B:s2++s2}->&{ D:B}.D)
+Map(x1 : s1, { A : x1, B : s2 ++ s2 }+>{ D : B }.D) : i8**
+Binder : ForEach(*1: s1, SetFields(!2: {A:*1, B:SeqConcat(s2, s2)}, D : !2.B).D)
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, SetFields(!3: {A:*2, B:!1}, D : !3.B).D))
+###
+> Map(x1:s1, {A: Map(x2:s2, Range(x1)), B:s2++s2}->&{D:B}.D)
+Map(x1 : s1, { A : Map(x2 : s2, Range(x1)), B : s2 ++ s2 }+>{ D : B }.D) : i8**
+Binder : ForEach(*1: s1, SetFields(!3: {A:ForEach(*2: s2, Range(*1)), B:SeqConcat(s2, s2)}, D : !3.B).D)
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, SetFields(!5: {A:With(!3: Range(*2), ForEach(*4: s2, !3)), B:!1}, D : !5.B).D))
+Reducer: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, With(!3: Range(*2), SetFields(!5: {A:ForEach(*4: s2, !3), B:!1}, D : !5.B).D)))
+###
+> Map(s1, "str"->{ A: it }->&{A: it })
+Map(s1, "str"->{ A : it }+>{ A : it }) : {A:{A:s}}?*
+Binder : ForEach(*1: s1, Guard(?3: Guard(?2: "str", {A:?2}), SetFields(!4: ?3, A : !4)))
+Reducer: ForEach(*1: s1, Ref<{A:{A:s}}?>(SetFields(!2: {A:"str"}, A : !2)))
+Hoister: With(!2: Ref<{A:{A:s}}?>(SetFields(!1: {A:"str"}, A : !1)), ForEach(*3: s1, !2))
+###
+> not First(Map(x1:s1++s1, Count(s2) > 0))
+not First(Map(x1 : s1 ++ s1, Count(s2) $> 0)) : b?
+Binder : Guard(?2: First*(ForEach(*1: SeqConcat(s1, s1), Count(s2) @> 0)), Xor(?2, true))
+Reducer: Guard(?2: TakeOne(ForEach(*1: SeqConcat(s1, s1), Count(s2) @> 0), [else] null), Xor(?2, true))
+Hoister: Guard(?3: TakeOne(With(!1: Count(s2) @> 0, ForEach(*2: SeqConcat(s1, s1), !1)), [else] null), Xor(?3, true))
+Reducer: Guard(!1: Count(s2) @> 0, ?3: TakeOne(ForEach(*2: SeqConcat(s1, s1), !1), [else] null), Xor(?3, true))
+###
+> Map(x1:s1, Map(x2:s2++s2, not First(Map(x3:[x2], Count([x1]->Wrap()) > 0))))
+Map(x1 : s1, Map(x2 : s2 ++ s2, not First(Map(x3 : [x2], Count([x1]->Wrap()) $> 0)))) : b?**
+Binder : ForEach(*1: s1, ForEach(*2: SeqConcat(s2, s2), Guard(?4: First*(ForEach(*3: [*2], Count(Test.Wrap([*1])) @> 0)), Xor(?4, true))))
+Reducer: ForEach(*1: s1, ForEach(*2: SeqConcat(s2, s2), Opt<b?>(Xor(Count(Test.Wrap([*1])) @> 0, true))))
+Hoister: With(!1: SeqConcat(s2, s2), ForEach(*2: s1, With(!3: Opt<b?>(Xor(Count(Test.Wrap([*2])) @> 0, true)), ForEach(*4: !1, !3))))
+###
+> Map(x1:s1, Range(c1)) if First(Map(x2:s2++s2, Count(s2) > 0)) ?? true else Map(x3:s3++s3, Range(c3))
+Map(x1 : s1, Range(c1)) if First(Map(x2 : s2 ++ s2, Count(s2) $> 0)) ?? true else Map(x3 : s3 ++ s3, Range(c3)) : i8**
+Binder : If(Coalesce(First*(ForEach(*1: SeqConcat(s2, s2), Count(s2) @> 0)), true), ForEach(*2: s1, Range(c1)), ForEach(*3: SeqConcat(s3, s3), Range(c3)))
+Reducer: If(Coalesce(TakeOne(ForEach(*1: SeqConcat(s2, s2), Count(s2) @> 0), [else] null), true), ForEach(*2: s1, Range(c1)), ForEach(*3: SeqConcat(s3, s3), Range(c3)))
+Hoister: If(Coalesce(TakeOne(With(!1: Count(s2) @> 0, ForEach(*2: SeqConcat(s2, s2), !1)), [else] null), true), With(!3: Range(c1), ForEach(*4: s1, !3)), With(!5: Range(c3), ForEach(*6: SeqConcat(s3, s3), !5)))
+Reducer: With(!1: Count(s2) @> 0, If(Coalesce(TakeOne(ForEach(*2: SeqConcat(s2, s2), !1), [else] null), true), With(!3: Range(c1), ForEach(*4: s1, !3)), With(!5: Range(c3), ForEach(*6: SeqConcat(s3, s3), !5))))
+###
+> Map(x4:s4, Map(x1:s1++s1, Range(c1)) if First(Map(x2:s2++s2, Count([x4]->Wrap()) > 0)) ?? true else Map(x3:s3++s3, Range(c3)))
+Map(x4 : s4, Map(x1 : s1 ++ s1, Range(c1)) if First(Map(x2 : s2 ++ s2, Count([x4]->Wrap()) $> 0)) ?? true else Map(x3 : s3 ++ s3, Range(c3))) : i8***
+Binder : ForEach(*1: s4, If(Coalesce(First*(ForEach(*2: SeqConcat(s2, s2), Count(Test.Wrap([*1])) @> 0)), true), ForEach(*3: SeqConcat(s1, s1), Range(c1)), ForEach(*4: SeqConcat(s3, s3), Range(c3))))
+Reducer: ForEach(*1: s4, If(Coalesce(TakeOne(ForEach(*2: SeqConcat(s2, s2), Count(Test.Wrap([*1])) @> 0), [else] null), true), ForEach(*3: SeqConcat(s1, s1), Range(c1)), ForEach(*4: SeqConcat(s3, s3), Range(c3))))
+Hoister: With(!1: SeqConcat(s2, s2), !2: Range(c1), !3: Range(c3), !5: ForEach(*4: SeqConcat(s1, s1), !2), !7: ForEach(*6: SeqConcat(s3, s3), !3), ForEach(*8: s4, If(Coalesce(TakeOne(With(!9: Count(Test.Wrap([*8])) @> 0, ForEach(*10: !1, !9)), [else] null), true), !5, !7)))
+Reducer: With(!1: SeqConcat(s2, s2), !2: Range(c1), !3: Range(c3), !5: ForEach(*4: SeqConcat(s1, s1), !2), !7: ForEach(*6: SeqConcat(s3, s3), !3), ForEach(*8: s4, With(!9: Count(Test.Wrap([*8])) @> 0, If(Coalesce(TakeOne(ForEach(*10: !1, !9), [else] null), true), !5, !7))))
+###
+> s1 if b1 else Map(x1:s1, Count(s2))
+s1 if b1 else Map(x1 : s1, Count(s2)) : i8*
+Binder : If(b1, s1, ForEach(*1: s1, Count(s2)))
+Hoister: If(b1, s1, With(!1: Count(s2), ForEach(*2: s1, !1)))
+###
+> qi1 ?? Count(s1, it > Count(s2))
+qi1 ?? Count(s1, it $> Count(s2)) : i8
+Binder : Coalesce(Guard(?1: qi1, Num<i8>(?1)), Count(*2: s1, *2 @> Count(s2)))
+Hoister: Coalesce(Guard(?1: qi1, Num<i8>(?1)), With(!2: Count(s2), Count(*3: s1, *3 @> !2)))
+###
+> Sum(x1:s1, x1 if Count(s2) > c1 else 0r)
+Sum(x1 : s1, x1 if Count(s2) $> c1 else 0) : r8
+Binder : Sum(*1: s1, If(Count(s2) @> c1, Num<r8>(*1), 0))
+Hoister: With(!1: Count(s2) @> c1, Sum(*2: s1, If(!1, Num<r8>(*2), 0)))
+###
+> Sum(x1:s1, x2:s2, x3:s3, c2 if x1 = c1 else c3)
+Sum(x1 : s1, x2 : s2, x3 : s3, c2 if x1 @= c1 else c3) : i8
+Binder : Sum(*1: s1, *2: s2, *3: s3, If(*1 @= c1, c2, c3))
+Reducer: Sum(ForEach(*1: s1, *2: s2, *3: s3, If(*1 @= c1, c2, c3)))
+###
+> Map(x1:s1, x1 + Count(s2) + Count(s3))
+Map(x1 : s1, x1 + Count(s2) + Count(s3)) : i8*
+Binder : ForEach(*1: s1, Add(*1, Count(s2), Count(s3)))
+Hoister: With(!1: Add(Count(s2), Count(s3)), ForEach(*2: s1, Add(!1, *2)))
+###
+> Map(x1:s1, Count(s2) + x1 + Count(s3))
+Map(x1 : s1, Count(s2) + x1 + Count(s3)) : i8*
+Binder : ForEach(*1: s1, Add(Count(s2), *1, Count(s3)))
+Hoister: With(!1: Add(Count(s2), Count(s3)), ForEach(*2: s1, Add(!1, *2)))
+###
+> Map(x1:s1, c1 + c2)
+Map(x1 : s1, c1 + c2) : i8*
+Binder : ForEach(*1: s1, Add(c1, c2))
+Hoister: With(!1: Add(c1, c2), ForEach(*2: s1, !1))
+###
+> Map(x1:s1, Map(x2:s2, x1 + x1 - x2))
+Map(x1 : s1, Map(x2 : s2, x1 + x1 - x2)) : i8**
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(*1, *1, [-] *2)))
+Hoister: ForEach(*1: s1, With(!2: Add(*1, *1), ForEach(*3: s2, Add(!2, [-] *3))))
+###
+> Map(x1:s1, Map(x2:s2, c1 - x1 + c2))
+Map(x1 : s1, Map(x2 : s2, c1 - x1 + c2)) : i8**
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(c1, [-] *1, c2)))
+Hoister: With(!1: Add(c1, c2), ForEach(*2: s1, With(!3: Add(!1, [-] *2), ForEach(*4: s2, !3))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, it + Count(s1++s1) + it + Count([x1]->Wrap()) + it + Count([x2]->Wrap()))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, it + Count(s1 ++ s1) + it + Count([x1]->Wrap()) + it + Count([x2]->Wrap())))) : i8***
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, Add(*3, Count(SeqConcat(s1, s1)), *3, Count(Test.Wrap([*1])), *3, Count(Test.Wrap([*2]))))))
+Hoister: With(!1: Count(SeqConcat(s1, s1)), ForEach(*2: s1, With(!3: Add(!1, Count(Test.Wrap([*2]))), ForEach(*4: s2, With(!5: Add(!3, Count(Test.Wrap([*4]))), ForEach(*6: s3, Add(!5, *6, *6, *6)))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, Count(s1++s1) + Count([x1]->Wrap()) + Count([x2]->Wrap()) + Count([x3]->Wrap()) + Count([x4]->Wrap())))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, Count(s1 ++ s1) + Count([x1]->Wrap()) + Count([x2]->Wrap()) + Count([x3]->Wrap()) + Count([x4]->Wrap()))))) : i8****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(Count(SeqConcat(s1, s1)), Count(Test.Wrap([*1])), Count(Test.Wrap([*2])), Count(Test.Wrap([*3])), Count(Test.Wrap([*4])))))))
+Hoister: With(!1: Count(SeqConcat(s1, s1)), ForEach(*2: s1, With(!3: Add(!1, Count(Test.Wrap([*2]))), ForEach(*4: s2, With(!5: Add(!3, Count(Test.Wrap([*4]))), ForEach(*6: s3, With(!7: Add(!5, Count(Test.Wrap([*6]))), ForEach(*8: s4, Add(!7, Count(Test.Wrap([*8])))))))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, it - Count(s1++s1) - it - Count([x1]->Wrap()) - it - Count([x2]->Wrap()))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, it - Count(s1 ++ s1) - it - Count([x1]->Wrap()) - it - Count([x2]->Wrap())))) : i8***
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, Add(*3, [-] Count(SeqConcat(s1, s1)), [-] *3, [-] Count(Test.Wrap([*1])), [-] *3, [-] Count(Test.Wrap([*2]))))))
+Hoister: With(!1: Add([-] Count(SeqConcat(s1, s1))), ForEach(*2: s1, With(!3: Add(!1, [-] Count(Test.Wrap([*2]))), ForEach(*4: s2, With(!5: Add(!3, [-] Count(Test.Wrap([*4]))), ForEach(*6: s3, Add(!5, *6, [-] *6, [-] *6)))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, Count(s1++s1) - Count([x1]->Wrap()) - Count([x2]->Wrap()) - Count([x3]->Wrap()) - Count([x4]->Wrap())))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, Count(s1 ++ s1) - Count([x1]->Wrap()) - Count([x2]->Wrap()) - Count([x3]->Wrap()) - Count([x4]->Wrap()))))) : i8****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(Count(SeqConcat(s1, s1)), [-] Count(Test.Wrap([*1])), [-] Count(Test.Wrap([*2])), [-] Count(Test.Wrap([*3])), [-] Count(Test.Wrap([*4])))))))
+Hoister: With(!1: Count(SeqConcat(s1, s1)), ForEach(*2: s1, With(!3: Add(!1, [-] Count(Test.Wrap([*2]))), ForEach(*4: s2, With(!5: Add(!3, [-] Count(Test.Wrap([*4]))), ForEach(*6: s3, With(!7: Add(!5, [-] Count(Test.Wrap([*6]))), ForEach(*8: s4, Add(!7, [-] Count(Test.Wrap([*8])))))))))))
+###
+> Map(x1:sr, Map(x2:s1, x1.A + c1 - x2))
+Map(x1 : sr, Map(x2 : s1, x1.A + c1 - x2)) : i8**
+Binder : ForEach(*1: sr, ForEach(*2: s1, Add(*1.A, c1, [-] *2)))
+Hoister: ForEach(*1: sr, With(!2: Add(c1, *1.A), ForEach(*3: s1, Add(!2, [-] *3))))
+###
+> Map(x1:sr, Map(x2:s1, x2 - x1.A))
+Map(x1 : sr, Map(x2 : s1, x2 - x1.A)) : i8**
+Binder : ForEach(*1: sr, ForEach(*2: s1, Add(*2, [-] *1.A)))
+###
+> Map(x1:sr, Map(x2:s1, x1.A - x1.A + x2))
+Map(x1 : sr, Map(x2 : s1, x1.A - x1.A + x2)) : i8**
+Binder : ForEach(*1: sr, ForEach(*2: s1, Add(*1.A, [-] *1.A, *2)))
+Hoister: ForEach(*1: sr, With(!2: Add(*1.A, [-] *1.A), ForEach(*3: s1, Add(!2, *3))))
+###
+> Map(x1:sr, With(x2:x1.A, Map(x3:sr, x3.A * x2 * c1)))
+Map(x1 : sr, With(x2 : x1.A, Map(x3 : sr, x3.A * x2 * c1))) : i8**
+Binder : ForEach(*1: sr, With(!2: *1.A, ForEach(*3: sr, Mul(*3.A, !2, c1))))
+Reducer: ForEach(*1: sr, ForEach(*2: sr, Mul(*2.A, *1.A, c1)))
+Hoister: ForEach(*1: sr, With(!2: Mul(c1, *1.A), ForEach(*3: sr, Mul(!2, *3.A))))
+###
+> Map(x1:sr, With(x2:x1.A, x3:x1.A+1, Map(x4:sr, x4.A * x2 * x3)))
+Map(x1 : sr, With(x2 : x1.A, x3 : x1.A + 1, Map(x4 : sr, x4.A * x2 * x3))) : i8**
+Binder : ForEach(*1: sr, With(!2: *1.A, !3: Add(*1.A, 1), ForEach(*4: sr, Mul(*4.A, !2, !3))))
+Reducer: ForEach(*1: sr, With(!2: Add(*1.A, 1), ForEach(*3: sr, Mul(*3.A, *1.A, !2))))
+Hoister: ForEach(*1: sr, With(!2: Add(*1.A, 1), With(!3: Mul(*1.A, !2), ForEach(*4: sr, Mul(!3, *4.A)))))
+Reducer: ForEach(*1: sr, With(!2: Mul(*1.A, Add(*1.A, 1)), ForEach(*3: sr, Mul(!2, *3.A))))
+###
+> Map(x1:sr, With(x2:x1.A, Map(x3:sr, x3.A * x2 * x1.A)))
+Map(x1 : sr, With(x2 : x1.A, Map(x3 : sr, x3.A * x2 * x1.A))) : i8**
+Binder : ForEach(*1: sr, With(!2: *1.A, ForEach(*3: sr, Mul(*3.A, !2, *1.A))))
+Reducer: ForEach(*1: sr, ForEach(*2: sr, Mul(*2.A, *1.A, *1.A)))
+Hoister: ForEach(*1: sr, With(!2: Mul(*1.A, *1.A), ForEach(*3: sr, Mul(!2, *3.A))))
+###
+> -c1 + Count(s1, it > Count(s3)) - Count(s2, it > Count(s4))
+-c1 + Count(s1, it $> Count(s3)) - Count(s2, it $> Count(s4)) : i8
+Binder : Add([-] c1, Count(*1: s1, *1 @> Count(s3)), [-] Count(*2: s2, *2 @> Count(s4)))
+Hoister: Add([-] c1, With(!1: Count(s3), Count(*2: s1, *2 @> !1)), [-] With(!3: Count(s4), Count(*4: s2, *4 @> !3)))
+Reducer: With(!1: Count(s3), !2: Count(s4), Add([-] c1, Count(*3: s1, *3 @> !1), [-] Count(*4: s2, *4 @> !2)))
+###
+> -Count(s1, it > Count(s3))
+-Count(s1, it $> Count(s3)) : i8
+Binder : Add([-] Count(*1: s1, *1 @> Count(s3)))
+Hoister: Add([-] With(!1: Count(s3), Count(*2: s1, *2 @> !1)))
+Reducer: With(!1: Count(s3), Add([-] Count(*2: s1, *2 @> !1)))
+###
+> ~Count(s1, it > Count(s3))
+~Count(s1, it $> Count(s3)) : i8
+Binder : BitXor(Count(*1: s1, *1 @> Count(s3)), -1)
+Hoister: BitXor(With(!1: Count(s3), Count(*2: s1, *2 @> !1)), -1)
+Reducer: With(!1: Count(s3), BitXor(Count(*2: s1, *2 @> !1), -1))
+###
+> Map(x1:s1, ToText(c1) & ToText(c2) & ToText(c3))
+Map(x1 : s1, ToText(c1) & ToText(c2) & ToText(c3)) : s*
+Binder : ForEach(*1: s1, StrConcat(ToText(c1), ToText(c2), ToText(c3)))
+Hoister: With(!1: StrConcat(ToText(c1), ToText(c2), ToText(c3)), ForEach(*2: s1, !1))
+###
+> Map(x1:s1, ToText(x1) & ToText(c2) & ToText(c3))
+Map(x1 : s1, ToText(x1) & ToText(c2) & ToText(c3)) : s*
+Binder : ForEach(*1: s1, StrConcat(ToText(*1), ToText(c2), ToText(c3)))
+Hoister: With(!1: StrConcat(ToText(c2), ToText(c3)), ForEach(*2: s1, StrConcat(ToText(*2), !1)))
+###
+> Map(x1:s1, ToText(c2) & ToText(x1) & ToText(c3))
+Map(x1 : s1, ToText(c2) & ToText(x1) & ToText(c3)) : s*
+Binder : ForEach(*1: s1, StrConcat(ToText(c2), ToText(*1), ToText(c3)))
+Hoister: With(!1: ToText(c2), !2: ToText(c3), ForEach(*3: s1, StrConcat(!1, ToText(*3), !2)))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, ToText(c1) & ToText(x1) & ToText(x2) & ToText(x3) & ToText(x4)))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, ToText(c1) & ToText(x1) & ToText(x2) & ToText(x3) & ToText(x4))))) : s****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, StrConcat(ToText(c1), ToText(*1), ToText(*2), ToText(*3), ToText(*4))))))
+Hoister: With(!1: ToText(c1), ForEach(*2: s1, With(!3: StrConcat(!1, ToText(*2)), ForEach(*4: s2, With(!5: StrConcat(!3, ToText(*4)), ForEach(*6: s3, With(!7: StrConcat(!5, ToText(*6)), ForEach(*8: s4, StrConcat(!7, ToText(*8))))))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, ToText(x3) & ToText(c1) & ToText(c2) & ToText(x1) & ToText(x4) & ToText(x2)))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, ToText(x3) & ToText(c1) & ToText(c2) & ToText(x1) & ToText(x4) & ToText(x2))))) : s****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, StrConcat(ToText(*3), ToText(c1), ToText(c2), ToText(*1), ToText(*4), ToText(*2))))))
+Hoister: With(!1: StrConcat(ToText(c1), ToText(c2)), ForEach(*2: s1, With(!3: StrConcat(!1, ToText(*2)), ForEach(*4: s2, With(!5: ToText(*4), ForEach(*6: s3, With(!7: StrConcat(ToText(*6), !3), ForEach(*8: s4, StrConcat(!7, ToText(*8), !5)))))))))
+###
+> Map(x1:st, Map(x2: st, t1 & x1 & x2))
+Map(x1 : st, Map(x2 : st, t1 & x1 & x2)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(t1, *1, *2)))
+Hoister: ForEach(*1: st, With(!2: StrConcat(t1, *1), ForEach(*3: st, StrConcat(!2, *3))))
+###
+> Map(x1:st, Map(x2: st, x1 & t1 & x2))
+Map(x1 : st, Map(x2 : st, x1 & t1 & x2)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(*1, t1, *2)))
+Hoister: ForEach(*1: st, With(!2: StrConcat(*1, t1), ForEach(*3: st, StrConcat(!2, *3))))
+###
+> Map(x1:st, Map(x2: st, x2 & x1 & t1))
+Map(x1 : st, Map(x2 : st, x2 & x1 & t1)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(*2, *1, t1)))
+Hoister: ForEach(*1: st, With(!2: StrConcat(*1, t1), ForEach(*3: st, StrConcat(*3, !2))))
+###
+> Map(x1:st, Map(x2: st, x2 & t1 & x1 & t1))
+Map(x1 : st, Map(x2 : st, x2 & t1 & x1 & t1)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(*2, t1, *1, t1)))
+Hoister: ForEach(*1: st, With(!2: StrConcat(t1, *1, t1), ForEach(*3: st, StrConcat(*3, !2))))
+###
+> Map(x1:st, Map(x2: st, x2 & t1 & t2 & x1))
+Map(x1 : st, Map(x2 : st, x2 & t1 & t2 & x1)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(*2, t1, t2, *1)))
+Hoister: With(!1: StrConcat(t1, t2), ForEach(*2: st, With(!3: StrConcat(!1, *2), ForEach(*4: st, StrConcat(*4, !3)))))
+###
+> Map(x1:st, Map(x2: st, x2 & x1 & t1 & t2))
+Map(x1 : st, Map(x2 : st, x2 & x1 & t1 & t2)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(*2, *1, t1, t2)))
+Hoister: With(!1: StrConcat(t1, t2), ForEach(*2: st, With(!3: StrConcat(*2, !1), ForEach(*4: st, StrConcat(*4, !3)))))
+###
+> Map(x1:st, Map(x2: st, t1 & t2 & x1 & x2 & x1 & t1 & t2))
+Map(x1 : st, Map(x2 : st, t1 & t2 & x1 & x2 & x1 & t1 & t2)) : s**
+Binder : ForEach(*1: st, ForEach(*2: st, StrConcat(t1, t2, *1, *2, *1, t1, t2)))
+Hoister: With(!1: StrConcat(t1, t2), ForEach(*2: st, With(!3: StrConcat(!1, *2), !4: StrConcat(*2, !1), ForEach(*5: st, StrConcat(!3, *5, !4)))))
+###
+> t1 & ToText(Count(s1, it > Count(s3))) & ToText(Count(s2, it > Count(s4)))
+t1 & ToText(Count(s1, it $> Count(s3))) & ToText(Count(s2, it $> Count(s4))) : s
+Binder : StrConcat(t1, ToText(Count(*1: s1, *1 @> Count(s3))), ToText(Count(*2: s2, *2 @> Count(s4))))
+Hoister: StrConcat(t1, ToText(With(!1: Count(s3), Count(*2: s1, *2 @> !1))), ToText(With(!3: Count(s4), Count(*4: s2, *4 @> !3))))
+Reducer: With(!1: Count(s3), !2: Count(s4), StrConcat(t1, ToText(Count(*3: s1, *3 @> !1)), ToText(Count(*4: s2, *4 @> !2))))
+###
+> Map(x1:s1, -CastR8(c1))
+Map(x1 : s1, -CastR8(c1)) : r8*
+Binder : ForEach(*1: s1, Add([-] CastR8*(c1)))
+Reducer: ForEach(*1: s1, Add([-] Num<r8>(c1)))
+Hoister: With(!1: Add([-] Num<r8>(c1)), ForEach(*2: s1, !1))
+###
+> Map(x1:s1, CastR8(c1) - c1 + c1)
+Map(x1 : s1, CastR8(c1) - c1 + c1) : r8*
+Binder : ForEach(*1: s1, Add(CastR8*(c1), [-] Num<r8>(c1), Num<r8>(c1)))
+Reducer: ForEach(*1: s1, Add(Num<r8>(c1), [-] Num<r8>(c1), Num<r8>(c1)))
+Hoister: With(!1: Add(Num<r8>(c1), [-] Num<r8>(c1), Num<r8>(c1)), ForEach(*2: s1, !1))
+###
+> Map(x1:s1, CastR8(c1) - c1 + x1 + c1)
+Map(x1 : s1, CastR8(c1) - c1 + x1 + c1) : r8*
+Binder : ForEach(*1: s1, Add(CastR8*(c1), [-] Num<r8>(c1), Num<r8>(*1), Num<r8>(c1)))
+Reducer: ForEach(*1: s1, Add(Num<r8>(c1), [-] Num<r8>(c1), Num<r8>(*1), Num<r8>(c1)))
+Hoister: With(!1: Add(Num<r8>(c1), [-] Num<r8>(c1)), ForEach(*2: s1, Add(!1, Num<r8>(*2), Num<r8>(c1))))
+###
+> Map(x1:s1, x1 + CastR8(Count(s2)) + Count(s3))
+Map(x1 : s1, x1 + CastR8(Count(s2)) + Count(s3)) : r8*
+Binder : ForEach(*1: s1, Add(Num<r8>(*1), CastR8*(Count(s2)), Num<r8>(Count(s3))))
+Reducer: ForEach(*1: s1, Add(Num<r8>(*1), Num<r8>(Count(s2)), Num<r8>(Count(s3))))
+Hoister: With(!1: Num<r8>(Count(s2)), !2: Num<r8>(Count(s3)), ForEach(*3: s1, Add(Num<r8>(*3), !1, !2)))
+###
+> Map(x1:s1, CastR8(Count(s2)) + x1 + Count(s3))
+Map(x1 : s1, CastR8(Count(s2)) + x1 + Count(s3)) : r8*
+Binder : ForEach(*1: s1, Add(CastR8*(Count(s2)), Num<r8>(*1), Num<r8>(Count(s3))))
+Reducer: ForEach(*1: s1, Add(Num<r8>(Count(s2)), Num<r8>(*1), Num<r8>(Count(s3))))
+Hoister: With(!1: Num<r8>(Count(s2)), !2: Num<r8>(Count(s3)), ForEach(*3: s1, Add(!1, Num<r8>(*3), !2)))
+###
+> Map(x1:s1, Map(x2:s2, CastR8(c1) + CastR8(Wrap(x1))))
+Map(x1 : s1, Map(x2 : s2, CastR8(c1) + CastR8(Wrap(x1)))) : r8**
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(CastR8*(c1), CastR8*(Test.Wrap(*1)))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, Add(Num<r8>(c1), Num<r8>(Test.Wrap(*1)))))
+Hoister: ForEach(*1: s1, With(!2: Add(Num<r8>(c1), Num<r8>(Test.Wrap(*1))), ForEach(*3: s2, !2)))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(c1) + CastR8(Wrap(x1)) + CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x4))))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, CastR8(c1) + CastR8(Wrap(x1)) + CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x4)))))) : r8****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(CastR8*(c1), CastR8*(Test.Wrap(*1)), CastR8*(Test.Wrap(*2)), CastR8*(Test.Wrap(*3)), CastR8*(Test.Wrap(*4)))))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(Num<r8>(c1), Num<r8>(Test.Wrap(*1)), Num<r8>(Test.Wrap(*2)), Num<r8>(Test.Wrap(*3)), Num<r8>(Test.Wrap(*4)))))))
+Hoister: ForEach(*1: s1, With(!2: Add(Num<r8>(c1), Num<r8>(Test.Wrap(*1))), ForEach(*3: s2, With(!4: Add(!2, Num<r8>(Test.Wrap(*3))), ForEach(*5: s3, With(!6: Add(!4, Num<r8>(Test.Wrap(*5))), ForEach(*7: s4, Add(!6, Num<r8>(Test.Wrap(*7))))))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(Wrap(x4)) + CastR8(Wrap(x3)) + CastR8(Wrap(x2)) + CastR8(Wrap(x1)) + CastR8(c1)))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, CastR8(Wrap(x4)) + CastR8(Wrap(x3)) + CastR8(Wrap(x2)) + CastR8(Wrap(x1)) + CastR8(c1))))) : r8****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(CastR8*(Test.Wrap(*4)), CastR8*(Test.Wrap(*3)), CastR8*(Test.Wrap(*2)), CastR8*(Test.Wrap(*1)), CastR8*(c1))))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(Num<r8>(Test.Wrap(*4)), Num<r8>(Test.Wrap(*3)), Num<r8>(Test.Wrap(*2)), Num<r8>(Test.Wrap(*1)), Num<r8>(c1))))))
+Hoister: ForEach(*1: s1, With(!2: Num<r8>(Test.Wrap(*1)), ForEach(*3: s2, With(!4: Num<r8>(Test.Wrap(*3)), ForEach(*5: s3, With(!6: Num<r8>(Test.Wrap(*5)), ForEach(*7: s4, Add(Num<r8>(Test.Wrap(*7)), !6, !4, !2, Num<r8>(c1)))))))))
+###
+> Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x1)) + CastR8(Wrap(x4)) + CastR8(Wrap(x2))))))
+Map(x1 : s1, Map(x2 : s2, Map(x3 : s3, Map(x4 : s4, CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x1)) + CastR8(Wrap(x4)) + CastR8(Wrap(x2)))))) : r8****
+Binder : ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(CastR8*(Test.Wrap(*2)), CastR8*(Test.Wrap(*3)), CastR8*(Test.Wrap(*1)), CastR8*(Test.Wrap(*4)), CastR8*(Test.Wrap(*2)))))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, ForEach(*3: s3, ForEach(*4: s4, Add(Num<r8>(Test.Wrap(*2)), Num<r8>(Test.Wrap(*3)), Num<r8>(Test.Wrap(*1)), Num<r8>(Test.Wrap(*4)), Num<r8>(Test.Wrap(*2)))))))
+Hoister: ForEach(*1: s1, With(!2: Num<r8>(Test.Wrap(*1)), ForEach(*3: s2, With(!4: Num<r8>(Test.Wrap(*3)), ForEach(*5: s3, With(!6: Add(!4, Num<r8>(Test.Wrap(*5)), !2), ForEach(*7: s4, Add(!6, Num<r8>(Test.Wrap(*7)), !4))))))))
+###
+> Map(x1:sf1, Map(x2:sf2, f1 + x1 - x2))
+Map(x1 : sf1, Map(x2 : sf2, f1 + x1 - x2)) : r8**
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(f1, *1, [-] *2)))
+Hoister: ForEach(*1: sf1, With(!2: Add(f1, *1), ForEach(*3: sf2, Add(!2, [-] *3))))
+###
+> Map(x1:sf1, Map(x2:sf2, -x1 + f1 + x2))
+Map(x1 : sf1, Map(x2 : sf2, -x1 + f1 + x2)) : r8**
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add([-] *1, f1, *2)))
+Hoister: ForEach(*1: sf1, With(!2: Add([-] *1, f1), ForEach(*3: sf2, Add(!2, *3))))
+###
+> Map(x1:sf1, Map(x2:sf2, x2 + x1 - f1))
+Map(x1 : sf1, Map(x2 : sf2, x2 + x1 - f1)) : r8**
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(*2, *1, [-] f1)))
+###
+> Map(x1:sf1, Map(x2:sf2, -f1 + x1 - f1 + x2))
+Map(x1 : sf1, Map(x2 : sf2, -f1 + x1 - f1 + x2)) : r8**
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add([-] f1, *1, [-] f1, *2)))
+Hoister: ForEach(*1: sf1, With(!2: Add([-] f1, *1, [-] f1), ForEach(*3: sf2, Add(!2, *3))))
+###
+> Map(x1:sf1, Map(x2:sf2, f1 + f1 + x1 - x2))
+Map(x1 : sf1, Map(x2 : sf2, f1 + f1 + x1 - x2)) : r8**
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(f1, f1, *1, [-] *2)))
+Hoister: With(!1: Add(f1, f1), ForEach(*2: sf1, With(!3: Add(!1, *2), ForEach(*4: sf2, Add(!3, [-] *4)))))
+###
+> -f1 + Count(s1, it > Count(s3)) - Count(s2, it > Count(s4))
+-f1 + Count(s1, it $> Count(s3)) - Count(s2, it $> Count(s4)) : r8
+Binder : Add([-] f1, Num<r8>(Count(*1: s1, *1 @> Count(s3))), [-] Num<r8>(Count(*2: s2, *2 @> Count(s4))))
+Hoister: Add([-] f1, Num<r8>(With(!1: Count(s3), Count(*2: s1, *2 @> !1))), [-] Num<r8>(With(!3: Count(s4), Count(*4: s2, *4 @> !3))))
+Reducer: With(!1: Count(s3), !2: Count(s4), Add([-] f1, Num<r8>(Count(*3: s1, *3 @> !1)), [-] Num<r8>(Count(*4: s2, *4 @> !2))))
+###
+> f1 + ~Count(s1, it > Count(s3))
+f1 + ~Count(s1, it $> Count(s3)) : r8
+Binder : Add(f1, Num<r8>(BitXor(Count(*1: s1, *1 @> Count(s3)), -1)))
+Hoister: Add(f1, Num<r8>(BitXor(With(!1: Count(s3), Count(*2: s1, *2 @> !1)), -1)))
+Reducer: With(!1: Count(s3), Add(f1, Num<r8>(BitXor(Count(*2: s1, *2 @> !1), -1))))
+###
+> Map(x1:sr, Map(x2:sr, t1 has t2))
+Map(x1 : sr, Map(x2 : sr, t1 has t2)) : b**
+Binder : ForEach(*1: sr, ForEach(*2: sr, Has(t1, t2)))
+Hoister: With(!1: Has(t1, t2), !3: ForEach(*2: sr, !1), ForEach(*4: sr, !3))
+###
+> Map(x1:sr, Map(x2:sr, x1.B has x2.B))
+Map(x1 : sr, Map(x2 : sr, x1.B has x2.B)) : b**
+Binder : ForEach(*1: sr, ForEach(*2: sr, Has(*1.B, *2.B)))
+###
+> Map(x1:sb, Wrap(b1) and x1)
+Map(x1 : sb, Wrap(b1) and x1) : b*
+Binder : ForEach(*1: sb, And(Test.Wrap(b1), *1))
+Hoister: With(!1: Test.Wrap(b1), ForEach(*2: sb, And(!1, *2)))
+###
+> Map(x1:sb, Wrap(qb) and x1)
+Map(x1 : sb, Wrap(qb) and x1) : b?*
+Binder : ForEach(*1: sb, And(Test.Wrap(qb), *1))
+Hoister: With(!1: Test.Wrap(qb), ForEach(*2: sb, And(!1, *2)))
+###
+> Map(x1:sb, Map(x2:sb, x1 and b2 and qb))
+Map(x1 : sb, Map(x2 : sb, x1 and b2 and qb)) : b?**
+Binder : ForEach(*1: sb, ForEach(*2: sb, And(*1, b2, qb)))
+Hoister: With(!1: And(b2, qb), ForEach(*2: sb, With(!3: And(!1, *2), ForEach(*4: sb, !3))))
+###
+> Map(x1:sqb, Map(x2:sb, x1 and b1 and b2))
+Map(x1 : sqb, Map(x2 : sb, x1 and b1 and b2)) : b?**
+Binder : ForEach(*1: sqb, ForEach(*2: sb, And(*1, b1, b2)))
+Hoister: With(!1: And(b1, b2), ForEach(*2: sqb, With(!3: And(!1, *2), ForEach(*4: sb, !3))))
+###
+> Map(x1:sb, Map(x2:sqb, x1 and b1 and b2 and x2))
+Map(x1 : sb, Map(x2 : sqb, x1 and b1 and b2 and x2)) : b?**
+Binder : ForEach(*1: sb, ForEach(*2: sqb, And(*1, b1, b2, *2)))
+Hoister: With(!1: And(b2, b1), ForEach(*2: sb, With(!3: And(!1, *2), ForEach(*4: sqb, And(!3, *4)))))
+###
+> qb and Any(x1:s1, x1 > Count(s3))
+qb and Any(x1 : s1, x1 $> Count(s3)) : b?
+Binder : And(qb, Any(*1: s1, *1 @> Count(s3)))
+Hoister: And(qb, With(!1: Count(s3), Any(*2: s1, *2 @> !1)))
+###
+> qb and not Any(x1:s1, x1 > Count(s3))
+qb and not Any(x1 : s1, x1 $> Count(s3)) : b?
+Binder : And(qb, Xor(Any(*1: s1, *1 @> Count(s3)), true))
+Hoister: And(qb, Xor(With(!1: Count(s3), Any(*2: s1, *2 @> !1)), true))
+Reducer: And(qb, With(!1: Count(s3), Xor(Any(*2: s1, *2 @> !1), true)))
+###
+> [qi1, Count(x1:s1, x1 > Count(s3))]
+[qi1, Count(x1 : s1, x1 $> Count(s3))] : i8?*
+Binder : [Guard(?1: qi1, Num<i8>(?1)), Opt<i8?>(Count(*2: s1, *2 @> Count(s3)))]
+Hoister: [Guard(?1: qi1, Num<i8>(?1)), Opt<i8?>(With(!2: Count(s3), Count(*3: s1, *3 @> !2)))]
+Reducer: With(!1: Count(s3), [Guard(?2: qi1, Num<i8>(?2)), Opt<i8?>(Count(*3: s1, *3 @> !1))])
+###
+> [c1, Map(x1:s1, x1 + Count(s3))]
+[c1, Map(x1 : s1, x1 + Count(s3))] : g*
+*** Error: (8,9) Node: Map(x1 : s1, x1 + Count(s3)), Message: The given types are incompatible: 'i8' and 'i8*'
+Binder : [Box<g>(c1), Ref<g>(ForEach(*1: s1, Add(*1, Count(s3))))]
+Hoister: [Box<g>(c1), Ref<g>(With(!1: Count(s3), ForEach(*2: s1, Add(!1, *2))))]
+Reducer: With(!1: Count(s3), [Box<g>(c1), Ref<g>(ForEach(*2: s1, Add(!1, *2)))])
+###
+> Map(x1:s1, [c1, Map(x2:s2, x2 + Count(s4) + x1), Count(x3:s3, it > Count(s4))])
+Map(x1 : s1, [c1, Map(x2 : s2, x2 + Count(s4) + x1), Count(x3 : s3, it $> Count(s4))]) : g**
+*** Error: (19,20) Node: Map(x2 : s2, x2 + Count(s4) + x1), Message: The given types are incompatible: 'i8' and 'i8*'
+Binder : ForEach(*1: s1, [Box<g>(c1), Ref<g>(ForEach(*2: s2, Add(*2, Count(s4), *1))), Box<g>(Count(*3: s3, *3 @> Count(s4)))])
+Hoister: With(!1: Count(s4), !2: Box<g>(c1), !4: Box<g>(Count(*3: s3, *3 @> !1)), ForEach(*5: s1, [!2, Ref<g>(With(!6: Add(!1, *5), ForEach(*7: s2, Add(!6, *7)))), !4]))
+Reducer: With(!1: Count(s4), !2: Box<g>(c1), !4: Box<g>(Count(*3: s3, *3 @> !1)), ForEach(*5: s1, With(!6: Add(!1, *5), [!2, Ref<g>(ForEach(*7: s2, Add(!6, *7))), !4])))
+###
+> Map(x1:s1, T[Count(s1), Count(s2)])
+Map(x1 : s1, T[Count(s1), Count(s2)]) : i8*
+Binder : ForEach(*1: s1, T[Count(s1), Count(s2)])
+Hoister: With(!1: T[Count(s1), Count(s2)], ForEach(*2: s1, !1))
+###
+> Map(x1:s1, T[x1, Count(s2)])
+Map(x1 : s1, T[x1, Count(s2)]) : i8*
+Binder : ForEach(*1: s1, T[*1, Count(s2)])
+Hoister: With(!1: Count(s2), ForEach(*2: s1, T[*2, !1]))
+###
+> Map(x1:s1, T[Count(s1), tup])
+Map(x1 : s1, T[Count(s1), tup]) : i8[*]*
+Binder : ForEach(*1: s1, T[Count(s1), tup])
+Hoister: With(!1: T[Count(s1), tup], ForEach(*2: s1, !1))
+###
+> Map(x1:s1, T[x1, tup])
+Map(x1 : s1, T[x1, tup]) : i8[*]*
+Binder : ForEach(*1: s1, T[*1, tup])
+###
+> Map(x1:s1, T[Count(s1), Count(s2):Count(s3):Count(s4)])
+Map(x1 : s1, T[Count(s1), Count(s2):Count(s3):Count(s4)]) : i8[*]*
+Binder : ForEach(*1: s1, T[Count(s1), Count(s2):Count(s3):Count(s4)])
+Hoister: With(!1: T[Count(s1), Count(s2):Count(s3):Count(s4)], ForEach(*2: s1, !1))
+###
+> Map(x1:s1, T[Count(s1), (Count(s2), Count(s3), Count(s4))])
+Map(x1 : s1, T[Count(s1), (Count(s2), Count(s3), Count(s4))]) : i8[*]*
+Binder : ForEach(*1: s1, T[Count(s1), Count(s2):Count(s3):Count(s4)])
+Hoister: With(!1: T[Count(s1), Count(s2):Count(s3):Count(s4)], ForEach(*2: s1, !1))
+###
+> Map(x1:s1, T[Count(s1), Count(s2):Count(s3):x1])
+Map(x1 : s1, T[Count(s1), Count(s2):Count(s3):x1]) : i8[*]*
+Binder : ForEach(*1: s1, T[Count(s1), Count(s2):Count(s3):*1])
+Hoister: With(!1: Count(s1), !2: Count(s2), !3: Count(s3), ForEach(*4: s1, T[!1, !2:!3:*4]))
+###
+> Map(x1:s1, T[Count(s1), (Count(s2), Count(s3), x1)])
+Map(x1 : s1, T[Count(s1), (Count(s2), Count(s3), x1)]) : i8[*]*
+Binder : ForEach(*1: s1, T[Count(s1), Count(s2):Count(s3):*1])
+Hoister: With(!1: Count(s1), !2: Count(s2), !3: Count(s3), ForEach(*4: s1, T[!1, !2:!3:*4]))
+###
+> Map(x1:s1, Tensor.Fill(Count(s1), 1)[x1:Count(s2)])
+Map(x1 : s1, Tensor.Fill(Count(s1), 1)[x1:Count(s2)]) : i8[*]*
+Binder : ForEach(*1: s1, Tensor.Fill(Count(s1), 1)[*1:Count(s2):])
+Hoister: With(!1: Tensor.Fill(Count(s1), 1), !2: Count(s2), ForEach(*3: s1, !1[*3:!2:]))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, b^2:c^2:d^2]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, b^2:c^2:d^2])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), Power(^2, 2):Power(^3, 2):Power(^4, 2)]))))
+Hoister: Generate(^1: c1, With(!2: Power(^1, 2), Generate(^3: c2, With(!4: Power(^3, 2), Generate(^5: c3, With(!6: Power(^5, 2), Generate(^7: c4, T[!2, !4:!6:Power(^7, 2)])))))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & (c^2,d^2)]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, (b^2,) & (c^2, d^2)])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat((Power(^2, 2),), (Power(^3, 2), Power(^4, 2)))]))))
+Reducer: Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), Power(^2, 2):Power(^3, 2):Power(^4, 2)]))))
+Hoister: Generate(^1: c1, With(!2: Power(^1, 2), Generate(^3: c2, With(!4: Power(^3, 2), Generate(^5: c3, With(!6: Power(^5, 2), Generate(^7: c4, T[!2, !4:!6:Power(^7, 2)])))))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, tup[:2] & (d^2,)]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, tup[:2] & (d^2,)])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat(tup[0:2:1], (Power(^4, 2),))]))))
+Hoister: With(!1: tup[0:2:1], Generate(^2: c1, With(!3: Power(^2, 2), !5: Generate(^4: c4, T[!3, TupleConcat(!1, (Power(^4, 2),))]), !7: Generate(^6: c3, !5), Generate(^8: c2, !7))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & tup[1:]]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, (b^2,) & tup[1:]])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat((Power(^2, 2),), tup[1:3:1])]))))
+Hoister: With(!1: tup[1:3:1], Generate(^2: c1, With(!3: Power(^2, 2), Generate(^4: c2, With(!5: T[!3, TupleConcat((Power(^4, 2),), !1)], !7: Generate(^6: c4, !5), Generate(^8: c3, !7))))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, tup[:1] & (c^2,d^2)]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, tup[:1] & (c^2, d^2)])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat(tup[0:1:1], (Power(^3, 2), Power(^4, 2)))]))))
+Hoister: With(!1: tup[0:1:1], Generate(^2: c1, With(!3: Power(^2, 2), !7: Generate(^4: c3, With(!5: Power(^4, 2), Generate(^6: c4, T[!3, TupleConcat(!1, (!5, Power(^6, 2)))]))), Generate(^8: c2, !7))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & tup[1:2] & (d^2,)]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, (b^2,) & tup[1:2] & (d^2,)])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat((Power(^2, 2),), tup[1:2:1], (Power(^4, 2),))]))))
+Hoister: With(!1: tup[1:2:1], Generate(^2: c1, With(!3: Power(^2, 2), Generate(^4: c2, With(!5: (Power(^4, 2),), !7: Generate(^6: c4, T[!3, TupleConcat(!5, !1, (Power(^6, 2),))]), Generate(^8: c3, !7))))))
+###
+> Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,c^2) & tup[2:]]))))
+Generate(a : c1, Generate(b : c2, Generate(c : c3, Generate(d : c4, T[a^2, (b^2, c^2) & tup[2:]])))) : i8[*]****
+Binder : Generate(^1: c1, Generate(^2: c2, Generate(^3: c3, Generate(^4: c4, T[Power(^1, 2), TupleConcat((Power(^2, 2), Power(^3, 2)), tup[2:3:1])]))))
+Hoister: With(!1: tup[2:3:1], Generate(^2: c1, With(!3: Power(^2, 2), Generate(^4: c2, With(!5: Power(^4, 2), Generate(^6: c3, With(!7: T[!3, TupleConcat((!5, Power(^6, 2)), !1)], Generate(^8: c4, !7))))))))
+###
+> Map(x1:s1, x2:stup, x2[Count(s1)])
+Map(x1 : s1, x2 : stup, x2[Count(s1)]) : i8*
+Binder : ForEach(*1: s1, *2: stup, *2[Count(s1)])
+Hoister: With(!1: Count(s1), ForEach(*2: s1, *3: stup, *3[!1]))
+###
+> Map(x1:s1, (c1, Count(s1))[x1])
+Map(x1 : s1, (c1, Count(s1))[x1]) : i8*
+Binder : ForEach(*1: s1, (c1, Count(s1))[*1])
+Hoister: With(!1: (c1, Count(s1)), ForEach(*2: s1, !1[*2]))
+###
+> Map(x1:s1, x2:stup[Count(s1)], (x2,x2,x2))
+Map(x1 : s1, x2 : stup[Count(s1)], (x2, x2, x2)) : (i8, i8, i8)*
+Binder : ForEach(*3: s1, *4: With(!1: Count(s1), ForEach(*2: stup, *2[!1])), (*4, *4, *4))
+Reducer: With(!1: Count(s1), ForEach(*2: s1, *3: stup, With(!4: *3[!1], (!4, !4, !4))))
+###
+> Map(x1:s1, Map(x2:s2, A + x1))
+Map(x1 : s1, Map(x2 : s2, A + x1)) : i8**
+*** Error: (22,23) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(Unit<i8>(Error(ErrNameDoesNotExist)), *1)))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, *1))
+###
+> Map(x1:s1, Map(x2:s2, x1 + A))
+Map(x1 : s1, Map(x2 : s2, x1 + A)) : i8**
+*** Error: (27,28) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(*1, Unit<i8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, *1))
+###
+> Map(x1:s1, Map(x2:s2, x1 + Count(s1) + x2 + x1 + A))
+Map(x1 : s1, Map(x2 : s2, x1 + Count(s1) + x2 + x1 + A)) : i8**
+*** Error: (49,50) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, Add(*1, Count(s1), *2, *1, Unit<i8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, Add(*1, Count(s1), *2, *1)))
+Hoister: With(!1: Count(s1), ForEach(*2: s1, With(!3: Add(!1, *2, *2), ForEach(*4: s2, Add(!3, *4)))))
+###
+> Map(x1:s1, Map(x2:s2, A & ToText(x1)))
+Map(x1 : s1, Map(x2 : s2, A & ToText(x1))) : s**
+*** Error: (22,23) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, StrConcat(Unit<s>(Error(ErrNameDoesNotExist)), ToText(*1))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, StrConcat(ToText(*1))))
+Hoister: ForEach(*1: s1, With(!2: StrConcat(ToText(*1)), ForEach(*3: s2, !2)))
+###
+> Map(x1:s1, Map(x2:s2, ToText(x1) & A))
+Map(x1 : s1, Map(x2 : s2, ToText(x1) & A)) : s**
+*** Error: (35,36) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, StrConcat(ToText(*1), Unit<s>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, StrConcat(ToText(*1))))
+Hoister: ForEach(*1: s1, With(!2: StrConcat(ToText(*1)), ForEach(*3: s2, !2)))
+###
+> Map(x1:s1, Map(x2:s2, ToText(x1) & ToText(c1) & ToText(x2) & ToText(x1) & A))
+Map(x1 : s1, Map(x2 : s2, ToText(x1) & ToText(c1) & ToText(x2) & ToText(x1) & A)) : s**
+*** Error: (74,75) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: s1, ForEach(*2: s2, StrConcat(ToText(*1), ToText(c1), ToText(*2), ToText(*1), Unit<s>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: s1, ForEach(*2: s2, StrConcat(ToText(*1), ToText(c1), ToText(*2), ToText(*1))))
+Hoister: With(!1: ToText(c1), ForEach(*2: s1, With(!3: StrConcat(ToText(*2), !1), !4: ToText(*2), ForEach(*5: s2, StrConcat(!3, ToText(*5), !4)))))
+###
+> Map(x1:sf1, Map(x2:sf2, A + x1))
+Map(x1 : sf1, Map(x2 : sf2, A + x1)) : r8**
+*** Error: (24,25) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(Unit<r8>(Error(ErrNameDoesNotExist)), *1)))
+Reducer: ForEach(*1: sf1, ForEach(*2: sf2, Add(0, *1)))
+Hoister: ForEach(*1: sf1, With(!2: Add(0, *1), ForEach(*3: sf2, !2)))
+###
+> Map(x1:sf1, Map(x2:sf2, x1 + A))
+Map(x1 : sf1, Map(x2 : sf2, x1 + A)) : r8**
+*** Error: (29,30) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(*1, Unit<r8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: sf1, ForEach(*2: sf2, Add(*1, 0)))
+Hoister: ForEach(*1: sf1, With(!2: Add(*1, 0), ForEach(*3: sf2, !2)))
+###
+> Map(x1:sf1, Map(x2:sf2, CastR8(c1) + x1 + A))
+Map(x1 : sf1, Map(x2 : sf2, CastR8(c1) + x1 + A)) : r8**
+*** Error: (42,43) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(CastR8*(c1), *1, Unit<r8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: sf1, ForEach(*2: sf2, Add(Num<r8>(c1), *1, 0)))
+Hoister: ForEach(*1: sf1, With(!2: Add(Num<r8>(c1), *1, 0), ForEach(*3: sf2, !2)))
+###
+> Map(x1:sf1, Map(x2:sf2, x1 + CastR8(c1) + x2 + x1 + A))
+Map(x1 : sf1, Map(x2 : sf2, x1 + CastR8(c1) + x2 + x1 + A)) : r8**
+*** Error: (52,53) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: sf1, ForEach(*2: sf2, Add(*1, CastR8*(c1), *2, *1, Unit<r8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: sf1, ForEach(*2: sf2, Add(*1, Num<r8>(c1), *2, *1, 0)))
+Hoister: ForEach(*1: sf1, With(!2: Add(*1, Num<r8>(c1)), ForEach(*3: sf2, Add(!2, *3, *1, 0))))
+###
+> Generate(c1, { A: Range(c2), B: Range(c3) })
+Generate(c1, { A : Range(c2), B : Range(c3) }) : {A:i8*, B:i8*}*
+Binder : Generate(^1: c1, {A:Range(c2), B:Range(c3)})
+Hoister: With(!1: {A:Range(c2), B:Range(c3)}, Generate(^2: c1, !1))
+###
+> Generate(x1:c1, s1:{ A: Range(c2), B: Range(c3) }, it, Generate(x2:c2, (x2, { A: Range(c2), B: Range(c3) })))
+Generate(x1 : c1, s1 : { A : Range(c2), B : Range(c3) }, it, Generate(x2 : c2, (x2, { A : Range(c2), B : Range(c3) }))) : (i8, {A:i8*, B:i8*})**
+Binder : Generate(^1: c1, %2: {A:Range(c2), B:Range(c3)}, %2, Generate(^3: c2, (^3, {A:Range(c2), B:Range(c3)})))
+Hoister: With(!1: {A:Range(c2), B:Range(c3)}, !3: Generate(^2: c2, (^2, !1)), Generate(^4: c1, %5: {A:Range(c2), B:Range(c3)}, %5, !3))
+###
+> Map(x: s1, (("a" ~in []) > "b") ?? "c") // Found by fuzzer, errors.
+Map(x : s1, "a" ~in [] $> "b" ?? "c") : g*
+*** Error: (27,30) Node: "b", Message: Invalid operand type: cannot convert type 's' to 'b?'
+*** Warning: (11,12) Node: "a" ~in [] $> "b", Message: Coalesce operator '??' is not necessary with left operand of non optional type: 'b'
+*** Error: (32,34) Node: "a" ~in [] $> "b" ?? "c", Message: The given types are incompatible: 'b' and 's'
+Binder : ForEach(*1: s1, Coalesce(Box<g>(InCi("a", null) $> Error(ErrBadType_Src_Dst)), Ref<g>("c")))
+Hoister: With(!1: InCi("a", null), ForEach(*2: s1, Coalesce(Box<g>(!1 $> Error(ErrBadType_Src_Dst)), Ref<g>("c"))))
+###
+> ForEach(x:[s2], si1 ++ si1 ++ x)
+ForEach(x : [s2], si1 ++ si1 ++ x) : i**
+Binder : ForEach(*1: [s2], SeqConcat(si1, si1, ForEach(*2: *1, Num<i>(*2))))
+Hoister: With(!1: SeqConcat(si1, si1), ForEach(*2: [s2], SeqConcat(!1, ForEach(*3: *2, Num<i>(*3)))))
+###
+> ForEach(x:stup, tup[1:] & x)[2:]
+ForEach(x : stup, tup[1:] & x)[2:] : (i8, i8, i8)*
+Binder : ForEach(*2: ForEach(*1: stup, TupleConcat(tup[1:3:1], *1)), *2[2:5:1])
+Reducer: ForEach(*1: stup, TupleConcat(tup[1:3:1], *1)[2:5:1])
+Hoister: With(!1: tup[1:3:1], ForEach(*2: stup, TupleConcat(!1, *2)[2:5:1]))
+###
+> ForEach(x:stup, qtup[1:] & x)[2:] // REVIEW: This should hoist (WI#46544).
+ForEach(x : stup, qtup[1:] & x)[2:] : (i8, i8, i8)?*
+Binder : ForEach(*4: ForEach(*1: stup, Guard(?3: Guard(?2: qtup, ?2[1:3:1]), TupleConcat(?3, *1))), Guard(?5: *4, ?5[2:5:1]))
+Reducer: ForEach(*1: stup, Guard(?2: qtup, TupleConcat(?2[1:3:1], *1)[2:5:1]))
+###
+> ForEach(x:stup, tup & tup & x)
+ForEach(x : stup, tup & tup & x) : (i8, i8, i8, i8, i8, i8, i8, i8, i8)*
+Binder : ForEach(*1: stup, TupleConcat(tup, tup, *1))
+###
+> ForEach(x:stup, qtup & qtup & x)
+ForEach(x : stup, qtup & qtup & x) : (i8, i8, i8, i8, i8, i8, i8, i8, i8)?*
+Binder : ForEach(*1: stup, Guard(?4: Guard(?2: qtup, ?3: qtup, TupleConcat(?2, ?3)), TupleConcat(?4, *1)))
+Reducer: ForEach(*1: stup, Guard(?2: qtup, TupleConcat(?2, ?2, *1)))
+###
+> ForEach(x:stup, tup & tup & tup)
+ForEach(x : stup, tup & tup & tup) : (i8, i8, i8, i8, i8, i8, i8, i8, i8)*
+Binder : ForEach(*1: stup, TupleConcat(tup, tup, tup))
+Hoister: With(!1: TupleConcat(tup, tup, tup), ForEach(*2: stup, !1))
+###
+
+**** New globals: {a:{A:i8}, b:{B:i8}, c:{C:i8}*, qa:{A:i8}?, qb:{B:i8}?}
+
+> ForEach(x:c, a & b & x)
+ForEach(x : c, a & b & x) : {A:i8, B:i8, C:i8}*
+Binder : ForEach(*1: c, RecordConcat(a, b, *1))
+###
+> ForEach(x:c, qa & qb & x)
+ForEach(x : c, qa & qb & x) : {A:i8, B:i8, C:i8}?*
+Binder : ForEach(*1: c, Guard(?4: Guard(?2: qa, ?3: qb, RecordConcat(?2, ?3)), RecordConcat(?4, *1)))
+Reducer: ForEach(*1: c, Guard(?2: qa, ?3: qb, RecordConcat(?2, ?3, *1)))
+###
+> ForEach(x:c, a & b & a)
+ForEach(x : c, a & b & a) : {A:i8, B:i8}*
+Binder : ForEach(*1: c, RecordConcat(a, b, a))
+Reducer: ForEach(*1: c, RecordConcat(b, a))
+Hoister: With(!1: RecordConcat(b, a), ForEach(*2: c, !1))
+###
+
+**** New globals: {b:b, bs:b*, bss:b**}
+
+> b and bss and null and bs
+b and bss and null and bs : b?**
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: bss, ForEach(*2: *1, And(b, *2))), ForEach(*4: *3, And(*4, null))), *6: bs, ForEach(*7: *5, And(*7, *6)))
+Reducer: ForEach(*1: bss, *2: bs, ForEach(*3: *1, And(b, *3, *2, null)))
+Hoister: With(!1: And(b, null), ForEach(*2: bss, *3: bs, With(!4: And(!1, *3), ForEach(*5: *2, And(!4, *5)))))
+###
+
+**** New globals: {Games:{AScore:i4, Away:s, HScore:i4, Home:s, Week:i4}*, c1:i4, c2:i4, c3:i4, c4:i4, c5:i4, s1:i4*, s2:i4*, s3:i4*, s4:i4*, si1:i*}
+
+> GroupBy(Games, Home, XGames)
+GroupBy(Games, Home, XGames) : {Home:s, XGames:{AScore:i4, Away:s, HScore:i4, Week:i4}*}*
+Binder : GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>)
+###
+> GroupBy(Games, [auto] XGames, [key] K:Home)
+GroupBy(Games, [auto] XGames, [key] K : Home) : {K:s, XGames:{AScore:i4, Away:s, HScore:i4, Week:i4}*}*
+Binder : GroupBy(*1: Games, [key] K:*1.Home, [auto] XGames:<auto>)
+###
+> GroupBy(Games, Home, M:Range(c1))
+GroupBy(Games, Home, M : Range(c1)) : {Home:s, M:i8**}*
+Binder : GroupBy(*1: Games, [key] Home:*1.Home, [map] M:Range(Num<i8>(c1)))
+Hoister: With(!1: Range(Num<i8>(c1)), GroupBy(*2: Games, [key] Home:*2.Home, [map] M:!1))
+###
+> GroupBy(Games, [map] M:Range(c1), [key] K:Home)
+GroupBy(Games, [map] M : Range(c1), [key] K : Home) : {K:s, M:i8**}*
+Binder : GroupBy(*1: Games, [key] K:*1.Home, [map] M:Range(Num<i8>(c1)))
+Hoister: With(!1: Range(Num<i8>(c1)), GroupBy(*2: Games, [key] K:*2.Home, [map] M:!1))
+###
+> GroupBy(Games, Home, [agg] A:Range(c1))
+GroupBy(Games, Home, [agg] A : Range(c1)) : {A:i8*, Home:s}*
+Binder : GroupBy(*1: Games, [key] Home:*1.Home, [agg] A:Range(Num<i8>(c1)))
+###
+> GroupBy(Games, Home, [agg] A:Map(it, Range(c1)))
+GroupBy(Games, Home, [agg] A : Map(it, Range(c1))) : {A:i8**, Home:s}*
+Binder : GroupBy(*1: Games, [key] Home:*1.Home, [agg] A:ForEach(*3: !2, Range(Num<i8>(c1))))
+Hoister: GroupBy(*1: Games, [key] Home:*1.Home, [agg] A:With(!3: Range(Num<i8>(c1)), ForEach(*4: !2, !3)))
+###
+> GroupBy(Games, Count(Range(c1)), [agg] A:Map(it, Range(c1)))
+GroupBy(Games, Count(Range(c1)), [agg] A : Map(it, Range(c1))) : {A:i8**}*
+Binder : GroupBy(*1: Games, [key] Count(Range(Num<i8>(c1))), [agg] A:ForEach(*3: !2, Range(Num<i8>(c1))))
+Hoister: With(!1: Count(Range(Num<i8>(c1))), GroupBy(*2: Games, [key] !1, [agg] A:With(!4: Range(Num<i8>(c1)), ForEach(*5: !3, !4))))
+###
+> GroupBy(Games, Home: Count(Range(c1)), [agg] A:Map(it, Range(c1)))
+GroupBy(Games, Home : Count(Range(c1)), [agg] A : Map(it, Range(c1))) : {A:i8**, Home:i8}*
+Binder : GroupBy(*1: Games, [key] Home:Count(Range(Num<i8>(c1))), [agg] A:ForEach(*3: !2, Range(Num<i8>(c1))))
+Hoister: With(!1: Count(Range(Num<i8>(c1))), GroupBy(*2: Games, [key] Home:!1, [agg] A:With(!4: Range(Num<i8>(c1)), ForEach(*5: !3, !4))))
+###
+> GroupBy([{A: Range(c2), B: Range(c3)}], [key] Count(Range(c4)), [map] M:Range(c5), [agg] A:Range(6))
+GroupBy([{ A : Range(c2), B : Range(c3) }], [key] Count(Range(c4)), [map] M : Range(c5), [agg] A : Range(6)) : {A:i8*, M:i8**}*
+Binder : GroupBy(*1: [{A:Range(Num<i8>(c2)), B:Range(Num<i8>(c3))}], [key] Count(Range(Num<i8>(c4))), [map] M:Range(Num<i8>(c5)), [agg] A:Range(6))
+Hoister: With(!1: Count(Range(Num<i8>(c4))), !2: Range(Num<i8>(c5)), GroupBy(*3: [{A:Range(Num<i8>(c2)), B:Range(Num<i8>(c3))}], [key] !1, [map] M:!2, [agg] A:Range(6)))
+###
+> GroupBy(Map(Range(c1), {A: Range(c2), B: Range(c3)}), [key] Count(Range(c4)), [map] M:Range(c5), [agg] A:Map(it, Range(6)))
+GroupBy(Map(Range(c1), { A : Range(c2), B : Range(c3) }), [key] Count(Range(c4)), [map] M : Range(c5), [agg] A : Map(it, Range(6))) : {A:i8**, M:i8**}*
+Binder : GroupBy(*2: ForEach(*1: Range(Num<i8>(c1)), {A:Range(Num<i8>(c2)), B:Range(Num<i8>(c3))}), [key] Count(Range(Num<i8>(c4))), [map] M:Range(Num<i8>(c5)), [agg] A:ForEach(*5: !4, Range(6)))
+Hoister: With(!1: Count(Range(Num<i8>(c4))), !2: Range(Num<i8>(c5)), GroupBy(*5: With(!3: {A:Range(Num<i8>(c2)), B:Range(Num<i8>(c3))}, ForEach(*4: Range(Num<i8>(c1)), !3)), [key] !1, [map] M:!2, [agg] A:With(!8: Range(6), ForEach(*9: !7, !8))))
+Reducer: With(!1: Count(Range(Num<i8>(c4))), !2: Range(Num<i8>(c5)), !3: {A:Range(Num<i8>(c2)), B:Range(Num<i8>(c3))}, GroupBy(*5: ForEach(*4: Range(Num<i8>(c1)), !3), [key] !1, [map] M:!2, [agg] A:With(!8: Range(6), ForEach(*9: !7, !8))))
+###
+> Map(x1:Range(c1), GroupBy(Range(x1), [key] Count(Range(x1)), [map] M:Range(x1) ++ s1++s1, [agg] A:Range(x1) ++ s2++s2))
+Map(x1 : Range(c1), GroupBy(Range(x1), [key] Count(Range(x1)), [map] M : Range(x1) ++ s1 ++ s1, [agg] A : Range(x1) ++ s2 ++ s2)) : {A:i8*, M:i8**}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: Range(*1), [key] Count(Range(*1)), [map] M:SeqConcat(Range(*1), ForEach(*4: s1, Num<i8>(*4)), ForEach(*5: s1, Num<i8>(*5))), [agg] A:SeqConcat(Range(*1), ForEach(*7: s2, Num<i8>(*7)), ForEach(*8: s2, Num<i8>(*8)))))
+Hoister: With(!3: SeqConcat(ForEach(*1: s1, Num<i8>(*1)), ForEach(*2: s1, Num<i8>(*2))), !6: SeqConcat(ForEach(*4: s2, Num<i8>(*4)), ForEach(*5: s2, Num<i8>(*5))), ForEach(*7: Range(Num<i8>(c1)), With(!8: Count(Range(*7)), !9: SeqConcat(Range(*7), !3), GroupBy(*10: Range(*7), [key] !8, [map] M:!9, [agg] A:SeqConcat(Range(*7), !6)))))
+###
+> Map(x1:Range(c1), GroupBy(s1, [key] Count(s2)))
+Map(x1 : Range(c1), GroupBy(s1, [key] Count(s2))) : i4***
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: s1, [key] Count(s2)))
+Hoister: With(!1: Count(s2), !3: GroupBy(*2: s1, [key] !1), ForEach(*4: Range(Num<i8>(c1)), !3))
+###
+> Map(x1:Range(c1), GroupBy(Games, [key] K:Home))
+Map(x1 : Range(c1), GroupBy(Games, [key] K : Home)) : {K:s}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: Games, [key] K:*2.Home))
+Hoister: With(!2: GroupBy(*1: Games, [key] K:*1.Home), ForEach(*3: Range(Num<i8>(c1)), !2))
+###
+> Map(x1:Range(c1), GroupBy(s1, [key] K:Count(s2)))
+Map(x1 : Range(c1), GroupBy(s1, [key] K : Count(s2))) : {K:i8}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: s1, [key] K:Count(s2)))
+Hoister: With(!1: Count(s2), !3: GroupBy(*2: s1, [key] K:!1), ForEach(*4: Range(Num<i8>(c1)), !3))
+###
+> Map(x1:Range(c1), GroupBy(Games, [key] K:Home, [map] M:HScore))
+Map(x1 : Range(c1), GroupBy(Games, [key] K : Home, [map] M : HScore)) : {K:s, M:i4*}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: Games, [key] K:*2.Home, [map] M:*3.HScore))
+Hoister: With(!3: GroupBy(*1: Games, [key] K:*1.Home, [map] M:*2.HScore), ForEach(*4: Range(Num<i8>(c1)), !3))
+###
+> Map(x1:Range(c1), GroupBy(s1, [key]it, [map] M:Count(s2)))
+Map(x1 : Range(c1), GroupBy(s1, [key] it, [map] M : Count(s2))) : {M:i8*}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: s1, [key] *2, [map] M:Count(s2)))
+Hoister: With(!1: Count(s2), !4: GroupBy(*2: s1, [key] *2, [map] M:!1), ForEach(*5: Range(Num<i8>(c1)), !4))
+###
+> Map(x1:Range(c1), GroupBy(Games, [key] K:Home, [agg] A:Count(it)))
+Map(x1 : Range(c1), GroupBy(Games, [key] K : Home, [agg] A : Count(it))) : {A:i8, K:s}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: Games, [key] K:*2.Home, [agg] A:Count(!3)))
+Hoister: With(!3: GroupBy(*1: Games, [key] K:*1.Home, [agg] A:Count(!2)), ForEach(*4: Range(Num<i8>(c1)), !3))
+###
+> Map(x1:Range(c1), GroupBy(s1, [key]it, [agg] A:Count(s2)))
+Map(x1 : Range(c1), GroupBy(s1, [key] it, [agg] A : Count(s2))) : {A:i8}**
+Binder : ForEach(*1: Range(Num<i8>(c1)), GroupBy(*2: s1, [key] *2, [agg] A:Count(s2)))
+Hoister: With(!3: GroupBy(*1: s1, [key] *1, [agg] A:Count(s2)), ForEach(*4: Range(Num<i8>(c1)), !3))
+###
+> (Map(Games, Count(s1)), Map(Games, Count(s2)))
+(Map(Games, Count(s1)), Map(Games, Count(s2))) : (i8*, i8*)
+Binder : (ForEach(*1: Games, Count(s1)), ForEach(*2: Games, Count(s2)))
+Hoister: (With(!1: Count(s1), ForEach(*2: Games, !1)), With(!3: Count(s2), ForEach(*4: Games, !3)))
+Reducer: With(!1: Count(s1), !2: Count(s2), (ForEach(*3: Games, !1), ForEach(*4: Games, !2)))
+###
+> (Map(Games, Count(s1)), Map(Games, Count(s2)), Map(Games, Count(s1))) // CSE should improve this.
+(Map(Games, Count(s1)), Map(Games, Count(s2)), Map(Games, Count(s1))) : (i8*, i8*, i8*)
+Binder : (ForEach(*1: Games, Count(s1)), ForEach(*2: Games, Count(s2)), ForEach(*3: Games, Count(s1)))
+Hoister: (With(!1: Count(s1), ForEach(*2: Games, !1)), With(!3: Count(s2), ForEach(*4: Games, !3)), With(!5: Count(s1), ForEach(*6: Games, !5)))
+Reducer: With(!1: Count(s1), !2: Count(s2), (ForEach(*3: Games, !1), ForEach(*4: Games, !2), ForEach(*5: Games, !1)))
+###
+> (Map(Games, Count(s1)), Map(Games, Count(s2)), Count(s1)) // CSE should improve this.
+(Map(Games, Count(s1)), Map(Games, Count(s2)), Count(s1)) : (i8*, i8*, i8)
+Binder : (ForEach(*1: Games, Count(s1)), ForEach(*2: Games, Count(s2)), Count(s1))
+Hoister: (With(!1: Count(s1), ForEach(*2: Games, !1)), With(!3: Count(s2), ForEach(*4: Games, !3)), Count(s1))
+Reducer: With(!1: Count(s1), !2: Count(s2), (ForEach(*3: Games, !1), ForEach(*4: Games, !2), Count(s1)))
+###
+> Map(g:Games, (Home, HScore, Count(s1)))
+Map(g : Games, (Home, HScore, Count(s1))) : (s, i4, i8)*
+Binder : ForEach(*1: Games, (*1.Home, *1.HScore, Count(s1)))
+Hoister: With(!1: Count(s1), ForEach(*2: Games, (*2.Home, *2.HScore, !1)))
+###
+> Map(g:Games, (Home, HScore, Count(s1)) if HScore > AScore else (Away, AScore, -1))[2]
+Map(g : Games, (Home, HScore, Count(s1)) if HScore $> AScore else (Away, AScore, -1))[2] : i8*
+Binder : ForEach(*2: ForEach(*1: Games, If(*1.HScore @> *1.AScore, (*1.Home, *1.HScore, Count(s1)), (*1.Away, *1.AScore, -1))), *2.2)
+Reducer: ForEach(*1: Games, If(*1.HScore @> *1.AScore, (*1.Home, *1.HScore, Count(s1)), (*1.Away, *1.AScore, -1)).2)
+Hoister: With(!1: Count(s1), ForEach(*2: Games, If(*2.HScore @> *2.AScore, (*2.Home, *2.HScore, !1), (*2.Away, *2.AScore, -1)).2))
+###
+> Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), z * it[1] * n)))
+Map(n : Range(5), With(x : n * n, y : x * x, z : y * y, Sum(Range(n), z * it[1] * n))) : i8*
+*** Error: (62,63) Node: it[1], Message: Operand must be either a tensor or a tuple
+Binder : ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*5: Range(*1), Mul(!4, Error(ErrNotIndexable), *1))))
+###
+> Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), 1.0 * z * it[1] * n)))
+Map(n : Range(5), With(x : n * n, y : x * x, z : y * y, Sum(Range(n), 1 * z * it[1] * n))) : r8*
+*** Error: (68,69) Node: it[1], Message: Operand must be either a tensor or a tuple
+Binder : ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*5: Range(*1), Mul(1, Num<r8>(!4), Num<r8>(Error(ErrNotIndexable)), Num<r8>(*1)))))
+Reducer: ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*5: Range(*1), Mul(Num<r8>(!4), Num<r8>(Error(ErrNotIndexable)), Num<r8>(*1)))))
+###
+> Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), 1.0 * z * n * it[1])))
+Map(n : Range(5), With(x : n * n, y : x * x, z : y * y, Sum(Range(n), 1 * z * n * it[1]))) : r8*
+*** Error: (72,73) Node: it[1], Message: Operand must be either a tensor or a tuple
+Binder : ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*5: Range(*1), Mul(1, Num<r8>(!4), Num<r8>(*1), Num<r8>(Error(ErrNotIndexable))))))
+Reducer: ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*5: Range(*1), Mul(Num<r8>(!4), Num<r8>(*1), Num<r8>(Error(ErrNotIndexable))))))
+###

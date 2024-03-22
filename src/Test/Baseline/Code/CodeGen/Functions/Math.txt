@@ -1,0 +1,720 @@
+**** New globals: {i1:i1, i2:i2, i4:i4, i8:i8, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+**** New definitions: T, type: {X:i1}*
+**** New definitions: U, type: {X:i1?}*
+**** New definitions: IAs, type: i*
+
+> Abs(r8 - 7f)
+Abs(r8 - 7) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Add(Global(r8), [-] 7:r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 7
+###
+> Abs(r8 + 7f)
+Abs(r8 + 7) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Add(Global(r8), 7:r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 7
+###
+> Abs(r4 - 7f)
+Abs(r4 - 7) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Add(Num<r8>(Global(r4)), [-] 7:r8)):r8))
+Func sig: (r4:r4) to r8
+Type: r8, Value: 7
+###
+> Abs(r4 + 7f)
+Abs(r4 + 7) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Add(Num<r8>(Global(r4)), 7:r8)):r8))
+Func sig: (r4:r4) to r8
+Type: r8, Value: 7
+###
+> Abs(i8 - 7)
+Abs(i8 - 7) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Abs(Add(Global(i8), [-] 7:i8)):i8))
+Func sig: (i8:i8) to i8
+Type: i8, Value: 7
+###
+> Abs(i8 + 7)
+Abs(i8 + 7) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Abs(Add(Global(i8), 7:i8)):i8))
+Func sig: (i8:i8) to i8
+Type: i8, Value: 7
+###
+> Abs(i4 - 7)
+Abs(i4 - 7) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Abs(Add(Num<i8>(Global(i4)), [-] 7:i8)):i8))
+Func sig: (i4:i4) to i8
+Type: i8, Value: 7
+###
+> Abs(i4 + 7)
+Abs(i4 + 7) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Abs(Add(Num<i8>(Global(i4)), 7:i8)):i8))
+Func sig: (i4:i4) to i8
+Type: i8, Value: 7
+###
+> Abs(i2)
+Abs(i2) : i2
+BndKind:Call, Type:i2, Bnd:(Call(∂.Abs(Global(i2)):i2))
+Func sig: (i2:i2) to i2
+Type: i2, Value: 0
+###
+> Abs(i1)
+Abs(i1) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.Abs(Global(i1)):i1))
+Func sig: (i1:i1) to i1
+Type: i1, Value: 0
+###
+> Abs(Wrap(7i1))
+Abs(Wrap(7)) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(7:i1):i1)):i1))
+Func sig: () to i1
+Type: i1, Value: 7
+###
+> Abs(Wrap(-7i1))
+Abs(Wrap(-7)) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-7:i1):i1)):i1))
+Func sig: () to i1
+Type: i1, Value: 7
+###
+> Abs(Wrap(7i2))
+Abs(Wrap(7)) : i2
+BndKind:Call, Type:i2, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(7:i2):i2)):i2))
+Func sig: () to i2
+Type: i2, Value: 7
+###
+> Abs(Wrap(-7i2))
+Abs(Wrap(-7)) : i2
+BndKind:Call, Type:i2, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-7:i2):i2)):i2))
+Func sig: () to i2
+Type: i2, Value: 7
+###
+> Abs(IAs)
+Abs(IAs) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(IAs), Call(∂.Abs(Scope(1)):i)):i*))
+Func sig: (IAs:i*) to i*
+Sequence: Seq<ia>
+ 0) 5
+ 1) 7
+ 2) 18446744073709551616
+###
+> Abs(u8 + 7u)
+Abs(u8 + 7) : u8
+BndKind:VariadicOp, Type:u8, Bnd:(Add(Global(u8), 7:u8))
+Func sig: (u8:u8) to u8
+Type: u8, Value: 7
+###
+> Abs(u4 + 7u)
+Abs(u4 + 7) : u8
+BndKind:VariadicOp, Type:u8, Bnd:(Add(Num<u8>(Global(u4)), 7:u8))
+Func sig: (u4:u4) to u8
+Type: u8, Value: 7
+###
+> Abs(u2)
+Abs(u2) : u2
+BndKind:Global, Type:u2, Bnd:(Global(u2))
+Func sig: (u2:u2) to u2
+Type: u2, Value: 0
+###
+> Abs(u1)
+Abs(u1) : u1
+BndKind:Global, Type:u1, Bnd:(Global(u1))
+Func sig: (u1:u1) to u1
+Type: u1, Value: 0
+###
+> Abs(Wrap(7u1))
+Abs(Wrap(7)) : u1
+BndKind:Call, Type:u1, Bnd:(Call(∂.Test.Wrap(7:u1):u1))
+Func sig: () to u1
+Type: u1, Value: 7
+###
+> Abs(Wrap(7u2))
+Abs(Wrap(7)) : u2
+BndKind:Call, Type:u2, Bnd:(Call(∂.Test.Wrap(7:u2):u2))
+Func sig: () to u2
+Type: u2, Value: 7
+###
+> Abs(Wrap(0x80i1))
+Abs(Wrap(128)) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-128:i1):i1)):i1))
+Func sig: () to i1
+Type: i1, Value: -128
+###
+> Abs(Wrap(0x8000i2))
+Abs(Wrap(32768)) : i2
+BndKind:Call, Type:i2, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-32768:i2):i2)):i2))
+Func sig: () to i2
+Type: i2, Value: -32768
+###
+> Abs(Wrap(0x80000000i4))
+Abs(Wrap(2147483648)) : i4
+BndKind:Call, Type:i4, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-2147483648:i4):i4)):i4))
+Func sig: () to i4
+Type: i4, Value: -2147483648
+###
+> Abs(Wrap(0x8000000000000000i8))
+Abs(Wrap(9223372036854775808)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-9223372036854775808:i8):i8)):i8))
+Func sig: () to i8
+Type: i8, Value: -9223372036854775808
+###
+> Abs(Wrap(0.0r4))
+Abs(Wrap(0)) : r4
+BndKind:Call, Type:r4, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(0:r4):r4)):r4))
+Func sig: () to r4
+Type: r4, Value: 0
+###
+> Abs(Wrap(-0.0r4))
+Abs(Wrap(-0)) : r4
+BndKind:Call, Type:r4, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-0:r4):r4)):r4))
+Func sig: () to r4
+Type: r4, Value: 0
+###
+> Abs(Wrap(0.0r8))
+Abs(Wrap(0)) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(0:r8):r8)):r8))
+Func sig: () to r8
+Type: r8, Value: 0
+###
+> Abs(Wrap(-0.0r8))
+Abs(Wrap(-0)) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Abs(Call(∂.Test.Wrap(-0:r8):r8)):r8))
+Func sig: () to r8
+Type: r8, Value: 0
+###
+> Sum([1i1, 2i1, 3i1])
+Sum([1, 2, 3]) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([1:i1, 2:i1, 3:i1]:i1*):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 4
+    [0](4): Sum([1, 2, 3])
+###
+> Sum([1i1, 2i1, 3i1], it)
+Sum([1, 2, 3], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [1:i1, 2:i1, 3:i1]:i1*, Num<i8>(Scope(1))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 4
+    [0](4): Sum(*1: [1, 2, 3], Num<i8>(*1))
+###
+> Sum(x:[1i1, 2i1, 3i1], x)
+Sum(x : [1, 2, 3], x) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [1:i1, 2:i1, 3:i1]:i1*, Num<i8>(Scope(1))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 4
+    [0](4): Sum(*1: [1, 2, 3], Num<i8>(*1))
+###
+> Sum([1i1, null, null])
+Sum([1, null, null]) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([Opt<i1?>(1:i1), null:i1?, null:i1?]:i1?*):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 4
+    [0](4): Sum([Opt<i1?>(1), null, null])
+###
+> Sum([1i1, null, null], it) // Cast from i1? to i8?
+Sum([1, null, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<i1?>(1:i1), null:i1?, null:i1?]:i1?*, Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 4
+    [0](4): Sum(*1: [Opt<i1?>(1), null, null], Guard(?2: *1, Num<i8>(?2)))
+###
+> Sum([1i1, null], it) // Cast from i1? to i8?
+Sum([1, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<i1?>(1:i1), null:i1?]:i1?*, Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<i1?>(1), null], Guard(?2: *1, Num<i8>(?2)))
+###
+> Sum([0x80i2, null], it) // Cast from i2? to i8?
+Sum([128, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<i2?>(128:i2), null:i2?]:i2?*, Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 128
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<i2?>(128), null], Guard(?2: *1, Num<i8>(?2)))
+###
+> Sum([0x8000, null], it)
+Sum([32768, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<i8?>(32768:i8), null:i8?]:i8?*, Scope(1)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 32768
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<i8?>(32768), null], *1)
+###
+> Sum([0x80000000, null], it)
+Sum([2147483648, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<i8?>(2147483648:i8), null:i8?]:i8?*, Scope(1)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 2147483648
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<i8?>(2147483648), null], *1)
+###
+> Sum([1u1, null], it) // Cast from u1? to u8?
+Sum([1, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<u1?>(1:u1), null:u1?]:u1?*, Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<u1?>(1), null], Guard(?2: *1, Num<i8>(?2)))
+###
+> Sum([0x100u2, null], it)  // Cast from u2? to u8?
+Sum([256, null], it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [Opt<u2?>(256:u2), null:u2?]:u2?*, Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 256
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<u2?>(256), null], Guard(?2: *1, Num<i8>(?2)))
+###
+> Sum([0x10000u, null], it)
+Sum([65536, null], it) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Sum([map:1] [Opt<u8?>(65536:u8), null:u8?]:u8?*, Scope(1)):u8))
+Func sig: (<ctx>:x) to u8
+Type: u8, Value: 65536
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<u8?>(65536), null], *1)
+###
+> Sum([0x100000000u, null], it)
+Sum([4294967296, null], it) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Sum([map:1] [Opt<u8?>(4294967296:u8), null:u8?]:u8?*, Scope(1)):u8))
+Func sig: (<ctx>:x) to u8
+Type: u8, Value: 4294967296
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<u8?>(4294967296), null], *1)
+###
+> Sum([1.0f, null], it)
+Sum([1, null], it) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Sum([map:1] [Opt<r4?>(1:r4), null:r4?]:r4?*, Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8))
+Func sig: (<ctx>:x) to r8
+Type: r8, Value: 1
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<r4?>(1), null], Guard(?2: *1, Num<r8>(?2)))
+###
+> Sum([3.14159265358979, null], it)
+Sum([3.14159265358979, null], it) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Sum([map:1] [Opt<r8?>(3.14159265358979:r8), null:r8?]:r8?*, Scope(1)):r8))
+Func sig: (<ctx>:x) to r8
+Type: r8, Value: 3.14159265358979
+*** Ctx ping count: 3
+    [0](3): Sum(*1: [Opt<r8?>(3.14159265358979), null], *1)
+###
+> T.X->Sum()
+T.X->Sum() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Global(T), Num<i8>(GetField(Scope(1), X))):i8))
+Func sig: (<ctx>:x, T:{X:i1}*) to i8
+Type: i8, Value: 55
+*** Ctx ping count: 11
+    [0](11): Sum(*1: T, Num<i8>(*1.X))
+###
+> Sum(T, X)
+Sum(T, X) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Global(T), Num<i8>(GetField(Scope(1), X))):i8))
+Func sig: (<ctx>:x, T:{X:i1}*) to i8
+Type: i8, Value: 55
+*** Ctx ping count: 11
+    [0](11): Sum(*1: T, Num<i8>(*1.X))
+###
+> U.X->Sum()
+U.X->Sum() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Global(U), Call(∂.Guard([guard:2] GetField(Scope(1), X), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x, U:{X:i1?}*) to i8
+Type: i8, Value: 62
+*** Ctx ping count: 12
+    [0](12): Sum(*1: U, Guard(?2: *1.X, Num<i8>(?2)))
+###
+> Sum(U, X)
+Sum(U, X) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Global(U), Call(∂.Guard([guard:2] GetField(Scope(1), X), Num<i8>(Scope(2))):i8?)):i8))
+Func sig: (<ctx>:x, U:{X:i1?}*) to i8
+Type: i8, Value: 62
+*** Ctx ping count: 12
+    [0](12): Sum(*1: U, Guard(?2: *1.X, Num<i8>(?2)))
+###
+> [1,1,1,1] | Sum(_, it * 0x40000000) // Should overflow instead of throwing an exception.
+[1, 1, 1, 1] | Sum(_, it * 1073741824) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [1:i8, 1:i8, 1:i8, 1:i8]:i8*, Mul(Scope(1), 1073741824:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 4294967296
+*** Ctx ping count: 5
+    [0](5): Sum(*1: [1, 1, 1, 1], Mul(*1, 1073741824))
+###
+> [1,1,1,1] | Sum(_, it * 0x4000000000000000) // Should overflow instead of throwing an exception.
+[1, 1, 1, 1] | Sum(_, it * 4611686018427387904) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] [1:i8, 1:i8, 1:i8, 1:i8]:i8*, Mul(Scope(1), 4611686018427387904:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 5
+    [0](5): Sum(*1: [1, 1, 1, 1], Mul(*1, 4611686018427387904))
+###
+> [1i1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), null:i1?]:i1?*):i1?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):i1?*), Call(∂.Guard([guard:3] Scope(2), Num<i8>(Scope(3))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<i1?>(1), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<i1?>(1), null]), [if] Xor(IsNull(*1), true)), Guard(?3: *2, Num<i8>(?3)))
+###
+> [0x80i2, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[128, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<i2?>(128:i2), null:i2?]:i2?*):i2?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):i2?*), Call(∂.Guard([guard:3] Scope(2), Num<i8>(Scope(3))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 128
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<i2?>(128), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<i2?>(128), null]), [if] Xor(IsNull(*1), true)), Guard(?3: *2, Num<i8>(?3)))
+###
+> [0x8000, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[32768, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<i8?>(32768:i8), null:i8?]:i8?*):i8?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):i8?*), Scope(2)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 32768
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<i8?>(32768), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<i8?>(32768), null]), [if] Xor(IsNull(*1), true)), *2)
+###
+> [0x80000000, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[2147483648, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<i8?>(2147483648:i8), null:i8?]:i8?*):i8?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):i8?*), Scope(2)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 2147483648
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<i8?>(2147483648), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<i8?>(2147483648), null]), [if] Xor(IsNull(*1), true)), *2)
+###
+> [1u1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), null:u1?]:u1?*):u1?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):u1?*), Call(∂.Guard([guard:3] Scope(2), Num<i8>(Scope(3))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<u1?>(1), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<u1?>(1), null]), [if] Xor(IsNull(*1), true)), Guard(?3: *2, Num<i8>(?3)))
+###
+> [0x100u2, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[256, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<u2?>(256:u2), null:u2?]:u2?*):u2?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):u2?*), Call(∂.Guard([guard:3] Scope(2), Num<i8>(Scope(3))):i8?)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 256
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<u2?>(256), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<u2?>(256), null]), [if] Xor(IsNull(*1), true)), Guard(?3: *2, Num<i8>(?3)))
+###
+> [0x10000u, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[65536, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<u8?>(65536:u8), null:u8?]:u8?*):u8?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):u8?*), Scope(2)):u8))
+Func sig: (<ctx>:x) to u8
+Type: u8, Value: 65536
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<u8?>(65536), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<u8?>(65536), null]), [if] Xor(IsNull(*1), true)), *2)
+###
+> [0x100000000u, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[4294967296, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<u8?>(4294967296:u8), null:u8?]:u8?*):u8?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):u8?*), Scope(2)):u8))
+Func sig: (<ctx>:x) to u8
+Type: u8, Value: 4294967296
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<u8?>(4294967296), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<u8?>(4294967296), null]), [if] Xor(IsNull(*1), true)), *2)
+###
+> [1.0f, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<r4?>(1:r4), null:r4?]:r4?*):r4?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):r4?*), Call(∂.Guard([guard:3] Scope(2), Num<r8>(Scope(3))):r8?)):r8))
+Func sig: (<ctx>:x) to r8
+Type: r8, Value: 1
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<r4?>(1), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<r4?>(1), null]), [if] Xor(IsNull(*1), true)), Guard(?3: *2, Num<r8>(?3)))
+###
+> [3.14159265358979, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[3.14159265358979, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Sum([map:2] Call(∂.Take([map:1] Call(∂.Test.Wrap([Opt<r8?>(3.14159265358979:r8), null:r8?]:r8?*):r8?*), [if] Xor(Call(∂.IsNull(Scope(1)):b), true:b)):r8?*), Scope(2)):r8))
+Func sig: (<ctx>:x) to r8
+Type: r8, Value: 3.14159265358979
+*** Ctx ping count: 3
+    [0](1): Take(*1: Test.Wrap([Opt<r8?>(3.14159265358979), null]), [if] Xor(IsNull(*1), true))
+    [1](2): Sum(*2: Take(*1: Test.Wrap([Opt<r8?>(3.14159265358979), null]), [if] Xor(IsNull(*1), true)), *2)
+###
+> Chain(Wrap([1i1, 2i1, null]), [0x80i2])
+Chain(Wrap([1, 2, null]), [128]) : i2?*
+BndKind:VariadicOp, Type:i2?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), Opt<i1?>(2:i1), null:i1?]:i1?*):i1?*), Call(∂.Guard([guard:2] Scope(1), Num<i2>(Scope(2))):i2?)):i2?*), [Opt<i2?>(128:i2)]:i2?*))
+Func sig: () to i2?*
+Sequence: Seq<Opt<i2>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 128
+###
+> Chain(Wrap([1i1, 2i1, null]), [0x8000])
+Chain(Wrap([1, 2, null]), [32768]) : i8?*
+BndKind:VariadicOp, Type:i8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), Opt<i1?>(2:i1), null:i1?]:i1?*):i1?*), Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8?*), [Opt<i8?>(32768:i8)]:i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 32768
+###
+> Chain(Wrap([1i1, 2i1, null]), [0x80000000])
+Chain(Wrap([1, 2, null]), [2147483648]) : i8?*
+BndKind:VariadicOp, Type:i8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), Opt<i1?>(2:i1), null:i1?]:i1?*):i1?*), Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8?*), [Opt<i8?>(2147483648:i8)]:i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 2147483648
+###
+> Chain(Wrap([0x80i2, 0x81i2, null]), [0x8000])
+Chain(Wrap([128, 129, null]), [32768]) : i8?*
+BndKind:VariadicOp, Type:i8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i2?>(128:i2), Opt<i2?>(129:i2), null:i2?]:i2?*):i2?*), Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8?*), [Opt<i8?>(32768:i8)]:i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 128
+ 1) 129
+ 2) <null>
+ 3) 32768
+###
+> Chain(Wrap([0x80i2, 0x81i2, null]), [0x80000000])
+Chain(Wrap([128, 129, null]), [2147483648]) : i8?*
+BndKind:VariadicOp, Type:i8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i2?>(128:i2), Opt<i2?>(129:i2), null:i2?]:i2?*):i2?*), Call(∂.Guard([guard:2] Scope(1), Num<i8>(Scope(2))):i8?)):i8?*), [Opt<i8?>(2147483648:i8)]:i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 128
+ 1) 129
+ 2) <null>
+ 3) 2147483648
+###
+> Chain(Wrap([0x8000, 0x8001, null]), [0x80000000])
+Chain(Wrap([32768, 32769, null]), [2147483648]) : i8?*
+BndKind:VariadicOp, Type:i8?*, Bnd:(SeqConcat(Call(∂.Test.Wrap([Opt<i8?>(32768:i8), Opt<i8?>(32769:i8), null:i8?]:i8?*):i8?*), [Opt<i8?>(2147483648:i8)]:i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 32768
+ 1) 32769
+ 2) <null>
+ 3) 2147483648
+###
+> Chain(Wrap([1u1, 2u1, null]), [0x100u2])
+Chain(Wrap([1, 2, null]), [256]) : u2?*
+BndKind:VariadicOp, Type:u2?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), Opt<u1?>(2:u1), null:u1?]:u1?*):u1?*), Call(∂.Guard([guard:2] Scope(1), Num<u2>(Scope(2))):u2?)):u2?*), [Opt<u2?>(256:u2)]:u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 256
+###
+> Chain(Wrap([1u1, 2u1, null]), [0x10000u])
+Chain(Wrap([1, 2, null]), [65536]) : u8?*
+BndKind:VariadicOp, Type:u8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), Opt<u1?>(2:u1), null:u1?]:u1?*):u1?*), Call(∂.Guard([guard:2] Scope(1), Num<u8>(Scope(2))):u8?)):u8?*), [Opt<u8?>(65536:u8)]:u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 65536
+###
+> Chain(Wrap([1u1, 2u1, null]), [0x100000000u])
+Chain(Wrap([1, 2, null]), [4294967296]) : u8?*
+BndKind:VariadicOp, Type:u8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), Opt<u1?>(2:u1), null:u1?]:u1?*):u1?*), Call(∂.Guard([guard:2] Scope(1), Num<u8>(Scope(2))):u8?)):u8?*), [Opt<u8?>(4294967296:u8)]:u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 4294967296
+###
+> Chain(Wrap([0x100u2, 0x101u2, null]), [0x10000u])
+Chain(Wrap([256, 257, null]), [65536]) : u8?*
+BndKind:VariadicOp, Type:u8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u2?>(256:u2), Opt<u2?>(257:u2), null:u2?]:u2?*):u2?*), Call(∂.Guard([guard:2] Scope(1), Num<u8>(Scope(2))):u8?)):u8?*), [Opt<u8?>(65536:u8)]:u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 256
+ 1) 257
+ 2) <null>
+ 3) 65536
+###
+> Chain(Wrap([0x100u2, 0x101u2, null]), [0x100000000u])
+Chain(Wrap([256, 257, null]), [4294967296]) : u8?*
+BndKind:VariadicOp, Type:u8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u2?>(256:u2), Opt<u2?>(257:u2), null:u2?]:u2?*):u2?*), Call(∂.Guard([guard:2] Scope(1), Num<u8>(Scope(2))):u8?)):u8?*), [Opt<u8?>(4294967296:u8)]:u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 256
+ 1) 257
+ 2) <null>
+ 3) 4294967296
+###
+> Chain(Wrap([0x10000u, 0x10001u, null]), [0x100000000u])
+Chain(Wrap([65536, 65537, null]), [4294967296]) : u8?*
+BndKind:VariadicOp, Type:u8?*, Bnd:(SeqConcat(Call(∂.Test.Wrap([Opt<u8?>(65536:u8), Opt<u8?>(65537:u8), null:u8?]:u8?*):u8?*), [Opt<u8?>(4294967296:u8)]:u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 65536
+ 1) 65537
+ 2) <null>
+ 3) 4294967296
+###
+> Chain(Wrap([1i1, 2i1, null]), [3.5f])
+Chain(Wrap([1, 2, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), Opt<i1?>(2:i1), null:i1?]:i1?*):i1?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([1i1, 2i1, null]), [3.5d])
+Chain(Wrap([1, 2, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i1?>(1:i1), Opt<i1?>(2:i1), null:i1?]:i1?*):i1?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x80i2, 0x81i2, null]), [3.5f])
+Chain(Wrap([128, 129, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i2?>(128:i2), Opt<i2?>(129:i2), null:i2?]:i2?*):i2?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 128
+ 1) 129
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x80i2, 0x81i2, null]), [3.5d])
+Chain(Wrap([128, 129, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i2?>(128:i2), Opt<i2?>(129:i2), null:i2?]:i2?*):i2?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 128
+ 1) 129
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x8000, 0x8001, null]), [3.5f])
+Chain(Wrap([32768, 32769, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i8?>(32768:i8), Opt<i8?>(32769:i8), null:i8?]:i8?*):i8?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 32768
+ 1) 32769
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x8000, 0x8001, null]), [3.5d])
+Chain(Wrap([32768, 32769, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i8?>(32768:i8), Opt<i8?>(32769:i8), null:i8?]:i8?*):i8?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 32768
+ 1) 32769
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x80000000, 0x80000001, null]), [3.5f])
+Chain(Wrap([2147483648, 2147483649, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i8?>(2147483648:i8), Opt<i8?>(2147483649:i8), null:i8?]:i8?*):i8?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 2.1474836E+09
+ 1) 2.1474836E+09
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x80000000, 0x80000001, null]), [3.5d])
+Chain(Wrap([2147483648, 2147483649, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<i8?>(2147483648:i8), Opt<i8?>(2147483649:i8), null:i8?]:i8?*):i8?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 2147483648
+ 1) 2147483649
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([1u1, 2u1, null]), [3.5f])
+Chain(Wrap([1, 2, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), Opt<u1?>(2:u1), null:u1?]:u1?*):u1?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([1u1, 2u1, null]), [3.5d])
+Chain(Wrap([1, 2, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u1?>(1:u1), Opt<u1?>(2:u1), null:u1?]:u1?*):u1?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 1
+ 1) 2
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x100u2, 0x101u2, null]), [3.5f])
+Chain(Wrap([256, 257, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u2?>(256:u2), Opt<u2?>(257:u2), null:u2?]:u2?*):u2?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 256
+ 1) 257
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x100u2, 0x101u2, null]), [3.5d])
+Chain(Wrap([256, 257, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u2?>(256:u2), Opt<u2?>(257:u2), null:u2?]:u2?*):u2?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 256
+ 1) 257
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x10000u, 0x10001u, null]), [3.5f])
+Chain(Wrap([65536, 65537, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u8?>(65536:u8), Opt<u8?>(65537:u8), null:u8?]:u8?*):u8?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 65536
+ 1) 65537
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x10000u, 0x10001u, null]), [3.5d])
+Chain(Wrap([65536, 65537, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u8?>(65536:u8), Opt<u8?>(65537:u8), null:u8?]:u8?*):u8?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 65536
+ 1) 65537
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x100000000u, 0x100000001u, null]), [3.5f])
+Chain(Wrap([4294967296, 4294967297, null]), [3.5]) : r4?*
+BndKind:VariadicOp, Type:r4?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u8?>(4294967296:u8), Opt<u8?>(4294967297:u8), null:u8?]:u8?*):u8?*), Call(∂.Guard([guard:2] Scope(1), Num<r4>(Scope(2))):r4?)):r4?*), [Opt<r4?>(3.5:r4)]:r4?*))
+Func sig: () to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) 4.2949673E+09
+ 1) 4.2949673E+09
+ 2) <null>
+ 3) 3.5
+###
+> Chain(Wrap([0x100000000u, 0x100000001u, null]), [3.5d])
+Chain(Wrap([4294967296, 4294967297, null]), [3.5]) : r8?*
+BndKind:VariadicOp, Type:r8?*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Opt<u8?>(4294967296:u8), Opt<u8?>(4294967297:u8), null:u8?]:u8?*):u8?*), Call(∂.Guard([guard:2] Scope(1), Num<r8>(Scope(2))):r8?)):r8?*), [Opt<r8?>(3.5:r8)]:r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 4294967296
+ 1) 4294967297
+ 2) <null>
+ 3) 3.5
+###

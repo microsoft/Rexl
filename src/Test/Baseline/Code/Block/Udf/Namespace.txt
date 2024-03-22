@@ -1,0 +1,258 @@
+>>> *** Source:
+    namespace @N;
+    func @F() := "F";
+    func F() := "N.F";
+    func @P.F() := "P.F";
+    func P.F() := "N.P.F";
+    "";
+    namespace @N.P;
+    "namespace @N.P";
+    F();
+    @F();
+    N.F();
+    @N.F();
+    P.F();
+    @P.F();
+    "";
+    namespace @N;
+    "namespace @N";
+    F();
+    @F();
+    N.F();
+    @N.F();
+    P.F();
+    @P.F();
+    "";
+    namespace @P;
+    "namespace @P";
+    F();
+    @F();
+    N.F();
+    @N.F();
+    P.F();
+    @P.F();
+    "";
+    namespace @;
+    "namespace @";
+    F();
+    @F();
+    N.F();
+    @N.F();
+    P.F();
+    @P.F();
+    "";
+    func IndexOf(s, t) := (s, t);
+    "ABC"->IndexOf("B");
+    "ABC"->@IndexOf("B");
+    namespace N {
+        "in namespace N";
+        F();
+        @F();
+        N.F();
+        @N.F();
+        P.F();
+        @P.F();
+        "";
+        namespace P {
+            "in namespace N.P";
+            F();
+            @F();
+            N.F();
+            @N.F();
+            P.F();
+            @P.F();
+            "";
+        };
+    }
+
+>>> *** Instructions:
+   0) [0] Namespace @N
+   1) [0] DefineFunc @F() <- "F"
+   2) [0] DefineFunc F() <- "N.F"
+   3) [0] DefineFunc @P.F() <- "P.F"
+   4) [0] DefineFunc P.F() <- "N.P.F"
+   5) [0] Expr ""
+   6) [0] Namespace @N.P
+   7) [0] Expr "namespace @N.P"
+   8) [0] Expr F()
+   9) [0] Expr @F()
+  10) [0] Expr N.F()
+  11) [0] Expr @N.F()
+  12) [0] Expr P.F()
+  13) [0] Expr @P.F()
+  14) [0] Expr ""
+  15) [0] Namespace @N
+  16) [0] Expr "namespace @N"
+  17) [0] Expr F()
+  18) [0] Expr @F()
+  19) [0] Expr N.F()
+  20) [0] Expr @N.F()
+  21) [0] Expr P.F()
+  22) [0] Expr @P.F()
+  23) [0] Expr ""
+  24) [0] Namespace @P
+  25) [0] Expr "namespace @P"
+  26) [0] Expr F()
+  27) [0] Expr @F()
+  28) [0] Expr N.F()
+  29) [0] Expr @N.F()
+  30) [0] Expr P.F()
+  31) [0] Expr @P.F()
+  32) [0] Expr ""
+  33) [0] Namespace @
+  34) [0] Expr "namespace @"
+  35) [0] Expr F()
+  36) [0] Expr @F()
+  37) [0] Expr N.F()
+  38) [0] Expr @N.F()
+  39) [0] Expr P.F()
+  40) [0] Expr @P.F()
+  41) [0] Expr ""
+  42) [0] DefineFunc IndexOf(s, t) <- (s, t)
+  43) [0] Expr "ABC"->IndexOf("B")
+  44) [0] Expr "ABC"->@IndexOf("B")
+  45) [0] Enter (0=>1) N
+  46) [1] Expr "in namespace N"
+  47) [1] Expr F()
+  48) [1] Expr @F()
+  49) [1] Expr N.F()
+  50) [1] Expr @N.F()
+  51) [1] Expr P.F()
+  52) [1] Expr @P.F()
+  53) [1] Expr ""
+  54) [1] Enter (1=>2) P
+  55) [2] Expr "in namespace N.P"
+  56) [2] Expr F()
+  57) [2] Expr @F()
+  58) [2] Expr N.F()
+  59) [2] Expr @N.F()
+  60) [2] Expr P.F()
+  61) [2] Expr @P.F()
+  62) [2] Expr ""
+  63) [2] Leave (2=>1)
+  64) [1] Leave (1=>0)
+  65) [0] End
+
+>    0) [0] Namespace @N
+>    1) [0] DefineFunc @F() <- "F"
+UDF 'F' has arity 0
+>    2) [0] DefineFunc F() <- "N.F"
+UDF 'N.F' has arity 0
+>    3) [0] DefineFunc @P.F() <- "P.F"
+UDF 'P.F' has arity 0
+>    4) [0] DefineFunc P.F() <- "N.P.F"
+UDF 'N.P.F' has arity 0
+>    5) [0] Expr ""
+
+>    6) [0] Namespace @N.P
+>    7) [0] Expr "namespace @N.P"
+namespace @N.P
+>    8) [0] Expr F()
+N.P.F
+>    9) [0] Expr @F()
+F
+>   10) [0] Expr N.F()
+N.F
+>   11) [0] Expr @N.F()
+N.F
+>   12) [0] Expr P.F()
+N.P.F
+>   13) [0] Expr @P.F()
+P.F
+>   14) [0] Expr ""
+
+>   15) [0] Namespace @N
+>   16) [0] Expr "namespace @N"
+namespace @N
+>   17) [0] Expr F()
+N.F
+>   18) [0] Expr @F()
+F
+>   19) [0] Expr N.F()
+N.F
+>   20) [0] Expr @N.F()
+N.F
+>   21) [0] Expr P.F()
+N.P.F
+>   22) [0] Expr @P.F()
+P.F
+>   23) [0] Expr ""
+
+>   24) [0] Namespace @P
+>   25) [0] Expr "namespace @P"
+namespace @P
+>   26) [0] Expr F()
+P.F
+>   27) [0] Expr @F()
+F
+>   28) [0] Expr N.F()
+N.F
+>   29) [0] Expr @N.F()
+N.F
+>   30) [0] Expr P.F()
+P.F
+>   31) [0] Expr @P.F()
+P.F
+>   32) [0] Expr ""
+
+>   33) [0] Namespace @
+>   34) [0] Expr "namespace @"
+namespace @
+>   35) [0] Expr F()
+F
+>   36) [0] Expr @F()
+F
+>   37) [0] Expr N.F()
+N.F
+>   38) [0] Expr @N.F()
+N.F
+>   39) [0] Expr P.F()
+P.F
+>   40) [0] Expr @P.F()
+P.F
+>   41) [0] Expr ""
+
+>   42) [0] DefineFunc IndexOf(s, t) <- (s, t)
+UDF 'IndexOf' has arity 2
+>   43) [0] Expr "ABC"->IndexOf("B")
+1
+>   44) [0] Expr "ABC"->@IndexOf("B")
+(ABC, B)
+>   45) [0] Enter (0=>1) N
+>   46) [1] Expr "in namespace N"
+in namespace N
+>   47) [1] Expr F()
+N.F
+>   48) [1] Expr @F()
+F
+>   49) [1] Expr N.F()
+N.F
+>   50) [1] Expr @N.F()
+N.F
+>   51) [1] Expr P.F()
+N.P.F
+>   52) [1] Expr @P.F()
+P.F
+>   53) [1] Expr ""
+
+>   54) [1] Enter (1=>2) P
+>   55) [2] Expr "in namespace N.P"
+in namespace N.P
+>   56) [2] Expr F()
+N.P.F
+>   57) [2] Expr @F()
+F
+>   58) [2] Expr N.F()
+N.F
+>   59) [2] Expr @N.F()
+N.F
+>   60) [2] Expr P.F()
+N.P.F
+>   61) [2] Expr @P.F()
+P.F
+>   62) [2] Expr ""
+
+>   63) [2] Leave (2=>1)
+>   64) [1] Leave (1=>0)
+>   65) [0] End
+

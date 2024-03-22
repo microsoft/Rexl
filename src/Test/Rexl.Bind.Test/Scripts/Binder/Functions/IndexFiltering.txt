@@ -1,0 +1,188 @@
+﻿// Demonstrates reductions on Take/Drop and related when
+// the predicate is an index comparison against a constant.
+
+:: { A:i8*, X:i8 }
+
+TakeOne(A, #it < 0)
+TakeOne(A, #it !>= 0)
+TakeOne(A, #it < 1)
+TakeOne(A, #it !>= 1)
+TakeOne(A, #it < -1)
+TakeOne(A, #it !>= -1)
+TakeOne(A, #it < X)
+TakeOne(A, #it !>= X)
+TakeOne(A, #it < 0x8000_0000_0000_0000L)
+TakeOne(A, #it < 3, -1)
+TakeOne(Range(3), #it < 2)
+TakeOne(Range(3), #it < 3)
+TakeOne(A, 0 > #it)
+TakeOne(A, 0 !<= #it)
+TakeOne(A, 1 > #it)
+TakeOne(A, 1 !<= #it)
+TakeOne(A, -1 > #it)
+TakeOne(A, -1 !<= #it)
+TakeOne(A, X > #it)
+TakeOne(A, X !<= #it)
+TakeOne(A, 0x8000_0000_0000_0000L > #it)
+TakeOne(A, 3 > #it, -1)
+TakeOne(Range(3), 2 > #it)
+TakeOne(Range(3), 3 > #it)
+
+TakeOne(A, #it > 0)
+TakeOne(A, #it !<= 0)
+TakeOne(A, #it > 1)
+TakeOne(A, #it !<= 1)
+TakeOne(A, #it > -1)
+TakeOne(A, #it !<= -1)
+TakeOne(A, #it > X)
+TakeOne(A, #it !<= X)
+TakeOne(A, #it > 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it > 3, -1)
+TakeOne(Range(3), #it > 1)
+TakeOne(Range(3), #it > 2)
+TakeOne(A, 0 < #it)
+TakeOne(A, 0 !>= #it)
+TakeOne(A, 1 < #it)
+TakeOne(A, 1 !>= #it)
+TakeOne(A, -1 < #it)
+TakeOne(A, -1 !>= #it)
+TakeOne(A, X < #it)
+TakeOne(A, X !>= #it)
+TakeOne(A, 0x7fff_ffff_ffff_ffff < #it)
+TakeOne(A, 3 < #it, -1)
+TakeOne(Range(3), 2 < #it)
+TakeOne(Range(3), 3 < #it)
+
+TakeOne(A, #it = 0)
+TakeOne(A, 0 = #it)
+TakeOne(A, #it = -1)
+TakeOne(A, #it = 0x8000_0000_0000_0000L)
+TakeOne(A, #it = X)
+TakeOne(A, #it = 0x7fff_ffff_ffff_ffff)
+TakeOne(Range(3), #it = 2)
+TakeOne(Range(3), #it = 3)
+
+TakeOne(A, #it != 0)
+TakeOne(A, 0 != #it)
+TakeOne(A, #it != -1)
+TakeOne(A, #it != 0x8000_0000_0000_0000L)
+TakeOne(A, #it != X)
+TakeOne(A, #it != 0x7fff_ffff_ffff_ffff)
+TakeOne(Range(3), #it != 2)
+TakeOne(Range(3), #it != 3)
+
+TakeOne(A, #it <= 0)
+TakeOne(A, #it !> 0)
+TakeOne(A, #it <= 1)
+TakeOne(A, #it !> 1)
+TakeOne(A, #it <= -1)
+TakeOne(A, #it !> -1)
+TakeOne(A, #it <= 0x8000_0000_0000_0000L)
+TakeOne(A, #it <= X)
+TakeOne(A, #it !> X)
+TakeOne(A, #it <= 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it <= 3, -1)
+TakeOne(Range(3), #it <= 2)
+TakeOne(Range(3), #it <= 3)
+TakeOne(A, 0 >= #it)
+TakeOne(A, 0 !< #it)
+TakeOne(A, 1 >= #it)
+TakeOne(A, 1 !< #it)
+TakeOne(A, -1 >= #it)
+TakeOne(A, -1 !< #it)
+TakeOne(A, 0x8000_0000_0000_0000L >= #it)
+TakeOne(A, X >= #it)
+TakeOne(A, X !< #it)
+TakeOne(A, 0x7fff_ffff_ffff_ffff >= #it)
+TakeOne(A, 3 >= #it, -1)
+TakeOne(Range(3), 2 >= #it)
+TakeOne(Range(3), 3 >= #it)
+
+TakeOne(A, #it >= 0)
+TakeOne(A, #it !< 0)
+TakeOne(A, #it >= 1)
+TakeOne(A, #it !< 1)
+TakeOne(A, #it >= -1)
+TakeOne(A, #it !< -1)
+TakeOne(A, #it >= 0x8000_0000_0000_0000L)
+TakeOne(A, #it >= X)
+TakeOne(A, #it !< X)
+TakeOne(A, #it >= 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it >= 3, -1)
+TakeOne(Range(3), #it >= 2)
+TakeOne(Range(3), #it >= 3)
+TakeOne(A, 0 <= #it)
+TakeOne(A, 0 !> #it)
+TakeOne(A, 1 <= #it)
+TakeOne(A, 1 !> #it)
+TakeOne(A, -1 <= #it)
+TakeOne(A, -1 !> #it)
+TakeOne(A, 0x8000_0000_0000_0000L <= #it)
+TakeOne(A, X <= #it)
+TakeOne(A, X !> #it)
+TakeOne(A, 0x7fff_ffff_ffff_ffff <= #it)
+TakeOne(A, 3 <= #it, -1)
+TakeOne(Range(3), 2 <= #it)
+TakeOne(Range(3), 3 <= #it)
+
+// Explicit else args.
+TakeOne(Range(10), #it < 0, [else] -1)
+TakeOne(Range(10), #it !>= 0, [else] -1)
+TakeOne(Range(10), #it > 9, [else] null)
+TakeOne(Range(10), #it !<= 9, [else] null)
+TakeOne(Range(0x7fff_ffff_ffff_ffff), #it > 0x7fff_ffff_ffff_ffff, null)
+TakeOne(Range(0x7fff_ffff_ffff_ffff), #it >= 0x7fff_ffff_ffff_ffff, null)
+TakeOne(Range(0x7fff_ffff_ffff_ffff), #it !<= 0x7fff_ffff_ffff_ffff, null)
+TakeOne([], #it = 3, null)
+TakeOne(A, #it = 3, -1)
+TakeOne([4, 5, 6], [if] #it = 2, -1)
+TakeOne([4, 5, 6], [if] #it = 3, [else] -1)
+TakeOne([4, 5, 6], #it = 2, [else] null)
+TakeOne([4, 5, 6], [if] #it = 2, [else] null)
+TakeOne(Range(10), #it = 10, -1)
+TakeOne(Range(10), #it = -1, -1)
+TakeOne([4, 5, 6], #it = 2, null)
+TakeOne(A, #it < 0, null)
+TakeOne(Range(10), #it > 10, null)
+TakeOne(Range(10), #it <= 0, null)
+TakeOne(A, #it = -1, null)
+TakeOne(A, [if] #it = -1, null)
+TakeOne(A, [if] #it = -1, [else] null)
+
+// REVIEW: These more complicated predicates are technically reducible.
+TakeOne(A, 2 < #it <= 3) // #it = 3.
+TakeOne(A, #it = 0 or #it > 2) // TakeOne(A).
+TakeOne(A, not (2 < #it))
+TakeOne(A, not (2 = #it))
+TakeOne(A, not (2 >= #it))
+TakeOne(A, not (2 !< #it))
+TakeOne(A, not (2 != #it))
+TakeOne(A, not (2 !>= #it))
+
+// REVIEW: We can do better on many examples like these. WI #43643.
+ForEachIf(A, #it = 5, it) // TakeAt(A, 5).
+ForEachIf(A, [if] #it = 5, it) // TakeAt(A, 5).
+ForEach(A, [while] #it = X, it) // For X != 0 should reduce to empty. For X == 0, should reduce to TakeAt(A, 0).
+ForEachIf(A, #it < 5, it) // Take(A, 5).
+ForEach(A, [if] #it < 5, it) // Take(A, 5).
+ForEach(A, [while] #it < 5, it) // Take(A, 5).
+ForEachIf(A, #it <= 5, it) // Take(A, 6).
+ForEachWhile(A, #it <= 5, it) // Take(A, 6).
+ForEach(A, [if] #it <= 5, it) // Take(A, 6).
+ForEach(A, [while] #it <= 5, it) // Take(A, 6).
+ForEachIf(A, #it > 5, it) // Drop(A, 5).
+ForEach(A, [if] #it > 5, it) // Drop(A, 5).
+ForEach(A, [while] #it >= X, it) // For X > 0 should reduce to empty. For X <= 0, should drop the predicate.
+ForEachIf(A, #it >= 5, it) // Drop(A, 6).
+ForEach(A, [if] #it >= 5, it) // Drop(A, 6).
+ForEachIf(A, #it + 1 >= 5, it) // Drop(A, 5).
+ForEach(A, [if] #it + 1 >= 5, it) // Drop(A, 5).
+
+Take(A, [if] #it = 5) // TakeAt(A, 5).
+Take(A, [if] #it = 0) // TakeOne(A).
+Take(A, [if] #it < 5) // Take(A, 5).
+Take(A, [if] #it >= 5) // Drop(A, 5).
+Take(A, [while] #it < 5) // Take(A, 5).
+Take(A, [if] #it <= 5) // Take(A, 6).
+TakeIf(A, #it < 5) // Take(A, 5).
+TakeWhile(A, #it < 5) // Take(A, 5).

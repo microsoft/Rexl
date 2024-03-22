@@ -1,0 +1,294 @@
+**** New definitions: N, type: i8*
+**** New definitions: S, type: i8*
+**** New definitions: T, type: i8*
+**** New definitions: U, type: i8*
+**** New definitions: X, type: i8*
+**** New definitions: Y, type: r8*
+
+> N->Count()
+N->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(N)):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> N->Count(it > 5)
+N->Count(it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Global(N), Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> N->Count([if] it > 5)
+N->Count([if] it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Global(N), [if] Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> N->Count([while] it > 5)
+N->Count([while] it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Global(N), [while] Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> S->CantCount()->Count()
+S->CantCount()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.CantCount(Global(S)):i8*)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 101
+    [0](101): Count(Test.CantCount(S))
+###
+> S->CantCount()->Count(it > 5)
+S->CantCount()->Count(it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.CantCount(Global(S)):i8*), Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 94
+*** Ctx ping count: 101
+    [0](101): Count(*1: Test.CantCount(S), *1 @> 5)
+###
+> S->CantCount()->Count([if] it > 5)
+S->CantCount()->Count([if] it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.CantCount(Global(S)):i8*), [if] Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 94
+*** Ctx ping count: 101
+    [0](101): Count(*1: Test.CantCount(S), [if] *1 @> 5)
+###
+> S->CantCount()->Count([while] it > 5)
+S->CantCount()->Count([while] it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.CantCount(Global(S)):i8*), [while] Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 1
+    [0](1): Count(*1: Test.CantCount(S), [while] *1 @> 5)
+###
+> S->CantCount()->Count([while] it < 50)
+S->CantCount()->Count([while] it $< 50) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.CantCount(Global(S)):i8*), [while] Cmp(Scope(1) @< 50:i8)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 50
+*** Ctx ping count: 51
+    [0](51): Count(*1: Test.CantCount(S), [while] *1 @< 50)
+###
+> S->CantCount()->Count([while] it < 200)
+S->CantCount()->Count([while] it $< 200) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.CantCount(Global(S)):i8*), [while] Cmp(Scope(1) @< 200:i8)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 101
+    [0](101): Count(*1: Test.CantCount(S), [while] *1 @< 200)
+###
+> S->Count()
+S->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(S)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> S->Count() + S->Count()
+S->Count() + S->Count() : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Count(Global(S)):i8), Call(∂.Count(Global(S)):i8)))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 200
+*** Ctx ping count: 0
+###
+> T->Count()
+T->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(T)):i8))
+Func sig: (<ctx>:x, T:i8*) to i8
+Type: i8, Value: 1000000000000
+*** Ctx ping count: 0
+###
+> T->Count() + T->Count()
+T->Count() + T->Count() : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Count(Global(T)):i8), Call(∂.Count(Global(T)):i8)))
+Func sig: (<ctx>:x, T:i8*) to i8
+Type: i8, Value: 2000000000000
+*** Ctx ping count: 0
+###
+> X->Count()
+X->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(X)):i8))
+Func sig: (<ctx>:x, X:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> X->Count() + X->Count()
+X->Count() + X->Count() : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Count(Global(X)):i8), Call(∂.Count(Global(X)):i8)))
+Func sig: (<ctx>:x, X:i8*) to i8
+Type: i8, Value: 200
+*** Ctx ping count: 0
+###
+> Y->Count()
+Y->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(Y)):i8))
+Func sig: (<ctx>:x, Y:r8*) to i8
+Type: i8, Value: 1000000000000
+*** Ctx ping count: 0
+###
+> Y->Count() + Y->Count()
+Y->Count() + Y->Count() : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Count(Global(Y)):i8), Call(∂.Count(Global(Y)):i8)))
+Func sig: (<ctx>:x, Y:r8*) to i8
+Type: i8, Value: 2000000000000
+*** Ctx ping count: 0
+###
+> S->(it * it)->Count()
+S->(it * it)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.ForEach([map:1] Global(S), Mul(Scope(1), Scope(1))):i8*)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> T->(it * it)->Count()
+T->(it * it)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.ForEach([map:1] Global(T), Mul(Scope(1), Scope(1))):i8*)):i8))
+Func sig: (<ctx>:x, T:i8*) to i8
+Type: i8, Value: 1000000000000
+*** Ctx ping count: 0
+###
+> X->(it * it)->Count()
+X->(it * it)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.ForEach([map:1] Global(X), Mul(Scope(1), Scope(1))):i8*)):i8))
+Func sig: (<ctx>:x, X:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> Y->(it * it)->Count()
+Y->(it * it)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.ForEach([map:1] Global(Y), Mul(Scope(1), Scope(1))):r8*)):i8))
+Func sig: (<ctx>:x, Y:r8*) to i8
+Type: i8, Value: 1000000000000
+*** Ctx ping count: 0
+###
+> S->Sort()->Count()
+S->Sort()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Sort(Global(S)):i8*)):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> T->Sort()->Count()
+T->Sort()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Sort(Global(T)):i8*)):i8))
+Func sig: (<ctx>:x, T:i8*) to i8
+Type: i8, Value: 1000000000000
+*** Ctx ping count: 0
+###
+> [1, 2, 3]->Sort()->Count()
+[1, 2, 3]->Sort()->Count() : i8
+BndKind:Int, Type:i8, Bnd:(3:i8)
+Func sig: () to i8
+Type: i8, Value: 3
+###
+> Wrap([1, 2, 3])->Sort()->Count()
+Wrap([1, 2, 3])->Sort()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Sort(Call(∂.Test.Wrap([1:i8, 2:i8, 3:i8]:i8*):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 3
+*** Ctx ping count: 0
+###
+> U->Count()
+U->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(U)):i8))
+Func sig: (<ctx>:x, U:i8*) to i8
+Type: i8, Value: 50
+*** Ctx ping count: 51
+    [0](51): Count(U)
+###
+> U->Count() + U->Count()
+U->Count() + U->Count() : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Count(Global(U)):i8), Call(∂.Count(Global(U)):i8)))
+Func sig: (<ctx>:x, U:i8*) to i8
+Type: i8, Value: 100
+*** Ctx ping count: 0
+###
+> U->(it * it)->Count()
+U->(it * it)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.ForEach([map:1] Global(U), Mul(Scope(1), Scope(1))):i8*)):i8))
+Func sig: (<ctx>:x, U:i8*) to i8
+Type: i8, Value: 50
+*** Ctx ping count: 0
+###
+> U->Sort()->Count()
+U->Sort()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Sort(Global(U)):i8*)):i8))
+Func sig: (<ctx>:x, U:i8*) to i8
+Type: i8, Value: 50
+*** Ctx ping count: 0
+###
+> Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8)->Count()
+Range(9223372036854775808, 9223372036854775807)->Count() : i8
+BndKind:Int, Type:i8, Bnd:(9223372036854775807:i8)
+Func sig: () to i8
+Type: i8, Value: 9223372036854775807
+###
+> Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8)->Wrap()->Count()
+Range(9223372036854775808, 9223372036854775807)->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap(Call(∂.Range(-9223372036854775808:i8, 9223372036854775807:i8):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 9223372036854775807
+*** Ctx ping count: 0
+###
+> Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8, 1)->Count()
+Range(9223372036854775808, 9223372036854775807, 1)->Count() : i8
+BndKind:Int, Type:i8, Bnd:(9223372036854775807:i8)
+Func sig: () to i8
+Type: i8, Value: 9223372036854775807
+###
+> Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8, 1)->Wrap()->Count()
+Range(9223372036854775808, 9223372036854775807, 1)->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap(Call(∂.Range(-9223372036854775808:i8, 9223372036854775807:i8, 1:i8):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 9223372036854775807
+*** Ctx ping count: 0
+###
+> N->Count(# < 20 or it > 30)
+N->Count(# $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(N), Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> N->Count([if] # < 20 or it > 30)
+N->Count([if] # $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(N), [if] Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> N->Count([while] # < 20 or it > 30)
+N->Count([while] # $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(N), [while] Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, N:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> S->Count(# < 20 or it > 30)
+S->Count(# $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(S), Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 89
+*** Ctx ping count: 101
+    [0](101): Count(*2: S, Or(#1 @< 20, *2 @> 30))
+###
+> S->Count([if] # < 20 or it > 30)
+S->Count([if] # $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(S), [if] Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 89
+*** Ctx ping count: 101
+    [0](101): Count(*2: S, [if] Or(#1 @< 20, *2 @> 30))
+###
+> S->Count([while] # < 20 or it > 30)
+S->Count([while] # $< 20 or it $> 30) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:2] Global(S), [while] Or(Cmp(Scope(1) @< 20:i8), Cmp(Scope(2) @> 30:i8))):i8))
+Func sig: (<ctx>:x, S:i8*) to i8
+Type: i8, Value: 20
+*** Ctx ping count: 21
+    [0](21): Count(*2: S, [while] Or(#1 @< 20, *2 @> 30))
+###

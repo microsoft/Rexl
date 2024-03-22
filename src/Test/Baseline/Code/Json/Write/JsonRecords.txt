@@ -1,0 +1,36 @@
+*** Formula: Map(Range(5), {A: it, B: "A" & ToText(it)})
+*** Item DType: {A:i8, B:s}
+{"A":0,"B":"A0"}
+{"A":1,"B":"A1"}
+{"A":2,"B":"A2"}
+{"A":3,"B":"A3"}
+{"A":4,"B":"A4"}
+
+*** Formula: [{'lowercase': "value1", 'MixedCase': "value2",'UPPERCASE': "value3"}]
+*** Item DType: {MixedCase:s, UPPERCASE:s, lowercase:s}
+{"MixedCase":"value2","UPPERCASE":"value3","lowercase":"value1"}
+
+*** Formula: [{TupleField: ("A", 1)}, {TupleField: ("B", 2)}]
+*** Item DType: {TupleField:(s, i8)}
+{"TupleField":["A",1]}
+{"TupleField":["B",2]}
+
+*** Formula: [({RecordInTuple: 1}, "A"), ({RecordInTuple: 2}, "B")]
+*** Item DType: ({RecordInTuple:i8}, s)
+[{"RecordInTuple":1},"A"]
+[{"RecordInTuple":2},"B"]
+
+*** Formula: [{RecordWithSequence: [1, 2]}, {RecordWithSequence: []}, {RecordWithSequence: null}]
+*** Item DType: {RecordWithSequence:i8*}
+{"RecordWithSequence":[1,2]}
+{"RecordWithSequence":[]}
+{"RecordWithSequence":[]}
+
+*** Formula: [{ 'A"B': "hello" }]
+*** Item DType: {'A"B':s}
+{"A\"B":"hello"}
+
+*** Formula: [{ 'A\u0001B': "hello" }]
+*** Item DType: {'A\u0001B':s}
+{"A\\u0001B":"hello"}
+

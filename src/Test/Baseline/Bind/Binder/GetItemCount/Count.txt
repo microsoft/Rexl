@@ -1,0 +1,47 @@
+> Range(3)
+Range(3) : i8*
+Binder : (3, 3) Range(3)
+###
+> Range(3, 10)
+Range(3, 10) : i8*
+Binder : (7, 7) Range(3, 10)
+###
+> Range(3, 10, 2)
+Range(3, 10, 2) : i8*
+Binder : (4, 4) Range(3, 10, 2)
+###
+> Range(10, 3, -2)
+Range(10, 3, -2) : i8*
+Binder : (4, 4) Range(10, 3, -2)
+###
+> Range(3)->Count()
+Range(3)->Count() : i8
+Binder : Count(Range(3))
+Reducer: 3
+###
+> Range(3)->Count(it > 5)
+Range(3)->Count(it $> 5) : i8
+Binder : Count(*1: Range(3), *1 @> 5)
+###
+> Null(Range(3))->Count()
+Null(Range(3))->Count() : i8
+Binder : Count(DefOpt*(Range(3)))
+Reducer: 0
+###
+> Null(Range(3))->Count(it > 5)
+Null(Range(3))->Count(it $> 5) : i8
+Binder : Count(*1: DefOpt*(Range(3)), *1 @> 5)
+Reducer: 0
+###
+> Sequence(10)
+Sequence(10) : i8*
+Binder : (10, 10) Sequence(10)
+###
+> Sequence(10, 3, 5)
+Sequence(10, 3, 5) : i8*
+Binder : (10, 10) Sequence(10, 3, 5)
+###
+> Sequence(10, 3.5)
+Sequence(10, 3.5) : r8*
+Binder : (10, 10) Sequence(10, 3.5)
+###

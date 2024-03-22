@@ -1,0 +1,470 @@
+**** New definition: i8, type: i8
+**** New definition: qi8, type: i8?
+**** New definition: r8, type: r8
+**** New udf: F, arity: 1
+**** New udf: G, arity: 2
+**** New udf: H, arity: 1
+**** New udf: H, arity: 3
+**** New udf: I, arity: 1
+**** New udf: V, arity: 1
+
+> F(i8)
+F(i8) : i8
+Binder : With(!1: i8, Add(!1, Abs(!1)))
+Reducer: Add(i8, Abs(i8))
+###
+> F(r8)
+F(r8) : r8
+Binder : With(!1: r8, Add(!1, Abs(!1)))
+Reducer: Add(r8, Abs(r8))
+###
+> F(3)
+F(3) : i8
+Binder : With(!1: 3, Add(!1, Abs(!1)))
+Reducer: 6
+###
+> F(-7)
+F(-7) : i8
+Binder : With(!1: -7, Add(!1, Abs(!1)))
+Reducer: 0
+###
+> F(-7.5)
+F(-7.5) : r8
+Binder : With(!1: -7.5, Add(!1, Abs(!1)))
+Reducer: 0
+###
+> F(3.5)
+F(3.5) : r8
+Binder : With(!1: 3.5, Add(!1, Abs(!1)))
+Reducer: 7
+###
+> F(i8 * i8)
+F(i8 * i8) : i8
+Binder : With(!1: Mul(i8, i8), Add(!1, Abs(!1)))
+###
+> F(i8 + r8)
+F(i8 + r8) : r8
+Binder : With(!1: Add(Num<r8>(i8), r8), Add(!1, Abs(!1)))
+###
+> G(i8, i8)
+G(i8, i8) : i8
+Binder : With(!1: i8, !2: i8, Add(!1, Abs(!2)))
+Reducer: Add(i8, Abs(i8))
+###
+> G(Wrap(i8), i8)
+G(Wrap(i8), i8) : i8
+Binder : With(!1: Test.Wrap(i8), !2: i8, Add(!1, Abs(!2)))
+Reducer: Add(Test.Wrap(i8), Abs(i8))
+###
+> G(i8, Wrap(i8))
+G(i8, Wrap(i8)) : i8
+Binder : With(!1: i8, !2: Test.Wrap(i8), Add(!1, Abs(!2)))
+Reducer: Add(i8, Abs(Test.Wrap(i8)))
+###
+> G(Wrap(i8), Wrap(i8))
+G(Wrap(i8), Wrap(i8)) : i8
+Binder : With(!1: Test.Wrap(i8), !2: Test.Wrap(i8), Add(!1, Abs(!2)))
+Reducer: With(!1: Test.Wrap(i8), Add(!1, Abs(!1)))
+###
+> G(i8, r8)
+G(i8, r8) : r8
+Binder : With(!1: i8, !2: r8, Add(Num<r8>(!1), Abs(!2)))
+Reducer: Add(Num<r8>(i8), Abs(r8))
+###
+> G(i8, -12)
+G(i8, -12) : i8
+Binder : With(!1: i8, !2: -12, Add(!1, Abs(!2)))
+Reducer: Add(i8, 12)
+###
+> G(3, -12)
+G(3, -12) : i8
+Binder : With(!1: 3, !2: -12, Add(!1, Abs(!2)))
+Reducer: 15
+###
+> H(i8)
+H(i8) : i8
+Binder : With(!1: i8, Mul(With(!2: !1, Add(!2, Abs(!2))), With(!3: !1, !4: !1, Add(!3, Abs(!4)))))
+Reducer: Mul(Add(i8, Abs(i8)), Add(i8, Abs(i8)))
+###
+> H(Wrap(i8))
+H(Wrap(i8)) : i8
+Binder : With(!1: Test.Wrap(i8), Mul(With(!2: !1, Add(!2, Abs(!2))), With(!3: !1, !4: !1, Add(!3, Abs(!4)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(!1, Abs(!1)), Add(!1, Abs(!1))))
+###
+> H(3)
+H(3) : i8
+Binder : With(!1: 3, Mul(With(!2: !1, Add(!2, Abs(!2))), With(!3: !1, !4: !1, Add(!3, Abs(!4)))))
+Reducer: 36
+###
+> H(i8, i8, i8)
+H(i8, i8, i8) : i8
+Binder : With(!1: i8, !2: i8, !3: i8, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: Mul(Add(i8, Abs(i8)), Add(i8, Abs(i8)))
+###
+> H(Wrap(i8), i8, i8)
+H(Wrap(i8), i8, i8) : i8
+Binder : With(!1: Test.Wrap(i8), !2: i8, !3: i8, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(!1, Abs(!1)), Add(i8, Abs(i8))))
+###
+> H(i8, Wrap(i8), i8)
+H(i8, Wrap(i8), i8) : i8
+Binder : With(!1: i8, !2: Test.Wrap(i8), !3: i8, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: Mul(Add(i8, Abs(i8)), Add(Test.Wrap(i8), Abs(i8)))
+###
+> H(i8, i8, Wrap(i8))
+H(i8, i8, Wrap(i8)) : i8
+Binder : With(!1: i8, !2: i8, !3: Test.Wrap(i8), Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: Mul(Add(i8, Abs(i8)), Add(i8, Abs(Test.Wrap(i8))))
+###
+> H(Wrap(i8), Wrap(i8), i8)
+H(Wrap(i8), Wrap(i8), i8) : i8
+Binder : With(!1: Test.Wrap(i8), !2: Test.Wrap(i8), !3: i8, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(!1, Abs(!1)), Add(!1, Abs(i8))))
+###
+> H(Wrap(i8), i8, Wrap(i8))
+H(Wrap(i8), i8, Wrap(i8)) : i8
+Binder : With(!1: Test.Wrap(i8), !2: i8, !3: Test.Wrap(i8), Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(!1, Abs(!1)), Add(i8, Abs(!1))))
+###
+> H(i8, Wrap(i8), Wrap(i8))
+H(i8, Wrap(i8), Wrap(i8)) : i8
+Binder : With(!1: i8, !2: Test.Wrap(i8), !3: Test.Wrap(i8), Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(i8, Abs(i8)), Add(!1, Abs(!1))))
+###
+> H(Wrap(i8), Wrap(i8), Wrap(i8))
+H(Wrap(i8), Wrap(i8), Wrap(i8)) : i8
+Binder : With(!1: Test.Wrap(i8), !2: Test.Wrap(i8), !3: Test.Wrap(i8), Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: With(!1: Test.Wrap(i8), Mul(Add(!1, Abs(!1)), Add(!1, Abs(!1))))
+###
+> H(i8, r8, 7)
+H(i8, r8, 7) : r8
+Binder : With(!1: i8, !2: r8, !3: 7, Mul(Num<r8>(With(!4: !1, Add(!4, Abs(!4)))), With(!5: !2, !6: !3, Add(!5, Num<r8>(Abs(!6))))))
+Reducer: Mul(Num<r8>(Add(i8, Abs(i8))), Add(r8, 7))
+###
+> H(3, i8, -12)
+H(3, i8, -12) : i8
+Binder : With(!1: 3, !2: i8, !3: -12, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: Mul(Add(i8, 12), 6)
+###
+> H(3, -12, 5)
+H(3, -12, 5) : i8
+Binder : With(!1: 3, !2: -12, !3: 5, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: -42
+###
+> I(i8)
+I(i8) : (i8, i8)
+Binder : With(!1: i8, (!1, Abs(!1)))
+Reducer: (i8, Abs(i8))
+###
+> I(-12)
+I(-12) : (i8, i8)
+Binder : With(!1: -12, (!1, Abs(!1)))
+Reducer: (-12, 12)
+###
+> V(3) // Error - volatile not allowed.
+V(3) : d
+*** Error: (215-216;9:26-9:27) Node: Date.Now.Utc(), Message: Volatile function calls aren't permitted in this context
+Binder : With(!1: 3, ChronoAdd(Date.Now.Utc(), Time(!1)))
+Reducer: ChronoAdd(Date.Now.Utc(), Time(3))
+###
+> F(Range(i8))
+F(Range(i8)) : i8*
+Binder : With(!1: Range(i8), ForEach(*3: !1, *4: ForEach(*2: !1, Abs(*2)), Add(*3, *4)))
+Reducer: ForEach(*1: Range(i8), Add(*1, Abs(*1)))
+###
+> G(Range(i8), 3)
+G(Range(i8), 3) : i8*
+Binder : With(!1: Range(i8), !2: 3, With(!3: Abs(!2), ForEach(*4: !1, Add(*4, !3))))
+Reducer: ForEach(*1: Range(i8), Add(*1, 3))
+###
+> G(Range(i8), Range(3))
+G(Range(i8), Range(3)) : i8*
+Binder : With(!1: Range(i8), !2: Range(3), ForEach(*4: !1, *5: ForEach(*3: !2, Abs(*3)), Add(*4, *5)))
+Reducer: ForEach(*1: Range(i8), *2: Range(3), Add(*1, Abs(*2)))
+###
+> I(Range(i8)) // Tuple with a sequence, not sequence of tuples.
+I(Range(i8)) : (i8*, i8*)
+Binder : With(!1: Range(i8), (!1, ForEach(*2: !1, Abs(*2))))
+###
+> F(qi8)
+F(qi8) : i8?
+Binder : With(!1: qi8, Guard(?2: !1, ?4: Guard(?3: !1, Abs(?3)), Add(?2, ?4)))
+Reducer: Guard(?1: qi8, Add(?1, Abs(?1)))
+###
+> G(qi8, qi8)
+G(qi8, qi8) : i8?
+Binder : With(!1: qi8, !2: qi8, Guard(?3: !1, ?5: Guard(?4: !2, Abs(?4)), Add(?3, ?5)))
+Reducer: Guard(?1: qi8, Add(?1, Abs(?1)))
+###
+> G(qi8, 3)
+G(qi8, 3) : i8?
+Binder : With(!1: qi8, !2: 3, Guard(?3: !1, Add(?3, Abs(!2))))
+Reducer: Guard(?1: qi8, Add(?1, 3))
+###
+> G(Range(i8), qi8)
+G(Range(i8), qi8) : i8?*
+Binder : With(!1: Range(i8), !2: qi8, With(!4: Guard(?3: !2, Abs(?3)), ForEach(*5: !1, Guard(?6: !4, Add(*5, ?6)))))
+Reducer: With(!2: Guard(?1: qi8, Abs(?1)), ForEach(*3: Range(i8), Guard(?4: !2, Add(*3, ?4))))
+###
+> I(qi8) // The Guard is inside the tuple.
+I(qi8) : (i8?, i8?)
+Binder : With(!1: qi8, (!1, Guard(?2: !1, Abs(?2))))
+Reducer: (qi8, Guard(?1: qi8, Abs(?1)))
+###
+> F()
+F() : i8
+*** Error: (1,2) Node: F(), Message: Too few arguments for F, expected 1 additional
+Binder : With(!1: <missing>, Add(Unit<i8>(!1), Abs(Unit<i8>(!1))))
+Reducer: 0
+###
+> F(3, -12)
+F(3, -12) : i8
+*** Error: (5,6) Node: -12, Message: Too many arguments for F, expected 1 fewer
+Binder : With(!1: 3, Add(!1, Abs(!1)))
+Reducer: 6
+###
+> H()
+H() : i8
+*** Error: (1,2) Node: H(), Message: Too few arguments for H, expected 1 additional
+Binder : With(!1: <missing>, Mul(With(!2: !1, Add(Unit<i8>(!2), Abs(Unit<i8>(!2)))), With(!3: !1, !4: !1, Add(Unit<i8>(!3), Abs(Unit<i8>(!4))))))
+Reducer: 0
+###
+> H(3, -12)
+H(3, -12) : i8
+*** Error: (1,2) Node: H(3, -12), Message: Too few arguments for H, expected 1 additional
+Binder : With(!1: 3, !2: -12, !3: <missing>, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(Unit<i8>(!6))))))
+Reducer: -72
+###
+> H(3, -12, 5, 4)
+H(3, -12, 5, 4) : i8
+*** Error: (13,14) Node: 4, Message: Too many arguments for H, expected 1 fewer
+Binder : With(!1: 3, !2: -12, !3: 5, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: -42
+###
+> f(-7)
+Corrected by binder: [F(-7)]
+f(-7) : i8
+*** Error: (1,2) Node: f(-7), Message: Invocation of unknown function, did you intend 'F'?
+Binder : With(!1: -7, Add(!1, Abs(!1)))
+Reducer: 0
+###
+> f()
+Corrected by binder: [F()]
+f() : i8
+*** Error: (1,2) Node: f(), Message: Invocation of unknown function, did you intend 'F'?
+*** Error: (1,2) Node: f(), Message: Too few arguments for F, expected 1 additional
+Binder : With(!1: <missing>, Add(Unit<i8>(!1), Abs(Unit<i8>(!1))))
+Reducer: 0
+###
+> f(3, -12)
+Corrected by binder: [F(3, -12)]
+f(3, -12) : i8
+*** Error: (1,2) Node: f(3, -12), Message: Invocation of unknown function, did you intend 'F'?
+*** Error: (5,6) Node: -12, Message: Too many arguments for F, expected 1 fewer
+Binder : With(!1: 3, Add(!1, Abs(!1)))
+Reducer: 6
+###
+> h()
+Corrected by binder: [H()]
+h() : i8
+*** Error: (1,2) Node: h(), Message: Invocation of unknown function, did you intend 'H'?
+*** Error: (1,2) Node: h(), Message: Too few arguments for H, expected 1 additional
+Binder : With(!1: <missing>, Mul(With(!2: !1, Add(Unit<i8>(!2), Abs(Unit<i8>(!2)))), With(!3: !1, !4: !1, Add(Unit<i8>(!3), Abs(Unit<i8>(!4))))))
+Reducer: 0
+###
+> h(3, -12)
+Corrected by binder: [H(3, -12)]
+h(3, -12) : i8
+*** Error: (1,2) Node: h(3, -12), Message: Invocation of unknown function, did you intend 'H'?
+*** Error: (1,2) Node: h(3, -12), Message: Too few arguments for H, expected 1 additional
+Binder : With(!1: 3, !2: -12, !3: <missing>, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(Unit<i8>(!6))))))
+Reducer: -72
+###
+> h(3, -12, 5, 4)
+Corrected by binder: [H(3, -12, 5, 4)]
+h(3, -12, 5, 4) : i8
+*** Error: (1,2) Node: h(3, -12, 5, 4), Message: Invocation of unknown function, did you intend 'H'?
+*** Error: (13,14) Node: 4, Message: Too many arguments for H, expected 1 fewer
+Binder : With(!1: 3, !2: -12, !3: 5, Mul(With(!4: !1, Add(!4, Abs(!4))), With(!5: !2, !6: !3, Add(!5, Abs(!6)))))
+Reducer: -42
+###
+
+**** Udf removed: F
+
+> F(i8)
+F(i8) : v
+*** Error: (1,2) Node: F(i8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i8)
+###
+> G(3, -12)
+G(3, -12) : i8
+Binder : With(!1: 3, !2: -12, Add(!1, Abs(!2)))
+Reducer: 15
+###
+> H(i8)
+H(i8) : i8
+*** Error: (110-111;6:15-6:16) Node: F(x), Message: Invocation of unknown or unsupported function
+Binder : With(!1: i8, Mul(Unit<i8>(__err__.Unknown(!1)), With(!2: !1, !3: !1, Add(!2, Abs(!3)))))
+Reducer: 0
+###
+> H(3)
+H(3) : i8
+*** Error: (110-111;6:15-6:16) Node: F(x), Message: Invocation of unknown or unsupported function
+Binder : With(!1: 3, Mul(Unit<i8>(__err__.Unknown(!1)), With(!2: !1, !3: !1, Add(!2, Abs(!3)))))
+Reducer: 0
+###
+
+Diagnostics while parsing global script.
+Error: (13-14;1:14-1:15) Tok: 'x', Message: Duplicate parameter name: 'x'
+**** New udf: F, arity: 3
+
+> F(1,2,3)
+F(1, 2, 3) : (i8, i8)
+Binder : With(!1: 1, !2: 2, !3: 3, (!3, !2))
+Reducer: (3, 2)
+###
+
+**** New definition: x, type: i8
+**** New udf: K, arity: 0
+**** New udf: L, arity: 1
+**** New udf: M, arity: 1
+
+> K()
+K() : i8
+*** Error: (55-56;2:13-2:14) Node: x, Message: Name does not exist in the current context
+*** Error: (60-61;2:18-2:19) Node: @x, Message: Name does not exist in the current context
+Binder : Add(Unit<i8>(Error(ErrNameDoesNotExist)), Unit<i8>(Error(ErrNameDoesNotExist)))
+Reducer: 0
+###
+> L(2)
+L(2) : i8
+*** Error: (128-129;3:19-3:20) Node: @x, Message: Name does not exist in the current context
+Binder : With(!1: 2, Add(!1, Unit<i8>(Error(ErrNameDoesNotExist))))
+Reducer: 2
+###
+> M(2)
+M(2) : i8
+Binder : With(!1: 2, Mul(!1, !1))
+Reducer: 4
+###
+> With(x: 12, M(3))
+With(x : 12, M(3)) : i8
+Binder : With(!1: 12, With(!2: 3, Mul(!2, !2)))
+Reducer: 9
+###
+
+**** New udf: Text.HalfUpper, arity: 2
+**** New udf: Text.HalfUpper, arity: 1
+**** New udf: Text.HalfSwap, arity: 2
+**** New udf: Text.HalfSwap, arity: 1
+**** New definition: s, type: s
+
+> Text.HalfUpper(s)
+Text.HalfUpper(s) : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Upper(Text.Part(s, 0, !1)), Text.Part(s, !1)))
+###
+> s.HalfUpper
+s.HalfUpper : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Upper(Text.Part(s, 0, !1)), Text.Part(s, !1)))
+###
+> s->HalfUpper()
+s->HalfUpper() : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Upper(Text.Part(s, 0, !1)), Text.Part(s, !1)))
+###
+> s->HalfUpper(3)
+s->HalfUpper(3) : s
+Binder : With(!1: s, !2: 3, StrConcat(Text.Upper(Text.Part(!1, 0, !2)), Text.Part(!1, !2)))
+Reducer: StrConcat(Text.Upper(Text.Part(s, 0, 3)), Text.Part(s, 3))
+###
+> Text.HalfUpper("Hello, World")
+Text.HalfUpper("Hello, World") : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: "HELLO, World"
+###
+> "Hello, World".HalfUpper
+"Hello, World".HalfUpper : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: "HELLO, World"
+###
+> "Hello, World"->HalfUpper()
+"Hello, World"->HalfUpper() : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Upper(Text.Part(!2, 0, !3)), Text.Part(!2, !3))))
+Reducer: "HELLO, World"
+###
+> "Hello, World"->HalfUpper(3)
+"Hello, World"->HalfUpper(3) : s
+Binder : With(!1: "Hello, World", !2: 3, StrConcat(Text.Upper(Text.Part(!1, 0, !2)), Text.Part(!1, !2)))
+Reducer: "HELlo, World"
+###
+> "Hello, World"->HalfUpper(10)
+"Hello, World"->HalfUpper(10) : s
+Binder : With(!1: "Hello, World", !2: 10, StrConcat(Text.Upper(Text.Part(!1, 0, !2)), Text.Part(!1, !2)))
+Reducer: "HELLO, WORld"
+###
+> Text.HalfSwap(s)
+Text.HalfSwap(s) : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Part(s, !1), Text.Part(s, 0, !1)))
+###
+> s.HalfSwap
+s.HalfSwap : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Part(s, !1), Text.Part(s, 0, !1)))
+###
+> s->HalfSwap()
+s->HalfSwap() : s
+Binder : With(!1: s, With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: With(!1: IntDiv(Text.Len(s), 2), StrConcat(Text.Part(s, !1), Text.Part(s, 0, !1)))
+###
+> s->HalfSwap(3)
+s->HalfSwap(3) : s
+Binder : With(!1: s, !2: 3, StrConcat(Text.Part(!1, !2), Text.Part(!1, 0, !2)))
+Reducer: StrConcat(Text.Part(s, 3), Text.Part(s, 0, 3))
+###
+> Text.HalfSwap("Hello, World")
+Text.HalfSwap("Hello, World") : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: " WorldHello,"
+###
+> "Hello, World".HalfSwap
+"Hello, World".HalfSwap : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: " WorldHello,"
+###
+> "Hello, World"->HalfSwap()
+"Hello, World"->HalfSwap() : s
+Binder : With(!1: "Hello, World", With(!2: !1, !3: IntDiv(Text.Len(!1), 2), StrConcat(Text.Part(!2, !3), Text.Part(!2, 0, !3))))
+Reducer: " WorldHello,"
+###
+> "Hello, World"->HalfSwap(3)
+"Hello, World"->HalfSwap(3) : s
+Binder : With(!1: "Hello, World", !2: 3, StrConcat(Text.Part(!1, !2), Text.Part(!1, 0, !2)))
+Reducer: "lo, WorldHel"
+###
+> "Hello, World"->HalfSwap(10)
+"Hello, World"->HalfSwap(10) : s
+Binder : With(!1: "Hello, World", !2: 10, StrConcat(Text.Part(!1, !2), Text.Part(!1, 0, !2)))
+Reducer: "ldHello, Wor"
+###
+
+**** New udf: J, arity: 1
+
+> J(Range(3))
+J(Range(3)) : i8*
+*** Warning: (20-21;1:21-1:22) Node: GlueMap(x, Range(it + 1)), Message: This function is deprecated and may be removed in the future, use 'ChainMap' instead
+Binder : With(!1: Range(3), ChainMap(*2: !1, Range(Add(*2, 1))))
+Reducer: ChainMap(*1: Range(3), Range(Add(*1, 1)))
+###
+
+**** New udf: Q, arity: 1
+**** New udf: R, arity: 1
+
+> Q(2)
+Q(2) : b
+*** Warning: (34-35;2:16-2:17) Node: y ~in Range(3), Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : With(!1: 2, With(!2: !1, In(!2, Range(3))))
+Reducer: In(2, Range(3))
+###

@@ -1,0 +1,51 @@
+**** New globals: {n:u1}
+
+> Sum([1, 3, 12, -2])
+Sum([1, 3, 12, -2]) : i8
+Binder : Sum([1, 3, 12, -2])
+Reducer: 14
+###
+> Sum([1u, 3u])
+Sum([1, 3]) : u8
+Binder : Sum([1, 3])
+Reducer: 4
+###
+> Sum([1ia, 3, 12, -2])
+Sum([1, 3, 12, -2]) : i
+Binder : Sum([1, 3, 12, -2])
+Reducer: 14
+###
+> Sum([1r, 3, 12, -2])
+Sum([1, 3, 12, -2]) : r8
+Binder : Sum([1, 3, 12, -2])
+Reducer: 14
+###
+> Sum([n, 1, 3, 12, -2])
+Sum([n, 1, 3, 12, -2]) : i8
+Binder : Sum([Num<i8>(n), 1, 3, 12, -2])
+Reducer: Add(Num<i8>(n), 14)
+###
+> Sum([n, 1u, 3u])
+Sum([n, 1, 3]) : u8
+Binder : Sum([Num<u8>(n), 1, 3])
+Reducer: Add(Num<u8>(n), 4)
+###
+> Sum([n, 1ia, 3, 12, -2])
+Sum([n, 1, 3, 12, -2]) : i
+Binder : Sum([Num<i>(n), 1, 3, 12, -2])
+Reducer: Add(Num<i>(n), 14)
+###
+> Sum([n, 1r, 3, 12, -2])
+Sum([n, 1, 3, 12, -2]) : r8
+Binder : Sum([Num<r8>(n), 1, 3, 12, -2])
+Reducer: Add(Num<r8>(n), 1, 3, 12, -2)
+###
+> Sum([1r, 3, 12, -2, n])
+Sum([1, 3, 12, -2, n]) : r8
+Binder : Sum([1, 3, 12, -2, Num<r8>(n)])
+Reducer: Add(14, Num<r8>(n))
+###
+> Sum([1i4, 3i4]) // Doesn't reduce, since conversion is involved.
+Sum([1, 3]) : i8
+Binder : Sum([1, 3])
+###

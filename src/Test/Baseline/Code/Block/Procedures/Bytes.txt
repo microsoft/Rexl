@@ -1,0 +1,512 @@
+>>> *** Source:
+    func HexByte(u) := With(hi: (u shr 4) band 0x0F, lo: u band 0x0F, digs: "0123456789ABCDEF",  digs->Part(hi, hi + 1) & digs->Part(lo, lo + 1));
+    func Hex(ten) := ten.Values->ForEach(as u, HexByte(u))->Concat(" ");
+    func HexN(ten, n) := Range((ten.Shape[0] + n - 1) div n)->ForEach(as p, ten[n * p : n * (p + 1)]->Hex());
+    func EqTen(a, b) := a.Shape = b.Shape and (a = b).Values->All();
+    Path := "temp/table.rbin";
+    Path2 := "temp/table-2.rbin";
+    Link := Link.LocalData(Path);
+    T := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    GetType(T);
+    finish Writer as WriteRbin(T, Path, true, false);
+    "*** Wrote table to '" & Writer.Link.Path & "' ***";
+    (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+    (Writer.Size, Writer.Compression);
+    // Use ReadBytes.
+    finish R as ReadBytes(Path);
+    (R$Finished, R$Failed, R$ResultNames);
+    R.FullLink.Path  = Writer.FullLink.Path;
+    R.Data.Shape;
+    "*** Bytes:";
+    R.Data->HexN(16);
+    // Write it back out.
+    finish W2 as WriteBytes(R.Data, Path2);
+    (W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+    (W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = R.Data.Shape[0]);
+    finish R2 as ReadBytes(Path2);
+    (R2$Finished, R2$Failed, R2$ResultNames);
+    R2.FullLink.Path  = W2.FullLink.Path;
+    R2.Data.Shape;
+    (R2.Data.Shape = R.Data.Shape, (R2.Data = R.Data).Values->All());
+    EqTen(ReadAll(R.FullLink), R.Data);
+    EqTen(ReadAll(Path), R.Data);
+    ReadAll(Null(R.FullLink))->IsNull();
+    ReadAll(Null(Path))->IsNull();
+    ReadAll(" ")->IsNull();
+    ReadAll("Blarg")->IsNull();
+    // Use ReadByteBlocks with block size 16.
+    finish R as ReadByteBlocks(Path, 16);
+    (R$Finished, R$Failed, R$ResultNames);
+    R.FullLink.Path  = Writer.FullLink.Path;
+    (R.BlockSize, R.BlockCount, R.ByteCount);
+    R.Data.Shape;
+    R.Data.Shape[0]->Sum();
+    "*** Bytes:";
+    R.Data->@ForEach(as ten, ten->Hex());
+    // Use ReadByteBlocks with large block size.
+    finish R as ReadByteBlocks(Link);
+    (R$Finished, R$Failed, R$ResultNames);
+    R.FullLink.Path  = Writer.FullLink.Path;
+    (R.BlockSize, R.BlockCount, R.ByteCount);
+    R.Data.Shape;
+    R.Data.Shape[0]->Sum();
+    "*** Bytes:";
+    R.Data->TakeOne()->HexN(16);
+    // Larger data.
+    T := Range(10_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    GetType(T);
+    finish Writer as WriteRbin(T, Path, true, false);
+    "*** Wrote table to '" & Writer.Link.Path & "' ***";
+    (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+    (Writer.Size, Writer.Compression);
+    // Use ReadBytes.
+    finish R as ReadBytes(Path);
+    (R$Finished, R$Failed, R$ResultNames);
+    R.FullLink.Path  = Writer.FullLink.Path;
+    R.Data.Shape;
+    "*** Bytes:";
+    R.Data->HexN(16);
+    // Write it back out.
+    finish W2 as WriteBytes(R.Data, Path2);
+    (W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+    (W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = R.Data.Shape[0]);
+    finish R2 as ReadBytes(Path2);
+    (R2$Finished, R2$Failed, R2$ResultNames);
+    R2.FullLink.Path  = W2.FullLink.Path;
+    R2.Data.Shape;
+    (R2.Data.Shape = R.Data.Shape, (R2.Data = R.Data).Values->All());
+    // Non-contiguous.
+    D := R.Data[::-1];
+    finish W2 as WriteBytes(D, Path2);
+    (W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+    (W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = D.Shape[0]);
+    finish R2 as ReadBytes(Path2);
+    (R2$Finished, R2$Failed, R2$ResultNames);
+    R2.FullLink.Path  = W2.FullLink.Path;
+    R2.Data.Shape;
+    (R2.Data.Shape = D.Shape, (R2.Data = D).Values->All());
+    // Errors.
+    finish W2 as WriteBytes(D, Null(Path2));
+    (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage);
+    finish W2 as WriteBytes(Null(D), Path2);
+    (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage);
+
+>>> *** Instructions:
+   0) [0] DefineFunc HexByte(u) <- With(hi : u shr 4 band 15, lo : u band 15, digs : "0123456789ABCDEF", digs->Part(hi, hi + 1) & digs->Part(lo, lo + 1))
+   1) [0] DefineFunc Hex(ten) <- ten.Values->ForEach(as u, HexByte(u))->Concat(" ")
+   2) [0] DefineFunc HexN(ten, n) <- Range((ten.Shape[0] + n - 1) div n)->ForEach(as p, ten[n * p:n * (p + 1)]->Hex())
+   3) [0] DefineFunc EqTen(a, b) <- a.Shape @= b.Shape and (a @= b).Values->All()
+   4) [0] Define Path <- "temp/table.rbin"
+   5) [0] Define Path2 <- "temp/table-2.rbin"
+   6) [0] Define Link <- Link.LocalData(Path)
+   7) [0] Define T <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   8) [0] Expr GetType(T)
+   9) [0] TaskProc finish Writer as WriteRbin(T, Path, true, false)
+  10) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+  11) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+  12) [0] Expr (Writer.Size, Writer.Compression)
+  13) [0] TaskProc finish R as ReadBytes(Path)
+  14) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+  15) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+  16) [0] Expr R.Data.Shape
+  17) [0] Expr "*** Bytes:"
+  18) [0] Expr R.Data->HexN(16)
+  19) [0] TaskProc finish W2 as WriteBytes(R.Data, Path2)
+  20) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+  21) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= R.Data.Shape[0])
+  22) [0] TaskProc finish R2 as ReadBytes(Path2)
+  23) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+  24) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+  25) [0] Expr R2.Data.Shape
+  26) [0] Expr (R2.Data.Shape @= R.Data.Shape, (R2.Data @= R.Data).Values->All())
+  27) [0] Expr EqTen(ReadAll(R.FullLink), R.Data)
+  28) [0] Expr EqTen(ReadAll(Path), R.Data)
+  29) [0] Expr ReadAll(Null(R.FullLink))->IsNull()
+  30) [0] Expr ReadAll(Null(Path))->IsNull()
+  31) [0] Expr ReadAll(" ")->IsNull()
+  32) [0] Expr ReadAll("Blarg")->IsNull()
+  33) [0] TaskProc finish R as ReadByteBlocks(Path, 16)
+  34) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+  35) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+  36) [0] Expr (R.BlockSize, R.BlockCount, R.ByteCount)
+  37) [0] Expr R.Data.Shape
+  38) [0] Expr R.Data.Shape[0]->Sum()
+  39) [0] Expr "*** Bytes:"
+  40) [0] Expr R.Data->@ForEach(as ten, ten->Hex())
+  41) [0] TaskProc finish R as ReadByteBlocks(Link)
+  42) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+  43) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+  44) [0] Expr (R.BlockSize, R.BlockCount, R.ByteCount)
+  45) [0] Expr R.Data.Shape
+  46) [0] Expr R.Data.Shape[0]->Sum()
+  47) [0] Expr "*** Bytes:"
+  48) [0] Expr R.Data->TakeOne()->HexN(16)
+  49) [0] Define T <- Range(10000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+  50) [0] Expr GetType(T)
+  51) [0] TaskProc finish Writer as WriteRbin(T, Path, true, false)
+  52) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+  53) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+  54) [0] Expr (Writer.Size, Writer.Compression)
+  55) [0] TaskProc finish R as ReadBytes(Path)
+  56) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+  57) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+  58) [0] Expr R.Data.Shape
+  59) [0] Expr "*** Bytes:"
+  60) [0] Expr R.Data->HexN(16)
+  61) [0] TaskProc finish W2 as WriteBytes(R.Data, Path2)
+  62) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+  63) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= R.Data.Shape[0])
+  64) [0] TaskProc finish R2 as ReadBytes(Path2)
+  65) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+  66) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+  67) [0] Expr R2.Data.Shape
+  68) [0] Expr (R2.Data.Shape @= R.Data.Shape, (R2.Data @= R.Data).Values->All())
+  69) [0] Define D <- R.Data[::-1]
+  70) [0] TaskProc finish W2 as WriteBytes(D, Path2)
+  71) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+  72) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= D.Shape[0])
+  73) [0] TaskProc finish R2 as ReadBytes(Path2)
+  74) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+  75) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+  76) [0] Expr R2.Data.Shape
+  77) [0] Expr (R2.Data.Shape @= D.Shape, (R2.Data @= D).Values->All())
+  78) [0] TaskProc finish W2 as WriteBytes(D, Null(Path2))
+  79) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage)
+  80) [0] TaskProc finish W2 as WriteBytes(Null(D), Path2)
+  81) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage)
+  82) [0] End
+
+>    0) [0] DefineFunc HexByte(u) <- With(hi : u shr 4 band 15, lo : u band 15, digs : "0123456789ABCDEF", digs->Part(hi, hi + 1) & digs->Part(lo, lo + 1))
+UDF 'HexByte' has arity 1
+>    1) [0] DefineFunc Hex(ten) <- ten.Values->ForEach(as u, HexByte(u))->Concat(" ")
+UDF 'Hex' has arity 1
+>    2) [0] DefineFunc HexN(ten, n) <- Range((ten.Shape[0] + n - 1) div n)->ForEach(as p, ten[n * p:n * (p + 1)]->Hex())
+UDF 'HexN' has arity 2
+>    3) [0] DefineFunc EqTen(a, b) <- a.Shape @= b.Shape and (a @= b).Values->All()
+UDF 'EqTen' has arity 2
+>    4) [0] Define Path <- "temp/table.rbin"
+Global 'Path' has DType: s, SysType: str
+>    5) [0] Define Path2 <- "temp/table-2.rbin"
+Global 'Path2' has DType: s, SysType: str
+>    6) [0] Define Link <- Link.LocalData(Path)
+Global 'Link' has DType: U<Data>, SysType: Link
+>    7) [0] Define T <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    8) [0] Expr GetType(T)
+{A:i8, B:i8, C:s, D:b}*
+>    9) [0] TaskProc finish Writer as WriteRbin(T, Path, true, false)
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>   10) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+*** Wrote table to 'temp/table.rbin' ***
+>   11) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>   12) [0] Expr (Writer.Size, Writer.Compression)
+(292, None)
+>   13) [0] TaskProc finish R as ReadBytes(Path)
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   14) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+(true, false, (Link, FullLink, Data))
+>   15) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+true
+>   16) [0] Expr R.Data.Shape
+(292,)
+>   17) [0] Expr "*** Bytes:"
+*** Bytes:
+>   18) [0] Expr R.Data->HexN(16)
+Seq<str>
+   0) 4E 49 42 52 02 00 01 00 17 7B 41 3A 69 38 2C 20
+   1) 42 3A 69 38 2C 20 43 3A 73 2C 20 44 3A 62 7D 2A
+   2) AA 00 52 45 58 4C 06 00 01 00 06 00 01 00 A0 C4
+   3) 0A 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00
+   4) DA 00 00 00 00 00 00 00 F0 00 00 00 00 00 00 00
+   5) 00 0A 00 00 00 00 00 00 00 B6 00 00 00 00 00 00
+   6) 00 00 B1 B2 00 B2 00 B2 A4 06 42 6C 61 68 5F 30
+   7) A5 B2 01 BF B1 B2 01 B2 01 B2 A4 06 42 6C 61 68
+   8) 5F 31 A5 B2 00 BF B1 B2 02 B2 04 B2 A4 06 42 6C
+   9) 61 68 5F 32 A5 B2 00 BF B1 B2 03 B2 09 B2 A4 06
+  10) 42 6C 61 68 5F 33 A5 B2 01 BF B1 B2 04 B2 10 B2
+  11) A4 06 42 6C 61 68 5F 34 A5 B2 00 BF B1 B2 05 B2
+  12) 19 B2 A4 06 42 6C 61 68 5F 35 A5 B2 00 BF B1 B2
+  13) 06 B2 24 B2 A4 06 42 6C 61 68 5F 36 A5 B2 01 BF
+  14) B1 B2 07 B2 31 B2 A4 06 42 6C 61 68 5F 37 A5 B2
+  15) 00 BF B1 B2 08 B2 80 40 B2 A4 06 42 6C 61 68 5F
+  16) 38 A5 B2 00 BF B1 B2 09 B2 80 51 B2 A4 06 42 6C
+  17) 61 68 5F 39 A5 B2 01 BF F1 D0 00 00 00 00 00 00
+  18) 00 F2 CF A1
+*** Ctx ping count: 311
+    [0](311): Text.Concat(ForEach(*2: Tensor.Values(R.Data[Mul(*1x, 16):Mul(Add(*1x, 1), 16):]), With(!3: BitAnd(Num<i8>(Shru(*2, 4)), 15), !4: BitAnd(Num<i8>(*2), 15), StrConcat(Text.Part("0123456789ABCDEF", !3, Add(!3, 1)), Text.Part("0123456789ABCDEF", !4, Add(!4, 1))))), " ")
+>   19) [0] TaskProc finish W2 as WriteBytes(R.Data, Path2)
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   20) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+(Finished, true, false, (Link, FullLink, ByteCount, Size))
+>   21) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= R.Data.Shape[0])
+(true, true, true)
+>   22) [0] TaskProc finish R2 as ReadBytes(Path2)
+Task 'R2' added
+Task 'R2' now playing
+Task 'R2' finished
+>   23) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+(true, false, (Link, FullLink, Data))
+>   24) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+true
+>   25) [0] Expr R2.Data.Shape
+(292,)
+>   26) [0] Expr (R2.Data.Shape @= R.Data.Shape, (R2.Data @= R.Data).Values->All())
+(true, true)
+*** Ctx ping count: 0
+>   27) [0] Expr EqTen(ReadAll(R.FullLink), R.Data)
+true
+*** Ctx ping count: 0
+>   28) [0] Expr EqTen(ReadAll(Path), R.Data)
+true
+*** Ctx ping count: 0
+>   29) [0] Expr ReadAll(Null(R.FullLink))->IsNull()
+true
+*** Ctx ping count: 0
+>   30) [0] Expr ReadAll(Null(Path))->IsNull()
+true
+*** Ctx ping count: 0
+>   31) [0] Expr ReadAll(" ")->IsNull()
+true
+*** Ctx ping count: 0
+>   32) [0] Expr ReadAll("Blarg")->IsNull()
+true
+*** Ctx ping count: 0
+>   33) [0] TaskProc finish R as ReadByteBlocks(Path, 16)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   34) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+(true, false, (Link, FullLink, BlockSize, BlockCount, ByteCount, SData, Data))
+>   35) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+true
+>   36) [0] Expr (R.BlockSize, R.BlockCount, R.ByteCount)
+(16, 19, 292)
+>   37) [0] Expr R.Data.Shape
+Seq<(i8)>
+   0) (16,)
+   1) (16,)
+   2) (16,)
+   3) (16,)
+   4) (16,)
+   5) (16,)
+   6) (16,)
+   7) (16,)
+   8) (16,)
+   9) (16,)
+  10) (16,)
+  11) (16,)
+  12) (16,)
+  13) (16,)
+  14) (16,)
+  15) (16,)
+  16) (16,)
+  17) (16,)
+  18) (4,)
+>   38) [0] Expr R.Data.Shape[0]->Sum()
+292
+*** Ctx ping count: 20
+    [0](20): Sum(*1: R.Data, Tensor.Shape(*1).0)
+>   39) [0] Expr "*** Bytes:"
+*** Bytes:
+>   40) [0] Expr R.Data->@ForEach(as ten, ten->Hex())
+Seq<str>
+   0) 4E 49 42 52 02 00 01 00 17 7B 41 3A 69 38 2C 20
+   1) 42 3A 69 38 2C 20 43 3A 73 2C 20 44 3A 62 7D 2A
+   2) AA 00 52 45 58 4C 06 00 01 00 06 00 01 00 A0 C4
+   3) 0A 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00
+   4) DA 00 00 00 00 00 00 00 F0 00 00 00 00 00 00 00
+   5) 00 0A 00 00 00 00 00 00 00 B6 00 00 00 00 00 00
+   6) 00 00 B1 B2 00 B2 00 B2 A4 06 42 6C 61 68 5F 30
+   7) A5 B2 01 BF B1 B2 01 B2 01 B2 A4 06 42 6C 61 68
+   8) 5F 31 A5 B2 00 BF B1 B2 02 B2 04 B2 A4 06 42 6C
+   9) 61 68 5F 32 A5 B2 00 BF B1 B2 03 B2 09 B2 A4 06
+  10) 42 6C 61 68 5F 33 A5 B2 01 BF B1 B2 04 B2 10 B2
+  11) A4 06 42 6C 61 68 5F 34 A5 B2 00 BF B1 B2 05 B2
+  12) 19 B2 A4 06 42 6C 61 68 5F 35 A5 B2 00 BF B1 B2
+  13) 06 B2 24 B2 A4 06 42 6C 61 68 5F 36 A5 B2 01 BF
+  14) B1 B2 07 B2 31 B2 A4 06 42 6C 61 68 5F 37 A5 B2
+  15) 00 BF B1 B2 08 B2 80 40 B2 A4 06 42 6C 61 68 5F
+  16) 38 A5 B2 00 BF B1 B2 09 B2 80 51 B2 A4 06 42 6C
+  17) 61 68 5F 39 A5 B2 01 BF F1 D0 00 00 00 00 00 00
+  18) 00 F2 CF A1
+*** Ctx ping count: 311
+    [0](311): Text.Concat(ForEach(*2: Tensor.Values(*1x), With(!3: BitAnd(Num<i8>(Shru(*2, 4)), 15), !4: BitAnd(Num<i8>(*2), 15), StrConcat(Text.Part("0123456789ABCDEF", !3, Add(!3, 1)), Text.Part("0123456789ABCDEF", !4, Add(!4, 1))))), " ")
+>   41) [0] TaskProc finish R as ReadByteBlocks(Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   42) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+(true, false, (Link, FullLink, BlockSize, BlockCount, ByteCount, SData, Data))
+>   43) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+true
+>   44) [0] Expr (R.BlockSize, R.BlockCount, R.ByteCount)
+(4096, 1, 292)
+>   45) [0] Expr R.Data.Shape
+Seq<(i8)>
+   0) (292,)
+>   46) [0] Expr R.Data.Shape[0]->Sum()
+292
+*** Ctx ping count: 2
+    [0](2): Sum(*1: R.Data, Tensor.Shape(*1).0)
+>   47) [0] Expr "*** Bytes:"
+*** Bytes:
+>   48) [0] Expr R.Data->TakeOne()->HexN(16)
+Seq<str>
+   0) 4E 49 42 52 02 00 01 00 17 7B 41 3A 69 38 2C 20
+   1) 42 3A 69 38 2C 20 43 3A 73 2C 20 44 3A 62 7D 2A
+   2) AA 00 52 45 58 4C 06 00 01 00 06 00 01 00 A0 C4
+   3) 0A 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00
+   4) DA 00 00 00 00 00 00 00 F0 00 00 00 00 00 00 00
+   5) 00 0A 00 00 00 00 00 00 00 B6 00 00 00 00 00 00
+   6) 00 00 B1 B2 00 B2 00 B2 A4 06 42 6C 61 68 5F 30
+   7) A5 B2 01 BF B1 B2 01 B2 01 B2 A4 06 42 6C 61 68
+   8) 5F 31 A5 B2 00 BF B1 B2 02 B2 04 B2 A4 06 42 6C
+   9) 61 68 5F 32 A5 B2 00 BF B1 B2 03 B2 09 B2 A4 06
+  10) 42 6C 61 68 5F 33 A5 B2 01 BF B1 B2 04 B2 10 B2
+  11) A4 06 42 6C 61 68 5F 34 A5 B2 00 BF B1 B2 05 B2
+  12) 19 B2 A4 06 42 6C 61 68 5F 35 A5 B2 00 BF B1 B2
+  13) 06 B2 24 B2 A4 06 42 6C 61 68 5F 36 A5 B2 01 BF
+  14) B1 B2 07 B2 31 B2 A4 06 42 6C 61 68 5F 37 A5 B2
+  15) 00 BF B1 B2 08 B2 80 40 B2 A4 06 42 6C 61 68 5F
+  16) 38 A5 B2 00 BF B1 B2 09 B2 80 51 B2 A4 06 42 6C
+  17) 61 68 5F 39 A5 B2 01 BF F1 D0 00 00 00 00 00 00
+  18) 00 F2 CF A1
+*** Ctx ping count: 311
+    [0](311): Text.Concat(ForEach(*3: Tensor.Values(!1x[Mul(*2x, 16):Mul(Add(*2x, 1), 16):]), With(!4: BitAnd(Num<i8>(Shru(*3, 4)), 15), !5: BitAnd(Num<i8>(*3), 15), StrConcat(Text.Part("0123456789ABCDEF", !4, Add(!4, 1)), Text.Part("0123456789ABCDEF", !5, Add(!5, 1))))), " ")
+>   49) [0] Define T <- Range(10000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+>   50) [0] Expr GetType(T)
+{A:i8, B:i8, C:s, D:b}*
+>   51) [0] TaskProc finish Writer as WriteRbin(T, Path, true, false)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>   52) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+*** Wrote table to 'temp/table.rbin' ***
+>   53) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>   54) [0] Expr (Writer.Size, Writer.Compression)
+(249765, None)
+>   55) [0] TaskProc finish R as ReadBytes(Path)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   56) [0] Expr (R$Finished, R$Failed, R$ResultNames)
+(true, false, (Link, FullLink, Data))
+>   57) [0] Expr R.FullLink.Path @= Writer.FullLink.Path
+true
+>   58) [0] Expr R.Data.Shape
+(249765,)
+>   59) [0] Expr "*** Bytes:"
+*** Bytes:
+>   60) [0] Expr R.Data->HexN(16)
+Seq<str>
+   0) 4E 49 42 52 02 00 01 00 17 7B 41 3A 69 38 2C 20
+   1) 42 3A 69 38 2C 20 43 3A 73 2C 20 44 3A 62 7D 2A
+   2) AA 00 52 45 58 4C 06 00 01 00 06 00 01 00 A0 C4
+   3) 10 27 00 00 00 00 00 00 05 00 00 00 00 00 00 00
+   4) 5B CF 03 00 00 00 00 00 F0 00 00 00 00 00 00 00
+   5) 00 F6 09 00 00 00 00 00 00 0D F0 00 00 00 00 00
+   6) 00 00 B1 B2 00 B2 00 B2 A4 06 42 6C 61 68 5F 30
+   7) A5 B2 01 BF B1 B2 01 B2 01 B2 A4 06 42 6C 61 68
+   8) 5F 31 A5 B2 00 BF B1 B2 02 B2 04 B2 A4 06 42 6C
+   9) 61 68 5F 32 A5 B2 00 BF B1 B2 03 B2 09 B2 A4 06
+  10) 42 6C 61 68 5F 33 A5 B2 01 BF B1 B2 04 B2 10 B2
+  11) A4 06 42 6C 61 68 5F 34 A5 B2 00 BF B1 B2 05 B2
+  12) 19 B2 A4 06 42 6C 61 68 5F 35 A5 B2 00 BF B1 B2
+  13) 06 B2 24 B2 A4 06 42 6C 61 68 5F 36 A5 B2 01 BF
+  14) B1 B2 07 B2 31 B2 A4 06 42 6C 61 68 5F 37 A5 B2
+  15) 00 BF B1 B2 08 B2 80 40 B2 A4 06 42 6C 61 68 5F
+  16) 38 A5 B2 00 BF B1 B2 09 B2 80 51 B2 A4 06 42 6C
+  17) 61 68 5F 39 A5 B2 01 BF B1 B2 0A B2 80 64 B2 A4
+  18) 07 42 6C 61 68 5F 31 30 A5 B2 00 BF B1 B2 0B B2
+  19) 80 79 B2 A4 07 42 6C 61 68 5F 31 31 A5 B2 00 BF
+  20) B1 B2 0C B2 80 90 B2 A4 07 42 6C 61 68 5F 31 32
+  21) A5 B2 01 BF B1 B2 0D B2 80 A9 B2 A4 07 42 6C 61
+  22) 68 5F 31 33 A5 B2 00 BF B1 B2 0E B2 80 C4 B2 A4
+  23) 07 42 6C 61 68 5F 31 34 A5 B2 00 BF B1 B2 0F B2
+  24) 80 E1 B2 A4 07 42 6C 61 68 5F 31 35 A5 B2 01 BF
+  25) B1 B2 10 B2 81 00 B2 A4 07 42 6C 61 68 5F 31 36
+  26) A5 B2 00 BF B1 B2 11 B2 81 21 B2 A4 07 42 6C 61
+  27) 68 5F 31 37 A5 B2 00 BF B1 B2 12 B2 81 44 B2 A4
+  28) 07 42 6C 61 68 5F 31 38 A5 B2 01 BF B1 B2 13 B2
+  29) 81 69 B2 A4 07 42 6C 61 68 5F 31 39 A5 B2 00 BF
+  30) B1 B2 14 B2 81 90 B2 A4 07 42 6C 61 68 5F 32 30
+  31) A5 B2 00 BF B1 B2 15 B2 81 B9 B2 A4 07 42 6C 61
+  ...
+*** Ctx ping count: 561
+    [0](561): Text.Concat(ForEach(*2: Tensor.Values(R.Data[Mul(*1x, 16):Mul(Add(*1x, 1), 16):]), With(!3: BitAnd(Num<i8>(Shru(*2, 4)), 15), !4: BitAnd(Num<i8>(*2), 15), StrConcat(Text.Part("0123456789ABCDEF", !3, Add(!3, 1)), Text.Part("0123456789ABCDEF", !4, Add(!4, 1))))), " ")
+>   61) [0] TaskProc finish W2 as WriteBytes(R.Data, Path2)
+Overwriting task: W2
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   62) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+(Finished, true, false, (Link, FullLink, ByteCount, Size))
+>   63) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= R.Data.Shape[0])
+(true, true, true)
+>   64) [0] TaskProc finish R2 as ReadBytes(Path2)
+Overwriting task: R2
+Task 'R2' added
+Task 'R2' now playing
+Task 'R2' finished
+>   65) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+(true, false, (Link, FullLink, Data))
+>   66) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+true
+>   67) [0] Expr R2.Data.Shape
+(249765,)
+>   68) [0] Expr (R2.Data.Shape @= R.Data.Shape, (R2.Data @= R.Data).Values->All())
+(true, true)
+*** Ctx ping count: 0
+>   69) [0] Define D <- R.Data[::-1]
+Global 'D' has DType: u1[*], SysType: Ten<u1>
+>   70) [0] TaskProc finish W2 as WriteBytes(D, Path2)
+Overwriting task: W2
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   71) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames)
+(Finished, true, false, (Link, FullLink, ByteCount, Size))
+>   72) [0] Expr (W2.ByteCount @= Writer.Size, W2.Size @= Writer.Size, W2.Size @= D.Shape[0])
+(true, true, true)
+>   73) [0] TaskProc finish R2 as ReadBytes(Path2)
+Overwriting task: R2
+Task 'R2' added
+Task 'R2' now playing
+Task 'R2' finished
+>   74) [0] Expr (R2$Finished, R2$Failed, R2$ResultNames)
+(true, false, (Link, FullLink, Data))
+>   75) [0] Expr R2.FullLink.Path @= W2.FullLink.Path
+true
+>   76) [0] Expr R2.Data.Shape
+(249765,)
+>   77) [0] Expr (R2.Data.Shape @= D.Shape, (R2.Data @= D).Values->All())
+(true, true)
+*** Ctx ping count: 0
+>   78) [0] TaskProc finish W2 as WriteBytes(D, Null(Path2))
+Overwriting task: W2
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   79) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage)
+(Finished, true, true, (Link,), Null link)
+>   80) [0] TaskProc finish W2 as WriteBytes(Null(D), Path2)
+Overwriting task: W2
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   81) [0] Expr (W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage)
+(Finished, true, true, (Link,), Null data)
+>   82) [0] End
+

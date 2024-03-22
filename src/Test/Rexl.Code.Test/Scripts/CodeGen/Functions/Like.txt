@@ -1,0 +1,48 @@
+﻿`` Vals := [ "Values", 3, 7.5, true ];
+`` Recs := [ "Record", {A:3}, {B:3}, {A:Opt(3), B:Opt(true)}, {A:Opt(3), B:Null(true)}, {A:Opt(3i4)} ];
+`` func TF(v) := Tensor.Fill(v);
+`` func TF(v, a) := Tensor.Fill(v, a);
+`` func TF(v, a, b) := Tensor.Fill(v, a, b);
+`` Tens := [ "Tensor", TF(1), TF(Opt(2)), TF(3, 3), TF(5.5, 3), TF(4, 2, 2) ];
+
+`` func L(a, b) := LikeOrNull(a, b);
+
+Vals->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Recs->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Tens->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+
+Vals->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Recs->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Tens->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+
+Vals->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Recs->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Tens->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+
+`` func L(a, b) := LikeOrDef(a, b);
+
+Vals->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Recs->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Tens->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+
+Vals->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Recs->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Tens->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+
+Vals->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Recs->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Tens->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+
+`` func L(a, b) := LikeOrVal(a, b);
+
+Vals->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Recs->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+Tens->(it->L(""), it->L(-1), it->L(Opt(-1)), it->L(-1.0), it->L(false), it->L(true))
+
+Vals->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Recs->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+Tens->(it->L(""), it->L({A:-1}), it->L({B:-1}), it->L({A:-1, B:true}), it->L({A:-1, B:Opt(false)}), it->L({A:-1i4}))
+
+Vals->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Recs->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))
+Tens->(it->L(""), it->L(TF(-1)), it->L(TF(Opt(-1))), it->L(TF(-1, 1)), it->L(TF(-1.0, 1)), it->L(TF(-1, 1, 1)))

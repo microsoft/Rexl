@@ -1,0 +1,243 @@
+**** New globals: {R:{A:i4}?, S:{A:i4}, T:{A:r8?}?, s:s}
+
+> Guard(R, A * 3)
+Guard(R, A * 3) : i8?
+Binder : Guard(?1: R, Mul(Num<i8>(?1.A), 3))
+###
+> Guard(S, A * 3)
+Guard(S, A * 3) : i8
+Binder : Guard(!1: S, Mul(Num<i8>(!1.A), 3))
+Reducer: Mul(Num<i8>(S.A), 3)
+###
+> Guard(r: R, s: S, r.A * s.A) // S uses a with scope.
+Guard(r : R, s : S, r.A * s.A) : i8?
+Binder : Guard(?1: R, !2: S, Mul(Num<i8>(?1.A), Num<i8>(!2.A)))
+Reducer: Guard(?1: R, Mul(Num<i8>(?1.A), Num<i8>(S.A)))
+###
+> Guard(r: R, t: T, r.A * S.A * t.A) // The explicit use of Guard can be combined with implicit Guard.
+Guard(r : R, t : T, r.A * S.A * t.A) : r8?
+Binder : Guard(?1: R, ?2: T, Guard(?3: ?2.A, Mul(Num<r8>(Mul(Num<i8>(?1.A), Num<i8>(S.A))), ?3)))
+Reducer: Guard(?1: R, ?2: T, ?3: ?2.A, Mul(Num<r8>(Mul(Num<i8>(?1.A), Num<i8>(S.A))), ?3))
+###
+> Guard(r: R, t: T, x: t.A, r.A * S.A * x) // Should match.
+Guard(r : R, t : T, x : t.A, r.A * S.A * x) : r8?
+Binder : Guard(?1: R, ?2: T, ?3: ?2.A, Mul(Num<r8>(Mul(Num<i8>(?1.A), Num<i8>(S.A))), ?3))
+###
+> R.A * S.A * T.A // Implicit Guard matches the optimal.
+R.A * S.A * T.A : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: R, ?1.A), Mul(Num<i8>(?2), Num<i8>(S.A))), ?5: Guard(?4: T, ?4.A), Mul(Num<r8>(?3), ?5))
+Reducer: Guard(?1: R, ?2: T, ?3: ?2.A, Mul(Num<r8>(Mul(Num<i8>(?1.A), Num<i8>(S.A))), ?3))
+###
+> Guard(null, s)
+Guard(null, s) : s
+Binder : Guard(?1: null, s)
+Reducer: str(<null>)
+###
+> Guard(null, 4)
+Guard(null, 4) : i8?
+Binder : Guard(?1: null, 4)
+Reducer: null
+###
+> Guard(s, null)
+Guard(s, null) : o
+Binder : Guard(?1: s, null)
+Reducer: null
+###
+> Guard(s, null + 3)
+Guard(s, null + 3) : i8?
+Binder : Guard(?1: s, Guard(?2: null, Add(Unit<i8>(?2), 3)))
+Reducer: null
+###
+> Guard(s, s)
+Guard(s, s) : s
+Binder : Guard(?1: s, ?1)
+Reducer: s
+###
+> Guard(true or null, not it) // First arg constant non-null value of nullable type.
+Guard(true or null, not it) : b?
+Binder : Guard(?1: Or(true, null), Xor(?1, true))
+Reducer: Opt<b?>(false)
+###
+> Guard(Text.Lower(null), Text.Len(it)) // First arg constant null value of text type.
+Guard(Text.Lower(null), Text.Len(it)) : i8?
+Binder : Guard(?1: Text.Lower(str(<null>)), Text.Len(?1))
+Reducer: null
+###
+> T.A * T.A
+T.A * T.A : r8?
+Binder : Guard(?2: Guard(?1: T, ?1.A), ?4: Guard(?3: T, ?3.A), Mul(?2, ?4))
+Reducer: Guard(?1: T, ?2: ?1.A, Mul(?2, ?2))
+###
+
+**** New globals: {qi4:i4?, qr8:r8?}
+
+> Guard(        a:Wrap(qi4),         b:Wrap(qi4), {a, b})
+Guard(a : Wrap(qi4), b : Wrap(qi4), { a, b }) : {a:i4, b:i4}?
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), {a:?1, b:?2})
+Reducer: Guard(?1: Test.Wrap(qi4), {a:?1, b:?1})
+###
+> Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qi4), {a, b})
+Guard([guard] a : Wrap(qi4), [guard] b : Wrap(qi4), { a, b }) : {a:i4, b:i4}?
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), {a:?1, b:?2})
+Reducer: Guard(?1: Test.Wrap(qi4), {a:?1, b:?1})
+###
+> Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qi4), {a, b})
+Guard([guard] a : Wrap(qi4), [with] b : Wrap(qi4), { a, b }) : {a:i4, b:i4?}?
+Binder : Guard(?1: Test.Wrap(qi4), !2: Test.Wrap(qi4), {a:?1, b:!2})
+Reducer: Guard(?1: Test.Wrap(qi4), {a:?1, b:Test.Wrap(qi4)})
+###
+> Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qi4), {a, b})
+Guard([with] a : Wrap(qi4), [guard] b : Wrap(qi4), { a, b }) : {a:i4?, b:i4}?
+Binder : Guard(!1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), {a:!1, b:?2})
+Reducer: Guard(?1: Test.Wrap(qi4), {a:Test.Wrap(qi4), b:?1})
+###
+> Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qi4), {a, b})
+Guard([with] a : Wrap(qi4), [with] b : Wrap(qi4), { a, b }) : {a:i4?, b:i4?}
+Binder : Guard(!1: Test.Wrap(qi4), !2: Test.Wrap(qi4), {a:!1, b:!2})
+Reducer: With(!1: Test.Wrap(qi4), {a:!1, b:!1})
+###
+> Guard(        a:Wrap(qi4),         b:Wrap(qi4), [a, b])
+Guard(a : Wrap(qi4), b : Wrap(qi4), [a, b]) : i4*
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), [?1, ?2])
+Reducer: Guard(?1: Test.Wrap(qi4), [?1, ?1])
+###
+> Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qi4), [a, b])
+Guard([guard] a : Wrap(qi4), [guard] b : Wrap(qi4), [a, b]) : i4*
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), [?1, ?2])
+Reducer: Guard(?1: Test.Wrap(qi4), [?1, ?1])
+###
+> Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qi4), [a, b])
+Guard([guard] a : Wrap(qi4), [with] b : Wrap(qi4), [a, b]) : i4?*
+Binder : Guard(?1: Test.Wrap(qi4), !2: Test.Wrap(qi4), [Opt<i4?>(?1), !2])
+Reducer: Guard(?1: Test.Wrap(qi4), [Opt<i4?>(?1), Test.Wrap(qi4)])
+###
+> Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qi4), [a, b])
+Guard([with] a : Wrap(qi4), [guard] b : Wrap(qi4), [a, b]) : i4?*
+Binder : Guard(!1: Test.Wrap(qi4), ?2: Test.Wrap(qi4), [!1, Opt<i4?>(?2)])
+Reducer: Guard(?1: Test.Wrap(qi4), [Test.Wrap(qi4), Opt<i4?>(?1)])
+###
+> Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qi4), [a, b])
+Guard([with] a : Wrap(qi4), [with] b : Wrap(qi4), [a, b]) : i4?*
+Binder : Guard(!1: Test.Wrap(qi4), !2: Test.Wrap(qi4), [!1, !2])
+Reducer: With(!1: Test.Wrap(qi4), [!1, !1])
+###
+> Guard(        a:Wrap(qi4),         b:Wrap(qr8), {a, b})
+Guard(a : Wrap(qi4), b : Wrap(qr8), { a, b }) : {a:i4, b:r8}?
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), {a:?1, b:?2})
+###
+> Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qr8), {a, b})
+Guard([guard] a : Wrap(qi4), [guard] b : Wrap(qr8), { a, b }) : {a:i4, b:r8}?
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), {a:?1, b:?2})
+###
+> Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qr8), {a, b})
+Guard([guard] a : Wrap(qi4), [with] b : Wrap(qr8), { a, b }) : {a:i4, b:r8?}?
+Binder : Guard(?1: Test.Wrap(qi4), !2: Test.Wrap(qr8), {a:?1, b:!2})
+Reducer: Guard(?1: Test.Wrap(qi4), {a:?1, b:Test.Wrap(qr8)})
+###
+> Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qr8), {a, b})
+Guard([with] a : Wrap(qi4), [guard] b : Wrap(qr8), { a, b }) : {a:i4?, b:r8}?
+Binder : Guard(!1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), {a:!1, b:?2})
+Reducer: Guard(?1: Test.Wrap(qr8), {a:Test.Wrap(qi4), b:?1})
+###
+> Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qr8), {a, b})
+Guard([with] a : Wrap(qi4), [with] b : Wrap(qr8), { a, b }) : {a:i4?, b:r8?}
+Binder : Guard(!1: Test.Wrap(qi4), !2: Test.Wrap(qr8), {a:!1, b:!2})
+Reducer: {a:Test.Wrap(qi4), b:Test.Wrap(qr8)}
+###
+> Guard(        a:Wrap(qi4),         b:Wrap(qr8), [a, b])
+Guard(a : Wrap(qi4), b : Wrap(qr8), [a, b]) : r8*
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), [Num<r8>(?1), ?2])
+###
+> Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qr8), [a, b])
+Guard([guard] a : Wrap(qi4), [guard] b : Wrap(qr8), [a, b]) : r8*
+Binder : Guard(?1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), [Num<r8>(?1), ?2])
+###
+> Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qr8), [a, b])
+Guard([guard] a : Wrap(qi4), [with] b : Wrap(qr8), [a, b]) : r8?*
+Binder : Guard(?1: Test.Wrap(qi4), !2: Test.Wrap(qr8), [Opt<r8?>(Num<r8>(?1)), !2])
+Reducer: Guard(?1: Test.Wrap(qi4), [Opt<r8?>(Num<r8>(?1)), Test.Wrap(qr8)])
+###
+> Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qr8), [a, b])
+Guard([with] a : Wrap(qi4), [guard] b : Wrap(qr8), [a, b]) : r8?*
+Binder : Guard(!1: Test.Wrap(qi4), ?2: Test.Wrap(qr8), [Guard(?3: !1, Num<r8>(?3)), Opt<r8?>(?2)])
+Reducer: Guard(?1: Test.Wrap(qr8), [Guard(?2: Test.Wrap(qi4), Num<r8>(?2)), Opt<r8?>(?1)])
+###
+> Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qr8), [a, b])
+Guard([with] a : Wrap(qi4), [with] b : Wrap(qr8), [a, b]) : r8?*
+Binder : Guard(!1: Test.Wrap(qi4), !2: Test.Wrap(qr8), [Guard(?3: !1, Num<r8>(?3)), !2])
+Reducer: [Guard(?1: Test.Wrap(qi4), Num<r8>(?1)), Test.Wrap(qr8)]
+###
+> Guard(        a:qi4,         b:qi4, {a, b})
+Guard(a : qi4, b : qi4, { a, b }) : {a:i4, b:i4}?
+Binder : Guard(?1: qi4, ?2: qi4, {a:?1, b:?2})
+Reducer: Guard(?1: qi4, {a:?1, b:?1})
+###
+> Guard([guard] a:qi4, [guard] b:qi4, {a, b})
+Guard([guard] a : qi4, [guard] b : qi4, { a, b }) : {a:i4, b:i4}?
+Binder : Guard(?1: qi4, ?2: qi4, {a:?1, b:?2})
+Reducer: Guard(?1: qi4, {a:?1, b:?1})
+###
+> Guard([guard] a:qi4, [with]  b:qi4, {a, b})
+Guard([guard] a : qi4, [with] b : qi4, { a, b }) : {a:i4, b:i4?}?
+Binder : Guard(?1: qi4, !2: qi4, {a:?1, b:!2})
+Reducer: Guard(?1: qi4, {a:?1, b:qi4})
+###
+> Guard([with]  a:qi4, [guard] b:qi4, {a, b})
+Guard([with] a : qi4, [guard] b : qi4, { a, b }) : {a:i4?, b:i4}?
+Binder : Guard(!1: qi4, ?2: qi4, {a:!1, b:?2})
+Reducer: Guard(?1: qi4, {a:qi4, b:?1})
+###
+> Guard([with]  a:qi4, [with]  b:qi4, {a, b})
+Guard([with] a : qi4, [with] b : qi4, { a, b }) : {a:i4?, b:i4?}
+Binder : Guard(!1: qi4, !2: qi4, {a:!1, b:!2})
+Reducer: {a:qi4, b:qi4}
+###
+> Guard("hello"->Opt (), it & "-extra")
+Guard("hello"->Opt(), it & "-extra") : s
+*** Warning: (6,13) Node: "hello", Message: The type is already optional: 's'
+Binder : Guard(?1: Opt*("hello"), StrConcat(?1, "-extra"))
+Reducer: "hello-extra"
+###
+> Guard("hello"->Null(), it & "-extra")
+Guard("hello"->Null(), it & "-extra") : s
+Binder : Guard(?1: DefOpt*("hello"), StrConcat(?1, "-extra"))
+Reducer: str(<null>)
+###
+
+**** New globals: {b:b, qbs:b?*}
+
+> (false and qbs) xor (false and qbs)
+false and qbs xor false and qbs : b?*
+Binder : ForEach(*3: ForEach(*1: qbs, And(false, *1)), *4: ForEach(*2: qbs, And(false, *2)), Guard(?5: *3, ?6: *4, Xor(?5, ?6)))
+Reducer: ForEach(*1: qbs, Opt<b?>(false))
+###
+> (null and false) xor (false & "" and true)
+null and false xor false & "" and true : b?
+*** Error: (22,27) Node: false, Message: Invalid operand type: cannot convert type 'b' to 's'
+*** Error: (28,29) Node: false & "", Message: Invalid operand type: cannot convert type 's' to 'b?'
+Binder : Guard(?1: And(null, false), ?2: And(Error(ErrBadType_Src_Dst), true), Xor(?1, ?2))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Map(x:&Range(10),it->{ A: it, B: x)*x })
+Map(x : (<missing>) & Range(10), it->{ A : it, B : x }) * x : i8?*
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '&', Message: Expected an operand
+*** Error: (34,35) Tok: ')', Message: Expected: '}', Found: ')'
+*** Error: (38,39) Tok: '}', Message: Unexpected token
+=== Bind diagnostics:
+*** Error: (6,7) Node: (<missing>), Message: Expected an operand
+*** Error: (12,13) Node: Range(10), Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (36,37) Node: x, Message: Name does not exist in the current context
+*** Error: (3,4) Node: Map(x : (<missing>) & Range(10), it->{ A : it, B : x }), Message: Invalid operand type: cannot convert type '{A:s, B:s}' to 'i8'
+Binder : ForEach(*4: ForEach(*2: ForEach(*1: Range(10), StrConcat(Unit<s>(<missing>), Error(ErrBadType_Src_Dst))), Guard(?3: *2, {A:?3, B:*2})), Guard(?5: *4, Mul(Error(ErrBadType_Src_Dst), Unit<i8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: Repeat(StrConcat(Error(ErrBadType_Src_Dst)), 10), Guard(?2: *1, 0))
+###
+> SumK(-[3, null])
+SumK(-[3, null]) : r8
+Binder : SumK(ForEach(*1: [Opt<i8?>(3), null], Guard(?2: *1, Add([-] ?2))))
+Reducer: SumK(*1: [Opt<i8?>(3), null], Guard(?2: *1, Num<r8>(Add([-] ?2))))
+###
+> Guard(x: {a: 3.0}, y: x.a if b else null, x)
+Guard(x : { a : 3 }, y : x.a if b else null, x) : {a:r8}?
+Binder : Guard(!1: {a:3}, ?2: If(b, Opt<r8?>(!1.a), null), !1)
+###

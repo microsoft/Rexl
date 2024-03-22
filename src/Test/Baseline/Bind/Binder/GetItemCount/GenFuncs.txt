@@ -1,0 +1,490 @@
+**** New globals: {b:b, n:i8, qb:b?, qn:i8?, s:i8*}
+
+> With(x: n, [ x, x * x, x * x * x ])
+With(x : n, [x, x * x, x * x * x]) : i8*
+Binder : (3, 3) With(!1: n, [!1, Mul(!1, !1), Mul(!1, !1, !1)])
+Reducer: (3, 3) [n, Mul(n, n), Mul(n, n, n)]
+###
+> Guard(x: qn, [ x, x * x, x * x * x ])
+Guard(x : qn, [x, x * x, x * x * x]) : i8*
+Binder : (0, 3) Guard(?1: qn, [?1, Mul(?1, ?1), Mul(?1, ?1, ?1)])
+###
+> If(true , [1,2,3])
+If(true, [1, 2, 3]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3])
+If(3 $< 5, [1, 2, 3]) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3])
+If(false, [1, 2, 3]) : i8*
+Binder : (0, 0) If*(false, [1, 2, 3])
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3])
+If(7 $< 5, [1, 2, 3]) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3])
+Reducer: (0, 0) null
+###
+> If(n < 5, [1,2,3])
+If(n $< 5, [1, 2, 3]) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3])
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(true , [1,2,3], [4,5])
+If(true, [1, 2, 3], [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], [4,5])
+If(3 $< 5, [1, 2, 3], [4, 5]) : i8*
+Binder : (2, 3) If*(3 @< 5, [1, 2, 3], [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], [4,5])
+If(false, [1, 2, 3], [4, 5]) : i8*
+Binder : (2, 2) If*(false, [1, 2, 3], [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(7 < 5, [1,2,3], [4,5])
+If(7 $< 5, [1, 2, 3], [4, 5]) : i8*
+Binder : (2, 3) If*(7 @< 5, [1, 2, 3], [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(n < 5, [1,2,3], [4,5])
+If(n $< 5, [1, 2, 3], [4, 5]) : i8*
+Binder : (2, 3) If*(n @< 5, [1, 2, 3], [4, 5])
+Reducer: (2, 3) If(n @< 5, [1, 2, 3], [4, 5])
+###
+> If(true , [1,2,3], s)
+If(true, [1, 2, 3], s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], s)
+If(3 $< 5, [1, 2, 3], s) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], s)
+If(false, [1, 2, 3], s) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], s)
+Reducer: (0, *) s
+###
+> If(7 < 5, [1,2,3], s)
+If(7 $< 5, [1, 2, 3], s) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], s)
+Reducer: (0, *) s
+###
+> If(n < 5, [1,2,3], s)
+If(n $< 5, [1, 2, 3], s) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], s)
+Reducer: (0, *) If(n @< 5, [1, 2, 3], s)
+###
+> If(true , [1,2,3], s ++ Range(17))
+If(true, [1, 2, 3], s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], s ++ Range(17))
+If(3 $< 5, [1, 2, 3], s ++ Range(17)) : i8*
+Binder : (3, *) If*(3 @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], s ++ Range(17))
+If(false, [1, 2, 3], s ++ Range(17)) : i8*
+Binder : (17, *) If*(false, [1, 2, 3], SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(7 < 5, [1,2,3], s ++ Range(17))
+If(7 $< 5, [1, 2, 3], s ++ Range(17)) : i8*
+Binder : (3, *) If*(7 @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(n < 5, [1,2,3], s ++ Range(17))
+If(n $< 5, [1, 2, 3], s ++ Range(17)) : i8*
+Binder : (3, *) If*(n @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+Reducer: (3, *) If(n @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+###
+> If(true , [1,2,3], true , [4,5])
+If(true, [1, 2, 3], true, [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], true, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 3 < 5, [4,5])
+If(true, [1, 2, 3], 3 $< 5, [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 3 @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], false, [4,5])
+If(true, [1, 2, 3], false, [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], false, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 7 < 5, [4,5])
+If(true, [1, 2, 3], 7 $< 5, [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 7 @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], n < 5, [4,5])
+If(true, [1, 2, 3], n $< 5, [4, 5]) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], n @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], true , [4,5])
+If(3 $< 5, [1, 2, 3], true, [4, 5]) : i8*
+Binder : (2, 3) If*(3 @< 5, [1, 2, 3], true, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 3 < 5, [4,5])
+If(3 $< 5, [1, 2, 3], 3 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], 3 @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], false, [4,5])
+If(3 $< 5, [1, 2, 3], false, [4, 5]) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], false, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 7 < 5, [4,5])
+If(3 $< 5, [1, 2, 3], 7 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], 7 @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], n < 5, [4,5])
+If(3 $< 5, [1, 2, 3], n $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], n @< 5, [4, 5])
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], true , [4,5])
+If(false, [1, 2, 3], true, [4, 5]) : i8*
+Binder : (2, 2) If*(false, [1, 2, 3], true, [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(false, [1,2,3], 3 < 5, [4,5])
+If(false, [1, 2, 3], 3 $< 5, [4, 5]) : i8*
+Binder : (0, 2) If*(false, [1, 2, 3], 3 @< 5, [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(false, [1,2,3], false, [4,5])
+If(false, [1, 2, 3], false, [4, 5]) : i8*
+Binder : (0, 0) If*(false, [1, 2, 3], false, [4, 5])
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], 7 < 5, [4,5])
+If(false, [1, 2, 3], 7 $< 5, [4, 5]) : i8*
+Binder : (0, 2) If*(false, [1, 2, 3], 7 @< 5, [4, 5])
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], n < 5, [4,5])
+If(false, [1, 2, 3], n $< 5, [4, 5]) : i8*
+Binder : (0, 2) If*(false, [1, 2, 3], n @< 5, [4, 5])
+Reducer: (0, 2) If(n @< 5, [4, 5], null)
+###
+> If(7 < 5, [1,2,3], true , [4,5])
+If(7 $< 5, [1, 2, 3], true, [4, 5]) : i8*
+Binder : (2, 3) If*(7 @< 5, [1, 2, 3], true, [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(7 < 5, [1,2,3], 3 < 5, [4,5])
+If(7 $< 5, [1, 2, 3], 3 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], 3 @< 5, [4, 5])
+Reducer: (2, 2) [4, 5]
+###
+> If(7 < 5, [1,2,3], false, [4,5])
+If(7 $< 5, [1, 2, 3], false, [4, 5]) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], false, [4, 5])
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], 7 < 5, [4,5])
+If(7 $< 5, [1, 2, 3], 7 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], 7 @< 5, [4, 5])
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], n < 5, [4,5])
+If(7 $< 5, [1, 2, 3], n $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], n @< 5, [4, 5])
+Reducer: (0, 2) If(n @< 5, [4, 5], null)
+###
+> If(n < 5, [1,2,3], true , [4,5])
+If(n $< 5, [1, 2, 3], true, [4, 5]) : i8*
+Binder : (2, 3) If*(n @< 5, [1, 2, 3], true, [4, 5])
+Reducer: (2, 3) If(n @< 5, [1, 2, 3], [4, 5])
+###
+> If(n < 5, [1,2,3], 3 < 5, [4,5])
+If(n $< 5, [1, 2, 3], 3 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], 3 @< 5, [4, 5])
+Reducer: (2, 3) If(n @< 5, [1, 2, 3], [4, 5])
+###
+> If(n < 5, [1,2,3], false, [4,5])
+If(n $< 5, [1, 2, 3], false, [4, 5]) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], false, [4, 5])
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], 7 < 5, [4,5])
+If(n $< 5, [1, 2, 3], 7 $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], 7 @< 5, [4, 5])
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], n < 5, [4,5])
+If(n $< 5, [1, 2, 3], n $< 5, [4, 5]) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], n @< 5, [4, 5])
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], If(n @< 5, [4, 5], null))
+###
+> If(true , [1,2,3], true , s)
+If(true, [1, 2, 3], true, s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], true, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 3 < 5, s)
+If(true, [1, 2, 3], 3 $< 5, s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 3 @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], false, s)
+If(true, [1, 2, 3], false, s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], false, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 7 < 5, s)
+If(true, [1, 2, 3], 7 $< 5, s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 7 @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], n < 5, s)
+If(true, [1, 2, 3], n $< 5, s) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], n @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], true , s)
+If(3 $< 5, [1, 2, 3], true, s) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], true, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 3 < 5, s)
+If(3 $< 5, [1, 2, 3], 3 $< 5, s) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], 3 @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], false, s)
+If(3 $< 5, [1, 2, 3], false, s) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], false, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 7 < 5, s)
+If(3 $< 5, [1, 2, 3], 7 $< 5, s) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], 7 @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], n < 5, s)
+If(3 $< 5, [1, 2, 3], n $< 5, s) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], n @< 5, s)
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], true , s)
+If(false, [1, 2, 3], true, s) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], true, s)
+Reducer: (0, *) s
+###
+> If(false, [1,2,3], 3 < 5, s)
+If(false, [1, 2, 3], 3 $< 5, s) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], 3 @< 5, s)
+Reducer: (0, *) s
+###
+> If(false, [1,2,3], false, s)
+If(false, [1, 2, 3], false, s) : i8*
+Binder : (0, 0) If*(false, [1, 2, 3], false, s)
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], 7 < 5, s)
+If(false, [1, 2, 3], 7 $< 5, s) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], 7 @< 5, s)
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], n < 5, s)
+If(false, [1, 2, 3], n $< 5, s) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], n @< 5, s)
+Reducer: (0, *) If(n @< 5, s, null)
+###
+> If(7 < 5, [1,2,3], true , s)
+If(7 $< 5, [1, 2, 3], true, s) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], true, s)
+Reducer: (0, *) s
+###
+> If(7 < 5, [1,2,3], 3 < 5, s)
+If(7 $< 5, [1, 2, 3], 3 $< 5, s) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], 3 @< 5, s)
+Reducer: (0, *) s
+###
+> If(7 < 5, [1,2,3], false, s)
+If(7 $< 5, [1, 2, 3], false, s) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], false, s)
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], 7 < 5, s)
+If(7 $< 5, [1, 2, 3], 7 $< 5, s) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], 7 @< 5, s)
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], n < 5, s)
+If(7 $< 5, [1, 2, 3], n $< 5, s) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], n @< 5, s)
+Reducer: (0, *) If(n @< 5, s, null)
+###
+> If(n < 5, [1,2,3], true , s)
+If(n $< 5, [1, 2, 3], true, s) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], true, s)
+Reducer: (0, *) If(n @< 5, [1, 2, 3], s)
+###
+> If(n < 5, [1,2,3], 3 < 5, s)
+If(n $< 5, [1, 2, 3], 3 $< 5, s) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], 3 @< 5, s)
+Reducer: (0, *) If(n @< 5, [1, 2, 3], s)
+###
+> If(n < 5, [1,2,3], false, s)
+If(n $< 5, [1, 2, 3], false, s) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], false, s)
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], 7 < 5, s)
+If(n $< 5, [1, 2, 3], 7 $< 5, s) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], 7 @< 5, s)
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], n < 5, s)
+If(n $< 5, [1, 2, 3], n $< 5, s) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], n @< 5, s)
+Reducer: (0, *) If(n @< 5, [1, 2, 3], If(n @< 5, s, null))
+###
+> If(true , [1,2,3], true , s ++ Range(17))
+If(true, [1, 2, 3], true, s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], true, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 3 < 5, s ++ Range(17))
+If(true, [1, 2, 3], 3 $< 5, s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 3 @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], false, s ++ Range(17))
+If(true, [1, 2, 3], false, s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], false, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], 7 < 5, s ++ Range(17))
+If(true, [1, 2, 3], 7 $< 5, s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], 7 @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(true , [1,2,3], n < 5, s ++ Range(17))
+If(true, [1, 2, 3], n $< 5, s ++ Range(17)) : i8*
+Binder : (3, 3) If*(true, [1, 2, 3], n @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], true , s ++ Range(17))
+If(3 $< 5, [1, 2, 3], true, s ++ Range(17)) : i8*
+Binder : (3, *) If*(3 @< 5, [1, 2, 3], true, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 3 < 5, s ++ Range(17))
+If(3 $< 5, [1, 2, 3], 3 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], 3 @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], false, s ++ Range(17))
+If(3 $< 5, [1, 2, 3], false, s ++ Range(17)) : i8*
+Binder : (0, 3) If*(3 @< 5, [1, 2, 3], false, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], 7 < 5, s ++ Range(17))
+If(3 $< 5, [1, 2, 3], 7 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], 7 @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(3 < 5, [1,2,3], n < 5, s ++ Range(17))
+If(3 $< 5, [1, 2, 3], n $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(3 @< 5, [1, 2, 3], n @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, 3) [1, 2, 3]
+###
+> If(false, [1,2,3], true , s ++ Range(17))
+If(false, [1, 2, 3], true, s ++ Range(17)) : i8*
+Binder : (17, *) If*(false, [1, 2, 3], true, SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(false, [1,2,3], 3 < 5, s ++ Range(17))
+If(false, [1, 2, 3], 3 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], 3 @< 5, SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(false, [1,2,3], false, s ++ Range(17))
+If(false, [1, 2, 3], false, s ++ Range(17)) : i8*
+Binder : (0, 0) If*(false, [1, 2, 3], false, SeqConcat(s, Range(17)))
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], 7 < 5, s ++ Range(17))
+If(false, [1, 2, 3], 7 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], 7 @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, 0) null
+###
+> If(false, [1,2,3], n < 5, s ++ Range(17))
+If(false, [1, 2, 3], n $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(false, [1, 2, 3], n @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, *) If(n @< 5, SeqConcat(s, Range(17)), null)
+###
+> If(7 < 5, [1,2,3], true , s ++ Range(17))
+If(7 $< 5, [1, 2, 3], true, s ++ Range(17)) : i8*
+Binder : (3, *) If*(7 @< 5, [1, 2, 3], true, SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(7 < 5, [1,2,3], 3 < 5, s ++ Range(17))
+If(7 $< 5, [1, 2, 3], 3 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], 3 @< 5, SeqConcat(s, Range(17)))
+Reducer: (17, *) SeqConcat(s, Range(17))
+###
+> If(7 < 5, [1,2,3], false, s ++ Range(17))
+If(7 $< 5, [1, 2, 3], false, s ++ Range(17)) : i8*
+Binder : (0, 3) If*(7 @< 5, [1, 2, 3], false, SeqConcat(s, Range(17)))
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], 7 < 5, s ++ Range(17))
+If(7 $< 5, [1, 2, 3], 7 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], 7 @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, 0) null
+###
+> If(7 < 5, [1,2,3], n < 5, s ++ Range(17))
+If(7 $< 5, [1, 2, 3], n $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(7 @< 5, [1, 2, 3], n @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, *) If(n @< 5, SeqConcat(s, Range(17)), null)
+###
+> If(n < 5, [1,2,3], true , s ++ Range(17))
+If(n $< 5, [1, 2, 3], true, s ++ Range(17)) : i8*
+Binder : (3, *) If*(n @< 5, [1, 2, 3], true, SeqConcat(s, Range(17)))
+Reducer: (3, *) If(n @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+###
+> If(n < 5, [1,2,3], 3 < 5, s ++ Range(17))
+If(n $< 5, [1, 2, 3], 3 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], 3 @< 5, SeqConcat(s, Range(17)))
+Reducer: (3, *) If(n @< 5, [1, 2, 3], SeqConcat(s, Range(17)))
+###
+> If(n < 5, [1,2,3], false, s ++ Range(17))
+If(n $< 5, [1, 2, 3], false, s ++ Range(17)) : i8*
+Binder : (0, 3) If*(n @< 5, [1, 2, 3], false, SeqConcat(s, Range(17)))
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], 7 < 5, s ++ Range(17))
+If(n $< 5, [1, 2, 3], 7 $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], 7 @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, 3) If(n @< 5, [1, 2, 3], null)
+###
+> If(n < 5, [1,2,3], n < 5, s ++ Range(17))
+If(n $< 5, [1, 2, 3], n $< 5, s ++ Range(17)) : i8*
+Binder : (0, *) If*(n @< 5, [1, 2, 3], n @< 5, SeqConcat(s, Range(17)))
+Reducer: (0, *) If(n @< 5, [1, 2, 3], If(n @< 5, SeqConcat(s, Range(17)), null))
+###
+> With(x: Range(10), x if b else -x)
+With(x : Range(10), x if b else -x) : i8*
+Binder : (0, *) With(!1: Range(10), If(b, !1, ForEach(*2: !1, Add([-] *2))))
+###

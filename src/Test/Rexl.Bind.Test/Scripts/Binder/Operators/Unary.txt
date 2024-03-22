@@ -1,0 +1,737 @@
+:: {g:g, v:v, o:o, s:s, b:b, qb:b?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+// *** Some constants, to warm up on.
+
+12345
+12345f
+12345U
+255
+255u
+
+1234.5
+123.45
+123e45
+
+true
+false
+"hello"
+null
+
+// *** Negation/posation on literals.
++2u
+-1
+--1
+---1
+----1
+-null
++true
+-true
++"hello" // type error
+-"hello" // type error
+--null
+--true
+--"hello" // type error
+
+-0x80i1
+-0x8000i2
+-0x80000000i4
+-0x8000000000000000i8
+
+-0b1000_0000i1
+-0b1000_0000_0000_0000i2
+-0b1000_0000_0000_0000_0000_0000_0000_0000i4
+-0b1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000i8
+
+// These are special cased to avoid generating warnings.
+-128i1
+-32768i2
+-2147483648i4
+-9223372036854775808i8
+
+// These produce i2, i4, i8, i8, respectively.
+-128u1
+-32768u2
+-2147483648u4
+-9223372036854775808u8
+
+// These are all i8.
+-128
+-32768
+-2147483648
+-9223372036854775808
+
+// *** Not on literals.
+not true
+not not not true
+not false
+not not not false
+! true
+!null
+! 3 // type error
+not - 7 // type error
+! "bye" // type error
+
+// *** Percent on literals.
+10%
+-10%
+10%%
+10%%%%%%
+null%
+true%
+false%
+
+// *** Bitwise negation.
+~0x55i1
+~0x7Fi1
+~0xFFi1
+~0x80i1
+~0x55u1
+~0x7Fu1
+~0xFFu1
+~0x80u1
+~~0x55i1
+~~0x7Fi1
+~~0xFFi1
+~~0x80i1
+~~0x55u1
+~~0x7Fu1
+~~0xFFu1
+~~0x80u1
+
+~0x5555i2
+~0x7FFFi2
+~0xFFFFi2
+~0x8000i2
+~0x5555u2
+~0x7FFFu2
+~0xFFFFu2
+~0x8000u2
+~~0x5555i2
+~~0x7FFFi2
+~~0xFFFFi2
+~~0x8000i2
+~~0x5555u2
+~~0x7FFFu2
+~~0xFFFFu2
+~~0x8000u2
+
+~0x55555555i4
+~0x7FFFFFFFi4
+~0xFFFFFFFFi4
+~0x80000000i4
+~0x55555555u4
+~0x7FFFFFFFu4
+~0xFFFFFFFFu4
+~0x80000000u4
+~~0x55555555i4
+~~0x7FFFFFFFi4
+~~0xFFFFFFFFi4
+~~0x80000000i4
+~~0x55555555u4
+~~0x7FFFFFFFu4
+~~0xFFFFFFFFu4
+~~0x80000000u4
+
+~0x5555555555555555i8
+~0x7FFFFFFFFFFFFFFFi8
+~0xFFFFFFFFFFFFFFFFi8
+~0x8000000000000000i8
+~0x5555555555555555u8
+~0x7FFFFFFFFFFFFFFFu8
+~0xFFFFFFFFFFFFFFFFu8
+~0x8000000000000000u8
+~~0x5555555555555555i8
+~~0x7FFFFFFFFFFFFFFFi8
+~~0xFFFFFFFFFFFFFFFFi8
+~~0x8000000000000000i8
+~~0x5555555555555555u8
+~~0x7FFFFFFFFFFFFFFFu8
+~~0xFFFFFFFFFFFFFFFFu8
+~~0x8000000000000000u8
+
+~0u8
+~0u4
+~0u2
+~0u1
+bnot 0u8
+bnot 0u4
+bnot 0u2
+bnot 0u1
+
+// Precedence is different.
+bnot 3 + 12
+   ~ 3 + 12
+4 + bnot 3 + 12 // Error
+4 +    ~ 3 + 12 // OK
+
+// *** Negation on names.
+
+-g
+-v
+-o
+-s
+-b
+-n
+-r8
+-r4
+-i
+-i8
+-i4
+-i2
+-i1
+-u8
+-u4
+-u2
+-u1
+
++g
++v
++o
++s
++b
++n
++r8
++r4
++i
++i8
++i4
++i2
++i1
++u8
++u4
++u2
++u1
+
+--g
+--v
+--o
+--s
+--b
+--n
+--r8
+--r4
+--i
+--i8
+--i4
+--i2
+--i1
+--u8
+--u4
+--u2
+--u1
+
+---g
+---v
+---o
+---s
+---b
+---n
+---r8
+---r4
+---i
+---i8
+---i4
+---i2
+---i1
+---u8
+---u4
+---u2
+---u1
+
+-qb
+-qn
+-qr8
+-qr4
+-qi
+-qi8
+-qi4
+-qi2
+-qi1
+-qu8
+-qu4
+-qu2
+-qu1
+
+--qb
+--qn
+--qr8
+--qr4
+--qi
+--qi8
+--qi4
+--qi2
+--qi1
+--qu8
+--qu4
+--qu2
+--qu1
+
+---qb
+---qn
+---qr8
+---qr4
+---qi
+---qi8
+---qi4
+---qi2
+---qi1
+---qu8
+---qu4
+---qu2
+---qu1
+
+// *** Not on names.
+not b
+not not b
+not not not b
+not qb
+not not qb
+not not not qb
+not (not (not b))
+not (not (not (b)))
+!!!qb
+
+not g // type error
+not v
+not o
+not s // type error
+not n // type error
+not i // type error
+not qn // type error
+not qi // type error
+
+not not g // type error
+not not v
+not not o
+not not s // type error
+not not n // type error
+not not i // type error
+not not qn // type error
+not not qi // type error
+
+not not not g // type error
+not not not v
+not not not o
+not not not s // type error
+not not not n // type error
+not not not i // type error
+not not not qn // type error
+not not not qi // type error
+
+// ! vs not
+  ! b < b
+not b < b
+
+// *** Percent on names.
+
+g %
+v %
+o %
+s %
+b %
+n %
+r8%
+r4%
+i %
+i8%
+i4%
+i2%
+i1%
+u8%
+u4%
+u2%
+u1%
+
+g %%
+v %%
+o %%
+s %%
+b %%
+n %%
+r8%%
+r4%%
+i %%
+i8%%
+i4%%
+i2%%
+i1%%
+u8%%
+u4%%
+u2%%
+u1%%
+
+-g %
+-v %
+-o %
+-s %
+-b %
+-n %
+-r8%
+-r4%
+-i %
+-i8%
+-i4%
+-i2%
+-i1%
+-u8%
+-u4%
+-u2%
+-u1%
+
+-g %%
+-v %%
+-o %%
+-s %%
+-b %%
+-n %%
+-r8%%
+-r4%%
+-i %%
+-i8%%
+-i4%%
+-i2%%
+-i1%%
+-u8%%
+-u4%%
+-u2%%
+-u1%%
+
+--g %%
+--v %%
+--o %%
+--s %%
+--b %%
+--n %%
+--r8%%
+--r4%%
+--i %%
+--i8%%
+--i4%%
+--i2%%
+--i1%%
+--u8%%
+--u4%%
+--u2%%
+--u1%%
+
+qb %
+qn %
+qr8%
+qr4%
+qi %
+qi8%
+qi4%
+qi2%
+qi1%
+qu8%
+qu4%
+qu2%
+qu1%
+
+qb %%
+qn %%
+qr8%%
+qr4%%
+qi %%
+qi8%%
+qi4%%
+qi2%%
+qi1%%
+qu8%%
+qu4%%
+qu2%%
+qu1%%
+
+-qb %
+-qn %
+-qr8%
+-qr4%
+-qi %
+-qi8%
+-qi4%
+-qi2%
+-qi1%
+-qu8%
+-qu4%
+-qu2%
+-qu1%
+
+-qb %%
+-qn %%
+-qr8%%
+-qr4%%
+-qi %%
+-qi8%%
+-qi4%%
+-qi2%%
+-qi1%%
+-qu8%%
+-qu4%%
+-qu2%%
+-qu1%%
+
+--qb %%
+--qn %%
+--qr8%%
+--qr4%%
+--qi %%
+--qi8%%
+--qi4%%
+--qi2%%
+--qi1%%
+--qu8%%
+--qu4%%
+--qu2%%
+--qu1%%
+
+// *** Bitwise.
+~g
+~v
+~o
+~s
+~b
+~n
+~r8
+~r4
+~i
+~i8
+~i4
+~i2
+~i1
+~u8
+~u4
+~u2
+~u1
+~~g
+~~v
+~~o
+~~s
+~~b
+~~n
+~~r8
+~~r4
+~~i
+~~i8
+~~i4
+~~i2
+~~i1
+~~u8
+~~u4
+~~u2
+~~u1
+
+// ~ vs bnot
+   ~ i4 + i8
+bnot i4 + i8
+
+// *** Lifting
+:: {g:g*, v:v*, o:o*, s:s*, b:b*, qb:b?*, n:n*, qn:n?*, r8:r8*, qr8:r8?*, r4:r4*, qr4:r4?*, i:i*, qi:i?*, i8:i8*, qi8:i8?*, i4:i4*, qi4:i4?*, i2:i2*, qi2:i2?*, i1:i1*, qi1:i1?*, u8:u8*, qu8:u8?*, u4:u4*, qu4:u4?*, u2:u2*, qu2:u2?*, u1:u1*, qu1:u1?*}
+
+-g
+-v
+-o
+-s
+-b
+-n
+-r8
+-r4
+-i
+-i8
+-i4
+-i2
+-i1
+-u8
+-u4
+-u2
+-u1
+
++g
++v
++o
++s
++b
++n
++r8
++r4
++i
++i8
++i4
++i2
++i1
++u8
++u4
++u2
++u1
+
+-qb
+-qn
+-qr8
+-qr4
+-qi
+-qi8
+-qi4
+-qi2
+-qi1
+-qu8
+-qu4
+-qu2
+-qu1
+
+--g
+--v
+--o
+--s
+--b
+--n
+--r8
+--r4
+--i
+--i8
+--i4
+--i2
+--i1
+--u8
+--u4
+--u2
+--u1
+
+--qb
+--qn
+--qr8
+--qr4
+--qi
+--qi8
+--qi4
+--qi2
+--qi1
+--qu8
+--qu4
+--qu2
+--qu1
+
+not g // type error
+not v
+not o
+not s // type error
+not b
+not n // type error
+not i // type error
+not qb
+not qn // type error
+not qi // type error
+
+not not g // type error
+not not v
+not not o
+not not s // type error
+not not b
+not not n // type error
+not not i // type error
+not not qb
+not not qn // type error
+not not qi // type error
+
+// Precedence is different.
+not ! b
+! not b
+not qb ++ b
+  ! qb ++ b
+b ++ not qb ++ b // Error
+b ++   ! qb ++ b // OK
+
+g %
+v %
+o %
+s %
+b %
+n %
+r8%
+r4%
+i %
+i8%
+i4%
+i2%
+i1%
+u8%
+u4%
+u2%
+u1%
+
+qb %
+qn %
+qr8%
+qr4%
+qi %
+qi8%
+qi4%
+qi2%
+qi1%
+qu8%
+qu4%
+qu2%
+qu1%
+
+// *** Bitwise.
+~g
+~v
+~o
+~s
+~b
+~n
+~r8
+~r4
+~i
+~i8
+~i4
+~i2
+~i1
+~u8
+~u4
+~u2
+~u1
+~~g
+~~v
+~~o
+~~s
+~~b
+~~n
+~~r8
+~~r4
+~~i
+~~i8
+~~i4
+~~i2
+~~i1
+~~u8
+~~u4
+~~u2
+~~u1
+
+// Precedence is different.
+bnot ~ i4
+~ bnot i4
+bnot i4 + i8
+   ~ i4 + i8
+i2 + bnot i4 + i8 // Error
+i2 +    ~ i4 + i8 // OK
+
+// *** Guarded
+:: {T:{B:b, QB:b?, I4:i4, QI4:i4?}?*}
+
+not T.B
+not T.QB
+not not T.B
+not not T.QB
+
+-T.I4
+-T.QI4
+--T.I4
+--T.QI4
+
+~T.I4
+~T.QI4
+~~T.I4
+~~T.QI4
+
+T.I4%
+T.QI4%

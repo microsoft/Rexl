@@ -1,0 +1,182 @@
+>>> *** Source:
+    function F(x) := Abs(x);
+    function G(x) := x + F(x);
+    function H(x) := x max false;
+    S := Range(-5, 6);
+    S->ForEach(F(it));
+    S->ForEach(G(it));
+    S->ForEach(H(it));
+    S->ForEach(G(it) - 2 * H(it));
+    func F(x) := x * x;
+    S->ForEach(F(it));
+    S->ForEach(G(it));
+    S->ForEach(H(it));
+    S->ForEach(G(it) - 2 * H(it));
+    func F(x) := _;
+    S->ForEach(F(it));
+    S->ForEach(G(it));
+    S->ForEach(H(it));
+    S->ForEach(G(it) - 2 * H(it));
+
+>>> *** Instructions:
+   0) [0] DefineFunc F(x) <- Abs(x)
+   1) [0] DefineFunc G(x) <- x + F(x)
+   2) [0] DefineFunc H(x) <- x max false
+   3) [0] Define S <- Range(-5, 6)
+   4) [0] Expr S->ForEach(F(it))
+   5) [0] Expr S->ForEach(G(it))
+   6) [0] Expr S->ForEach(H(it))
+   7) [0] Expr S->ForEach(G(it) - 2 * H(it))
+   8) [0] DefineFunc F(x) <- x * x
+   9) [0] Expr S->ForEach(F(it))
+  10) [0] Expr S->ForEach(G(it))
+  11) [0] Expr S->ForEach(H(it))
+  12) [0] Expr S->ForEach(G(it) - 2 * H(it))
+  13) [0] DefineFunc F(x) <- _
+  14) [0] Expr S->ForEach(F(it))
+  15) [0] Expr S->ForEach(G(it))
+  16) [0] Expr S->ForEach(H(it))
+  17) [0] Expr S->ForEach(G(it) - 2 * H(it))
+  18) [0] End
+
+>    0) [0] DefineFunc F(x) <- Abs(x)
+UDF 'F' has arity 1
+>    1) [0] DefineFunc G(x) <- x + F(x)
+UDF 'G' has arity 1
+>    2) [0] DefineFunc H(x) <- x max false
+UDF 'H' has arity 1
+>    3) [0] Define S <- Range(-5, 6)
+Global 'S' has DType: i8*, SysType: Seq<i8>
+>    4) [0] Expr S->ForEach(F(it))
+Seq<i8>
+   0) 5
+   1) 4
+   2) 3
+   3) 2
+   4) 1
+   5) 0
+   6) 1
+   7) 2
+   8) 3
+   9) 4
+  10) 5
+>    5) [0] Expr S->ForEach(G(it))
+Seq<i8>
+   0) 0
+   1) 0
+   2) 0
+   3) 0
+   4) 0
+   5) 0
+   6) 2
+   7) 4
+   8) 6
+   9) 8
+  10) 10
+>    6) [0] Expr S->ForEach(H(it))
+Seq<i8>
+   0) 0
+   1) 0
+   2) 0
+   3) 0
+   4) 0
+   5) 0
+   6) 1
+   7) 2
+   8) 3
+   9) 4
+  10) 5
+>    7) [0] Expr S->ForEach(G(it) - 2 * H(it))
+Seq<i8>
+   0) 0
+   1) 0
+   2) 0
+   3) 0
+   4) 0
+   5) 0
+   6) 0
+   7) 0
+   8) 0
+   9) 0
+  10) 0
+>    8) [0] DefineFunc F(x) <- x * x
+Overwriting UDF: F
+UDF 'F' has arity 1
+>    9) [0] Expr S->ForEach(F(it))
+Seq<i8>
+   0) 25
+   1) 16
+   2) 9
+   3) 4
+   4) 1
+   5) 0
+   6) 1
+   7) 4
+   8) 9
+   9) 16
+  10) 25
+>   10) [0] Expr S->ForEach(G(it))
+Seq<i8>
+   0) 20
+   1) 12
+   2) 6
+   3) 2
+   4) 0
+   5) 0
+   6) 2
+   7) 6
+   8) 12
+   9) 20
+  10) 30
+>   11) [0] Expr S->ForEach(H(it))
+Seq<i8>
+   0) 0
+   1) 0
+   2) 0
+   3) 0
+   4) 0
+   5) 0
+   6) 1
+   7) 2
+   8) 3
+   9) 4
+  10) 5
+>   12) [0] Expr S->ForEach(G(it) - 2 * H(it))
+Seq<i8>
+   0) 20
+   1) 12
+   2) 6
+   3) 2
+   4) 0
+   5) 0
+   6) 0
+   7) 2
+   8) 6
+   9) 12
+  10) 20
+>   13) [0] DefineFunc F(x) <- _
+Deleting UDF: F
+>   14) [0] Expr S->ForEach(F(it))
+*** Bind diagnostics:
+  [Redefine.txt] Error: (330,331) Node: F(it), Message: Invocation of unknown or unsupported function
+>   15) [0] Expr S->ForEach(G(it))
+*** Bind diagnostics:
+  [Redefine.txt] Error: (47,48) Node: F(x), Message: Invocation of unknown or unsupported function
+>   16) [0] Expr S->ForEach(H(it))
+Seq<i8>
+   0) 0
+   1) 0
+   2) 0
+   3) 0
+   4) 0
+   5) 0
+   6) 1
+   7) 2
+   8) 3
+   9) 4
+  10) 5
+>   17) [0] Expr S->ForEach(G(it) - 2 * H(it))
+*** Bind diagnostics:
+  [Redefine.txt] Error: (47,48) Node: F(x), Message: Invocation of unknown or unsupported function
+>   18) [0] End
+

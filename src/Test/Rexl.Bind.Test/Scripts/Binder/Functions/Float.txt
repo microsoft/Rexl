@@ -1,0 +1,244 @@
+﻿:: {s:s, b:b, qb:b?, d:d, qd:d?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, ia:ia, qia:ia?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+Float.IsNaN(s)
+Float.IsNaN(d)
+Float.IsNaN(r8)
+Float.IsNaN(r4)
+Float.IsNaN(ia)
+Float.IsNaN(i8)
+Float.IsNaN(qd)
+Float.IsNaN(qr8)
+Float.IsNaN(qr4)
+Float.IsNaN(qia)
+Float.IsNaN(qi8)
+
+Float.IsNotNaN(s)
+Float.IsNotNaN(d)
+Float.IsNotNaN(r8)
+Float.IsNotNaN(r4)
+Float.IsNotNaN(ia)
+Float.IsNotNaN(i8)
+Float.IsNotNaN(qd)
+Float.IsNotNaN(qr8)
+Float.IsNotNaN(qr4)
+Float.IsNotNaN(qia)
+Float.IsNotNaN(qi8)
+
+Float.Bits(s)
+Float.Bits(d)
+Float.Bits(r8)
+Float.Bits(r4)
+Float.Bits(ia)
+Float.Bits(i8)
+Float.Bits(qd)
+Float.Bits(qr8)
+Float.Bits(qr4)
+Float.Bits(qia)
+Float.Bits(qi8)
+
+Float.FromBits(s)
+Float.FromBits(d)
+Float.FromBits(r8)
+Float.FromBits(r4)
+Float.FromBits(ia)
+Float.FromBits(i8)
+Float.FromBits(i4)
+Float.FromBits(i2)
+Float.FromBits(i1)
+Float.FromBits(u8)
+Float.FromBits(u4)
+Float.FromBits(u2)
+Float.FromBits(u1)
+Float.FromBits(b)
+Float.FromBits(qd)
+Float.FromBits(qr8)
+Float.FromBits(qr4)
+Float.FromBits(qia)
+Float.FromBits(qi8)
+Float.FromBits(qi4)
+Float.FromBits(qi2)
+Float.FromBits(qi1)
+Float.FromBits(qu8)
+Float.FromBits(qu4)
+Float.FromBits(qu2)
+Float.FromBits(qu1)
+Float.FromBits(qb)
+
+r8.IsNaN
+r4.IsNaN
+ia.IsNaN
+i8.IsNaN
+qr8.IsNaN
+qr4.IsNaN
+qia.IsNaN
+qi8.IsNaN
+
+r8.IsNotNaN
+r4.IsNotNaN
+ia.IsNotNaN
+i8.IsNotNaN
+qr8.IsNotNaN
+qr4.IsNotNaN
+qia.IsNotNaN
+qi8.IsNotNaN
+
+r8.Bits
+r4.Bits
+ia.Bits
+i8.Bits
+qr8.Bits
+qr4.Bits
+qia.Bits
+qi8.Bits
+
+// Reduction.
+
+0r8.IsNaN
+0r4.IsNaN
+1r8.IsNaN
+1r4.IsNaN
+(1r8/0).IsNaN
+(1r4/0).IsNaN
+(0r8/0).IsNaN
+(0r4/0).IsNaN // Promotes to R8. REVIEW: Should this promote?
+CastR4(0/0).IsNaN
+
+0r8.IsNotNaN
+0r4.IsNotNaN
+1r8.IsNotNaN
+1r4.IsNotNaN
+(1r8/0).IsNotNaN
+(1r4/0).IsNotNaN
+(0r8/0).IsNotNaN
+(0r4/0).IsNotNaN // Promotes to R8. REVIEW: Should this promote?
+CastR4(0/0).IsNotNaN
+
+0r8.Bits.Hex
+0r4.Bits.Hex
+1r8.Bits.Hex
+1r4.Bits.Hex
+3.5r8.Bits.Hex
+3.5r4.Bits.Hex
+(1r8/0).Bits.Hex
+(1r4/0).Bits.Hex
+(0r8/0).Bits.Hex
+(0r4/0).Bits.Hex // Promotes to R8. REVIEW: Should this promote?
+CastR4(0r/0).Bits.Hex
+
+(-0r8).IsNaN
+(-0r4).IsNaN
+(-1r8).IsNaN
+(-1r4).IsNaN
+(-1r8/0).IsNaN
+(-1r4/0).IsNaN
+(-(0r8/0)).IsNaN
+(-(0r4/0)).IsNaN // Promotes to R8. REVIEW: Should this promote?
+CastR4(-(0r/0)).IsNaN
+
+(-0r8).IsNotNaN
+(-0r4).IsNotNaN
+(-1r8).IsNotNaN
+(-1r4).IsNotNaN
+(-1r8/0).IsNotNaN
+(-1r4/0).IsNotNaN
+(-(0r8/0)).IsNotNaN
+(-(0r4/0)).IsNotNaN // Promotes to R8. REVIEW: Should this promote?
+CastR4(-(0r/0)).IsNotNaN
+
+(-0r8).Bits.Hex
+(-0r4).Bits.Hex
+(-1r8).Bits.Hex
+(-1r4).Bits.Hex
+(-3.5r8).Bits.Hex
+(-3.5r4).Bits.Hex
+(-1r8/0).Bits.Hex
+(-1r4/0).Bits.Hex
+(-(0r8/0)).Bits.Hex
+(-(0r4/0)).Bits.Hex // Promotes to R8. REVIEW: Should this promote?
+CastR4(-(0r/0)).Bits.Hex
+
+Float.FromBits(0)
+Float.FromBits(0x3FF shl 52)
+Float.FromBits(0x7FF shl 52)
+Float.FromBits(0x7FF shl 52 bor 1)
+
+Float.FromBits(0i4)
+Float.FromBits(0x7Fi4 shl 23)
+Float.FromBits(0xFFi4 shl 23)
+Float.FromBits(0xFFi4 shl 23 bor 1i4)
+
+Float.FromBits((0) bor (1 shl 63))
+Float.FromBits((0x3FF shl 52) bor (1 shl 63))
+Float.FromBits((0x7FF shl 52) bor (1 shl 63))
+Float.FromBits((0x7FF shl 52 bor 1) bor (1 shl 63))
+
+Float.FromBits((0i4) bor (1i4 shl 31))
+Float.FromBits((0x7Fi4 shl 23) bor (1i4 shl 31))
+Float.FromBits((0xFFi4 shl 23) bor (1i4 shl 31))
+Float.FromBits((0xFFi4 shl 23 bor 1i4) bor (1i4 shl 31))
+
+// Lifting.
+:: {s:s*, b:b*, qb:b?*, d:d*, qd:d?*, r8:r8*, qr8:r8?*, r4:r4*, qr4:r4?*, ia:ia*, qia:ia?*, i8:i8*, qi8:i8?*, i4:i4*, qi4:i4?*, i2:i2*, qi2:i2?*, i1:i1*, qi1:i1?*, u8:u8*, qu8:u8?*, u4:u4*, qu4:u4?*, u2:u2*, qu2:u2?*, u1:u1*, qu1:u1?*}
+
+Float.IsNaN(s)
+Float.IsNaN(d)
+Float.IsNaN(r8)
+Float.IsNaN(r4)
+Float.IsNaN(ia)
+Float.IsNaN(i8)
+Float.IsNaN(qd)
+Float.IsNaN(qr8)
+Float.IsNaN(qr4)
+Float.IsNaN(qia)
+Float.IsNaN(qi8)
+
+Float.IsNotNaN(s)
+Float.IsNotNaN(d)
+Float.IsNotNaN(r8)
+Float.IsNotNaN(r4)
+Float.IsNotNaN(ia)
+Float.IsNotNaN(i8)
+Float.IsNotNaN(qd)
+Float.IsNotNaN(qr8)
+Float.IsNotNaN(qr4)
+Float.IsNotNaN(qia)
+Float.IsNotNaN(qi8)
+
+Float.Bits(s)
+Float.Bits(d)
+Float.Bits(r8)
+Float.Bits(r4)
+Float.Bits(ia)
+Float.Bits(i8)
+Float.Bits(qd)
+Float.Bits(qr8)
+Float.Bits(qr4)
+Float.Bits(qia)
+Float.Bits(qi8)
+
+r8.IsNaN
+r4.IsNaN
+ia.IsNaN
+i8.IsNaN
+qr8.IsNaN
+qr4.IsNaN
+qia.IsNaN
+qi8.IsNaN
+
+r8.IsNotNaN
+r4.IsNotNaN
+ia.IsNotNaN
+i8.IsNotNaN
+qr8.IsNotNaN
+qr4.IsNotNaN
+qia.IsNotNaN
+qi8.IsNotNaN
+
+r8.Bits
+r4.Bits
+ia.Bits
+i8.Bits
+qr8.Bits
+qr4.Bits
+qia.Bits
+qi8.Bits

@@ -1,0 +1,5139 @@
+**** New definitions: T_0, type: i8[*]
+**** New definitions: T_12, type: i8[*]
+**** New definitions: T_3_4, type: i8[*,*]
+**** New definitions: T_2_3_2, type: i8[*,*,*]
+**** New definitions: T_2_3_1_2, type: i8[*,*,*,*]
+**** New definitions: T_2_1_3_1_2, type: i8[*,*,*,*,*]
+**** New definitions: N0, type: i8
+**** New definitions: N1, type: i8
+**** New definitions: N2, type: i8
+**** New definitions: N3, type: i8
+**** New definitions: N4, type: i8
+**** New definitions: N9, type: i8
+
+> With(t: T_0, (t, t->Transpose()))
+With(t : T_0, (t, t->Transpose())) : (i8[*], i8[*])
+BndKind:Tuple, Type:(i8[*], i8[*]), Bnd:((Global(T_0), Global(T_0)):(i8[*], i8[*]))
+Func sig: (T_0:i8[*]) to (i8[*], i8[*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(0)<0> [],
+    Ten<i8>(0)<0> [])
+###
+> With(t: T_12, (t, t->Transpose()))
+With(t : T_12, (t, t->Transpose())) : (i8[*], i8[*])
+BndKind:Tuple, Type:(i8[*], i8[*]), Bnd:((Global(T_12), Global(T_12)):(i8[*], i8[*]))
+Func sig: (T_12:i8[*]) to (i8[*], i8[*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(12)<1> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    Ten<i8>(12)<1> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+###
+> With(t: T_3_4, (t, t->Transpose()))
+With(t : T_3_4, (t, t->Transpose())) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4)):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose()))
+With(t : T_2_3_2, (t, t->Transpose())) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<1,2,6>
+      [[[0, 6]
+        [2, 8]
+        [4, 10]]
+
+       [[1, 7]
+        [3, 9]
+        [5, 11]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose()))
+With(t : T_2_3_1_2, (t, t->Transpose())) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*]) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 0, 1))) // *** Identity
+With(t : T_3_4, (t, t->Transpose(0, 1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Global(T_3_4)):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 0, 0)))
+With(t : T_3_4, (t, t->Transpose(0, 0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 0:i8, 0:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (36,37) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 9, 1)))
+With(t : T_3_4, (t, t->Transpose(9, 1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 9:i8, 1:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (33,34) Node: 9, Message: The number should be at least 0 and less than 2
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose(N0, 1)))
+With(t : T_3_4, (t, t->Transpose(N0, 1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), Global(N0), 1:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*], N0:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose(N0, 0)))
+With(t : T_3_4, (t, t->Transpose(N0, 0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), Global(N0), 0:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*], N0:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose(N0, 9)))
+With(t : T_3_4, (t, t->Transpose(N0, 9))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), Global(N0), 9:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (36,37) Node: 9, Message: The number should be at least 0 and less than 2
+Func sig: (T_3_4:i8[*,*], N0:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose(N9, 1)))
+With(t : T_3_4, (t, t->Transpose(N9, 1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), Global(N9), 1:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*], N9:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 1, 0))) // *** Reverse
+With(t : T_3_4, (t, t->Transpose(1, 0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 1:i8, 0:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 1, 1)))
+With(t : T_3_4, (t, t->Transpose(1, 1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 1:i8, 1:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (36,37) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 9, 0)))
+With(t : T_3_4, (t, t->Transpose(9, 0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 9:i8, 0:i8):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (33,34) Node: 9, Message: The number should be at least 0 and less than 2
+Func sig: (T_3_4:i8[*,*]) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 1,N0)))
+With(t : T_3_4, (t, t->Transpose(1, N0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 1:i8, Global(N0)):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*], N0:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 1,N1)))
+With(t : T_3_4, (t, t->Transpose(1, N1))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 1:i8, Global(N1)):i8[*,*])):(i8[*,*], i8[*,*]))
+Func sig: (T_3_4:i8[*,*], N1:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_3_4, (t, t->Transpose( 9,N0)))
+With(t : T_3_4, (t, t->Transpose(9, N0))) : (i8[*,*], i8[*,*])
+BndKind:Tuple, Type:(i8[*,*], i8[*,*]), Bnd:((Global(T_3_4), Call(∂.Tensor.Transpose(Global(T_3_4), 9:i8, Global(N0)):i8[*,*])):(i8[*,*], i8[*,*]))
+*** Warning: (33,34) Node: 9, Message: The number should be at least 0 and less than 2
+Func sig: (T_3_4:i8[*,*], N0:i8) to (i8[*,*], i8[*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(3,4)<4,1>
+      [[0, 1, 2, 3]
+       [4, 5, 6, 7]
+       [8, 9, 10, 11]]
+  ,
+    Ten<i8>(4,3)<1,4>
+      [[0, 4, 8]
+       [1, 5, 9]
+       [2, 6, 10]
+       [3, 7, 11]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 1, 2))) // *** Identity
+With(t : T_2_3_2, (t, t->Transpose(0, 1, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Global(T_2_3_2)):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 0, 0)))
+With(t : T_2_3_2, (t, t->Transpose(0, 0, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 0:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 0, Message: The 0 axis has already been specified
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 1, 0)))
+With(t : T_2_3_2, (t, t->Transpose(0, 1, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 1:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 1, 1)))
+With(t : T_2_3_2, (t, t->Transpose(0, 1, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 1:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 1, 0)))
+With(t : T_2_3_2, (t, t->Transpose(0, 1, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 1:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(9, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(0, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 1, 9)))
+With(t : T_2_3_2, (t, t->Transpose(0, 1, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 1:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 1, 2)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 1, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 1:i8, 2:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 0, 0)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 0, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 0:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 1, 0)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 1, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 1:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 1, 1)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 1, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 1:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 1, 0)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 1, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 1:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N9, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(N9, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N9), 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N0, 1, 9)))
+With(t : T_2_3_2, (t, t->Transpose(N0, 1, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N0), 1:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 2, 1))) // *** 021
+With(t : T_2_3_2, (t, t->Transpose(0, 2, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 2:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 2, 0)))
+With(t : T_2_3_2, (t, t->Transpose(0, 2, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 2:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 2, 2)))
+With(t : T_2_3_2, (t, t->Transpose(0, 2, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 2:i8, 2:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 2, Message: The 2 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0, 2, 9)))
+With(t : T_2_3_2, (t, t->Transpose(0, 2, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, 2:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 2, 1)))
+With(t : T_2_3_2, (t, t->Transpose(9, 2, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 2:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 2, 9)))
+With(t : T_2_3_2, (t, t->Transpose(9, 2, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 2:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0,N2, 1)))
+With(t : T_2_3_2, (t, t->Transpose(0, N2, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, Global(N2), 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0,N2, 0)))
+With(t : T_2_3_2, (t, t->Transpose(0, N2, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, Global(N2), 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0,N2, 2)))
+With(t : T_2_3_2, (t, t->Transpose(0, N2, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, Global(N2), 2:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 0,N2, 9)))
+With(t : T_2_3_2, (t, t->Transpose(0, N2, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 0:i8, Global(N2), 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9,N2, 1)))
+With(t : T_2_3_2, (t, t->Transpose(9, N2, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, Global(N2), 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9,N2, 9)))
+With(t : T_2_3_2, (t, t->Transpose(9, N2, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, Global(N2), 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<6,1,2>
+      [[[0, 2, 4]
+        [1, 3, 5]]
+
+       [[6, 8, 10]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0, 2))) // *** 102
+With(t : T_2_3_2, (t, t->Transpose(1, 0, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, 2:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 1, 1)))
+With(t : T_2_3_2, (t, t->Transpose(1, 1, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 1:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 1, Message: The 1 axis has already been specified
+*** Warning: (41,42) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0, 0)))
+With(t : T_2_3_2, (t, t->Transpose(1, 0, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 1, 9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 1, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 1:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 1, Message: The 1 axis has already been specified
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0, 9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 0, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 0, 9)))
+With(t : T_2_3_2, (t, t->Transpose(9, 0, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 0:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0,N2)))
+With(t : T_2_3_2, (t, t->Transpose(1, 0, N2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, Global(N2)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 1,N1)))
+With(t : T_2_3_2, (t, t->Transpose(1, 1, N1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 1:i8, Global(N1)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*], N1:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0,N0)))
+With(t : T_2_3_2, (t, t->Transpose(1, 0, N0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, Global(N0)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 9,N9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 9, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 9:i8, Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 1,N9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 1, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 1:i8, Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 1, Message: The 1 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 1, 0,N9)))
+With(t : T_2_3_2, (t, t->Transpose(1, 0, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 1:i8, 0:i8, Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 0,N9)))
+With(t : T_2_3_2, (t, t->Transpose(9, 0, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 0:i8, Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(3,2,2)<2,6,1>
+      [[[0, 1]
+        [6, 7]]
+
+       [[2, 3]
+        [8, 9]]
+
+       [[4, 5]
+        [10, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 0, 1))) // *** 201
+With(t : T_2_3_2, (t, t->Transpose(2, 0, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 0:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 2, 2)))
+With(t : T_2_3_2, (t, t->Transpose(2, 2, 2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 2:i8, 2:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 2, Message: The 2 axis has already been specified
+*** Warning: (41,42) Node: 2, Message: The 2 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 0, 0)))
+With(t : T_2_3_2, (t, t->Transpose(2, 0, 0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 0:i8, 0:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 0, Message: The 0 axis has already been specified
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 9, 9)))
+With(t : T_2_3_2, (t, t->Transpose(2, 9, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 9:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 9, Message: The number should be at least 0 and less than 3
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 2, 9)))
+With(t : T_2_3_2, (t, t->Transpose(2, 2, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 2:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (38,39) Node: 2, Message: The 2 axis has already been specified
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 2, 0, 9)))
+With(t : T_2_3_2, (t, t->Transpose(2, 0, 9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 2:i8, 0:i8, 9:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (41,42) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose( 9, 0, 1)))
+With(t : T_2_3_2, (t, t->Transpose(9, 0, 1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), 9:i8, 0:i8, 1:i8):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+*** Warning: (35,36) Node: 9, Message: The number should be at least 0 and less than 3
+Func sig: (T_2_3_2:i8[*,*,*]) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N0,N1)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N0, N1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N0), Global(N1)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8, N0:i8, N1:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N2,N2)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N2, N2))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N2), Global(N2)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N0,N0)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N0, N0))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N0), Global(N0)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8, N0:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N9,N9)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N9, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N9), Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8, N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N2,N9)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N2, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N2), Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8, N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N2,N0,N9)))
+With(t : T_2_3_2, (t, t->Transpose(N2, N0, N9))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N2), Global(N0), Global(N9)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N2:i8, N0:i8, N9:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_2, (t, t->Transpose(N9,N0,N1)))
+With(t : T_2_3_2, (t, t->Transpose(N9, N0, N1))) : (i8[*,*,*], i8[*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*], i8[*,*,*]), Bnd:((Global(T_2_3_2), Call(∂.Tensor.Transpose(Global(T_2_3_2), Global(N9), Global(N0), Global(N1)):i8[*,*,*])):(i8[*,*,*], i8[*,*,*]))
+Func sig: (T_2_3_2:i8[*,*,*], N9:i8, N0:i8, N1:i8) to (i8[*,*,*], i8[*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,2)<6,2,1>
+      [[[0, 1]
+        [2, 3]
+        [4, 5]]
+
+       [[6, 7]
+        [8, 9]
+        [10, 11]]]
+  ,
+    Ten<i8>(2,2,3)<1,6,2>
+      [[[0, 2, 4]
+        [6, 8, 10]]
+
+       [[1, 3, 5]
+        [7, 9, 11]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 9, 9, 9, 9))) // *** Identity
+With(t : T_2_3_1_2, (t, t->Transpose(9, 9, 9, 9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 9:i8, 9:i8, 9:i8, 9:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+*** Warning: (37,38) Node: 9, Message: The number should be at least 0 and less than 4
+*** Warning: (40,41) Node: 9, Message: The number should be at least 0 and less than 4
+*** Warning: (43,44) Node: 9, Message: The number should be at least 0 and less than 4
+*** Warning: (46,47) Node: 9, Message: The number should be at least 0 and less than 4
+Func sig: (T_2_3_1_2:i8[*,*,*,*]) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 9, 9, 9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 9, 9, 9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 9:i8, 9:i8, 9:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+*** Warning: (40,41) Node: 9, Message: The number should be at least 0 and less than 4
+*** Warning: (43,44) Node: 9, Message: The number should be at least 0 and less than 4
+*** Warning: (46,47) Node: 9, Message: The number should be at least 0 and less than 4
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0, 1, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, 1, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Global(T_2_3_1_2)):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*]) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 1, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 1, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 1:i8, 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0,N9, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, N9, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, Global(N9), 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9,N9, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, N9, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), Global(N9), 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0, 1,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, 1, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, 1:i8, Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 1,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 1, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 1:i8, Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0,N9,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, N9, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, Global(N9), Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9,N9,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, N9, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), Global(N9), Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0, 1, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, 1, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, 1:i8, 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 1, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 1, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 1:i8, 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0,N9, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, N9, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, Global(N9), 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9,N9, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, N9, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), Global(N9), 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0, 1,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, 1, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, 1:i8, Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 1,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 1, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 1:i8, Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 0,N9,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(0, N9, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 0:i8, Global(N9), Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9,N9,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, N9, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), Global(N9), Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 3, 2, 1, 0))) // *** 3210
+With(t : T_2_3_1_2, (t, t->Transpose(3, 2, 1, 0))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 3:i8, 2:i8, 1:i8, 0:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*]) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 3,N2, 1, 0)))
+With(t : T_2_3_1_2, (t, t->Transpose(3, N2, 1, 0))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 3:i8, Global(N2), 1:i8, 0:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N2:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 3, 2, 1,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(3, 2, 1, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 3:i8, 2:i8, 1:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 3, 2,N9, 0)))
+With(t : T_2_3_1_2, (t, t->Transpose(3, 2, N9, 0))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 3:i8, 2:i8, Global(N9), 0:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 3,N9, 1, 0)))
+With(t : T_2_3_1_2, (t, t->Transpose(3, N9, 1, 0))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 3:i8, Global(N9), 1:i8, 0:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 2, 1, 0)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 2, 1, 0))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 2:i8, 1:i8, 0:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(2,1,3,2)<1,0,2,6>
+      [[[[0, 6]
+         [2, 8]
+         [4, 10]]]
+
+
+       [[[1, 7]
+         [3, 9]
+         [5, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1, 0, 2, 3))) // *** 1023
+With(t : T_2_3_1_2, (t, t->Transpose(1, 0, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, 0:i8, 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*]) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 0, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 0, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 0:i8, 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1,N9, 2, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, N9, 2, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, Global(N9), 2:i8, 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1, 0,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, 0, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, 0:i8, Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 0,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 0, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 0:i8, Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1,N9,N9, 3)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, N9, N9, 3))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, Global(N9), Global(N9), 3:i8):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1, 0, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, 0, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, 0:i8, 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 0, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 0, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 0:i8, 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1,N9, 2,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, N9, 2, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, Global(N9), 2:i8, Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1, 0,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, 0, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, 0:i8, Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose(N9, 0,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(N9, 0, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), Global(N9), 0:i8, Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_3_1_2, (t, t->Transpose( 1,N9,N9,N9)))
+With(t : T_2_3_1_2, (t, t->Transpose(1, N9, N9, N9))) : (i8[*,*,*,*], i8[*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*], i8[*,*,*,*]), Bnd:((Global(T_2_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_3_1_2), 1:i8, Global(N9), Global(N9), Global(N9)):i8[*,*,*,*])):(i8[*,*,*,*], i8[*,*,*,*]))
+Func sig: (T_2_3_1_2:i8[*,*,*,*], N9:i8) to (i8[*,*,*,*], i8[*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,3,1,2)<6,2,0,1>
+      [[[[0, 1]]
+
+        [[2, 3]]
+
+        [[4, 5]]]
+
+
+       [[[6, 7]]
+
+        [[8, 9]]
+
+        [[10, 11]]]]
+  ,
+    Ten<i8>(3,2,1,2)<2,6,0,1>
+      [[[[0, 1]]
+
+        [[6, 7]]]
+
+
+       [[[2, 3]]
+
+        [[8, 9]]]
+
+
+       [[[4, 5]]
+
+        [[10, 11]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 9, 9, 9, 9, 9))) // *** Identity
+With(t : T_2_1_3_1_2, (t, t->Transpose(9, 9, 9, 9, 9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 9:i8, 9:i8, 9:i8, 9:i8, 9:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+*** Warning: (39,40) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (42,43) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (45,46) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (48,49) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (51,52) Node: 9, Message: The number should be at least 0 and less than 5
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*]) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 9, 9, 9, 9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 9, 9, 9, 9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 9:i8, 9:i8, 9:i8, 9:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+*** Warning: (42,43) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (45,46) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (48,49) Node: 9, Message: The number should be at least 0 and less than 5
+*** Warning: (51,52) Node: 9, Message: The number should be at least 0 and less than 5
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Global(T_2_1_3_1_2)):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*]) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 3, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, 3, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), 3:i8, 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9, 4)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, N9, 4))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), Global(N9), 4:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 3,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, 3, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), 3:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, N9, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), Global(N9), Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 4, 3))) // 01243
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*]) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 4, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, 4, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), 4:i8, 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9, 3)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, N9, 3))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), Global(N9), 3:i8):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, 2, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, 2:i8, 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, 2:i8, 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, 2, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), 2:i8, 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, 2, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), 2:i8, 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, 1, N9, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, 1:i8, Global(N9), 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, 1, N9, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), 1:i8, Global(N9), 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(0, N9, N9, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), 0:i8, Global(N9), Global(N9), 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###
+> With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 4,N9)))
+With(t : T_2_1_3_1_2, (t, t->Transpose(N9, N9, N9, 4, N9))) : (i8[*,*,*,*,*], i8[*,*,*,*,*])
+BndKind:Tuple, Type:(i8[*,*,*,*,*], i8[*,*,*,*,*]), Bnd:((Global(T_2_1_3_1_2), Call(∂.Tensor.Transpose(Global(T_2_1_3_1_2), Global(N9), Global(N9), Global(N9), 4:i8, Global(N9)):i8[*,*,*,*,*])):(i8[*,*,*,*,*], i8[*,*,*,*,*]))
+Func sig: (T_2_1_3_1_2:i8[*,*,*,*,*], N9:i8) to (i8[*,*,*,*,*], i8[*,*,*,*,*])
+Type: (Ten<i8>,Ten<i8>), Value: (
+    Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+      [[[[[0, 1]]
+
+         [[2, 3]]
+
+         [[4, 5]]]]
+
+
+
+       [[[[6, 7]]
+
+         [[8, 9]]
+
+         [[10, 11]]]]]
+  ,
+    Ten<i8>(2,1,3,2,1)<6,0,2,1,0>
+      [[[[[0]
+          [1]]
+
+         [[2]
+          [3]]
+
+         [[4]
+          [5]]]]
+
+
+
+       [[[[6]
+          [7]]
+
+         [[8]
+          [9]]
+
+         [[10]
+          [11]]]]]
+)
+###

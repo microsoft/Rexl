@@ -1,0 +1,6 @@
+﻿With(A: Ping(), B: Ping(), { A, B }) // Shouldn't consolidate.
+
+ForEach(With(A: Ping(), B: Ping(), Range(10)->{Id:it, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S: Range(10)->TakeIf(true)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S: Range(10)->TakeIf(false)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S: Range(10)->TakeIf(it > 100)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))

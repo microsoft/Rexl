@@ -1,0 +1,195 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Globalization;
+using System.Text.Json;
+
+using Microsoft.Rexl.Private;
+
+<#
+// REVIEW: Determine whether we need to allow string types here. There are some model
+// tests that pass strings for integer types, so we're allowing them for now to not break them.
+// We need to see if models are relying on that behavior.
+// REVIEW: Float types shouldn't be allowed here, but previously they were. We need top
+// ensure all models are updated to pass integers for all integer values, and then we can remove
+// Float from this list.
+
+// Tuples of (DKind, MethSuffix, system type)
+var intTypes = new[] {
+    ("I8", "Int64", "long"),
+    ("I4", "Int32", "int"),
+    ("I2", "Int16", "short"),
+    ("I1", "SByte", "sbyte"),
+    ("U8", "UInt64", "ulong"),
+    ("U4", "UInt32", "uint"),
+    ("U2", "UInt16", "ushort"),
+    ("U1", "Byte", "byte"),
+};
+
+// Floating point types accept strings, because that's the token type for Infinity and Nan values.
+var floatTypes = new[] {
+    ("R8", "Double", "double"),
+    ("R4", "Single", "float"),
+};
+
+var types = intTypes.Concat(floatTypes).ToArray();
+#>
+namespace Microsoft.Rexl.Code;
+
+using Writer = RawJsonWriter;
+
+partial class TypeManager
+{
+    public abstract partial class JsonReader
+    {
+        private void AddNumericReaders()
+        {
+<#
+foreach (var typeInfo in types) {
+#>
+            _typeToReader[DType.<#=typeInfo.Item1#>Req] = (TryReadFunc<<#=typeInfo.Item3#>>)TryRead<#=typeInfo.Item1#>;
+<#
+}
+#>
+        }
+
+        private bool TryReadNumeric(DType type, JsonElement jelm, out object value)
+        {
+            switch (type.Kind)
+            {
+<#
+foreach (var typeInfo in types) {
+#>
+            case DKind.<#=typeInfo.Item1#>:
+                if (TryRead<#=typeInfo.Item1#>(type, jelm, out var value<#=typeInfo.Item1#>))
+                {
+                    value = value<#=typeInfo.Item1#>;
+                    return true;
+                }
+                break;
+<#
+}
+#>
+            }
+
+            value = null;
+            return false;
+        }
+<#
+foreach (var typeInfo in intTypes) {
+#>
+
+        private bool TryRead<#=typeInfo.Item1#>(DType type, JsonElement jelm, out <#=typeInfo.Item3#> value)
+        {
+            Validation.Assert(type.Kind == DKind.<#=typeInfo.Item1#>);
+
+            switch (jelm.ValueKind)
+            {
+            case JsonValueKind.Number:
+                if (jelm.TryGet<#=typeInfo.Item2#>(out value))
+                    return true;
+                break;
+            case JsonValueKind.String:
+                var str = jelm.GetString();
+                if (<#=typeInfo.Item3#>.TryParse(str, out value))
+                    return true;
+                break;
+            }
+
+            value = default;
+            return false;
+        }
+<#
+}
+#>
+<#
+foreach (var typeInfo in floatTypes) {
+#>
+
+        private bool TryRead<#=typeInfo.Item1#>(DType type, JsonElement jelm, out <#=typeInfo.Item3#> value)
+        {
+            Validation.Assert(type.Kind == DKind.<#=typeInfo.Item1#>);
+
+            switch (jelm.ValueKind)
+            {
+            case JsonValueKind.Number:
+                if (jelm.TryGet<#=typeInfo.Item2#>(out value))
+                    return true;
+                break;
+            case JsonValueKind.String:
+                var str = jelm.GetString();
+                if (<#=typeInfo.Item3#>.TryParse(str, out value))
+                    return true;
+                switch (str)
+                {
+                case "∞":
+                case "Infinity":
+                    value = <#=typeInfo.Item3#>.PositiveInfinity;
+                    return true;
+                case "-∞":
+                case "-Infinity":
+                    value = <#=typeInfo.Item3#>.NegativeInfinity;
+                    return true;
+                case "NaN":
+                    value = <#=typeInfo.Item3#>.NaN;
+                    return true;
+                }
+                break;
+            }
+
+            value = default;
+            return false;
+        }
+<#
+}
+#>
+    }
+
+    public abstract partial class JsonWriter
+    {
+        private void AddNumericWriters()
+        {
+<#
+foreach (var typeInfo in types) {
+#>
+            _typeToWriter[DType.<#=typeInfo.Item1#>Req] = (TryWriteFunc<<#=typeInfo.Item3#>>)TryWrite<#=typeInfo.Item1#>;
+<#
+}
+#>
+        }
+<#
+foreach (var typeInfo in types) {
+    var useStringNum = typeInfo.Item1 == "I8" || typeInfo.Item1 == "U8";
+#>
+
+        private bool TryWrite<#=typeInfo.Item1#>(Writer wrt, DType type, Type st, <#=typeInfo.Item3#> value)
+        {
+            Validation.AssertValue(wrt);
+            Validation.Assert(type.Kind == DKind.<#=typeInfo.Item1#>);
+            Validation.Assert(st == (type.IsOpt ? typeof(<#=typeInfo.Item3#>?) : typeof(<#=typeInfo.Item3#>)));
+<#
+    if (useStringNum) {
+#>
+            if ((_options & EncodingOptions.StringNum) != 0 && <#=typeInfo.Item1 == "I8" ? "(value < -DoubleMax || value > DoubleMax)" : "value > DoubleMax"#>)
+            {
+                wrt.WriteStringValue(value.ToString(CultureInfo.InvariantCulture));
+                return true;
+            }
+<#
+    }
+#>
+            wrt.WriteNumberValue(value);
+            return true;
+        }
+<#
+}
+#>
+    }
+}

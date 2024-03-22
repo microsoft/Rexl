@@ -1,0 +1,328 @@
+**** New definitions: S, type: i8*
+**** New definitions: <this>, type: i8*
+
+> S
+S : i8*
+BndKind:Global, Type:i8*, Bnd:(Global(S))
+// (∂.S:i8*) : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ret
+  Total Size: 11
+
+Func sig: (S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+###
+> S->TakeIf(it mod 2 = 0)
+S->TakeIf(it mod 2 @= 0) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8)):i8*))
+// (<ctx>, ∂.S:i8*) : i8*
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldc.i4.2
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,bool>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 39
+
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 2
+ 2) 4
+ 3) 6
+ 4) 8
+*** Ctx ping count: 5
+    [0](5): Take(*1: S, [if] IntMod(*1, 2) @= 0)
+###
+> S->DropIf(it mod 2 = 0)
+S->DropIf(it mod 2 @= 0) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8)):i8*))
+// (<ctx>, ∂.S:i8*) : i8*
+Drop_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldc.i4.2
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,bool>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecDropIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 39
+
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 5
+ 3) 7
+ 4) 9
+*** Ctx ping count: 5
+    [0](5): Drop(*1: S, [if] IntMod(*1, 2) @= 0)
+###
+> this
+this : i8*
+BndKind:This, Type:i8*, Bnd:(<this>)
+// (∂:i8*) : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ret
+  Total Size: 11
+
+Func sig: (<this>:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> this->TakeIf(it mod 2 = 0)
+this->TakeIf(it mod 2 @= 0) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] <this>, [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8)):i8*))
+// (<ctx>, ∂:i8*) : i8*
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldc.i4.2
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,bool>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 39
+
+Func sig: (<ctx>:x, <this>:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 2
+ 2) 4
+*** Ctx ping count: 2
+    [0](2): Take(*1: <this>, [if] IntMod(*1, 2) @= 0)
+###
+> this->TakeIf(it < S->Count())
+this->TakeIf(it $< S->Count()) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Count(Global(S)):i8), Call(∂.Take([map:2] <this>, [if] Cmp(Scope(2) @< Scope(1))):i8*)):i8*))
+// (<ctx>, ∂.S:i8*, ∂:i8*) : i8*
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      2) clt
+      1) ret
+  Total Size: 16
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) stloc.3 [i8]
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.3 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 97
+
+Func sig: (<ctx>:x, S:i8*, <this>:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+*** Ctx ping count: 0
+###
+> S->TakeIf(it !< this->Count())
+S->TakeIf(it !$< this->Count()) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Count(<this>):i8), Call(∂.Take([map:2] Global(S), [if] Cmp(Scope(2) @>= Scope(1))):i8*)):i8*))
+// (<ctx>, ∂:i8*, ∂.S:i8*) : i8*
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 19
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) stloc.3 [i8]
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.3 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 97
+
+Func sig: (<ctx>:x, <this>:i8*, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 6
+ 2) 7
+ 3) 8
+ 4) 9
+*** Ctx ping count: 5
+    [1](5): Take(*1: S, [if] *1 @>= !2x)
+###

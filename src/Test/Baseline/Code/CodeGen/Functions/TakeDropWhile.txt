@@ -1,0 +1,196 @@
+**** New definitions: N, type: i8*
+**** New definitions: A, type: i8*
+
+> N->TakeWhile(it < 3)
+N->TakeWhile(it $< 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(N), [while] Cmp(Scope(1) @< 3:i8)):i8*))
+Func sig: (N:i8*) to i8*
+Type: <null>, Value: <null>
+###
+> N->DropWhile(it < 3)
+N->DropWhile(it $< 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(N), [while] Cmp(Scope(1) @< 3:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> N->TakeWhile(# + it < 10)
+N->TakeWhile(# + it $< 10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Global(N), [while] Cmp(Add(Scope(1), Scope(2)) @< 10:i8)):i8*))
+Func sig: (N:i8*) to i8*
+Type: <null>, Value: <null>
+###
+> N->DropWhile(# + it < 10)
+N->DropWhile(# + it $< 10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Global(N), [while] Cmp(Add(Scope(1), Scope(2)) @< 10:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> A
+A : i8*
+BndKind:Global, Type:i8*, Bnd:(Global(A))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 0
+13) 1
+14) 2
+15) 3
+###
+> A->TakeWhile(it < 3)
+A->TakeWhile(it $< 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(A), [while] Cmp(Scope(1) @< 3:i8)):i8*))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+###
+> A->DropWhile(it < 3)
+A->DropWhile(it $< 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(A), [while] Cmp(Scope(1) @< 3:i8)):i8*))
+Func sig: (<ctx>:x, A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 0
+ 2) 1
+ 3) 2
+ 4) 3
+ 5) 0
+ 6) 1
+ 7) 2
+ 8) 3
+ 9) 0
+10) 1
+11) 2
+12) 3
+*** Ctx ping count: 4
+    [0](4): Drop(*1: A, [while] *1 @< 3)
+###
+> A->TakeWhile(it < 0)
+A->TakeWhile(it $< 0) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(A), [while] Cmp(Scope(1) @< 0:i8)):i8*))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+###
+> A->DropWhile(it < 0)
+A->DropWhile(it $< 0) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(A), [while] Cmp(Scope(1) @< 0:i8)):i8*))
+Func sig: (<ctx>:x, A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 0
+13) 1
+14) 2
+15) 3
+*** Ctx ping count: 1
+    [0](1): Drop(*1: A, [while] *1 @< 0)
+###
+> A->TakeWhile(it < 100)
+A->TakeWhile(it $< 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(A), [while] Cmp(Scope(1) @< 100:i8)):i8*))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 0
+13) 1
+14) 2
+15) 3
+###
+> A->DropWhile(it < 100)
+A->DropWhile(it $< 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(A), [while] Cmp(Scope(1) @< 100:i8)):i8*))
+Func sig: (<ctx>:x, A:i8*) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 17
+    [0](17): Drop(*1: A, [while] *1 @< 100)
+###
+
+**** New definitions: Ai, type: (i8, i8)*
+
+> Ai
+Ai : (i8, i8)*
+BndKind:Global, Type:(i8, i8)*, Bnd:(Global(Ai))
+Func sig: (Ai:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 0)
+ 1) (1, 1)
+ 2) (2, 2)
+ 3) (3, 3)
+ 4) (4, 0)
+ 5) (5, 1)
+ 6) (6, 2)
+ 7) (7, 3)
+ 8) (8, 0)
+ 9) (9, 1)
+10) (10, 2)
+11) (11, 3)
+12) (12, 0)
+13) (13, 1)
+14) (14, 2)
+15) (15, 3)
+###
+> Ai->TakeWhile(# + it[1] < 10)
+Ai->TakeWhile(# + it[1] $< 10) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Ai), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 10:i8)):(i8, i8)*))
+Func sig: (Ai:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 0)
+ 1) (1, 1)
+ 2) (2, 2)
+ 3) (3, 3)
+ 4) (4, 0)
+ 5) (5, 1)
+ 6) (6, 2)
+###
+> Ai->DropWhile(# + it[1] < 10)
+Ai->DropWhile(# + it[1] $< 10) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Ai), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 10:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Ai:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (7, 3)
+ 1) (8, 0)
+ 2) (9, 1)
+ 3) (10, 2)
+ 4) (11, 3)
+ 5) (12, 0)
+ 6) (13, 1)
+ 7) (14, 2)
+ 8) (15, 3)
+*** Ctx ping count: 8
+    [0](8): Drop(*2: Ai, [while] Add(#1, *2.1) @< 10)
+###

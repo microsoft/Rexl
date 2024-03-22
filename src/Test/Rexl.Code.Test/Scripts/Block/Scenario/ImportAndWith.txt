@@ -1,0 +1,34 @@
+﻿@X := "@X";
+@M.X := "@M.X";
+@M.M.X := "@M.M.X";
+
+import "ImportScript2.rexl";
+import "ImportScript2.rexl" in namespace @;
+
+namespace @M { import "ImportScript2.rexl"; }
+import "ImportScript2.rexl" in namespace @M;
+
+namespace @M.M { import "ImportScript2.rexl"; }
+import "ImportScript2.rexl" in namespace @M.M;
+
+with @M {
+    import "ImportScript2.rexl";
+    import "ImportScript2.rexl" in namespace @;
+
+    namespace @M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M;
+
+    namespace @M.M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M.M;
+}
+
+with @M.M {
+    import "ImportScript2.rexl";
+    import "ImportScript2.rexl" in namespace @;
+
+    namespace @M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M;
+
+    namespace @M.M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M.M;
+}

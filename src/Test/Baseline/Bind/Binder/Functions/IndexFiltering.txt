@@ -1,0 +1,825 @@
+**** New globals: {A:i8*, X:i8}
+
+> TakeOne(A, #it < 0)
+TakeOne(A, #it $< 0) : i8
+Binder : TakeOne(*2: A, #1 @< 0)
+Reducer: 0
+###
+> TakeOne(A, #it !>= 0)
+TakeOne(A, #it !$>= 0) : i8
+Binder : TakeOne(*2: A, #1 @< 0)
+Reducer: 0
+###
+> TakeOne(A, #it < 1)
+TakeOne(A, #it $< 1) : i8
+Binder : TakeOne(*2: A, #1 @< 1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !>= 1)
+TakeOne(A, #it !$>= 1) : i8
+Binder : TakeOne(*2: A, #1 @< 1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it < -1)
+TakeOne(A, #it $< -1) : i8
+Binder : TakeOne(*2: A, #1 @< -1)
+Reducer: 0
+###
+> TakeOne(A, #it !>= -1)
+TakeOne(A, #it !$>= -1) : i8
+Binder : TakeOne(*2: A, #1 @< -1)
+Reducer: 0
+###
+> TakeOne(A, #it < X)
+TakeOne(A, #it $< X) : i8
+Binder : TakeOne(*2: A, #1 @< X)
+###
+> TakeOne(A, #it !>= X)
+TakeOne(A, #it !$>= X) : i8
+Binder : TakeOne(*2: A, #1 @< X)
+###
+> TakeOne(A, #it < 0x8000_0000_0000_0000L)
+TakeOne(A, #it $< 9223372036854775808) : i8
+Binder : TakeOne(*2: A, #1 @< -9223372036854775808)
+Reducer: 0
+###
+> TakeOne(A, #it < 3, -1)
+TakeOne(A, #it $< 3, -1) : i8
+Binder : TakeOne(*2: A, #1 @< 3, -1)
+Reducer: TakeOne(A, [else] -1)
+###
+> TakeOne(Range(3), #it < 2)
+TakeOne(Range(3), #it $< 2) : i8
+Binder : TakeOne(*2: Range(3), #1 @< 2)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(Range(3), #it < 3)
+TakeOne(Range(3), #it $< 3) : i8
+Binder : TakeOne(*2: Range(3), #1 @< 3)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(A, 0 > #it)
+TakeOne(A, 0 $> #it) : i8
+Binder : TakeOne(*2: A, 0 @> #1)
+Reducer: 0
+###
+> TakeOne(A, 0 !<= #it)
+TakeOne(A, 0 !$<= #it) : i8
+Binder : TakeOne(*2: A, 0 @> #1)
+Reducer: 0
+###
+> TakeOne(A, 1 > #it)
+TakeOne(A, 1 $> #it) : i8
+Binder : TakeOne(*2: A, 1 @> #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 1 !<= #it)
+TakeOne(A, 1 !$<= #it) : i8
+Binder : TakeOne(*2: A, 1 @> #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, -1 > #it)
+TakeOne(A, -1 $> #it) : i8
+Binder : TakeOne(*2: A, -1 @> #1)
+Reducer: 0
+###
+> TakeOne(A, -1 !<= #it)
+TakeOne(A, -1 !$<= #it) : i8
+Binder : TakeOne(*2: A, -1 @> #1)
+Reducer: 0
+###
+> TakeOne(A, X > #it)
+TakeOne(A, X $> #it) : i8
+Binder : TakeOne(*2: A, X @> #1)
+###
+> TakeOne(A, X !<= #it)
+TakeOne(A, X !$<= #it) : i8
+Binder : TakeOne(*2: A, X @> #1)
+###
+> TakeOne(A, 0x8000_0000_0000_0000L > #it)
+TakeOne(A, 9223372036854775808 $> #it) : i8
+Binder : TakeOne(*2: A, -9223372036854775808 @> #1)
+Reducer: 0
+###
+> TakeOne(A, 3 > #it, -1)
+TakeOne(A, 3 $> #it, -1) : i8
+Binder : TakeOne(*2: A, 3 @> #1, -1)
+Reducer: TakeOne(A, [else] -1)
+###
+> TakeOne(Range(3), 2 > #it)
+TakeOne(Range(3), 2 $> #it) : i8
+Binder : TakeOne(*2: Range(3), 2 @> #1)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(Range(3), 3 > #it)
+TakeOne(Range(3), 3 $> #it) : i8
+Binder : TakeOne(*2: Range(3), 3 @> #1)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(A, #it > 0)
+TakeOne(A, #it $> 0) : i8
+Binder : TakeOne(*2: A, #1 @> 0)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, #it !<= 0)
+TakeOne(A, #it !$<= 0) : i8
+Binder : TakeOne(*2: A, #1 @> 0)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, #it > 1)
+TakeOne(A, #it $> 1) : i8
+Binder : TakeOne(*2: A, #1 @> 1)
+Reducer: TakeAt(A, 2)
+###
+> TakeOne(A, #it !<= 1)
+TakeOne(A, #it !$<= 1) : i8
+Binder : TakeOne(*2: A, #1 @> 1)
+Reducer: TakeAt(A, 2)
+###
+> TakeOne(A, #it > -1)
+TakeOne(A, #it $> -1) : i8
+Binder : TakeOne(*2: A, #1 @> -1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !<= -1)
+TakeOne(A, #it !$<= -1) : i8
+Binder : TakeOne(*2: A, #1 @> -1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it > X)
+TakeOne(A, #it $> X) : i8
+Binder : TakeOne(*2: A, #1 @> X)
+###
+> TakeOne(A, #it !<= X)
+TakeOne(A, #it !$<= X) : i8
+Binder : TakeOne(*2: A, #1 @> X)
+###
+> TakeOne(A, #it > 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it $> 9223372036854775807) : i8
+Binder : TakeOne(*2: A, #1 @> 9223372036854775807)
+Reducer: 0
+###
+> TakeOne(A, #it > 3, -1)
+TakeOne(A, #it $> 3, -1) : i8
+Binder : TakeOne(*2: A, #1 @> 3, -1)
+Reducer: TakeAt(A, 4, -1)
+###
+> TakeOne(Range(3), #it > 1)
+TakeOne(Range(3), #it $> 1) : i8
+Binder : TakeOne(*2: Range(3), #1 @> 1)
+Reducer: TakeAt(Range(3), 2)
+###
+> TakeOne(Range(3), #it > 2)
+TakeOne(Range(3), #it $> 2) : i8
+Binder : TakeOne(*2: Range(3), #1 @> 2)
+Reducer: 0
+###
+> TakeOne(A, 0 < #it)
+TakeOne(A, 0 $< #it) : i8
+Binder : TakeOne(*2: A, 0 @< #1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, 0 !>= #it)
+TakeOne(A, 0 !$>= #it) : i8
+Binder : TakeOne(*2: A, 0 @< #1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, 1 < #it)
+TakeOne(A, 1 $< #it) : i8
+Binder : TakeOne(*2: A, 1 @< #1)
+Reducer: TakeAt(A, 2)
+###
+> TakeOne(A, 1 !>= #it)
+TakeOne(A, 1 !$>= #it) : i8
+Binder : TakeOne(*2: A, 1 @< #1)
+Reducer: TakeAt(A, 2)
+###
+> TakeOne(A, -1 < #it)
+TakeOne(A, -1 $< #it) : i8
+Binder : TakeOne(*2: A, -1 @< #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, -1 !>= #it)
+TakeOne(A, -1 !$>= #it) : i8
+Binder : TakeOne(*2: A, -1 @< #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, X < #it)
+TakeOne(A, X $< #it) : i8
+Binder : TakeOne(*2: A, X @< #1)
+###
+> TakeOne(A, X !>= #it)
+TakeOne(A, X !$>= #it) : i8
+Binder : TakeOne(*2: A, X @< #1)
+###
+> TakeOne(A, 0x7fff_ffff_ffff_ffff < #it)
+TakeOne(A, 9223372036854775807 $< #it) : i8
+Binder : TakeOne(*2: A, 9223372036854775807 @< #1)
+Reducer: 0
+###
+> TakeOne(A, 3 < #it, -1)
+TakeOne(A, 3 $< #it, -1) : i8
+Binder : TakeOne(*2: A, 3 @< #1, -1)
+Reducer: TakeAt(A, 4, -1)
+###
+> TakeOne(Range(3), 2 < #it)
+TakeOne(Range(3), 2 $< #it) : i8
+Binder : TakeOne(*2: Range(3), 2 @< #1)
+Reducer: 0
+###
+> TakeOne(Range(3), 3 < #it)
+TakeOne(Range(3), 3 $< #it) : i8
+Binder : TakeOne(*2: Range(3), 3 @< #1)
+Reducer: 0
+###
+> TakeOne(A, #it = 0)
+TakeOne(A, #it @= 0) : i8
+Binder : TakeOne(*2: A, #1 @= 0)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 0 = #it)
+TakeOne(A, 0 @= #it) : i8
+Binder : TakeOne(*2: A, 0 @= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it = -1)
+TakeOne(A, #it @= -1) : i8
+Binder : TakeOne(*2: A, #1 @= -1)
+Reducer: 0
+###
+> TakeOne(A, #it = 0x8000_0000_0000_0000L)
+TakeOne(A, #it @= 9223372036854775808) : i8
+Binder : TakeOne(*2: A, #1 @= -9223372036854775808)
+Reducer: 0
+###
+> TakeOne(A, #it = X)
+TakeOne(A, #it @= X) : i8
+Binder : TakeOne(*2: A, #1 @= X)
+###
+> TakeOne(A, #it = 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it @= 9223372036854775807) : i8
+Binder : TakeOne(*2: A, #1 @= 9223372036854775807)
+Reducer: 0
+###
+> TakeOne(Range(3), #it = 2)
+TakeOne(Range(3), #it @= 2) : i8
+Binder : TakeOne(*2: Range(3), #1 @= 2)
+Reducer: TakeAt(Range(3), 2)
+###
+> TakeOne(Range(3), #it = 3)
+TakeOne(Range(3), #it @= 3) : i8
+Binder : TakeOne(*2: Range(3), #1 @= 3)
+Reducer: 0
+###
+> TakeOne(A, #it != 0)
+TakeOne(A, #it !@= 0) : i8
+Binder : TakeOne(*2: A, #1 !@= 0)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, 0 != #it)
+TakeOne(A, 0 !@= #it) : i8
+Binder : TakeOne(*2: A, 0 !@= #1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, #it != -1)
+TakeOne(A, #it !@= -1) : i8
+Binder : TakeOne(*2: A, #1 !@= -1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it != 0x8000_0000_0000_0000L)
+TakeOne(A, #it !@= 9223372036854775808) : i8
+Binder : TakeOne(*2: A, #1 !@= -9223372036854775808)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it != X)
+TakeOne(A, #it !@= X) : i8
+Binder : TakeOne(*2: A, #1 !@= X)
+###
+> TakeOne(A, #it != 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it !@= 9223372036854775807) : i8
+Binder : TakeOne(*2: A, #1 !@= 9223372036854775807)
+Reducer: TakeOne(A)
+###
+> TakeOne(Range(3), #it != 2)
+TakeOne(Range(3), #it !@= 2) : i8
+Binder : TakeOne(*2: Range(3), #1 !@= 2)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(Range(3), #it != 3)
+TakeOne(Range(3), #it !@= 3) : i8
+Binder : TakeOne(*2: Range(3), #1 !@= 3)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(A, #it <= 0)
+TakeOne(A, #it $<= 0) : i8
+Binder : TakeOne(*2: A, #1 @<= 0)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !> 0)
+TakeOne(A, #it !$> 0) : i8
+Binder : TakeOne(*2: A, #1 @<= 0)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it <= 1)
+TakeOne(A, #it $<= 1) : i8
+Binder : TakeOne(*2: A, #1 @<= 1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !> 1)
+TakeOne(A, #it !$> 1) : i8
+Binder : TakeOne(*2: A, #1 @<= 1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it <= -1)
+TakeOne(A, #it $<= -1) : i8
+Binder : TakeOne(*2: A, #1 @<= -1)
+Reducer: 0
+###
+> TakeOne(A, #it !> -1)
+TakeOne(A, #it !$> -1) : i8
+Binder : TakeOne(*2: A, #1 @<= -1)
+Reducer: 0
+###
+> TakeOne(A, #it <= 0x8000_0000_0000_0000L)
+TakeOne(A, #it $<= 9223372036854775808) : i8
+Binder : TakeOne(*2: A, #1 @<= -9223372036854775808)
+Reducer: 0
+###
+> TakeOne(A, #it <= X)
+TakeOne(A, #it $<= X) : i8
+Binder : TakeOne(*2: A, #1 @<= X)
+###
+> TakeOne(A, #it !> X)
+TakeOne(A, #it !$> X) : i8
+Binder : TakeOne(*2: A, #1 @<= X)
+###
+> TakeOne(A, #it <= 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it $<= 9223372036854775807) : i8
+Binder : TakeOne(*2: A, #1 @<= 9223372036854775807)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it <= 3, -1)
+TakeOne(A, #it $<= 3, -1) : i8
+Binder : TakeOne(*2: A, #1 @<= 3, -1)
+Reducer: TakeOne(A, [else] -1)
+###
+> TakeOne(Range(3), #it <= 2)
+TakeOne(Range(3), #it $<= 2) : i8
+Binder : TakeOne(*2: Range(3), #1 @<= 2)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(Range(3), #it <= 3)
+TakeOne(Range(3), #it $<= 3) : i8
+Binder : TakeOne(*2: Range(3), #1 @<= 3)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(A, 0 >= #it)
+TakeOne(A, 0 $>= #it) : i8
+Binder : TakeOne(*2: A, 0 @>= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 0 !< #it)
+TakeOne(A, 0 !$< #it) : i8
+Binder : TakeOne(*2: A, 0 @>= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 1 >= #it)
+TakeOne(A, 1 $>= #it) : i8
+Binder : TakeOne(*2: A, 1 @>= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 1 !< #it)
+TakeOne(A, 1 !$< #it) : i8
+Binder : TakeOne(*2: A, 1 @>= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, -1 >= #it)
+TakeOne(A, -1 $>= #it) : i8
+Binder : TakeOne(*2: A, -1 @>= #1)
+Reducer: 0
+###
+> TakeOne(A, -1 !< #it)
+TakeOne(A, -1 !$< #it) : i8
+Binder : TakeOne(*2: A, -1 @>= #1)
+Reducer: 0
+###
+> TakeOne(A, 0x8000_0000_0000_0000L >= #it)
+TakeOne(A, 9223372036854775808 $>= #it) : i8
+Binder : TakeOne(*2: A, -9223372036854775808 @>= #1)
+Reducer: 0
+###
+> TakeOne(A, X >= #it)
+TakeOne(A, X $>= #it) : i8
+Binder : TakeOne(*2: A, X @>= #1)
+###
+> TakeOne(A, X !< #it)
+TakeOne(A, X !$< #it) : i8
+Binder : TakeOne(*2: A, X @>= #1)
+###
+> TakeOne(A, 0x7fff_ffff_ffff_ffff >= #it)
+TakeOne(A, 9223372036854775807 $>= #it) : i8
+Binder : TakeOne(*2: A, 9223372036854775807 @>= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 3 >= #it, -1)
+TakeOne(A, 3 $>= #it, -1) : i8
+Binder : TakeOne(*2: A, 3 @>= #1, -1)
+Reducer: TakeOne(A, [else] -1)
+###
+> TakeOne(Range(3), 2 >= #it)
+TakeOne(Range(3), 2 $>= #it) : i8
+Binder : TakeOne(*2: Range(3), 2 @>= #1)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(Range(3), 3 >= #it)
+TakeOne(Range(3), 3 $>= #it) : i8
+Binder : TakeOne(*2: Range(3), 3 @>= #1)
+Reducer: TakeOne(Range(3))
+###
+> TakeOne(A, #it >= 0)
+TakeOne(A, #it $>= 0) : i8
+Binder : TakeOne(*2: A, #1 @>= 0)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !< 0)
+TakeOne(A, #it !$< 0) : i8
+Binder : TakeOne(*2: A, #1 @>= 0)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it >= 1)
+TakeOne(A, #it $>= 1) : i8
+Binder : TakeOne(*2: A, #1 @>= 1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, #it !< 1)
+TakeOne(A, #it !$< 1) : i8
+Binder : TakeOne(*2: A, #1 @>= 1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, #it >= -1)
+TakeOne(A, #it $>= -1) : i8
+Binder : TakeOne(*2: A, #1 @>= -1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it !< -1)
+TakeOne(A, #it !$< -1) : i8
+Binder : TakeOne(*2: A, #1 @>= -1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it >= 0x8000_0000_0000_0000L)
+TakeOne(A, #it $>= 9223372036854775808) : i8
+Binder : TakeOne(*2: A, #1 @>= -9223372036854775808)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, #it >= X)
+TakeOne(A, #it $>= X) : i8
+Binder : TakeOne(*2: A, #1 @>= X)
+###
+> TakeOne(A, #it !< X)
+TakeOne(A, #it !$< X) : i8
+Binder : TakeOne(*2: A, #1 @>= X)
+###
+> TakeOne(A, #it >= 0x7fff_ffff_ffff_ffff)
+TakeOne(A, #it $>= 9223372036854775807) : i8
+Binder : TakeOne(*2: A, #1 @>= 9223372036854775807)
+Reducer: 0
+###
+> TakeOne(A, #it >= 3, -1)
+TakeOne(A, #it $>= 3, -1) : i8
+Binder : TakeOne(*2: A, #1 @>= 3, -1)
+Reducer: TakeAt(A, 3, -1)
+###
+> TakeOne(Range(3), #it >= 2)
+TakeOne(Range(3), #it $>= 2) : i8
+Binder : TakeOne(*2: Range(3), #1 @>= 2)
+Reducer: TakeAt(Range(3), 2)
+###
+> TakeOne(Range(3), #it >= 3)
+TakeOne(Range(3), #it $>= 3) : i8
+Binder : TakeOne(*2: Range(3), #1 @>= 3)
+Reducer: 0
+###
+> TakeOne(A, 0 <= #it)
+TakeOne(A, 0 $<= #it) : i8
+Binder : TakeOne(*2: A, 0 @<= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 0 !> #it)
+TakeOne(A, 0 !$> #it) : i8
+Binder : TakeOne(*2: A, 0 @<= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 1 <= #it)
+TakeOne(A, 1 $<= #it) : i8
+Binder : TakeOne(*2: A, 1 @<= #1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, 1 !> #it)
+TakeOne(A, 1 !$> #it) : i8
+Binder : TakeOne(*2: A, 1 @<= #1)
+Reducer: TakeAt(A, 1)
+###
+> TakeOne(A, -1 <= #it)
+TakeOne(A, -1 $<= #it) : i8
+Binder : TakeOne(*2: A, -1 @<= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, -1 !> #it)
+TakeOne(A, -1 !$> #it) : i8
+Binder : TakeOne(*2: A, -1 @<= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, 0x8000_0000_0000_0000L <= #it)
+TakeOne(A, 9223372036854775808 $<= #it) : i8
+Binder : TakeOne(*2: A, -9223372036854775808 @<= #1)
+Reducer: TakeOne(A)
+###
+> TakeOne(A, X <= #it)
+TakeOne(A, X $<= #it) : i8
+Binder : TakeOne(*2: A, X @<= #1)
+###
+> TakeOne(A, X !> #it)
+TakeOne(A, X !$> #it) : i8
+Binder : TakeOne(*2: A, X @<= #1)
+###
+> TakeOne(A, 0x7fff_ffff_ffff_ffff <= #it)
+TakeOne(A, 9223372036854775807 $<= #it) : i8
+Binder : TakeOne(*2: A, 9223372036854775807 @<= #1)
+Reducer: 0
+###
+> TakeOne(A, 3 <= #it, -1)
+TakeOne(A, 3 $<= #it, -1) : i8
+Binder : TakeOne(*2: A, 3 @<= #1, -1)
+Reducer: TakeAt(A, 3, -1)
+###
+> TakeOne(Range(3), 2 <= #it)
+TakeOne(Range(3), 2 $<= #it) : i8
+Binder : TakeOne(*2: Range(3), 2 @<= #1)
+Reducer: TakeAt(Range(3), 2)
+###
+> TakeOne(Range(3), 3 <= #it)
+TakeOne(Range(3), 3 $<= #it) : i8
+Binder : TakeOne(*2: Range(3), 3 @<= #1)
+Reducer: 0
+###
+> TakeOne(Range(10), #it < 0, [else] -1)
+TakeOne(Range(10), #it $< 0, [else] -1) : i8
+Binder : TakeOne(*2: Range(10), #1 @< 0, [else] -1)
+Reducer: -1
+###
+> TakeOne(Range(10), #it !>= 0, [else] -1)
+TakeOne(Range(10), #it !$>= 0, [else] -1) : i8
+Binder : TakeOne(*2: Range(10), #1 @< 0, [else] -1)
+Reducer: -1
+###
+> TakeOne(Range(10), #it > 9, [else] null)
+TakeOne(Range(10), #it $> 9, [else] null) : i8?
+Binder : TakeOne(*2: Range(10), #1 @> 9, [else] null)
+Reducer: null
+###
+> TakeOne(Range(10), #it !<= 9, [else] null)
+TakeOne(Range(10), #it !$<= 9, [else] null) : i8?
+Binder : TakeOne(*2: Range(10), #1 @> 9, [else] null)
+Reducer: null
+###
+> TakeOne(Range(0x7fff_ffff_ffff_ffff), #it > 0x7fff_ffff_ffff_ffff, null)
+TakeOne(Range(9223372036854775807), #it $> 9223372036854775807, null) : i8?
+Binder : TakeOne(*2: Range(9223372036854775807), #1 @> 9223372036854775807, null)
+Reducer: null
+###
+> TakeOne(Range(0x7fff_ffff_ffff_ffff), #it >= 0x7fff_ffff_ffff_ffff, null)
+TakeOne(Range(9223372036854775807), #it $>= 9223372036854775807, null) : i8?
+Binder : TakeOne(*2: Range(9223372036854775807), #1 @>= 9223372036854775807, null)
+Reducer: null
+###
+> TakeOne(Range(0x7fff_ffff_ffff_ffff), #it !<= 0x7fff_ffff_ffff_ffff, null)
+TakeOne(Range(9223372036854775807), #it !$<= 9223372036854775807, null) : i8?
+Binder : TakeOne(*2: Range(9223372036854775807), #1 @> 9223372036854775807, null)
+Reducer: null
+###
+> TakeOne([], #it = 3, null)
+TakeOne([], #it @= 3, null) : o
+Binder : TakeOne(*2: null, #1 @= 3, null)
+Reducer: null
+###
+> TakeOne(A, #it = 3, -1)
+TakeOne(A, #it @= 3, -1) : i8
+Binder : TakeOne(*2: A, #1 @= 3, -1)
+Reducer: TakeAt(A, 3, -1)
+###
+> TakeOne([4, 5, 6], [if] #it = 2, -1)
+TakeOne([4, 5, 6], [if] #it @= 2, -1) : i8
+Binder : TakeOne(*2: [4, 5, 6], [if] #1 @= 2, -1)
+Reducer: 6
+###
+> TakeOne([4, 5, 6], [if] #it = 3, [else] -1)
+TakeOne([4, 5, 6], [if] #it @= 3, [else] -1) : i8
+Binder : TakeOne(*2: [4, 5, 6], [if] #1 @= 3, [else] -1)
+Reducer: -1
+###
+> TakeOne([4, 5, 6], #it = 2, [else] null)
+TakeOne([4, 5, 6], #it @= 2, [else] null) : i8?
+Binder : TakeOne(*2: [4, 5, 6], #1 @= 2, [else] null)
+Reducer: Opt<i8?>(6)
+###
+> TakeOne([4, 5, 6], [if] #it = 2, [else] null)
+TakeOne([4, 5, 6], [if] #it @= 2, [else] null) : i8?
+Binder : TakeOne(*2: [4, 5, 6], [if] #1 @= 2, [else] null)
+Reducer: Opt<i8?>(6)
+###
+> TakeOne(Range(10), #it = 10, -1)
+TakeOne(Range(10), #it @= 10, -1) : i8
+Binder : TakeOne(*2: Range(10), #1 @= 10, -1)
+Reducer: -1
+###
+> TakeOne(Range(10), #it = -1, -1)
+TakeOne(Range(10), #it @= -1, -1) : i8
+Binder : TakeOne(*2: Range(10), #1 @= -1, -1)
+Reducer: -1
+###
+> TakeOne([4, 5, 6], #it = 2, null)
+TakeOne([4, 5, 6], #it @= 2, null) : i8?
+Binder : TakeOne(*2: [4, 5, 6], #1 @= 2, null)
+Reducer: Opt<i8?>(6)
+###
+> TakeOne(A, #it < 0, null)
+TakeOne(A, #it $< 0, null) : i8?
+Binder : TakeOne(*2: A, #1 @< 0, null)
+Reducer: null
+###
+> TakeOne(Range(10), #it > 10, null)
+TakeOne(Range(10), #it $> 10, null) : i8?
+Binder : TakeOne(*2: Range(10), #1 @> 10, null)
+Reducer: null
+###
+> TakeOne(Range(10), #it <= 0, null)
+TakeOne(Range(10), #it $<= 0, null) : i8?
+Binder : TakeOne(*2: Range(10), #1 @<= 0, null)
+Reducer: TakeOne(Range(10), [else] null)
+###
+> TakeOne(A, #it = -1, null)
+TakeOne(A, #it @= -1, null) : i8?
+Binder : TakeOne(*2: A, #1 @= -1, null)
+Reducer: null
+###
+> TakeOne(A, [if] #it = -1, null)
+TakeOne(A, [if] #it @= -1, null) : i8?
+Binder : TakeOne(*2: A, [if] #1 @= -1, null)
+Reducer: null
+###
+> TakeOne(A, [if] #it = -1, [else] null)
+TakeOne(A, [if] #it @= -1, [else] null) : i8?
+Binder : TakeOne(*2: A, [if] #1 @= -1, [else] null)
+Reducer: null
+###
+> TakeOne(A, 2 < #it <= 3) // #it = 3.
+TakeOne(A, 2 $< #it $<= 3) : i8
+Binder : TakeOne(*2: A, 2 @< #1 @<= 3)
+###
+> TakeOne(A, #it = 0 or #it > 2) // TakeOne(A).
+TakeOne(A, #it @= 0 or #it $> 2) : i8
+Binder : TakeOne(*2: A, Or(#1 @= 0, #1 @> 2))
+###
+> TakeOne(A, not (2 < #it))
+TakeOne(A, not 2 $< #it) : i8
+Binder : TakeOne(*2: A, Xor(2 @< #1, true))
+###
+> TakeOne(A, not (2 = #it))
+TakeOne(A, not 2 @= #it) : i8
+Binder : TakeOne(*2: A, Xor(2 @= #1, true))
+###
+> TakeOne(A, not (2 >= #it))
+TakeOne(A, not 2 $>= #it) : i8
+Binder : TakeOne(*2: A, Xor(2 @>= #1, true))
+###
+> TakeOne(A, not (2 !< #it))
+TakeOne(A, not 2 !$< #it) : i8
+Binder : TakeOne(*2: A, Xor(2 @>= #1, true))
+###
+> TakeOne(A, not (2 != #it))
+TakeOne(A, not 2 !@= #it) : i8
+Binder : TakeOne(*2: A, Xor(2 !@= #1, true))
+###
+> TakeOne(A, not (2 !>= #it))
+TakeOne(A, not 2 !$>= #it) : i8
+Binder : TakeOne(*2: A, Xor(2 @< #1, true))
+###
+> ForEachIf(A, #it = 5, it) // TakeAt(A, 5).
+ForEachIf(A, #it @= 5, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @= 5, *2)
+Reducer: Take(*2: A, [if] #1 @= 5)
+###
+> ForEachIf(A, [if] #it = 5, it) // TakeAt(A, 5).
+ForEachIf(A, [if] #it @= 5, it) : i8*
+Binder : ForEachIf*(*2: A, [if] #1 @= 5, *2)
+Reducer: Take(*2: A, [if] #1 @= 5)
+###
+> ForEach(A, [while] #it = X, it) // For X != 0 should reduce to empty. For X == 0, should reduce to TakeAt(A, 0).
+ForEach(A, [while] #it @= X, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @= X, *2)
+Reducer: Take(*2: A, [while] #1 @= X)
+###
+> ForEachIf(A, #it < 5, it) // Take(A, 5).
+ForEachIf(A, #it $< 5, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @< 5, *2)
+Reducer: Take(*2: A, [if] #1 @< 5)
+###
+> ForEach(A, [if] #it < 5, it) // Take(A, 5).
+ForEach(A, [if] #it $< 5, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @< 5, *2)
+Reducer: Take(*2: A, [if] #1 @< 5)
+###
+> ForEach(A, [while] #it < 5, it) // Take(A, 5).
+ForEach(A, [while] #it $< 5, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @< 5, *2)
+Reducer: Take(*2: A, [while] #1 @< 5)
+###
+> ForEachIf(A, #it <= 5, it) // Take(A, 6).
+ForEachIf(A, #it $<= 5, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @<= 5, *2)
+Reducer: Take(*2: A, [if] #1 @<= 5)
+###
+> ForEachWhile(A, #it <= 5, it) // Take(A, 6).
+ForEachWhile(A, #it $<= 5, it) : i8*
+Binder : ForEachWhile*(*2: A, #1 @<= 5, *2)
+Reducer: Take(*2: A, [while] #1 @<= 5)
+###
+> ForEach(A, [if] #it <= 5, it) // Take(A, 6).
+ForEach(A, [if] #it $<= 5, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @<= 5, *2)
+Reducer: Take(*2: A, [if] #1 @<= 5)
+###
+> ForEach(A, [while] #it <= 5, it) // Take(A, 6).
+ForEach(A, [while] #it $<= 5, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @<= 5, *2)
+Reducer: Take(*2: A, [while] #1 @<= 5)
+###
+> ForEachIf(A, #it > 5, it) // Drop(A, 5).
+ForEachIf(A, #it $> 5, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @> 5, *2)
+Reducer: Take(*2: A, [if] #1 @> 5)
+###
+> ForEach(A, [if] #it > 5, it) // Drop(A, 5).
+ForEach(A, [if] #it $> 5, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @> 5, *2)
+Reducer: Take(*2: A, [if] #1 @> 5)
+###
+> ForEach(A, [while] #it >= X, it) // For X > 0 should reduce to empty. For X <= 0, should drop the predicate.
+ForEach(A, [while] #it $>= X, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @>= X, *2)
+Reducer: Take(*2: A, [while] #1 @>= X)
+###
+> ForEachIf(A, #it >= 5, it) // Drop(A, 6).
+ForEachIf(A, #it $>= 5, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @>= 5, *2)
+Reducer: Take(*2: A, [if] #1 @>= 5)
+###
+> ForEach(A, [if] #it >= 5, it) // Drop(A, 6).
+ForEach(A, [if] #it $>= 5, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @>= 5, *2)
+Reducer: Take(*2: A, [if] #1 @>= 5)
+###
+> ForEachIf(A, #it + 1 >= 5, it) // Drop(A, 5).
+ForEachIf(A, #it + 1 $>= 5, it) : i8*
+Binder : ForEachIf*(*2: A, Add(#1, 1) @>= 5, *2)
+Reducer: Take(*2: A, [if] Add(#1, 1) @>= 5)
+###
+> ForEach(A, [if] #it + 1 >= 5, it) // Drop(A, 5).
+ForEach(A, [if] #it + 1 $>= 5, it) : i8*
+Binder : ForEach(*2: A, [if] Add(#1, 1) @>= 5, *2)
+Reducer: Take(*2: A, [if] Add(#1, 1) @>= 5)
+###
+> Take(A, [if] #it = 5) // TakeAt(A, 5).
+Take(A, [if] #it @= 5) : i8*
+Binder : Take(*2: A, [if] #1 @= 5)
+###
+> Take(A, [if] #it = 0) // TakeOne(A).
+Take(A, [if] #it @= 0) : i8*
+Binder : Take(*2: A, [if] #1 @= 0)
+###
+> Take(A, [if] #it < 5) // Take(A, 5).
+Take(A, [if] #it $< 5) : i8*
+Binder : Take(*2: A, [if] #1 @< 5)
+###
+> Take(A, [if] #it >= 5) // Drop(A, 5).
+Take(A, [if] #it $>= 5) : i8*
+Binder : Take(*2: A, [if] #1 @>= 5)
+###
+> Take(A, [while] #it < 5) // Take(A, 5).
+Take(A, [while] #it $< 5) : i8*
+Binder : Take(*2: A, [while] #1 @< 5)
+###
+> Take(A, [if] #it <= 5) // Take(A, 6).
+Take(A, [if] #it $<= 5) : i8*
+Binder : Take(*2: A, [if] #1 @<= 5)
+###
+> TakeIf(A, #it < 5) // Take(A, 5).
+TakeIf(A, #it $< 5) : i8*
+Binder : TakeIf*(*2: A, #1 @< 5)
+Reducer: Take(*2: A, [if] #1 @< 5)
+###
+> TakeWhile(A, #it < 5) // Take(A, 5).
+TakeWhile(A, #it $< 5) : i8*
+Binder : TakeWhile*(*2: A, #1 @< 5)
+Reducer: Take(*2: A, [while] #1 @< 5)
+###

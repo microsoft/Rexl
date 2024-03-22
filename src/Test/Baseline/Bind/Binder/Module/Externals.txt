@@ -1,0 +1,86 @@
+**** New globals: {R:{A:r8, B:s}, T:{A:r8, B:s}*}
+
+> module { var X from T; let Num := X->Count() }
+module { var X from T; let Num := X->Count() } : M{let Num:i8, var X:{A:r8, B:s}*}
+Binder : module[ext!1(T,), items!2]{ var X from !1.0 def !2.0 opt; let Num := Count(!2.1) }
+###
+> Range(10)->ForEach(as n,
+    module {
+        var X from Range(n);
+        let Num := X->Count()
+    })
+Range(10)->ForEach(as n, module { var X from Range(n); let Num := X->Count() }) : M{let Num:i8, var X:i8*}*
+Binder : ForEach(*1: Range(10), module[ext!2(*1,), items!3]{ var X from Range(!2.0) def !3.0 opt; let Num := Count(!3.1) })
+###
+> Range(10)->ForEach(
+    module {
+        var X from Range(it$1);
+        let Num := X->Count()
+    })
+Range(10)->ForEach(module { var X from Range(it$1); let Num := X->Count() }) : M{let Num:i8, var X:i8*}*
+Binder : ForEach(*1: Range(10), module[ext!2(*1,), items!3]{ var X from Range(!2.0) def !3.0 opt; let Num := Count(!3.1) })
+###
+> Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from Range(A);
+        let Num := X->Count()
+    })
+Range(10)->{ A : it, B : ToText(it) }->ForEach(module { var X from Range(A); let Num := X->Count() }) : M{let Num:i8, var X:i8*}*
+Binder : ForEach(*3: ForEach(*1: Range(10), Guard(!2: *1, {A:!2, B:ToText(!2)})), module[ext!4(*3,), items!5]{ var X from Range(!4.0.A) def !5.0 opt; let Num := Count(!5.1) })
+Reducer: ForEach(*1: Range(10), module[ext!2({A:*1, B:ToText(*1)},), items!3]{ var X from Range(!2.0.A) def !3.0 opt; let Num := Count(!3.1) })
+###
+> Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from Range(it$1.A);
+        let Num := X->Count()
+    })
+Range(10)->{ A : it, B : ToText(it) }->ForEach(module { var X from Range(it$1.A); let Num := X->Count() }) : M{let Num:i8, var X:i8*}*
+Binder : ForEach(*3: ForEach(*1: Range(10), Guard(!2: *1, {A:!2, B:ToText(!2)})), module[ext!4(*3,), items!5]{ var X from Range(!4.0.A) def !5.0 opt; let Num := Count(!5.1) })
+Reducer: ForEach(*1: Range(10), module[ext!2({A:*1, B:ToText(*1)},), items!3]{ var X from Range(!2.0.A) def !3.0 opt; let Num := Count(!3.1) })
+###
+> Range(10)->ForEach(as n,
+    module {
+        var X from T->Take(n);
+        let Num := X->Count()
+    })
+Range(10)->ForEach(as n, module { var X from T->Take(n); let Num := X->Count() }) : M{let Num:i8, var X:{A:r8, B:s}*}*
+Binder : ForEach(*1: Range(10), module[ext!2(T,*1,), items!3]{ var X from Take(!2.0, !2.1) def !3.0 opt; let Num := Count(!3.1) })
+###
+> Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from T->Take(A);
+        let Num := X->Count()
+    })
+Range(10)->{ A : it, B : ToText(it) }->ForEach(module { var X from T->Take(A); let Num := X->Count() }) : M{let Num:i8, var X:{A:r8, B:s}*}*
+Binder : ForEach(*3: ForEach(*1: Range(10), Guard(!2: *1, {A:!2, B:ToText(!2)})), module[ext!4(T,*3,), items!5]{ var X from Take(!4.0, !4.1.A) def !5.0 opt; let Num := Count(!5.1) })
+Reducer: ForEach(*1: Range(10), module[ext!2(T,{A:*1, B:ToText(*1)},), items!3]{ var X from Take(!2.0, !2.1.A) def !3.0 opt; let Num := Count(!3.1) })
+###
+> With(
+    M1 : module { var X in T; let Y := X.A },
+    M2 : module { var X := R; let Y := X.A + 1 },
+    (M1, M2, [M1, M2]))
+With(M1 : module { var X in T; let Y := X.A }, M2 : module { var X def R; let Y := X.A + 1 }, (M1, M2, [M1, M2])) : (M{var X:{A:r8, B:s}, let Y:r8}, M{var X:{A:r8, B:s}, let Y:r8}, M{var X:{A:r8, B:s}, let Y:r8}*)
+Binder : With(!3: module[ext!1(T,), items!2]{ var X in !1.0 def TakeOne(!2.0, [else] dflt<{A:r8, B:s}>); let Y := !2.1.A }, !6: module[ext!4(R,), items!5]{ var X def !4.0; let Y := Add(!5.0.A, 1) }, (!3, !6, [!3, !6]))
+###
+> With(
+    M : module { var X in T },
+    RR : { X: R },
+    (M, RR, [M, RR]))
+With(M : module { var X in T }, RR : { X : R }, (M, RR, [M, RR])) : (M{var X:{A:r8, B:s}}, {X:{A:r8, B:s}}, {X:{A:r8, B:s}}*)
+Binder : With(!3: module[ext!1(T,), items!2]{ var X in !1.0 def TakeOne(!2.0, [else] dflt<{A:r8, B:s}>) }, !4: {X:R}, (!3, !4, [ModToRec(!3), !4]))
+###
+> With(
+    M : module { var X in T; var Z from 0 to 100 },
+    RR : { X: R, Y: 3.5 },
+    (M, RR, [M, RR]))
+With(M : module { var X in T; var Z from 0 to 100 }, RR : { X : R, Y : 3.5 }, (M, RR, [M, RR])) : (M{var X:{A:r8, B:s}, var Z:i8}, {X:{A:r8, B:s}, Y:r8}, {X:{A:r8, B:s}, Y:r8?, Z:i8?}*)
+Binder : With(!3: module[ext!1(T,), items!2]{ var X in !1.0 def TakeOne(!2.0, [else] dflt<{A:r8, B:s}>); var Z from 0 to 100 def !2.2 }, !4: {X:R, Y:3.5}, (!3, !4, [With(!5: ModToRec(!3), {X:!5.X, Y:null, Z:Opt<i8?>(!5.Z)}), With(!6: !4, {X:!6.X, Y:Opt<r8?>(!6.Y), Z:null})]))
+Reducer: With(!3: module[ext!1(T,), items!2]{ var X in !1.0 def TakeOne(!2.0, [else] dflt<{A:r8, B:s}>); var Z from 0 to 100 def !2.2 }, !4: {X:R, Y:3.5}, !5: ModToRec(!3), (!3, !4, [{X:!5.X, Y:null, Z:Opt<i8?>(!5.Z)}, {X:!4.X, Y:Opt<r8?>(!4.Y), Z:null}]))
+###
+> module {
+    var X in T+>{ C: R.A^2 * A };
+}
+module { var X in T+>{ C : R.A^2 * A } } : M{var X:{A:r8, B:s, C:r8}}
+Binder : module[ext!1(T,R,), items!2]{ var X in ForEach(*3: !1.0, SetFields(!4: *3, C : Mul(Power(!1.1.A, 2), !4.A))) def TakeOne(!2.0, [else] dflt<{A:r8, B:s, C:r8}>) }
+Hoister: module[ext!1(T,R,), items!2]{ var X in With(!3: Power(!1.1.A, 2), ForEach(*4: !1.0, SetFields(!5: *4, C : Mul(!3, !5.A)))) def TakeOne(!2.0, [else] dflt<{A:r8, B:s, C:r8}>) }
+###

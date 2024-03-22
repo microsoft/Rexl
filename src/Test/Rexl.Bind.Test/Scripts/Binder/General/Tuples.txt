@@ -1,0 +1,607 @@
+:: {g:g, o:o, s:s, b:b, qb:b?, d:d, qd:d?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?, qrec: {A:i8}? }
+
+// Sequences.
+[1,2,3]
+[1, 2U]
+[1, 2F]
+[1, -1, 2.5]
+[1, 128]
+
+[1, 0x80, 0x8000]
+[1, 0x80, 0x8000, 0x80000000]
+[0x80000000, 1, 0x80, 0x8000]
+[0x80000000, 1, 0x80, null, 0x8000]
+
+[true, false, true, true]
+[true, null, false]
+
+["hi", null, ""]
+["hi", true]
+["hi", 3]
+["hi", true, -3]
+
+[o, s, "hi"]
+[g, o, s]
+[b, true, false]
+
+[qi]
+[qi, null, 3]
+
+[]
+
+[1,2,3] + 4
+[] + 4
+
+[d, null]
+[qd, d]
+
+[{A:i4}, {A:i4+3}]
+[{A:i4}, {A:i8}]
+
+// Tuples.
+(1,2,3)
+(1, 2U)
+(1, 2F)
+(1, -1, 2.5)
+(1, 128)
+
+(1, 0x80, 0x8000)
+(1, 0x80, 0x8000, 0x80000000)
+(0x80000000, 1, 0x80, 0x8000)
+(0x80000000, 1, 0x80, null, 0x8000)
+
+(true, false, true, true)
+(true, null, false)
+
+("hi", null, "")
+("hi", true)
+("hi", 3)
+("hi", true, -3)
+
+(o, s, "hi")
+(g, o, s)
+(b, true, false)
+
+(qi)
+(qi,)
+(qi, null, 3)
+
+()
+
+// REVIEW: Should we lift operators over tuple when it makes sense to do so?
+(1,2,3) + 4
+() + 4
+
+(d, null)
+(qd, d)
+
+({A:i4}, {A:i4+3})
+({A:i4}, {A:i8})
+
+::+ { tup:(i8,s,b), tupe:(), qtup:(i8,s,b)?, qtupe:()?, stup:(i8,s,b)*, stupe:()*, sqtup:(i8,s,b)?*, sqtupe:()?* }
+
+tup[^3]
+tup[^2]
+tup[^1]
+tup[0]
+tup[1]
+tup[2]
+tup[^4]
+tup[3]
+tup[i8]
+
+// Special error message
+tup[-1]
+tup[-2]
+
+tup[7]
+tup[^7]
+tup[%7]
+tup[&7]
+tup[^%7]
+tup[^&7]
+tup[-7]
+tup[%-7]
+tup[&-7]
+tup[^%-7]
+tup[^&-7]
+
+tup[]
+tup[0,]
+tup[0, s, 1,]
+tup[s, 0]
+tup[s]
+
+tupe[0]
+tupe[]
+tupe[0,]
+tupe[0, s, 1,]
+tupe[s, 1]
+tupe[s]
+
+qtup[^3]
+qtup[^2]
+qtup[^1]
+qtup[0]
+qtup[1]
+qtup[2]
+qtup[^4]
+qtup[3]
+qtup[i8]
+
+stup[^3]
+stup[^2]
+stup[^1]
+stup[0]
+stup[1]
+stup[2]
+stup[^4]
+stup[3]
+stup[i8]
+stupe[0]
+
+sqtup[^3]
+sqtup[^2]
+sqtup[^1]
+sqtup[0]
+sqtup[1]
+sqtup[2]
+sqtup[^4]
+sqtup[3]
+sqtupe[0]
+
+tup.Item0
+tup.Item1
+tup.Item2
+tup.Item3
+tupe.Item0
+
+qtup.Item0
+qtup.Item1
+qtup.Item2
+qtup.Item3
+qtupe.Item0
+
+stup.Item0
+stup.Item1
+stup.Item2
+stup.Item3
+stupe.Item0
+
+sqtup.Item0
+sqtup.Item1
+sqtup.Item2
+sqtup.Item3
+sqtupe.Item0
+
+Tuple.Item0(tup)
+Tuple.Item1(tup)
+Tuple.Item2(tup)
+Tuple.Item3(tup)
+Tuple.Item0(tupe)
+
+Tuple.Item0(qtup)
+Tuple.Item1(qtup)
+Tuple.Item2(qtup)
+Tuple.Item3(qtup)
+Tuple.Item0(qtupe)
+
+Tuple.Item0(stup)
+Tuple.Item1(stup)
+Tuple.Item2(stup)
+Tuple.Item3(stup)
+Tuple.Item0(stupe)
+
+Tuple.Item0(sqtup)
+Tuple.Item1(sqtup)
+Tuple.Item2(sqtup)
+Tuple.Item2(sqtup)
+Tuple.Item0(sqtupe)
+
+i4[3]
+i4.Item3
+Tuple.Item3(i4)
+
+tup.Len
+tupe.Len
+
+qtup.Len
+qtupe.Len
+
+stup.Len
+stupe.Len
+
+sqtup.Len
+sqtupe.Len
+
+Tuple.Len(tup)
+Tuple.Len(tupe)
+
+Tuple.Len(qtup)
+Tuple.Len(qtupe)
+
+Tuple.Len(stup)
+Tuple.Len(stupe)
+
+Tuple.Len(sqtup)
+Tuple.Len(sqtupe)
+
+Tuple.Len("hi")
+
+[(1, "hi", false), tup]
+[(1.5, "hi", false), tup]
+[(1.5, "hi", false), Wrap(tup)]
+
+[[(1, "hi", false)], stup]
+[[(1.5, "hi", false)], stup]
+[stup, sqtup]
+
+[(1.5, "hi", false), (-3, 17, null) ]
+[(1, "hi", false), (-3, 17, null) ]
+[(1.5, "hi", false), (-3, "bye", true) ]
+[(1, "hi", false), (-3.5, "bye", true) ]
+
+(i4, s, b)[0]
+(i4, s, b)[1]
+(i4, s, b)[2]
+(i4, s, b).Item0
+(i4, s, b).Item1
+(i4, s, b).Item2
+
+(tup if true else qtup)[0]
+(tup if true else qtup).Item0
+(tup if true else tup)[0]
+(tup if true else tup).Item0
+
+// Slicing
+()[:] // Error.
+()[1:] // Error.
+(1,)[:]
+(1,)[::0]
+(1,)[::-1]
+(1,)[0:1:0]
+(1,)[0:1:1]
+(1,)[0:1:2]
+(1,)[0:1:-1]
+(i4, s, b)[:]
+(i4, s, b)[1::]
+(i4, s, b)[:1:]
+(i4, s, b)[::-1]
+(i4, s, b)[::0]
+(i4, s, b)[::1]
+(i4, s, b)[2::]
+(i4, s, b)[:2:]
+(i4, s, b)[::2]
+(i4, s, b)[0:0:]
+(i4, s, b)[0:10:]
+(i4, s, b)[0:2:]
+(i4, s, b)[0:2:0]
+(i4, s, b)[0:2:-1]
+(i4, s, b)[0:2:2]
+(i4, s, b)[-1:0:]
+(i4, s, b)[1:10:]
+(i4, s, b)[2:10:]
+(i4, s, b)[2:-1:]
+(i4, s, b)[1:-3:]
+(i4, s, b)[1:-3:1]
+(i4, s, b)[1:-3:2]
+(i4, s, b)[1:-3:-1]
+(i4, s, b)[1:-3:-2]
+(i4, s, b)[1:-1:]
+(i8, r8, s, b)[:]
+(i8, r8, s, b)[1::]
+(i8, r8, s, b)[:1:]
+(i8, r8, s, b)[::-1]
+(i8, r8, s, b)[::0]
+(i8, r8, s, b)[::1]
+(i8, r8, s, b)[2::]
+(i8, r8, s, b)[:2:]
+(i8, r8, s, b)[::2]
+(i8, r8, s, b)[0:0:]
+(i8, r8, s, b)[0:10:]
+(i8, r8, s, b)[0:10:-1]
+(i8, r8, s, b)[0:10:-2]
+(i8, r8, s, b)[0:10:2]
+(i8, r8, s, b)[0:10:10]
+(i8, r8, s, b)[0:2:]
+(i8, r8, s, b)[1:-1:]
+
+tupe[:] // Error.
+tup[:]
+stupe[:] // Error.
+stup[:]
+qtupe[:] // Error.
+qtup[:]
+sqtupe[:] // Error.
+sqtup[:]
+
+tup[null:2]
+tup[2:null]
+tup[:2:null]
+
+// Reducing fullrange slices
+tup[0::] // Reduce to tup.
+tup[:^0] // Reduce to tup.
+tup[::1] // Reduce to tup.
+tup[:3:] // Reduce to tup.
+tup[^0:] // Reduce to empty.
+tup[:^1:] // Doesn't reduce.
+tup[:^1+1:] // Error.
+tup[0::-1] // Doesn't reduce.
+tup[0::2] // Doesn't reduce.
+tup[:*3] // Reduce to tup.
+tup[:*47] // Reduce to tup.
+tup[:*2] // Doesn't reduce.
+tup[:^*0] // Reduce to tup.
+tup[:*^3] // Reduce to empty.
+tup[:*^2] // Doesn't reduce.
+tup[:^*0:2] // Doesn't reduce.
+
+tup[1:*2] // Doesn't reduce.
+tup[3:*2] // Reduce to empty.
+tup[1:*0] // Reduce to empty.
+
+tup[-3:*3]
+tup[-3:*2]
+tup[-3:*1]
+tup[-3:*0]
+tup[-3:*^3]
+tup[-3:*^2]
+tup[-3:*^1]
+tup[-3:*^0]
+tup[-3:*3:1]
+tup[-3:*2:1]
+tup[-3:*1:1]
+tup[-3:*0:1]
+tup[-3:*^3:1]
+tup[-3:*^2:1]
+tup[-3:*^1:1]
+tup[-3:*^0:1]
+tup[-3:*3:-1]
+tup[-3:*2:-1]
+tup[-3:*1:-1]
+tup[-3:*0:-1]
+tup[-3:*^3:-1]
+tup[-3:*^2:-1]
+tup[-3:*^1:-1]
+tup[-3:*^0:-1]
+
+tup[1:*3]
+tup[1:*2]
+tup[1:*1]
+tup[1:*0]
+tup[1:*^3]
+tup[1:*^2]
+tup[1:*^1]
+tup[1:*^0]
+tup[1:*3:1]
+tup[1:*2:1]
+tup[1:*1:1]
+tup[1:*0:1]
+tup[1:*^3:1]
+tup[1:*^2:1]
+tup[1:*^1:1]
+tup[1:*^0:1]
+tup[1:*3:-1]
+tup[1:*2:-1]
+tup[1:*1:-1]
+tup[1:*0:-1]
+tup[1:*^3:-1]
+tup[1:*^2:-1]
+tup[1:*^1:-1]
+tup[1:*^0:-1]
+
+tup[4:*3]
+tup[4:*2]
+tup[4:*1]
+tup[4:*0]
+tup[4:*^3]
+tup[4:*^2]
+tup[4:*^1]
+tup[4:*^0]
+tup[4:*3:1]
+tup[4:*2:1]
+tup[4:*1:1]
+tup[4:*0:1]
+tup[4:*^3:1]
+tup[4:*^2:1]
+tup[4:*^1:1]
+tup[4:*^0:1]
+tup[4:*3:-1]
+tup[4:*2:-1]
+tup[4:*1:-1]
+tup[4:*0:-1]
+tup[4:*^3:-1]
+tup[4:*^2:-1]
+tup[4:*^1:-1]
+tup[4:*^0:-1]
+
+tup[3:] 
+tup[::2]
+tup[3::1]
+tup[0::0]
+tup[0::1]
+tup[:3:1]
+tup[0:3:]
+tup[0:3:1]
+qtup[3:] 
+qtup[0::]
+qtup[::1]
+qtup[::2]
+qtup[:3:]
+qtup[0::0]
+qtup[0::1]
+qtup[:3:1]
+qtup[0:3:]
+qtup[0:3:1]
+sqtup[3:]
+sqtup[0::]
+sqtup[::1]
+sqtup[::2]
+sqtup[:3:]
+sqtup[0::0]
+sqtup[0::1]
+sqtup[:3:1]
+sqtup[0:3:]
+sqtup[0:3:1]
+
+tup[-1::1]
+qtup[-1::1]
+sqtup[-1::1]
+tup[-3:-1:1]
+qtup[-3:-1:1]
+sqtup[-3:-1:1]
+
+tup[0:1:1]
+qtup[0:1:1]
+sqtup[0:1:1]
+
+tup[:^0:1]
+tup[:^0:-1]
+tup[0:2:1]
+tup[0:^1:1]
+qtup[:^0:1]
+qtup[:^0:-1]
+qtup[0:2:1]
+qtup[0:^1:1]
+sqtup[:^0:1]
+sqtup[:^0:-1]
+sqtup[0:2:1]
+sqtup[0:^1:1]
+
+tup[1:2:1]
+tup[^2:^1:1]
+qtup[1:2:1]
+qtup[^2:^1:1]
+sqtup[1:2:1]
+sqtup[^2:^1:1]
+
+tup[2:0:-1]
+tup[^1:^3:-1]
+qtup[2:0:-1]
+qtup[^1:^3:-1]
+sqtup[2:0:-1]
+sqtup[^1:^3:-1]
+
+tup[:][:]
+tup[:][0:1]
+tup[1:2][:]
+tup[1:2][0:2]
+tup[1:3][0:3]
+qtup[:][:]
+qtup[:][0:1]
+qtup[1:2][:]
+qtup[1:2][0:2]
+qtup[1:3][0:3]
+sqtup[:][:]
+sqtup[:][0:1]
+sqtup[1:2][:]
+sqtup[1:2][0:2]
+sqtup[1:3][0:3]
+
+tup[(2,4,1)] // Error.
+tup[(2,true,4,true,1)] // Error.
+
+// Default node test.
+((s,s,s), (s,s,s))[4][1:]
+
+// REVIEW: Support simple expressions as constants.
+tup[1-1::1] // Error.
+tup[:0+1:] // Error.
+tup[-1::1+0] // Error.
+tup[-1:-1:1+0] // Error.
+tup[-1:-2:1+0] // Error.
+
+(tup if true else qtup)[0:]
+(tup if true else tup)[0:]
+(tup if true else qtup)[1:]
+(tup if true else tup)[1:]
+
+ForEach(x:stup, tup[1:] & x)[2:]
+
+::+ { hom:({A:s,B:i8,C:b?},{A:s,B:i8,C:b?},{A:s,B:i8,C:b?}), homhet:((i8,s,b),(i8,s,b),(i8,s,b)), homhom: ((s,s,s),(s,s,s),(s,s,s))}
+
+hom[^3]
+hom[^2]
+hom[^1]
+hom[0]
+hom[1]
+hom[2]
+
+hom[7]
+hom[^7]
+hom[%7]
+hom[&7]
+hom[^%7]
+hom[^&7]
+hom[-7]
+hom[%-7]
+hom[&-7]
+hom[^%-7]
+hom[^&-7]
+
+hom[^10]
+hom[^4].A
+hom[^3 * 2].B
+hom[3].C
+hom[i8]
+
+hom[With(x:i8 * i8, x^x)]
+
+hom[]
+hom[0,]
+hom[0, s, 1,]
+hom[s, 1]
+hom[s]
+
+homhom[^4+1][i8]
+homhom[3+1][0]
+homhom[3+1][^4]
+homhom[3+1][3]
+homhom[i8][i8]
+
+homhet[^4][^4]
+homhom[^4][^4]
+
+homhet[^1][0]
+homhom[^1][0]
+
+homhet[0][i8]
+homhom[0][i8]
+
+homhet[3,0][2]
+homhom[3,0][2]
+
+homhet[1 + 2][0]
+homhom[1 + 2][-1 + 1]
+
+// Returning defaults should be constant nodes.
+(10,20)[^3]
+(true, true)[2]
+(2.71, 3.14)[^400]
+(qrec, qrec)[4]
+
+(10, 20)[1 - 1]
+
+::+ {shom: ({A:s,B:i8,C:b?},{A:s,B:i8,C:b?},{A:s,B:i8,C:b?})*}
+
+// REVIEW: This will always be out of range and should theoretically be default.
+Map(x1:Range(10), x2:shom, x2[(1 max x1) shl 2])
+
+// REVIEW: These indices aren't recognized as constants since they are checked only at bind time.
+tup[1+1]
+tup[3+1]
+stup[1+1]
+stup[3+1]
+tupe[-1+1]
+stupe[-1+1]
+stupe[1 shl 1]
+sqtup[1+1]
+sqtup[3+1]
+sqtupe[-1+1]
+sqtupe[1+1]
+homhet[i8][1+1]
+homhet[i8][3+1]
+
+(,)[^3] // Error, found from fuzz testing.
+(,)[-3] // Error, found from fuzz testing.

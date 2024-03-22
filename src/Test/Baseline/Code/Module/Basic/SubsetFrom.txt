@@ -1,0 +1,120 @@
+>>> *** Source:
+    P := plan {
+        param Set := Range(10);
+        param Def := Set->TakeIf(it mod 3 = 0);
+        var Some from Set def Def;
+    };
+    P;
+    P with { Set: Range(5) };
+    P with { Def: Range(10)->TakeIf(it mod 3 = 1) };
+    P with { Def: Range(0) };
+    P with { Def: [] };
+    P := plan { var Some from Range(3, 10) to 7; };
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param Set := Range(10); param Def := Set->TakeIf(it mod 3 @= 0); var Some from Set def Def }
+   1) [0] Expr P
+   2) [0] Expr P=>{ Set : Range(5) }
+   3) [0] Expr P=>{ Def : Range(10)->TakeIf(it mod 3 @= 1) }
+   4) [0] Expr P=>{ Def : Range(0) }
+   5) [0] Expr P=>{ Def : [] }
+   6) [0] Define P <- module { var Some from Range(3, 10) to 7 }
+   7) [0] End
+
+>    0) [0] Define P <- module { param Set := Range(10); param Def := Set->TakeIf(it mod 3 @= 0); var Some from Set def Def }
+Global 'P' has DType: M{param Def:i8*, param Set:i8*, var Some:i8*}, SysType: RuntimeModule<{Seq<i8>,Seq<i8>,Seq<i8>},(Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>)>
+>    1) [0] Expr P
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: Seq<i8>
+       0) 0
+       1) 3
+       2) 6
+       3) 9
+  var Some: Seq<i8>
+       0) 0
+       1) 3
+       2) 6
+       3) 9
+>    2) [0] Expr P=>{ Set : Range(5) }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+  param Def: Seq<i8>
+       0) 0
+       1) 3
+  var Some: Seq<i8>
+       0) 0
+       1) 3
+>    3) [0] Expr P=>{ Def : Range(10)->TakeIf(it mod 3 @= 1) }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: Seq<i8>
+       0) 1
+       1) 4
+       2) 7
+  var Some: Seq<i8>
+       0) 1
+       1) 4
+       2) 7
+*** Ctx ping count: 14
+    [0](14): Take(*1: Range(10), [if] IntMod(*1, 3) @= 1)
+>    4) [0] Expr P=>{ Def : Range(0) }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: Seq<i8>
+  var Some: Seq<i8>
+>    5) [0] Expr P=>{ Def : [] }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: <null>
+  var Some: <null>
+>    6) [0] Define P <- module { var Some from Range(3, 10) to 7 }
+*** Bind diagnostics:
+  [SubsetFrom.txt] Error: (284,286) Node: 7, Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+>    7) [0] End
+

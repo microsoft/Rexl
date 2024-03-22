@@ -1,0 +1,791 @@
+>>> *** Source:
+    import 3;
+
+>>> *** Instructions:
+   0) [0] Import: 3
+   1) [0] End
+
+>    0) [0] Import: 3
+*** Statement diagnostics:
+  [Coverage.txt] Error: (7,8) Node: 3, Message: Unhandled import type: 'i8'
+>    1) [0] End
+###
+>>> *** Source:
+    import X;
+
+>>> *** Instructions:
+   0) [0] Import: X
+   1) [0] End
+
+>    0) [0] Import: X
+*** Bind diagnostics:
+  [Coverage.txt] Error: (7,8) Node: X, Message: Name does not exist in the current context
+>    1) [0] End
+###
+>>> *** Source:
+    import "hi";
+
+>>> *** Instructions:
+   0) [0] Import: "hi"
+   1) [0] End
+
+>    0) [0] Import: "hi"
+*** Statement diagnostics:
+  Error: *** Import Exception: File not found: 'hi'
+    Exception (FileNotFoundException): File not found: 'hi'
+>    1) [0] End
+###
+>>> *** Source:
+    import Link.Local("Text.Rexl", "hi");
+
+>>> *** Instructions:
+   0) [0] Import: Link.Local("Text.Rexl", "hi")
+   1) [0] End
+
+>    0) [0] Import: Link.Local("Text.Rexl", "hi")
+*** Statement diagnostics:
+  Error: *** Import Exception: File not found: 'hi'
+    Exception (FileNotFoundException): File not found: 'hi'
+>    1) [0] End
+###
+>>> *** Source:
+    import Link.Local("Text", "hi");
+
+>>> *** Instructions:
+   0) [0] Import: Link.Local("Text", "hi")
+   1) [0] End
+
+>    0) [0] Import: Link.Local("Text", "hi")
+*** Statement diagnostics:
+  [Coverage.txt] Error: (17,18) Node: Link.Local("Text", "hi"), Message: Expected link flavor 'Text.Rexl', not: 'Text'
+>    1) [0] End
+###
+>>> *** Source:
+    execute X;
+
+>>> *** Instructions:
+   0) [0] Execute: X
+   1) [0] End
+
+>    0) [0] Execute: X
+*** Bind diagnostics:
+  [Coverage.txt] Error: (8,9) Node: X, Message: Name does not exist in the current context
+>    1) [0] End
+###
+>>> *** Source:
+    execute 3;
+
+>>> *** Instructions:
+   0) [0] Execute: 3
+   1) [0] End
+
+>    0) [0] Execute: 3
+*** Statement diagnostics:
+  [Coverage.txt] Error: (8,9) Node: 3, Message: The value for `execute` must be type 's' instead of type 'i8'
+>    1) [0] End
+###
+>>> *** Source:
+    execute Null("3");
+
+>>> *** Instructions:
+   0) [0] Execute: Null("3")
+   1) [0] End
+
+>    0) [0] Execute: Null("3")
+>    1) [0] End
+###
+>>> *** Source:
+    func Expect(e, a) := (a, "PASS" if e = a else "*** FAIL!!! ***");
+    X := 0;
+    C0 := "X := X + 1";
+    C1 := "execute C0";
+    C2 := "execute C1";
+    C3 := "execute C2";
+    C4 := "execute C3";
+    C5 := "execute C4";
+    C6 := "execute C5";
+    C7 := "execute C6";
+    C8 := "execute C7";
+    C9 := "execute C8";
+    CA := "execute C9";
+    execute C1; Expect(1, X);
+    execute C3; Expect(2, X);
+    execute C9; Expect(3, X);
+    // This fails (nesting too deep), so X should be unchanged.
+    execute CA; Expect(3, X);
+
+>>> *** Instructions:
+   0) [0] DefineFunc Expect(e, a) <- (a, "PASS" if e @= a else "*** FAIL!!! ***")
+   1) [0] Define X <- 0
+   2) [0] Define C0 <- "X := X + 1"
+   3) [0] Define C1 <- "execute C0"
+   4) [0] Define C2 <- "execute C1"
+   5) [0] Define C3 <- "execute C2"
+   6) [0] Define C4 <- "execute C3"
+   7) [0] Define C5 <- "execute C4"
+   8) [0] Define C6 <- "execute C5"
+   9) [0] Define C7 <- "execute C6"
+  10) [0] Define C8 <- "execute C7"
+  11) [0] Define C9 <- "execute C8"
+  12) [0] Define CA <- "execute C9"
+  13) [0] Execute: C1
+  14) [0] Expr Expect(1, X)
+  15) [0] Execute: C3
+  16) [0] Expr Expect(2, X)
+  17) [0] Execute: C9
+  18) [0] Expr Expect(3, X)
+  19) [0] Execute: CA
+  20) [0] Expr Expect(3, X)
+  21) [0] End
+
+>    0) [0] DefineFunc Expect(e, a) <- (a, "PASS" if e @= a else "*** FAIL!!! ***")
+UDF 'Expect' has arity 2
+>    1) [0] Define X <- 0
+Global 'X' has DType: i8, SysType: i8
+>    2) [0] Define C0 <- "X := X + 1"
+Global 'C0' has DType: s, SysType: str
+>    3) [0] Define C1 <- "execute C0"
+Global 'C1' has DType: s, SysType: str
+>    4) [0] Define C2 <- "execute C1"
+Global 'C2' has DType: s, SysType: str
+>    5) [0] Define C3 <- "execute C2"
+Global 'C3' has DType: s, SysType: str
+>    6) [0] Define C4 <- "execute C3"
+Global 'C4' has DType: s, SysType: str
+>    7) [0] Define C5 <- "execute C4"
+Global 'C5' has DType: s, SysType: str
+>    8) [0] Define C6 <- "execute C5"
+Global 'C6' has DType: s, SysType: str
+>    9) [0] Define C7 <- "execute C6"
+Global 'C7' has DType: s, SysType: str
+>   10) [0] Define C8 <- "execute C7"
+Global 'C8' has DType: s, SysType: str
+>   11) [0] Define C9 <- "execute C8"
+Global 'C9' has DType: s, SysType: str
+>   12) [0] Define CA <- "execute C9"
+Global 'CA' has DType: s, SysType: str
+>   13) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    X := X + 1
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>   14) [0] Expr Expect(1, X)
+(1, PASS)
+>   15) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    X := X + 1
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   16) [0] Expr Expect(2, X)
+(2, PASS)
+>   17) [0] Execute: C9
+>>> *** Source:
+    execute C8
+
+>>> *** Instructions:
+   0) [0] Execute: C8
+   1) [0] End
+
+>    0) [0] Execute: C8
+>>> *** Source:
+    execute C7
+
+>>> *** Instructions:
+   0) [0] Execute: C7
+   1) [0] End
+
+>    0) [0] Execute: C7
+>>> *** Source:
+    execute C6
+
+>>> *** Instructions:
+   0) [0] Execute: C6
+   1) [0] End
+
+>    0) [0] Execute: C6
+>>> *** Source:
+    execute C5
+
+>>> *** Instructions:
+   0) [0] Execute: C5
+   1) [0] End
+
+>    0) [0] Execute: C5
+>>> *** Source:
+    execute C4
+
+>>> *** Instructions:
+   0) [0] Execute: C4
+   1) [0] End
+
+>    0) [0] Execute: C4
+>>> *** Source:
+    execute C3
+
+>>> *** Instructions:
+   0) [0] Execute: C3
+   1) [0] End
+
+>    0) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    X := X + 1
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   18) [0] Expr Expect(3, X)
+(3, PASS)
+>   19) [0] Execute: CA
+>>> *** Source:
+    execute C9
+
+>>> *** Instructions:
+   0) [0] Execute: C9
+   1) [0] End
+
+>    0) [0] Execute: C9
+>>> *** Source:
+    execute C8
+
+>>> *** Instructions:
+   0) [0] Execute: C8
+   1) [0] End
+
+>    0) [0] Execute: C8
+>>> *** Source:
+    execute C7
+
+>>> *** Instructions:
+   0) [0] Execute: C7
+   1) [0] End
+
+>    0) [0] Execute: C7
+>>> *** Source:
+    execute C6
+
+>>> *** Instructions:
+   0) [0] Execute: C6
+   1) [0] End
+
+>    0) [0] Execute: C6
+>>> *** Source:
+    execute C5
+
+>>> *** Instructions:
+   0) [0] Execute: C5
+   1) [0] End
+
+>    0) [0] Execute: C5
+>>> *** Source:
+    execute C4
+
+>>> *** Instructions:
+   0) [0] Execute: C4
+   1) [0] End
+
+>    0) [0] Execute: C4
+>>> *** Source:
+    execute C3
+
+>>> *** Instructions:
+   0) [0] Execute: C3
+   1) [0] End
+
+>    0) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+*** Statement diagnostics:
+  Error: (8,10) Node: C0, Message: Nesting of 'import' and 'execute' is too deep
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   20) [0] Expr Expect(3, X)
+(3, PASS)
+>   21) [0] End
+###
+>>> *** Source:
+    func Expect(e, a) := (a, "PASS" if e = a else "*** FAIL!!! ***");
+    X := 0;
+    F := Link.Local("Text.Rexl", "IncX.rexl");
+    C0 := "import F";
+    C1 := "execute C0";
+    C2 := "execute C1";
+    C3 := "execute C2";
+    C4 := "execute C3";
+    C5 := "execute C4";
+    C6 := "execute C5";
+    C7 := "execute C6";
+    C8 := "execute C7";
+    C9 := "execute C8";
+    execute C1; Expect(1, X);
+    execute C3; Expect(2, X);
+    execute C8; Expect(3, X);
+    // This fails (nesting too deep).
+    execute C9; Expect(3, X);
+
+>>> *** Instructions:
+   0) [0] DefineFunc Expect(e, a) <- (a, "PASS" if e @= a else "*** FAIL!!! ***")
+   1) [0] Define X <- 0
+   2) [0] Define F <- Link.Local("Text.Rexl", "IncX.rexl")
+   3) [0] Define C0 <- "import F"
+   4) [0] Define C1 <- "execute C0"
+   5) [0] Define C2 <- "execute C1"
+   6) [0] Define C3 <- "execute C2"
+   7) [0] Define C4 <- "execute C3"
+   8) [0] Define C5 <- "execute C4"
+   9) [0] Define C6 <- "execute C5"
+  10) [0] Define C7 <- "execute C6"
+  11) [0] Define C8 <- "execute C7"
+  12) [0] Define C9 <- "execute C8"
+  13) [0] Execute: C1
+  14) [0] Expr Expect(1, X)
+  15) [0] Execute: C3
+  16) [0] Expr Expect(2, X)
+  17) [0] Execute: C8
+  18) [0] Expr Expect(3, X)
+  19) [0] Execute: C9
+  20) [0] Expr Expect(3, X)
+  21) [0] End
+
+>    0) [0] DefineFunc Expect(e, a) <- (a, "PASS" if e @= a else "*** FAIL!!! ***")
+UDF 'Expect' has arity 2
+>    1) [0] Define X <- 0
+Global 'X' has DType: i8, SysType: i8
+>    2) [0] Define F <- Link.Local("Text.Rexl", "IncX.rexl")
+Global 'F' has DType: U<Text.Rexl>, SysType: Link
+>    3) [0] Define C0 <- "import F"
+Global 'C0' has DType: s, SysType: str
+>    4) [0] Define C1 <- "execute C0"
+Global 'C1' has DType: s, SysType: str
+>    5) [0] Define C2 <- "execute C1"
+Global 'C2' has DType: s, SysType: str
+>    6) [0] Define C3 <- "execute C2"
+Global 'C3' has DType: s, SysType: str
+>    7) [0] Define C4 <- "execute C3"
+Global 'C4' has DType: s, SysType: str
+>    8) [0] Define C5 <- "execute C4"
+Global 'C5' has DType: s, SysType: str
+>    9) [0] Define C6 <- "execute C5"
+Global 'C6' has DType: s, SysType: str
+>   10) [0] Define C7 <- "execute C6"
+Global 'C7' has DType: s, SysType: str
+>   11) [0] Define C8 <- "execute C7"
+Global 'C8' has DType: s, SysType: str
+>   12) [0] Define C9 <- "execute C8"
+Global 'C9' has DType: s, SysType: str
+>   13) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    import F
+
+>>> *** Instructions:
+   0) [0] Import: F
+   1) [0] End
+
+>    0) [0] Import: F
+>>> *** Source:
+    X := X + 1;
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   14) [0] Expr Expect(1, X)
+(1, PASS)
+>   15) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    import F
+
+>>> *** Instructions:
+   0) [0] Import: F
+   1) [0] End
+
+>    0) [0] Import: F
+>>> *** Source:
+    X := X + 1;
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   16) [0] Expr Expect(2, X)
+(2, PASS)
+>   17) [0] Execute: C8
+>>> *** Source:
+    execute C7
+
+>>> *** Instructions:
+   0) [0] Execute: C7
+   1) [0] End
+
+>    0) [0] Execute: C7
+>>> *** Source:
+    execute C6
+
+>>> *** Instructions:
+   0) [0] Execute: C6
+   1) [0] End
+
+>    0) [0] Execute: C6
+>>> *** Source:
+    execute C5
+
+>>> *** Instructions:
+   0) [0] Execute: C5
+   1) [0] End
+
+>    0) [0] Execute: C5
+>>> *** Source:
+    execute C4
+
+>>> *** Instructions:
+   0) [0] Execute: C4
+   1) [0] End
+
+>    0) [0] Execute: C4
+>>> *** Source:
+    execute C3
+
+>>> *** Instructions:
+   0) [0] Execute: C3
+   1) [0] End
+
+>    0) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    import F
+
+>>> *** Instructions:
+   0) [0] Import: F
+   1) [0] End
+
+>    0) [0] Import: F
+>>> *** Source:
+    X := X + 1;
+
+>>> *** Instructions:
+   0) [0] Define X <- X + 1
+   1) [0] End
+
+>    0) [0] Define X <- X + 1
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   18) [0] Expr Expect(3, X)
+(3, PASS)
+>   19) [0] Execute: C9
+>>> *** Source:
+    execute C8
+
+>>> *** Instructions:
+   0) [0] Execute: C8
+   1) [0] End
+
+>    0) [0] Execute: C8
+>>> *** Source:
+    execute C7
+
+>>> *** Instructions:
+   0) [0] Execute: C7
+   1) [0] End
+
+>    0) [0] Execute: C7
+>>> *** Source:
+    execute C6
+
+>>> *** Instructions:
+   0) [0] Execute: C6
+   1) [0] End
+
+>    0) [0] Execute: C6
+>>> *** Source:
+    execute C5
+
+>>> *** Instructions:
+   0) [0] Execute: C5
+   1) [0] End
+
+>    0) [0] Execute: C5
+>>> *** Source:
+    execute C4
+
+>>> *** Instructions:
+   0) [0] Execute: C4
+   1) [0] End
+
+>    0) [0] Execute: C4
+>>> *** Source:
+    execute C3
+
+>>> *** Instructions:
+   0) [0] Execute: C3
+   1) [0] End
+
+>    0) [0] Execute: C3
+>>> *** Source:
+    execute C2
+
+>>> *** Instructions:
+   0) [0] Execute: C2
+   1) [0] End
+
+>    0) [0] Execute: C2
+>>> *** Source:
+    execute C1
+
+>>> *** Instructions:
+   0) [0] Execute: C1
+   1) [0] End
+
+>    0) [0] Execute: C1
+>>> *** Source:
+    execute C0
+
+>>> *** Instructions:
+   0) [0] Execute: C0
+   1) [0] End
+
+>    0) [0] Execute: C0
+>>> *** Source:
+    import F
+
+>>> *** Instructions:
+   0) [0] Import: F
+   1) [0] End
+
+>    0) [0] Import: F
+*** Statement diagnostics:
+  Error: (7,8) Node: F, Message: Nesting of 'import' and 'execute' is too deep
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>    1) [0] End
+>   20) [0] Expr Expect(3, X)
+(3, PASS)
+>   21) [0] End
+###
+>>> *** Source:
+    if (X) "Bad";
+    else "Good";
+
+>>> *** Instructions:
+   0) [0] JumpIfNot 3 (0=>0) X
+   1) [0] Expr "Bad"
+   2) [0] Jump 4 (0=>0)
+   3) [0] Expr "Good"
+   4) [0] End
+
+>    0) [0] JumpIfNot 3 (0=>0) X
+*** Bind diagnostics:
+  [Coverage.txt] Error: (4,5) Node: X, Message: Name does not exist in the current context
+>    3) [0] Expr "Good"
+Good
+>    4) [0] End
+###
+>>> *** Source:
+    if (3) "Bad";
+    else "Good";
+
+>>> *** Instructions:
+   0) [0] JumpIfNot 3 (0=>0) 3
+   1) [0] Expr "Bad"
+   2) [0] Jump 4 (0=>0)
+   3) [0] Expr "Good"
+   4) [0] End
+
+>    0) [0] JumpIfNot 3 (0=>0) 3
+*** Statement diagnostics:
+  [Coverage.txt] Error: (3,4) Node: 3, Message: The condition for 'if' must be type 'b' instead of type 'i8'
+>    3) [0] Expr "Good"
+Good
+>    4) [0] End
+###
+

@@ -1,0 +1,181 @@
+// Basic module creation.
+module {
+    param A := 3;
+    const B := A * A;
+}
+###
+module {
+    param A := 3;
+    param B := A * A;
+    const K := A + B;
+    var X from 3 to B def K;
+    let Y := X * X;
+    msr M := Y + X;
+    con C := Y <= 100;
+}
+###
+module { param A := 3; const A := 17; }
+###
+module { con X := 3.5; }
+###
+module {
+    param D := Range(10);
+    var X in D req;
+}
+###
+module {
+    param D := Range(10);
+    var X in D opt;
+}
+###
+module {
+    param D := 10;
+    var X in D opt;
+}
+###
+module { var X in [0, 1, null] opt; }
+###
+module { const X := 3; var X from 0; }
+###
+module { const X := 3; var X from 0 to "hi"; }
+###
+module { var X from 0 opt; }
+###
+module { var X to 10 opt; }
+###
+module { var X def 0 opt; }
+###
+module { var X from 0 to 10.5; }
+###
+module { var X from 0 def 10.5; }
+###
+module { var X from Range(10); }
+###
+module { var X from Range(10) req; }
+###
+module { var X from Range(10) def Range(1, 10, 2); }
+###
+module { var X from Range(10) def 7; }
+###
+module { var X to Range(10); }
+###
+module { var X to Range(10) opt; }
+###
+module { var X to Range(10) def Range(1, 10, 2); }
+###
+module { var X to Range(10) def 7; }
+###
+module { var X from Range(10) to 17; }
+###
+module { var X to 10 from 0; }
+###
+module { var X to 10 from Date(1,2,3); }
+###
+// Module field access.
+With(M : module { var X from Range(10); let N := X->Count() }, M.X)
+###
+With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N))
+###
+// Two modules of the same type.
+With(
+    M1 : module { var X in Range(10); let Y := X * X },
+    M2 : module { var X := 17; let Y := X + 1 },
+    (M1, M2, [M1, M2]))
+###
+// Conversion from module to canonical record.
+With(
+    M : module { var X in Range(10) },
+    R : { X: 17 },
+    (M, R, [M, R]))
+###
+// Conversion from module to non-canonical record.
+With(
+    M : module { var X in Range(10); var Z from 0.0 to 100 },
+    R : { X: 17, Y: "Blah" },
+    (M, R, [M, R]))
+###
+// Bad it.
+module {
+    param A := 3;
+    const B := it.A;
+    const C := Range(A)->Sum(it * it$1.B);
+    const D := Range(A)->Sum(it * it$2);
+}
+###
+// Constant referencing variable.
+module { var X from 0; const Z := X * 2; }
+###
+// Parameter referencing variable.
+module { var X from 0; let Y := X * 3; param Z := Y * 2; }
+###
+// Free variable domain value referencing variable.
+module { var X from 0; let Y := X * 3; var Z from 0 to Y * 2; }
+###
+module { param A := 3; const B := A * a; }
+###
+module { param 'A A' := 3; const B := 'A A' * 'A a'; }
+###
+:: { M:M{param A:i8, const B:i8, var X:i8, msr S:i8, msr T:s}, QM:M{param A:i8, msr S:i8}?, R:{A:i8}, QR:{A:i8}?, b:b }
+
+M with {A:17}
+###
+M with {A:it.A+1}
+###
+M with {A:A+1}
+###
+M with {A:a+1} // Error.
+###
+M with {B:17}
+###
+M with {A:17, X:-3}
+###
+M with {A:17, X:-2.5}
+###
+M=>(R)
+###
+M=>(R & {X:B*2})
+###
+M=>(R & {x:B*2}) // Error.
+###
+M=>("hi")
+###
+R with { B:"hi" }
+###
+R => { A:17 }
+###
+Module.Maximize(M, S)
+###
+M->Minimize(S)
+###
+QM->Minimize(S)
+###
+Module.Optimize(M, S, b)
+###
+QM->Optimize(S, b)
+###
+Module.Maximize(M, s) // Error.
+###
+Module.Maximize(M, A) // Error.
+###
+M->Maximize(X) // Error.
+###
+Module.Maximize(R, A) // Error.
+###
+Module.Maximize(QR, A) // Error.
+###
+M->Maximize(S, "GLPK")
+###
+Module.Maximize(M, 0) // Error.
+###
+Module.Maximize(M, 2 * S) // Error.
+###
+Module.Minimize(M, -S) // Error.
+###
+Module.Minimize(M, T) // Error.
+###
+M->Optimize(S, A > 10) // Error.
+###
+M->Optimize(S, b, "highs")
+###
+// Hoisting out of optimize expression.
+Range(10)->ForEach(as n, Module.Maximize(M with { A : R.A * R.A * n }, S))

@@ -1,0 +1,326 @@
+Add: 00000001 [X], <config>
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [X]: [A  tT      dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** MarkDataChanged(nodeA)
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [X]: [           dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** ChangeConfig to same type
+Cfg: 00000001 [X], <config>
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [           dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Undo(1)
+Cfg: 00000001 [X], <config>
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [X]: [           dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Redo(1)
+Cfg: 00000001 [X], <config>
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [           dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** MarkDataChanged(nodeA)
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [           dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Rename(nodeA, Y)
+*** MarkDataChanged(nodeA)
+Ren: 00000001 [Y] <= [X], <config>
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [ N         dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Undo(1)
+Ren: 00000001 [X] <= [Y], <config>
+Status: 1 nodes, 2 undos, 1 redos
+  Node changes:
+    00000001 [X]: [ N             ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Redo(1)
+Ren: 00000001 [Y] <= [X], <config>
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [ N             ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Add extra formulas
+Fma: 00000001 [Y], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Undo(1)
+Fma: 00000001 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [  F T       D  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Redo(1)
+Fma: 00000001 [Y], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Undo(1)
+Fma: 00000001 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [  F T       D  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Undo(1)
+Ren: 00000001 [X] <= [Y], <config>
+Status: 1 nodes, 2 undos, 2 redos
+  Node changes:
+    00000001 [X]: [ N             ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Redo(1)
+Ren: 00000001 [Y] <= [X], <config>
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [ N             ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Undo(1)
+Ren: 00000001 [X] <= [Y], <config>
+Status: 1 nodes, 2 undos, 2 redos
+  Node changes:
+    00000001 [X]: [ N             ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Redo(2)
+Ren: 00000001 [Y] <= [X], <config>
+Fma: 00000001 [Y], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [ NF T   b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Undo(4)
+Del: 00000001 [Y], <config>
+Status: 0 nodes, 0 undos, 4 redos
+###
+*** Redo(4)
+Add: 00000001 [Y], <config>, Extra: { [this+>{ D: C * 1 }] }
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [A FtT   b cdD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+Fma: 00000001 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:this->Filter(A < 10u1)]
+  New 1: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [  F     b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Undo(1)
+Fma: 00000001 [Y], <config>
+  Old 0: [0:this->Filter(A < 10u1)]
+  Old 1: [0:this+>{ D: C * 1 }]
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 4 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [  F     b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Redo(1)
+Fma: 00000001 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:this->Filter(A < 10u1)]
+  New 1: [0:this+>{ D: C * 1 }]
+Status: 1 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [  F     b c D  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** ChangeConfig to same type with extra formulas
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Undo(1)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 5 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Redo(1)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** ChangeConfig to different type with extra formulas
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [   tT   b cdD  ], <config>, Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: {A:u8?, B:b, C:r8, D:r8}*
+###
+*** Undo(1)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 6 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [   tT   b cdD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Redo(1)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [Y]: [   tT   b cdD  ], <config>, Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: {A:u8?, B:b, C:r8, D:r8}*
+###
+*** Undo(2)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 5 undos, 2 redos
+  Node changes:
+    00000001 [Y]: [   tT   b cdD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Redo(1)
+Cfg: 00000001 [Y], <config>
+Status: 1 nodes, 6 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+*** Add Y
+Add: 00000002 [Z], Fma: [Y->Filter(C < 8u1)]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [A  tTuUB C dD  ], Base: {A:i4, B:b?, C:r8?, D:r8?}*
+###
+Fma: 00000002 [Z]
+  New 0: [0:this->Count()]
+Status: 2 nodes, 8 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [  F T  Bb c D  ], Base: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[0]: i8
+###
+Fma: 00000002 [Z]
+  Old 0: [0:this->Count()]
+  New 0: [0:this->Sum(A)]
+Status: 2 nodes, 9 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [       Bb c D  ], Base: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[0]: i8
+###
+Fma: 00000002 [Z]
+  Old 0: [0:this->Sum(A)]
+  New 0: [0:this->Filter(B = true)]
+  New 1: [0:this->Sum(A)]
+Status: 2 nodes, 10 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [  F    Bb c D  ], Base: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[1]: i8
+###
+Del: 00000001 [Y], <config>
+Status: 1 nodes, 11 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,1) Node: Y, Message: Name does not exist in the current context
+      *) Error: (10,11) Node: C, Message: Name does not exist in the current context
+      0) Error: (13,14) Node: B, Message: Name does not exist in the current context
+      1) Error: (10,11) Node: A, Message: Name does not exist in the current context
+###
+*** Undo(1)
+Add: 00000001 [Y], <config>, Extra: { [this->Filter(A < 10u1)], [this+>{ D: C * 1 }] }
+Status: 2 nodes, 10 undos, 1 redos
+  Node changes:
+    00000001 [Y]: [A FtT   b cdD  ], <config>, Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: {A:i4, B:b?, C:r8?, D:r8?}*
+    00000002 [Z]: [   tTuUBbCcdD  ], Base: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?, D:r8?}*, Extra[1]: i8
+###
+*** Redo(1)
+Del: 00000001 [Y], <config>
+Status: 1 nodes, 11 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,1) Node: Y, Message: Name does not exist in the current context
+      *) Error: (10,11) Node: C, Message: Name does not exist in the current context
+      0) Error: (13,14) Node: B, Message: Name does not exist in the current context
+      1) Error: (10,11) Node: A, Message: Name does not exist in the current context
+###
+*** UndoAll
+Del: 00000002 [Z]
+Status: 0 nodes, 0 undos, 11 redos
+###
+*** RedoAll
+Add: 00000002 [Z], Fma: [Y->Filter(C < 8u1)], Extra: { [this->Filter(B = true)], [this->Sum(A)] }
+Status: 1 nodes, 11 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [A FtT  BbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,1) Node: Y, Message: Name does not exist in the current context
+      *) Error: (10,11) Node: C, Message: Name does not exist in the current context
+      0) Error: (13,14) Node: B, Message: Name does not exist in the current context
+      1) Error: (10,11) Node: A, Message: Name does not exist in the current context
+###
+Add: 00000003 [Y], <config>
+Status: 2 nodes, 12 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tTuUBbCcdD  ], Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: u8
+    00000003 [Y]: [A  tT      dD  ], <config>, Base: {A:u8?, B:b, C:r8}*
+###
+*** Undo(1)
+Del: 00000003 [Y], <config>
+Status: 1 nodes, 11 undos, 1 redos
+  Node changes:
+    00000002 [Z]: [   tTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,1) Node: Y, Message: Name does not exist in the current context
+      *) Error: (10,11) Node: C, Message: Name does not exist in the current context
+      0) Error: (13,14) Node: B, Message: Name does not exist in the current context
+      1) Error: (10,11) Node: A, Message: Name does not exist in the current context
+###
+*** Redo(1)
+Add: 00000003 [Y], <config>
+Status: 2 nodes, 12 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tTuUBbCcdD  ], Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: u8
+    00000003 [Y]: [A  tT      dD  ], <config>, Base: {A:u8?, B:b, C:r8}*
+###
+*** UndoAll
+Del: 00000002 [Z]
+Del: 00000003 [Y], <config>
+Status: 0 nodes, 0 undos, 12 redos
+###
+*** RedoAll
+Add: 00000002 [Z], Fma: [Y->Filter(C < 8u1)], Extra: { [this->Filter(B = true)], [this->Sum(A)] }
+Add: 00000003 [Y], <config>
+Status: 2 nodes, 12 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [A FtTuUBbCcdD  ], Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: u8
+    00000003 [Y]: [A  tT      dD  ], <config>, Base: {A:u8?, B:b, C:r8}*
+###
+Cfg: 00000003 [Y], <config>
+Status: 2 nodes, 13 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tT  BbCcdD  ], Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: i8
+    00000003 [Y]: [   tT      dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** Undo(1)
+Cfg: 00000003 [Y], <config>
+Status: 2 nodes, 12 undos, 1 redos
+  Node changes:
+    00000002 [Z]: [   tT  BbCcdD  ], Base: {A:u8?, B:b, C:r8}*, Extra[0]: {A:u8?, B:b, C:r8}*, Extra[1]: u8
+    00000003 [Y]: [   tT      dD  ], <config>, Base: {A:u8?, B:b, C:r8}*
+###
+*** Redo(1)
+Cfg: 00000003 [Y], <config>
+Status: 2 nodes, 13 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [   tT  BbCcdD  ], Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: i8
+    00000003 [Y]: [   tT      dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###
+*** UndoAll
+Del: 00000002 [Z]
+Del: 00000003 [Y], <config>
+Status: 0 nodes, 0 undos, 13 redos
+###
+*** RedoAll
+Add: 00000002 [Z], Fma: [Y->Filter(C < 8u1)], Extra: { [this->Filter(B = true)], [this->Sum(A)] }
+Add: 00000003 [Y], <config>
+Status: 2 nodes, 13 undos, 0 redos
+  Node changes:
+    00000002 [Z]: [A FtTuUBbCcdD  ], Base: {A:i4, B:b?, C:r8?}*, Extra[0]: {A:i4, B:b?, C:r8?}*, Extra[1]: i8
+    00000003 [Y]: [A  tT      dD  ], <config>, Base: {A:i4, B:b?, C:r8?}*
+###

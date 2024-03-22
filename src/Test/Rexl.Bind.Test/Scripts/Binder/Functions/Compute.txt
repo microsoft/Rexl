@@ -1,0 +1,48 @@
+﻿::: {A:i4, B:i4?, R:{A:r8, X:i4, Y:i2, S:{X:i4}}, T:{A:r8, B:r8?, X:i4, Y:i2, S:{X:i4}}?*, P:(r8, i4, i2, {X:i4})?*}
+
+// Each matching group is started with a "// Match" comment on the first line, so it shows in the baselines.
+
+// Compute over tuple literals. Note that we may choose to optimize these at bind time, but currently do not.
+GuardMap([1,2,3], it * 2) // Baseline whether we expand over tuples.
+GuardMap(x : [1,2,3], x * 2)
+GuardMap([[1,2,3], [4,5]], it * 2)
+GuardMap([[1,2,3], [4,5]], it$0 * Count(it$2)) // Error - don't see the injected map scope.
+Map(a: [[1,2,3], [4,5]], GuardMap(b: a, b * Count(a))) // Alternative.
+
+GuardMap(T, A)
+WithMap(T, A)
+GuardMap(T, A ?? 3)
+WithMap(T, A ?? 3)
+GuardMap(T, B, B ?? 3)
+WithMap(T, B, B ?? 3)
+
+GuardMap(P, Item0)
+WithMap(P, Item0)
+GuardMap(P, Item0 ?? 3)
+WithMap(P, Item0 ?? 3)
+
+T->{A} // Match
+GuardMap(T, {A})
+WithMap(T, {A})
+
+T->{A, S} // Match
+GuardMap(T, {A, S})
+WithMap(T, {A, S})
+
+T | [First(_), null]->{A} // Match. Constant folds the null.
+T | [First(_), null] | GuardMap(_, { A})
+T | [First(_), null] | WithMap(_, { A})
+
+R | [_, null]->{A} // Match. Constant folds the null.
+R | [_, null] | GuardMap(_, { A})
+R | [_, null] | WithMap(_, { A})
+
+GuardMap(["hello", null], Text.Len(it)) // Result is i4?* since null maps to null.
+WithMap(["hello", null], Text.Len(it)) // Result is i4* since null is not mapped.
+
+GuardMap(-42, it * it)
+WithMap(-42, it * it)
+GuardMap(Opt (-42), it * it)
+GuardMap(Null(-42), it * it)
+WithMap(Opt (-42), it * it)
+WithMap(Null(-42), it * it)

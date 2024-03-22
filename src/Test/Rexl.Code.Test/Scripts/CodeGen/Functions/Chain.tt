@@ -1,0 +1,50 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+// Chain
+Chain(null)
+Chain([])
+Chain([], [])
+Chain(null, [null, 2, 3])
+Chain([null, 2, 3], null)
+Chain([], [], [])
+Chain([1, 2, 3], null, null)
+Chain([], [], [], [])
+Chain([1, 2, 3], null, [1, 2, 3], null)
+Chain(Range(1), Range(2), Range(3), Range(4), Range(5))
+Chain(Range(1), Range(2), Range(3), Range(4), Range(5), Range(6))
+
+// Limit of sequences in ChainMap.
+ChainMap(Range(1, 10)->Map(Range(2)->{ a: it$2, b: it$1, N: it$0 }))
+<# const int lim = 18;
+for (int num = 1; num < lim; num++) {
+    var ss = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}: Range({i+1}, 20)"));
+    var rec = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}"));
+#>
+ChainMap(<#= ss #>, Range(2)->{ <#= rec #>, N:it })
+<#}#>
+// Indexed.
+<# for (int num = 1; num < lim - 1; num++) {
+    var ss = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}: Range({i+1}, 20)"));
+    var ritems = Enumerable.Range(0, num).Select(i => $"s{i}");
+    var rinds = Enumerable.Range(0, num).Select(i => $"i{i}: #s{i}");
+    var rec = string.Join(", ", rinds.Concat(ritems));
+#>
+ChainMap(<#= ss #>, Range(2)->{ <#= rec #>, N:it })
+<#}#>
+
+// Null Check.
+``` e := [];
+<# for (int num = 1; num < lim - 1; num++) {
+    for (int inull = 0; inull < num; inull++) {
+        var ss = string.Join(", ", Enumerable.Range(0, num).Select(i => i == inull ? $"s{i}:e" : $"s{i}: Range({i+1}, 20)"));
+        var rec = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}"));
+#>
+ChainMap(<#= ss #>, Range(2)->{ <#= rec #>, N:it })
+<#  }
+}#>

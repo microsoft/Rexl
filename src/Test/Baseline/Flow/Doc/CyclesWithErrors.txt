@@ -1,0 +1,103 @@
+Add: 00000001 [A], Fma: [A +  | CastI4(_)]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tTuUB C dDEX], Base: i4
+      *) Parse Error: (5,6) Tok: '|', Message: Expected an operand
+      *) Error: (5,6) Node: (<missing>), Message: Expected an operand
+###
+Fma: 00000001 [A], Main: [A +  | CastI4(_)] => [17 +  | CastI4(_)]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDE ], Base: i4
+      *) Parse Error: (6,7) Tok: '|', Message: Expected an operand
+      *) Error: (6,7) Node: (<missing>), Message: Expected an operand
+###
+Add: 00000002 [B], Fma: [A + 1 | CastI4(_)]
+Status: 2 nodes, 3 undos, 0 redos
+  Node changes:
+    00000002 [B]: [A  tTuUB C dD  ], Base: i4
+###
+Fma: 00000001 [A], Main: [17 +  | CastI4(_)] => [B +  | CastI4(_)]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDEX], Base: i4
+      *) Parse Error: (5,6) Tok: '|', Message: Expected an operand
+      *) Error: (5,6) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B   dD X], Base: i4
+###
+Fma: 00000001 [A], Main: [B +  | CastI4(_)] => [17 +  | CastI4(_)]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDE ], Base: i4
+      *) Parse Error: (6,7) Tok: '|', Message: Expected an operand
+      *) Error: (6,7) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B   dD  ], Base: i4
+###
+Fma: 00000001 [A], Main: [17 +  | CastI4(_)] => [A + B +  | CastI4(_)]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDEX], Base: i4
+      *) Parse Error: (9,10) Tok: '|', Message: Expected an operand
+      *) Error: (9,10) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B   dD X], Base: i4
+###
+Fma: 00000001 [A], Main: [A + B +  | CastI4(_)] => [A + A +  | CastI4(_)]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDEX], Base: i4
+      *) Parse Error: (9,10) Tok: '|', Message: Expected an operand
+      *) Error: (9,10) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B   dD X], Base: i4
+###
+Fma: 00000002 [B], Main: [A + 1 | CastI4(_)] => [A + A | CastI4(_)]
+Status: 2 nodes, 8 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B C dDEX], Base: i4
+      *) Parse Error: (9,10) Tok: '|', Message: Expected an operand
+      *) Error: (9,10) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B C dD X], Base: i4
+###
+Fma: 00000001 [A], Main: [A + A +  | CastI4(_)] => [D if Wrap(true) else ]
+Fma: 00000002 [B], Main: [A + A | CastI4(_)] => [A]
+Add: 00000003 [C], Fma: [B]
+Add: 00000004 [D], Fma: [C]
+Status: 4 nodes, 9 undos, 0 redos
+  Node changes:
+    00000001 [A]: [     uUB C dDEX], Base: i4
+      *) Parse Error: (21,21) Tok: '<eof>', Message: Expected an operand
+      *) Error: (21,21) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [       B C dD X], Base: i4
+    00000003 [C]: [A  tTuUB C dD X], Base: i4
+    00000004 [D]: [A  tTuUB C dD X], Base: i4
+###
+Fma: 00000002 [B], Main: [A] => [A + D | CastI4(_)]
+Status: 4 nodes, 10 undos, 0 redos
+  Node changes:
+    00000001 [A]: [           dDEX], Base: i4
+      *) Parse Error: (21,21) Tok: '<eof>', Message: Expected an operand
+      *) Error: (21,21) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [     uUB C dD X], Base: i4
+    00000003 [C]: [       B   dD X], Base: i4
+    00000004 [D]: [           dD X], Base: i4
+###
+*** UndoAll
+Del: 00000001 [A]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [D]
+Status: 0 nodes, 0 undos, 10 redos
+###
+*** RedoAll
+Add: 00000001 [A], Fma: [D if Wrap(true) else ]
+Add: 00000002 [B], Fma: [A + D | CastI4(_)]
+Add: 00000003 [C], Fma: [B]
+Add: 00000004 [D], Fma: [C]
+Status: 4 nodes, 10 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tTuUB C dDEX], Base: i4
+      *) Parse Error: (21,21) Tok: '<eof>', Message: Expected an operand
+      *) Error: (21,21) Node: (<missing>), Message: Expected an operand
+    00000002 [B]: [A  tTuUB C dD X], Base: i4
+    00000003 [C]: [A  tTuUB C dD X], Base: i4
+    00000004 [D]: [A  tTuUB C dD X], Base: i4
+###

@@ -1,0 +1,39 @@
+﻿// This demonstrates/tests the execute command together with a crude (hand crafted) "meta-programming" technique.
+
+code := "{ " & Range(5)->ToText()->ForEach("F" & it & ": " & it)->Concat(", ") & " };";
+execute code;
+execute "X := " & code;
+
+// Code template where the field names and variable name are provided via "macros".
+template := @"
+$(V) := Range($(Rows))->{ $(F)1 : it, $(F)2: it^2, $(F)3: it^3 };
+$(V);
+$(V)->Sum($(F)1);
+$(V)->Sum($(F)2);
+$(V)->Sum($(F)3);
+";
+
+code := template
+    ->Replace("$(V)", "Variable")
+    ->Replace("$(F)", "Field")
+    ->Replace("$(Rows)", "5");
+execute code;
+
+code := template
+    ->Replace("$(V)", "W")
+    ->Replace("$(F)", "G")
+    ->Replace("$(Rows)", "5");
+execute code;
+
+// Generalize the number of powers.
+func MakeTemplate(N) := @"
+$(V) := Range($(Rows))->{ " & Generate(N, With(txt: ToText(it + 1), "$(F)" & txt & " : it^" & txt))->Concat(",") & @" };
+$(V);
+" & Generate(N, @"$(V)->Sum($(F)" & ToText(it + 1) & @");
+")->Concat("");
+
+code := MakeTemplate(4)
+    ->Replace("$(V)", "X")
+    ->Replace("$(F)", "H")
+    ->Replace("$(Rows)", "8");
+execute code;

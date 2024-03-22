@@ -1,0 +1,1105 @@
+**** New globals: {b1:b, b2:b, b3:b, qb1:b?, qb2:b?, qb3:b?}
+
+> b1 and b2
+b1 and b2 : b
+BndKind:VariadicOp, Type:b, Bnd:(And(Global(b1), Global(b2)))
+// (∂.b1:b, ∂.b2:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.1 [bool]
+  Label [0]:
+      5) box [bool]
+      1) ret
+  Total Size: 33
+
+Func sig: (b1:b, b2:b) to b
+Type: bool, Value: false
+###
+> b1 and qb2
+b1 and qb2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(b1), Global(qb2)))
+// (∂.b1:b, ∂.qb2:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.1 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 43
+
+Func sig: (b1:b, qb2:b?) to b?
+Type: bool, Value: false
+###
+> qb1 and b2
+qb1 and b2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(b2)))
+// (∂.qb1:b?, ∂.b2:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.0 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 43
+
+Func sig: (qb1:b?, b2:b) to b?
+Type: bool, Value: false
+###
+> qb1 and qb2
+qb1 and qb2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(qb2)))
+// (∂.qb1:b?, ∂.qb2:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldc.i4.1
+      1) stloc.3 [i4]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.2 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [1]
+      1) ldc.i4.0
+      1) stloc.3 [i4]
+  Label [0]:
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.2 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brfalse [1]
+      1) ldloc.3 [i4]
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (2)]
+      6) initobj [Opt<bool>]
+  Label [1]:
+      1) ldloc.2 [Opt<bool>]
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 83
+
+Func sig: (qb1:b?, qb2:b?) to b?
+Type: <null>, Value: <null>
+###
+> b1 or b2
+b1 or b2 : b
+BndKind:VariadicOp, Type:b, Bnd:(Or(Global(b1), Global(b2)))
+// (∂.b1:b, ∂.b2:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.1 [bool]
+  Label [0]:
+      5) box [bool]
+      1) ret
+  Total Size: 33
+
+Func sig: (b1:b, b2:b) to b
+Type: bool, Value: false
+###
+> b1 or qb2
+b1 or qb2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(b1), Global(qb2)))
+// (∂.b1:b, ∂.qb2:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.1 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 43
+
+Func sig: (b1:b, qb2:b?) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or b2
+qb1 or b2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(b2)))
+// (∂.qb1:b?, ∂.b2:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.0 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 43
+
+Func sig: (qb1:b?, b2:b) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or qb2
+qb1 or qb2 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(qb2)))
+// (∂.qb1:b?, ∂.qb2:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldc.i4.1
+      1) stloc.3 [i4]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.2 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::get_HasValue():bool
+      1) stloc.3 [i4]
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.2 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (2)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      1) ldloc.3 [i4]
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (2)]
+      6) initobj [Opt<bool>]
+  Label [0]:
+      1) ldloc.2 [Opt<bool>]
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 77
+
+Func sig: (qb1:b?, qb2:b?) to b?
+Type: <null>, Value: <null>
+###
+> b1 and b2 and b3
+b1 and b2 and b3 : b
+BndKind:VariadicOp, Type:b, Bnd:(And(Global(b1), Global(b2), Global(b3)))
+// (∂.b1:b, ∂.b2:b, ∂.b3:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.1 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.2 [bool]
+  Label [0]:
+      5) box [bool]
+      1) ret
+  Total Size: 50
+
+Func sig: (b1:b, b2:b, b3:b) to b
+Type: bool, Value: false
+###
+> b1 and b2 and qb3
+b1 and b2 and qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(b1), Global(b2), Global(qb3)))
+// (∂.b1:b, ∂.b2:b, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.1 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.2 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (b1:b, b2:b, qb3:b?) to b?
+Type: bool, Value: false
+###
+> b1 and qb2 and b3
+b1 and qb2 and b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(b1), Global(qb2), Global(b3)))
+// (∂.b1:b, ∂.qb2:b?, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.2 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.1 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (b1:b, qb2:b?, b3:b) to b?
+Type: bool, Value: false
+###
+> qb1 and b2 and b3
+qb1 and b2 and b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(b2), Global(b3)))
+// (∂.qb1:b?, ∂.b2:b, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.2 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldloc.0 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (qb1:b?, b2:b, b3:b) to b?
+Type: bool, Value: false
+###
+> b1 and qb2 and qb3
+b1 and qb2 and qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(b1), Global(qb2), Global(qb3)))
+// (∂.b1:b, ∂.qb2:b?, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [2]
+      1) ldc.i4.0
+      2) stloc.s [i4 (4)]
+  Label [1]:
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brfalse [2]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [2]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [2]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [3]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [3]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 113
+
+Func sig: (b1:b, qb2:b?, qb3:b?) to b?
+Type: bool, Value: false
+###
+> qb1 and b2 and qb3
+qb1 and b2 and qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(b2), Global(qb3)))
+// (∂.qb1:b?, ∂.b2:b, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [2]
+      1) ldc.i4.0
+      2) stloc.s [i4 (4)]
+  Label [1]:
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brfalse [2]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [2]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [2]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [3]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [3]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 113
+
+Func sig: (qb1:b?, b2:b, qb3:b?) to b?
+Type: bool, Value: false
+###
+> qb1 and qb2 and b3
+qb1 and qb2 and b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(qb2), Global(b3)))
+// (∂.qb1:b?, ∂.qb2:b?, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.2 [bool]
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [2]
+      1) ldc.i4.0
+      2) stloc.s [i4 (4)]
+  Label [1]:
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brfalse [2]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [2]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [2]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [3]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [3]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 113
+
+Func sig: (qb1:b?, qb2:b?, b3:b) to b?
+Type: bool, Value: false
+###
+> qb1 and qb2 and qb3
+qb1 and qb2 and qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(And(Global(qb1), Global(qb2), Global(qb3)))
+// (∂.qb1:b?, ∂.qb2:b?, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [1]
+      1) ldc.i4.0
+      2) stloc.s [i4 (4)]
+  Label [0]:
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [2]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brtrue [1]
+      1) ldc.i4.0
+      2) stloc.s [i4 (4)]
+  Label [2]:
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brfalse [1]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [1]:
+      1) ldloc.3 [Opt<bool>]
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 124
+
+Func sig: (qb1:b?, qb2:b?, qb3:b?) to b?
+Type: <null>, Value: <null>
+###
+> b1 or b2 or b3
+b1 or b2 or b3 : b
+BndKind:VariadicOp, Type:b, Bnd:(Or(Global(b1), Global(b2), Global(b3)))
+// (∂.b1:b, ∂.b2:b, ∂.b3:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.1 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.2 [bool]
+  Label [0]:
+      5) box [bool]
+      1) ret
+  Total Size: 50
+
+Func sig: (b1:b, b2:b, b3:b) to b
+Type: bool, Value: false
+###
+> b1 or b2 or qb3
+b1 or b2 or qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(b1), Global(b2), Global(qb3)))
+// (∂.b1:b, ∂.b2:b, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.1 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.2 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (b1:b, b2:b, qb3:b?) to b?
+Type: <null>, Value: <null>
+###
+> b1 or qb2 or b3
+b1 or qb2 or b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(b1), Global(qb2), Global(b3)))
+// (∂.b1:b, ∂.qb2:b?, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.2 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.1 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (b1:b, qb2:b?, b3:b) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or b2 or b3
+qb1 or b2 or b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(b2), Global(b3)))
+// (∂.qb1:b?, ∂.b2:b, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.2 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldloc.0 [Opt<bool>]
+      5) br [1]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [1]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 60
+
+Func sig: (qb1:b?, b2:b, b3:b) to b?
+Type: <null>, Value: <null>
+###
+> b1 or qb2 or qb3
+b1 or qb2 or qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(b1), Global(qb2), Global(qb3)))
+// (∂.b1:b, ∂.qb2:b?, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.0 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      2) stloc.s [i4 (4)]
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [1]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [2]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [2]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 107
+
+Func sig: (b1:b, qb2:b?, qb3:b?) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or b2 or qb3
+qb1 or b2 or qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(b2), Global(qb3)))
+// (∂.qb1:b?, ∂.b2:b, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldloc.1 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      2) stloc.s [i4 (4)]
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [1]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [2]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [2]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 107
+
+Func sig: (qb1:b?, b2:b, qb3:b?) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or qb2 or b3
+qb1 or qb2 or b3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(qb2), Global(b3)))
+// (∂.qb1:b?, ∂.qb2:b?, ∂.b3:b) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.2 [bool]
+      1) ldloc.2 [bool]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      2) stloc.s [i4 (4)]
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [1]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [1]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [1]:
+      1) ldloc.3 [Opt<bool>]
+      5) br [2]
+  Label [0]:
+      5) newobj Opt<bool>(bool)
+  Label [2]:
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 107
+
+Func sig: (qb1:b?, qb2:b?, b3:b) to b?
+Type: <null>, Value: <null>
+###
+> qb1 or qb2 or qb3
+qb1 or qb2 or qb3 : b?
+BndKind:VariadicOp, Type:b?, Bnd:(Or(Global(qb1), Global(qb2), Global(qb3)))
+// (∂.qb1:b?, ∂.qb2:b?, ∂.qb3:b?) : b?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.2 [Opt<bool>]
+      1) ldc.i4.1
+      2) stloc.s [i4 (4)]
+      1) ldloc.0 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      2) stloc.s [i4 (4)]
+      1) ldloc.1 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloc.s [i4 (4)]
+      5) brfalse [1]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::get_HasValue():bool
+      2) stloc.s [i4 (4)]
+  Label [1]:
+      1) ldloc.2 [Opt<bool>]
+      1) stloc.3 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (3)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      5) brtrue [0]
+      2) ldloc.s [i4 (4)]
+      5) brtrue [0]
+      2) ldloca.s [Opt<bool> (3)]
+      6) initobj [Opt<bool>]
+  Label [0]:
+      1) ldloc.3 [Opt<bool>]
+      5) box [Opt<bool>]
+      1) ret
+  Total Size: 119
+
+Func sig: (qb1:b?, qb2:b?, qb3:b?) to b?
+Type: <null>, Value: <null>
+###
+> not b1 xor b2
+not b1 xor b2 : b
+BndKind:VariadicOp, Type:b, Bnd:(Xor(Global(b1), Global(b2), true:b))
+// (∂.b1:b, ∂.b2:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [bool]
+      1) ldloc.1 [bool]
+      1) xor
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 30
+
+Func sig: (b1:b, b2:b) to b
+Type: bool, Value: true 
+###
+> b1 xor not b2
+b1 xor not b2 : b
+BndKind:VariadicOp, Type:b, Bnd:(Xor(Global(b1), Global(b2), true:b))
+// (∂.b1:b, ∂.b2:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [bool]
+      1) ldloc.1 [bool]
+      1) xor
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 30
+
+Func sig: (b1:b, b2:b) to b
+Type: bool, Value: true 
+###

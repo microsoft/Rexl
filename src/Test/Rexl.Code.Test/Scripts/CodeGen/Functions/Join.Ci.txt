@@ -1,0 +1,31 @@
+﻿`` A := [ null, "A", "b", null, "B", "a", "", null ]->ForEach({ Id:#, V:it });
+`` B := A+>{ Id: null };
+`` C := [null] ++ B ++ [null];
+
+// Key is a text field.
+KeyJoin(x:A, y:A,     V,      V, (x, y), (x, null))
+KeyJoin(x:A, y:A, [~] V,      V, (x, y), (x, null))
+KeyJoin(x:A, y:A,     V, [~]  V, (x, y), (x, null))
+
+// Key is whole record.
+KeyJoin(x:B, y:B,     x,      y, (x, y), (x, null))
+KeyJoin(x:B, y:B, [~] x,      y, (x, y), (x, null))
+KeyJoin(x:B, y:B,     x, [~]  y, (x, y), (x, null))
+
+// Key is whole record, which is opt.
+KeyJoin(x:C, y:C,     x,      y, (x, y))
+KeyJoin(x:C, y:C, [~] x,      y, (x, y))
+KeyJoin(x:C, y:C,     x, [~]  y, (x, y))
+
+// With indices.
+KeyJoin(x:A, y:A,     V if # < 100 else null,     V if # < 100 else null, (x, y, #x, #y))
+KeyJoin(x:A, y:A, [~] V if # < 100 else null,     V if # < 100 else null, (x, y, #x, #y))
+KeyJoin(x:A, y:A,     V if # < 100 else null, [~] V if # < 100 else null, (x, y, #x, #y))
+
+KeyJoin(x:A, y:A,     V if # < 100 else null,     V if # < 100 else null, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:A, y:A, [~] V if # < 100 else null,     V if # < 100 else null, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:A, y:A,     V if # < 100 else null, [~] V if # < 100 else null, (x, y, #x, #y), (x, null, #x, -1))
+
+KeyJoin(x:C, y:C,     x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:C, y:C, [~] x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:C, y:C,     x, [~]  y, (x, y, #x, #y), (x, null, #x, -1))

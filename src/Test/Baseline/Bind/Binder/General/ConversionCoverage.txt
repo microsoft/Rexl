@@ -1,0 +1,74 @@
+**** New udf: G, arity: 1
+**** New globals: {s:s}
+
+> Tensor.Add(Tensor.Fill(3, 5), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.Fill(3, 5), Tensor.Fill(7.5, 5)) : r8[*]
+Binder : Tensor.Add(Tensor.Fill(3, 5), Tensor.Fill(7.5, 5))
+###
+> Tensor.Add(Tensor.From(Range(5)), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.From(Range(5)), Tensor.Fill(7.5, 5)) : r8[*]
+Binder : Tensor.Add(Tensor.From(ForEach(*1: Range(5), Num<r8>(*1))), Tensor.Fill(7.5, 5))
+###
+> Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(7.5, 5)) : r8[*]
+Binder : Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(7.5, 5))
+Reducer: Tensor.Add([! 0, 1, 2, 3, 4 !]:r8[5], Tensor.Fill(7.5, 5))
+###
+> Tensor.Add(Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(3, 5)), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(3, 5)), Tensor.Fill(7.5, 5)) : r8[*]
+Binder : Tensor.Add(Tensor.ForEachLazy(@1: Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(3, 5)), Num<r8>(@1)), Tensor.Fill(7.5, 5))
+Reducer: Tensor.Add(Tensor.ForEachLazy(@1: Tensor.Add([! 0, 1, 2, 3, 4 !]:i8[5], Tensor.Fill(3, 5)), Num<r8>(@1)), Tensor.Fill(7.5, 5))
+###
+> [ 3, "hi" ]
+[3, "hi"] : g*
+*** Error: (5,9) Node: "hi", Message: The given types are incompatible: 'i8' and 's'
+Binder : [Box<g>(3), Ref<g>("hi")]
+###
+> [ { A: 3, B:   "hi"  }, { A: 3.5, B: 17 } ]
+[{ A : 3, B : "hi" }, { A : 3.5, B : 17 }] : {A:r8, B:g}*
+*** Error: (24,25) Node: { A : 3.5, B : 17 }, Message: The given types are incompatible: '{A:i8, B:s}' and '{A:r8, B:i8}'
+Binder : [{A:3, B:Ref<g>("hi")}, {A:3.5, B:Box<g>(17)}]
+###
+> [ { A: 3, B: G("hi") }, { A: 3.5, B: 17 } ]
+[{ A : 3, B : G("hi") }, { A : 3.5, B : 17 }] : {A:r8, B:g}*
+Binder : [{A:3, B:With(!1: "hi", Test.CastGen(!1))}, {A:3.5, B:Box<g>(17)}]
+Reducer: [{A:3, B:Test.CastGen("hi")}, {A:3.5, B:Box<g>(17)}]
+###
+> [ { A: 3, B: G("hi") }, { A:   (3, true) , B: 17 } ]
+[{ A : 3, B : G("hi") }, { A : (3, true), B : 17 }] : {A:g, B:g}*
+*** Error: (24,25) Node: { A : (3, true), B : 17 }, Message: The given types are incompatible: '{A:i8, B:g}' and '{A:(i8, b), B:i8}'
+Binder : [{A:Box<g>(3), B:With(!1: "hi", Test.CastGen(!1))}, {A:Ref<g>((3, true)), B:Box<g>(17)}]
+Reducer: [{A:Box<g>(3), B:Test.CastGen("hi")}, {A:Ref<g>((3, true)), B:Box<g>(17)}]
+###
+> [ { A: 3, B: G("hi") }, { A: G((3, true)), B: 17 } ]
+[{ A : 3, B : G("hi") }, { A : G((3, true)), B : 17 }] : {A:g, B:g}*
+Binder : [{A:Box<g>(3), B:With(!1: "hi", Test.CastGen(!1))}, {A:With(!2: (3, true), Test.CastGen(!2)), B:Box<g>(17)}]
+Reducer: [{A:Box<g>(3), B:Test.CastGen("hi")}, {A:Test.CastGen((3, true)), B:Box<g>(17)}]
+###
+> [ { A: 3, B: G("hi"), C:   7  }, { A: G((3, true)), B: 17, C: "bye" } ]
+[{ A : 3, B : G("hi"), C : 7 }, { A : G((3, true)), B : 17, C : "bye" }] : {A:g, B:g, C:g}*
+*** Error: (33,34) Node: { A : G((3, true)), B : 17, C : "bye" }, Message: The given types are incompatible: '{A:i8, B:g, C:i8}' and '{A:g, B:i8, C:s}'
+Binder : [{A:Box<g>(3), B:With(!1: "hi", Test.CastGen(!1)), C:Box<g>(7)}, {A:With(!2: (3, true), Test.CastGen(!2)), B:Box<g>(17), C:Ref<g>("bye")}]
+Reducer: [{A:Box<g>(3), B:Test.CastGen("hi"), C:Box<g>(7)}, {A:Test.CastGen((3, true)), B:Box<g>(17), C:Ref<g>("bye")}]
+###
+> [ { A: 3, B: G("hi"), C: G(7) }, { A: G((3, true)), B: 17, C: "bye" } ]
+[{ A : 3, B : G("hi"), C : G(7) }, { A : G((3, true)), B : 17, C : "bye" }] : {A:g, B:g, C:g}*
+Binder : [{A:Box<g>(3), B:With(!1: "hi", Test.CastGen(!1)), C:With(!2: 7, Test.CastGen(!2))}, {A:With(!3: (3, true), Test.CastGen(!3)), B:Box<g>(17), C:Ref<g>("bye")}]
+Reducer: [{A:Box<g>(3), B:Test.CastGen("hi"), C:Test.CastGen(7)}, {A:Test.CastGen((3, true)), B:Box<g>(17), C:Ref<g>("bye")}]
+###
+> 3 min "hi"
+3 min "hi" : i8
+*** Error: (2,5) Node: 3 min "hi", Message: The given types are not comparable: 'i8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> s ?? 3
+s ?? 3 : g
+*** Error: (2,4) Node: s ?? 3, Message: The given types are incompatible: 's' and 'i8'
+Binder : Coalesce(Ref<g>(s), Box<g>(3))
+###
+> s if false else 3
+s if false else 3 : g
+*** Error: (2,4) Node: s if false else 3, Message: The given types are incompatible: 's' and 'i8'
+Binder : If(false, Ref<g>(s), Box<g>(3))
+Reducer: Box<g>(3)
+###

@@ -1,0 +1,209 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+**** Add globals: {R:{A:i4, B:s}}
+
+> { A:3, B:s, C:i4, D:d, E:true, F:null }
+{ A : 3, B : s, C : i4, D : d, E : true, F : null } : {A:i8, B:s, C:i4, D:d, E:b, F:o}
+Binder : {A:3, B:s, C:i4, D:d, E:true, F:null}
+###
+> { D:qi4, C:s, B:qb, A:s }
+{ D : qi4, C : s, B : qb, A : s } : {A:s, B:b?, C:s, D:i4?}
+Binder : {A:s, B:qb, C:s, D:qi4}
+###
+> { A:3, A:true }
+{ A : 3, A : true } : {A:i8}
+*** Error: (7,8) Node: { A : 3, A : true }, Tok: 'A', Message: Duplicate field name: 'A'
+Binder : {A:3}
+###
+> { i4, b }
+{ i4, b } : {b:b, i4:i4}
+Binder : {b:b, i4:i4}
+###
+> { i4, b, R, R.A, R.B }
+{ i4, b, R, R.A, R.B } : {A:i4, B:s, R:{A:i4, B:s}, b:b, i4:i4}
+Binder : {A:R.A, B:R.B, R:R, b:b, i4:i4}
+###
+> SetFields({A:3, B:s}, C:n, D:d)
+SetFields({ A : 3, B : s }, C : n, D : d) : {A:i8, B:s, C:r8, D:d}
+Binder : SetFields(!1: {A:3, B:s}, C : n, D : d)
+###
+> {A:3, B:s, C:n, D:d}->{A, C, E: D}
+{ A : 3, B : s, C : n, D : d }->{ A, C, E : D } : {A:i8, C:r8, E:d}
+Binder : Guard(!1: {A:3, B:s, C:n, D:d}, {A:!1.A, C:!1.C, E:!1.D})
+Reducer: {A:3, C:n, E:d}
+###
+> {A:3, B:s, C:n, D:d}->{A, C, E: it.D}
+{ A : 3, B : s, C : n, D : d }->{ A, C, E : it.D } : {A:i8, C:r8, E:d}
+Binder : Guard(!1: {A:3, B:s, C:n, D:d}, {A:!1.A, C:!1.C, E:!1.D})
+Reducer: {A:3, C:n, E:d}
+###
+> GuardMap({A:3, B:s, C:n, D:d}, {A, C, E: D})
+GuardMap({ A : 3, B : s, C : n, D : d }, { A, C, E : D }) : {A:i8, C:r8, E:d}
+Binder : Guard(!1: {A:3, B:s, C:n, D:d}, {A:!1.A, C:!1.C, E:!1.D})
+Reducer: {A:3, C:n, E:d}
+###
+> GuardMap({A:3, B:s, C:n, D:d}, {A, C, E: it.D})
+GuardMap({ A : 3, B : s, C : n, D : d }, { A, C, E : it.D }) : {A:i8, C:r8, E:d}
+Binder : Guard(!1: {A:3, B:s, C:n, D:d}, {A:!1.A, C:!1.C, E:!1.D})
+Reducer: {A:3, C:n, E:d}
+###
+> { R }->{ R.A, R.B }
+{ R }->{ R.A, R.B } : {A:i4, B:s}
+Binder : Guard(!1: {R:R}, {A:!1.R.A, B:!1.R.B})
+Reducer: {A:R.A, B:R.B}
+###
+> { R:Wrap(R) }->{ R.A, R.B }
+{ R : Wrap(R) }->{ R.A, R.B } : {A:i4, B:s}
+Binder : Guard(!1: {R:Test.Wrap(R)}, {A:!1.R.A, B:!1.R.B})
+Reducer: Guard(!1: Test.Wrap(R), {A:!1.A, B:!1.B})
+###
+> GuardMap({ R }, { R.A, R.B })
+GuardMap({ R }, { R.A, R.B }) : {A:i4, B:s}
+Binder : Guard(!1: {R:R}, {A:!1.R.A, B:!1.R.B})
+Reducer: {A:R.A, B:R.B}
+###
+> GuardMap({ R:Wrap(R) }, { R.A, R.B })
+GuardMap({ R : Wrap(R) }, { R.A, R.B }) : {A:i4, B:s}
+Binder : Guard(!1: {R:Test.Wrap(R)}, {A:!1.R.A, B:!1.R.B})
+Reducer: Guard(!1: Test.Wrap(R), {A:!1.A, B:!1.B})
+###
+> [[1,2,3], [4,5]]->{ A: it * 2, } // Baseline whether we expand over sequence literals.
+[[1, 2, 3], [4, 5]]->{ A : it * 2 } : {A:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2)}))
+###
+> GuardMap([[1,2,3], [4,5]], { A: it * 2, })
+GuardMap([[1, 2, 3], [4, 5]], { A : it * 2 }) : {A:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2)}))
+###
+> [[1,2,3], [4,5]]->{ A: it * 2, B: GetType(it$1), }
+[[1, 2, 3], [4, 5]]->{ A : it * 2, B : GetType(it$1) } : {A:i8, B:s}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2), B:GetType*(*2)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2), B:"i8"}))
+###
+> [[1,2,3], [4,5]]->{ A: it * 2, B: Count(it$2), }
+[[1, 2, 3], [4, 5]]->{ A : it * 2, B : Count(it$2) } : {A:i8, B:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2), B:Count(*1)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2), B:Count(*1)}))
+Hoister: ForEach(*1: [[1, 2, 3], [4, 5]], With(!2: Count(*1), ForEach(*3: *1, {A:Mul(*3, 2), B:!2})))
+###
+> Map(a: [[1,2,3], [4,5]], Map(b: a, b->{ A: it * 2, B: Count(a), })) // Alternative.
+Map(a : [[1, 2, 3], [4, 5]], Map(b : a, b->{ A : it * 2, B : Count(a) })) : {A:i8, B:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2), B:Count(*1)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2), B:Count(*1)}))
+Hoister: ForEach(*1: [[1, 2, 3], [4, 5]], With(!2: Count(*1), ForEach(*3: *1, {A:Mul(*3, 2), B:!2})))
+###
+> GuardMap([[1,2,3], [4,5]], { A: it * 2, B: Count(it$2) })
+GuardMap([[1, 2, 3], [4, 5]], { A : it * 2, B : Count(it$2) }) : {A:i8, B:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2), B:Count(*1)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2), B:Count(*1)}))
+Hoister: ForEach(*1: [[1, 2, 3], [4, 5]], With(!2: Count(*1), ForEach(*3: *1, {A:Mul(*3, 2), B:!2})))
+###
+> Map(a: [[1,2,3], [4,5]], GuardMap(b: a, { A: b * 2, B: Count(a) })) // Alternative.
+Map(a : [[1, 2, 3], [4, 5]], GuardMap(b : a, { A : b * 2, B : Count(a) })) : {A:i8, B:i8}**
+Binder : ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, Guard(!3: *2, {A:Mul(!3, 2), B:Count(*1)})))
+Reducer: ForEach(*1: [[1, 2, 3], [4, 5]], ForEach(*2: *1, {A:Mul(*2, 2), B:Count(*1)}))
+Hoister: ForEach(*1: [[1, 2, 3], [4, 5]], With(!2: Count(*1), ForEach(*3: *1, {A:Mul(*3, 2), B:!2})))
+###
+> {A:3, B:s}+>{ C:n, D:d, E: A + 7}
+{ A : 3, B : s }+>{ C : n, D : d, E : A + 7 } : {A:i8, B:s, C:r8, D:d, E:i8}
+Binder : SetFields(!1: {A:3, B:s}, C : n, D : d, E : Add(!1.A, 7))
+###
+> {A:3, B:s}+>{ C:n, D:d, E: it.A + 7}
+{ A : 3, B : s }+>{ C : n, D : d, E : it.A + 7 } : {A:i8, B:s, C:r8, D:d, E:i8}
+Binder : SetFields(!1: {A:3, B:s}, C : n, D : d, E : Add(!1.A, 7))
+###
+> SetFields({A:3, B:s}, C:n, D:d, E: A + 7)
+SetFields({ A : 3, B : s }, C : n, D : d, E : A + 7) : {A:i8, B:s, C:r8, D:d, E:i8}
+Binder : SetFields(!1: {A:3, B:s}, C : n, D : d, E : Add(!1.A, 7))
+###
+> SetFields({A:3, B:s}, C:n, D:d, E: it.A + 7)
+SetFields({ A : 3, B : s }, C : n, D : d, E : it.A + 7) : {A:i8, B:s, C:r8, D:d, E:i8}
+Binder : SetFields(!1: {A:3, B:s}, C : n, D : d, E : Add(!1.A, 7))
+###
+> { R }+>{ R.A, R.B }
+{ R }+>{ R.A, R.B } : {A:i4, B:s, R:{A:i4, B:s}}
+Binder : SetFields(!1: {R:R}, A : !1.R.A, B : !1.R.B)
+###
+
+**** New globals: {A:{A:i4, B:b}?}
+
+> A+>{ C:  A }
+A+>{ C : A } : {B:b, C:i4}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2.A))
+###
+> AddFields(A, C: A)
+AddFields(A, C : A) : {A:i4, B:b, C:i4}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2.A))
+###
+> SetFields(A, C: A)
+SetFields(A, C : A) : {B:b, C:i4}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2.A))
+###
+> AddFields(A, C: it)
+AddFields(A, C : it) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> SetFields(A, C: it)
+SetFields(A, C : it) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> AddFields(a:A, C: a)
+AddFields(a : A, C : a) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> SetFields(a:A, C: a)
+SetFields(a : A, C : a) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> AddFields(A:A, C: A)
+AddFields(A : A, C : A) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> SetFields(A:A, C: A)
+SetFields(A : A, C : A) : {A:i4, B:b, C:{A:i4, B:b}}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2))
+###
+> AddFields(A:A, C: A.A)
+AddFields(A : A, C : A.A) : {A:i4, B:b, C:i4}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2.A))
+###
+> SetFields(A:A, C: A.A)
+SetFields(A : A, C : A.A) : {A:i4, B:b, C:i4}?
+Binder : Guard(?1: A, SetFields(!2: ?1, C : !2.A))
+###
+> { A:5, B:false }.A
+{ A : 5, B : false }.A : i8
+Binder : 5
+###
+> { A:5, B:false }.B
+{ A : 5, B : false }.B : b
+Binder : false
+###
+
+**** Add globals: {R:{A:i4, B:b}, S:{A:i4}}
+
+> (R if false else R).A
+(R if false else R).A : i4
+Binder : If(false, R, R).A
+Reducer: R.A
+###
+> (R if false else S).A
+(R if false else S).A : i4
+Binder : If(false, Ref<{A:i4, B:b?}>(R), With(!1: S, {A:!1.A, B:null})).A
+Reducer: S.A
+###
+> (R if false else S).B
+(R if false else S).B : b?
+Binder : If(false, Ref<{A:i4, B:b?}>(R), With(!1: S, {A:!1.A, B:null})).B
+Reducer: null
+###
+> ({A:1, B:true} if false else {A:2}).B
+({ A : 1, B : true } if false else { A : 2 }).B : b?
+Binder : If(false, Ref<{A:i8, B:b?}>({A:1, B:true}), {A:2[, B:null:b?]}).B
+Reducer: null
+###
+> { heißen: 7, heissen: 3 }
+{ heißen : 7, heissen : 3 } : {heissen:i8, heißen:i8}
+Binder : {heissen:3, heißen:7}
+###

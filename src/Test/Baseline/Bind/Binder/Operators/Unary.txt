@@ -1,0 +1,3070 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8, v:v}
+
+> 12345
+12345 : i8
+Binder : 12345
+###
+> 12345f
+12345 : r4
+Binder : 12345
+###
+> 12345U
+12345 : u8
+Binder : 12345
+###
+> 255
+255 : i8
+Binder : 255
+###
+> 255u
+255 : u8
+Binder : 255
+###
+> 1234.5
+1234.5 : r8
+Binder : 1234.5
+###
+> 123.45
+123.45 : r8
+Binder : 123.45
+###
+> 123e45
+1.23E+47 : r8
+Binder : 1.23E+47
+###
+> true
+true : b
+Binder : true
+###
+> false
+false : b
+Binder : false
+###
+> "hello"
+"hello" : s
+Binder : "hello"
+###
+> null
+null : o
+Binder : null
+###
+> +2u
++2 : u8
+Binder : 2
+###
+> -1
+-1 : i8
+Binder : -1
+###
+> --1
+--1 : i8
+Binder : 1
+###
+> ---1
+---1 : i8
+Binder : -1
+###
+> ----1
+----1 : i8
+Binder : 1
+###
+> -null
+-null : i8?
+Binder : Guard(?1: null, Add([-] Unit<i8>(?1)))
+Reducer: null
+###
+> +true
++true : b
+Binder : true
+###
+> -true
+-true : i1
+Binder : -1
+###
+> +"hello" // type error
++"hello" : i8?
+*** Error: (1,8) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> -"hello" // type error
+-"hello" : i8
+*** Error: (1,8) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Add([-] Error(ErrBadType_Src_Dst))
+###
+> --null
+--null : i8?
+Binder : Guard(?2: Guard(?1: null, Add([-] Unit<i8>(?1))), Add([-] ?2))
+Reducer: null
+###
+> --true
+--true : i1
+Binder : 1
+###
+> --"hello" // type error
+--"hello" : i8
+*** Error: (2,9) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> -0x80i1
+-128 : i1
+*** Warning: (0,1) Node: -128, Message: Constant integer overflow
+Binder : -128
+###
+> -0x8000i2
+-32768 : i2
+*** Warning: (0,1) Node: -32768, Message: Constant integer overflow
+Binder : -32768
+###
+> -0x80000000i4
+-2147483648 : i4
+*** Warning: (0,1) Node: -2147483648, Message: Constant integer overflow
+Binder : -2147483648
+###
+> -0x8000000000000000i8
+-9223372036854775808 : i8
+*** Warning: (0,1) Node: -9223372036854775808, Message: Constant integer overflow
+Binder : -9223372036854775808
+###
+> -0b1000_0000i1
+-128 : i1
+Binder : -128
+###
+> -0b1000_0000_0000_0000i2
+-32768 : i2
+Binder : -32768
+###
+> -0b1000_0000_0000_0000_0000_0000_0000_0000i4
+-2147483648 : i4
+Binder : -2147483648
+###
+> -0b1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000i8
+-9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> -128i1
+-128 : i1
+Binder : -128
+###
+> -32768i2
+-32768 : i2
+Binder : -32768
+###
+> -2147483648i4
+-2147483648 : i4
+Binder : -2147483648
+###
+> -9223372036854775808i8
+-9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> -128u1
+-128 : i2
+Binder : -128
+###
+> -32768u2
+-32768 : i4
+Binder : -32768
+###
+> -2147483648u4
+-2147483648 : i8
+Binder : -2147483648
+###
+> -9223372036854775808u8
+-9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> -128
+-128 : i8
+Binder : -128
+###
+> -32768
+-32768 : i8
+Binder : -32768
+###
+> -2147483648
+-2147483648 : i8
+Binder : -2147483648
+###
+> -9223372036854775808
+-9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> not true
+not true : b
+Binder : Xor(true, true)
+Reducer: false
+###
+> not not not true
+not not not true : b
+Binder : Xor(true, true, true, true)
+Reducer: false
+###
+> not false
+not false : b
+Binder : Xor(false, true)
+Reducer: true
+###
+> not not not false
+not not not false : b
+Binder : Xor(false, true, true, true)
+Reducer: true
+###
+> ! true
+!true : b
+Binder : Xor(true, true)
+Reducer: false
+###
+> !null
+!null : b?
+Binder : Guard(?1: null, Xor(Unit<b>(?1), true))
+Reducer: null
+###
+> ! 3 // type error
+!3 : b
+*** Error: (2,3) Node: 3, Message: Invalid operand type: cannot convert type 'i8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not - 7 // type error
+not -7 : b
+*** Error: (4,5) Node: -7, Message: Invalid operand type: cannot convert type 'i8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> ! "bye" // type error
+!"bye" : b
+*** Error: (2,7) Node: "bye", Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> 10%
+10% : r8
+Binder : Mul(10, [/] 100)
+Reducer: 0.1
+###
+> -10%
+-10% : r8
+Binder : Add([-] Mul(10, [/] 100))
+Reducer: -0.1
+###
+> 10%%
+10%% : r8
+Binder : Mul(10, [/] 100, [/] 100)
+Reducer: 0.001
+###
+> 10%%%%%%
+10%%%%%% : r8
+Binder : Mul(10, [/] 100, [/] 100, [/] 100, [/] 100, [/] 100, [/] 100)
+Reducer: 1.0000000000000001E-11
+###
+> null%
+null% : r8?
+Binder : Guard(?1: null, Mul(Unit<r8>(?1), [/] 100))
+Reducer: null
+###
+> true%
+true% : r8
+Binder : Mul(1, [/] 100)
+Reducer: 0.01
+###
+> false%
+false% : r8
+Binder : Mul(0, [/] 100)
+Reducer: 0
+###
+> ~0x55i1
+~85 : i1
+Binder : BitXor(85, -1)
+Reducer: -86
+###
+> ~0x7Fi1
+~127 : i1
+Binder : BitXor(127, -1)
+Reducer: -128
+###
+> ~0xFFi1
+~255 : i1
+Binder : BitXor(-1, -1)
+Reducer: 0
+###
+> ~0x80i1
+~128 : i1
+Binder : BitXor(-128, -1)
+Reducer: 127
+###
+> ~0x55u1
+~85 : u1
+Binder : BitXor(85, 255)
+Reducer: 170
+###
+> ~0x7Fu1
+~127 : u1
+Binder : BitXor(127, 255)
+Reducer: 128
+###
+> ~0xFFu1
+~255 : u1
+Binder : BitXor(255, 255)
+Reducer: 0
+###
+> ~0x80u1
+~128 : u1
+Binder : BitXor(128, 255)
+Reducer: 127
+###
+> ~~0x55i1
+~~85 : i1
+Binder : BitXor(85, -1, -1)
+Reducer: 85
+###
+> ~~0x7Fi1
+~~127 : i1
+Binder : BitXor(127, -1, -1)
+Reducer: 127
+###
+> ~~0xFFi1
+~~255 : i1
+Binder : BitXor(-1, -1, -1)
+Reducer: -1
+###
+> ~~0x80i1
+~~128 : i1
+Binder : BitXor(-128, -1, -1)
+Reducer: -128
+###
+> ~~0x55u1
+~~85 : u1
+Binder : BitXor(85, 255, 255)
+Reducer: 85
+###
+> ~~0x7Fu1
+~~127 : u1
+Binder : BitXor(127, 255, 255)
+Reducer: 127
+###
+> ~~0xFFu1
+~~255 : u1
+Binder : BitXor(255, 255, 255)
+Reducer: 255
+###
+> ~~0x80u1
+~~128 : u1
+Binder : BitXor(128, 255, 255)
+Reducer: 128
+###
+> ~0x5555i2
+~21845 : i2
+Binder : BitXor(21845, -1)
+Reducer: -21846
+###
+> ~0x7FFFi2
+~32767 : i2
+Binder : BitXor(32767, -1)
+Reducer: -32768
+###
+> ~0xFFFFi2
+~65535 : i2
+Binder : BitXor(-1, -1)
+Reducer: 0
+###
+> ~0x8000i2
+~32768 : i2
+Binder : BitXor(-32768, -1)
+Reducer: 32767
+###
+> ~0x5555u2
+~21845 : u2
+Binder : BitXor(21845, 65535)
+Reducer: 43690
+###
+> ~0x7FFFu2
+~32767 : u2
+Binder : BitXor(32767, 65535)
+Reducer: 32768
+###
+> ~0xFFFFu2
+~65535 : u2
+Binder : BitXor(65535, 65535)
+Reducer: 0
+###
+> ~0x8000u2
+~32768 : u2
+Binder : BitXor(32768, 65535)
+Reducer: 32767
+###
+> ~~0x5555i2
+~~21845 : i2
+Binder : BitXor(21845, -1, -1)
+Reducer: 21845
+###
+> ~~0x7FFFi2
+~~32767 : i2
+Binder : BitXor(32767, -1, -1)
+Reducer: 32767
+###
+> ~~0xFFFFi2
+~~65535 : i2
+Binder : BitXor(-1, -1, -1)
+Reducer: -1
+###
+> ~~0x8000i2
+~~32768 : i2
+Binder : BitXor(-32768, -1, -1)
+Reducer: -32768
+###
+> ~~0x5555u2
+~~21845 : u2
+Binder : BitXor(21845, 65535, 65535)
+Reducer: 21845
+###
+> ~~0x7FFFu2
+~~32767 : u2
+Binder : BitXor(32767, 65535, 65535)
+Reducer: 32767
+###
+> ~~0xFFFFu2
+~~65535 : u2
+Binder : BitXor(65535, 65535, 65535)
+Reducer: 65535
+###
+> ~~0x8000u2
+~~32768 : u2
+Binder : BitXor(32768, 65535, 65535)
+Reducer: 32768
+###
+> ~0x55555555i4
+~1431655765 : i4
+Binder : BitXor(1431655765, -1)
+Reducer: -1431655766
+###
+> ~0x7FFFFFFFi4
+~2147483647 : i4
+Binder : BitXor(2147483647, -1)
+Reducer: -2147483648
+###
+> ~0xFFFFFFFFi4
+~4294967295 : i4
+Binder : BitXor(-1, -1)
+Reducer: 0
+###
+> ~0x80000000i4
+~2147483648 : i4
+Binder : BitXor(-2147483648, -1)
+Reducer: 2147483647
+###
+> ~0x55555555u4
+~1431655765 : u4
+Binder : BitXor(1431655765, 4294967295)
+Reducer: 2863311530
+###
+> ~0x7FFFFFFFu4
+~2147483647 : u4
+Binder : BitXor(2147483647, 4294967295)
+Reducer: 2147483648
+###
+> ~0xFFFFFFFFu4
+~4294967295 : u4
+Binder : BitXor(4294967295, 4294967295)
+Reducer: 0
+###
+> ~0x80000000u4
+~2147483648 : u4
+Binder : BitXor(2147483648, 4294967295)
+Reducer: 2147483647
+###
+> ~~0x55555555i4
+~~1431655765 : i4
+Binder : BitXor(1431655765, -1, -1)
+Reducer: 1431655765
+###
+> ~~0x7FFFFFFFi4
+~~2147483647 : i4
+Binder : BitXor(2147483647, -1, -1)
+Reducer: 2147483647
+###
+> ~~0xFFFFFFFFi4
+~~4294967295 : i4
+Binder : BitXor(-1, -1, -1)
+Reducer: -1
+###
+> ~~0x80000000i4
+~~2147483648 : i4
+Binder : BitXor(-2147483648, -1, -1)
+Reducer: -2147483648
+###
+> ~~0x55555555u4
+~~1431655765 : u4
+Binder : BitXor(1431655765, 4294967295, 4294967295)
+Reducer: 1431655765
+###
+> ~~0x7FFFFFFFu4
+~~2147483647 : u4
+Binder : BitXor(2147483647, 4294967295, 4294967295)
+Reducer: 2147483647
+###
+> ~~0xFFFFFFFFu4
+~~4294967295 : u4
+Binder : BitXor(4294967295, 4294967295, 4294967295)
+Reducer: 4294967295
+###
+> ~~0x80000000u4
+~~2147483648 : u4
+Binder : BitXor(2147483648, 4294967295, 4294967295)
+Reducer: 2147483648
+###
+> ~0x5555555555555555i8
+~6148914691236517205 : i8
+Binder : BitXor(6148914691236517205, -1)
+Reducer: -6148914691236517206
+###
+> ~0x7FFFFFFFFFFFFFFFi8
+~9223372036854775807 : i8
+Binder : BitXor(9223372036854775807, -1)
+Reducer: -9223372036854775808
+###
+> ~0xFFFFFFFFFFFFFFFFi8
+~18446744073709551615 : i8
+Binder : BitXor(-1, -1)
+Reducer: 0
+###
+> ~0x8000000000000000i8
+~9223372036854775808 : i8
+Binder : BitXor(-9223372036854775808, -1)
+Reducer: 9223372036854775807
+###
+> ~0x5555555555555555u8
+~6148914691236517205 : u8
+Binder : BitXor(6148914691236517205, 18446744073709551615)
+Reducer: 12297829382473034410
+###
+> ~0x7FFFFFFFFFFFFFFFu8
+~9223372036854775807 : u8
+Binder : BitXor(9223372036854775807, 18446744073709551615)
+Reducer: 9223372036854775808
+###
+> ~0xFFFFFFFFFFFFFFFFu8
+~18446744073709551615 : u8
+Binder : BitXor(18446744073709551615, 18446744073709551615)
+Reducer: 0
+###
+> ~0x8000000000000000u8
+~9223372036854775808 : u8
+Binder : BitXor(9223372036854775808, 18446744073709551615)
+Reducer: 9223372036854775807
+###
+> ~~0x5555555555555555i8
+~~6148914691236517205 : i8
+Binder : BitXor(6148914691236517205, -1, -1)
+Reducer: 6148914691236517205
+###
+> ~~0x7FFFFFFFFFFFFFFFi8
+~~9223372036854775807 : i8
+Binder : BitXor(9223372036854775807, -1, -1)
+Reducer: 9223372036854775807
+###
+> ~~0xFFFFFFFFFFFFFFFFi8
+~~18446744073709551615 : i8
+Binder : BitXor(-1, -1, -1)
+Reducer: -1
+###
+> ~~0x8000000000000000i8
+~~9223372036854775808 : i8
+Binder : BitXor(-9223372036854775808, -1, -1)
+Reducer: -9223372036854775808
+###
+> ~~0x5555555555555555u8
+~~6148914691236517205 : u8
+Binder : BitXor(6148914691236517205, 18446744073709551615, 18446744073709551615)
+Reducer: 6148914691236517205
+###
+> ~~0x7FFFFFFFFFFFFFFFu8
+~~9223372036854775807 : u8
+Binder : BitXor(9223372036854775807, 18446744073709551615, 18446744073709551615)
+Reducer: 9223372036854775807
+###
+> ~~0xFFFFFFFFFFFFFFFFu8
+~~18446744073709551615 : u8
+Binder : BitXor(18446744073709551615, 18446744073709551615, 18446744073709551615)
+Reducer: 18446744073709551615
+###
+> ~~0x8000000000000000u8
+~~9223372036854775808 : u8
+Binder : BitXor(9223372036854775808, 18446744073709551615, 18446744073709551615)
+Reducer: 9223372036854775808
+###
+> ~0u8
+~0 : u8
+Binder : BitXor(0, 18446744073709551615)
+Reducer: 18446744073709551615
+###
+> ~0u4
+~0 : u4
+Binder : BitXor(0, 4294967295)
+Reducer: 4294967295
+###
+> ~0u2
+~0 : u2
+Binder : BitXor(0, 65535)
+Reducer: 65535
+###
+> ~0u1
+~0 : u1
+Binder : BitXor(0, 255)
+Reducer: 255
+###
+> bnot 0u8
+bnot 0 : u8
+Binder : BitXor(0, 18446744073709551615)
+Reducer: 18446744073709551615
+###
+> bnot 0u4
+bnot 0 : u4
+Binder : BitXor(0, 4294967295)
+Reducer: 4294967295
+###
+> bnot 0u2
+bnot 0 : u2
+Binder : BitXor(0, 65535)
+Reducer: 65535
+###
+> bnot 0u1
+bnot 0 : u1
+Binder : BitXor(0, 255)
+Reducer: 255
+###
+> bnot 3 + 12
+bnot 3 + 12 : i8
+Binder : BitXor(Add(3, 12), -1)
+Reducer: -16
+###
+> ~ 3 + 12
+~3 + 12 : i8
+Binder : Add(BitXor(3, -1), 12)
+Reducer: 8
+###
+> 4 + bnot 3 + 12 // Error
+4 + (bnot 3 + 12) : i8
+=== Parse diagnostics:
+*** Error: (4,8) Tok: 'bnot', Message: Invalid 'bnot' operator, consider `~` or parentheses
+Binder : Add(4, BitXor(Add(3, 12), -1))
+Reducer: -12
+###
+> 4 +    ~ 3 + 12 // OK
+4 + ~3 + 12 : i8
+Binder : Add(4, BitXor(3, -1), 12)
+Reducer: 12
+###
+> -g
+-g : i8
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Add([-] Error(ErrBadType_Src_Dst))
+###
+> -v
+-v : i8
+Binder : Add([-] Unit<i8>(v))
+Reducer: 0
+###
+> -o
+-o : i8?
+Binder : Guard(?1: o, Add([-] Unit<i8>(?1)))
+Reducer: null
+###
+> -s
+-s : i8
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Add([-] Error(ErrBadType_Src_Dst))
+###
+> -b
+-b : i8
+Binder : Add([-] Num<i8>(b))
+###
+> -n
+-n : r8
+Binder : Add([-] n)
+###
+> -r8
+-r8 : r8
+Binder : Add([-] r8)
+###
+> -r4
+-r4 : r8
+Binder : Add([-] Num<r8>(r4))
+###
+> -i
+-i : i
+Binder : Add([-] i)
+###
+> -i8
+-i8 : i8
+Binder : Add([-] i8)
+###
+> -i4
+-i4 : i8
+Binder : Add([-] Num<i8>(i4))
+###
+> -i2
+-i2 : i8
+Binder : Add([-] Num<i8>(i2))
+###
+> -i1
+-i1 : i8
+Binder : Add([-] Num<i8>(i1))
+###
+> -u8
+-u8 : i8
+*** Warning: (1,3) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Add([-] Num<i8>(u8))
+###
+> -u4
+-u4 : i8
+Binder : Add([-] Num<i8>(u4))
+###
+> -u2
+-u2 : i8
+Binder : Add([-] Num<i8>(u2))
+###
+> -u1
+-u1 : i8
+Binder : Add([-] Num<i8>(u1))
+###
+> +g
++g : i8?
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> +v
++v : i8
+Binder : Unit<i8>(v)
+Reducer: 0
+###
+> +o
++o : i8?
+Binder : null
+###
+> +s
++s : i8?
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> +b
++b : b
+Binder : b
+###
+> +n
++n : r8
+Binder : n
+###
+> +r8
++r8 : r8
+Binder : r8
+###
+> +r4
++r4 : r4
+Binder : r4
+###
+> +i
++i : i
+Binder : i
+###
+> +i8
++i8 : i8
+Binder : i8
+###
+> +i4
++i4 : i4
+Binder : i4
+###
+> +i2
++i2 : i2
+Binder : i2
+###
+> +i1
++i1 : i1
+Binder : i1
+###
+> +u8
++u8 : u8
+Binder : u8
+###
+> +u4
++u4 : u4
+Binder : u4
+###
+> +u2
++u2 : u2
+Binder : u2
+###
+> +u1
++u1 : u1
+Binder : u1
+###
+> --g
+--g : i8
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> --v
+--v : i8
+Binder : Unit<i8>(v)
+Reducer: 0
+###
+> --o
+--o : i8?
+Binder : Guard(?2: Guard(?1: o, Add([-] Unit<i8>(?1))), Add([-] ?2))
+Reducer: null
+###
+> --s
+--s : i8
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> --b
+--b : i8
+Binder : Num<i8>(b)
+###
+> --n
+--n : r8
+Binder : n
+###
+> --r8
+--r8 : r8
+Binder : r8
+###
+> --r4
+--r4 : r8
+Binder : Num<r8>(r4)
+###
+> --i
+--i : i
+Binder : i
+###
+> --i8
+--i8 : i8
+Binder : i8
+###
+> --i4
+--i4 : i8
+Binder : Num<i8>(i4)
+###
+> --i2
+--i2 : i8
+Binder : Num<i8>(i2)
+###
+> --i1
+--i1 : i8
+Binder : Num<i8>(i1)
+###
+> --u8
+--u8 : i8
+*** Warning: (2,4) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Num<i8>(u8)
+###
+> --u4
+--u4 : i8
+Binder : Num<i8>(u4)
+###
+> --u2
+--u2 : i8
+Binder : Num<i8>(u2)
+###
+> --u1
+--u1 : i8
+Binder : Num<i8>(u1)
+###
+> ---g
+---g : i8
+*** Error: (3,4) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Add([-] Error(ErrBadType_Src_Dst))
+###
+> ---v
+---v : i8
+Binder : Add([-] Unit<i8>(v))
+Reducer: 0
+###
+> ---o
+---o : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: o, Add([-] Unit<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: null
+###
+> ---s
+---s : i8
+*** Error: (3,4) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Add([-] Error(ErrBadType_Src_Dst))
+###
+> ---b
+---b : i8
+Binder : Add([-] Num<i8>(b))
+###
+> ---n
+---n : r8
+Binder : Add([-] n)
+###
+> ---r8
+---r8 : r8
+Binder : Add([-] r8)
+###
+> ---r4
+---r4 : r8
+Binder : Add([-] Num<r8>(r4))
+###
+> ---i
+---i : i
+Binder : Add([-] i)
+###
+> ---i8
+---i8 : i8
+Binder : Add([-] i8)
+###
+> ---i4
+---i4 : i8
+Binder : Add([-] Num<i8>(i4))
+###
+> ---i2
+---i2 : i8
+Binder : Add([-] Num<i8>(i2))
+###
+> ---i1
+---i1 : i8
+Binder : Add([-] Num<i8>(i1))
+###
+> ---u8
+---u8 : i8
+*** Warning: (3,5) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Add([-] Num<i8>(u8))
+###
+> ---u4
+---u4 : i8
+Binder : Add([-] Num<i8>(u4))
+###
+> ---u2
+---u2 : i8
+Binder : Add([-] Num<i8>(u2))
+###
+> ---u1
+---u1 : i8
+Binder : Add([-] Num<i8>(u1))
+###
+> -qb
+-qb : i8?
+Binder : Guard(?1: qb, Add([-] Num<i8>(?1)))
+###
+> -qn
+-qn : r8?
+Binder : Guard(?1: qn, Add([-] ?1))
+###
+> -qr8
+-qr8 : r8?
+Binder : Guard(?1: qr8, Add([-] ?1))
+###
+> -qr4
+-qr4 : r8?
+Binder : Guard(?1: qr4, Add([-] Num<r8>(?1)))
+###
+> -qi
+-qi : i?
+Binder : Guard(?1: qi, Add([-] ?1))
+###
+> -qi8
+-qi8 : i8?
+Binder : Guard(?1: qi8, Add([-] ?1))
+###
+> -qi4
+-qi4 : i8?
+Binder : Guard(?1: qi4, Add([-] Num<i8>(?1)))
+###
+> -qi2
+-qi2 : i8?
+Binder : Guard(?1: qi2, Add([-] Num<i8>(?1)))
+###
+> -qi1
+-qi1 : i8?
+Binder : Guard(?1: qi1, Add([-] Num<i8>(?1)))
+###
+> -qu8
+-qu8 : i8?
+*** Warning: (1,4) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Add([-] Num<i8>(?1)))
+###
+> -qu4
+-qu4 : i8?
+Binder : Guard(?1: qu4, Add([-] Num<i8>(?1)))
+###
+> -qu2
+-qu2 : i8?
+Binder : Guard(?1: qu2, Add([-] Num<i8>(?1)))
+###
+> -qu1
+-qu1 : i8?
+Binder : Guard(?1: qu1, Add([-] Num<i8>(?1)))
+###
+> --qb
+--qb : i8?
+Binder : Guard(?2: Guard(?1: qb, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qb, Num<i8>(?1))
+###
+> --qn
+--qn : r8?
+Binder : Guard(?2: Guard(?1: qn, Add([-] ?1)), Add([-] ?2))
+Reducer: qn
+###
+> --qr8
+--qr8 : r8?
+Binder : Guard(?2: Guard(?1: qr8, Add([-] ?1)), Add([-] ?2))
+Reducer: qr8
+###
+> --qr4
+--qr4 : r8?
+Binder : Guard(?2: Guard(?1: qr4, Add([-] Num<r8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qr4, Num<r8>(?1))
+###
+> --qi
+--qi : i?
+Binder : Guard(?2: Guard(?1: qi, Add([-] ?1)), Add([-] ?2))
+Reducer: qi
+###
+> --qi8
+--qi8 : i8?
+Binder : Guard(?2: Guard(?1: qi8, Add([-] ?1)), Add([-] ?2))
+Reducer: qi8
+###
+> --qi4
+--qi4 : i8?
+Binder : Guard(?2: Guard(?1: qi4, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qi4, Num<i8>(?1))
+###
+> --qi2
+--qi2 : i8?
+Binder : Guard(?2: Guard(?1: qi2, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qi2, Num<i8>(?1))
+###
+> --qi1
+--qi1 : i8?
+Binder : Guard(?2: Guard(?1: qi1, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qi1, Num<i8>(?1))
+###
+> --qu8
+--qu8 : i8?
+*** Warning: (2,5) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?2: Guard(?1: qu8, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qu8, Num<i8>(?1))
+###
+> --qu4
+--qu4 : i8?
+Binder : Guard(?2: Guard(?1: qu4, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qu4, Num<i8>(?1))
+###
+> --qu2
+--qu2 : i8?
+Binder : Guard(?2: Guard(?1: qu2, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qu2, Num<i8>(?1))
+###
+> --qu1
+--qu1 : i8?
+Binder : Guard(?2: Guard(?1: qu1, Add([-] Num<i8>(?1))), Add([-] ?2))
+Reducer: Guard(?1: qu1, Num<i8>(?1))
+###
+> ---qb
+---qb : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qb, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qb, Add([-] Num<i8>(?1)))
+###
+> ---qn
+---qn : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qn, Add([-] ?1)), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qn, Add([-] ?1))
+###
+> ---qr8
+---qr8 : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qr8, Add([-] ?1)), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qr8, Add([-] ?1))
+###
+> ---qr4
+---qr4 : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qr4, Add([-] Num<r8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qr4, Add([-] Num<r8>(?1)))
+###
+> ---qi
+---qi : i?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi, Add([-] ?1)), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qi, Add([-] ?1))
+###
+> ---qi8
+---qi8 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi8, Add([-] ?1)), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qi8, Add([-] ?1))
+###
+> ---qi4
+---qi4 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi4, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qi4, Add([-] Num<i8>(?1)))
+###
+> ---qi2
+---qi2 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi2, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qi2, Add([-] Num<i8>(?1)))
+###
+> ---qi1
+---qi1 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi1, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qi1, Add([-] Num<i8>(?1)))
+###
+> ---qu8
+---qu8 : i8?
+*** Warning: (3,6) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?3: Guard(?2: Guard(?1: qu8, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qu8, Add([-] Num<i8>(?1)))
+###
+> ---qu4
+---qu4 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu4, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qu4, Add([-] Num<i8>(?1)))
+###
+> ---qu2
+---qu2 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu2, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qu2, Add([-] Num<i8>(?1)))
+###
+> ---qu1
+---qu1 : i8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu1, Add([-] Num<i8>(?1))), Add([-] ?2)), Add([-] ?3))
+Reducer: Guard(?1: qu1, Add([-] Num<i8>(?1)))
+###
+> not b
+not b : b
+Binder : Xor(b, true)
+###
+> not not b
+not not b : b
+Binder : Xor(b, true, true)
+Reducer: b
+###
+> not not not b
+not not not b : b
+Binder : Xor(b, true, true, true)
+Reducer: Xor(b, true)
+###
+> not qb
+not qb : b?
+Binder : Guard(?1: qb, Xor(?1, true))
+###
+> not not qb
+not not qb : b?
+Binder : Guard(?2: Guard(?1: qb, Xor(?1, true)), Xor(?2, true))
+Reducer: qb
+###
+> not not not qb
+not not not qb : b?
+Binder : Guard(?3: Guard(?2: Guard(?1: qb, Xor(?1, true)), Xor(?2, true)), Xor(?3, true))
+Reducer: Guard(?1: qb, Xor(?1, true))
+###
+> not (not (not b))
+not not not b : b
+Binder : Xor(b, true, true, true)
+Reducer: Xor(b, true)
+###
+> not (not (not (b)))
+not not not b : b
+Binder : Xor(b, true, true, true)
+Reducer: Xor(b, true)
+###
+> !!!qb
+!!!qb : b?
+Binder : Guard(?3: Guard(?2: Guard(?1: qb, Xor(?1, true)), Xor(?2, true)), Xor(?3, true))
+Reducer: Guard(?1: qb, Xor(?1, true))
+###
+> not g // type error
+not g : b
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not v
+not v : b
+Binder : Xor(Unit<b>(v), true)
+Reducer: true
+###
+> not o
+not o : b?
+Binder : Guard(?1: o, Xor(Unit<b>(?1), true))
+Reducer: null
+###
+> not s // type error
+not s : b
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not n // type error
+not n : b
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not i // type error
+not i : b
+*** Error: (4,5) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not qn // type error
+not qn : b?
+*** Error: (4,6) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Guard(?1: qn, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not qi // type error
+not qi : b?
+*** Error: (4,6) Node: qi, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Guard(?1: qi, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not not g // type error
+not not g : b
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> not not v
+not not v : b
+Binder : Xor(Unit<b>(v), true, true)
+Reducer: false
+###
+> not not o
+not not o : b?
+Binder : Guard(?2: Guard(?1: o, Xor(Unit<b>(?1), true)), Xor(?2, true))
+Reducer: null
+###
+> not not s // type error
+not not s : b
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> not not n // type error
+not not n : b
+*** Error: (8,9) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> not not i // type error
+not not i : b
+*** Error: (8,9) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> not not qn // type error
+not not qn : b?
+*** Error: (8,10) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Guard(?2: Guard(?1: qn, Xor(Error(ErrBadType_Src_Dst), true)), Xor(?2, true))
+Reducer: Guard(?1: qn, Error(ErrBadType_Src_Dst))
+###
+> not not qi // type error
+not not qi : b?
+*** Error: (8,10) Node: qi, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Guard(?2: Guard(?1: qi, Xor(Error(ErrBadType_Src_Dst), true)), Xor(?2, true))
+Reducer: Guard(?1: qi, Error(ErrBadType_Src_Dst))
+###
+> not not not g // type error
+not not not g : b
+*** Error: (12,13) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true, true)
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not not not v
+not not not v : b
+Binder : Xor(Unit<b>(v), true, true, true)
+Reducer: true
+###
+> not not not o
+not not not o : b?
+Binder : Guard(?3: Guard(?2: Guard(?1: o, Xor(Unit<b>(?1), true)), Xor(?2, true)), Xor(?3, true))
+Reducer: null
+###
+> not not not s // type error
+not not not s : b
+*** Error: (12,13) Node: s, Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true, true)
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not not not n // type error
+not not not n : b
+*** Error: (12,13) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true, true)
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not not not i // type error
+not not not i : b
+*** Error: (12,13) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true, true, true)
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> not not not qn // type error
+not not not qn : b?
+*** Error: (12,14) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Guard(?3: Guard(?2: Guard(?1: qn, Xor(Error(ErrBadType_Src_Dst), true)), Xor(?2, true)), Xor(?3, true))
+Reducer: Guard(?1: qn, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not not not qi // type error
+not not not qi : b?
+*** Error: (12,14) Node: qi, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : Guard(?3: Guard(?2: Guard(?1: qi, Xor(Error(ErrBadType_Src_Dst), true)), Xor(?2, true)), Xor(?3, true))
+Reducer: Guard(?1: qi, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> ! b < b
+!b $< b : b
+Binder : Xor(b, true) @< b
+###
+> not b < b
+not b $< b : b
+Binder : Xor(b @< b, true)
+###
+> g %
+g% : r8
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100)
+###
+> v %
+v% : r8
+Binder : Mul(Unit<r8>(v), [/] 100)
+Reducer: 0
+###
+> o %
+o% : r8?
+Binder : Guard(?1: o, Mul(Unit<r8>(?1), [/] 100))
+Reducer: null
+###
+> s %
+s% : r8
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100)
+###
+> b %
+b% : r8
+Binder : Mul(Num<r8>(b), [/] 100)
+###
+> n %
+n% : r8
+Binder : Mul(n, [/] 100)
+###
+> r8%
+r8% : r8
+Binder : Mul(r8, [/] 100)
+###
+> r4%
+r4% : r8
+Binder : Mul(Num<r8>(r4), [/] 100)
+###
+> i %
+i% : r8
+Binder : Mul(Num<r8>(i), [/] 100)
+###
+> i8%
+i8% : r8
+Binder : Mul(Num<r8>(i8), [/] 100)
+###
+> i4%
+i4% : r8
+Binder : Mul(Num<r8>(i4), [/] 100)
+###
+> i2%
+i2% : r8
+Binder : Mul(Num<r8>(i2), [/] 100)
+###
+> i1%
+i1% : r8
+Binder : Mul(Num<r8>(i1), [/] 100)
+###
+> u8%
+u8% : r8
+Binder : Mul(Num<r8>(u8), [/] 100)
+###
+> u4%
+u4% : r8
+Binder : Mul(Num<r8>(u4), [/] 100)
+###
+> u2%
+u2% : r8
+Binder : Mul(Num<r8>(u2), [/] 100)
+###
+> u1%
+u1% : r8
+Binder : Mul(Num<r8>(u1), [/] 100)
+###
+> g %%
+g%% : r8
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100)
+###
+> v %%
+v%% : r8
+Binder : Mul(Unit<r8>(v), [/] 100, [/] 100)
+Reducer: 0
+###
+> o %%
+o%% : r8?
+Binder : Guard(?2: Guard(?1: o, Mul(Unit<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: null
+###
+> s %%
+s%% : r8
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100)
+###
+> b %%
+b%% : r8
+Binder : Mul(Num<r8>(b), [/] 100, [/] 100)
+###
+> n %%
+n%% : r8
+Binder : Mul(n, [/] 100, [/] 100)
+###
+> r8%%
+r8%% : r8
+Binder : Mul(r8, [/] 100, [/] 100)
+###
+> r4%%
+r4%% : r8
+Binder : Mul(Num<r8>(r4), [/] 100, [/] 100)
+###
+> i %%
+i%% : r8
+Binder : Mul(Num<r8>(i), [/] 100, [/] 100)
+###
+> i8%%
+i8%% : r8
+Binder : Mul(Num<r8>(i8), [/] 100, [/] 100)
+###
+> i4%%
+i4%% : r8
+Binder : Mul(Num<r8>(i4), [/] 100, [/] 100)
+###
+> i2%%
+i2%% : r8
+Binder : Mul(Num<r8>(i2), [/] 100, [/] 100)
+###
+> i1%%
+i1%% : r8
+Binder : Mul(Num<r8>(i1), [/] 100, [/] 100)
+###
+> u8%%
+u8%% : r8
+Binder : Mul(Num<r8>(u8), [/] 100, [/] 100)
+###
+> u4%%
+u4%% : r8
+Binder : Mul(Num<r8>(u4), [/] 100, [/] 100)
+###
+> u2%%
+u2%% : r8
+Binder : Mul(Num<r8>(u2), [/] 100, [/] 100)
+###
+> u1%%
+u1%% : r8
+Binder : Mul(Num<r8>(u1), [/] 100, [/] 100)
+###
+> -g %
+-g% : r8
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Add([-] Mul(Error(ErrBadType_Src_Dst), [/] 100))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] -100)
+###
+> -v %
+-v% : r8
+Binder : Add([-] Mul(Unit<r8>(v), [/] 100))
+Reducer: -0
+###
+> -o %
+-o% : r8?
+Binder : Guard(?2: Guard(?1: o, Mul(Unit<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: null
+###
+> -s %
+-s% : r8
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Add([-] Mul(Error(ErrBadType_Src_Dst), [/] 100))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] -100)
+###
+> -b %
+-b% : r8
+Binder : Add([-] Mul(Num<r8>(b), [/] 100))
+Reducer: Mul(Num<r8>(b), [/] -100)
+###
+> -n %
+-n% : r8
+Binder : Add([-] Mul(n, [/] 100))
+Reducer: Mul(n, [/] -100)
+###
+> -r8%
+-r8% : r8
+Binder : Add([-] Mul(r8, [/] 100))
+Reducer: Mul(r8, [/] -100)
+###
+> -r4%
+-r4% : r8
+Binder : Add([-] Mul(Num<r8>(r4), [/] 100))
+Reducer: Mul(Num<r8>(r4), [/] -100)
+###
+> -i %
+-i% : r8
+Binder : Add([-] Mul(Num<r8>(i), [/] 100))
+Reducer: Mul(Num<r8>(i), [/] -100)
+###
+> -i8%
+-i8% : r8
+Binder : Add([-] Mul(Num<r8>(i8), [/] 100))
+Reducer: Mul(Num<r8>(i8), [/] -100)
+###
+> -i4%
+-i4% : r8
+Binder : Add([-] Mul(Num<r8>(i4), [/] 100))
+Reducer: Mul(Num<r8>(i4), [/] -100)
+###
+> -i2%
+-i2% : r8
+Binder : Add([-] Mul(Num<r8>(i2), [/] 100))
+Reducer: Mul(Num<r8>(i2), [/] -100)
+###
+> -i1%
+-i1% : r8
+Binder : Add([-] Mul(Num<r8>(i1), [/] 100))
+Reducer: Mul(Num<r8>(i1), [/] -100)
+###
+> -u8%
+-u8% : r8
+Binder : Add([-] Mul(Num<r8>(u8), [/] 100))
+Reducer: Mul(Num<r8>(u8), [/] -100)
+###
+> -u4%
+-u4% : r8
+Binder : Add([-] Mul(Num<r8>(u4), [/] 100))
+Reducer: Mul(Num<r8>(u4), [/] -100)
+###
+> -u2%
+-u2% : r8
+Binder : Add([-] Mul(Num<r8>(u2), [/] 100))
+Reducer: Mul(Num<r8>(u2), [/] -100)
+###
+> -u1%
+-u1% : r8
+Binder : Add([-] Mul(Num<r8>(u1), [/] 100))
+Reducer: Mul(Num<r8>(u1), [/] -100)
+###
+> -g %%
+-g%% : r8
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Add([-] Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] -100)
+###
+> -v %%
+-v%% : r8
+Binder : Add([-] Mul(Unit<r8>(v), [/] 100, [/] 100))
+Reducer: -0
+###
+> -o %%
+-o%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: o, Mul(Unit<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: null
+###
+> -s %%
+-s%% : r8
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Add([-] Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] -100)
+###
+> -b %%
+-b%% : r8
+Binder : Add([-] Mul(Num<r8>(b), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(b), [/] 100, [/] -100)
+###
+> -n %%
+-n%% : r8
+Binder : Add([-] Mul(n, [/] 100, [/] 100))
+Reducer: Mul(n, [/] 100, [/] -100)
+###
+> -r8%%
+-r8%% : r8
+Binder : Add([-] Mul(r8, [/] 100, [/] 100))
+Reducer: Mul(r8, [/] 100, [/] -100)
+###
+> -r4%%
+-r4%% : r8
+Binder : Add([-] Mul(Num<r8>(r4), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(r4), [/] 100, [/] -100)
+###
+> -i %%
+-i%% : r8
+Binder : Add([-] Mul(Num<r8>(i), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(i), [/] 100, [/] -100)
+###
+> -i8%%
+-i8%% : r8
+Binder : Add([-] Mul(Num<r8>(i8), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(i8), [/] 100, [/] -100)
+###
+> -i4%%
+-i4%% : r8
+Binder : Add([-] Mul(Num<r8>(i4), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(i4), [/] 100, [/] -100)
+###
+> -i2%%
+-i2%% : r8
+Binder : Add([-] Mul(Num<r8>(i2), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(i2), [/] 100, [/] -100)
+###
+> -i1%%
+-i1%% : r8
+Binder : Add([-] Mul(Num<r8>(i1), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(i1), [/] 100, [/] -100)
+###
+> -u8%%
+-u8%% : r8
+Binder : Add([-] Mul(Num<r8>(u8), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(u8), [/] 100, [/] -100)
+###
+> -u4%%
+-u4%% : r8
+Binder : Add([-] Mul(Num<r8>(u4), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(u4), [/] 100, [/] -100)
+###
+> -u2%%
+-u2%% : r8
+Binder : Add([-] Mul(Num<r8>(u2), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(u2), [/] 100, [/] -100)
+###
+> -u1%%
+-u1%% : r8
+Binder : Add([-] Mul(Num<r8>(u1), [/] 100, [/] 100))
+Reducer: Mul(Num<r8>(u1), [/] 100, [/] -100)
+###
+> --g %%
+--g%% : r8
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100)
+###
+> --v %%
+--v%% : r8
+Binder : Mul(Unit<r8>(v), [/] 100, [/] 100)
+Reducer: 0
+###
+> --o %%
+--o%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: o, Mul(Unit<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: null
+###
+> --s %%
+--s%% : r8
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Mul(Error(ErrBadType_Src_Dst), [/] 100, [/] 100)
+###
+> --b %%
+--b%% : r8
+Binder : Mul(Num<r8>(b), [/] 100, [/] 100)
+###
+> --n %%
+--n%% : r8
+Binder : Mul(n, [/] 100, [/] 100)
+###
+> --r8%%
+--r8%% : r8
+Binder : Mul(r8, [/] 100, [/] 100)
+###
+> --r4%%
+--r4%% : r8
+Binder : Mul(Num<r8>(r4), [/] 100, [/] 100)
+###
+> --i %%
+--i%% : r8
+Binder : Mul(Num<r8>(i), [/] 100, [/] 100)
+###
+> --i8%%
+--i8%% : r8
+Binder : Mul(Num<r8>(i8), [/] 100, [/] 100)
+###
+> --i4%%
+--i4%% : r8
+Binder : Mul(Num<r8>(i4), [/] 100, [/] 100)
+###
+> --i2%%
+--i2%% : r8
+Binder : Mul(Num<r8>(i2), [/] 100, [/] 100)
+###
+> --i1%%
+--i1%% : r8
+Binder : Mul(Num<r8>(i1), [/] 100, [/] 100)
+###
+> --u8%%
+--u8%% : r8
+Binder : Mul(Num<r8>(u8), [/] 100, [/] 100)
+###
+> --u4%%
+--u4%% : r8
+Binder : Mul(Num<r8>(u4), [/] 100, [/] 100)
+###
+> --u2%%
+--u2%% : r8
+Binder : Mul(Num<r8>(u2), [/] 100, [/] 100)
+###
+> --u1%%
+--u1%% : r8
+Binder : Mul(Num<r8>(u1), [/] 100, [/] 100)
+###
+> qb %
+qb% : r8?
+Binder : Guard(?1: qb, Mul(Num<r8>(?1), [/] 100))
+###
+> qn %
+qn% : r8?
+Binder : Guard(?1: qn, Mul(?1, [/] 100))
+###
+> qr8%
+qr8% : r8?
+Binder : Guard(?1: qr8, Mul(?1, [/] 100))
+###
+> qr4%
+qr4% : r8?
+Binder : Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100))
+###
+> qi %
+qi% : r8?
+Binder : Guard(?1: qi, Mul(Num<r8>(?1), [/] 100))
+###
+> qi8%
+qi8% : r8?
+Binder : Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100))
+###
+> qi4%
+qi4% : r8?
+Binder : Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100))
+###
+> qi2%
+qi2% : r8?
+Binder : Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100))
+###
+> qi1%
+qi1% : r8?
+Binder : Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100))
+###
+> qu8%
+qu8% : r8?
+Binder : Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100))
+###
+> qu4%
+qu4% : r8?
+Binder : Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100))
+###
+> qu2%
+qu2% : r8?
+Binder : Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100))
+###
+> qu1%
+qu1% : r8?
+Binder : Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100))
+###
+> qb %%
+qb%% : r8?
+Binder : Guard(?2: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qn %%
+qn%% : r8?
+Binder : Guard(?2: Guard(?1: qn, Mul(?1, [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qn, Mul(?1, [/] 100, [/] 100))
+###
+> qr8%%
+qr8%% : r8?
+Binder : Guard(?2: Guard(?1: qr8, Mul(?1, [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qr8, Mul(?1, [/] 100, [/] 100))
+###
+> qr4%%
+qr4%% : r8?
+Binder : Guard(?2: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qi %%
+qi%% : r8?
+Binder : Guard(?2: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qi8%%
+qi8%% : r8?
+Binder : Guard(?2: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qi4%%
+qi4%% : r8?
+Binder : Guard(?2: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qi2%%
+qi2%% : r8?
+Binder : Guard(?2: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qi1%%
+qi1%% : r8?
+Binder : Guard(?2: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qu8%%
+qu8%% : r8?
+Binder : Guard(?2: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qu4%%
+qu4%% : r8?
+Binder : Guard(?2: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qu2%%
+qu2%% : r8?
+Binder : Guard(?2: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> qu1%%
+qu1%% : r8?
+Binder : Guard(?2: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100))
+Reducer: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> -qb %
+-qb% : r8?
+Binder : Guard(?2: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qb, Mul(Num<r8>(?1), [/] -100))
+###
+> -qn %
+-qn% : r8?
+Binder : Guard(?2: Guard(?1: qn, Mul(?1, [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qn, Mul(?1, [/] -100))
+###
+> -qr8%
+-qr8% : r8?
+Binder : Guard(?2: Guard(?1: qr8, Mul(?1, [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qr8, Mul(?1, [/] -100))
+###
+> -qr4%
+-qr4% : r8?
+Binder : Guard(?2: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qr4, Mul(Num<r8>(?1), [/] -100))
+###
+> -qi %
+-qi% : r8?
+Binder : Guard(?2: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qi, Mul(Num<r8>(?1), [/] -100))
+###
+> -qi8%
+-qi8% : r8?
+Binder : Guard(?2: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qi8, Mul(Num<r8>(?1), [/] -100))
+###
+> -qi4%
+-qi4% : r8?
+Binder : Guard(?2: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qi4, Mul(Num<r8>(?1), [/] -100))
+###
+> -qi2%
+-qi2% : r8?
+Binder : Guard(?2: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qi2, Mul(Num<r8>(?1), [/] -100))
+###
+> -qi1%
+-qi1% : r8?
+Binder : Guard(?2: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qi1, Mul(Num<r8>(?1), [/] -100))
+###
+> -qu8%
+-qu8% : r8?
+Binder : Guard(?2: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qu8, Mul(Num<r8>(?1), [/] -100))
+###
+> -qu4%
+-qu4% : r8?
+Binder : Guard(?2: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qu4, Mul(Num<r8>(?1), [/] -100))
+###
+> -qu2%
+-qu2% : r8?
+Binder : Guard(?2: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qu2, Mul(Num<r8>(?1), [/] -100))
+###
+> -qu1%
+-qu1% : r8?
+Binder : Guard(?2: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100)), Add([-] ?2))
+Reducer: Guard(?1: qu1, Mul(Num<r8>(?1), [/] -100))
+###
+> -qb %%
+-qb%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qn %%
+-qn%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qn, Mul(?1, [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qn, Mul(?1, [/] 100, [/] -100))
+###
+> -qr8%%
+-qr8%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qr8, Mul(?1, [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qr8, Mul(?1, [/] 100, [/] -100))
+###
+> -qr4%%
+-qr4%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qi %%
+-qi%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qi8%%
+-qi8%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qi4%%
+-qi4%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qi2%%
+-qi2%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qi1%%
+-qi1%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qu8%%
+-qu8%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qu4%%
+-qu4%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qu2%%
+-qu2%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> -qu1%%
+-qu1%% : r8?
+Binder : Guard(?3: Guard(?2: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3))
+Reducer: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100, [/] -100))
+###
+> --qb %%
+--qb%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qb, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qn %%
+--qn%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qn, Mul(?1, [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qn, Mul(?1, [/] 100, [/] 100))
+###
+> --qr8%%
+--qr8%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qr8, Mul(?1, [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qr8, Mul(?1, [/] 100, [/] 100))
+###
+> --qr4%%
+--qr4%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qr4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qi %%
+--qi%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qi, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qi8%%
+--qi8%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qi8, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qi4%%
+--qi4%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qi4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qi2%%
+--qi2%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qi2, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qi1%%
+--qi1%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qi1, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qu8%%
+--qu8%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qu8, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qu4%%
+--qu4%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qu4, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qu2%%
+--qu2%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qu2, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> --qu1%%
+--qu1%% : r8?
+Binder : Guard(?4: Guard(?3: Guard(?2: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100)), Mul(?2, [/] 100)), Add([-] ?3)), Add([-] ?4))
+Reducer: Guard(?1: qu1, Mul(Num<r8>(?1), [/] 100, [/] 100))
+###
+> ~g
+~g : i8
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1)
+###
+> ~v
+~v : i8
+Binder : BitXor(Unit<i8>(v), -1)
+Reducer: -1
+###
+> ~o
+~o : i8?
+Binder : Guard(?1: o, BitXor(Unit<i8>(?1), -1))
+Reducer: null
+###
+> ~s
+~s : i8
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1)
+###
+> ~b
+~b : b
+Binder : BitXor(b, true)
+###
+> ~n
+~n : i8
+*** Error: (1,2) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1)
+###
+> ~r8
+~r8 : i8
+*** Error: (1,3) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1)
+###
+> ~r4
+~r4 : i8
+*** Error: (1,3) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1)
+###
+> ~i
+~i : i
+Binder : BitXor(i, -1)
+###
+> ~i8
+~i8 : i8
+Binder : BitXor(i8, -1)
+###
+> ~i4
+~i4 : i4
+Binder : BitXor(i4, -1)
+###
+> ~i2
+~i2 : i2
+Binder : BitXor(i2, -1)
+###
+> ~i1
+~i1 : i1
+Binder : BitXor(i1, -1)
+###
+> ~u8
+~u8 : u8
+Binder : BitXor(u8, 18446744073709551615)
+###
+> ~u4
+~u4 : u4
+Binder : BitXor(u4, 4294967295)
+###
+> ~u2
+~u2 : u2
+Binder : BitXor(u2, 65535)
+###
+> ~u1
+~u1 : u1
+Binder : BitXor(u1, 255)
+###
+> ~~g
+~~g : i8
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1, -1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> ~~v
+~~v : i8
+Binder : BitXor(Unit<i8>(v), -1, -1)
+Reducer: 0
+###
+> ~~o
+~~o : i8?
+Binder : Guard(?2: Guard(?1: o, BitXor(Unit<i8>(?1), -1)), BitXor(?2, -1))
+Reducer: null
+###
+> ~~s
+~~s : i8
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1, -1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> ~~b
+~~b : b
+Binder : BitXor(b, true, true)
+Reducer: b
+###
+> ~~n
+~~n : i8
+*** Error: (2,3) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1, -1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> ~~r8
+~~r8 : i8
+*** Error: (2,4) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1, -1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> ~~r4
+~~r4 : i8
+*** Error: (2,4) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : BitXor(Error(ErrBadType_Src_Dst), -1, -1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> ~~i
+~~i : i
+Binder : BitXor(i, -1, -1)
+Reducer: i
+###
+> ~~i8
+~~i8 : i8
+Binder : BitXor(i8, -1, -1)
+Reducer: i8
+###
+> ~~i4
+~~i4 : i4
+Binder : BitXor(i4, -1, -1)
+Reducer: i4
+###
+> ~~i2
+~~i2 : i2
+Binder : BitXor(i2, -1, -1)
+Reducer: i2
+###
+> ~~i1
+~~i1 : i1
+Binder : BitXor(i1, -1, -1)
+Reducer: i1
+###
+> ~~u8
+~~u8 : u8
+Binder : BitXor(u8, 18446744073709551615, 18446744073709551615)
+Reducer: u8
+###
+> ~~u4
+~~u4 : u4
+Binder : BitXor(u4, 4294967295, 4294967295)
+Reducer: u4
+###
+> ~~u2
+~~u2 : u2
+Binder : BitXor(u2, 65535, 65535)
+Reducer: u2
+###
+> ~~u1
+~~u1 : u1
+Binder : BitXor(u1, 255, 255)
+Reducer: u1
+###
+> ~ i4 + i8
+~i4 + i8 : i8
+Binder : Add(Num<i8>(BitXor(i4, -1)), i8)
+###
+> bnot i4 + i8
+bnot i4 + i8 : i8
+Binder : BitXor(Add(Num<i8>(i4), i8), -1)
+###
+
+**** New globals: {b:b*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*, v:v*}
+
+> -g
+-g : i8*
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, Add([-] Error(ErrBadType_Src_Dst)))
+###
+> -v
+-v : i8*
+Binder : ForEach(*1: v, Add([-] Unit<i8>(*1)))
+Reducer: ForEach(*1: v, 0)
+###
+> -o
+-o : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, Add([-] Unit<i8>(?2))))
+Reducer: ForEach(*1: o, null)
+###
+> -s
+-s : i8*
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, Add([-] Error(ErrBadType_Src_Dst)))
+###
+> -b
+-b : i8*
+Binder : ForEach(*1: b, Add([-] Num<i8>(*1)))
+###
+> -n
+-n : r8*
+Binder : ForEach(*1: n, Add([-] *1))
+###
+> -r8
+-r8 : r8*
+Binder : ForEach(*1: r8, Add([-] *1))
+###
+> -r4
+-r4 : r8*
+Binder : ForEach(*1: r4, Add([-] Num<r8>(*1)))
+###
+> -i
+-i : i*
+Binder : ForEach(*1: i, Add([-] *1))
+###
+> -i8
+-i8 : i8*
+Binder : ForEach(*1: i8, Add([-] *1))
+###
+> -i4
+-i4 : i8*
+Binder : ForEach(*1: i4, Add([-] Num<i8>(*1)))
+###
+> -i2
+-i2 : i8*
+Binder : ForEach(*1: i2, Add([-] Num<i8>(*1)))
+###
+> -i1
+-i1 : i8*
+Binder : ForEach(*1: i1, Add([-] Num<i8>(*1)))
+###
+> -u8
+-u8 : i8*
+*** Warning: (1,3) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: u8, Add([-] Num<i8>(*1)))
+###
+> -u4
+-u4 : i8*
+Binder : ForEach(*1: u4, Add([-] Num<i8>(*1)))
+###
+> -u2
+-u2 : i8*
+Binder : ForEach(*1: u2, Add([-] Num<i8>(*1)))
+###
+> -u1
+-u1 : i8*
+Binder : ForEach(*1: u1, Add([-] Num<i8>(*1)))
+###
+> +g
++g : i8?*
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g*' to 'i8?*'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> +v
++v : i8*
+Binder : ForEach(*1: v, Unit<i8>(*1))
+Reducer: ForEach(*1: v, 0)
+###
+> +o
++o : i8?*
+Binder : ForEach(*1: o, null)
+###
+> +s
++s : i8?*
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's*' to 'i8?*'
+Binder : Error(ErrBadType_Src_Dst)
+###
+> +b
++b : b*
+Binder : b
+###
+> +n
++n : r8*
+Binder : n
+###
+> +r8
++r8 : r8*
+Binder : r8
+###
+> +r4
++r4 : r4*
+Binder : r4
+###
+> +i
++i : i*
+Binder : i
+###
+> +i8
++i8 : i8*
+Binder : i8
+###
+> +i4
++i4 : i4*
+Binder : i4
+###
+> +i2
++i2 : i2*
+Binder : i2
+###
+> +i1
++i1 : i1*
+Binder : i1
+###
+> +u8
++u8 : u8*
+Binder : u8
+###
+> +u4
++u4 : u4*
+Binder : u4
+###
+> +u2
++u2 : u2*
+Binder : u2
+###
+> +u1
++u1 : u1*
+Binder : u1
+###
+> -qb
+-qb : i8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qn
+-qn : r8?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Add([-] ?2)))
+###
+> -qr8
+-qr8 : r8?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Add([-] ?2)))
+###
+> -qr4
+-qr4 : r8?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Add([-] Num<r8>(?2))))
+###
+> -qi
+-qi : i?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Add([-] ?2)))
+###
+> -qi8
+-qi8 : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Add([-] ?2)))
+###
+> -qi4
+-qi4 : i8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qi2
+-qi2 : i8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qi1
+-qi1 : i8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qu8
+-qu8 : i8?*
+*** Warning: (1,4) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: qu8, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qu4
+-qu4 : i8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qu2
+-qu2 : i8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> -qu1
+-qu1 : i8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Add([-] Num<i8>(?2))))
+###
+> --g
+--g : i8*
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*2: ForEach(*1: g, Add([-] Error(ErrBadType_Src_Dst))), Add([-] *2))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst))
+###
+> --v
+--v : i8*
+Binder : ForEach(*2: ForEach(*1: v, Add([-] Unit<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: v, 0)
+###
+> --o
+--o : i8?*
+Binder : ForEach(*3: ForEach(*1: o, Guard(?2: *1, Add([-] Unit<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: o, null)
+###
+> --s
+--s : i8*
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*2: ForEach(*1: s, Add([-] Error(ErrBadType_Src_Dst))), Add([-] *2))
+Reducer: ForEach(*1: s, Error(ErrBadType_Src_Dst))
+###
+> --b
+--b : i8*
+Binder : ForEach(*2: ForEach(*1: b, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: b, Num<i8>(*1))
+###
+> --n
+--n : r8*
+Binder : ForEach(*2: ForEach(*1: n, Add([-] *1)), Add([-] *2))
+Reducer: n
+###
+> --r8
+--r8 : r8*
+Binder : ForEach(*2: ForEach(*1: r8, Add([-] *1)), Add([-] *2))
+Reducer: r8
+###
+> --r4
+--r4 : r8*
+Binder : ForEach(*2: ForEach(*1: r4, Add([-] Num<r8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: r4, Num<r8>(*1))
+###
+> --i
+--i : i*
+Binder : ForEach(*2: ForEach(*1: i, Add([-] *1)), Add([-] *2))
+Reducer: i
+###
+> --i8
+--i8 : i8*
+Binder : ForEach(*2: ForEach(*1: i8, Add([-] *1)), Add([-] *2))
+Reducer: i8
+###
+> --i4
+--i4 : i8*
+Binder : ForEach(*2: ForEach(*1: i4, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: i4, Num<i8>(*1))
+###
+> --i2
+--i2 : i8*
+Binder : ForEach(*2: ForEach(*1: i2, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: i2, Num<i8>(*1))
+###
+> --i1
+--i1 : i8*
+Binder : ForEach(*2: ForEach(*1: i1, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: i1, Num<i8>(*1))
+###
+> --u8
+--u8 : i8*
+*** Warning: (2,4) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*2: ForEach(*1: u8, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: u8, Num<i8>(*1))
+###
+> --u4
+--u4 : i8*
+Binder : ForEach(*2: ForEach(*1: u4, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: u4, Num<i8>(*1))
+###
+> --u2
+--u2 : i8*
+Binder : ForEach(*2: ForEach(*1: u2, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: u2, Num<i8>(*1))
+###
+> --u1
+--u1 : i8*
+Binder : ForEach(*2: ForEach(*1: u1, Add([-] Num<i8>(*1))), Add([-] *2))
+Reducer: ForEach(*1: u1, Num<i8>(*1))
+###
+> --qb
+--qb : i8?*
+Binder : ForEach(*3: ForEach(*1: qb, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qb, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qn
+--qn : r8?*
+Binder : ForEach(*3: ForEach(*1: qn, Guard(?2: *1, Add([-] ?2))), Guard(?4: *3, Add([-] ?4)))
+Reducer: qn
+###
+> --qr8
+--qr8 : r8?*
+Binder : ForEach(*3: ForEach(*1: qr8, Guard(?2: *1, Add([-] ?2))), Guard(?4: *3, Add([-] ?4)))
+Reducer: qr8
+###
+> --qr4
+--qr4 : r8?*
+Binder : ForEach(*3: ForEach(*1: qr4, Guard(?2: *1, Add([-] Num<r8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qr4, Guard(?2: *1, Num<r8>(?2)))
+###
+> --qi
+--qi : i?*
+Binder : ForEach(*3: ForEach(*1: qi, Guard(?2: *1, Add([-] ?2))), Guard(?4: *3, Add([-] ?4)))
+Reducer: qi
+###
+> --qi8
+--qi8 : i8?*
+Binder : ForEach(*3: ForEach(*1: qi8, Guard(?2: *1, Add([-] ?2))), Guard(?4: *3, Add([-] ?4)))
+Reducer: qi8
+###
+> --qi4
+--qi4 : i8?*
+Binder : ForEach(*3: ForEach(*1: qi4, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qi4, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qi2
+--qi2 : i8?*
+Binder : ForEach(*3: ForEach(*1: qi2, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qi2, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qi1
+--qi1 : i8?*
+Binder : ForEach(*3: ForEach(*1: qi1, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qi1, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qu8
+--qu8 : i8?*
+*** Warning: (2,5) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*3: ForEach(*1: qu8, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qu8, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qu4
+--qu4 : i8?*
+Binder : ForEach(*3: ForEach(*1: qu4, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qu4, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qu2
+--qu2 : i8?*
+Binder : ForEach(*3: ForEach(*1: qu2, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qu2, Guard(?2: *1, Num<i8>(?2)))
+###
+> --qu1
+--qu1 : i8?*
+Binder : ForEach(*3: ForEach(*1: qu1, Guard(?2: *1, Add([-] Num<i8>(?2)))), Guard(?4: *3, Add([-] ?4)))
+Reducer: ForEach(*1: qu1, Guard(?2: *1, Num<i8>(?2)))
+###
+> not g // type error
+not g : b*
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'b'
+Binder : ForEach(*1: g, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not v
+not v : b*
+Binder : ForEach(*1: v, Xor(Unit<b>(*1), true))
+Reducer: ForEach(*1: v, true)
+###
+> not o
+not o : b?*
+Binder : ForEach(*1: o, Guard(?2: *1, Xor(Unit<b>(?2), true)))
+Reducer: ForEach(*1: o, null)
+###
+> not s // type error
+not s : b*
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : ForEach(*1: s, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not b
+not b : b*
+Binder : ForEach(*1: b, Xor(*1, true))
+###
+> not n // type error
+not n : b*
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : ForEach(*1: n, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not i // type error
+not i : b*
+*** Error: (4,5) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : ForEach(*1: i, Xor(Error(ErrBadType_Src_Dst), true))
+###
+> not qb
+not qb : b?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Xor(?2, true)))
+###
+> not qn // type error
+not qn : b?*
+*** Error: (4,6) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : ForEach(*1: qn, Guard(?2: *1, Xor(Error(ErrBadType_Src_Dst), true)))
+###
+> not qi // type error
+not qi : b?*
+*** Error: (4,6) Node: qi, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : ForEach(*1: qi, Guard(?2: *1, Xor(Error(ErrBadType_Src_Dst), true)))
+###
+> not not g // type error
+not not g : b*
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'b'
+Binder : ForEach(*2: ForEach(*1: g, Xor(Error(ErrBadType_Src_Dst), true)), Xor(*2, true))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst))
+###
+> not not v
+not not v : b*
+Binder : ForEach(*2: ForEach(*1: v, Xor(Unit<b>(*1), true)), Xor(*2, true))
+Reducer: ForEach(*1: v, false)
+###
+> not not o
+not not o : b?*
+Binder : ForEach(*3: ForEach(*1: o, Guard(?2: *1, Xor(Unit<b>(?2), true))), Guard(?4: *3, Xor(?4, true)))
+Reducer: ForEach(*1: o, null)
+###
+> not not s // type error
+not not s : b*
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : ForEach(*2: ForEach(*1: s, Xor(Error(ErrBadType_Src_Dst), true)), Xor(*2, true))
+Reducer: ForEach(*1: s, Error(ErrBadType_Src_Dst))
+###
+> not not b
+not not b : b*
+Binder : ForEach(*2: ForEach(*1: b, Xor(*1, true)), Xor(*2, true))
+Reducer: b
+###
+> not not n // type error
+not not n : b*
+*** Error: (8,9) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : ForEach(*2: ForEach(*1: n, Xor(Error(ErrBadType_Src_Dst), true)), Xor(*2, true))
+Reducer: ForEach(*1: n, Error(ErrBadType_Src_Dst))
+###
+> not not i // type error
+not not i : b*
+*** Error: (8,9) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : ForEach(*2: ForEach(*1: i, Xor(Error(ErrBadType_Src_Dst), true)), Xor(*2, true))
+Reducer: ForEach(*1: i, Error(ErrBadType_Src_Dst))
+###
+> not not qb
+not not qb : b?*
+Binder : ForEach(*3: ForEach(*1: qb, Guard(?2: *1, Xor(?2, true))), Guard(?4: *3, Xor(?4, true)))
+Reducer: qb
+###
+> not not qn // type error
+not not qn : b?*
+*** Error: (8,10) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : ForEach(*3: ForEach(*1: qn, Guard(?2: *1, Xor(Error(ErrBadType_Src_Dst), true))), Guard(?4: *3, Xor(?4, true)))
+Reducer: ForEach(*1: qn, Guard(?2: *1, Error(ErrBadType_Src_Dst)))
+###
+> not not qi // type error
+not not qi : b?*
+*** Error: (8,10) Node: qi, Message: Invalid operand type: cannot convert type 'i' to 'b'
+Binder : ForEach(*3: ForEach(*1: qi, Guard(?2: *1, Xor(Error(ErrBadType_Src_Dst), true))), Guard(?4: *3, Xor(?4, true)))
+Reducer: ForEach(*1: qi, Guard(?2: *1, Error(ErrBadType_Src_Dst)))
+###
+> not ! b
+not !b : b*
+Binder : ForEach(*2: ForEach(*1: b, Xor(*1, true)), Xor(*2, true))
+Reducer: b
+###
+> ! not b
+!(not b) : b*
+=== Parse diagnostics:
+*** Error: (2,5) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+Binder : ForEach(*2: ForEach(*1: b, Xor(*1, true)), Xor(*2, true))
+Reducer: b
+###
+> not qb ++ b
+not qb ++ b : b?*
+Binder : ForEach(*2: SeqConcat(qb, ForEach(*1: b, Opt<b?>(*1))), Guard(?3: *2, Xor(?3, true)))
+###
+> ! qb ++ b
+!qb ++ b : b?*
+Binder : SeqConcat(ForEach(*1: qb, Guard(?2: *1, Xor(?2, true))), ForEach(*3: b, Opt<b?>(*3)))
+###
+> b ++ not qb ++ b // Error
+b ++ (not qb ++ b) : b?*
+=== Parse diagnostics:
+*** Error: (5,8) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+Binder : SeqConcat(ForEach(*1: b, Opt<b?>(*1)), ForEach(*3: SeqConcat(qb, ForEach(*2: b, Opt<b?>(*2))), Guard(?4: *3, Xor(?4, true))))
+###
+> b ++   ! qb ++ b // OK
+b ++ !qb ++ b : b?*
+Binder : SeqConcat(ForEach(*1: b, Opt<b?>(*1)), ForEach(*2: qb, Guard(?3: *2, Xor(?3, true))), ForEach(*4: b, Opt<b?>(*4)))
+###
+> g %
+g% : r8*
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : ForEach(*1: g, Mul(Error(ErrBadType_Src_Dst), [/] 100))
+###
+> v %
+v% : r8*
+Binder : ForEach(*1: v, Mul(Unit<r8>(*1), [/] 100))
+Reducer: ForEach(*1: v, 0)
+###
+> o %
+o% : r8?*
+Binder : ForEach(*1: o, Guard(?2: *1, Mul(Unit<r8>(?2), [/] 100)))
+Reducer: ForEach(*1: o, null)
+###
+> s %
+s% : r8*
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : ForEach(*1: s, Mul(Error(ErrBadType_Src_Dst), [/] 100))
+###
+> b %
+b% : r8*
+Binder : ForEach(*1: b, Mul(Num<r8>(*1), [/] 100))
+###
+> n %
+n% : r8*
+Binder : ForEach(*1: n, Mul(*1, [/] 100))
+###
+> r8%
+r8% : r8*
+Binder : ForEach(*1: r8, Mul(*1, [/] 100))
+###
+> r4%
+r4% : r8*
+Binder : ForEach(*1: r4, Mul(Num<r8>(*1), [/] 100))
+###
+> i %
+i% : r8*
+Binder : ForEach(*1: i, Mul(Num<r8>(*1), [/] 100))
+###
+> i8%
+i8% : r8*
+Binder : ForEach(*1: i8, Mul(Num<r8>(*1), [/] 100))
+###
+> i4%
+i4% : r8*
+Binder : ForEach(*1: i4, Mul(Num<r8>(*1), [/] 100))
+###
+> i2%
+i2% : r8*
+Binder : ForEach(*1: i2, Mul(Num<r8>(*1), [/] 100))
+###
+> i1%
+i1% : r8*
+Binder : ForEach(*1: i1, Mul(Num<r8>(*1), [/] 100))
+###
+> u8%
+u8% : r8*
+Binder : ForEach(*1: u8, Mul(Num<r8>(*1), [/] 100))
+###
+> u4%
+u4% : r8*
+Binder : ForEach(*1: u4, Mul(Num<r8>(*1), [/] 100))
+###
+> u2%
+u2% : r8*
+Binder : ForEach(*1: u2, Mul(Num<r8>(*1), [/] 100))
+###
+> u1%
+u1% : r8*
+Binder : ForEach(*1: u1, Mul(Num<r8>(*1), [/] 100))
+###
+> qb %
+qb% : r8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qn %
+qn% : r8?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Mul(?2, [/] 100)))
+###
+> qr8%
+qr8% : r8?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Mul(?2, [/] 100)))
+###
+> qr4%
+qr4% : r8?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qi %
+qi% : r8?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qi8%
+qi8% : r8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qi4%
+qi4% : r8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qi2%
+qi2% : r8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qi1%
+qi1% : r8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qu8%
+qu8% : r8?*
+Binder : ForEach(*1: qu8, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qu4%
+qu4% : r8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qu2%
+qu2% : r8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> qu1%
+qu1% : r8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Mul(Num<r8>(?2), [/] 100)))
+###
+> ~g
+~g : i8*
+*** Error: (1,2) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, BitXor(Error(ErrBadType_Src_Dst), -1))
+###
+> ~v
+~v : i8*
+Binder : ForEach(*1: v, BitXor(Unit<i8>(*1), -1))
+Reducer: ForEach(*1: v, -1)
+###
+> ~o
+~o : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, BitXor(Unit<i8>(?2), -1)))
+Reducer: ForEach(*1: o, null)
+###
+> ~s
+~s : i8*
+*** Error: (1,2) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, BitXor(Error(ErrBadType_Src_Dst), -1))
+###
+> ~b
+~b : b*
+Binder : ForEach(*1: b, BitXor(*1, true))
+###
+> ~n
+~n : i8*
+*** Error: (1,2) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: n, BitXor(Error(ErrBadType_Src_Dst), -1))
+###
+> ~r8
+~r8 : i8*
+*** Error: (1,3) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: r8, BitXor(Error(ErrBadType_Src_Dst), -1))
+###
+> ~r4
+~r4 : i8*
+*** Error: (1,3) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*1: r4, BitXor(Error(ErrBadType_Src_Dst), -1))
+###
+> ~i
+~i : i*
+Binder : ForEach(*1: i, BitXor(*1, -1))
+###
+> ~i8
+~i8 : i8*
+Binder : ForEach(*1: i8, BitXor(*1, -1))
+###
+> ~i4
+~i4 : i4*
+Binder : ForEach(*1: i4, BitXor(*1, -1))
+###
+> ~i2
+~i2 : i2*
+Binder : ForEach(*1: i2, BitXor(*1, -1))
+###
+> ~i1
+~i1 : i1*
+Binder : ForEach(*1: i1, BitXor(*1, -1))
+###
+> ~u8
+~u8 : u8*
+Binder : ForEach(*1: u8, BitXor(*1, 18446744073709551615))
+###
+> ~u4
+~u4 : u4*
+Binder : ForEach(*1: u4, BitXor(*1, 4294967295))
+###
+> ~u2
+~u2 : u2*
+Binder : ForEach(*1: u2, BitXor(*1, 65535))
+###
+> ~u1
+~u1 : u1*
+Binder : ForEach(*1: u1, BitXor(*1, 255))
+###
+> ~~g
+~~g : i8*
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*2: ForEach(*1: g, BitXor(Error(ErrBadType_Src_Dst), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst))
+###
+> ~~v
+~~v : i8*
+Binder : ForEach(*2: ForEach(*1: v, BitXor(Unit<i8>(*1), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: v, 0)
+###
+> ~~o
+~~o : i8?*
+Binder : ForEach(*3: ForEach(*1: o, Guard(?2: *1, BitXor(Unit<i8>(?2), -1))), Guard(?4: *3, BitXor(?4, -1)))
+Reducer: ForEach(*1: o, null)
+###
+> ~~s
+~~s : i8*
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*2: ForEach(*1: s, BitXor(Error(ErrBadType_Src_Dst), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: s, Error(ErrBadType_Src_Dst))
+###
+> ~~b
+~~b : b*
+Binder : ForEach(*2: ForEach(*1: b, BitXor(*1, true)), BitXor(*2, true))
+Reducer: b
+###
+> ~~n
+~~n : i8*
+*** Error: (2,3) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*2: ForEach(*1: n, BitXor(Error(ErrBadType_Src_Dst), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: n, Error(ErrBadType_Src_Dst))
+###
+> ~~r8
+~~r8 : i8*
+*** Error: (2,4) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*2: ForEach(*1: r8, BitXor(Error(ErrBadType_Src_Dst), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: r8, Error(ErrBadType_Src_Dst))
+###
+> ~~r4
+~~r4 : i8*
+*** Error: (2,4) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*2: ForEach(*1: r4, BitXor(Error(ErrBadType_Src_Dst), -1)), BitXor(*2, -1))
+Reducer: ForEach(*1: r4, Error(ErrBadType_Src_Dst))
+###
+> ~~i
+~~i : i*
+Binder : ForEach(*2: ForEach(*1: i, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i
+###
+> ~~i8
+~~i8 : i8*
+Binder : ForEach(*2: ForEach(*1: i8, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i8
+###
+> ~~i4
+~~i4 : i4*
+Binder : ForEach(*2: ForEach(*1: i4, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i4
+###
+> ~~i2
+~~i2 : i2*
+Binder : ForEach(*2: ForEach(*1: i2, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i2
+###
+> ~~i1
+~~i1 : i1*
+Binder : ForEach(*2: ForEach(*1: i1, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i1
+###
+> ~~u8
+~~u8 : u8*
+Binder : ForEach(*2: ForEach(*1: u8, BitXor(*1, 18446744073709551615)), BitXor(*2, 18446744073709551615))
+Reducer: u8
+###
+> ~~u4
+~~u4 : u4*
+Binder : ForEach(*2: ForEach(*1: u4, BitXor(*1, 4294967295)), BitXor(*2, 4294967295))
+Reducer: u4
+###
+> ~~u2
+~~u2 : u2*
+Binder : ForEach(*2: ForEach(*1: u2, BitXor(*1, 65535)), BitXor(*2, 65535))
+Reducer: u2
+###
+> ~~u1
+~~u1 : u1*
+Binder : ForEach(*2: ForEach(*1: u1, BitXor(*1, 255)), BitXor(*2, 255))
+Reducer: u1
+###
+> bnot ~ i4
+bnot ~i4 : i4*
+Binder : ForEach(*2: ForEach(*1: i4, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i4
+###
+> ~ bnot i4
+~(bnot i4) : i4*
+=== Parse diagnostics:
+*** Error: (2,6) Tok: 'bnot', Message: Invalid 'bnot' operator, consider `~` or parentheses
+Binder : ForEach(*2: ForEach(*1: i4, BitXor(*1, -1)), BitXor(*2, -1))
+Reducer: i4
+###
+> bnot i4 + i8
+bnot i4 + i8 : i8*
+Binder : ForEach(*3: ForEach(*1: i4, *2: i8, Add(Num<i8>(*1), *2)), BitXor(*3, -1))
+Reducer: ForEach(*1: i4, *2: i8, BitXor(Add(Num<i8>(*1), *2), -1))
+###
+> ~ i4 + i8
+~i4 + i8 : i8*
+Binder : ForEach(*2: ForEach(*1: i4, BitXor(*1, -1)), *3: i8, Add(Num<i8>(*2), *3))
+Reducer: ForEach(*1: i4, *2: i8, Add(Num<i8>(BitXor(*1, -1)), *2))
+###
+> i2 + bnot i4 + i8 // Error
+i2 + (bnot i4 + i8) : i8*
+=== Parse diagnostics:
+*** Error: (5,9) Tok: 'bnot', Message: Invalid 'bnot' operator, consider `~` or parentheses
+Binder : ForEach(*4: i2, *5: ForEach(*3: ForEach(*1: i4, *2: i8, Add(Num<i8>(*1), *2)), BitXor(*3, -1)), Add(Num<i8>(*4), *5))
+Reducer: ForEach(*1: i2, *2: i4, *3: i8, Add(Num<i8>(*1), BitXor(Add(Num<i8>(*2), *3), -1)))
+###
+> i2 +    ~ i4 + i8 // OK
+i2 + ~i4 + i8 : i8*
+Binder : ForEach(*4: ForEach(*2: i2, *3: ForEach(*1: i4, BitXor(*1, -1)), Add(Num<i8>(*2), Num<i8>(*3))), *5: i8, Add(*4, *5))
+Reducer: ForEach(*1: i2, *2: i4, *3: i8, Add(Num<i8>(*1), Num<i8>(BitXor(*2, -1)), *3))
+###
+
+**** New globals: {T:{B:b, I4:i4, QB:b?, QI4:i4?}?*}
+
+> not T.B
+not T.B : b?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.B)), Guard(?4: *3, Xor(?4, true)))
+Reducer: ForEach(*1: T, Guard(?2: *1, Xor(?2.B, true)))
+###
+> not T.QB
+not T.QB : b?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QB)), Guard(?4: *3, Xor(?4, true)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?3: ?2.QB, Xor(?3, true)))
+###
+> not not T.B
+not not T.B : b?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.B)), Guard(?4: *3, Xor(?4, true))), Guard(?6: *5, Xor(?6, true)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?2.B))
+###
+> not not T.QB
+not not T.QB : b?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QB)), Guard(?4: *3, Xor(?4, true))), Guard(?6: *5, Xor(?6, true)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?2.QB))
+###
+> -T.I4
+-T.I4 : i8?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.I4)), Guard(?4: *3, Add([-] Num<i8>(?4))))
+Reducer: ForEach(*1: T, Guard(?2: *1, Add([-] Num<i8>(?2.I4))))
+###
+> -T.QI4
+-T.QI4 : i8?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QI4)), Guard(?4: *3, Add([-] Num<i8>(?4))))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?3: ?2.QI4, Add([-] Num<i8>(?3))))
+###
+> --T.I4
+--T.I4 : i8?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.I4)), Guard(?4: *3, Add([-] Num<i8>(?4)))), Guard(?6: *5, Add([-] ?6)))
+Reducer: ForEach(*1: T, Guard(?2: *1, Num<i8>(?2.I4)))
+###
+> --T.QI4
+--T.QI4 : i8?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QI4)), Guard(?4: *3, Add([-] Num<i8>(?4)))), Guard(?6: *5, Add([-] ?6)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?3: ?2.QI4, Num<i8>(?3)))
+###
+> ~T.I4
+~T.I4 : i4?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.I4)), Guard(?4: *3, BitXor(?4, -1)))
+Reducer: ForEach(*1: T, Guard(?2: *1, BitXor(?2.I4, -1)))
+###
+> ~T.QI4
+~T.QI4 : i4?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QI4)), Guard(?4: *3, BitXor(?4, -1)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?3: ?2.QI4, BitXor(?3, -1)))
+###
+> ~~T.I4
+~~T.I4 : i4?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.I4)), Guard(?4: *3, BitXor(?4, -1))), Guard(?6: *5, BitXor(?6, -1)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?2.I4))
+###
+> ~~T.QI4
+~~T.QI4 : i4?*
+Binder : ForEach(*5: ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QI4)), Guard(?4: *3, BitXor(?4, -1))), Guard(?6: *5, BitXor(?6, -1)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?2.QI4))
+###
+> T.I4%
+T.I4% : r8?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.I4)), Guard(?4: *3, Mul(Num<r8>(?4), [/] 100)))
+Reducer: ForEach(*1: T, Guard(?2: *1, Mul(Num<r8>(?2.I4), [/] 100)))
+###
+> T.QI4%
+T.QI4% : r8?*
+Binder : ForEach(*3: ForEach(*1: T, Guard(?2: *1, ?2.QI4)), Guard(?4: *3, Mul(Num<r8>(?4), [/] 100)))
+Reducer: ForEach(*1: T, Guard(?2: *1, ?3: ?2.QI4, Mul(Num<r8>(?3), [/] 100)))
+###

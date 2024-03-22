@@ -1,0 +1,405 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qr:{A:i8}?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r:{A:i8}, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8, v:v}
+
+> Opt(b)
+Opt(b) : b?
+Binder : Call(∂.Opt*(Global(b)):b?)
+Reducer: Opt<b?>(Global(b))
+###
+> Opt(i8)
+Opt(i8) : i8?
+Binder : Call(∂.Opt*(Global(i8)):i8?)
+Reducer: Opt<i8?>(Global(i8))
+###
+> Opt(r8)
+Opt(r8) : r8?
+Binder : Call(∂.Opt*(Global(r8)):r8?)
+Reducer: Opt<r8?>(Global(r8))
+###
+> Opt(i)
+Opt(i) : i?
+Binder : Call(∂.Opt*(Global(i)):i?)
+Reducer: Opt<i?>(Global(i))
+###
+> Opt(qi4)
+Opt(qi4) : i4?
+*** Warning: (4,7) Node: qi4, Message: The type is already optional: 'i4?'
+Binder : Call(∂.Opt*(Global(qi4)):i4?)
+Reducer: Global(qi4)
+###
+> Opt(s)
+Opt(s) : s
+*** Warning: (4,5) Node: s, Message: The type is already optional: 's'
+Binder : Call(∂.Opt*(Global(s)):s)
+Reducer: Global(s)
+###
+> Opt(o)
+Opt(o) : o
+*** Warning: (4,5) Node: o, Message: The type is already optional: 'o'
+Binder : Call(∂.Opt*(Global(o)):o)
+Reducer: Global(o)
+###
+> Opt(g)
+Opt(g) : g
+*** Warning: (4,5) Node: g, Message: The type is already optional: 'g'
+Binder : Call(∂.Opt*(Global(g)):g)
+Reducer: Global(g)
+###
+> Opt(v)
+Opt(v) : o
+Binder : Call(∂.Opt*(Global(v)):o)
+Reducer: Opt<o>(Global(v))
+###
+> Opt(r)
+Opt(r) : {A:i8}?
+Binder : Call(∂.Opt*(Global(r)))
+Reducer: Ref<{A:i8}?>(Global(r))
+###
+> Opt(qr)
+Opt(qr) : {A:i8}?
+*** Warning: (4,6) Node: qr, Message: The type is already optional: '{A:i8}?'
+Binder : Call(∂.Opt*(Global(qr)))
+Reducer: Global(qr)
+###
+> Def(b)
+Def(b) : b
+Binder : Call(∂.Def*(Global(b)):b)
+Reducer: false:b
+###
+> Def(i8)
+Def(i8) : i8
+Binder : Call(∂.Def*(Global(i8)):i8)
+Reducer: 0:i8
+###
+> Def(r8)
+Def(r8) : r8
+Binder : Call(∂.Def*(Global(r8)):r8)
+Reducer: 0:r8
+###
+> Def(i)
+Def(i) : i
+Binder : Call(∂.Def*(Global(i)):i)
+Reducer: 0:i
+###
+> Def(qi4)
+Def(qi4) : i4?
+Binder : Call(∂.Def*(Global(qi4)):i4?)
+Reducer: null:i4?
+###
+> Def(s)
+Def(s) : s
+Binder : Call(∂.Def*(Global(s)):s)
+Reducer: str(<null>)
+###
+> Def(o)
+Def(o) : o
+Binder : Call(∂.Def*(Global(o)):o)
+Reducer: null
+###
+> Def(g)
+Def(g) : g
+Binder : Call(∂.Def*(Global(g)):g)
+Reducer: null:g
+###
+> Def(v)
+Def(v) : v
+Binder : Call(∂.Def*(Global(v)):v)
+Reducer: dflt<v>
+###
+> Def(r)
+Def(r) : {A:i8}
+Binder : Call(∂.Def*(Global(r)))
+Reducer: dflt<{A:i8}>
+###
+> Def(qr)
+Def(qr) : {A:i8}?
+Binder : Call(∂.Def*(Global(qr)))
+Reducer: null:{A:i8}?
+###
+> DefReq(b)
+DefReq(b) : b
+Binder : Call(∂.DefReq*(Global(b)):b)
+Reducer: false:b
+###
+> DefReq(i8)
+DefReq(i8) : i8
+Binder : Call(∂.DefReq*(Global(i8)):i8)
+Reducer: 0:i8
+###
+> DefReq(r8)
+DefReq(r8) : r8
+Binder : Call(∂.DefReq*(Global(r8)):r8)
+Reducer: 0:r8
+###
+> DefReq(i)
+DefReq(i) : i
+Binder : Call(∂.DefReq*(Global(i)):i)
+Reducer: 0:i
+###
+> DefReq(qi4)
+DefReq(qi4) : i4
+Binder : Call(∂.DefReq*(Global(qi4)):i4)
+Reducer: 0:i4
+###
+> DefReq(s)
+DefReq(s) : s
+*** Warning: (7,8) Node: s, Message: The type has no required form: 's'
+Binder : Call(∂.DefReq*(Global(s)):s)
+Reducer: str(<null>)
+###
+> DefReq(o)
+DefReq(o) : v
+Binder : Call(∂.DefReq*(Global(o)):v)
+Reducer: dflt<v>
+###
+> DefReq(g)
+DefReq(g) : g
+*** Warning: (7,8) Node: g, Message: The type has no required form: 'g'
+Binder : Call(∂.DefReq*(Global(g)):g)
+Reducer: null:g
+###
+> DefReq(v)
+DefReq(v) : v
+Binder : Call(∂.DefReq*(Global(v)):v)
+Reducer: dflt<v>
+###
+> DefReq(r)
+DefReq(r) : {A:i8}
+Binder : Call(∂.DefReq*(Global(r)))
+Reducer: dflt<{A:i8}>
+###
+> DefReq(qr)
+DefReq(qr) : {A:i8}
+Binder : Call(∂.DefReq*(Global(qr)))
+Reducer: dflt<{A:i8}>
+###
+> Null(b)
+Null(b) : b?
+Binder : Call(∂.DefOpt*(Global(b)):b?)
+Reducer: null:b?
+###
+> Null(i8)
+Null(i8) : i8?
+Binder : Call(∂.DefOpt*(Global(i8)):i8?)
+Reducer: null:i8?
+###
+> Null(r8)
+Null(r8) : r8?
+Binder : Call(∂.DefOpt*(Global(r8)):r8?)
+Reducer: null:r8?
+###
+> Null(i)
+Null(i) : i?
+Binder : Call(∂.DefOpt*(Global(i)):i?)
+Reducer: null:i?
+###
+> Null(qi4)
+Null(qi4) : i4?
+Binder : Call(∂.DefOpt*(Global(qi4)):i4?)
+Reducer: null:i4?
+###
+> Null(s)
+Null(s) : s
+Binder : Call(∂.DefOpt*(Global(s)):s)
+Reducer: str(<null>)
+###
+> Null(o)
+Null(o) : o
+Binder : Call(∂.DefOpt*(Global(o)):o)
+Reducer: null
+###
+> Null(g)
+Null(g) : g
+Binder : Call(∂.DefOpt*(Global(g)):g)
+Reducer: null:g
+###
+> Null(v)
+Null(v) : o
+Binder : Call(∂.DefOpt*(Global(v)):o)
+Reducer: null
+###
+> Null(r)
+Null(r) : {A:i8}?
+Binder : Call(∂.DefOpt*(Global(r)))
+Reducer: null:{A:i8}?
+###
+> Null(qr)
+Null(qr) : {A:i8}?
+Binder : Call(∂.DefOpt*(Global(qr)))
+Reducer: null:{A:i8}?
+###
+
+**** New globals: {b:b*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qr:{A:i8}?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r:{A:i8}*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*, v:v*}
+
+> Opt(r)
+Opt(r) : {A:i8}*
+*** Warning: (4,5) Node: r, Message: The type is already optional: '{A:i8}*'
+Binder : Call(∂.Opt*(Global(r)))
+Reducer: Global(r)
+###
+> DefItem(b)
+DefItem(b) : b
+Binder : Call(∂.DefItem*(Global(b)):b)
+Reducer: false:b
+###
+> DefItem(i8)
+DefItem(i8) : i8
+Binder : Call(∂.DefItem*(Global(i8)):i8)
+Reducer: 0:i8
+###
+> DefItem(r8)
+DefItem(r8) : r8
+Binder : Call(∂.DefItem*(Global(r8)):r8)
+Reducer: 0:r8
+###
+> DefItem(i)
+DefItem(i) : i
+Binder : Call(∂.DefItem*(Global(i)):i)
+Reducer: 0:i
+###
+> DefItem(qi4)
+DefItem(qi4) : i4?
+Binder : Call(∂.DefItem*(Global(qi4)):i4?)
+Reducer: null:i4?
+###
+> DefItem(s)
+DefItem(s) : s
+Binder : Call(∂.DefItem*(Global(s)):s)
+Reducer: str(<null>)
+###
+> DefItem(o)
+DefItem(o) : o
+Binder : Call(∂.DefItem*(Global(o)):o)
+Reducer: null
+###
+> DefItem(g)
+DefItem(g) : g
+Binder : Call(∂.DefItem*(Global(g)):g)
+Reducer: null:g
+###
+> DefItem(v)
+DefItem(v) : v
+Binder : Call(∂.DefItem*(Global(v)):v)
+Reducer: dflt<v>
+###
+> DefItem(r)
+DefItem(r) : {A:i8}
+Binder : Call(∂.DefItem*(Global(r)))
+Reducer: dflt<{A:i8}>
+###
+> DefItem(qr)
+DefItem(qr) : {A:i8}?
+Binder : Call(∂.DefItem*(Global(qr)))
+Reducer: null:{A:i8}?
+###
+> DefItemReq(b)
+DefItemReq(b) : b
+Binder : Call(∂.DefItemReq*(Global(b)):b)
+Reducer: false:b
+###
+> DefItemReq(i8)
+DefItemReq(i8) : i8
+Binder : Call(∂.DefItemReq*(Global(i8)):i8)
+Reducer: 0:i8
+###
+> DefItemReq(r8)
+DefItemReq(r8) : r8
+Binder : Call(∂.DefItemReq*(Global(r8)):r8)
+Reducer: 0:r8
+###
+> DefItemReq(i)
+DefItemReq(i) : i
+Binder : Call(∂.DefItemReq*(Global(i)):i)
+Reducer: 0:i
+###
+> DefItemReq(qi4)
+DefItemReq(qi4) : i4
+Binder : Call(∂.DefItemReq*(Global(qi4)):i4)
+Reducer: 0:i4
+###
+> DefItemReq(s)
+DefItemReq(s) : s
+*** Warning: (11,12) Node: s, Message: The type has no required form: 's'
+Binder : Call(∂.DefItemReq*(Global(s)):s)
+Reducer: str(<null>)
+###
+> DefItemReq(o)
+DefItemReq(o) : v
+Binder : Call(∂.DefItemReq*(Global(o)):v)
+Reducer: dflt<v>
+###
+> DefItemReq(g)
+DefItemReq(g) : g
+*** Warning: (11,12) Node: g, Message: The type has no required form: 'g'
+Binder : Call(∂.DefItemReq*(Global(g)):g)
+Reducer: null:g
+###
+> DefItemReq(v)
+DefItemReq(v) : v
+Binder : Call(∂.DefItemReq*(Global(v)):v)
+Reducer: dflt<v>
+###
+> DefItemReq(r)
+DefItemReq(r) : {A:i8}
+Binder : Call(∂.DefItemReq*(Global(r)))
+Reducer: dflt<{A:i8}>
+###
+> DefItemReq(qr)
+DefItemReq(qr) : {A:i8}
+Binder : Call(∂.DefItemReq*(Global(qr)))
+Reducer: dflt<{A:i8}>
+###
+> NullItem(b)
+NullItem(b) : b?
+Binder : Call(∂.DefItemOpt*(Global(b)):b?)
+Reducer: null:b?
+###
+> NullItem(i8)
+NullItem(i8) : i8?
+Binder : Call(∂.DefItemOpt*(Global(i8)):i8?)
+Reducer: null:i8?
+###
+> NullItem(r8)
+NullItem(r8) : r8?
+Binder : Call(∂.DefItemOpt*(Global(r8)):r8?)
+Reducer: null:r8?
+###
+> NullItem(i)
+NullItem(i) : i?
+Binder : Call(∂.DefItemOpt*(Global(i)):i?)
+Reducer: null:i?
+###
+> NullItem(qi4)
+NullItem(qi4) : i4?
+Binder : Call(∂.DefItemOpt*(Global(qi4)):i4?)
+Reducer: null:i4?
+###
+> NullItem(s)
+NullItem(s) : s
+Binder : Call(∂.DefItemOpt*(Global(s)):s)
+Reducer: str(<null>)
+###
+> NullItem(o)
+NullItem(o) : o
+Binder : Call(∂.DefItemOpt*(Global(o)):o)
+Reducer: null
+###
+> NullItem(g)
+NullItem(g) : g
+Binder : Call(∂.DefItemOpt*(Global(g)):g)
+Reducer: null:g
+###
+> NullItem(v)
+NullItem(v) : o
+Binder : Call(∂.DefItemOpt*(Global(v)):o)
+Reducer: null
+###
+> NullItem(r)
+NullItem(r) : {A:i8}?
+Binder : Call(∂.DefItemOpt*(Global(r)))
+Reducer: null:{A:i8}?
+###
+> NullItem(qr)
+NullItem(qr) : {A:i8}?
+Binder : Call(∂.DefItemOpt*(Global(qr)))
+Reducer: null:{A:i8}?
+###

@@ -1,0 +1,889 @@
+**** New globals: {B:b, N:r8, X:r8, Y:r8, Z:r8, b:b?, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8?, o:o, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> false or false
+false or false : b
+Binder : Or(false, false)
+Reducer: false
+###
+> false or true
+false or true : b
+Binder : Or(false, true)
+Reducer: true
+###
+> false or null
+false or null : b?
+Binder : Or(false, null)
+Reducer: null
+###
+> true or false
+true or false : b
+Binder : Or(true, false)
+Reducer: true
+###
+> true or true
+true or true : b
+Binder : Or(true, true)
+Reducer: true
+###
+> true or null
+true or null : b?
+Binder : Or(true, null)
+Reducer: Opt<b?>(true)
+###
+> null or false
+null or false : b?
+Binder : Or(null, false)
+Reducer: null
+###
+> null or true
+null or true : b?
+Binder : Or(null, true)
+Reducer: Opt<b?>(true)
+###
+> null or null
+null or null : b?
+Binder : Or(null, null)
+Reducer: null
+###
+> false and false
+false and false : b
+Binder : And(false, false)
+Reducer: false
+###
+> false and true
+false and true : b
+Binder : And(false, true)
+Reducer: false
+###
+> false and null
+false and null : b?
+Binder : And(false, null)
+Reducer: Opt<b?>(false)
+###
+> true and false
+true and false : b
+Binder : And(true, false)
+Reducer: false
+###
+> true and true
+true and true : b
+Binder : And(true, true)
+Reducer: true
+###
+> true and null
+true and null : b?
+Binder : And(true, null)
+Reducer: null
+###
+> null and false
+null and false : b?
+Binder : And(null, false)
+Reducer: Opt<b?>(false)
+###
+> null and true
+null and true : b?
+Binder : And(null, true)
+Reducer: null
+###
+> null and null
+null and null : b?
+Binder : And(null, null)
+Reducer: null
+###
+> false xor false
+false xor false : b
+Binder : Xor(false, false)
+Reducer: false
+###
+> false xor true
+false xor true : b
+Binder : Xor(false, true)
+Reducer: true
+###
+> false xor null
+false xor null : b?
+Binder : Guard(?1: null, Xor(false, Unit<b>(?1)))
+Reducer: null
+###
+> true xor false
+true xor false : b
+Binder : Xor(true, false)
+Reducer: true
+###
+> true xor true
+true xor true : b
+Binder : Xor(true, true)
+Reducer: false
+###
+> true xor null
+true xor null : b?
+Binder : Guard(?1: null, Xor(true, Unit<b>(?1)))
+Reducer: null
+###
+> null xor false
+null xor false : b?
+Binder : Guard(?1: null, Xor(Unit<b>(?1), false))
+Reducer: null
+###
+> null xor true
+null xor true : b?
+Binder : Guard(?1: null, Xor(Unit<b>(?1), true))
+Reducer: null
+###
+> null xor null
+null xor null : b?
+Binder : Guard(?1: null, ?2: null, Xor(Unit<b>(?1), Unit<b>(?2)))
+Reducer: null
+###
+> B or false
+B or false : b
+Binder : Or(B, false)
+Reducer: B
+###
+> B or true
+B or true : b
+Binder : Or(B, true)
+Reducer: true
+###
+> B or null
+B or null : b?
+Binder : Or(B, null)
+###
+> false or B
+false or B : b
+Binder : Or(false, B)
+Reducer: B
+###
+> true or B
+true or B : b
+Binder : Or(true, B)
+Reducer: true
+###
+> null or B
+null or B : b?
+Binder : Or(null, B)
+Reducer: Or(B, null)
+###
+> N or false
+N or false : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(Error(ErrBadType_Src_Dst), false)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> N or true
+N or true : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(Error(ErrBadType_Src_Dst), true)
+Reducer: true
+###
+> N or null
+N or null : b?
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(Error(ErrBadType_Src_Dst), null)
+###
+> false or N
+false or N : b
+*** Error: (9,10) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(false, Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> true or N
+true or N : b
+*** Error: (8,9) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(true, Error(ErrBadType_Src_Dst))
+Reducer: true
+###
+> null or N
+null or N : b?
+*** Error: (8,9) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(null, Error(ErrBadType_Src_Dst))
+Reducer: Or(Error(ErrBadType_Src_Dst), null)
+###
+> B and false
+B and false : b
+Binder : And(B, false)
+Reducer: false
+###
+> B and true
+B and true : b
+Binder : And(B, true)
+Reducer: B
+###
+> B and null
+B and null : b?
+Binder : And(B, null)
+###
+> false and B
+false and B : b
+Binder : And(false, B)
+Reducer: false
+###
+> true and B
+true and B : b
+Binder : And(true, B)
+Reducer: B
+###
+> null and B
+null and B : b?
+Binder : And(null, B)
+Reducer: And(B, null)
+###
+> N and false
+N and false : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(Error(ErrBadType_Src_Dst), false)
+Reducer: false
+###
+> N and true
+N and true : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(Error(ErrBadType_Src_Dst), true)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> N and null
+N and null : b?
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(Error(ErrBadType_Src_Dst), null)
+###
+> false and N
+false and N : b
+*** Error: (10,11) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(false, Error(ErrBadType_Src_Dst))
+Reducer: false
+###
+> true and N
+true and N : b
+*** Error: (9,10) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(true, Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> null and N
+null and N : b?
+*** Error: (9,10) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(null, Error(ErrBadType_Src_Dst))
+Reducer: And(Error(ErrBadType_Src_Dst), null)
+###
+> B xor false
+B xor false : b
+Binder : Xor(B, false)
+Reducer: B
+###
+> B xor true
+B xor true : b
+Binder : Xor(B, true)
+###
+> B xor null
+B xor null : b?
+Binder : Guard(?1: null, Xor(B, Unit<b>(?1)))
+Reducer: null
+###
+> false xor B
+false xor B : b
+Binder : Xor(false, B)
+Reducer: B
+###
+> true xor B
+true xor B : b
+Binder : Xor(true, B)
+Reducer: Xor(B, true)
+###
+> null xor B
+null xor B : b?
+Binder : Guard(?1: null, Xor(Unit<b>(?1), B))
+Reducer: null
+###
+> N xor false
+N xor false : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), false)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> N xor true
+N xor true : b
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(Error(ErrBadType_Src_Dst), true)
+###
+> N xor null
+N xor null : b?
+*** Error: (0,1) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Guard(?1: null, Xor(Error(ErrBadType_Src_Dst), Unit<b>(?1)))
+Reducer: null
+###
+> false xor N
+false xor N : b
+*** Error: (10,11) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(false, Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> true xor N
+true xor N : b
+*** Error: (9,10) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Xor(true, Error(ErrBadType_Src_Dst))
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> null xor N
+null xor N : b?
+*** Error: (9,10) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Guard(?1: null, Xor(Unit<b>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> b or false
+b or false : b?
+Binder : Or(b, false)
+Reducer: b
+###
+> b or true
+b or true : b?
+Binder : Or(b, true)
+Reducer: Opt<b?>(true)
+###
+> b or null
+b or null : b?
+Binder : Or(b, null)
+###
+> false or b
+false or b : b?
+Binder : Or(false, b)
+Reducer: b
+###
+> true or b
+true or b : b?
+Binder : Or(true, b)
+Reducer: Opt<b?>(true)
+###
+> null or b
+null or b : b?
+Binder : Or(null, b)
+Reducer: Or(b, null)
+###
+> b and false
+b and false : b?
+Binder : And(b, false)
+Reducer: Opt<b?>(false)
+###
+> b and true
+b and true : b?
+Binder : And(b, true)
+Reducer: b
+###
+> b and null
+b and null : b?
+Binder : And(b, null)
+###
+> false and b
+false and b : b?
+Binder : And(false, b)
+Reducer: Opt<b?>(false)
+###
+> true and b
+true and b : b?
+Binder : And(true, b)
+Reducer: b
+###
+> null and b
+null and b : b?
+Binder : And(null, b)
+Reducer: And(b, null)
+###
+> b xor false
+b xor false : b?
+Binder : Guard(?1: b, Xor(?1, false))
+Reducer: b
+###
+> b xor true
+b xor true : b?
+Binder : Guard(?1: b, Xor(?1, true))
+###
+> b xor null
+b xor null : b?
+Binder : Guard(?1: b, ?2: null, Xor(?1, Unit<b>(?2)))
+Reducer: null
+###
+> false xor b
+false xor b : b?
+Binder : Guard(?1: b, Xor(false, ?1))
+Reducer: b
+###
+> true xor b
+true xor b : b?
+Binder : Guard(?1: b, Xor(true, ?1))
+Reducer: Guard(?1: b, Xor(?1, true))
+###
+> null xor b
+null xor b : b?
+Binder : Guard(?1: null, ?2: b, Xor(Unit<b>(?1), ?2))
+Reducer: null
+###
+> B or false or b
+B or false or b : b?
+Binder : Or(B, false, b)
+Reducer: Or(B, b)
+###
+> B or true or b
+B or true or b : b?
+Binder : Or(B, true, b)
+Reducer: Opt<b?>(true)
+###
+> B or null or b
+B or null or b : b?
+Binder : Or(B, null, b)
+Reducer: Or(B, b, null)
+###
+> false or B or b
+false or B or b : b?
+Binder : Or(false, B, b)
+Reducer: Or(B, b)
+###
+> true or B or b
+true or B or b : b?
+Binder : Or(true, B, b)
+Reducer: Opt<b?>(true)
+###
+> null or B or b
+null or B or b : b?
+Binder : Or(null, B, b)
+Reducer: Or(B, b, null)
+###
+> B and false and b
+B and false and b : b?
+Binder : And(B, false, b)
+Reducer: Opt<b?>(false)
+###
+> B and true and b
+B and true and b : b?
+Binder : And(B, true, b)
+Reducer: And(B, b)
+###
+> B and null and b
+B and null and b : b?
+Binder : And(B, null, b)
+Reducer: And(B, b, null)
+###
+> false and B and b
+false and B and b : b?
+Binder : And(false, B, b)
+Reducer: Opt<b?>(false)
+###
+> true and B and b
+true and B and b : b?
+Binder : And(true, B, b)
+Reducer: And(B, b)
+###
+> null and B and b
+null and B and b : b?
+Binder : And(null, B, b)
+Reducer: And(B, b, null)
+###
+> B xor false xor b
+B xor false xor b : b?
+Binder : Guard(?1: b, Xor(B, false, ?1))
+Reducer: Guard(?1: b, Xor(B, ?1))
+###
+> B xor true xor b
+B xor true xor b : b?
+Binder : Guard(?1: b, Xor(B, true, ?1))
+Reducer: Guard(?1: b, Xor(B, ?1, true))
+###
+> B xor null xor b
+B xor null xor b : b?
+Binder : Guard(?2: Guard(?1: null, Xor(B, Unit<b>(?1))), ?3: b, Xor(?2, ?3))
+Reducer: null
+###
+> false xor B xor b
+false xor B xor b : b?
+Binder : Guard(?1: b, Xor(false, B, ?1))
+Reducer: Guard(?1: b, Xor(B, ?1))
+###
+> true xor B xor b
+true xor B xor b : b?
+Binder : Guard(?1: b, Xor(true, B, ?1))
+Reducer: Guard(?1: b, Xor(B, ?1, true))
+###
+> null xor B xor b
+null xor B xor b : b?
+Binder : Guard(?2: Guard(?1: null, Xor(Unit<b>(?1), B)), ?3: b, Xor(?2, ?3))
+Reducer: null
+###
+> B or b or false
+B or b or false : b?
+Binder : Or(B, b, false)
+Reducer: Or(B, b)
+###
+> B or b or true
+B or b or true : b?
+Binder : Or(B, b, true)
+Reducer: Opt<b?>(true)
+###
+> B or b or null
+B or b or null : b?
+Binder : Or(B, b, null)
+###
+> false or b or B
+false or b or B : b?
+Binder : Or(false, b, B)
+Reducer: Or(b, B)
+###
+> true or b or B
+true or b or B : b?
+Binder : Or(true, b, B)
+Reducer: Opt<b?>(true)
+###
+> null or b or B
+null or b or B : b?
+Binder : Or(null, b, B)
+Reducer: Or(b, B, null)
+###
+> B and b and false
+B and b and false : b?
+Binder : And(B, b, false)
+Reducer: Opt<b?>(false)
+###
+> B and b and true
+B and b and true : b?
+Binder : And(B, b, true)
+Reducer: And(B, b)
+###
+> B and b and null
+B and b and null : b?
+Binder : And(B, b, null)
+###
+> false and b and B
+false and b and B : b?
+Binder : And(false, b, B)
+Reducer: Opt<b?>(false)
+###
+> true and b and B
+true and b and B : b?
+Binder : And(true, b, B)
+Reducer: And(b, B)
+###
+> null and b and B
+null and b and B : b?
+Binder : And(null, b, B)
+Reducer: And(b, B, null)
+###
+> B xor b xor false
+B xor b xor false : b?
+Binder : Guard(?2: Guard(?1: b, Xor(B, ?1)), Xor(?2, false))
+Reducer: Guard(?1: b, Xor(B, ?1))
+###
+> B xor b xor true
+B xor b xor true : b?
+Binder : Guard(?2: Guard(?1: b, Xor(B, ?1)), Xor(?2, true))
+Reducer: Guard(?1: b, Xor(B, ?1, true))
+###
+> B xor b xor null
+B xor b xor null : b?
+Binder : Guard(?2: Guard(?1: b, Xor(B, ?1)), ?3: null, Xor(?2, Unit<b>(?3)))
+Reducer: null
+###
+> false xor b xor B
+false xor b xor B : b?
+Binder : Guard(?2: Guard(?1: b, Xor(false, ?1)), Xor(?2, B))
+Reducer: Guard(?1: b, Xor(?1, B))
+###
+> true xor b xor B
+true xor b xor B : b?
+Binder : Guard(?2: Guard(?1: b, Xor(true, ?1)), Xor(?2, B))
+Reducer: Guard(?1: b, Xor(?1, B, true))
+###
+> null xor b xor B
+null xor b xor B : b?
+Binder : Guard(?3: Guard(?1: null, ?2: b, Xor(Unit<b>(?1), ?2)), Xor(?3, B))
+Reducer: null
+###
+> (B or null) or (N or null)
+B or null or (N or null) : b?
+*** Error: (16,17) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(B, null, Error(ErrBadType_Src_Dst), null)
+Reducer: Or(B, Error(ErrBadType_Src_Dst), null)
+###
+> (B or null) or (N or true)
+B or null or (N or true) : b?
+*** Error: (16,17) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(B, null, Error(ErrBadType_Src_Dst), true)
+Reducer: Opt<b?>(true)
+###
+> (B or null) or (N or false)
+B or null or (N or false) : b?
+*** Error: (16,17) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : Or(B, null, Error(ErrBadType_Src_Dst), false)
+Reducer: Or(B, Error(ErrBadType_Src_Dst), null)
+###
+> (B and null) and (N and null)
+B and null and (N and null) : b?
+*** Error: (18,19) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(B, null, Error(ErrBadType_Src_Dst), null)
+Reducer: And(B, Error(ErrBadType_Src_Dst), null)
+###
+> (B and null) and (N and true)
+B and null and (N and true) : b?
+*** Error: (18,19) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(B, null, Error(ErrBadType_Src_Dst), true)
+Reducer: And(B, Error(ErrBadType_Src_Dst), null)
+###
+> (B and null) and (N and false)
+B and null and (N and false) : b?
+*** Error: (18,19) Node: N, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : And(B, null, Error(ErrBadType_Src_Dst), false)
+Reducer: Opt<b?>(false)
+###
+> Opt(false) or false
+Opt(false) or false : b?
+Binder : Or(Opt*(false), false)
+Reducer: Opt<b?>(false)
+###
+> B or Opt(false)
+B or Opt(false) : b?
+Binder : Or(B, Opt*(false))
+Reducer: Opt<b?>(B)
+###
+> b or null or false
+b or null or false : b?
+Binder : Or(b, null, false)
+Reducer: Or(b, null)
+###
+> null or b or false
+null or b or false : b?
+Binder : Or(null, b, false)
+Reducer: Or(b, null)
+###
+
+**** New globals: {B:b*, N:r8*, X:r8*, Y:r8*, Z:r8*, b:b?*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8?*, o:o*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> B or false
+B or false : b*
+Binder : ForEach(*1: B, Or(*1, false))
+Reducer: B
+###
+> B or true
+B or true : b*
+Binder : ForEach(*1: B, Or(*1, true))
+Reducer: ForEach(*1: B, true)
+###
+> B or null
+B or null : b?*
+Binder : ForEach(*1: B, Or(*1, null))
+###
+> false or B
+false or B : b*
+Binder : ForEach(*1: B, Or(false, *1))
+Reducer: B
+###
+> true or B
+true or B : b*
+Binder : ForEach(*1: B, Or(true, *1))
+Reducer: ForEach(*1: B, true)
+###
+> null or B
+null or B : b?*
+Binder : ForEach(*1: B, Or(null, *1))
+Reducer: ForEach(*1: B, Or(*1, null))
+###
+> B and false
+B and false : b*
+Binder : ForEach(*1: B, And(*1, false))
+Reducer: ForEach(*1: B, false)
+###
+> B and true
+B and true : b*
+Binder : ForEach(*1: B, And(*1, true))
+Reducer: B
+###
+> B and null
+B and null : b?*
+Binder : ForEach(*1: B, And(*1, null))
+###
+> false and B
+false and B : b*
+Binder : ForEach(*1: B, And(false, *1))
+Reducer: ForEach(*1: B, false)
+###
+> true and B
+true and B : b*
+Binder : ForEach(*1: B, And(true, *1))
+Reducer: B
+###
+> null and B
+null and B : b?*
+Binder : ForEach(*1: B, And(null, *1))
+Reducer: ForEach(*1: B, And(*1, null))
+###
+> b or false
+b or false : b?*
+Binder : ForEach(*1: b, Or(*1, false))
+Reducer: b
+###
+> b or true
+b or true : b?*
+Binder : ForEach(*1: b, Or(*1, true))
+Reducer: ForEach(*1: b, Opt<b?>(true))
+###
+> b or null
+b or null : b?*
+Binder : ForEach(*1: b, Or(*1, null))
+###
+> false or b
+false or b : b?*
+Binder : ForEach(*1: b, Or(false, *1))
+Reducer: b
+###
+> true or b
+true or b : b?*
+Binder : ForEach(*1: b, Or(true, *1))
+Reducer: ForEach(*1: b, Opt<b?>(true))
+###
+> null or b
+null or b : b?*
+Binder : ForEach(*1: b, Or(null, *1))
+Reducer: ForEach(*1: b, Or(*1, null))
+###
+> b and false
+b and false : b?*
+Binder : ForEach(*1: b, And(*1, false))
+Reducer: ForEach(*1: b, Opt<b?>(false))
+###
+> b and true
+b and true : b?*
+Binder : ForEach(*1: b, And(*1, true))
+Reducer: b
+###
+> b and null
+b and null : b?*
+Binder : ForEach(*1: b, And(*1, null))
+###
+> false and b
+false and b : b?*
+Binder : ForEach(*1: b, And(false, *1))
+Reducer: ForEach(*1: b, Opt<b?>(false))
+###
+> true and b
+true and b : b?*
+Binder : ForEach(*1: b, And(true, *1))
+Reducer: b
+###
+> null and b
+null and b : b?*
+Binder : ForEach(*1: b, And(null, *1))
+Reducer: ForEach(*1: b, And(*1, null))
+###
+> B or false or b
+B or false or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(*1, false)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2))
+###
+> B or true or b
+B or true or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(*1, true)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(true))
+###
+> B or null or b
+B or null or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(*1, null)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2, null))
+###
+> false or B or b
+false or B or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(false, *1)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2))
+###
+> true or B or b
+true or B or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(true, *1)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(true))
+###
+> null or B or b
+null or B or b : b?*
+Binder : ForEach(*2: ForEach(*1: B, Or(null, *1)), *3: b, Or(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2, null))
+###
+> B and false and b
+B and false and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(*1, false)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(false))
+###
+> B and true and b
+B and true and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(*1, true)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2))
+###
+> B and null and b
+B and null and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(*1, null)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2, null))
+###
+> false and B and b
+false and B and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(false, *1)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(false))
+###
+> true and B and b
+true and B and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(true, *1)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2))
+###
+> null and B and b
+null and B and b : b?*
+Binder : ForEach(*2: ForEach(*1: B, And(null, *1)), *3: b, And(*2, *3))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2, null))
+###
+> B or b or false
+B or b or false : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, Or(*1, *2)), Or(*3, false))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2))
+###
+> B or b or true
+B or b or true : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, Or(*1, *2)), Or(*3, true))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(true))
+###
+> B or b or null
+B or b or null : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, Or(*1, *2)), Or(*3, null))
+Reducer: ForEach(*1: B, *2: b, Or(*1, *2, null))
+###
+> false or b or B
+false or b or B : b?*
+Binder : ForEach(*2: ForEach(*1: b, Or(false, *1)), *3: B, Or(*2, *3))
+Reducer: ForEach(*1: b, *2: B, Or(*1, *2))
+###
+> true or b or B
+true or b or B : b?*
+Binder : ForEach(*2: ForEach(*1: b, Or(true, *1)), *3: B, Or(*2, *3))
+Reducer: ForEach(*1: b, *2: B, Opt<b?>(true))
+###
+> null or b or B
+null or b or B : b?*
+Binder : ForEach(*2: ForEach(*1: b, Or(null, *1)), *3: B, Or(*2, *3))
+Reducer: ForEach(*1: b, *2: B, Or(*1, *2, null))
+###
+> B and b and false
+B and b and false : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, And(*1, *2)), And(*3, false))
+Reducer: ForEach(*1: B, *2: b, Opt<b?>(false))
+###
+> B and b and true
+B and b and true : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, And(*1, *2)), And(*3, true))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2))
+###
+> B and b and null
+B and b and null : b?*
+Binder : ForEach(*3: ForEach(*1: B, *2: b, And(*1, *2)), And(*3, null))
+Reducer: ForEach(*1: B, *2: b, And(*1, *2, null))
+###
+> false and b and B
+false and b and B : b?*
+Binder : ForEach(*2: ForEach(*1: b, And(false, *1)), *3: B, And(*2, *3))
+Reducer: ForEach(*1: b, *2: B, Opt<b?>(false))
+###
+> true and b and B
+true and b and B : b?*
+Binder : ForEach(*2: ForEach(*1: b, And(true, *1)), *3: B, And(*2, *3))
+Reducer: ForEach(*1: b, *2: B, And(*1, *2))
+###
+> null and b and B
+null and b and B : b?*
+Binder : ForEach(*2: ForEach(*1: b, And(null, *1)), *3: B, And(*2, *3))
+Reducer: ForEach(*1: b, *2: B, And(*1, *2, null))
+###

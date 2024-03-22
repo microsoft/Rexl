@@ -1,0 +1,110 @@
+﻿namespace @N;
+
+@X := "X";
+X := "N.X";
+@P.X := "P.X";
+P.X := "N.P.X";
+"";
+
+namespace @N.P;
+X;
+@X;
+N.X;
+@N.X;
+P.X;
+@P.X;
+"";
+
+namespace @N;
+X;
+@X;
+N.X;
+@N.X;
+P.X;
+@P.X;
+"";
+
+namespace @P;
+X;
+@X;
+N.X;
+@N.X;
+P.X;
+@P.X;
+"";
+
+namespace @;
+X;
+@X;
+N.X;
+@N.X;
+P.X;
+@P.X;
+"";
+
+namespace A {
+    H := "A.H";
+    I := "A.I";
+    namespace B {
+        H := "A.B.H";
+        J := "A.B.J";
+    };
+
+    (H, I);
+    with B, P {
+        (H, I, J, X);
+    };
+};
+
+with A {
+    (H, I);
+    with B, P { // Error on B.
+        (H, I, X);
+        J; // Error.
+    };
+};
+
+with A.B {
+    (H, J);
+};
+
+with A, A.B {
+    (H, I, J, A.H, A.B.H);
+};
+
+with A;
+(H, I);
+J; // Error.
+
+with B; // Error.
+
+with A.B;
+"*** A.B before A";
+(H, I, J);
+
+with A {
+    "*** A before A.B";
+    (H, I, J);
+};
+
+"*** A.B before A";
+(H, I, J);
+
+with A;
+"*** A before A.B";
+(H, I, J);
+
+"*** Fuzzy in with";
+(h, i, j);
+
+"*** Fuzzy namespace";
+p.X;
+
+"*** With coverage";
+@N.X := "N.X";
+@N.N.X := "N.N.X";
+@N.N.N.X := "N.N.N.X";
+
+with N { X; }
+with N.N { X; }
+with N, N { X; }

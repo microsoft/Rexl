@@ -1,0 +1,289 @@
+**** New globals: {b:b, g:g, n:r8, o:o, qb:b?, qn:r8?, s:s}
+
+> "Hello" & " there"
+"Hello" & " there" : s
+Binder : StrConcat("Hello", " there")
+Reducer: "Hello there"
+###
+> "Hello" & " there" & " world"
+"Hello" & " there" & " world" : s
+Binder : StrConcat("Hello", " there", " world")
+Reducer: "Hello there world"
+###
+> "Hello" & null & " there"
+"Hello" & null & " there" : s
+Binder : StrConcat("Hello", str(<null>), " there")
+Reducer: "Hello there"
+###
+> null & "Hello"
+null & "Hello" : s
+Binder : StrConcat(str(<null>), "Hello")
+Reducer: "Hello"
+###
+> "Hello" & s
+"Hello" & s : s
+Binder : StrConcat("Hello", s)
+###
+> "Hello" & " there" & s
+"Hello" & " there" & s : s
+Binder : StrConcat("Hello", " there", s)
+Reducer: StrConcat("Hello there", s)
+###
+> "Hello" & s & " there" & " world" // Partially fold, since & is associative.
+"Hello" & s & " there" & " world" : s
+Binder : StrConcat("Hello", s, " there", " world")
+Reducer: StrConcat("Hello", s, " there world")
+###
+> "a" & "b" & "c" & "d" & "e" & "f" & "g" & "h"
+"a" & "b" & "c" & "d" & "e" & "f" & "g" & "h" : s
+Binder : StrConcat("a", "b", "c", "d", "e", "f", "g", "h")
+Reducer: "abcdefgh"
+###
+> "a" & "b" & "c" & "d" & s & "e" & "f" & "g" & "h"
+"a" & "b" & "c" & "d" & s & "e" & "f" & "g" & "h" : s
+Binder : StrConcat("a", "b", "c", "d", s, "e", "f", "g", "h")
+Reducer: StrConcat("abcd", s, "efgh")
+###
+> "Hello" & ""
+"Hello" & "" : s
+Binder : StrConcat("Hello", "")
+Reducer: "Hello"
+###
+> "" & "Hello"
+"" & "Hello" : s
+Binder : StrConcat("", "Hello")
+Reducer: "Hello"
+###
+> "Hello" & null
+"Hello" & null : s
+Binder : StrConcat("Hello", str(<null>))
+Reducer: "Hello"
+###
+> null & "Hello"
+null & "Hello" : s
+Binder : StrConcat(str(<null>), "Hello")
+Reducer: "Hello"
+###
+> "" & ""
+"" & "" : s
+Binder : StrConcat("", "")
+Reducer: ""
+###
+> "" & null
+"" & null : s
+Binder : StrConcat("", str(<null>))
+Reducer: ""
+###
+> null & ""
+null & "" : s
+Binder : StrConcat(str(<null>), "")
+Reducer: ""
+###
+> null & null
+null & null : s
+Binder : StrConcat(str(<null>), str(<null>))
+Reducer: ""
+###
+> s & ""
+s & "" : s
+Binder : StrConcat(s, "")
+Reducer: StrConcat(s)
+###
+> "" & s
+"" & s : s
+Binder : StrConcat("", s)
+Reducer: StrConcat(s)
+###
+> s & null
+s & null : s
+Binder : StrConcat(s, str(<null>))
+Reducer: StrConcat(s)
+###
+> null & s
+null & s : s
+Binder : StrConcat(str(<null>), s)
+Reducer: StrConcat(s)
+###
+> s & s & null
+s & s & null : s
+Binder : StrConcat(s, s, str(<null>))
+Reducer: StrConcat(s, s)
+###
+> s & s
+s & s : s
+Binder : StrConcat(s, s)
+###
+> s & s & s
+s & s & s : s
+Binder : StrConcat(s, s, s)
+###
+> s & s & s & s
+s & s & s & s : s
+Binder : StrConcat(s, s, s, s)
+###
+> s & s & (s & s)
+s & s & (s & s) : s
+Binder : StrConcat(s, s, s, s)
+###
+> s & (s & (s & s))
+s & (s & (s & s)) : s
+Binder : StrConcat(s, s, s, s)
+###
+> n & "hello"
+n & "hello" : s
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : StrConcat(Error(ErrBadType_Src_Dst), "hello")
+###
+> n & n
+n & n : s
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : StrConcat(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> n & qn
+n & qn : s
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (4,6) Node: qn, Message: Invalid operand type: cannot convert type 'r8?' to 's'
+Binder : StrConcat(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> o & n
+o & n : s
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : StrConcat(str(<null>), Error(ErrBadType_Src_Dst))
+Reducer: StrConcat(Error(ErrBadType_Src_Dst))
+###
+> o & "hello"
+o & "hello" : s
+Binder : StrConcat(str(<null>), "hello")
+Reducer: "hello"
+###
+> "hello" & b
+"hello" & b : s
+*** Error: (10,11) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : StrConcat("hello", Error(ErrBadType_Src_Dst))
+###
+> "hello" & qb
+"hello" & qb : s
+*** Error: (10,12) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 's'
+Binder : StrConcat("hello", Error(ErrBadType_Src_Dst))
+###
+> s & 3
+s & 3 : s
+*** Error: (4,5) Node: 3, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : StrConcat(s, Error(ErrBadType_Src_Dst))
+###
+
+**** New globals: {b:b*, g:g*, n:r8*, o:o*, qb:b?*, qn:r8?*, s:s*}
+
+> s & ""
+s & "" : s*
+Binder : ForEach(*1: s, StrConcat(*1, ""))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> "" & s
+"" & s : s*
+Binder : ForEach(*1: s, StrConcat("", *1))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> s & null
+s & null : s*
+Binder : ForEach(*1: s, StrConcat(*1, str(<null>)))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> null & s
+null & s : s*
+Binder : ForEach(*1: s, StrConcat(str(<null>), *1))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> s & s & null
+s & s & null : s*
+Binder : ForEach(*3: ForEach(*1: s, *2: s, StrConcat(*1, *2)), StrConcat(*3, str(<null>)))
+Reducer: ForEach(*1: s, StrConcat(*1, *1))
+###
+> s & s
+s & s : s*
+Binder : ForEach(*1: s, *2: s, StrConcat(*1, *2))
+Reducer: ForEach(*1: s, StrConcat(*1, *1))
+###
+> s & s & s
+s & s & s : s*
+Binder : ForEach(*3: ForEach(*1: s, *2: s, StrConcat(*1, *2)), *4: s, StrConcat(*3, *4))
+Reducer: ForEach(*1: s, StrConcat(*1, *1, *1))
+###
+> n & "hello"
+n & "hello" : s*
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : ForEach(*1: n, StrConcat(Error(ErrBadType_Src_Dst), "hello"))
+###
+> n & n
+n & n : s*
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : ForEach(*1: n, *2: n, StrConcat(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: n, StrConcat(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> n & qn
+n & qn : s*
+*** Error: (0,1) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (4,6) Node: qn, Message: Invalid operand type: cannot convert type 'r8?' to 's'
+Binder : ForEach(*1: n, *2: qn, StrConcat(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> o & n
+o & n : s*
+*** Error: (4,5) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+Binder : ForEach(*1: o, *2: n, StrConcat(str(<null>), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: o, *2: n, StrConcat(Error(ErrBadType_Src_Dst)))
+###
+> o & "hello"
+o & "hello" : s*
+Binder : ForEach(*1: o, StrConcat(str(<null>), "hello"))
+Reducer: ForEach(*1: o, "hello")
+###
+> "hello" & b
+"hello" & b : s*
+*** Error: (10,11) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : ForEach(*1: b, StrConcat("hello", Error(ErrBadType_Src_Dst)))
+###
+> "hello" & qb
+"hello" & qb : s*
+*** Error: (10,12) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 's'
+Binder : ForEach(*1: qb, StrConcat("hello", Error(ErrBadType_Src_Dst)))
+###
+> s & 3
+s & 3 : s*
+*** Error: (4,5) Node: 3, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : ForEach(*1: s, StrConcat(*1, Error(ErrBadType_Src_Dst)))
+###
+> "Hello" + " there"
+Corrected by binder: ["Hello" & " there"]
+"Hello" + " there" : s
+*** Warning: (8,9) Node: "Hello" + " there", Message: The binary operator '+' for text concatenation is deprecated, use '&' instead
+Binder : StrConcat("Hello", " there")
+Reducer: "Hello there"
+###
+> s + s
+Corrected by binder: [s & s]
+s + s : s*
+*** Warning: (2,3) Node: s + s, Message: The binary operator '+' for text concatenation is deprecated, use '&' instead
+Binder : ForEach(*1: s, *2: s, StrConcat(*1, *2))
+Reducer: ForEach(*1: s, StrConcat(*1, *1))
+###
+> s + null
+Corrected by binder: [s & null]
+s + null : s*
+*** Warning: (2,3) Node: s + null, Message: The binary operator '+' for text concatenation is deprecated, use '&' instead
+Binder : ForEach(*1: s, StrConcat(*1, str(<null>)))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> null + s
+Corrected by binder: [null & s]
+null + s : s*
+*** Warning: (5,6) Node: null + s, Message: The binary operator '+' for text concatenation is deprecated, use '&' instead
+Binder : ForEach(*1: s, StrConcat(str(<null>), *1))
+Reducer: ForEach(*1: s, StrConcat(*1))
+###
+> s + 3
+s + 3 : i8*
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, Add(Error(ErrBadType_Src_Dst), 3))
+###

@@ -1,0 +1,17 @@
+﻿Tensor.Fill(17, 3, 4)->Wrap()->Map(it * 2)
+Tensor.From(Range(12), 3, 4)->Wrap()->Map(it * 2)
+Tensor.Fill(17, 3, 4)->Wrap()->Map("V" & it->ToText())
+Tensor.From(Range(12), 3, 4)->Wrap()->Map("V" & it->ToText())
+
+// REVIEW: These should propagate the Map into the values. Make it so.
+Tensor.Fill(17, 3, 4)->Map(it * 2)
+Tensor.From(Range(12), 3, 4)->Map(it * 2)
+Tensor.Fill(17, 3, 4)->Map("V" & it->ToText())
+Tensor.From(Range(12), 3, 4)->Map("V" & it->ToText())
+
+// Test conversion in the "lazy" range.
+`` T := Range(40)->CastU1()->Tensor.From(8, 5);
+`` U := Tensor.Fill(7.5, 8, 5);
+
+Tensor.Add(T, U)
+T + U

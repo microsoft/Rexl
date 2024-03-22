@@ -1,0 +1,267 @@
+Add: 00000001 [A], Fma: ["Hello"]
+Add: 00000002 [B], Fma: [Text.Len(A, 17)]
+Add: 00000003 [C], Fma: [A->Len()]
+Add: 00000004 [D], Fma: [A->Len(32)]
+Add: 00000005 [E], Fma: [A->text.lEN(32)]
+Add: 00000006 [F], Fma: [A->teXT.leN(32)]
+Add: 00000007 [G], Fma: [otHer(32)]
+Add: 00000008 [H], Fma: [OtHer(32, 17)]
+Add: 00000009 [I], <config>, Extra: { [this->Text.Len(3)] }
+Status: 9 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: s
+    00000002 [B]: [A  tTuUB C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000003 [C]: [A  tTuUB C dD  ], Base: i8
+    00000004 [D]: [A  tTuUB C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [A  tTuUB C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [A  tTuUB C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000007 [G]: [A  tT  B C dDE ], Base: v
+      *) Error: (5,6) Node: otHer(32), Message: Invocation of unknown or unsupported function
+    00000008 [H]: [A  tT  B C dDE ], Base: v
+      *) Error: (5,6) Node: OtHer(32, 17), Message: Invocation of unknown or unsupported function
+    00000009 [I]: [A FtT   b cdDE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+Status: 9 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+*** Undo(1)
+Status: 9 nodes, 1 undos, 1 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Redo(1)
+Status: 9 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+Status: 9 nodes, 3 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Undo(1)
+Status: 9 nodes, 2 undos, 1 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+*** Redo(1)
+Status: 9 nodes, 3 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+Status: 9 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+*** Undo(1)
+Status: 9 nodes, 3 undos, 1 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Redo(1)
+Status: 9 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+*** Undo(2)
+Status: 9 nodes, 2 undos, 2 redos
+###
+*** Undo(1)
+Status: 9 nodes, 1 undos, 3 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Redo(2)
+Status: 9 nodes, 3 undos, 1 redos
+###
+*** Redo(1)
+Status: 9 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+Status: 9 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dD  ], Base: i8
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'text.lEN'?
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Undo(1)
+Status: 9 nodes, 4 undos, 1 redos
+  Node changes:
+    00000002 [B]: [       B C dD  ], Base: i8
+    00000004 [D]: [       B C dD  ], Base: i8
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+    00000009 [I]: [        b c D  ], <config>, Base: s*, Extra[0]: i8*
+###
+*** Redo(1)
+Status: 9 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [B]: [       B C dDE ], Base: i8
+      *) Error: (12,14) Node: 17, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000004 [D]: [       B C dDE ], Base: i8
+      *) Error: (7,9) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000005 [E]: [       B C dD  ], Base: i8
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'text.lEN'?
+    00000009 [I]: [        b c DE ], <config>, Base: s*, Extra[0]: i8*
+      0) Error: (15,16) Node: 3, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+Status: 9 nodes, 6 undos, 0 redos
+  Node changes:
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Undo(1)
+Status: 9 nodes, 5 undos, 1 redos
+  Node changes:
+    00000005 [E]: [       B C dD  ], Base: i8
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'text.lEN'?
+###
+*** Redo(1)
+Status: 9 nodes, 6 undos, 0 redos
+  Node changes:
+    00000005 [E]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->text.lEN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+    00000006 [F]: [       B C dDE ], Base: i8
+      *) Error: (1,3) Node: A->teXT.leN(32), Message: Invocation of unknown function, did you intend 'Text.Len'?
+      *) Error: (12,14) Node: 32, Message: Too many arguments for Text.Len, expected 1 fewer
+###
+*** Other udf
+Status: 9 nodes, 7 undos, 0 redos
+  Node changes:
+    00000007 [G]: [   tT  B C dDE ], Base: i8
+      *) Error: (5,6) Node: otHer(32), Message: Invocation of unknown function, did you intend 'Other'?
+      *) Error: (5,6) Node: otHer(32), Message: Too few arguments for Other, expected 1 additional
+    00000008 [H]: [   tT  B C dDE ], Base: i8
+      *) Error: (5,6) Node: OtHer(32, 17), Message: Invocation of unknown function, did you intend 'Other'?
+###
+*** Undo(1)
+Status: 9 nodes, 6 undos, 1 redos
+  Node changes:
+    00000007 [G]: [   tT  B C dDE ], Base: v
+      *) Error: (5,6) Node: otHer(32), Message: Invocation of unknown or unsupported function
+    00000008 [H]: [   tT  B C dDE ], Base: v
+      *) Error: (5,6) Node: OtHer(32, 17), Message: Invocation of unknown or unsupported function
+###
+*** Redo(1)
+Status: 9 nodes, 7 undos, 0 redos
+  Node changes:
+    00000007 [G]: [   tT  B C dDE ], Base: i8
+      *) Error: (5,6) Node: otHer(32), Message: Invocation of unknown function, did you intend 'Other'?
+      *) Error: (5,6) Node: otHer(32), Message: Too few arguments for Other, expected 1 additional
+    00000008 [H]: [   tT  B C dDE ], Base: i8
+      *) Error: (5,6) Node: OtHer(32, 17), Message: Invocation of unknown function, did you intend 'Other'?
+###

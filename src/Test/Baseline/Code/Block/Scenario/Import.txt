@@ -1,0 +1,283 @@
+>>> *** Source:
+    @X := "@X";
+    @Z.X := "@Z.X";
+    "*** Bare import";
+    import "ImportScript.rexl";
+    "*** Import in Data";
+    import Link.Local("Text.Rexl", "ImportScript.rexl") in namespace Data;
+    "*** Bare import within N0";
+    namespace N0;
+    import Link.Local("Text.Rexl.More.Stuff", "ImportScript.rexl");
+    "*** Import in @ within N1";
+    namespace N1;
+    import "ImportScript.rexl" in namespace @;
+    "*** Import in _ within N2";
+    namespace N2;
+    import "ImportScript.rexl" in namespace;
+    "*** Import in Sub within N3";
+    namespace N3;
+    import "ImportScript.rexl" in namespace Sub;
+    "*** Import in @Z within N4";
+    namespace N4;
+    import "ImportScript.rexl" in namespace @Z;
+
+>>> *** Instructions:
+   0) [0] Define @X <- "@X"
+   1) [0] Define @Z.X <- "@Z.X"
+   2) [0] Expr "*** Bare import"
+   3) [0] Import: "ImportScript.rexl"
+   4) [0] Expr "*** Import in Data"
+   5) [0] Import in Data: Link.Local("Text.Rexl", "ImportScript.rexl")
+   6) [0] Expr "*** Bare import within N0"
+   7) [0] Namespace N0
+   8) [0] Import: Link.Local("Text.Rexl.More.Stuff", "ImportScript.rexl")
+   9) [0] Expr "*** Import in @ within N1"
+  10) [0] Namespace N1
+  11) [0] Import in @: "ImportScript.rexl"
+  12) [0] Expr "*** Import in _ within N2"
+  13) [0] Namespace N2
+  14) [0] Import in _: "ImportScript.rexl"
+  15) [0] Expr "*** Import in Sub within N3"
+  16) [0] Namespace N3
+  17) [0] Import in Sub: "ImportScript.rexl"
+  18) [0] Expr "*** Import in @Z within N4"
+  19) [0] Namespace N4
+  20) [0] Import in @Z: "ImportScript.rexl"
+  21) [0] End
+
+>    0) [0] Define @X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define @Z.X <- "@Z.X"
+Global 'Z.X' has DType: s, SysType: str
+>    2) [0] Expr "*** Bare import"
+*** Bare import
+>    3) [0] Import: "ImportScript.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] Define A <- "A"
+Global 'A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+Global 'N.B' has DType: s, SysType: str
+>    5) [0] Define @C <- "@C"
+Global 'C' has DType: s, SysType: str
+>    6) [0] End
+>    4) [0] Expr "*** Import in Data"
+*** Import in Data
+>    5) [0] Import in Data: Link.Local("Text.Rexl", "ImportScript.rexl")
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (1,2) Node: @X, Message: Name does not exist in the current context
+>    1) [0] Expr X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (69,70) Node: X, Message: Name does not exist in the current context
+>    2) [0] Define A <- "A"
+Global 'Data.A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+Global 'Data.N.B' has DType: s, SysType: str
+>    5) [0] Define @C <- "@C"
+Global 'Data.C' has DType: s, SysType: str
+>    6) [0] End
+>    6) [0] Expr "*** Bare import within N0"
+*** Bare import within N0
+>    7) [0] Namespace N0
+>    8) [0] Import: Link.Local("Text.Rexl.More.Stuff", "ImportScript.rexl")
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] Define A <- "A"
+Global 'N0.A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+>    5) [0] Define @C <- "@C"
+>    6) [0] End
+>    9) [0] Expr "*** Import in @ within N1"
+*** Import in @ within N1
+>   10) [0] Namespace N1
+>   11) [0] Import in @: "ImportScript.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] Define A <- "A"
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+>    5) [0] Define @C <- "@C"
+>    6) [0] End
+>   12) [0] Expr "*** Import in _ within N2"
+*** Import in _ within N2
+>   13) [0] Namespace N2
+>   14) [0] Import in _: "ImportScript.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (1,2) Node: @X, Message: Name does not exist in the current context
+>    1) [0] Expr X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (69,70) Node: X, Message: Name does not exist in the current context
+>    2) [0] Define A <- "A"
+Global 'N2.A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+Global 'N2.N.B' has DType: s, SysType: str
+>    5) [0] Define @C <- "@C"
+Global 'N2.C' has DType: s, SysType: str
+>    6) [0] End
+>   15) [0] Expr "*** Import in Sub within N3"
+*** Import in Sub within N3
+>   16) [0] Namespace N3
+>   17) [0] Import in Sub: "ImportScript.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (1,2) Node: @X, Message: Name does not exist in the current context
+>    1) [0] Expr X
+*** Bind diagnostics:
+  [ImportScript.rexl] Error: (69,70) Node: X, Message: Name does not exist in the current context
+>    2) [0] Define A <- "A"
+Global 'N3.Sub.A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+Global 'N3.Sub.N.B' has DType: s, SysType: str
+>    5) [0] Define @C <- "@C"
+Global 'N3.Sub.C' has DType: s, SysType: str
+>    6) [0] End
+>   18) [0] Expr "*** Import in @Z within N4"
+*** Import in @Z within N4
+>   19) [0] Namespace N4
+>   20) [0] Import in @Z: "ImportScript.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    A := "A";
+    namespace N;
+    B := "N.B";
+    @C := "@C";
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Define A <- "A"
+   3) [0] Namespace N
+   4) [0] Define B <- "N.B"
+   5) [0] Define @C <- "@C"
+   6) [0] End
+
+>    0) [0] Expr @X
+@Z.X
+>    1) [0] Expr X
+@Z.X
+>    2) [0] Define A <- "A"
+Global 'Z.A' has DType: s, SysType: str
+>    3) [0] Namespace N
+>    4) [0] Define B <- "N.B"
+Global 'Z.N.B' has DType: s, SysType: str
+>    5) [0] Define @C <- "@C"
+Global 'Z.C' has DType: s, SysType: str
+>    6) [0] End
+>   21) [0] End
+

@@ -1,0 +1,1230 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> Mod(3, 4)
+Mod(3, 4) : i8
+Binder : Mod(3, 4)
+Reducer: 3
+###
+> Mod(2, -1)
+Mod(2, -1) : i8
+Binder : Mod(2, -1)
+Reducer: 0
+###
+> Mod(2, 0)
+Mod(2, 0) : i8
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(-0, 2)
+Mod(-0, 2) : i8
+Binder : Mod(0, 2)
+Reducer: 0
+###
+> Mod(-0f, 2f)
+Mod(-0, 2) : r8
+Binder : Mod(-0, 2)
+Reducer: -0
+###
+> Mod(-0.0, 2.0)
+Mod(-0, 2) : r8
+Binder : Mod(-0, 2)
+Reducer: -0
+###
+> Mod(-2, -0)
+Mod(-2, -0) : i8
+Binder : Mod(-2, 0)
+Reducer: 0
+###
+> Mod(-2f, -0f)
+Mod(-2, -0) : r8
+Binder : Mod(-2, -0)
+Reducer: -0
+###
+> Mod(-2.0, -0.0)
+Mod(-2, -0) : r8
+Binder : Mod(-2, -0)
+Reducer: -0
+###
+> Mod(0x3FFF_FFFFI4, 2I4)
+Mod(1073741823, 2) : i8
+Binder : Mod(1073741823, 2)
+Reducer: 1
+###
+> Mod(0x3FFF_FFFFI4, 4I4)
+Mod(1073741823, 4) : i8
+Binder : Mod(1073741823, 4)
+Reducer: 3
+###
+> Mod(0x7FFF_FFFFU4, 2I4) // i8
+Mod(2147483647, 2) : i8
+Binder : Mod(2147483647, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFFU4, 2U4) // i8
+Mod(2147483647, 2) : i8
+Binder : Mod(2147483647, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFFU4, 4I4) // i8
+Mod(2147483647, 4) : i8
+Binder : Mod(2147483647, 4)
+Reducer: 3
+###
+> Mod(0x3FFF_FFFF, 2)
+Mod(1073741823, 2) : i8
+Binder : Mod(1073741823, 2)
+Reducer: 1
+###
+> Mod(0x3FFF_FFFF, 4)
+Mod(1073741823, 4) : i8
+Binder : Mod(1073741823, 4)
+Reducer: 3
+###
+> Mod(0x7FFF_FFFFU, 2 ) // i8
+Mod(2147483647, 2) : i8
+Binder : Mod(2147483647, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFFU, 2U) // u8
+Mod(2147483647, 2) : u8
+Binder : Mod(2147483647, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFFU, 4 ) // i8
+Mod(2147483647, 4) : i8
+Binder : Mod(2147483647, 4)
+Reducer: 3
+###
+> Mod(0x3FFF_FFFF_FFFF_FFFF, 2)
+Mod(4611686018427387903, 2) : i8
+Binder : Mod(4611686018427387903, 2)
+Reducer: 1
+###
+> Mod(0x3FFF_FFFF_FFFF_FFFF, 4)
+Mod(4611686018427387903, 4) : i8
+Binder : Mod(4611686018427387903, 4)
+Reducer: 3
+###
+> Mod(0x7FFF_FFFF_FFFF_FFFFU, 2)
+Mod(9223372036854775807, 2) : i8
+Binder : Mod(9223372036854775807, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFF_FFFF_FFFFU, 2U)
+Mod(9223372036854775807, 2) : u8
+Binder : Mod(9223372036854775807, 2)
+Reducer: 1
+###
+> Mod(0x7FFF_FFFF_FFFF_FFFFU, 4)
+Mod(9223372036854775807, 4) : i8
+Binder : Mod(9223372036854775807, 4)
+Reducer: 3
+###
+> Mod(3, null)
+Mod(3, null) : i8?
+Binder : Guard(?1: null, Mod(3, Unit<i8>(?1)))
+Reducer: null
+###
+> Mod(null, 3)
+Mod(null, 3) : i8?
+Binder : Guard(?1: null, Mod(Unit<i8>(?1), 3))
+Reducer: null
+###
+> Mod(0, null)
+Mod(0, null) : i8?
+Binder : Guard(?1: null, Mod(0, Unit<i8>(?1)))
+Reducer: null
+###
+> Mod(null, 0)
+Mod(null, 0) : i8?
+Binder : Guard(?1: null, Mod(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Mod(null, null)
+Mod(null, null) : i8?
+Binder : Guard(?1: null, ?2: null, Mod(Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Mod(i4, 3)
+Mod(i4, 3) : i8
+Binder : Mod(Num<i8>(i4), 3)
+###
+> Mod(3, i4)
+Mod(3, i4) : i8
+Binder : Mod(3, Num<i8>(i4))
+###
+> Mod(i4, null)
+Mod(i4, null) : i8?
+Binder : Guard(?1: null, Mod(Num<i8>(i4), Unit<i8>(?1)))
+Reducer: null
+###
+> Mod(null, i4)
+Mod(null, i4) : i8?
+Binder : Guard(?1: null, Mod(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> Mod(3, true)
+Mod(3, true) : i8
+Binder : Mod(3, 1)
+Reducer: 0
+###
+> Mod(true, 3)
+Mod(true, 3) : i8
+Binder : Mod(1, 3)
+Reducer: 1
+###
+> Mod(true, false)
+Mod(true, false) : i8
+Binder : Mod(1, 0)
+Reducer: 0
+###
+> Mod("hello", true)
+Mod("hello", true) : i8
+*** Error: (4,11) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 1)
+Reducer: 0
+###
+> Mod(2.0, 4.0)
+Mod(2, 4) : r8
+Binder : Mod(2, 4)
+Reducer: 2
+###
+> Mod(2.0, 3.0)
+Mod(2, 3) : r8
+Binder : Mod(2, 3)
+Reducer: 2
+###
+> Mod(3f, null)
+Mod(3, null) : r8?
+Binder : Guard(?1: null, Mod(3, Unit<r8>(?1)))
+Reducer: null
+###
+> Mod(null, 2f)
+Mod(null, 2) : r8?
+Binder : Guard(?1: null, Mod(Unit<r8>(?1), 2))
+Reducer: null
+###
+> Mod(2, r4)
+Mod(2, r4) : r8
+Binder : Mod(2, Num<r8>(r4))
+###
+> Mod(r4, 3)
+Mod(r4, 3) : r8
+Binder : Mod(Num<r8>(r4), 3)
+###
+> Mod(1, r4)
+Mod(1, r4) : r8
+Binder : Mod(1, Num<r8>(r4))
+###
+> Mod(r4, 1)
+Mod(r4, 1) : r8
+Binder : Mod(Num<r8>(r4), 1)
+###
+> Mod(null, r4)
+Mod(null, r4) : r8?
+Binder : Guard(?1: null, Mod(Unit<r8>(?1), Num<r8>(r4)))
+Reducer: null
+###
+> Mod(r4, null)
+Mod(r4, null) : r8?
+Binder : Guard(?1: null, Mod(Num<r8>(r4), Unit<r8>(?1)))
+Reducer: null
+###
+> Mod(0, r4)
+Mod(0, r4) : r8
+Binder : Mod(0, Num<r8>(r4))
+###
+> Mod(r4, 0)
+Mod(r4, 0) : r8
+Binder : Mod(Num<r8>(r4), 0)
+###
+> Mod(2ia, 0)
+Mod(2, 0) : i
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(2i8, 0)
+Mod(2, 0) : i8
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(0x80000000i4, -1)
+Mod(2147483648, -1) : i8
+Binder : Mod(-2147483648, -1)
+Reducer: 0
+###
+> Mod(0x8000000000000000i8, -1)
+Mod(9223372036854775808, -1) : i8
+Binder : Mod(-9223372036854775808, -1)
+Reducer: 0
+###
+> Mod(2, -1)
+Mod(2, -1) : i8
+Binder : Mod(2, -1)
+Reducer: 0
+###
+> Mod(2u, 0u)
+Mod(2, 0) : u8
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(7u8, 4u)
+Mod(7, 4) : u8
+Binder : Mod(7, 4)
+Reducer: 3
+###
+> Mod(7ia, 4)
+Mod(7, 4) : i
+Binder : Mod(7, 4)
+Reducer: 3
+###
+> Mod(2u8, 0u)
+Mod(2, 0) : u8
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(3.0r4, 2.0r4)
+Mod(3, 2) : r8
+Binder : Mod(3, 2)
+Reducer: 1
+###
+> Mod(3.0r8, 2.0r8)
+Mod(3, 2) : r8
+Binder : Mod(3, 2)
+Reducer: 1
+###
+> Mod(2f, 0f)
+Mod(2, 0) : r8
+Binder : Mod(2, 0)
+Reducer: 0
+###
+> Mod(-2f, 0f)
+Mod(-2, 0) : r8
+Binder : Mod(-2, 0)
+Reducer: -0
+###
+> Mod(0f, 0f)
+Mod(0, 0) : r8
+Binder : Mod(0, 0)
+Reducer: 0
+###
+> Mod(-0f, 0f)
+Mod(-0, 0) : r8
+Binder : Mod(-0, 0)
+Reducer: -0
+###
+> Mod(CastR4(1/0.0), 0f)
+Mod(CastR4(1 / 0), 0) : r8
+Binder : Mod(Num<r8>(CastR4(Mul(1, [/] 0))), 0)
+Reducer: 0
+###
+> Mod(CastR4(-1/0.0), 0f)
+Mod(CastR4(-1 / 0), 0) : r8
+Binder : Mod(Num<r8>(CastR4(Mul(-1, [/] 0))), 0)
+Reducer: -0
+###
+> Mod(0f/0f, 0f)
+Mod(0 / 0, 0) : r8
+Binder : Mod(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(-0f/0f, 0f)
+Mod(-0 / 0, 0) : r8
+Binder : Mod(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(1.0/0, 0.0)
+Mod(1 / 0, 0) : r8
+Binder : Mod(Mul(1, [/] 0), 0)
+Reducer: 0
+###
+> Mod(-1.0/0, 0.0)
+Mod(-1 / 0, 0) : r8
+Binder : Mod(Mul(-1, [/] 0), 0)
+Reducer: -0
+###
+> Mod(0r8/0, 0.0)
+Mod(0 / 0, 0) : r8
+Binder : Mod(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(-0r8/0, 0.0)
+Mod(-0 / 0, 0) : r8
+Binder : Mod(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(1r/0r, 0r)
+Mod(1 / 0, 0) : r8
+Binder : Mod(Mul(1, [/] 0), 0)
+Reducer: 0
+###
+> Mod(-1r/0r, 0r)
+Mod(-1 / 0, 0) : r8
+Binder : Mod(Mul(-1, [/] 0), 0)
+Reducer: -0
+###
+> Mod(0r/0r, 0r)
+Mod(0 / 0, 0) : r8
+Binder : Mod(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(-0r/0r, 0.0r)
+Mod(-0 / 0, 0) : r8
+Binder : Mod(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Mod(0x812345u8, 0x81234567u8)
+Mod(8463173, 2166572391) : u8
+Binder : Mod(8463173, 2166572391)
+Reducer: 8463173
+###
+> Mod(0x80123456u8, 0x81234567u8)
+Mod(2148676694, 2166572391) : u8
+Binder : Mod(2148676694, 2166572391)
+Reducer: 2148676694
+###
+> Mod(0x81234567u8, 0x80123456u8)
+Mod(2166572391, 2148676694) : u8
+Binder : Mod(2166572391, 2148676694)
+Reducer: 17895697
+###
+> Mod(0x81234567u8, 0x812345u8)
+Mod(2166572391, 8463173) : u8
+Binder : Mod(2166572391, 8463173)
+Reducer: 103
+###
+> Mod(3, g)
+Mod(3, g) : i8
+*** Error: (7,8) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3, o)
+Mod(3, o) : i8?
+Binder : Guard(?1: o, Mod(3, Unit<i8>(?1)))
+Reducer: null
+###
+> Mod(3, s)
+Mod(3, s) : i8
+*** Error: (7,8) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3, d)
+Mod(3, d) : i8
+*** Error: (7,8) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3, b)
+Mod(3, b) : i8
+Binder : Mod(3, Num<i8>(b))
+###
+> Mod(3, n)
+Mod(3, n) : r8
+Binder : Mod(3, n)
+###
+> Mod(3, r8)
+Mod(3, r8) : r8
+Binder : Mod(3, r8)
+###
+> Mod(3, r4)
+Mod(3, r4) : r8
+Binder : Mod(3, Num<r8>(r4))
+###
+> Mod(3, i)
+Mod(3, i) : i
+Binder : Mod(3, i)
+###
+> Mod(3, i8)
+Mod(3, i8) : i8
+Binder : Mod(3, i8)
+###
+> Mod(3, i4)
+Mod(3, i4) : i8
+Binder : Mod(3, Num<i8>(i4))
+###
+> Mod(3, i2)
+Mod(3, i2) : i8
+Binder : Mod(3, Num<i8>(i2))
+###
+> Mod(3, i1)
+Mod(3, i1) : i8
+Binder : Mod(3, Num<i8>(i1))
+###
+> Mod(3, u8)
+Mod(3, u8) : i8
+*** Warning: (7,9) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Mod(3, Num<i8>(u8))
+###
+> Mod(3, u4)
+Mod(3, u4) : i8
+Binder : Mod(3, Num<i8>(u4))
+###
+> Mod(3, u2)
+Mod(3, u2) : i8
+Binder : Mod(3, Num<i8>(u2))
+###
+> Mod(3, u1)
+Mod(3, u1) : i8
+Binder : Mod(3, Num<i8>(u1))
+###
+> Mod(-3, g)
+Mod(-3, g) : i8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Mod(-3, Error(ErrBadType_Src_Dst))
+###
+> Mod(-3, o)
+Mod(-3, o) : i8?
+Binder : Guard(?1: o, Mod(-3, Unit<i8>(?1)))
+Reducer: null
+###
+> Mod(-3, s)
+Mod(-3, s) : i8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Mod(-3, Error(ErrBadType_Src_Dst))
+###
+> Mod(-3, d)
+Mod(-3, d) : i8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Mod(-3, Error(ErrBadType_Src_Dst))
+###
+> Mod(-3, b)
+Mod(-3, b) : i8
+Binder : Mod(-3, Num<i8>(b))
+###
+> Mod(-3, n)
+Mod(-3, n) : r8
+Binder : Mod(-3, n)
+###
+> Mod(-3, r8)
+Mod(-3, r8) : r8
+Binder : Mod(-3, r8)
+###
+> Mod(-3, r4)
+Mod(-3, r4) : r8
+Binder : Mod(-3, Num<r8>(r4))
+###
+> Mod(-3, i)
+Mod(-3, i) : i
+Binder : Mod(-3, i)
+###
+> Mod(-3, i8)
+Mod(-3, i8) : i8
+Binder : Mod(-3, i8)
+###
+> Mod(-3, i4)
+Mod(-3, i4) : i8
+Binder : Mod(-3, Num<i8>(i4))
+###
+> Mod(-3, i2)
+Mod(-3, i2) : i8
+Binder : Mod(-3, Num<i8>(i2))
+###
+> Mod(-3, i1)
+Mod(-3, i1) : i8
+Binder : Mod(-3, Num<i8>(i1))
+###
+> Mod(-3, u8)
+Mod(-3, u8) : i8
+*** Warning: (8,10) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Mod(-3, Num<i8>(u8))
+###
+> Mod(-3, u4)
+Mod(-3, u4) : i8
+Binder : Mod(-3, Num<i8>(u4))
+###
+> Mod(-3, u2)
+Mod(-3, u2) : i8
+Binder : Mod(-3, Num<i8>(u2))
+###
+> Mod(-3, u1)
+Mod(-3, u1) : i8
+Binder : Mod(-3, Num<i8>(u1))
+###
+> Mod(3u, g)
+Mod(3, g) : u8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'u8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3u, o)
+Mod(3, o) : u8?
+Binder : Guard(?1: o, Mod(3, Unit<u8>(?1)))
+Reducer: null
+###
+> Mod(3u, s)
+Mod(3, s) : u8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'u8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3u, d)
+Mod(3, d) : u8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'u8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3u, b)
+Mod(3, b) : u8
+Binder : Mod(3, Num<u8>(b))
+###
+> Mod(3u, n)
+Mod(3, n) : r8
+Binder : Mod(3, n)
+###
+> Mod(3u, r8)
+Mod(3, r8) : r8
+Binder : Mod(3, r8)
+###
+> Mod(3u, r4)
+Mod(3, r4) : r8
+Binder : Mod(3, Num<r8>(r4))
+###
+> Mod(3u, i)
+Mod(3, i) : i
+Binder : Mod(3, i)
+###
+> Mod(3u, i8)
+Mod(3, i8) : i8
+Binder : Mod(3, i8)
+###
+> Mod(3u, i4)
+Mod(3, i4) : i8
+Binder : Mod(3, Num<i8>(i4))
+###
+> Mod(3u, i2)
+Mod(3, i2) : i8
+Binder : Mod(3, Num<i8>(i2))
+###
+> Mod(3u, i1)
+Mod(3, i1) : i8
+Binder : Mod(3, Num<i8>(i1))
+###
+> Mod(3u, u8)
+Mod(3, u8) : u8
+Binder : Mod(3, u8)
+###
+> Mod(3u, u4)
+Mod(3, u4) : u8
+Binder : Mod(3, Num<u8>(u4))
+###
+> Mod(3u, u2)
+Mod(3, u2) : u8
+Binder : Mod(3, Num<u8>(u2))
+###
+> Mod(3u, u1)
+Mod(3, u1) : u8
+Binder : Mod(3, Num<u8>(u1))
+###
+> Mod(3f, g)
+Mod(3, g) : r8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3f, o)
+Mod(3, o) : r8?
+Binder : Guard(?1: o, Mod(3, Unit<r8>(?1)))
+Reducer: null
+###
+> Mod(3f, s)
+Mod(3, s) : r8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3f, d)
+Mod(3, d) : r8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'r8'
+Binder : Mod(3, Error(ErrBadType_Src_Dst))
+###
+> Mod(3f, b)
+Mod(3, b) : r8
+Binder : Mod(3, Num<r8>(b))
+###
+> Mod(3f, n)
+Mod(3, n) : r8
+Binder : Mod(3, n)
+###
+> Mod(3f, r8)
+Mod(3, r8) : r8
+Binder : Mod(3, r8)
+###
+> Mod(3f, r4)
+Mod(3, r4) : r8
+Binder : Mod(3, Num<r8>(r4))
+###
+> Mod(3f, i)
+Mod(3, i) : r8
+Binder : Mod(3, Num<r8>(i))
+###
+> Mod(3f, i8)
+Mod(3, i8) : r8
+Binder : Mod(3, Num<r8>(i8))
+###
+> Mod(3f, i4)
+Mod(3, i4) : r8
+Binder : Mod(3, Num<r8>(i4))
+###
+> Mod(3f, i2)
+Mod(3, i2) : r8
+Binder : Mod(3, Num<r8>(i2))
+###
+> Mod(3f, i1)
+Mod(3, i1) : r8
+Binder : Mod(3, Num<r8>(i1))
+###
+> Mod(3f, u8)
+Mod(3, u8) : r8
+Binder : Mod(3, Num<r8>(u8))
+###
+> Mod(3f, u4)
+Mod(3, u4) : r8
+Binder : Mod(3, Num<r8>(u4))
+###
+> Mod(3f, u2)
+Mod(3, u2) : r8
+Binder : Mod(3, Num<r8>(u2))
+###
+> Mod(3f, u1)
+Mod(3, u1) : r8
+Binder : Mod(3, Num<r8>(u1))
+###
+> Mod(3, qd)
+Mod(3, qd) : i8?
+*** Error: (7,9) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Mod(3, Error(ErrBadType_Src_Dst)))
+###
+> Mod(3, qb)
+Mod(3, qb) : i8?
+Binder : Guard(?1: qb, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qn)
+Mod(3, qn) : r8?
+Binder : Guard(?1: qn, Mod(3, ?1))
+###
+> Mod(3, qr8)
+Mod(3, qr8) : r8?
+Binder : Guard(?1: qr8, Mod(3, ?1))
+###
+> Mod(3, qr4)
+Mod(3, qr4) : r8?
+Binder : Guard(?1: qr4, Mod(3, Num<r8>(?1)))
+###
+> Mod(3, qi)
+Mod(3, qi) : i?
+Binder : Guard(?1: qi, Mod(3, ?1))
+###
+> Mod(3, qi8)
+Mod(3, qi8) : i8?
+Binder : Guard(?1: qi8, Mod(3, ?1))
+###
+> Mod(3, qi4)
+Mod(3, qi4) : i8?
+Binder : Guard(?1: qi4, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qi2)
+Mod(3, qi2) : i8?
+Binder : Guard(?1: qi2, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qi1)
+Mod(3, qi1) : i8?
+Binder : Guard(?1: qi1, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qu8)
+Mod(3, qu8) : i8?
+*** Warning: (7,10) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qu4)
+Mod(3, qu4) : i8?
+Binder : Guard(?1: qu4, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qu2)
+Mod(3, qu2) : i8?
+Binder : Guard(?1: qu2, Mod(3, Num<i8>(?1)))
+###
+> Mod(3, qu1)
+Mod(3, qu1) : i8?
+Binder : Guard(?1: qu1, Mod(3, Num<i8>(?1)))
+###
+> Mod(-3, qd)
+Mod(-3, qd) : i8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Mod(-3, Error(ErrBadType_Src_Dst)))
+###
+> Mod(-3, qb)
+Mod(-3, qb) : i8?
+Binder : Guard(?1: qb, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qn)
+Mod(-3, qn) : r8?
+Binder : Guard(?1: qn, Mod(-3, ?1))
+###
+> Mod(-3, qr8)
+Mod(-3, qr8) : r8?
+Binder : Guard(?1: qr8, Mod(-3, ?1))
+###
+> Mod(-3, qr4)
+Mod(-3, qr4) : r8?
+Binder : Guard(?1: qr4, Mod(-3, Num<r8>(?1)))
+###
+> Mod(-3, qi)
+Mod(-3, qi) : i?
+Binder : Guard(?1: qi, Mod(-3, ?1))
+###
+> Mod(-3, qi8)
+Mod(-3, qi8) : i8?
+Binder : Guard(?1: qi8, Mod(-3, ?1))
+###
+> Mod(-3, qi4)
+Mod(-3, qi4) : i8?
+Binder : Guard(?1: qi4, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qi2)
+Mod(-3, qi2) : i8?
+Binder : Guard(?1: qi2, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qi1)
+Mod(-3, qi1) : i8?
+Binder : Guard(?1: qi1, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qu8)
+Mod(-3, qu8) : i8?
+*** Warning: (8,11) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qu4)
+Mod(-3, qu4) : i8?
+Binder : Guard(?1: qu4, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qu2)
+Mod(-3, qu2) : i8?
+Binder : Guard(?1: qu2, Mod(-3, Num<i8>(?1)))
+###
+> Mod(-3, qu1)
+Mod(-3, qu1) : i8?
+Binder : Guard(?1: qu1, Mod(-3, Num<i8>(?1)))
+###
+> Mod(3u, qd)
+Mod(3, qd) : u8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'u8'
+Binder : Guard(?1: qd, Mod(3, Error(ErrBadType_Src_Dst)))
+###
+> Mod(3u, qb)
+Mod(3, qb) : u8?
+Binder : Guard(?1: qb, Mod(3, Num<u8>(?1)))
+###
+> Mod(3u, qn)
+Mod(3, qn) : r8?
+Binder : Guard(?1: qn, Mod(3, ?1))
+###
+> Mod(3u, qr8)
+Mod(3, qr8) : r8?
+Binder : Guard(?1: qr8, Mod(3, ?1))
+###
+> Mod(3u, qr4)
+Mod(3, qr4) : r8?
+Binder : Guard(?1: qr4, Mod(3, Num<r8>(?1)))
+###
+> Mod(3u, qi)
+Mod(3, qi) : i?
+Binder : Guard(?1: qi, Mod(3, ?1))
+###
+> Mod(3u, qi8)
+Mod(3, qi8) : i8?
+Binder : Guard(?1: qi8, Mod(3, ?1))
+###
+> Mod(3u, qi4)
+Mod(3, qi4) : i8?
+Binder : Guard(?1: qi4, Mod(3, Num<i8>(?1)))
+###
+> Mod(3u, qi2)
+Mod(3, qi2) : i8?
+Binder : Guard(?1: qi2, Mod(3, Num<i8>(?1)))
+###
+> Mod(3u, qi1)
+Mod(3, qi1) : i8?
+Binder : Guard(?1: qi1, Mod(3, Num<i8>(?1)))
+###
+> Mod(3u, qu8)
+Mod(3, qu8) : u8?
+Binder : Guard(?1: qu8, Mod(3, ?1))
+###
+> Mod(3u, qu4)
+Mod(3, qu4) : u8?
+Binder : Guard(?1: qu4, Mod(3, Num<u8>(?1)))
+###
+> Mod(3u, qu2)
+Mod(3, qu2) : u8?
+Binder : Guard(?1: qu2, Mod(3, Num<u8>(?1)))
+###
+> Mod(3u, qu1)
+Mod(3, qu1) : u8?
+Binder : Guard(?1: qu1, Mod(3, Num<u8>(?1)))
+###
+> Mod(3f, qd)
+Mod(3, qd) : r8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'r8'
+Binder : Guard(?1: qd, Mod(3, Error(ErrBadType_Src_Dst)))
+###
+> Mod(3f, qb)
+Mod(3, qb) : r8?
+Binder : Guard(?1: qb, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qn)
+Mod(3, qn) : r8?
+Binder : Guard(?1: qn, Mod(3, ?1))
+###
+> Mod(3f, qr8)
+Mod(3, qr8) : r8?
+Binder : Guard(?1: qr8, Mod(3, ?1))
+###
+> Mod(3f, qr4)
+Mod(3, qr4) : r8?
+Binder : Guard(?1: qr4, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qi)
+Mod(3, qi) : r8?
+Binder : Guard(?1: qi, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qi8)
+Mod(3, qi8) : r8?
+Binder : Guard(?1: qi8, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qi4)
+Mod(3, qi4) : r8?
+Binder : Guard(?1: qi4, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qi2)
+Mod(3, qi2) : r8?
+Binder : Guard(?1: qi2, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qi1)
+Mod(3, qi1) : r8?
+Binder : Guard(?1: qi1, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qu8)
+Mod(3, qu8) : r8?
+Binder : Guard(?1: qu8, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qu4)
+Mod(3, qu4) : r8?
+Binder : Guard(?1: qu4, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qu2)
+Mod(3, qu2) : r8?
+Binder : Guard(?1: qu2, Mod(3, Num<r8>(?1)))
+###
+> Mod(3f, qu1)
+Mod(3, qu1) : r8?
+Binder : Guard(?1: qu1, Mod(3, Num<r8>(?1)))
+###
+> Mod(g, 1)
+Mod(g, 1) : i8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 1)
+Reducer: 0
+###
+> Mod(o, 1)
+Mod(o, 1) : i8?
+Binder : Guard(?1: o, Mod(Unit<i8>(?1), 1))
+Reducer: null
+###
+> Mod(s, 1)
+Mod(s, 1) : i8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 1)
+Reducer: 0
+###
+> Mod(d, 1)
+Mod(d, 1) : i8
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 1)
+Reducer: 0
+###
+> Mod(b, 1)
+Mod(b, 1) : i8
+Binder : Mod(Num<i8>(b), 1)
+Reducer: 0
+###
+> Mod(n, 1)
+Mod(n, 1) : r8
+Binder : Mod(n, 1)
+###
+> Mod(r8, 1)
+Mod(r8, 1) : r8
+Binder : Mod(r8, 1)
+###
+> Mod(r4, 1)
+Mod(r4, 1) : r8
+Binder : Mod(Num<r8>(r4), 1)
+###
+> Mod(i, 1)
+Mod(i, 1) : i
+Binder : Mod(i, 1)
+Reducer: 0
+###
+> Mod(i8, 1)
+Mod(i8, 1) : i8
+Binder : Mod(i8, 1)
+Reducer: 0
+###
+> Mod(i4, 1)
+Mod(i4, 1) : i8
+Binder : Mod(Num<i8>(i4), 1)
+Reducer: 0
+###
+> Mod(i2, 1)
+Mod(i2, 1) : i8
+Binder : Mod(Num<i8>(i2), 1)
+Reducer: 0
+###
+> Mod(i1, 1)
+Mod(i1, 1) : i8
+Binder : Mod(Num<i8>(i1), 1)
+Reducer: 0
+###
+> Mod(u8, 1)
+Mod(u8, 1) : i8
+*** Warning: (4,6) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Mod(Num<i8>(u8), 1)
+Reducer: 0
+###
+> Mod(u4, 1)
+Mod(u4, 1) : i8
+Binder : Mod(Num<i8>(u4), 1)
+Reducer: 0
+###
+> Mod(u2, 1)
+Mod(u2, 1) : i8
+Binder : Mod(Num<i8>(u2), 1)
+Reducer: 0
+###
+> Mod(u1, 1)
+Mod(u1, 1) : i8
+Binder : Mod(Num<i8>(u1), 1)
+Reducer: 0
+###
+> Mod(qd, 1)
+Mod(qd, 1) : i8?
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Mod(Error(ErrBadType_Src_Dst), 1))
+Reducer: Guard(?1: qd, 0)
+###
+> Mod(qb, 1)
+Mod(qb, 1) : i8?
+Binder : Guard(?1: qb, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qb, 0)
+###
+> Mod(qn, 1)
+Mod(qn, 1) : r8?
+Binder : Guard(?1: qn, Mod(?1, 1))
+###
+> Mod(qr8, 1)
+Mod(qr8, 1) : r8?
+Binder : Guard(?1: qr8, Mod(?1, 1))
+###
+> Mod(qr4, 1)
+Mod(qr4, 1) : r8?
+Binder : Guard(?1: qr4, Mod(Num<r8>(?1), 1))
+###
+> Mod(qi, 1)
+Mod(qi, 1) : i?
+Binder : Guard(?1: qi, Mod(?1, 1))
+Reducer: Guard(?1: qi, 0)
+###
+> Mod(qi8, 1)
+Mod(qi8, 1) : i8?
+Binder : Guard(?1: qi8, Mod(?1, 1))
+Reducer: Guard(?1: qi8, 0)
+###
+> Mod(qi4, 1)
+Mod(qi4, 1) : i8?
+Binder : Guard(?1: qi4, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi4, 0)
+###
+> Mod(qi2, 1)
+Mod(qi2, 1) : i8?
+Binder : Guard(?1: qi2, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi2, 0)
+###
+> Mod(qi1, 1)
+Mod(qi1, 1) : i8?
+Binder : Guard(?1: qi1, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi1, 0)
+###
+> Mod(qu8, 1)
+Mod(qu8, 1) : i8?
+*** Warning: (4,7) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu8, 0)
+###
+> Mod(qu4, 1)
+Mod(qu4, 1) : i8?
+Binder : Guard(?1: qu4, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu4, 0)
+###
+> Mod(qu2, 1)
+Mod(qu2, 1) : i8?
+Binder : Guard(?1: qu2, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu2, 0)
+###
+> Mod(qu1, 1)
+Mod(qu1, 1) : i8?
+Binder : Guard(?1: qu1, Mod(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu1, 0)
+###
+> Mod(null, 0)
+Mod(null, 0) : i8?
+Binder : Guard(?1: null, Mod(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Mod(g, 0)
+Mod(g, 0) : i8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 0)
+Reducer: 0
+###
+> Mod(o, 0)
+Mod(o, 0) : i8?
+Binder : Guard(?1: o, Mod(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Mod(s, 0)
+Mod(s, 0) : i8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 0)
+Reducer: 0
+###
+> Mod(d, 0)
+Mod(d, 0) : i8
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Mod(Error(ErrBadType_Src_Dst), 0)
+Reducer: 0
+###
+> Mod(b, 0)
+Mod(b, 0) : i8
+Binder : Mod(Num<i8>(b), 0)
+Reducer: 0
+###
+> Mod(n, 0)
+Mod(n, 0) : r8
+Binder : Mod(n, 0)
+###
+> Mod(r8, 0)
+Mod(r8, 0) : r8
+Binder : Mod(r8, 0)
+###
+> Mod(r4, 0)
+Mod(r4, 0) : r8
+Binder : Mod(Num<r8>(r4), 0)
+###
+> Mod(i, 0)
+Mod(i, 0) : i
+Binder : Mod(i, 0)
+Reducer: 0
+###
+> Mod(i8, 0)
+Mod(i8, 0) : i8
+Binder : Mod(i8, 0)
+Reducer: 0
+###
+> Mod(i4, 0)
+Mod(i4, 0) : i8
+Binder : Mod(Num<i8>(i4), 0)
+Reducer: 0
+###
+> Mod(i2, 0)
+Mod(i2, 0) : i8
+Binder : Mod(Num<i8>(i2), 0)
+Reducer: 0
+###
+> Mod(i1, 0)
+Mod(i1, 0) : i8
+Binder : Mod(Num<i8>(i1), 0)
+Reducer: 0
+###
+> Mod(u8, 0)
+Mod(u8, 0) : i8
+*** Warning: (4,6) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Mod(Num<i8>(u8), 0)
+Reducer: 0
+###
+> Mod(u4, 0)
+Mod(u4, 0) : i8
+Binder : Mod(Num<i8>(u4), 0)
+Reducer: 0
+###
+> Mod(u2, 0)
+Mod(u2, 0) : i8
+Binder : Mod(Num<i8>(u2), 0)
+Reducer: 0
+###
+> Mod(u1, 0)
+Mod(u1, 0) : i8
+Binder : Mod(Num<i8>(u1), 0)
+Reducer: 0
+###
+> Mod(qd, 0)
+Mod(qd, 0) : i8?
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Mod(Error(ErrBadType_Src_Dst), 0))
+Reducer: Guard(?1: qd, 0)
+###
+> Mod(qb, 0)
+Mod(qb, 0) : i8?
+Binder : Guard(?1: qb, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qb, 0)
+###
+> Mod(qn, 0)
+Mod(qn, 0) : r8?
+Binder : Guard(?1: qn, Mod(?1, 0))
+###
+> Mod(qr8, 0)
+Mod(qr8, 0) : r8?
+Binder : Guard(?1: qr8, Mod(?1, 0))
+###
+> Mod(qr4, 0)
+Mod(qr4, 0) : r8?
+Binder : Guard(?1: qr4, Mod(Num<r8>(?1), 0))
+###
+> Mod(qi, 0)
+Mod(qi, 0) : i?
+Binder : Guard(?1: qi, Mod(?1, 0))
+Reducer: Guard(?1: qi, 0)
+###
+> Mod(qi8, 0)
+Mod(qi8, 0) : i8?
+Binder : Guard(?1: qi8, Mod(?1, 0))
+Reducer: Guard(?1: qi8, 0)
+###
+> Mod(qi4, 0)
+Mod(qi4, 0) : i8?
+Binder : Guard(?1: qi4, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi4, 0)
+###
+> Mod(qi2, 0)
+Mod(qi2, 0) : i8?
+Binder : Guard(?1: qi2, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi2, 0)
+###
+> Mod(qi1, 0)
+Mod(qi1, 0) : i8?
+Binder : Guard(?1: qi1, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi1, 0)
+###
+> Mod(qu8, 0)
+Mod(qu8, 0) : i8?
+*** Warning: (4,7) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu8, 0)
+###
+> Mod(qu4, 0)
+Mod(qu4, 0) : i8?
+Binder : Guard(?1: qu4, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu4, 0)
+###
+> Mod(qu2, 0)
+Mod(qu2, 0) : i8?
+Binder : Guard(?1: qu2, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu2, 0)
+###
+> Mod(qu1, 0)
+Mod(qu1, 0) : i8?
+Binder : Guard(?1: qu1, Mod(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu1, 0)
+###

@@ -1,0 +1,212 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+:: {r8:r8, qr8:r8?, i8:i8, qi8:i8?, s:s}
+
+"*** Two operator chain with =."
+<# Gen("r8", "@=", "3r", "5r"); #>
+// REVIEW: Could reduce some of these.
+<# Gen("3r", "@=", "r8", "5r"); #>
+
+<# Gen("r8", "@=", "3r", "null"); #>
+<# Gen("r8", "@=", "null", "5r"); #>
+<# Gen("r8", "@=", "null", "null"); #>
+
+<# Gen("qr8", "@=", "3r", "5r"); #>
+// REVIEW: Could reduce some of these.
+<# Gen("3r", "@=", "qr8", "5r"); #>
+
+<# Gen("qr8", "@=", "3r", "null"); #>
+<# Gen3("qr8", "=", "null", "5r"); #>
+<# Gen3("qr8", "=", "null", "null"); #>
+
+"*** Two operator chain with >."
+<# Gen("r8", "@>", "3r", "5r"); #>
+// REVIEW: Could reduce some of these.
+<# Gen("3r", "@>", "r8", "5r"); #>
+
+<# Gen("r8", "@>", "3r", "null"); #>
+<# Gen3("r8", ">", "null", "5r"); #>
+<# Gen3("r8", ">", "null", "null"); #>
+
+<# Gen("qr8", "@>", "3r", "5r"); #>
+// REVIEW: Could reduce some of these.
+<# Gen("3r", "@>", "qr8", "5r"); #>
+
+<# Gen("qr8", "@>", "3r", "null"); #>
+<# Gen3("qr8", ">", "null", "5r"); #>
+<# Gen3("qr8", ">", "null", "null"); #>
+
+"*** Two operator chain with = on the right."
+<# GenR("r8", "@=", "3r", "5r"); #>
+
+<# GenR("r8", "@=", "null", "5r"); #>
+<# GenR3("r8", "=", "3r", "null"); #>
+<# GenR3("r8", "=", "null", "null"); #>
+
+<# GenR3("qr8", "=", "3r", "5r"); #>
+
+<# GenR3("qr8", "=", "null", "5r"); #>
+<# GenR3("qr8", "=", "3r", "null"); #>
+<# GenR3("qr8", "=", "null", "null"); #>
+
+"*** Two operator chain with < on the right."
+<# GenR("r8", "@<", "3r", "5r"); #>
+
+<# GenR("r8", "@<", "null", "5r"); #>
+<# GenR3("r8", "<", "3r", "null"); #>
+<# GenR3("r8", "<", "null", "null"); #>
+
+<# GenR3("qr8", "<", "3r", "5r"); #>
+
+<# GenR3("qr8", "<", "null", "5r"); #>
+<# GenR3("qr8", "<", "3r", "null"); #>
+<# GenR3("qr8", "<", "null", "null"); #>
+
+"*** Two operator chain with !< on the right."
+<# GenR("r8", "!@<", "3r", "5r"); #>
+
+<# GenR("r8", "!@<", "null", "5r"); #>
+<# GenR3("r8", "!<", "3r", "null"); #>
+<# GenR3("r8", "!<", "null", "null"); #>
+
+<# GenR3("qr8", "!<", "3r", "5r"); #>
+
+<# GenR3("qr8", "!<", "null", "5r"); #>
+<# GenR3("qr8", "!<", "3r", "null"); #>
+<# GenR3("qr8", "!<", "null", "null"); #>
+
+"*** Others."
+<# GenGAG("qr8", "@=", "3r", "5r", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "5r", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "3r", "null", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "null", "@=", "r8"); #>
+
+<# GenGAG("qr8", "@=", "3r", "5r", "!@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "5r", "!@=", "r8"); #>
+<# GenGAG("qr8", "@=", "3r", "null", "!@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "null", "!@=", "r8"); #>
+
+<# GenAA("3r", "5r", "7r"); #>
+
+<# GenGAA("r8", "@<", "3r", "5r", "7r"); #>
+
+<# GenGAAG("r8", "@<", "3r", "5r", "7r", "@<", "qr8"); #>
+
+:: {r8:r8*, qr8:r8?*}
+
+"*** Lifting."
+
+<# GenGAG("qr8", "@=", "3r", "5r", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "5r", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "3r", "null", "@=", "r8"); #>
+<# GenGAG("qr8", "@=", "null", "null", "@=", "r8"); #>
+
+<# GenGAA("r8", "@<", "3r", "5r", "7r"); #>
+
+<#+
+string[] _ops = new[] { " @ =", "!@ =", " @< ", " @<=", " @> ", " @>="};
+string[] _roots = new[] { "= ", "< ", "<=", "> ", ">="};
+string[] _nots = new[] {" ", "!"};
+
+void Gen(string a, string op0, string b, string c)
+{
+    foreach (var not in _nots) {
+        foreach (var root in _roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+#>
+(<#=a#> <#=op0#> <#=b#> <#=op#> <#=c#>, <#=a#> <#=op0#> <#=b#> <#=sop#> <#=c#>)
+<#+
+        }
+    }
+}
+
+// For this, op0 should contain neither strictness modifier.
+void Gen3(string a, string op0, string b, string c)
+{
+    foreach (var not in _nots) {
+        foreach (var root in _roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+#>
+(<#=a#> @<#=op0#> <#=b#> <#=op#> <#=c#>, <#=a#> $<#=op0#> <#=b#> <#=op#> <#=c#>, <#=a#> @<#=op0#> <#=b#> <#=sop#> <#=c#>)
+<#+
+        }
+    }
+}
+
+void GenR(string a, string op0, string b, string c)
+{
+    foreach (var not in _nots) {
+        foreach (var root in _roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+#>
+(<#=b#> <#=op#> <#=c#> <#=op0#> <#=a#>, <#=b#> <#=sop#> <#=c#> <#=op0#> <#=a#>)
+<#+
+        }
+    }
+}
+
+// For this, op0 should contain neither strictness modifier.
+void GenR3(string a, string op0, string b, string c)
+{
+    foreach (var not in _nots) {
+        foreach (var root in _roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+#>
+(<#=b#> <#=op#> <#=c#> @<#=op0#> <#=a#>, <#=b#> <#=op#> <#=c#> $<#=op0#> <#=a#>, <#=b#> <#=sop#> <#=c#> @<#=op0#> <#=a#>)
+<#+
+        }
+    }
+}
+
+void GenGAG(string a, string op0, string b, string c, string op2, string d)
+{
+    foreach (var op1 in _ops) {
+#>
+<#=a#> <#=op0#> <#=b#> <#=op1#> <#=c#> <#=op2#> <#=d#>
+<#+
+    }
+}
+
+void GenAA(string a, string b, string c)
+{
+    foreach (var op0 in _ops) {
+        foreach (var op1 in _ops) {
+#>
+<#=a#> <#=op0#> <#=b#> <#=op1#> <#=c#>
+<#+
+        }
+    }
+}
+
+void GenGAA(string a, string op0, string b, string c, string d)
+{
+    foreach (var op1 in _ops) {
+        foreach (var op2 in _ops) {
+#>
+<#=a#> <#=op0#> <#=b#> <#=op1#> <#=c#> <#=op2#> <#=d#>
+<#+
+        }
+    }
+}
+
+void GenGAAG(string a, string op0, string b, string c, string d, string op3, string e)
+{
+    foreach (var op1 in _ops) {
+        foreach (var op2 in _ops) {
+#>
+<#=a#> <#=op0#> <#=b#> <#=op1#> <#=c#> <#=op2#> <#=d#> <#=op3#> <#=e#>
+<#+
+        }
+    }
+}
+#>

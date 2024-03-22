@@ -1,0 +1,182 @@
+﻿:: { s0:i8*, s1:i4*, s2:i2*, b:b }
+
+ForEachIf(x:Null(s0), y:s1, x > 0, y)
+ForEachWhile(x:Null(s0), y:s1, x > 0, y)
+ForEach(x:Null(s0), y:s1, [if] x > 0, y)
+ForEach(x:Null(s0), y:s1, [while] x > 0, y)
+Map(x:Null(s0), y:s1, [if] x > 0, y)
+Map(x:Null(s0), y:s1, [while] x > 0, y)
+Zip(x:Null(s0), y:s1, [if] x > 0, y)
+Zip(x:Null(s0), y:s1, [while] x > 0, y)
+
+ForEachIf(x:s0->Take(0), y:s1, x > 0, y)
+ForEachWhile(x:s0->Take(0), y:s1, x > 0, y)
+ForEach(x:s0->Take(0), y:s1, [if] x > 0, y)
+ForEach(x:s0->Take(0), y:s1, [while] x > 0, y)
+Map(x:s0->Take(0), y:s1, [if] x > 0, y)
+Map(x:s0->Take(0), y:s1, [while] x > 0, y)
+Zip(x:s0->Take(0), y:s1, [if] x > 0, y)
+Zip(x:s0->Take(0), y:s1, [while] x > 0, y)
+
+ForEachIf(x:s0, x > 0, x)
+ForEachWhile(x:s0, x > 0, x)
+ForEach(x:s0, x > 0, x) // Error.
+ForEachIf(x:s0, [if] x > 0, x)
+ForEachWhile(x:s0, [while] x > 0, x)
+ForEach(x:s0, [if] x > 0, x)
+ForEach(x:s0, [while] x > 0, x)
+Map(x:s0, [if] x > 0, x)
+Map(x:s0, [while] x > 0, x)
+Zip(x:s0, [if] x > 0, x)
+Zip(x:s0, [while] x > 0, x)
+
+ForEachIf(x:s0, [while] x > 0, x) // Error.
+ForEachWhile(x:s0, [if] x > 0, x) // Error.
+ForEachIf([if] x:s0, x > 0, x) // Error.
+ForEachWhile([while] x:s0, x > 0, x) // Error.
+ForEach([if] x:s0, x > 0, x) // Error.
+ForEach([while] x:s0, x > 0, x) // Error.
+ForEachIf(x:s0, x > 0, [if] x) // Error.
+ForEachWhile(x:s0, x > 0, [while] x) // Error.
+ForEach(x:s0, x > 0, [if] x) // Error.
+ForEach(x:s0, x > 0, [while] x) // Error.
+ForEach([if] x:s0, [if] x > 0, x) // Error.
+ForEach([while] x:s0, [while] x > 0, x) // Error.
+ForEach(x:s0, [if] x > 0, [if] x) // Error.
+ForEach(x:s0, [while] x > 0, [while] x) // Error.
+ForEach(x:s0, [if] x > 0, [if] x mod 2 = 0, x) // Error.
+ForEach(x:s0, [while] x > 0, [while] x mod 2 = 0, x) // Error.
+
+ForEachIf(x:s0, [if] true, x->CastR8())
+ForEachWhile(x:s0, [while] true, x->CastR8())
+ForEach(x:s0, [if] true, x->CastR8())
+ForEach(x:s0, [while] true, x->CastR8())
+ForEachIf(x:s0, [if] false, x->CastR8())
+ForEachWhile(x:s0, [while] false, x->CastR8())
+ForEach(x:s0, [if] false, x->CastR8())
+ForEach(x:s0, [while] false, x->CastR8())
+
+ForEachIf(x:s0->Take(10), y:Range(100), x > 0, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(100), x > 0, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100), [if] x > 0, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100), [while] x > 0, x->CastR8())
+ForEachIf(x:s0->Take(10), y:Range(10), x > 0, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(10), x > 0, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(10), [if] x > 0, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(10), [while] x > 0, x->CastR8())
+
+ForEachIf(x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100), [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100), [while] y > 3, x->CastR8())
+ForEachIf(x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(1, 100), [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(1, 100), [while] y > 3, x->CastR8())
+ForEachIf(x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(1, 100, 2), [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(1, 100, 2), [while] y > 3, x->CastR8())
+ForEachIf(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [while] y > 3, x->CastR8())
+ForEachIf(x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Repeat(4, 20), [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Repeat(4, 20), [while] y > 3, x->CastR8())
+
+ForEachIf(x:s0->Take(10), y:Range(100)->Sort(), y > 3, x->CastR8())
+ForEachWhile(x:s0->Take(10), y:Range(100)->Sort(), y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100)->Sort(), [if] y > 3, x->CastR8())
+ForEach(x:s0->Take(10), y:Range(100)->Sort(), [while] y > 3, x->CastR8())
+
+ForEachIf(Range(1000), x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(100), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(100), [while] y > 3, x->CastR8())
+ForEachIf(Range(1000), x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100), [while] y > 3, x->CastR8())
+ForEachIf(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), [while] y > 3, x->CastR8())
+ForEachIf(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachWhile(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [if] y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [while] y > 3, x->CastR8())
+ForEachIf(Range(1000), x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Repeat(4, 20), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x:s0->Take(10), y:Repeat(4, 20), [while] y > 3, x->CastR8())
+
+ForEach(Range(1000), Repeat("hi", 17), [3], "data")
+ForEachIf(Range(1000), Repeat("hi", 17), [3], "data") // Error.
+ForEachWhile(Range(1000), Repeat("hi", 17), [3], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [if] [3], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [while] [3], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data")
+ForEachIf(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data") // Error.
+ForEachWhile(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [if] [0,1,2,3,4], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [while] [0,1,2,3,4], "data") // Error.
+ForEachIf(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], x > 5, y)
+ForEachWhile(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], x > 5, y)
+ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [if] x > 5, y)
+ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [while] x > 5, y)
+ForEachIf(x:s0, y:s1, Range(100), x > 5, y)
+ForEachWhile(x:s0, y:s1, Range(100), x > 5, y)
+ForEach(x:s0, y:s1, Range(100), [if] x > 5, y)
+ForEach(x:s0, y:s1, Range(100), [while] x > 5, y)
+ForEachIf(x:s0, y:s1, Repeat("hi", 100), x > 5, y)
+ForEachWhile(x:s0, y:s1, Repeat("hi", 100), x > 5, y)
+ForEach(x:s0, y:s1, Repeat("hi", 100), [if] x > 5, y)
+ForEach(x:s0, y:s1, Repeat("hi", 100), [while] x > 5, y)
+
+ForEachIf(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], b, "data")
+ForEachWhile(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], b, "data")
+ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [if] b, "data")
+ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [while] b, "data")
+
+ForEachIf(x:Range(1000), y:Range(100), x > 5, y)
+ForEachWhile(x:Range(1000), y:Range(100), x > 5, y)
+ForEach(x:Range(1000), y:Range(100), [if] x > 5, y)
+ForEach(x:Range(1000), y:Range(100), [while] x > 5, y)
+
+ForEachIf(p:ForEach(x:s0, y:s1, x * y), q:Range(17), q mod 3 != 0, p)
+ForEachWhile(p:ForEach(x:s0, y:s1, x * y), q:Range(17), q mod 3 != 0, p)
+ForEach(p:ForEach(x:s0, y:s1, x * y), q:Range(17), [if] q mod 3 != 0, p)
+ForEach(p:ForEach(x:s0, y:s1, x * y), q:Range(17), [while] q mod 3 != 0, p)
+
+ForEachIf(p:ForEach(x:s0, y:s1, (x, y)), p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEachWhile(p:ForEach(x:s0, y:s1, (x, y)), p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, (x, y)), [if] p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, (x, y)), [while] p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+
+ForEachIf(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEachWhile(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), [if] p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), [while] p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+
+ForEachIf(p:ForEach(x:s0, y:s1, x * y), p > 0, p) // Not flattened.
+ForEachWhile(p:ForEach(x:s0, y:s1, x * y), p > 0, p) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, x * y), [if] p > 0, p) // Not flattened.
+ForEach(p:ForEach(x:s0, y:s1, x * y), [while] p > 0, p) // Not flattened.
+
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), i * 2)
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: s1, (i, j))
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, [if] it < 15, it - 1), (i, j))
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, [while] it < 15, it - 1), (i, j))
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, it - 1), (i, j))
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), i * 2)
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: s1, (i, j))
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, [while] it < 15, it - 1), (i, j))
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, [if] it < 15, it - 1), (i, j))
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, it - 1), (i, j))
+
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), [if] it > 3, i * 2) // Not flattened.
+ForEach(i: ForEach(s0, [if] it < 7, it + 1), [while] it > 3, i * 2) // Not flattened.
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), [if] it > 3, i * 2) // Not flattened.
+ForEach(i: ForEach(s0, [while] it < 7, it + 1), [while] it > 3, i * 2) // Not flattened.

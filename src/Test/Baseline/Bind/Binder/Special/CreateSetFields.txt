@@ -1,0 +1,23 @@
+Value: Global(str) : s
+Value: Global(rec) : {A:i8}
+Good: Global(rec) : {A:i8}
+Good: Global(rec) : {A:i8}
+Good: SetFields(Global(rec)) : {}
+Good: SetFields(Global(rec)) : {}
+Good: SetFields([with:1] Global(rec), B : Global(str)) : {A:i8, B:s}
+Good: SetFields([with:1] Global(rec), B : GetField(Scope(1), A)) : {A:i8, B:i8}
+Good: SetFields([with:1] Global(rec), B : Global(str)) : {B:s}
+Good: SetFields([with:1] Global(rec), B : GetField(Scope(1), A)) : {B:i8}
+Good: SetFields(Global(rec)) : {A:i8, B:s}
+Good: SetFields(Global(rec)) : {A:i8, B:i8}
+Good: SetFields(Global(rec)) : {A:i8, B:i8?}
+Good: SetFields(Global(rec)) : {A:i8, B:{A:i8}?}
+Error: Missing scope unused; {A:i8, B:s} ([] Global(rec), B:Global(str))
+Error: Missing scope used; {A:i8, B:i8} ([] Global(rec), B:GetField(Scope(1x), A))
+Error: Wrong type; {A:i8, B:s} ([{A:i8}] Global(rec), B:GetField(Scope(1x), A))
+Error: Wrong type 2; {B:s} ([{A:i8}] Global(rec), B:Global(i8))
+Error: Wrong type 3; {A:i8, B:i8} ([{A:i8}] Global(rec), C:GetField(Scope(1x), A))
+Error: Wrong type 4; i8 ([{A:i8}] Global(rec), B:Global(str))
+Error: Unassigned field of rec type; {A:i8, B:{A:i8}} ([{A:i8}] Global(rec))
+Error: Bad source; {A:i8, B:s} ([{A:i8}] <null>, B:Global(str))
+Error: Bad source type; {A:i8, B:s} ([{A:i8}] Global(i8), B:Global(str))

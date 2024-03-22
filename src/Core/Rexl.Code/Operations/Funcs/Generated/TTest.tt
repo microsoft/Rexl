@@ -1,0 +1,266 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+using Microsoft.Rexl.Private;
+
+<#
+var optFlavors1Samp= new (bool opt, string name)[]
+{
+    (false, "Req"),
+    (true, "Opt"),
+};
+
+var optFlavors = new (bool xOpt, bool yOpt, string name)[]
+{
+    (false, false, "Req"),
+    (true , false, "XOpt"),
+    (false, true , "YOpt"),
+    (true , true , "Opt")
+};
+
+var selFlavors = new string[]
+{
+    "",
+    "Sel",
+    "SelInd"
+};
+#>
+
+namespace Microsoft.Rexl.Code;
+
+partial class TTestOneSampleGen
+{
+    partial class Execs
+    {
+<# foreach (var (opt, name) in optFlavors1Samp) {#>
+        private static readonly MethodInfo _methExec<#=name#> = typeof(Execs).GetMethod(nameof(Exec<#=name#>), BindingFlags.NonPublic | BindingFlags.Static).VerifyValue();
+<# }#>
+
+<# foreach (var (opt, name) in optFlavors1Samp) {#>
+        private static void Exec<#=name#>(IEnumerable<double<#=OptSuffix(opt)#>> x, double popMean,
+            out double pl, out double pr, out double p2,
+            out double dof, out double stderr, out double t,
+            out long count, out double mean, out double variance,
+            ExecCtx ctx, int id)
+        {
+            if (x == null)
+            {
+                pl = NaN; pr = NaN; p2 = NaN;
+                dof = NaN; stderr = NaN; t = NaN;
+                count = 0; mean = NaN; variance = NaN;
+                return;
+            }
+
+            ExecSingleCore(<#=GetWrapSample(opt, "x")#>, popMean,
+                out pl, out pr, out p2,
+                out dof, out stderr, out t,
+                out count, out mean, out variance);
+        }
+<# }#>
+    }
+}
+
+partial class TTestTwoSampleGen
+{
+    partial class Execs
+    {
+<# foreach (var (_, _, name) in optFlavors) {#>
+        private static readonly MethodInfo _methExec<#=name#> = typeof(Execs).GetMethod(nameof(Exec<#=name#>), BindingFlags.NonPublic | BindingFlags.Static).VerifyValue();
+<# }#>
+
+<# foreach (var (xOpt, yOpt, name) in optFlavors) {#>
+        private static void Exec<#=name#>(IEnumerable<double<#=OptSuffix(xOpt)#>> x, IEnumerable<double<#=OptSuffix(yOpt)#>> y, bool equalVar,
+            out double pl, out double pr, out double p2,
+            out double dof, out double stderr, out double t,
+            out long countX, out long countY,
+            out double meanX, out double meanY,
+            out double varianceX, out double varianceY,
+            ExecCtx ctx, int id)
+        {
+            Validation.AssertValueOrNull(x);
+            Validation.AssertValueOrNull(y);
+
+            if (x == null || y == null)
+            {
+                pl = NaN; pr = NaN; p2 = NaN;
+                dof = NaN; stderr = NaN; t = NaN;
+                countX = 0; countY = 0;
+                meanX = NaN; meanY = NaN;
+                varianceX = NaN; varianceY = NaN;
+                return;
+            }
+
+            ExecCore(<#=GetWrapSample(xOpt, "x")#>, <#=GetWrapSample(yOpt, "y", incId: true)#>, equalVar,
+                out pl, out pr, out p2,
+                out dof, out stderr, out t,
+                out countX, out countY,
+                out meanX, out meanY,
+                out varianceX, out varianceY);
+        }
+<# }#>
+    }
+}
+
+partial class TTestPairedGen
+{
+    partial class Execs
+    {
+<# foreach (var selName in selFlavors) {#>
+<#     foreach (var (xOpt, yOpt, optName) in optFlavors) {#>
+<#          var name = optName + selName;#>
+        private static readonly MethodInfo _methExec<#=name#> = typeof(Execs).GetMethod(nameof(Exec<#=name#>), BindingFlags.NonPublic | BindingFlags.Static).VerifyValue();
+<#     }#>
+
+<# }#>
+<# foreach (var selName in selFlavors) {
+    bool isSel = selName != "";
+    bool isIndexed = selName == "SelInd";
+    foreach (var (xOpt, yOpt, optName) in optFlavors) {
+        bool req = optName == "Req";
+        var name = optName + selName;
+        string types;
+        if (isSel) {
+            var fmt = "IEnumerable<T> src, Func<{0}T, double{1}> fnX, Func<{0}T, double{2}> fnY";
+            types = string.Format(fmt, isIndexed ? "long, " : "", OptSuffix(xOpt), OptSuffix(yOpt));
+        } else {
+            var fmt = "IEnumerable<double{0}> x, IEnumerable<double{1}> y";
+            types = string.Format(fmt, OptSuffix(xOpt), OptSuffix(yOpt));
+        }
+#>
+        private static void Exec<#=name#><#=isSel ? "<T>" : ""#>(<#=types#>,
+            out double pl, out double pr, out double p2,
+            out double dof, out double stderr, out double t,
+            out long count, out double mean, out double variance,
+            ExecCtx ctx, int id)
+        {
+<#      if (isSel) {#>
+            Validation.AssertValueOrNull(src);
+            Validation.AssertValue(fnX);
+            Validation.AssertValue(fnY);
+
+            if (src == null)
+            {
+<#      } else {#>
+            Validation.AssertValueOrNull(x);
+            Validation.AssertValueOrNull(y);
+
+            if (x == null || y == null)
+            {
+<#      }#>
+                pl = NaN; pr = NaN; p2 = NaN;
+                dof = NaN; stderr = NaN; t = NaN;
+                count = 0; mean = NaN; variance = NaN;
+                return;
+            }
+
+            ExecSingleCore(Diffs(<#=(isSel ? "src, fnX, fnY" : "x, y") + ", ctx, id"#>), popMean: 0,
+                out pl, out pr, out p2,
+                out dof, out stderr, out t,
+                out count, out mean, out variance);
+
+            static IEnumerable<double> Diffs(<#=types + ","#>
+                ExecCtx ctx, int id)
+            {
+<#      if (isSel) {#>
+                Validation.AssertValue(src);
+                Validation.AssertValue(fnX);
+                Validation.AssertValue(fnY);
+
+<#          string fnArgs;#>
+<#          if (isIndexed) {#>
+                long i = -1;
+<#              fnArgs = "i, item";#>
+<#          } else {#>
+<#              fnArgs = "item";#>
+<#          }#>
+                foreach (var item in src)
+                {
+                    ctx.Ping(id);
+<#              if (isIndexed) {#>
+                    ++i;
+<#              }#>
+<#          if (req) {#>
+                    yield return fnX(<#=fnArgs#>) - fnY(<#=fnArgs#>);
+<#          } else if (xOpt && yOpt) {#>
+                    var xCur = fnX(<#=fnArgs#>);
+                    if (xCur == null)
+                        continue;
+                    var yCur = fnY(<#=fnArgs#>);
+                    if (yCur != null)
+                        yield return xCur.GetValueOrDefault() - yCur.GetValueOrDefault();
+<#          } else {
+                string curOpt, curReq, fnOpt, fnReq;
+                if (xOpt) {
+                    curOpt = "xCur"; curReq = "yCur";
+                    fnOpt = "fnX"; fnReq = "fnY";
+                } else {
+                    curOpt = "yCur"; curReq = "xCur";
+                    fnOpt = "fnY"; fnReq = "fnX";
+                }
+#>
+                    var <#=curOpt#> = <#=fnOpt#>(<#=fnArgs#>);
+                    if (<#=curOpt#> == null)
+                        continue;
+                    var <#=curReq#> = <#=fnReq#>(<#=fnArgs#>);
+                    yield return xCur<#=GvodSuffix(xOpt)#> - yCur<#=GvodSuffix(yOpt)#>;
+<#          }#>
+                }
+<#      } else {#>
+                Validation.AssertValue(x);
+                Validation.AssertValue(y);
+
+                using var atorX = x.GetEnumerator();
+                using var atorY = y.GetEnumerator();
+                while (atorX.MoveNext() && atorY.MoveNext())
+                {
+                    ctx.Ping(id);
+<#          if (req) {#>
+                    yield return atorX.Current - atorY.Current;
+<#          } else {#>
+                    var xCur = atorX.Current;
+                    var yCur = atorY.Current;
+                    if (<#=OptsToCond(xOpt, yOpt)#>)
+                        yield return xCur<#=GvodSuffix(xOpt)#> - yCur<#=GvodSuffix(yOpt)#>;
+<#          }#>
+                }
+<#      }#>
+            }
+        }
+<#  }#>
+<# }#>
+    }
+}
+<#+
+private string OptSuffix(bool opt) => opt ? "?" : "";
+
+private string OptsToCond(bool xOpt, bool yOpt)
+{
+    if (xOpt)
+    {
+        return yOpt ?
+            "xCur != null && yCur != null" :
+            "xCur != null";
+    }
+    return "yCur != null";
+}
+
+private string GetWrapSample(bool opt, string name, bool incId = false)
+{
+    var fmt = opt ? "FilterNulls({0}, ctx, id{1})" : "CodeGenUtil.EnumerableToPingingCore({0}, ctx, id{1})";
+    return string.Format(fmt, name, incId ? " + 1" : "");
+}
+
+string GvodSuffix(bool opt) => opt ? ".GetValueOrDefault()" : "";
+#>

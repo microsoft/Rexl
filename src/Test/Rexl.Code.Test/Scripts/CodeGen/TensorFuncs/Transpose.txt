@@ -1,0 +1,195 @@
+﻿`` T_0 := Range(0)->Tensor.From();
+`` T_12 := Range(12)->Tensor.From();
+`` T_3_4 := T_12->Reshape(3, 4);
+`` T_2_3_2 := T_12->Reshape(2, 3, 2);
+`` T_2_3_1_2 := T_12->Reshape(2, 3, 1, 2);
+`` T_2_1_3_1_2 := T_12->Reshape(2, 1, 3, 1, 2);
+
+`` N0 := 0;
+`` N1 := 1;
+`` N2 := 2;
+`` N3 := 3;
+`` N4 := 4;
+`` N9 := 9;
+
+With(t: T_0, (t, t->Transpose()))
+With(t: T_12, (t, t->Transpose()))
+With(t: T_3_4, (t, t->Transpose()))
+With(t: T_2_3_2, (t, t->Transpose()))
+With(t: T_2_3_1_2, (t, t->Transpose()))
+
+With(t: T_3_4, (t, t->Transpose( 0, 1))) // *** Identity
+With(t: T_3_4, (t, t->Transpose( 0, 0)))
+With(t: T_3_4, (t, t->Transpose( 9, 1)))
+With(t: T_3_4, (t, t->Transpose(N0, 1)))
+With(t: T_3_4, (t, t->Transpose(N0, 0)))
+With(t: T_3_4, (t, t->Transpose(N0, 9)))
+With(t: T_3_4, (t, t->Transpose(N9, 1)))
+
+With(t: T_3_4, (t, t->Transpose( 1, 0))) // *** Reverse
+With(t: T_3_4, (t, t->Transpose( 1, 1)))
+With(t: T_3_4, (t, t->Transpose( 9, 0)))
+With(t: T_3_4, (t, t->Transpose( 1,N0)))
+With(t: T_3_4, (t, t->Transpose( 1,N1)))
+With(t: T_3_4, (t, t->Transpose( 9,N0)))
+
+With(t: T_2_3_2, (t, t->Transpose( 0, 1, 2))) // *** Identity
+With(t: T_2_3_2, (t, t->Transpose( 0, 0, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 1, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 1, 1)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 1, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 1, 9)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 1, 2)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 0, 0)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 1, 0)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 1, 1)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 1, 0)))
+With(t: T_2_3_2, (t, t->Transpose(N9, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose(N0, 1, 9)))
+
+With(t: T_2_3_2, (t, t->Transpose( 0, 2, 1))) // *** 021
+With(t: T_2_3_2, (t, t->Transpose( 0, 2, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 2, 2)))
+With(t: T_2_3_2, (t, t->Transpose( 0, 2, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 2, 1)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 2, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 0,N2, 1)))
+With(t: T_2_3_2, (t, t->Transpose( 0,N2, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 0,N2, 2)))
+With(t: T_2_3_2, (t, t->Transpose( 0,N2, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 9,N2, 1)))
+With(t: T_2_3_2, (t, t->Transpose( 9,N2, 9)))
+
+With(t: T_2_3_2, (t, t->Transpose( 1, 0, 2))) // *** 102
+With(t: T_2_3_2, (t, t->Transpose( 1, 1, 1)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 0, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 1, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 0, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 0, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 0,N2)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 1,N1)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 0,N0)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 9,N9)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 1,N9)))
+With(t: T_2_3_2, (t, t->Transpose( 1, 0,N9)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 0,N9)))
+
+With(t: T_2_3_2, (t, t->Transpose( 2, 0, 1))) // *** 201
+With(t: T_2_3_2, (t, t->Transpose( 2, 2, 2)))
+With(t: T_2_3_2, (t, t->Transpose( 2, 0, 0)))
+With(t: T_2_3_2, (t, t->Transpose( 2, 9, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 2, 2, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 2, 0, 9)))
+With(t: T_2_3_2, (t, t->Transpose( 9, 0, 1)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N0,N1)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N2,N2)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N0,N0)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N9,N9)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N2,N9)))
+With(t: T_2_3_2, (t, t->Transpose(N2,N0,N9)))
+With(t: T_2_3_2, (t, t->Transpose(N9,N0,N1)))
+
+With(t: T_2_3_1_2, (t, t->Transpose( 9, 9, 9, 9))) // *** Identity
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 9, 9, 9)))
+
+With(t: T_2_3_1_2, (t, t->Transpose( 0, 1, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 1, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0,N9, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9,N9, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0, 1,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 1,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0,N9,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9,N9,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0, 1, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 1, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0,N9, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9,N9, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0, 1,N9,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 1,N9,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 0,N9,N9,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9,N9,N9,N9)))
+
+With(t: T_2_3_1_2, (t, t->Transpose( 3, 2, 1, 0))) // *** 3210
+With(t: T_2_3_1_2, (t, t->Transpose( 3,N2, 1, 0)))
+With(t: T_2_3_1_2, (t, t->Transpose( 3, 2, 1,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 3, 2,N9, 0)))
+With(t: T_2_3_1_2, (t, t->Transpose( 3,N9, 1, 0)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 2, 1, 0)))
+
+With(t: T_2_3_1_2, (t, t->Transpose( 1, 0, 2, 3))) // *** 1023
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 0, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1,N9, 2, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1, 0,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 0,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1,N9,N9, 3)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1, 0, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 0, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1,N9, 2,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1, 0,N9,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose(N9, 0,N9,N9)))
+With(t: T_2_3_1_2, (t, t->Transpose( 1,N9,N9,N9)))
+
+With(t: T_2_1_3_1_2, (t, t->Transpose( 9, 9, 9, 9, 9))) // *** Identity
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 9, 9, 9, 9)))
+
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 3, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9, 4)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 3,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9,N9)))
+
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 4, 3))) // 01243
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 4, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9,N9, 3)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1, 2, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1, 2, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9, 2, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9, 2, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0, 1,N9, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9, 1,N9, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose( 0,N9,N9, 4,N9)))
+With(t: T_2_1_3_1_2, (t, t->Transpose(N9,N9,N9, 4,N9)))

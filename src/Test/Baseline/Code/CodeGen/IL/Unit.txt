@@ -1,0 +1,111 @@
+**** New definitions: X, type: v*
+
+> []
+[] : v*
+BndKind:Null, Type:v*, Bnd:(null:v*)
+// () : v*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldnull
+      1) ret
+  Total Size: 2
+
+Func sig: () to v*
+Type: <null>, Value: <null>
+###
+> [] | Map(_, it + 3)
+[] | Map(_, it + 3) : i8*
+BndKind:Null, Type:i8*, Bnd:(null:i8*)
+// () : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldnull
+      1) ret
+  Total Size: 2
+
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> X | Map(_, it + 3)
+X | Map(_, it + 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(X), 3:i8):i8*))
+// (∂.X:v*) : i8*
+ForEach_1(Arr<obj>, obj):i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ret
+  Total Size: 3
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<obj>
+      1) stloc.0 [Seq<obj>]
+      1) ldloc.0 [Seq<obj>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<obj,i8>]
+      5) call static ForEachGen::Exec(Seq<obj>, Func<obj,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (X:v*) to i8*
+Type: <null>, Value: <null>
+###
+> Chain([], Range(5))
+Chain([], Range(5)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Range(5:i8):i8*))
+// () : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> Chain(X, Range(5))
+Chain(X, Range(5)) : i8*
+BndKind:VariadicOp, Type:i8*, Bnd:(SeqConcat(Call(∂.ForEach([map:1] Global(X), 0:i8):i8*), Call(∂.Range(5:i8):i8*)))
+// (∂.X:v*) : i8*
+ForEach_1(Arr<obj>, obj):i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ret
+  Total Size: 3
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<obj>
+      1) stloc.0 [Seq<obj>]
+      1) ldloc.0 [Seq<obj>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<obj,i8>]
+      5) call static ForEachGen::Exec(Seq<obj>, Func<obj,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) call static CodeGenUtil::SeqConcat(Seq<i8>, Seq<i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 45
+
+Func sig: (X:v*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###

@@ -1,0 +1,69 @@
+﻿:: { R:{A:i4}?, S:{A:i4}, T:{A:r8?}?, s:s }
+
+Guard(R, A * 3)
+Guard(S, A * 3)
+Guard(r: R, s: S, r.A * s.A) // S uses a with scope.
+Guard(r: R, t: T, r.A * S.A * t.A) // The explicit use of Guard can be combined with implicit Guard.
+Guard(r: R, t: T, x: t.A, r.A * S.A * x) // Should match.
+R.A * S.A * T.A // Implicit Guard matches the optimal.
+
+Guard(null, s)
+Guard(null, 4)
+Guard(s, null)
+Guard(s, null + 3)
+Guard(s, s)
+
+// For code coverage in the binder.
+Guard(true or null, not it) // First arg constant non-null value of nullable type.
+Guard(Text.Lower(null), Text.Len(it)) // First arg constant null value of text type.
+
+T.A * T.A
+
+:: { qi4:i4?, qr8:r8? }
+
+Guard(        a:Wrap(qi4),         b:Wrap(qi4), {a, b})
+Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qi4), {a, b})
+Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qi4), {a, b})
+Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qi4), {a, b})
+Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qi4), {a, b})
+
+Guard(        a:Wrap(qi4),         b:Wrap(qi4), [a, b])
+Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qi4), [a, b])
+Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qi4), [a, b])
+Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qi4), [a, b])
+Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qi4), [a, b])
+
+Guard(        a:Wrap(qi4),         b:Wrap(qr8), {a, b})
+Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qr8), {a, b})
+Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qr8), {a, b})
+Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qr8), {a, b})
+Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qr8), {a, b})
+
+Guard(        a:Wrap(qi4),         b:Wrap(qr8), [a, b])
+Guard([guard] a:Wrap(qi4), [guard] b:Wrap(qr8), [a, b])
+Guard([guard] a:Wrap(qi4), [with]  b:Wrap(qr8), [a, b])
+Guard([with]  a:Wrap(qi4), [guard] b:Wrap(qr8), [a, b])
+Guard([with]  a:Wrap(qi4), [with]  b:Wrap(qr8), [a, b])
+
+Guard(        a:qi4,         b:qi4, {a, b})
+Guard([guard] a:qi4, [guard] b:qi4, {a, b})
+Guard([guard] a:qi4, [with]  b:qi4, {a, b})
+Guard([with]  a:qi4, [guard] b:qi4, {a, b})
+Guard([with]  a:qi4, [with]  b:qi4, {a, b})
+
+Guard("hello"->Opt (), it & "-extra")
+Guard("hello"->Null(), it & "-extra")
+
+// Binder injected Guard with complex reduction.
+// Cases generated via fuzzing.
+
+:: {qbs:b?*, b:b}
+(false and qbs) xor (false and qbs)
+
+(null and false) xor (false & "" and true)
+
+Map(x:&Range(10),it->{ A: it, B: x)*x })
+
+SumK(-[3, null])
+
+Guard(x: {a: 3.0}, y: x.a if b else null, x)

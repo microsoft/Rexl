@@ -1,0 +1,115 @@
+﻿// Invocation variations
+
+3    = ToIA(Wrap(3.14))
+null = ToIA(Wrap(1/0))
+3    = ToIA(Wrap(3.14), null)
+null = ToIA(Wrap(1/0),  null)
+3    = ToIA(Wrap(3.14), Null(5))
+3    = ToIA(Wrap(3.14), Opt (5))
+null = ToIA(Wrap(1/0),  Null(5))
+5    = ToIA(Wrap(1/0),  Opt (5))
+3    = ToIA(Wrap(3.14), 5)
+5    = ToIA(Wrap(1/0),  5)
+
+null = ToIA(Wrap(Null(3.14)))
+3    = ToIA(Wrap(Opt (3.14)))
+null = ToIA(Wrap(Opt (1/0 )))
+null = ToIA(Wrap(Null(3.14)), null)
+3    = ToIA(Wrap(Opt (3.14)), null)
+null = ToIA(Wrap(Opt (1/0 )), null)
+null = ToIA(Wrap(Null(3.14)), Null(5))
+null = ToIA(Wrap(Null(3.14)), Opt (5))
+3    = ToIA(Wrap(Opt (3.14)), Null(5))
+3    = ToIA(Wrap(Opt (3.14)), Opt (5))
+null = ToIA(Wrap(Opt (1/0 )), Null(5))
+5    = ToIA(Wrap(Opt (1/0 )), Opt (5))
+null = ToIA(Wrap(Null(3.14)), 5)
+3    = ToIA(Wrap(Opt (3.14)), 5)
+5    = ToIA(Wrap(Opt (1/0 )), 5)
+
+3    = To(Wrap(3.14), Null(5ia))
+3    = To(Wrap(3.14), Opt (5ia))
+null = To(Wrap(1/0),  Null(5ia))
+5    = To(Wrap(1/0),  Opt (5ia))
+3    = To(Wrap(3.14), 5ia)
+5    = To(Wrap(1/0),  5ia)
+
+null = To(Wrap(Null(3.14)), Null(5ia))
+null = To(Wrap(Null(3.14)), Opt (5ia))
+3    = To(Wrap(Opt (3.14)), Null(5ia))
+3    = To(Wrap(Opt (3.14)), Opt (5ia))
+null = To(Wrap(Opt (1/0 )), Null(5ia))
+5    = To(Wrap(Opt (1/0 )), Opt (5ia))
+
+null = To(Wrap(Null(3.14)), 5ia)
+3    = To(Wrap(Opt (3.14)), 5ia)
+5    = To(Wrap(Opt (1/0 )), 5ia)
+
+// Lifting
+
+ToIA(["", "0"])
+ToIA([0r8, CastR8(0/0)])
+ToIA([0r4, CastR4(0/0)])
+
+ToIA([null, 0r8, CastR8(0/0)])
+ToIA([null, 0r4, CastR4(0/0)])
+
+To([null, "", "0"], 5ia)
+To([null, 0r8, CastR8(0/0)], 5ia)
+ToIA([null, 0r4, CastR4(0/0)], 5ia)
+
+// Floating point
+
+null = ToIA(Wrap(-1/0))
+null = ToIA(Wrap(1/0))
+null = ToIA(Wrap(0/0))
+5 = To(Wrap(-1/0), 5ia)
+5 = To(Wrap(1/0), 5ia)
+5 = ToIA(Wrap(0/0), 5ia)
+
+// Floating-point boundaries
+
+0 = ToIA(Wrap(-0x1FFFFFFFFFFFFF * 2d ^ -53))
+0 = ToIA(Wrap(CastR4(-0x7FFFFF  * 2d ^ -23)))
+0xFFFFFFia         shl 104 = ToIA(Wrap(CastR4(0xFFFFFF  * 2d ^ 104)))
+0x1FFFFFFFFFFFFFia shl 971 = ToIA(Wrap(0x1FFFFFFFFFFFFF * 2d ^ 971))
+
+// Strings
+
+null = ToIA(Wrap(""))
+null = ToIA(Wrap(" "))
+5 = To(Wrap(""), 5ia)
+5 = ToIA(Wrap(" "), 5ia)
+
+// Integer strings
+
+null = ToIA(Wrap("false"))
+null = ToIA(Wrap("true"))
+5 = To("false", 5ia)
+5 = ToIA("true", 5ia)
+
+null = ToIA(Wrap("1 234"))
+5 = To(Wrap("1 234"), 5ia)
+
+0     = ToIA(Wrap("-0"))
+12345 = ToIA(Wrap("12,345 "))
+-123  = ToIA(Wrap(" (123) "))
+
+// Fractional strings
+
+null = ToIA(Wrap("-0.0"))
+null = ToIA(Wrap("12.34"))
+null = ToIA(Wrap("2e20"))
+null = ToIA(Wrap("∞"))
+null = ToIA(Wrap("-∞"))
+null = ToIA(Wrap("Infinity"))
+null = ToIA(Wrap("-Infinity"))
+null = ToIA(Wrap("NaN"))
+5 = To(Wrap("-0.0"), 5ia)
+5 = To(Wrap("12.34"), 5ia)
+5 = To(Wrap("2e20"), 5ia)
+5 = To(Wrap("∞"), 5ia)
+5 = ToIA(Wrap("-∞"), 5ia)
+5 = ToIA(Wrap("Infinity"), 5ia)
+5 = ToIA(Wrap("-Infinity"), 5ia)
+5 = ToIA(Wrap("NaN"), 5ia)

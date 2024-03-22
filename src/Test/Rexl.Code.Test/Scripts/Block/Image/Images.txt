@@ -1,0 +1,23 @@
+func Clean(path) := path[path->LastIndexOf("Data") : ]->Replace("\\", "/");
+
+DogBytes := ReadBytes(_DATA_ & "dog.jpeg");
+Dog := DogBytes->GetPixels();
+Cat := ReadPixels(_DATA_ & "kitten.jpg");
+
+DogBytes.Shape;
+Dog.Shape;
+Cat.Shape;
+
+Cat2 := ReadPixelsU4(_DATA_ & "kitten.jpg");
+Cat.Shape;
+Cat2.Shape;
+
+finish T as ListFiles(_DATA_);
+T.Data->(Path->Clean())->Sort();
+
+ReadPixels(_DATA_ & "bad")->IsNull();
+ReadPixelsU4(_DATA_ & "bad")->IsNull();
+ReadPixels(Null(_DATA_ & "kitten.jpg"))->IsNull();
+ReadPixelsU4(Null(_DATA_ & "kitten.jpg"))->IsNull();
+ReadPixels(_DATA_ & "I4s.0105.rbin")->IsNull();
+ReadPixelsU4(_DATA_ & "I4s.0105.rbin")->IsNull();

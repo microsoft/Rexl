@@ -1,0 +1,148 @@
+Status: 0 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Y, <exp>∂.X.Z
+###
+Add: 00000001 [A], Fma: [1+1]
+Add: 00000002 [B], Fma: [1+1]
+Add: 00000003 [C], Fma: [1+1]
+Add: 00000004 [X.Y.B], Fma: [A + 1 + @B]
+Add: 00000005 [X.Y.C], Fma: [Y.B + @X.Y.B + B + @B]
+Add: 00000006 [X.Y.D], Fma: [X.Y.D + Y.D + D + @X.Y.D]
+Add: 00000007 [X.Z.C], Fma: [Y.B + C + E]
+Add: 00000008 [X.Z.E], Fma: [Y.B + C + A]
+Add: 00000009 [X.Y.Z.F], Fma: [A + B + C + D]
+Add: 0000000a [F], Fma: [X.Y.B + B]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Y, ∂.X.Y.Z, <exp>∂.X.Z
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tT  B C dD  ], Base: i8
+    00000003 [C]: [A  tT  B C dD  ], Base: i8
+    00000004 [X.Y.B]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Y.C]: [A  tTuUB C dD  ], Base: i8
+    00000006 [X.Y.D]: [A  tTuUB C dD X], Base: i8
+    00000007 [X.Z.C]: [A  tTuUB C dD X], Base: i8
+    00000008 [X.Z.E]: [A  tTuUB C dD X], Base: i8
+    00000009 [X.Y.Z.F]: [A  tTuUB C dD X], Base: i8
+    0000000a [F]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 00000004 [Y.B] <= [X.Y.B]
+Ren: 00000005 [Y.C] <= [X.Y.C]
+Fma: 00000005 [Y.C], Main: [Y.B + @X.Y.B + B + @B] => [B + @Y.B + B + @B]
+Ren: 00000006 [Y.D] <= [X.Y.D]
+Fma: 00000006 [Y.D], Main: [X.Y.D + Y.D + D + @X.Y.D] => [D + D + D + @Y.D]
+Ren: 00000009 [Y.Z.F] <= [X.Y.Z.F]
+Fma: 0000000a [F], Main: [X.Y.B + B] => [Y.B + B]
+Status: 10 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Z, <exp>∂.Y, ∂.Y.Z
+  Node changes:
+    00000004 [Y.B]: [ N     B       ], Base: i8
+    00000005 [Y.C]: [ N     B       ], Base: i8
+    00000006 [Y.D]: [ N     B   dD X], Base: i8
+    00000007 [X.Z.C]: [       B   dD X], Base: i8
+    00000008 [X.Z.E]: [       B C dD X], Base: i8
+    00000009 [Y.Z.F]: [ N     B   dD X], Base: i8
+    0000000a [F]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [Y.B]
+Ren: 00000005 [X.Y.C] <= [Y.C]
+Fma: 00000005 [X.Y.C], Main: [B + @Y.B + B + @B] => [Y.B + @X.Y.B + B + @B]
+Ren: 00000006 [X.Y.D] <= [Y.D]
+Fma: 00000006 [X.Y.D], Main: [D + D + D + @Y.D] => [X.Y.D + Y.D + D + @X.Y.D]
+Ren: 00000009 [X.Y.Z.F] <= [Y.Z.F]
+Fma: 0000000a [F], Main: [Y.B + B] => [X.Y.B + B]
+Status: 10 nodes, 2 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Y, ∂.X.Y.Z, <exp>∂.X.Z
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [ N     B       ], Base: i8
+    00000006 [X.Y.D]: [ N     B   dD X], Base: i8
+    00000007 [X.Z.C]: [       B   dD X], Base: i8
+    00000008 [X.Z.E]: [       B   dD X], Base: i8
+    00000009 [X.Y.Z.F]: [ N     B   dD X], Base: i8
+    0000000a [F]: [       B       ], Base: i8
+###
+Ren: 00000004 [X.Q.B] <= [X.Y.B]
+Ren: 00000005 [X.Q.C] <= [X.Y.C]
+Fma: 00000005 [X.Q.C], Main: [Y.B + @X.Y.B + B + @B] => [B + @X.Q.B + B + @B]
+Ren: 00000006 [X.Q.D] <= [X.Y.D]
+Fma: 00000006 [X.Q.D], Main: [X.Y.D + Y.D + D + @X.Y.D] => [D + D + D + @X.Q.D]
+Fma: 00000007 [X.Z.C], Main: [Y.B + C + E] => [Q.B + C + E]
+Fma: 00000008 [X.Z.E], Main: [Y.B + C + A] => [Q.B + C + A]
+Ren: 00000009 [X.Q.Z.F] <= [X.Y.Z.F]
+Fma: 0000000a [F], Main: [X.Y.B + B] => [X.Q.B + B]
+Status: 10 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Q, ∂.X.Q.Z, <exp>∂.X.Z
+  Node changes:
+    00000004 [X.Q.B]: [ N     B       ], Base: i8
+    00000005 [X.Q.C]: [ N     B       ], Base: i8
+    00000006 [X.Q.D]: [ N     B   dD X], Base: i8
+    00000007 [X.Z.C]: [       B   dD X], Base: i8
+    00000008 [X.Z.E]: [       B   dD X], Base: i8
+    00000009 [X.Q.Z.F]: [ N     B   dD X], Base: i8
+    0000000a [F]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [X.Q.B]
+Ren: 00000005 [X.Y.C] <= [X.Q.C]
+Fma: 00000005 [X.Y.C], Main: [B + @X.Q.B + B + @B] => [Y.B + @X.Y.B + B + @B]
+Ren: 00000006 [X.Y.D] <= [X.Q.D]
+Fma: 00000006 [X.Y.D], Main: [D + D + D + @X.Q.D] => [X.Y.D + Y.D + D + @X.Y.D]
+Fma: 00000007 [X.Z.C], Main: [Q.B + C + E] => [Y.B + C + E]
+Fma: 00000008 [X.Z.E], Main: [Q.B + C + A] => [Y.B + C + A]
+Ren: 00000009 [X.Y.Z.F] <= [X.Q.Z.F]
+Fma: 0000000a [F], Main: [X.Q.B + B] => [X.Y.B + B]
+Status: 10 nodes, 2 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Y, ∂.X.Y.Z, <exp>∂.X.Z
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [ N     B       ], Base: i8
+    00000006 [X.Y.D]: [ N     B   dD X], Base: i8
+    00000007 [X.Z.C]: [       B   dD X], Base: i8
+    00000008 [X.Z.E]: [       B   dD X], Base: i8
+    00000009 [X.Y.Z.F]: [ N     B   dD X], Base: i8
+    0000000a [F]: [       B       ], Base: i8
+###
+*** Undo(1)
+Del: 00000001 [A]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [X.Y.B]
+Del: 00000005 [X.Y.C]
+Del: 00000006 [X.Y.D]
+Del: 00000007 [X.Z.C]
+Del: 00000008 [X.Z.E]
+Del: 00000009 [X.Y.Z.F]
+Del: 0000000a [F]
+Status: 0 nodes, 1 undos, 2 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Y, <exp>∂.X.Z
+###
+*** UndoAll
+Status: 0 nodes, 0 undos, 3 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [A], Fma: [1+1]
+Add: 00000002 [B], Fma: [1+1]
+Add: 00000003 [C], Fma: [1+1]
+Add: 00000004 [X.Q.B], Fma: [A + 1 + @B]
+Add: 00000005 [X.Q.C], Fma: [B + @X.Q.B + B + @B]
+Add: 00000006 [X.Q.D], Fma: [D + D + D + @X.Q.D]
+Add: 00000007 [X.Z.C], Fma: [Q.B + C + E]
+Add: 00000008 [X.Z.E], Fma: [Q.B + C + A]
+Add: 00000009 [X.Q.Z.F], Fma: [A + B + C + D]
+Add: 0000000a [F], Fma: [X.Q.B + B]
+Status: 10 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, <exp>∂.X.Q, ∂.X.Q.Z, <exp>∂.X.Z
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tT  B C dD  ], Base: i8
+    00000003 [C]: [A  tT  B C dD  ], Base: i8
+    00000004 [X.Q.B]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Q.C]: [A  tTuUB C dD  ], Base: i8
+    00000006 [X.Q.D]: [A  tTuUB C dD X], Base: i8
+    00000007 [X.Z.C]: [A  tTuUB C dD X], Base: i8
+    00000008 [X.Z.E]: [A  tTuUB C dD X], Base: i8
+    00000009 [X.Q.Z.F]: [A  tTuUB C dD X], Base: i8
+    0000000a [F]: [A  tTuUB C dD  ], Base: i8
+###

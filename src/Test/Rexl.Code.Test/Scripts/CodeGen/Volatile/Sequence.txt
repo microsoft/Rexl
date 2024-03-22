@@ -1,0 +1,39 @@
+﻿`` T := Range(10)->{ A: it };
+
+Range(5)->ForEach(Ping())
+Range(5)->ForEach(Date.Now.Utc())
+With(start: Date.Now.Utc(), Range(5)->ForEach(Date.Now.Utc() - start))
+With(S: Range(5)->ForEach(Guid.Make()), (S, S->Sort(), S->SortUp(), S->SortDown()))
+With(S: Range(10)->ForEach(Guid.Make() if it mod 4 != 0 else null), (S, S->Sort(), S->SortUp(), S->SortDown()))
+
+With(x: Ping(), Range(5)->ForEach(x))
+(Range(5) * 100 + 100)->ForEach(it + Ping())
+Range(5) * 100 + 100 + Ping()
+
+T->Take([if] Ping() mod 3 = 0)
+T->Drop([if] Ping() mod 3 = 0)
+
+With(S : T->GroupBy(A mod 3, [group] Ping()), (S, S))
+With(S : T->GroupBy(K: A mod 3, [group] V: Ping()), (S, S))
+With(S : T->GroupBy(A mod 3, [item] (item, Ping())), (S, S))
+With(S : T->GroupBy(K: A mod 3, [item] V: (item, Ping())), (S, S))
+With(S : T->TakeIf(Ping() mod 4 != 0)->GroupBy(Key: A mod 3, [group] Num: group->Count()), (S, S))
+
+KeyJoin(T, T, A, A, Ping())
+KeyJoin(T, T, A, A if A mod 3 != 0 else null, (A, -1), (A, Ping()))
+KeyJoin(T, T, A if A mod 3 != 0 else null, A, (A, -1), (A, -2), (A, Ping()))
+
+CrossJoin(a:T, b:T, Ping() mod 3 = 0, (a.A, b.A))
+CrossJoin(a:T, b:T, a.A + b.A = 10, (a.A, b.A, Ping()))
+CrossJoin(a:T, b:T, a.A = 10 - b.A, (a.A, b.A, Ping()))
+CrossJoin(a:T, b:T, a.A = b.A and a.A mod 3 != 0, (A, -1), (A, Ping()))
+CrossJoin(a:T, b:T, a.A = b.A and a.A mod 3 != 0, (A, -1), (A, -2), (A, Ping()))
+
+ScanX(T, s:(0, -1), (s[0] + Ping(), A))
+ScanX(T, s:0, s + A, (Ping(), s))
+ScanZ(T, s:(0, -1), (s[0] + Ping(), A))
+ScanZ(T, s:0, s + A, (Ping(), s, A))
+
+Generate(a:10, (Ping(), a))
+Generate(a:10, s:0, s + Ping(), (s, a))
+Generate(a:10, s:0, s + a, (s, a, Ping()))

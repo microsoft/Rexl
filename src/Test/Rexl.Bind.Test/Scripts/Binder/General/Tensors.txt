@@ -1,0 +1,221 @@
+:: { S:i4[], T:i8[*], T0:i4[*,*], T1:i8[*,*], T0s:i4[*,*]*, i8:i8, qi8:i8?, i8s:i8*, qi8s:i8?*, i4:i4, b:b }
+
+[T0, T0]
+[T0, T1]
+[T0] ++ [T1]
+
+[S, T0] // g*
+
+S[]
+S[3]
+S["3"]
+
+T[]
+T[3]
+T[^3]
+T[%3]
+T[&3]
+T[^%3]
+T[&^3]
+
+T0[]
+T0[3]
+T0[3, 5]
+T0[3, 5, 0]
+T0[3.5, 2]
+T0["3", 2]
+T0["3"]
+T0[0, 0, "3"]
+T0[3, 3+2]
+
+T0[3]
+T0[^3]
+T0[%3]
+T0[&3]
+T0[^%3]
+T0[^&3]
+
+// Lifting
+T0[3, 5]
+T0[3, i8]
+T0[3, qi8]
+T0[3, i8s]
+T0[3, qi8s]
+T0[i8, 5]
+T0[i8, i8]
+T0[i8, qi8]
+T0[i8, i8s]
+T0[i8, qi8s]
+T0[qi8, 5]
+T0[qi8, i8]
+T0[qi8, qi8]
+T0[qi8, i8s]
+T0[qi8, qi8s]
+T0[i8s, 5]
+T0[i8s, i8]
+T0[i8s, qi8]
+T0[i8s, i8s]
+T0[i8s, qi8s]
+T0[qi8s, 5]
+T0[qi8s, i8]
+T0[qi8s, qi8]
+T0[qi8s, i8s]
+T0[qi8s, qi8s]
+T0s[3, 5]
+T0s[3, i8]
+T0s[3, qi8]
+T0s[3, i8s]
+T0s[3, qi8s]
+T0s[i8, 5]
+T0s[i8, i8]
+T0s[i8, qi8]
+T0s[i8, i8s]
+T0s[i8, qi8s]
+T0s[qi8, 5]
+T0s[qi8, i8]
+T0s[qi8, qi8]
+T0s[qi8, i8s]
+T0s[qi8, qi8s]
+T0s[i8s, 5]
+T0s[i8s, i8]
+T0s[i8s, qi8]
+T0s[i8s, i8s]
+T0s[i8s, qi8s]
+T0s[qi8s, 5]
+T0s[qi8s, i8]
+T0s[qi8s, qi8]
+T0s[qi8s, i8s]
+T0s[qi8s, qi8s]
+
+T0[i8, ^5]
+T0[i8, ^i8]
+T0[i8, ^qi8]
+T0[i8, ^i8s]
+T0[i8, ^qi8s]
+T0[i8, %5]
+T0[i8, %i8]
+T0[i8, %qi8]
+T0[i8, %i8s]
+T0[i8, %qi8s]
+T0[i8, &5]
+T0[i8, &i8]
+T0[i8, &qi8]
+T0[i8, &i8s]
+T0[i8, &qi8s]
+T0[i8, ^%5]
+T0[i8, ^%i8]
+T0[i8, ^%qi8]
+T0[i8, ^%i8s]
+T0[i8, ^%qi8s]
+T0[i8, ^%5]
+T0[i8, ^%i8]
+T0[i8, ^%qi8]
+T0[i8, ^%i8s]
+T0[i8, ^%qi8s]
+
+// Reduce tensor.
+(T0 if true else T0)[i8]
+
+// Slicing
+S[:]
+T0[:]
+T0[0::1,::1]
+T0[:, 7]
+T0[1:, 7]
+T0[:5, 7]
+T0[1:5, 7]
+T0[1:5:, 7]
+T0[1:5:0, 7]
+T0[1:5:2, 7]
+T0[1:5:100, 7]
+T0[5:1:, 7]
+T0[5:1:0, 7]
+T0[5:1:-1, 7]
+T0[5:1:-2, 7]
+T0[-1:5, 7]
+T0[-1:-5, 7]
+T0[-5:-1, 7]
+T0[i4:i8:i4, i4]
+T0[0:i4:i8, i4]
+T0[i8:2:i4, i4]
+T0[::i4, 7]
+T0[1+1:i8:i8, 3+4]
+T0[3, i8:1+1:2+2]
+T0[3+1, i8:1+1:2+2]
+T0[qi8:qi8:qi8, qi8:qi8:i8]
+T0[i8:qi8:i8, qi8:i8:i8]
+T0[qi8:i8:i8, qi8:i8:qi8]
+T0[qi8:qi8:i8, qi8:qi8:qi8]
+T0[1-1::]
+T0[:Null(1):]
+T0[1-1::1+0]
+T0[1-1::0+0]
+T0[:2+3:1+0]
+T0[3*2, 1:8:2]
+T0[qi8]
+
+T0[^0:] // Not full.
+T0[:^0] // Full.
+T0[:^-5] // Full.
+T0[::-1] // Not full.
+T0[::0] // Full.
+T0[::1] // Full.
+T0[::2] // Not full.
+T0[:^1] // Not full.
+T0[:^i8] // Not full.
+T0[null::] // Full.
+T0[^null::] // Full.
+T0[^ Null(3)::] // Full.
+T0[^ Null(3):^0:] // Full.
+T0[^ Null(3):^ Opt(3):] // Not full.
+
+T0[(1,2,3), 7]
+T0[(1,2) & (3,), 7]
+T0[(1, false, 2, false, 3), 7]
+T0[(i8, true, 2, true, null), 7]
+T0[(i8, true, 2, b, null), 7]
+T0[(i8, true and false, 2, true or false, null), 7]
+T0[(i8, true and false, 2, b or false, null), 7]
+T0[(i8, true and b, 2, true or false, null), 7]
+T0[3 + 5, (i8, true, 2, false, null)]
+
+T0[5, (1,2,3)]
+
+T0[:*3]
+T0[:*3:-1]
+T0[:*^0]
+T0[:*^0:-1]
+T0[17:*0]
+T0[17:*^0]
+
+// Tuple symbols that won't get inlined.
+:: { T0:i4[7,15], t0: (i8, i8, i8), t1: (i8, i8?, i8), t2: (i8?, i8?, i8?), twb: (i8, b, i8?, b, i8) }
+T0[t0, t1]
+T0[t0, t2]
+T0[twb, t2]
+T0[t0, twb]
+
+:: { S:i4[], T0:i4[*,*], T1:i8[*,*], T0s:i4[*,*]*, i8:i8, qi8:i8?, i8s:i8*, qi8s:i8?*, i4:i4 }
+// REVIEW: Should the individual indices be lifted?
+T0[:, qi8s]
+T0[qi8s:qi8s, i8s]
+T0[i8s:i8s:i8s, qi8s]
+
+// Create v value.
+Tensor.From([])[0]
+
+// Errors
+i8[3]
+qi8[3]
+i8s[3]
+qi8s[3]
+T0["hi":3.5:3, 7]
+T0[("hi",3.5,3), 7]
+T0[::, 5, ""]
+T0[x:]
+T0[:x:]
+T0[::x]
+T0[^(1,2,3)]
+T0[%(1,2,3)]
+With(tup:(1,2,3), T0[&tup])
+T0[:, 2, (1,2,3)]

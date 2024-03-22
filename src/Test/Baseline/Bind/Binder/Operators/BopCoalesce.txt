@@ -1,0 +1,104 @@
+**** New globals: {b:b, g:g, i:i4, n:r8, o:o, qb:b?, qi:i4?, qn:r8?, s:s}
+
+> s ?? "hello"
+s ?? "hello" : s
+Binder : Coalesce(s, "hello")
+###
+> s ?? null
+s ?? null : s
+Binder : Coalesce(s, str(<null>))
+Reducer: s
+###
+> qn ?? 7
+qn ?? 7 : r8
+Binder : Coalesce(qn, 7)
+###
+> qn ?? null
+qn ?? null : r8?
+Binder : Coalesce(qn, null)
+Reducer: qn
+###
+> qb ?? true
+qb ?? true : b
+Binder : Coalesce(qb, true)
+###
+> qb ?? null
+qb ?? null : b?
+Binder : Coalesce(qb, null)
+Reducer: qb
+###
+> qb ?? (null or true)
+qb ?? null or true : b?
+Binder : Coalesce(qb, Or(null, true))
+Reducer: Coalesce(qb, Opt<b?>(true))
+###
+> null ?? true
+null ?? true : b
+Binder : Coalesce(null, true)
+Reducer: true
+###
+> (null or true) ?? false
+null or true ?? false : b
+Binder : Coalesce(Or(null, true), false)
+Reducer: true
+###
+> (null or true) ?? qb
+null or true ?? qb : b?
+Binder : Coalesce(Or(null, true), qb)
+Reducer: Opt<b?>(true)
+###
+> null ?? 7
+null ?? 7 : i8
+Binder : Coalesce(null, 7)
+Reducer: 7
+###
+> null ?? "hello"
+null ?? "hello" : s
+Binder : Coalesce(str(<null>), "hello")
+Reducer: "hello"
+###
+> "hello" ?? "there"
+"hello" ?? "there" : s
+Binder : Coalesce("hello", "there")
+Reducer: "hello"
+###
+> 7 ?? 3
+7 ?? 3 : i8
+*** Warning: (0,1) Node: 7, Message: Coalesce operator '??' is not necessary with left operand of non optional type: 'i8'
+Binder : 7
+###
+> (qn + 3 - 7) ?? 3
+qn + 3 - 7 ?? 3 : r8
+Binder : Coalesce(Guard(?2: Guard(?1: qn, Add(?1, 3)), Add(?2, [-] 7)), 3)
+Reducer: Coalesce(Guard(?1: qn, Add(?1, 3, [-] 7)), 3)
+###
+> qn ?? (8 + n - 5)
+qn ?? 8 + n - 5 : r8
+Binder : Coalesce(qn, Add(8, n, [-] 5))
+###
+> (qi + 3 - 7) ?? 3
+qi + 3 - 7 ?? 3 : i8
+Binder : Coalesce(Guard(?2: Guard(?1: qi, Add(Num<i8>(?1), 3)), Add(?2, [-] 7)), 3)
+Reducer: Coalesce(Guard(?1: qi, Add(Num<i8>(?1), -4)), 3)
+###
+> qi ?? (8 + i - 5)
+qi ?? 8 + i - 5 : i8
+Binder : Coalesce(Guard(?1: qi, Num<i8>(?1)), Add(8, Num<i8>(i), [-] 5))
+Reducer: Coalesce(Guard(?1: qi, Num<i8>(?1)), Add(Num<i8>(i), 3))
+###
+> [ 3, null, 7] ?? -1
+[3, null, 7] ?? -1 : i8*
+Binder : ForEach(*1: [Opt<i8?>(3), null, Opt<i8?>(7)], Coalesce(*1, -1))
+###
+> [ 3.0, null, 7] ?? -1
+[3, null, 7] ?? -1 : r8*
+Binder : ForEach(*1: [Opt<r8?>(3), null, Opt<r8?>(7)], Coalesce(*1, -1))
+###
+> [ true, null, false] ?? true
+[true, null, false] ?? true : b*
+Binder : ForEach(*1: [Opt<b?>(true), null, Opt<b?>(false)], Coalesce(*1, true))
+###
+> [ "hi", null] ?? "hello"
+["hi", null] ?? "hello" : s*
+Binder : ForEach(*1: ["hi", str(<null>)], Coalesce(*1, "hello"))
+###

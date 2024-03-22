@@ -1,0 +1,557 @@
+Add: 00000001 [A], Fma: [1+1]
+Add: 00000002 [B], Fma: [A+1]
+Add: 00000003 [C], Fma: [A + Map(X: Range(10), X+A)]
+Add: 00000004 [D], Fma: [A'A']
+Add: 00000005 [E], Fma: [B+D]
+Add: 00000006 [F], Fma: [Map([{X:1}], X+A)]
+Add: 00000007 [G], Fma: [Map([[{X:1}]], X+A)]
+Add: 00000008 [H], Fma: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))]
+Add: 00000009 [I], Fma: [Guard(A, A*A)]
+Add: 0000000a [J], Fma: [[Guard(A, A*A), Guard(A, it*it)]]
+Add: 0000000b [K], Fma: [A->Guard(A*A)]
+Add: 0000000c [L], Fma: [A->Guard(it*it)]
+Add: 0000000d [M], Fma: [{B, A, C:A}]
+Add: 0000000e [N], Fma: [Map(X:[{}], {A, X})]
+Add: 0000000f [P], Fma: [Q+1]
+Add: 00000010 [Q], Fma: [A+1]
+Status: 16 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+    00000003 [C]: [A  tTuUB C dD  ], Base: i8*
+    00000004 [D]: [A  tTuUB C dDE ], Base: v
+      *) Parse Error: (1,4) Tok: ''A'', Message: Expected an operator
+      *) Error: (1,4) Node: ((A) <error> ('A')), Message: Expected an operator
+    00000005 [E]: [A  tTuUB C dD  ], Base: i8
+    00000006 [F]: [A  tTuUB C dD  ], Base: i8*
+    00000007 [G]: [A  tTuUB C dD  ], Base: i8**
+    00000008 [H]: [A  tTuUB C dD  ], Base: i8**
+    00000009 [I]: [A  tTuUB C dD  ], Base: i8
+    0000000a [J]: [A  tTuUB C dD  ], Base: i8*
+    0000000b [K]: [A  tTuUB C dD  ], Base: i8
+    0000000c [L]: [A  tTuUB C dD  ], Base: i8
+    0000000d [M]: [A  tTuUB C dD  ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [A  tTuUB C dD  ], Base: {A:i8, X:{}}*
+    0000000f [P]: [A  tTuUB C dD  ], Base: i8
+    00000010 [Q]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 00000001 [X] <= [A]
+Fma: 00000002 [B], Main: [A+1] => [X+1]
+Fma: 00000003 [C], Main: [A + Map(X: Range(10), X+A)] => [X + Map(X: Range(10), X+@X)]
+Fma: 00000004 [D], Main: [A'A'] => [X X]
+Fma: 00000006 [F], Main: [Map([{X:1}], X+A)] => [Map([{X:1}], X+@X)]
+Fma: 00000007 [G], Main: [Map([[{X:1}]], X+A)] => [Map([[{X:1}]], X+@X)]
+Fma: 00000008 [H], Main: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))] => [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X))]
+Fma: 00000009 [I], Main: [Guard(A, A*A)] => [Guard(A: X, A*A)]
+Fma: 0000000a [J], Main: [[Guard(A, A*A), Guard(A, it*it)]] => [[Guard(A: X, A*A), Guard(X, it*it)]]
+Fma: 0000000b [K], Main: [A->Guard(A*A)] => [X->Guard(X*X)]
+Fma: 0000000c [L], Main: [A->Guard(it*it)] => [X->Guard(it*it)]
+Fma: 0000000d [M], Main: [{B, A, C:A}] => [{B, A: X, C:X}]
+Fma: 0000000e [N], Main: [Map(X:[{}], {A, X})] => [Map(X:[{}], {A: @X, X})]
+Fma: 00000010 [Q], Main: [A+1] => [X+1]
+Status: 16 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B       ], Base: i8*
+    00000004 [D]: [       B C dDE ], Base: v
+      *) Parse Error: (2,3) Tok: 'X', Message: Expected an operator
+      *) Error: (2,3) Node: ((X) <error> (X)), Message: Expected an operator
+    00000005 [E]: [           dD  ], Base: i8
+    00000006 [F]: [       B       ], Base: i8*
+    00000007 [G]: [       B       ], Base: i8**
+    00000008 [H]: [       B       ], Base: i8**
+    00000009 [I]: [       B       ], Base: i8
+    0000000a [J]: [       B       ], Base: i8*
+    0000000b [K]: [       B       ], Base: i8
+    0000000c [L]: [       B       ], Base: i8
+    0000000d [M]: [       B       ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [       B       ], Base: {A:i8, X:{}}*
+    00000010 [Q]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [X]
+Fma: 00000002 [B], Main: [X+1] => [A+1]
+Fma: 00000003 [C], Main: [X + Map(X: Range(10), X+@X)] => [A + Map(X: Range(10), X+A)]
+Fma: 00000004 [D], Main: [X X] => [A'A']
+Fma: 00000006 [F], Main: [Map([{X:1}], X+@X)] => [Map([{X:1}], X+A)]
+Fma: 00000007 [G], Main: [Map([[{X:1}]], X+@X)] => [Map([[{X:1}]], X+A)]
+Fma: 00000008 [H], Main: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X))] => [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))]
+Fma: 00000009 [I], Main: [Guard(A: X, A*A)] => [Guard(A, A*A)]
+Fma: 0000000a [J], Main: [[Guard(A: X, A*A), Guard(X, it*it)]] => [[Guard(A, A*A), Guard(A, it*it)]]
+Fma: 0000000b [K], Main: [X->Guard(X*X)] => [A->Guard(A*A)]
+Fma: 0000000c [L], Main: [X->Guard(it*it)] => [A->Guard(it*it)]
+Fma: 0000000d [M], Main: [{B, A: X, C:X}] => [{B, A, C:A}]
+Fma: 0000000e [N], Main: [Map(X:[{}], {A: @X, X})] => [Map(X:[{}], {A, X})]
+Fma: 00000010 [Q], Main: [X+1] => [A+1]
+Status: 16 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B       ], Base: i8*
+    00000004 [D]: [       B C dDE ], Base: v
+      *) Parse Error: (1,4) Tok: ''A'', Message: Expected an operator
+      *) Error: (1,4) Node: ((A) <error> ('A')), Message: Expected an operator
+    00000005 [E]: [           dD  ], Base: i8
+    00000006 [F]: [       B       ], Base: i8*
+    00000007 [G]: [       B       ], Base: i8**
+    00000008 [H]: [       B       ], Base: i8**
+    00000009 [I]: [       B       ], Base: i8
+    0000000a [J]: [       B       ], Base: i8*
+    0000000b [K]: [       B       ], Base: i8
+    0000000c [L]: [       B       ], Base: i8
+    0000000d [M]: [       B       ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [       B       ], Base: {A:i8, X:{}}*
+    00000010 [Q]: [       B       ], Base: i8
+###
+Ren: 00000001 [X.Y] <= [A]
+Fma: 00000002 [B], Main: [A+1] => [X.Y+1]
+Fma: 00000003 [C], Main: [A + Map(X: Range(10), X+A)] => [X.Y + Map(X: Range(10), X+@X.Y)]
+Fma: 00000004 [D], Main: [A'A'] => [X.Y X.Y]
+Fma: 00000006 [F], Main: [Map([{X:1}], X+A)] => [Map([{X:1}], X+@X.Y)]
+Fma: 00000007 [G], Main: [Map([[{X:1}]], X+A)] => [Map([[{X:1}]], X+@X.Y)]
+Fma: 00000008 [H], Main: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))] => [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X.Y))]
+Fma: 00000009 [I], Main: [Guard(A, A*A)] => [Guard(A: X.Y, A*A)]
+Fma: 0000000a [J], Main: [[Guard(A, A*A), Guard(A, it*it)]] => [[Guard(A: X.Y, A*A), Guard(X.Y, it*it)]]
+Fma: 0000000b [K], Main: [A->Guard(A*A)] => [X.Y->Guard(X.Y*X.Y)]
+Fma: 0000000c [L], Main: [A->Guard(it*it)] => [X.Y->Guard(it*it)]
+Fma: 0000000d [M], Main: [{B, A, C:A}] => [{B, A: X.Y, C:X.Y}]
+Fma: 0000000e [N], Main: [Map(X:[{}], {A, X})] => [Map(X:[{}], {A: @X.Y, X})]
+Fma: 00000010 [Q], Main: [A+1] => [X.Y+1]
+Status: 16 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X
+  Node changes:
+    00000001 [X.Y]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B       ], Base: i8*
+    00000004 [D]: [       B C dDE ], Base: v
+      *) Parse Error: (4,5) Tok: 'X', Message: Expected an operator
+      *) Error: (4,5) Node: ((X.Y) <error> (X.Y)), Message: Expected an operator
+    00000005 [E]: [           dD  ], Base: i8
+    00000006 [F]: [       B       ], Base: i8*
+    00000007 [G]: [       B       ], Base: i8**
+    00000008 [H]: [       B       ], Base: i8**
+    00000009 [I]: [       B       ], Base: i8
+    0000000a [J]: [       B       ], Base: i8*
+    0000000b [K]: [       B       ], Base: i8
+    0000000c [L]: [       B       ], Base: i8
+    0000000d [M]: [       B       ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [       B       ], Base: {A:i8, X:{}}*
+    00000010 [Q]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [X.Y]
+Fma: 00000002 [B], Main: [X.Y+1] => [A+1]
+Fma: 00000003 [C], Main: [X.Y + Map(X: Range(10), X+@X.Y)] => [A + Map(X: Range(10), X+A)]
+Fma: 00000004 [D], Main: [X.Y X.Y] => [A'A']
+Fma: 00000006 [F], Main: [Map([{X:1}], X+@X.Y)] => [Map([{X:1}], X+A)]
+Fma: 00000007 [G], Main: [Map([[{X:1}]], X+@X.Y)] => [Map([[{X:1}]], X+A)]
+Fma: 00000008 [H], Main: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X.Y))] => [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))]
+Fma: 00000009 [I], Main: [Guard(A: X.Y, A*A)] => [Guard(A, A*A)]
+Fma: 0000000a [J], Main: [[Guard(A: X.Y, A*A), Guard(X.Y, it*it)]] => [[Guard(A, A*A), Guard(A, it*it)]]
+Fma: 0000000b [K], Main: [X.Y->Guard(X.Y*X.Y)] => [A->Guard(A*A)]
+Fma: 0000000c [L], Main: [X.Y->Guard(it*it)] => [A->Guard(it*it)]
+Fma: 0000000d [M], Main: [{B, A: X.Y, C:X.Y}] => [{B, A, C:A}]
+Fma: 0000000e [N], Main: [Map(X:[{}], {A: @X.Y, X})] => [Map(X:[{}], {A, X})]
+Fma: 00000010 [Q], Main: [X.Y+1] => [A+1]
+Status: 16 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B       ], Base: i8*
+    00000004 [D]: [       B C dDE ], Base: v
+      *) Parse Error: (1,4) Tok: ''A'', Message: Expected an operator
+      *) Error: (1,4) Node: ((A) <error> ('A')), Message: Expected an operator
+    00000005 [E]: [           dD  ], Base: i8
+    00000006 [F]: [       B       ], Base: i8*
+    00000007 [G]: [       B       ], Base: i8**
+    00000008 [H]: [       B       ], Base: i8**
+    00000009 [I]: [       B       ], Base: i8
+    0000000a [J]: [       B       ], Base: i8*
+    0000000b [K]: [       B       ], Base: i8
+    0000000c [L]: [       B       ], Base: i8
+    0000000d [M]: [       B       ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [       B       ], Base: {A:i8, X:{}}*
+    00000010 [Q]: [       B       ], Base: i8
+###
+*** Redo(1)
+Ren: 00000001 [X.Y] <= [A]
+Fma: 00000002 [B], Main: [A+1] => [X.Y+1]
+Fma: 00000003 [C], Main: [A + Map(X: Range(10), X+A)] => [X.Y + Map(X: Range(10), X+@X.Y)]
+Fma: 00000004 [D], Main: [A'A'] => [X.Y X.Y]
+Fma: 00000006 [F], Main: [Map([{X:1}], X+A)] => [Map([{X:1}], X+@X.Y)]
+Fma: 00000007 [G], Main: [Map([[{X:1}]], X+A)] => [Map([[{X:1}]], X+@X.Y)]
+Fma: 00000008 [H], Main: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+A))] => [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X.Y))]
+Fma: 00000009 [I], Main: [Guard(A, A*A)] => [Guard(A: X.Y, A*A)]
+Fma: 0000000a [J], Main: [[Guard(A, A*A), Guard(A, it*it)]] => [[Guard(A: X.Y, A*A), Guard(X.Y, it*it)]]
+Fma: 0000000b [K], Main: [A->Guard(A*A)] => [X.Y->Guard(X.Y*X.Y)]
+Fma: 0000000c [L], Main: [A->Guard(it*it)] => [X.Y->Guard(it*it)]
+Fma: 0000000d [M], Main: [{B, A, C:A}] => [{B, A: X.Y, C:X.Y}]
+Fma: 0000000e [N], Main: [Map(X:[{}], {A, X})] => [Map(X:[{}], {A: @X.Y, X})]
+Fma: 00000010 [Q], Main: [A+1] => [X.Y+1]
+Status: 16 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X
+  Node changes:
+    00000001 [X.Y]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B       ], Base: i8*
+    00000004 [D]: [       B C dDE ], Base: v
+      *) Parse Error: (4,5) Tok: 'X', Message: Expected an operator
+      *) Error: (4,5) Node: ((X.Y) <error> (X.Y)), Message: Expected an operator
+    00000005 [E]: [           dD  ], Base: i8
+    00000006 [F]: [       B       ], Base: i8*
+    00000007 [G]: [       B       ], Base: i8**
+    00000008 [H]: [       B       ], Base: i8**
+    00000009 [I]: [       B       ], Base: i8
+    0000000a [J]: [       B       ], Base: i8*
+    0000000b [K]: [       B       ], Base: i8
+    0000000c [L]: [       B       ], Base: i8
+    0000000d [M]: [       B       ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [       B       ], Base: {A:i8, X:{}}*
+    00000010 [Q]: [       B       ], Base: i8
+###
+Fma: 0000000f [P], Main: [Q+1] => [Z+1]
+Ren: 00000010 [Z] <= [Q]
+Status: 16 nodes, 3 undos, 0 redos
+  Node changes:
+    0000000f [P]: [       B       ], Base: i8
+    00000010 [Z]: [ N     B       ], Base: i8
+###
+*** Undo(1)
+Fma: 0000000f [P], Main: [Z+1] => [Q+1]
+Ren: 00000010 [Q] <= [Z]
+Status: 16 nodes, 2 undos, 1 redos
+  Node changes:
+    0000000f [P]: [       B       ], Base: i8
+    00000010 [Q]: [ N     B       ], Base: i8
+###
+*** Redo(1)
+Fma: 0000000f [P], Main: [Q+1] => [Z+1]
+Ren: 00000010 [Z] <= [Q]
+Status: 16 nodes, 3 undos, 0 redos
+  Node changes:
+    0000000f [P]: [       B       ], Base: i8
+    00000010 [Z]: [ N     B       ], Base: i8
+###
+*** Undo(1)
+Fma: 0000000f [P], Main: [Z+1] => [Q+1]
+Ren: 00000010 [Q] <= [Z]
+Status: 16 nodes, 2 undos, 1 redos
+  Node changes:
+    0000000f [P]: [       B       ], Base: i8
+    00000010 [Q]: [ N     B       ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [X.Y]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [D]
+Del: 00000005 [E]
+Del: 00000006 [F]
+Del: 00000007 [G]
+Del: 00000008 [H]
+Del: 00000009 [I]
+Del: 0000000a [J]
+Del: 0000000b [K]
+Del: 0000000c [L]
+Del: 0000000d [M]
+Del: 0000000e [N]
+Del: 0000000f [P]
+Del: 00000010 [Q]
+Status: 0 nodes, 0 undos, 3 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [X.Y], Fma: [1+1]
+Add: 00000002 [B], Fma: [X.Y+1]
+Add: 00000003 [C], Fma: [X.Y + Map(X: Range(10), X+@X.Y)]
+Add: 00000004 [D], Fma: [X.Y X.Y]
+Add: 00000005 [E], Fma: [B+D]
+Add: 00000006 [F], Fma: [Map([{X:1}], X+@X.Y)]
+Add: 00000007 [G], Fma: [Map([[{X:1}]], X+@X.Y)]
+Add: 00000008 [H], Fma: [Map(x:[{X:1}], Map(x:[{Y:2}], X+Y+@X.Y))]
+Add: 00000009 [I], Fma: [Guard(A: X.Y, A*A)]
+Add: 0000000a [J], Fma: [[Guard(A: X.Y, A*A), Guard(X.Y, it*it)]]
+Add: 0000000b [K], Fma: [X.Y->Guard(X.Y*X.Y)]
+Add: 0000000c [L], Fma: [X.Y->Guard(it*it)]
+Add: 0000000d [M], Fma: [{B, A: X.Y, C:X.Y}]
+Add: 0000000e [N], Fma: [Map(X:[{}], {A: @X.Y, X})]
+Add: 0000000f [P], Fma: [Z+1]
+Add: 00000010 [Z], Fma: [X.Y+1]
+Status: 16 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.X
+  Node changes:
+    00000001 [X.Y]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+    00000003 [C]: [A  tTuUB C dD  ], Base: i8*
+    00000004 [D]: [A  tTuUB C dDE ], Base: v
+      *) Parse Error: (4,5) Tok: 'X', Message: Expected an operator
+      *) Error: (4,5) Node: ((X.Y) <error> (X.Y)), Message: Expected an operator
+    00000005 [E]: [A  tTuUB C dD  ], Base: i8
+    00000006 [F]: [A  tTuUB C dD  ], Base: i8*
+    00000007 [G]: [A  tTuUB C dD  ], Base: i8**
+    00000008 [H]: [A  tTuUB C dD  ], Base: i8**
+    00000009 [I]: [A  tTuUB C dD  ], Base: i8
+    0000000a [J]: [A  tTuUB C dD  ], Base: i8*
+    0000000b [K]: [A  tTuUB C dD  ], Base: i8
+    0000000c [L]: [A  tTuUB C dD  ], Base: i8
+    0000000d [M]: [A  tTuUB C dD  ], Base: {A:i8, B:i8, C:i8}
+    0000000e [N]: [A  tTuUB C dD  ], Base: {A:i8, X:{}}*
+    0000000f [P]: [A  tTuUB C dD  ], Base: i8
+    00000010 [Z]: [A  tTuUB C dD  ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [X.Y]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [D]
+Del: 00000005 [E]
+Del: 00000006 [F]
+Del: 00000007 [G]
+Del: 00000008 [H]
+Del: 00000009 [I]
+Del: 0000000a [J]
+Del: 0000000b [K]
+Del: 0000000c [L]
+Del: 0000000d [M]
+Del: 0000000e [N]
+Del: 0000000f [P]
+Del: 00000010 [Z]
+Status: 0 nodes, 0 undos, 3 redos
+  Namespaces changed: ∂
+###
+Add: 00000011 [A1], Fma: [1+1]
+Add: 00000012 [B1], Fma: [1+A1 + 1]
+Add: 00000013 [C1], Fma: ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+A1)]
+Status: 3 nodes, 1 undos, 0 redos
+  Node changes:
+    00000011 [A1]: [A  tT  B C dD  ], Base: i8
+    00000012 [B1]: [A  tTuUB C dD  ], Base: i8
+    00000013 [C1]: [A  tTuUB C dDE ], Base: i8*
+      *) Error: (0,12) Node: 'A B.@#$%.C', Message: Name does not exist in the current context
+###
+Ren: 00000011 ['A B.@#$%.C'] <= [A1]
+Fma: 00000012 [B1], Main: [1+A1 + 1] => [1+'A B.@#$%.C' + 1]
+Fma: 00000013 [C1], Main: ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+A1)] => ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+@'A B.@#$%.C')]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000011 ['A B.@#$%.C']: [ N     B       ], Base: i8
+    00000012 [B1]: [       B       ], Base: i8
+    00000013 [C1]: [       B C dD  ], Base: i8*
+###
+*** Undo(1)
+Ren: 00000011 [A1] <= ['A B.@#$%.C']
+Fma: 00000012 [B1], Main: [1+'A B.@#$%.C' + 1] => [1+A1 + 1]
+Fma: 00000013 [C1], Main: ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+@'A B.@#$%.C')] => ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+A1)]
+Status: 3 nodes, 1 undos, 1 redos
+  Node changes:
+    00000011 [A1]: [ N     B       ], Base: i8
+    00000012 [B1]: [       B       ], Base: i8
+    00000013 [C1]: [       B C dDE ], Base: i8*
+      *) Error: (0,12) Node: 'A B.@#$%.C', Message: Name does not exist in the current context
+###
+*** Redo(1)
+Ren: 00000011 ['A B.@#$%.C'] <= [A1]
+Fma: 00000012 [B1], Main: [1+A1 + 1] => [1+'A B.@#$%.C' + 1]
+Fma: 00000013 [C1], Main: ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+A1)] => ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+@'A B.@#$%.C')]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000011 ['A B.@#$%.C']: [ N     B       ], Base: i8
+    00000012 [B1]: [       B       ], Base: i8
+    00000013 [C1]: [       B C dD  ], Base: i8*
+###
+*** UndoAll
+Del: 00000011 ['A B.@#$%.C']
+Del: 00000012 [B1]
+Del: 00000013 [C1]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** RedoAll
+Add: 00000011 ['A B.@#$%.C'], Fma: [1+1]
+Add: 00000012 [B1], Fma: [1+'A B.@#$%.C' + 1]
+Add: 00000013 [C1], Fma: ['A B.@#$%.C' + Map('A B.@#$%.C': Range(10), 'A B.@#$%.C'+@'A B.@#$%.C')]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000011 ['A B.@#$%.C']: [A  tT  B C dD  ], Base: i8
+    00000012 [B1]: [A  tTuUB C dD  ], Base: i8
+    00000013 [C1]: [A  tTuUB C dD  ], Base: i8*
+###
+*** UndoAll
+Del: 00000011 ['A B.@#$%.C']
+Del: 00000012 [B1]
+Del: 00000013 [C1]
+Status: 0 nodes, 0 undos, 2 redos
+###
+Add: 00000014 [Ns.'X X'], Fma: [1]
+Add: 00000015 [Ns.Y], Fma: [{ 'X X' }]
+Status: 2 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.Ns
+  Node changes:
+    00000014 [Ns.'X X']: [A  tT  B C dD  ], Base: i8
+    00000015 [Ns.Y]: [A  tTuUB C dD  ], Base: {'X X':i8}
+###
+Ren: 00000014 [Ns.Z] <= [Ns.'X X']
+Fma: 00000015 [Ns.Y], Main: [{ 'X X' }] => [{ 'X X': Z }]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000014 [Ns.Z]: [ N     B       ], Base: i8
+    00000015 [Ns.Y]: [       B       ], Base: {'X X':i8}
+###
+*** Undo(1)
+Ren: 00000014 [Ns.'X X'] <= [Ns.Z]
+Fma: 00000015 [Ns.Y], Main: [{ 'X X': Z }] => [{ 'X X' }]
+Status: 2 nodes, 1 undos, 1 redos
+  Node changes:
+    00000014 [Ns.'X X']: [ N     B       ], Base: i8
+    00000015 [Ns.Y]: [       B       ], Base: {'X X':i8}
+###
+*** Redo(1)
+Ren: 00000014 [Ns.Z] <= [Ns.'X X']
+Fma: 00000015 [Ns.Y], Main: [{ 'X X' }] => [{ 'X X': Z }]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000014 [Ns.Z]: [ N     B       ], Base: i8
+    00000015 [Ns.Y]: [       B       ], Base: {'X X':i8}
+###
+*** UndoAll
+Del: 00000014 [Ns.Z]
+Del: 00000015 [Ns.Y]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000014 [Ns.Z], Fma: [1]
+Add: 00000015 [Ns.Y], Fma: [{ 'X X': Z }]
+Status: 2 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.Ns
+  Node changes:
+    00000014 [Ns.Z]: [A  tT  B C dD  ], Base: i8
+    00000015 [Ns.Y]: [A  tTuUB C dD  ], Base: {'X X':i8}
+###
+*** UndoAll
+Del: 00000014 [Ns.Z]
+Del: 00000015 [Ns.Y]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###
+Add: 00000016 ['A B'], Fma: ["he"]
+Add: 00000017 [A2], Fma: ["hello" has'A B']
+Add: 00000018 [B2], Fma: ['A B'has "h"]
+Add: 00000019 [C2], Fma: [["hello" has'A B', 'A B'has "h"]]
+Status: 4 nodes, 1 undos, 0 redos
+  Node changes:
+    00000016 ['A B']: [A  tT  B C dD  ], Base: s
+    00000017 [A2]: [A  tTuUB C dD  ], Base: b
+    00000018 [B2]: [A  tTuUB C dD  ], Base: b
+    00000019 [C2]: [A  tTuUB C dD  ], Base: b*
+###
+Ren: 00000016 [Z2] <= ['A B']
+Fma: 00000017 [A2], Main: ["hello" has'A B'] => ["hello" has Z2]
+Fma: 00000018 [B2], Main: ['A B'has "h"] => [Z2 has "h"]
+Fma: 00000019 [C2], Main: [["hello" has'A B', 'A B'has "h"]] => [["hello" has Z2, Z2 has "h"]]
+Status: 4 nodes, 2 undos, 0 redos
+  Node changes:
+    00000016 [Z2]: [ N     B       ], Base: s
+    00000017 [A2]: [       B       ], Base: b
+    00000018 [B2]: [       B       ], Base: b
+    00000019 [C2]: [       B       ], Base: b*
+###
+*** Undo(1)
+Ren: 00000016 ['A B'] <= [Z2]
+Fma: 00000017 [A2], Main: ["hello" has Z2] => ["hello" has'A B']
+Fma: 00000018 [B2], Main: [Z2 has "h"] => ['A B'has "h"]
+Fma: 00000019 [C2], Main: [["hello" has Z2, Z2 has "h"]] => [["hello" has'A B', 'A B'has "h"]]
+Status: 4 nodes, 1 undos, 1 redos
+  Node changes:
+    00000016 ['A B']: [ N     B       ], Base: s
+    00000017 [A2]: [       B       ], Base: b
+    00000018 [B2]: [       B       ], Base: b
+    00000019 [C2]: [       B       ], Base: b*
+###
+*** Redo(1)
+Ren: 00000016 [Z2] <= ['A B']
+Fma: 00000017 [A2], Main: ["hello" has'A B'] => ["hello" has Z2]
+Fma: 00000018 [B2], Main: ['A B'has "h"] => [Z2 has "h"]
+Fma: 00000019 [C2], Main: [["hello" has'A B', 'A B'has "h"]] => [["hello" has Z2, Z2 has "h"]]
+Status: 4 nodes, 2 undos, 0 redos
+  Node changes:
+    00000016 [Z2]: [ N     B       ], Base: s
+    00000017 [A2]: [       B       ], Base: b
+    00000018 [B2]: [       B       ], Base: b
+    00000019 [C2]: [       B       ], Base: b*
+###
+*** UndoAll
+Del: 00000016 [Z2]
+Del: 00000017 [A2]
+Del: 00000018 [B2]
+Del: 00000019 [C2]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** RedoAll
+Add: 00000016 [Z2], Fma: ["he"]
+Add: 00000017 [A2], Fma: ["hello" has Z2]
+Add: 00000018 [B2], Fma: [Z2 has "h"]
+Add: 00000019 [C2], Fma: [["hello" has Z2, Z2 has "h"]]
+Status: 4 nodes, 2 undos, 0 redos
+  Node changes:
+    00000016 [Z2]: [A  tT  B C dD  ], Base: s
+    00000017 [A2]: [A  tTuUB C dD  ], Base: b
+    00000018 [B2]: [A  tTuUB C dD  ], Base: b
+    00000019 [C2]: [A  tTuUB C dD  ], Base: b*
+###
+*** UndoAll
+Del: 00000016 [Z2]
+Del: 00000017 [A2]
+Del: 00000018 [B2]
+Del: 00000019 [C2]
+Status: 0 nodes, 0 undos, 2 redos
+###
+Add: 0000001a [A], <config>
+Add: 0000001b [B], Fma: [A->Count()]
+Status: 2 nodes, 1 undos, 0 redos
+  Node changes:
+    0000001a [A]: [A  tT      dD  ], <config>, Base: s*
+    0000001b [B]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 0000001a [X] <= [A], <config>
+Fma: 0000001b [B], Main: [A->Count()] => [X->Count()]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    0000001a [X]: [ N             ], <config>, Base: s*
+    0000001b [B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 0000001a [A] <= [X], <config>
+Fma: 0000001b [B], Main: [X->Count()] => [A->Count()]
+Status: 2 nodes, 1 undos, 1 redos
+  Node changes:
+    0000001a [A]: [ N             ], <config>, Base: s*
+    0000001b [B]: [       B       ], Base: i8
+###
+*** Redo(1)
+Ren: 0000001a [X] <= [A], <config>
+Fma: 0000001b [B], Main: [A->Count()] => [X->Count()]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    0000001a [X]: [ N             ], <config>, Base: s*
+    0000001b [B]: [       B       ], Base: i8
+###
+*** UndoAll
+Del: 0000001a [X], <config>
+Del: 0000001b [B]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** RedoAll
+Add: 0000001a [X], <config>
+Add: 0000001b [B], Fma: [X->Count()]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    0000001a [X]: [A  tT      dD  ], <config>, Base: s*
+    0000001b [B]: [A  tTuUB C dD  ], Base: i8
+###
+*** UndoAll
+Del: 0000001a [X], <config>
+Del: 0000001b [B]
+Status: 0 nodes, 0 undos, 2 redos
+###

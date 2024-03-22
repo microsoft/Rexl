@@ -1,0 +1,191 @@
+**** New definitions: S, type: s*
+
+> WrapSeq(Range(10))
+WrapSeq(Range(10)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Test.WrapSeq(Call(∂.Range(10:i8):i8*)):i8*))
+// () : i8*
+top(Arr<obj>, Arr<obj>):obj
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static TestWrapSeqFuncGen::ExecSeq(Seq<i8>, i8):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 21
+
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 3) 3
+ 8) 8
+ 1) 1
+ 6) 6
+ 4) 0
+ 9) 9
+ 0) 0
+ 5) 5
+ 2) 2
+ 7) 7
+###
+> WrapSeq(S)
+WrapSeq(S) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Test.WrapSeq(Global(S)):s*))
+// (∂.S:s*) : s*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldnull
+      5) call static TestWrapSeqFuncGen::ExecSeq(Seq<str>, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 22
+
+Func sig: (S:s*) to s*
+Sequence: Seq<str>
+ 3) xyz
+ 1) xy
+ 6) hola
+ 4) <null>
+ 0) x
+ 5) adios
+ 2) <null>
+ 7) guten morgen
+###
+> WrapSeq(Zip(s:S, i:Range(10), { A: s, X: i + 1d }))
+WrapSeq(Zip(s : S, i : Range(10), { A : s, X : i + 1 })) : {A:s, X:r8}*
+BndKind:Call, Type:{A:s, X:r8}*, Bnd:(Call(∂.Test.WrapSeq(Call(∂.ForEach([map:1] Global(S), [map:2] Call(∂.Range(10:i8):i8*), {A:Scope(1), X:Add(Num<r8>(Scope(2)), 1:r8)})))))
+// (∂.S:s*) : {A:s, X:r8}*
+ForEach_2(Arr<obj>, str, i8):{str,r8}
+      5) newobj {str,r8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,r8}::_B0:u1
+      1) stloc.0 [{str,r8}]
+      1) ldloc.0 [{str,r8}]
+      1) ldarg.1 [str]
+      5) stfld {str,r8}::_F0:str
+      1) ldloc.0 [{str,r8}]
+      1) ldarg.2 [i8]
+      1) conv.r8
+      9) ldc.r8 [1]
+      1) add
+      5) stfld {str,r8}::_F1:r8
+      1) ldloc.0 [{str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 53
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,i8,{str,r8}>]
+      5) call static ForEachGen::Exec(Seq<str>, Seq<i8>, Func<str,i8,{str,r8}>):Seq<{str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,r8}>):Seq<{str,r8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [{str,r8}]
+      5) call static TestWrapSeqFuncGen::ExecSeq(Seq<{str,r8}>, {str,r8}):Seq<{str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,r8}>):Seq<{str,r8}>
+      1) ret
+  Total Size: 53
+
+Func sig: (S:s*) to {A:s, X:r8}*
+Sequence: Seq<{str,r8}>
+ 3) { A: xyz, X: 4 }
+ 1) { A: xy, X: 2 }
+ 6) { A: hola, X: 7 }
+ 4) { A: <null>, X: 0 }
+ 0) { A: x, X: 1 }
+ 5) { A: adios, X: 6 }
+ 2) { A: <null>, X: 3 }
+ 7) { A: guten morgen, X: 8 }
+###
+> WrapSeq(Zip(s:S, i:Range(10), { A: s, X: i + 1d } if i != 5 else null))
+WrapSeq(Zip(s : S, i : Range(10), { A : s, X : i + 1 } if i !@= 5 else null)) : {A:s, X:r8}?*
+BndKind:Call, Type:{A:s, X:r8}?*, Bnd:(Call(∂.Test.WrapSeq(Call(∂.ForEach([map:1] Global(S), [map:2] Call(∂.Range(10:i8):i8*), If(Cmp(Scope(2) !@= 5:i8), Ref<{A:s, X:r8}?>({A:Scope(1), X:Add(Num<r8>(Scope(2)), 1:r8)}), null:{A:s, X:r8}?))))))
+// (∂.S:s*) : {A:s, X:r8}?*
+ForEach_2(Arr<obj>, str, i8):{str,r8}
+      1) ldarg.2 [i8]
+      1) ldc.i4.5
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+      5) brfalse [0]
+      5) newobj {str,r8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,r8}::_B0:u1
+      1) stloc.0 [{str,r8}]
+      1) ldloc.0 [{str,r8}]
+      1) ldarg.1 [str]
+      5) stfld {str,r8}::_F0:str
+      1) ldloc.0 [{str,r8}]
+      1) ldarg.2 [i8]
+      1) conv.r8
+      9) ldc.r8 [1]
+      1) add
+      5) stfld {str,r8}::_F1:r8
+      1) ldloc.0 [{str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      5) br [1]
+  Label [0]:
+      1) ldnull
+  Label [1]:
+      1) ret
+  Total Size: 72
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,i8,{str,r8}>]
+      5) call static ForEachGen::Exec(Seq<str>, Seq<i8>, Func<str,i8,{str,r8}>):Seq<{str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,r8}>):Seq<{str,r8}>
+      1) ldnull
+      5) call static TestWrapSeqFuncGen::ExecSeq(Seq<{str,r8}>, {str,r8}):Seq<{str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,r8}>):Seq<{str,r8}>
+      1) ret
+  Total Size: 47
+
+Func sig: (S:s*) to {A:s, X:r8}?*
+Sequence: Seq<{str,r8}>
+ 3) { A: xyz, X: 4 }
+ 1) { A: xy, X: 2 }
+ 6) { A: hola, X: 7 }
+ 4) <null>
+ 0) { A: x, X: 1 }
+ 5) <null>
+ 2) { A: <null>, X: 3 }
+ 7) { A: guten morgen, X: 8 }
+###

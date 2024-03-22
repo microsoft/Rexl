@@ -1,0 +1,118 @@
+> [1, "hi", Range(5)]
+[1, "hi", Range(5)] : g*
+*** Error: (4,8) Node: "hi", Message: The given types are incompatible: 'i8' and 's'
+Binder : [Box<g>(1), Ref<g>("hi"), Ref<g>(Range(5))]
+###
+
+**** New globals: {Gs:g*, Gss:g**, I4s:i4*, I4ss:i4**, Os:o*, TI4_0s:i4[]*, TI4_1s:i4[*]*, TI4_2s:i4[*,*]*, TI4q_1s:i4?[*]*, TI8_1s:i8[*]*, UABCs:U<A.B.C>*, UABs:U<A.B>*, UACs:U<A.C>*, UAs:U<A>*, UBs:U<B>*, Us:U<>*, Vs:v*}
+
+> I4ss ++ Gs
+I4ss ++ Gs : g*
+Binder : SeqConcat(Ref<g*>(I4ss), Gs)
+###
+> I4ss ++ Gs
+I4ss ++ Gs : g*
+Binder : SeqConcat(Ref<g*>(I4ss), Gs)
+###
+> Vs ++ I4ss
+Vs ++ I4ss : i4**
+Binder : SeqConcat(ForEach(*1: Vs, Unit<i4*>(*1)), I4ss)
+Reducer: SeqConcat(ForEach(*1: Vs, null), I4ss)
+###
+> Os ++ I4ss
+Os ++ I4ss : i4**
+Binder : SeqConcat(ForEach(*1: Os, null), I4ss)
+###
+> [[[]]] ++ I4ss ++ I4s
+[[[]]] ++ I4ss ++ I4s : g*
+*** Error: (7,9) Node: [[[]]] ++ I4ss, Message: The given types are incompatible: 'v***' and 'i4**'
+*** Error: (15,17) Node: [[[]]] ++ I4ss ++ I4s, Message: The given types are incompatible: 'g**' and 'i4*'
+Binder : SeqConcat(Ref<g*>([[null]]), Ref<g*>(ForEach(*1: I4ss, ForEach(*2: *1, Box<g>(*2)))), ForEach(*3: I4s, Box<g>(*3)))
+###
+> [[[]]]->CastGenLift() ++ I4ss ++ I4s
+[[[]]]->CastGenLift() ++ I4ss ++ I4s : g*
+*** Error: (22,24) Node: [[[]]]->CastGenLift() ++ I4ss, Message: The given types are incompatible: 'g***' and 'i4**'
+*** Error: (30,32) Node: [[[]]]->CastGenLift() ++ I4ss ++ I4s, Message: The given types are incompatible: 'g**' and 'i4*'
+Binder : SeqConcat(Ref<g*>(ForEach(*1: [[null]], ForEach(*2: *1, ForEach(*3: *2, Test.CastGenLift(*3))))), Ref<g*>(ForEach(*4: I4ss, ForEach(*5: *4, Box<g>(*5)))), ForEach(*6: I4s, Box<g>(*6)))
+###
+> [[[]]]->ForEach(it->ForEach(it->CastGen())) ++ I4ss ++ I4s
+[[[]]]->ForEach(it->ForEach(it->CastGen())) ++ I4ss ++ I4s : g*
+*** Error: (52,54) Node: [[[]]]->ForEach(it->ForEach(it->CastGen())) ++ I4ss ++ I4s, Message: The given types are incompatible: 'g**' and 'i4*'
+Binder : SeqConcat(Ref<g*>(ForEach(*1: [[null]], ForEach(*2: *1, Test.CastGen(*2)))), Ref<g*>(ForEach(*3: I4ss, ForEach(*4: *3, Box<g>(*4)))), ForEach(*5: I4s, Box<g>(*5)))
+###
+> [[[]]]->ForEach(it->CastGen()) ++ I4ss ++ I4s
+[[[]]]->ForEach(it->CastGen()) ++ I4ss ++ I4s : g*
+Binder : SeqConcat(ForEach(*1: [[null]], Test.CastGen(*1)), Ref<g*>(I4ss), ForEach(*2: I4s, Box<g>(*2)))
+###
+> [[[]]] ++ I4ss->CastGenLift() ++ I4s
+[[[]]] ++ I4ss->CastGenLift() ++ I4s : g*
+*** Error: (30,32) Node: [[[]]] ++ I4ss->CastGenLift() ++ I4s, Message: The given types are incompatible: 'g**' and 'i4*'
+Binder : SeqConcat(Ref<g*>([[null]]), Ref<g*>(ForEach(*1: I4ss, ForEach(*2: *1, Test.CastGenLift(*2)))), ForEach(*3: I4s, Box<g>(*3)))
+###
+> [[[]]] ++ I4ss->ForEach(it->CastGen()) ++ I4s
+[[[]]] ++ I4ss->ForEach(it->CastGen()) ++ I4s : g*
+Binder : SeqConcat(Ref<g*>([[null]]), ForEach(*1: I4ss, Test.CastGen(*1)), ForEach(*2: I4s, Box<g>(*2)))
+###
+> [[[]]] ++ I4ss ++ I4s->CastGenLift()
+[[[]]] ++ I4ss ++ I4s->CastGenLift() : g*
+*** Error: (7,9) Node: [[[]]] ++ I4ss, Message: The given types are incompatible: 'v***' and 'i4**'
+Binder : SeqConcat(Ref<g*>([[null]]), Ref<g*>(ForEach(*1: I4ss, ForEach(*2: *1, Box<g>(*2)))), ForEach(*3: I4s, Test.CastGenLift(*3)))
+###
+> [[[]]] ++ I4ss->CastGenLift() ++ I4s->CastGenLift()
+[[[]]] ++ I4ss->CastGenLift() ++ I4s->CastGenLift() : g*
+Binder : SeqConcat(Ref<g*>([[null]]), Ref<g*>(ForEach(*1: I4ss, ForEach(*2: *1, Test.CastGenLift(*2)))), ForEach(*3: I4s, Test.CastGenLift(*3)))
+###
+> TI4_1s ++ TI4q_1s
+TI4_1s ++ TI4q_1s : i4?[*]*
+Binder : SeqConcat(ForEach(*1: TI4_1s, Tensor.ForEachLazy(@2: *1, Opt<i4?>(@2))), TI4q_1s)
+###
+> TI4_1s ++ TI8_1s
+TI4_1s ++ TI8_1s : i8[*]*
+Binder : SeqConcat(ForEach(*1: TI4_1s, Tensor.ForEachLazy(@2: *1, Num<i8>(@2))), TI8_1s)
+###
+> TI4_0s ++ TI4_1s
+TI4_0s ++ TI4_1s : g*
+*** Error: (7,9) Node: TI4_0s ++ TI4_1s, Message: The given types are incompatible: 'i4[]*' and 'i4[*]*'
+Binder : SeqConcat(Ref<g*>(TI4_0s), Ref<g*>(TI4_1s))
+###
+> TI4_1s ++ TI4_2s
+TI4_1s ++ TI4_2s : g*
+*** Error: (7,9) Node: TI4_1s ++ TI4_2s, Message: The given types are incompatible: 'i4[*]*' and 'i4[*,*]*'
+Binder : SeqConcat(Ref<g*>(TI4_1s), Ref<g*>(TI4_2s))
+###
+> Us ++ UAs
+Us ++ UAs : U<>*
+Binder : SeqConcat(Us, Ref<U<>*>(UAs))
+###
+> UBs ++ Us
+UBs ++ Us : U<>*
+Binder : SeqConcat(Ref<U<>*>(UBs), Us)
+###
+> UAs ++ UBs
+UAs ++ UBs : U<>*
+Binder : SeqConcat(Ref<U<>*>(UAs), Ref<U<>*>(UBs))
+###
+> UABs ++ UACs
+UABs ++ UACs : U<A>*
+Binder : SeqConcat(Ref<U<A>*>(UABs), Ref<U<A>*>(UACs))
+###
+> UABCs ++ UABs
+UABCs ++ UABs : U<A.B>*
+Binder : SeqConcat(Ref<U<A.B>*>(UABCs), UABs)
+###
+> UABs ++ UABCs
+UABs ++ UABCs : U<A.B>*
+Binder : SeqConcat(UABs, Ref<U<A.B>*>(UABCs))
+###
+> UABCs ++ UACs
+UABCs ++ UACs : U<A>*
+Binder : SeqConcat(Ref<U<A>*>(UABCs), Ref<U<A>*>(UACs))
+###
+> UACs ++ UABCs
+UACs ++ UABCs : U<A>*
+Binder : SeqConcat(Ref<U<A>*>(UACs), Ref<U<A>*>(UABCs))
+###
+> [{A:3, B:true}, {A:5}]
+[{ A : 3, B : true }, { A : 5 }] : {A:i8, B:b?}*
+Binder : [Ref<{A:i8, B:b?}>({A:3, B:true}), {A:5[, B:null:b?]}]
+###

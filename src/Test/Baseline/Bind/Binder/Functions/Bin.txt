@@ -1,0 +1,1246 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> Bin(3, 4)
+Bin(3, 4) : i8
+Binder : Bin(3, 4)
+Reducer: 0
+###
+> Bin(2, -1)
+Bin(2, -1) : i8
+Binder : Bin(2, -1)
+Reducer: 2
+###
+> Bin(2, 0)
+Bin(2, 0) : i8
+Binder : Bin(2, 0)
+Reducer: 2
+###
+> Bin(-0, 2)
+Bin(-0, 2) : i8
+Binder : Bin(0, 2)
+Reducer: 0
+###
+> Bin(-0f, 2f)
+Bin(-0, 2) : r8
+Binder : Bin(-0, 2)
+Reducer: -0
+###
+> Bin(-0.0, 2.0)
+Bin(-0, 2) : r8
+Binder : Bin(-0, 2)
+Reducer: -0
+###
+> Bin(-2, -0)
+Bin(-2, -0) : i8
+Binder : Bin(-2, 0)
+Reducer: -2
+###
+> Bin(-2f, -0f)
+Bin(-2, -0) : r8
+Binder : Bin(-2, -0)
+Reducer: -2
+###
+> Bin(-2.0, -0.0)
+Bin(-2, -0) : r8
+Binder : Bin(-2, -0)
+Reducer: -2
+###
+> Bin(0x3FFF_FFFFI4, 2I4)
+Bin(1073741823, 2) : i8
+Binder : Bin(1073741823, 2)
+Reducer: 1073741822
+###
+> Bin(0x3FFF_FFFFI4, 4I4)
+Bin(1073741823, 4) : i8
+Binder : Bin(1073741823, 4)
+Reducer: 1073741820
+###
+> Bin(0x7FFF_FFFFU4, 2I4) // i8
+Bin(2147483647, 2) : i8
+Binder : Bin(2147483647, 2)
+Reducer: 2147483646
+###
+> Bin(0x7FFF_FFFFU4, 2U4) // i8
+Bin(2147483647, 2) : i8
+Binder : Bin(2147483647, 2)
+Reducer: 2147483646
+###
+> Bin(0x7FFF_FFFFU4, 4I4) // i8
+Bin(2147483647, 4) : i8
+Binder : Bin(2147483647, 4)
+Reducer: 2147483644
+###
+> Bin(0x3FFF_FFFF, 2)
+Bin(1073741823, 2) : i8
+Binder : Bin(1073741823, 2)
+Reducer: 1073741822
+###
+> Bin(0x3FFF_FFFF, 4)
+Bin(1073741823, 4) : i8
+Binder : Bin(1073741823, 4)
+Reducer: 1073741820
+###
+> Bin(0x7FFF_FFFFU, 2 ) // i8
+Bin(2147483647, 2) : i8
+Binder : Bin(2147483647, 2)
+Reducer: 2147483646
+###
+> Bin(0x7FFF_FFFFU, 2U) // u8
+Bin(2147483647, 2) : u8
+Binder : Bin(2147483647, 2)
+Reducer: 2147483646
+###
+> Bin(0x7FFF_FFFFU, 4 ) // i8
+Bin(2147483647, 4) : i8
+Binder : Bin(2147483647, 4)
+Reducer: 2147483644
+###
+> Bin(0x3FFF_FFFF_FFFF_FFFF, 2)
+Bin(4611686018427387903, 2) : i8
+Binder : Bin(4611686018427387903, 2)
+Reducer: 4611686018427387902
+###
+> Bin(0x3FFF_FFFF_FFFF_FFFF, 4)
+Bin(4611686018427387903, 4) : i8
+Binder : Bin(4611686018427387903, 4)
+Reducer: 4611686018427387900
+###
+> Bin(0x7FFF_FFFF_FFFF_FFFFU, 2)
+Bin(9223372036854775807, 2) : i8
+Binder : Bin(9223372036854775807, 2)
+Reducer: 9223372036854775806
+###
+> Bin(0x7FFF_FFFF_FFFF_FFFFU, 2U)
+Bin(9223372036854775807, 2) : u8
+Binder : Bin(9223372036854775807, 2)
+Reducer: 9223372036854775806
+###
+> Bin(0x7FFF_FFFF_FFFF_FFFFU, 4)
+Bin(9223372036854775807, 4) : i8
+Binder : Bin(9223372036854775807, 4)
+Reducer: 9223372036854775804
+###
+> Bin(3, null)
+Bin(3, null) : i8?
+Binder : Guard(?1: null, Bin(3, Unit<i8>(?1)))
+Reducer: null
+###
+> Bin(null, 3)
+Bin(null, 3) : i8?
+Binder : Guard(?1: null, Bin(Unit<i8>(?1), 3))
+Reducer: null
+###
+> Bin(0, null)
+Bin(0, null) : i8?
+Binder : Guard(?1: null, Bin(0, Unit<i8>(?1)))
+Reducer: null
+###
+> Bin(null, 0)
+Bin(null, 0) : i8?
+Binder : Guard(?1: null, Bin(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Bin(null, null)
+Bin(null, null) : i8?
+Binder : Guard(?1: null, ?2: null, Bin(Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Bin(i4, 3)
+Bin(i4, 3) : i8
+Binder : Bin(Num<i8>(i4), 3)
+###
+> Bin(3, i4)
+Bin(3, i4) : i8
+Binder : Bin(3, Num<i8>(i4))
+###
+> Bin(i4, null)
+Bin(i4, null) : i8?
+Binder : Guard(?1: null, Bin(Num<i8>(i4), Unit<i8>(?1)))
+Reducer: null
+###
+> Bin(null, i4)
+Bin(null, i4) : i8?
+Binder : Guard(?1: null, Bin(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> Bin(3, true)
+Bin(3, true) : i8
+Binder : Bin(3, 1)
+Reducer: 3
+###
+> Bin(true, 3)
+Bin(true, 3) : i8
+Binder : Bin(1, 3)
+Reducer: 0
+###
+> Bin(true, false)
+Bin(true, false) : i8
+Binder : Bin(1, 0)
+Reducer: 1
+###
+> Bin("hello", true)
+Bin("hello", true) : i8
+*** Error: (4,11) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(2.0, 4.0)
+Bin(2, 4) : r8
+Binder : Bin(2, 4)
+Reducer: 0
+###
+> Bin(2.0, 3.0)
+Bin(2, 3) : r8
+Binder : Bin(2, 3)
+Reducer: 0
+###
+> Bin(3f, null)
+Bin(3, null) : r8?
+Binder : Guard(?1: null, Bin(3, Unit<r8>(?1)))
+Reducer: null
+###
+> Bin(null, 2f)
+Bin(null, 2) : r8?
+Binder : Guard(?1: null, Bin(Unit<r8>(?1), 2))
+Reducer: null
+###
+> Bin(2, r4)
+Bin(2, r4) : r8
+Binder : Bin(2, Num<r8>(r4))
+###
+> Bin(r4, 3)
+Bin(r4, 3) : r8
+Binder : Bin(Num<r8>(r4), 3)
+###
+> Bin(1, r4)
+Bin(1, r4) : r8
+Binder : Bin(1, Num<r8>(r4))
+###
+> Bin(r4, 1)
+Bin(r4, 1) : r8
+Binder : Bin(Num<r8>(r4), 1)
+###
+> Bin(null, r4)
+Bin(null, r4) : r8?
+Binder : Guard(?1: null, Bin(Unit<r8>(?1), Num<r8>(r4)))
+Reducer: null
+###
+> Bin(r4, null)
+Bin(r4, null) : r8?
+Binder : Guard(?1: null, Bin(Num<r8>(r4), Unit<r8>(?1)))
+Reducer: null
+###
+> Bin(0, r4)
+Bin(0, r4) : r8
+Binder : Bin(0, Num<r8>(r4))
+###
+> Bin(r4, 0)
+Bin(r4, 0) : r8
+Binder : Bin(Num<r8>(r4), 0)
+Reducer: Num<r8>(r4)
+###
+> Bin(2ia, 0)
+Bin(2, 0) : i
+Binder : Bin(2, 0)
+Reducer: 2
+###
+> Bin(2i8, 0)
+Bin(2, 0) : i8
+Binder : Bin(2, 0)
+Reducer: 2
+###
+> Bin(2u, 0u)
+Bin(2, 0) : u8
+Binder : Bin(2, 0)
+Reducer: 2
+###
+> Bin(0x80000000i4, -1)
+Bin(2147483648, -1) : i8
+Binder : Bin(-2147483648, -1)
+Reducer: -2147483648
+###
+> Bin(0x8000000000000000i8, -1)
+Bin(9223372036854775808, -1) : i8
+Binder : Bin(-9223372036854775808, -1)
+Reducer: -9223372036854775808
+###
+> Bin(2, -1)
+Bin(2, -1) : i8
+Binder : Bin(2, -1)
+Reducer: 2
+###
+> Bin(7u8, 4u)
+Bin(7, 4) : u8
+Binder : Bin(7, 4)
+Reducer: 4
+###
+> Bin(7ia, 4)
+Bin(7, 4) : i
+Binder : Bin(7, 4)
+Reducer: 4
+###
+> Bin(7, -4)
+Bin(7, -4) : i8
+Binder : Bin(7, -4)
+Reducer: 4
+###
+> Bin(7i8, -4)
+Bin(7, -4) : i8
+Binder : Bin(7, -4)
+Reducer: 4
+###
+> Bin(7ia, -4)
+Bin(7, -4) : i
+Binder : Bin(7, -4)
+Reducer: 4
+###
+> Bin(i4, -4)
+Bin(i4, -4) : i8
+Binder : Bin(Num<i8>(i4), -4)
+###
+> Bin(2u8, 0u)
+Bin(2, 0) : u8
+Binder : Bin(2, 0)
+Reducer: 2
+###
+> Bin(3.0r4, 2.0r4)
+Bin(3, 2) : r8
+Binder : Bin(3, 2)
+Reducer: 2
+###
+> Bin(3.0r8, 2.0r8)
+Bin(3, 2) : r8
+Binder : Bin(3, 2)
+Reducer: 2
+###
+> Bin(CastR4(1/0.0), 0f)
+Bin(CastR4(1 / 0), 0) : r8
+Binder : Bin(Num<r8>(CastR4(Mul(1, [/] 0))), 0)
+Reducer: ∞
+###
+> Bin(CastR4(-1/0.0), 0f)
+Bin(CastR4(-1 / 0), 0) : r8
+Binder : Bin(Num<r8>(CastR4(Mul(-1, [/] 0))), 0)
+Reducer: -∞
+###
+> Bin(0f/0f, 0f)
+Bin(0 / 0, 0) : r8
+Binder : Bin(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(-0f/0f, 0f)
+Bin(-0 / 0, 0) : r8
+Binder : Bin(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(1.0/0, 0.0)
+Bin(1 / 0, 0) : r8
+Binder : Bin(Mul(1, [/] 0), 0)
+Reducer: ∞
+###
+> Bin(-1.0/0, 0.0)
+Bin(-1 / 0, 0) : r8
+Binder : Bin(Mul(-1, [/] 0), 0)
+Reducer: -∞
+###
+> Bin(0r8/0, 0.0)
+Bin(0 / 0, 0) : r8
+Binder : Bin(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(-0r8/0, 0.0)
+Bin(-0 / 0, 0) : r8
+Binder : Bin(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(1r/0r, 0r)
+Bin(1 / 0, 0) : r8
+Binder : Bin(Mul(1, [/] 0), 0)
+Reducer: ∞
+###
+> Bin(-1r/0r, 0r)
+Bin(-1 / 0, 0) : r8
+Binder : Bin(Mul(-1, [/] 0), 0)
+Reducer: -∞
+###
+> Bin(0r/0r, 0r)
+Bin(0 / 0, 0) : r8
+Binder : Bin(Mul(0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(-0r/0r, 0.0r)
+Bin(-0 / 0, 0) : r8
+Binder : Bin(Mul(-0, [/] 0), 0)
+Reducer: NaN
+###
+> Bin(1.0/0, 1.0/0)
+Bin(1 / 0, 1 / 0) : r8
+Binder : Bin(Mul(1, [/] 0), Mul(1, [/] 0))
+Reducer: ∞
+###
+> Bin(1.0/0, -1.0/0)
+Bin(1 / 0, -1 / 0) : r8
+Binder : Bin(Mul(1, [/] 0), Mul(-1, [/] 0))
+Reducer: NaN
+###
+> Bin(0x812345u8, 0x81234567u8)
+Bin(8463173, 2166572391) : u8
+Binder : Bin(8463173, 2166572391)
+Reducer: 0
+###
+> Bin(0x80123456u8, 0x81234567u8)
+Bin(2148676694, 2166572391) : u8
+Binder : Bin(2148676694, 2166572391)
+Reducer: 0
+###
+> Bin(0x81234567u8, 0x80123456u8)
+Bin(2166572391, 2148676694) : u8
+Binder : Bin(2166572391, 2148676694)
+Reducer: 2148676694
+###
+> Bin(0x81234567u8, 0x812345u8)
+Bin(2166572391, 8463173) : u8
+Binder : Bin(2166572391, 8463173)
+Reducer: 2166572288
+###
+> Bin(3, g)
+Bin(3, g) : i8
+*** Error: (7,8) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3, o)
+Bin(3, o) : i8?
+Binder : Guard(?1: o, Bin(3, Unit<i8>(?1)))
+Reducer: null
+###
+> Bin(3, s)
+Bin(3, s) : i8
+*** Error: (7,8) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3, d)
+Bin(3, d) : i8
+*** Error: (7,8) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3, b)
+Bin(3, b) : i8
+Binder : Bin(3, Num<i8>(b))
+###
+> Bin(3, n)
+Bin(3, n) : r8
+Binder : Bin(3, n)
+###
+> Bin(3, r8)
+Bin(3, r8) : r8
+Binder : Bin(3, r8)
+###
+> Bin(3, r4)
+Bin(3, r4) : r8
+Binder : Bin(3, Num<r8>(r4))
+###
+> Bin(3, i)
+Bin(3, i) : i
+Binder : Bin(3, i)
+###
+> Bin(3, i8)
+Bin(3, i8) : i8
+Binder : Bin(3, i8)
+###
+> Bin(3, i4)
+Bin(3, i4) : i8
+Binder : Bin(3, Num<i8>(i4))
+###
+> Bin(3, i2)
+Bin(3, i2) : i8
+Binder : Bin(3, Num<i8>(i2))
+###
+> Bin(3, i1)
+Bin(3, i1) : i8
+Binder : Bin(3, Num<i8>(i1))
+###
+> Bin(3, u8)
+Bin(3, u8) : i8
+*** Warning: (7,9) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Bin(3, Num<i8>(u8))
+###
+> Bin(3, u4)
+Bin(3, u4) : i8
+Binder : Bin(3, Num<i8>(u4))
+###
+> Bin(3, u2)
+Bin(3, u2) : i8
+Binder : Bin(3, Num<i8>(u2))
+###
+> Bin(3, u1)
+Bin(3, u1) : i8
+Binder : Bin(3, Num<i8>(u1))
+###
+> Bin(-3, g)
+Bin(-3, g) : i8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Bin(-3, Error(ErrBadType_Src_Dst))
+###
+> Bin(-3, o)
+Bin(-3, o) : i8?
+Binder : Guard(?1: o, Bin(-3, Unit<i8>(?1)))
+Reducer: null
+###
+> Bin(-3, s)
+Bin(-3, s) : i8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Bin(-3, Error(ErrBadType_Src_Dst))
+###
+> Bin(-3, d)
+Bin(-3, d) : i8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Bin(-3, Error(ErrBadType_Src_Dst))
+###
+> Bin(-3, b)
+Bin(-3, b) : i8
+Binder : Bin(-3, Num<i8>(b))
+###
+> Bin(-3, n)
+Bin(-3, n) : r8
+Binder : Bin(-3, n)
+###
+> Bin(-3, r8)
+Bin(-3, r8) : r8
+Binder : Bin(-3, r8)
+###
+> Bin(-3, r4)
+Bin(-3, r4) : r8
+Binder : Bin(-3, Num<r8>(r4))
+###
+> Bin(-3, i)
+Bin(-3, i) : i
+Binder : Bin(-3, i)
+###
+> Bin(-3, i8)
+Bin(-3, i8) : i8
+Binder : Bin(-3, i8)
+###
+> Bin(-3, i4)
+Bin(-3, i4) : i8
+Binder : Bin(-3, Num<i8>(i4))
+###
+> Bin(-3, i2)
+Bin(-3, i2) : i8
+Binder : Bin(-3, Num<i8>(i2))
+###
+> Bin(-3, i1)
+Bin(-3, i1) : i8
+Binder : Bin(-3, Num<i8>(i1))
+###
+> Bin(-3, u8)
+Bin(-3, u8) : i8
+*** Warning: (8,10) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Bin(-3, Num<i8>(u8))
+###
+> Bin(-3, u4)
+Bin(-3, u4) : i8
+Binder : Bin(-3, Num<i8>(u4))
+###
+> Bin(-3, u2)
+Bin(-3, u2) : i8
+Binder : Bin(-3, Num<i8>(u2))
+###
+> Bin(-3, u1)
+Bin(-3, u1) : i8
+Binder : Bin(-3, Num<i8>(u1))
+###
+> Bin(3u, g)
+Bin(3, g) : u8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'u8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3u, o)
+Bin(3, o) : u8?
+Binder : Guard(?1: o, Bin(3, Unit<u8>(?1)))
+Reducer: null
+###
+> Bin(3u, s)
+Bin(3, s) : u8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'u8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3u, d)
+Bin(3, d) : u8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'u8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3u, b)
+Bin(3, b) : u8
+Binder : Bin(3, Num<u8>(b))
+###
+> Bin(3u, n)
+Bin(3, n) : r8
+Binder : Bin(3, n)
+###
+> Bin(3u, r8)
+Bin(3, r8) : r8
+Binder : Bin(3, r8)
+###
+> Bin(3u, r4)
+Bin(3, r4) : r8
+Binder : Bin(3, Num<r8>(r4))
+###
+> Bin(3u, i)
+Bin(3, i) : i
+Binder : Bin(3, i)
+###
+> Bin(3u, i8)
+Bin(3, i8) : i8
+Binder : Bin(3, i8)
+###
+> Bin(3u, i4)
+Bin(3, i4) : i8
+Binder : Bin(3, Num<i8>(i4))
+###
+> Bin(3u, i2)
+Bin(3, i2) : i8
+Binder : Bin(3, Num<i8>(i2))
+###
+> Bin(3u, i1)
+Bin(3, i1) : i8
+Binder : Bin(3, Num<i8>(i1))
+###
+> Bin(3u, u8)
+Bin(3, u8) : u8
+Binder : Bin(3, u8)
+###
+> Bin(3u, u4)
+Bin(3, u4) : u8
+Binder : Bin(3, Num<u8>(u4))
+###
+> Bin(3u, u2)
+Bin(3, u2) : u8
+Binder : Bin(3, Num<u8>(u2))
+###
+> Bin(3u, u1)
+Bin(3, u1) : u8
+Binder : Bin(3, Num<u8>(u1))
+###
+> Bin(3f, g)
+Bin(3, g) : r8
+*** Error: (8,9) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3f, o)
+Bin(3, o) : r8?
+Binder : Guard(?1: o, Bin(3, Unit<r8>(?1)))
+Reducer: null
+###
+> Bin(3f, s)
+Bin(3, s) : r8
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3f, d)
+Bin(3, d) : r8
+*** Error: (8,9) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'r8'
+Binder : Bin(3, Error(ErrBadType_Src_Dst))
+###
+> Bin(3f, b)
+Bin(3, b) : r8
+Binder : Bin(3, Num<r8>(b))
+###
+> Bin(3f, n)
+Bin(3, n) : r8
+Binder : Bin(3, n)
+###
+> Bin(3f, r8)
+Bin(3, r8) : r8
+Binder : Bin(3, r8)
+###
+> Bin(3f, r4)
+Bin(3, r4) : r8
+Binder : Bin(3, Num<r8>(r4))
+###
+> Bin(3f, i)
+Bin(3, i) : r8
+Binder : Bin(3, Num<r8>(i))
+###
+> Bin(3f, i8)
+Bin(3, i8) : r8
+Binder : Bin(3, Num<r8>(i8))
+###
+> Bin(3f, i4)
+Bin(3, i4) : r8
+Binder : Bin(3, Num<r8>(i4))
+###
+> Bin(3f, i2)
+Bin(3, i2) : r8
+Binder : Bin(3, Num<r8>(i2))
+###
+> Bin(3f, i1)
+Bin(3, i1) : r8
+Binder : Bin(3, Num<r8>(i1))
+###
+> Bin(3f, u8)
+Bin(3, u8) : r8
+Binder : Bin(3, Num<r8>(u8))
+###
+> Bin(3f, u4)
+Bin(3, u4) : r8
+Binder : Bin(3, Num<r8>(u4))
+###
+> Bin(3f, u2)
+Bin(3, u2) : r8
+Binder : Bin(3, Num<r8>(u2))
+###
+> Bin(3f, u1)
+Bin(3, u1) : r8
+Binder : Bin(3, Num<r8>(u1))
+###
+> Bin(3, qd)
+Bin(3, qd) : i8?
+*** Error: (7,9) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Bin(3, Error(ErrBadType_Src_Dst)))
+###
+> Bin(3, qb)
+Bin(3, qb) : i8?
+Binder : Guard(?1: qb, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qn)
+Bin(3, qn) : r8?
+Binder : Guard(?1: qn, Bin(3, ?1))
+###
+> Bin(3, qr8)
+Bin(3, qr8) : r8?
+Binder : Guard(?1: qr8, Bin(3, ?1))
+###
+> Bin(3, qr4)
+Bin(3, qr4) : r8?
+Binder : Guard(?1: qr4, Bin(3, Num<r8>(?1)))
+###
+> Bin(3, qi)
+Bin(3, qi) : i?
+Binder : Guard(?1: qi, Bin(3, ?1))
+###
+> Bin(3, qi8)
+Bin(3, qi8) : i8?
+Binder : Guard(?1: qi8, Bin(3, ?1))
+###
+> Bin(3, qi4)
+Bin(3, qi4) : i8?
+Binder : Guard(?1: qi4, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qi2)
+Bin(3, qi2) : i8?
+Binder : Guard(?1: qi2, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qi1)
+Bin(3, qi1) : i8?
+Binder : Guard(?1: qi1, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qu8)
+Bin(3, qu8) : i8?
+*** Warning: (7,10) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qu4)
+Bin(3, qu4) : i8?
+Binder : Guard(?1: qu4, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qu2)
+Bin(3, qu2) : i8?
+Binder : Guard(?1: qu2, Bin(3, Num<i8>(?1)))
+###
+> Bin(3, qu1)
+Bin(3, qu1) : i8?
+Binder : Guard(?1: qu1, Bin(3, Num<i8>(?1)))
+###
+> Bin(-3, qd)
+Bin(-3, qd) : i8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Bin(-3, Error(ErrBadType_Src_Dst)))
+###
+> Bin(-3, qb)
+Bin(-3, qb) : i8?
+Binder : Guard(?1: qb, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qn)
+Bin(-3, qn) : r8?
+Binder : Guard(?1: qn, Bin(-3, ?1))
+###
+> Bin(-3, qr8)
+Bin(-3, qr8) : r8?
+Binder : Guard(?1: qr8, Bin(-3, ?1))
+###
+> Bin(-3, qr4)
+Bin(-3, qr4) : r8?
+Binder : Guard(?1: qr4, Bin(-3, Num<r8>(?1)))
+###
+> Bin(-3, qi)
+Bin(-3, qi) : i?
+Binder : Guard(?1: qi, Bin(-3, ?1))
+###
+> Bin(-3, qi8)
+Bin(-3, qi8) : i8?
+Binder : Guard(?1: qi8, Bin(-3, ?1))
+###
+> Bin(-3, qi4)
+Bin(-3, qi4) : i8?
+Binder : Guard(?1: qi4, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qi2)
+Bin(-3, qi2) : i8?
+Binder : Guard(?1: qi2, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qi1)
+Bin(-3, qi1) : i8?
+Binder : Guard(?1: qi1, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qu8)
+Bin(-3, qu8) : i8?
+*** Warning: (8,11) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qu4)
+Bin(-3, qu4) : i8?
+Binder : Guard(?1: qu4, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qu2)
+Bin(-3, qu2) : i8?
+Binder : Guard(?1: qu2, Bin(-3, Num<i8>(?1)))
+###
+> Bin(-3, qu1)
+Bin(-3, qu1) : i8?
+Binder : Guard(?1: qu1, Bin(-3, Num<i8>(?1)))
+###
+> Bin(3u, qd)
+Bin(3, qd) : u8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'u8'
+Binder : Guard(?1: qd, Bin(3, Error(ErrBadType_Src_Dst)))
+###
+> Bin(3u, qb)
+Bin(3, qb) : u8?
+Binder : Guard(?1: qb, Bin(3, Num<u8>(?1)))
+###
+> Bin(3u, qn)
+Bin(3, qn) : r8?
+Binder : Guard(?1: qn, Bin(3, ?1))
+###
+> Bin(3u, qr8)
+Bin(3, qr8) : r8?
+Binder : Guard(?1: qr8, Bin(3, ?1))
+###
+> Bin(3u, qr4)
+Bin(3, qr4) : r8?
+Binder : Guard(?1: qr4, Bin(3, Num<r8>(?1)))
+###
+> Bin(3u, qi)
+Bin(3, qi) : i?
+Binder : Guard(?1: qi, Bin(3, ?1))
+###
+> Bin(3u, qi8)
+Bin(3, qi8) : i8?
+Binder : Guard(?1: qi8, Bin(3, ?1))
+###
+> Bin(3u, qi4)
+Bin(3, qi4) : i8?
+Binder : Guard(?1: qi4, Bin(3, Num<i8>(?1)))
+###
+> Bin(3u, qi2)
+Bin(3, qi2) : i8?
+Binder : Guard(?1: qi2, Bin(3, Num<i8>(?1)))
+###
+> Bin(3u, qi1)
+Bin(3, qi1) : i8?
+Binder : Guard(?1: qi1, Bin(3, Num<i8>(?1)))
+###
+> Bin(3u, qu8)
+Bin(3, qu8) : u8?
+Binder : Guard(?1: qu8, Bin(3, ?1))
+###
+> Bin(3u, qu4)
+Bin(3, qu4) : u8?
+Binder : Guard(?1: qu4, Bin(3, Num<u8>(?1)))
+###
+> Bin(3u, qu2)
+Bin(3, qu2) : u8?
+Binder : Guard(?1: qu2, Bin(3, Num<u8>(?1)))
+###
+> Bin(3u, qu1)
+Bin(3, qu1) : u8?
+Binder : Guard(?1: qu1, Bin(3, Num<u8>(?1)))
+###
+> Bin(3f, qd)
+Bin(3, qd) : r8?
+*** Error: (8,10) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'r8'
+Binder : Guard(?1: qd, Bin(3, Error(ErrBadType_Src_Dst)))
+###
+> Bin(3f, qb)
+Bin(3, qb) : r8?
+Binder : Guard(?1: qb, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qn)
+Bin(3, qn) : r8?
+Binder : Guard(?1: qn, Bin(3, ?1))
+###
+> Bin(3f, qr8)
+Bin(3, qr8) : r8?
+Binder : Guard(?1: qr8, Bin(3, ?1))
+###
+> Bin(3f, qr4)
+Bin(3, qr4) : r8?
+Binder : Guard(?1: qr4, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qi)
+Bin(3, qi) : r8?
+Binder : Guard(?1: qi, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qi8)
+Bin(3, qi8) : r8?
+Binder : Guard(?1: qi8, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qi4)
+Bin(3, qi4) : r8?
+Binder : Guard(?1: qi4, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qi2)
+Bin(3, qi2) : r8?
+Binder : Guard(?1: qi2, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qi1)
+Bin(3, qi1) : r8?
+Binder : Guard(?1: qi1, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qu8)
+Bin(3, qu8) : r8?
+Binder : Guard(?1: qu8, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qu4)
+Bin(3, qu4) : r8?
+Binder : Guard(?1: qu4, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qu2)
+Bin(3, qu2) : r8?
+Binder : Guard(?1: qu2, Bin(3, Num<r8>(?1)))
+###
+> Bin(3f, qu1)
+Bin(3, qu1) : r8?
+Binder : Guard(?1: qu1, Bin(3, Num<r8>(?1)))
+###
+> Bin(g, 1)
+Bin(g, 1) : i8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(o, 1)
+Bin(o, 1) : i8?
+Binder : Guard(?1: o, Bin(Unit<i8>(?1), 1))
+Reducer: null
+###
+> Bin(s, 1)
+Bin(s, 1) : i8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(d, 1)
+Bin(d, 1) : i8
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(b, 1)
+Bin(b, 1) : i8
+Binder : Bin(Num<i8>(b), 1)
+Reducer: Num<i8>(b)
+###
+> Bin(n, 1)
+Bin(n, 1) : r8
+Binder : Bin(n, 1)
+###
+> Bin(r8, 1)
+Bin(r8, 1) : r8
+Binder : Bin(r8, 1)
+###
+> Bin(r4, 1)
+Bin(r4, 1) : r8
+Binder : Bin(Num<r8>(r4), 1)
+###
+> Bin(i, 1)
+Bin(i, 1) : i
+Binder : Bin(i, 1)
+Reducer: i
+###
+> Bin(i8, 1)
+Bin(i8, 1) : i8
+Binder : Bin(i8, 1)
+Reducer: i8
+###
+> Bin(i4, 1)
+Bin(i4, 1) : i8
+Binder : Bin(Num<i8>(i4), 1)
+Reducer: Num<i8>(i4)
+###
+> Bin(i2, 1)
+Bin(i2, 1) : i8
+Binder : Bin(Num<i8>(i2), 1)
+Reducer: Num<i8>(i2)
+###
+> Bin(i1, 1)
+Bin(i1, 1) : i8
+Binder : Bin(Num<i8>(i1), 1)
+Reducer: Num<i8>(i1)
+###
+> Bin(u8, 1)
+Bin(u8, 1) : i8
+*** Warning: (4,6) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Bin(Num<i8>(u8), 1)
+Reducer: Num<i8>(u8)
+###
+> Bin(u4, 1)
+Bin(u4, 1) : i8
+Binder : Bin(Num<i8>(u4), 1)
+Reducer: Num<i8>(u4)
+###
+> Bin(u2, 1)
+Bin(u2, 1) : i8
+Binder : Bin(Num<i8>(u2), 1)
+Reducer: Num<i8>(u2)
+###
+> Bin(u1, 1)
+Bin(u1, 1) : i8
+Binder : Bin(Num<i8>(u1), 1)
+Reducer: Num<i8>(u1)
+###
+> Bin(qd, 1)
+Bin(qd, 1) : i8?
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Bin(Error(ErrBadType_Src_Dst), 1))
+Reducer: Guard(?1: qd, Error(ErrBadType_Src_Dst))
+###
+> Bin(qb, 1)
+Bin(qb, 1) : i8?
+Binder : Guard(?1: qb, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qb, Num<i8>(?1))
+###
+> Bin(qn, 1)
+Bin(qn, 1) : r8?
+Binder : Guard(?1: qn, Bin(?1, 1))
+###
+> Bin(qr8, 1)
+Bin(qr8, 1) : r8?
+Binder : Guard(?1: qr8, Bin(?1, 1))
+###
+> Bin(qr4, 1)
+Bin(qr4, 1) : r8?
+Binder : Guard(?1: qr4, Bin(Num<r8>(?1), 1))
+###
+> Bin(qi, 1)
+Bin(qi, 1) : i?
+Binder : Guard(?1: qi, Bin(?1, 1))
+Reducer: qi
+###
+> Bin(qi8, 1)
+Bin(qi8, 1) : i8?
+Binder : Guard(?1: qi8, Bin(?1, 1))
+Reducer: qi8
+###
+> Bin(qi4, 1)
+Bin(qi4, 1) : i8?
+Binder : Guard(?1: qi4, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi4, Num<i8>(?1))
+###
+> Bin(qi2, 1)
+Bin(qi2, 1) : i8?
+Binder : Guard(?1: qi2, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi2, Num<i8>(?1))
+###
+> Bin(qi1, 1)
+Bin(qi1, 1) : i8?
+Binder : Guard(?1: qi1, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qi1, Num<i8>(?1))
+###
+> Bin(qu8, 1)
+Bin(qu8, 1) : i8?
+*** Warning: (4,7) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu8, Num<i8>(?1))
+###
+> Bin(qu4, 1)
+Bin(qu4, 1) : i8?
+Binder : Guard(?1: qu4, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu4, Num<i8>(?1))
+###
+> Bin(qu2, 1)
+Bin(qu2, 1) : i8?
+Binder : Guard(?1: qu2, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu2, Num<i8>(?1))
+###
+> Bin(qu1, 1)
+Bin(qu1, 1) : i8?
+Binder : Guard(?1: qu1, Bin(Num<i8>(?1), 1))
+Reducer: Guard(?1: qu1, Num<i8>(?1))
+###
+> Bin(null, 0)
+Bin(null, 0) : i8?
+Binder : Guard(?1: null, Bin(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Bin(g, 0)
+Bin(g, 0) : i8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 0)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(o, 0)
+Bin(o, 0) : i8?
+Binder : Guard(?1: o, Bin(Unit<i8>(?1), 0))
+Reducer: null
+###
+> Bin(s, 0)
+Bin(s, 0) : i8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 0)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(d, 0)
+Bin(d, 0) : i8
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Bin(Error(ErrBadType_Src_Dst), 0)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> Bin(b, 0)
+Bin(b, 0) : i8
+Binder : Bin(Num<i8>(b), 0)
+Reducer: Num<i8>(b)
+###
+> Bin(n, 0)
+Bin(n, 0) : r8
+Binder : Bin(n, 0)
+Reducer: n
+###
+> Bin(r8, 0)
+Bin(r8, 0) : r8
+Binder : Bin(r8, 0)
+Reducer: r8
+###
+> Bin(r4, 0)
+Bin(r4, 0) : r8
+Binder : Bin(Num<r8>(r4), 0)
+Reducer: Num<r8>(r4)
+###
+> Bin(i, 0)
+Bin(i, 0) : i
+Binder : Bin(i, 0)
+Reducer: i
+###
+> Bin(i8, 0)
+Bin(i8, 0) : i8
+Binder : Bin(i8, 0)
+Reducer: i8
+###
+> Bin(i4, 0)
+Bin(i4, 0) : i8
+Binder : Bin(Num<i8>(i4), 0)
+Reducer: Num<i8>(i4)
+###
+> Bin(i2, 0)
+Bin(i2, 0) : i8
+Binder : Bin(Num<i8>(i2), 0)
+Reducer: Num<i8>(i2)
+###
+> Bin(i1, 0)
+Bin(i1, 0) : i8
+Binder : Bin(Num<i8>(i1), 0)
+Reducer: Num<i8>(i1)
+###
+> Bin(u8, 0)
+Bin(u8, 0) : i8
+*** Warning: (4,6) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Bin(Num<i8>(u8), 0)
+Reducer: Num<i8>(u8)
+###
+> Bin(u4, 0)
+Bin(u4, 0) : i8
+Binder : Bin(Num<i8>(u4), 0)
+Reducer: Num<i8>(u4)
+###
+> Bin(u2, 0)
+Bin(u2, 0) : i8
+Binder : Bin(Num<i8>(u2), 0)
+Reducer: Num<i8>(u2)
+###
+> Bin(u1, 0)
+Bin(u1, 0) : i8
+Binder : Bin(Num<i8>(u1), 0)
+Reducer: Num<i8>(u1)
+###
+> Bin(qd, 0)
+Bin(qd, 0) : i8?
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Bin(Error(ErrBadType_Src_Dst), 0))
+Reducer: Guard(?1: qd, Error(ErrBadType_Src_Dst))
+###
+> Bin(qb, 0)
+Bin(qb, 0) : i8?
+Binder : Guard(?1: qb, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qb, Num<i8>(?1))
+###
+> Bin(qn, 0)
+Bin(qn, 0) : r8?
+Binder : Guard(?1: qn, Bin(?1, 0))
+Reducer: qn
+###
+> Bin(qr8, 0)
+Bin(qr8, 0) : r8?
+Binder : Guard(?1: qr8, Bin(?1, 0))
+Reducer: qr8
+###
+> Bin(qr4, 0)
+Bin(qr4, 0) : r8?
+Binder : Guard(?1: qr4, Bin(Num<r8>(?1), 0))
+Reducer: Guard(?1: qr4, Num<r8>(?1))
+###
+> Bin(qi, 0)
+Bin(qi, 0) : i?
+Binder : Guard(?1: qi, Bin(?1, 0))
+Reducer: qi
+###
+> Bin(qi8, 0)
+Bin(qi8, 0) : i8?
+Binder : Guard(?1: qi8, Bin(?1, 0))
+Reducer: qi8
+###
+> Bin(qi4, 0)
+Bin(qi4, 0) : i8?
+Binder : Guard(?1: qi4, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi4, Num<i8>(?1))
+###
+> Bin(qi2, 0)
+Bin(qi2, 0) : i8?
+Binder : Guard(?1: qi2, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi2, Num<i8>(?1))
+###
+> Bin(qi1, 0)
+Bin(qi1, 0) : i8?
+Binder : Guard(?1: qi1, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qi1, Num<i8>(?1))
+###
+> Bin(qu8, 0)
+Bin(qu8, 0) : i8?
+*** Warning: (4,7) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu8, Num<i8>(?1))
+###
+> Bin(qu4, 0)
+Bin(qu4, 0) : i8?
+Binder : Guard(?1: qu4, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu4, Num<i8>(?1))
+###
+> Bin(qu2, 0)
+Bin(qu2, 0) : i8?
+Binder : Guard(?1: qu2, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu2, Num<i8>(?1))
+###
+> Bin(qu1, 0)
+Bin(qu1, 0) : i8?
+Binder : Guard(?1: qu1, Bin(Num<i8>(?1), 0))
+Reducer: Guard(?1: qu1, Num<i8>(?1))
+###

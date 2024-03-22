@@ -1,0 +1,54 @@
+﻿import _DATA_ & "Games.rexl";
+
+Games->Count();
+Games->Count(true);
+Games->Sum(1);
+
+Games->Count(HScore > AScore);
+Games->Count(HScore > AScore) / Games->Count() * 100;
+
+Sum(Games.HScore);
+Sum(Games, HScore);
+Games->Sum(HScore);
+
+Sum(Games.HScore + Games.AScore);
+Sum(Games, HScore + AScore);
+Games->Sum(HScore + AScore);
+
+Sum(Games, HScore + AScore) | GetBindInfo(_);
+Sum(Games.HScore + Games.AScore) | GetBindInfo(_);
+
+Games->Sum(HScore) / Games->Sum(HScore + AScore) * 100;
+
+Games->Count(HScore = AScore);
+Games->Count(HScore + AScore >= 70);
+Games->Count(HScore = 0 or AScore = 0);
+
+"Does the set of home teams equal the set of away teams?";
+Games.Home->Distinct()->Sort() = Games.Away->Distinct()->Sort() | All(_);
+
+HomeTeams := Games->GroupBy(Home, XGames)->Sort(Home);
+HomeTeams->{ Team: Home, HomeGameCount: Count(XGames) };
+
+HomeGames := Games->{ Team: Home, Against: Away, Pts: HScore, PtsAgainst: AScore, IsHome: true,  When };
+AwayGames := Games->{ Team: Away, Against: Home, Pts: AScore, PtsAgainst: HScore, IsHome: false, When };
+TeamGames := HomeGames ++ AwayGames;
+TeamGames->Count();
+
+Teams := TeamGames->GroupBy(Team, XGames);
+Teams->Count();
+
+TeamStats := Teams->{
+  Team,
+  XWins: XGames->Count(Pts > PtsAgainst),
+  XLosses: XGames->Count(Pts < PtsAgainst),
+  XPts: XGames->Sum(Pts),
+  XPtsAgainst: XGames->Sum(PtsAgainst),
+  XPtsDiff: XGames->Sum(Pts - PtsAgainst),
+};
+TeamStats;
+
+TeamStats->Sum(XPtsDiff);
+TeamStats->Sum(XWins - XLosses);
+
+TeamStats->Sort(XWins, XPtsDiff);

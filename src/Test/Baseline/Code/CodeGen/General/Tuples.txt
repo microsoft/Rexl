@@ -1,0 +1,467 @@
+> (17,)
+(17,) : (i8)
+BndKind:Tuple, Type:(i8), Bnd:((17:i8,):(i8))
+Func sig: () to (i8)
+Type: (i8), Value: (17,)
+###
+> ()
+() : ()
+BndKind:Tuple, Type:(), Bnd:(():())
+Func sig: () to ()
+Type: (), Value: ()
+###
+> (1,2,3)
+(1, 2, 3) : (i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8), Bnd:((1:i8, 2:i8, 3:i8):(i8, i8, i8))
+Func sig: () to (i8, i8, i8)
+Type: (i8,i8,i8), Value: (1, 2, 3)
+###
+> (1,3.5,"hi")
+(1, 3.5, "hi") : (i8, r8, s)
+BndKind:Tuple, Type:(i8, r8, s), Bnd:((1:i8, 3.5:r8, str(hi)):(i8, r8, s))
+Func sig: () to (i8, r8, s)
+Type: (i8,r8,str), Value: (1, 3.5, hi)
+###
+> [(1,3.5,"hi"), null]
+[(1, 3.5, "hi"), null] : (i8, r8, s)?*
+BndKind:Sequence, Type:(i8, r8, s)?*, Bnd:([Ref<(i8, r8, s)?>((1:i8, 3.5:r8, str(hi)):(i8, r8, s)), null:(i8, r8, s)?]:(i8, r8, s)?*)
+Func sig: () to (i8, r8, s)?*
+Sequence: Seq<(i8,r8,str)>
+ 0) (1, 3.5, hi)
+ 1) <null>
+###
+> ForEach(a:Range(5), b:["a", "b", "c", "d", "e"], c:[true, false, false, true, false], (a, b, c))
+ForEach(a : Range(5), b : ["a", "b", "c", "d", "e"], c : [true, false, false, true, false], (a, b, c)) : (i8, s, b)*
+BndKind:Call, Type:(i8, s, b)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(5:i8):i8*), [map:2] [str(a), str(b), str(c), str(d), str(e)]:s*, [map:3] [true:b, false:b, false:b, true:b, false:b]:b*, (Scope(1), Scope(2), Scope(3)):(i8, s, b)):(i8, s, b)*))
+Func sig: () to (i8, s, b)*
+Sequence: Seq<(i8,str,bool)>
+ 0) (0, a, true )
+ 1) (1, b, false)
+ 2) (2, c, false)
+ 3) (3, d, true )
+ 4) (4, e, false)
+###
+
+**** New definitions: TS, type: (i8, s, b)*
+
+> TS.Item0
+TS.Item0 : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 0)):i8*))
+Func sig: (TS:(i8, s, b)*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> TS[0]
+TS[0] : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 0)):i8*))
+Func sig: (TS:(i8, s, b)*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> TS[^3]
+TS[^3] : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 0)):i8*))
+Func sig: (TS:(i8, s, b)*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> TS[^4 - 1] // REVIEW: Support simple expressions as constants.
+TS[^4 - 1] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadHetTupleIndex)):v*))
+*** Error: (6,7) Node: ^4 - 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+###
+> TS[1]
+TS[1] : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 1)):s*))
+Func sig: (TS:(i8, s, b)*) to s*
+Sequence: Seq<str>
+ 0) a
+ 1) b
+ 2) c
+ 3) d
+ 4) e
+###
+> TS[^2]
+TS[^2] : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 1)):s*))
+Func sig: (TS:(i8, s, b)*) to s*
+Sequence: Seq<str>
+ 0) a
+ 1) b
+ 2) c
+ 3) d
+ 4) e
+###
+> TS[7 - 6] // REVIEW: Support simple expressions as constants.
+TS[7 - 6] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadHetTupleIndex)):v*))
+*** Error: (5,6) Node: 7 - 6, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+###
+> TS[2]
+TS[2] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 2)):b*))
+Func sig: (TS:(i8, s, b)*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) false
+ 3) true 
+ 4) false
+###
+> TS[^1]
+TS[^1] : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlot(Scope(1), 2)):b*))
+Func sig: (TS:(i8, s, b)*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) false
+ 3) true 
+ 4) false
+###
+> TS[1 shl 1] // REVIEW: Support simple expressions as constants.
+TS[1 shl 1] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadHetTupleIndex)):v*))
+*** Error: (5,8) Node: 1 shl 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+###
+> TS[::-1]
+TS[::-1] : (b, s, i8)*
+BndKind:Call, Type:(b, s, i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 2:-1:-1):(b, s, i8)):(b, s, i8)*))
+Func sig: (TS:(i8, s, b)*) to (b, s, i8)*
+Sequence: Seq<(bool,str,i8)>
+ 0) (true , a, 0)
+ 1) (false, b, 1)
+ 2) (false, c, 2)
+ 3) (true , d, 3)
+ 4) (false, e, 4)
+###
+> TS[^0:^3:-1]
+TS[^0:^3:-1] : (b, s)*
+BndKind:Call, Type:(b, s)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 2:0:-1):(b, s)):(b, s)*))
+Func sig: (TS:(i8, s, b)*) to (b, s)*
+Sequence: Seq<(bool,str)>
+ 0) (true , a)
+ 1) (false, b)
+ 2) (false, c)
+ 3) (true , d)
+ 4) (false, e)
+###
+> TS[0:0:]
+TS[0:0:] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[1:1:]
+TS[1:1:] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[0:2:2]
+TS[0:2:2] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:2:2):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[^3:^2:1]
+TS[^3:^2:1] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:1:1):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[^3:^4:-1]
+TS[^3:^4:-1] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:-1:-1):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[0:2:-2]
+TS[0:2:-2] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[0:5:-1]
+TS[0:5:-1] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[0:-2]
+TS[0:-2] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:-1:-1):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[0:-2:2]
+TS[0:-2:2] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[0:-2:-2]
+TS[0:-2:-2] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:-2:-2):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[-1:-2:2]
+TS[-1:-2:2] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[^0:^5:-1][^0:^5:-1]
+TS[^0:^5:-1][^0:^5:-1] : (i8, s, b)*
+BndKind:Call, Type:(i8, s, b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 2:-1:-1):(b, s, i8), 2:-1:-1):(i8, s, b)):(i8, s, b)*))
+Func sig: (TS:(i8, s, b)*) to (i8, s, b)*
+Sequence: Seq<(i8,str,bool)>
+ 0) (0, a, true )
+ 1) (1, b, false)
+ 2) (2, c, false)
+ 3) (3, d, true )
+ 4) (4, e, false)
+###
+> TS[:][0:1]
+TS[:][0:1] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(Scope(1), 0:1:1):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[^0:^4:-1][^0:^2:-1]
+TS[^0:^4:-1][^0:^2:-1] : (i8)*
+BndKind:Call, Type:(i8)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 2:-1:-1):(b, s, i8), 2:1:-1):(i8)):(i8)*))
+Func sig: (TS:(i8, s, b)*) to (i8)*
+Sequence: Seq<(i8)>
+ 0) (0,)
+ 1) (1,)
+ 2) (2,)
+ 3) (3,)
+ 4) (4,)
+###
+> TS[1:4][1:2]
+TS[1:4][1:2] : (b)*
+BndKind:Call, Type:(b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 1:3:1):(s, b), 1:2:1):(b)):(b)*))
+Func sig: (TS:(i8, s, b)*) to (b)*
+Sequence: Seq<(bool)>
+ 0) (true ,)
+ 1) (false,)
+ 2) (false,)
+ 3) (true ,)
+ 4) (false,)
+###
+> TS[^2:4:1][^1:^0:1]
+TS[^2:4:1][^1:^0:1] : (b)*
+BndKind:Call, Type:(b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 1:3:1):(s, b), 1:2:1):(b)):(b)*))
+Func sig: (TS:(i8, s, b)*) to (b)*
+Sequence: Seq<(bool)>
+ 0) (true ,)
+ 1) (false,)
+ 2) (false,)
+ 3) (true ,)
+ 4) (false,)
+###
+> TS[^0:^4:-1][^0:^4:-1]
+TS[^0:^4:-1][^0:^4:-1] : (i8, s, b)*
+BndKind:Call, Type:(i8, s, b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 2:-1:-1):(b, s, i8), 2:-1:-1):(i8, s, b)):(i8, s, b)*))
+Func sig: (TS:(i8, s, b)*) to (i8, s, b)*
+Sequence: Seq<(i8,str,bool)>
+ 0) (0, a, true )
+ 1) (1, b, false)
+ 2) (2, c, false)
+ 3) (3, d, true )
+ 4) (4, e, false)
+###
+> TS[1:10][1:4]
+TS[1:10][1:4] : (b)*
+BndKind:Call, Type:(b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 1:3:1):(s, b), 1:2:1):(b)):(b)*))
+Func sig: (TS:(i8, s, b)*) to (b)*
+Sequence: Seq<(bool)>
+ 0) (true ,)
+ 1) (false,)
+ 2) (false,)
+ 3) (true ,)
+ 4) (false,)
+###
+> TS[^1:^3:-1][^2:1:1]
+TS[^1:^3:-1][^2:1:1] : (b)*
+BndKind:Call, Type:(b)*, Bnd:(Call(∂.ForEach([map:1] Global(TS), GetSlice(GetSlice(Scope(1), 2:0:-1):(b, s), 0:1:1):(b)):(b)*))
+Func sig: (TS:(i8, s, b)*) to (b)*
+Sequence: Seq<(bool)>
+ 0) (true ,)
+ 1) (false,)
+ 2) (false,)
+ 3) (true ,)
+ 4) (false,)
+###
+> TS[-1:-2:-2] // Error.
+TS[-1:-2:-2] : ()*
+BndKind:Call, Type:()*, Bnd:(Call(∂.With([with:1] ():(), Call(∂.ForEach([map:2] Global(TS), Scope(1)):()*)):()*))
+Func sig: (TS:(i8, s, b)*) to ()*
+Sequence: Seq<()>
+ 0) ()
+ 1) ()
+ 2) ()
+ 3) ()
+ 4) ()
+###
+> TS[-1:-2:1+0] // Error.
+TS[-1:-2:1 + 0] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (10,11) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[(2,4,1)] // Error.
+TS[(2, 4, 1)] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadHetTupleIndex)):v*))
+*** Error: (3,4) Node: (2, 4, 1), Message: Invalid operand type: cannot convert type '(i8, i8, i8)' to 'i8'
+*** Error: (3,4) Node: (2, 4, 1), Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+###
+> TS[(2,true,4,true,1)] // Error.
+TS[(2, true, 4, true, 1)] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadHetTupleIndex)):v*))
+*** Error: (3,4) Node: (2, true, 4, true, 1), Message: Invalid operand type: cannot convert type '(i8, b, i8, b, i8)' to 'i8'
+*** Error: (3,4) Node: (2, true, 4, true, 1), Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+###
+> TS[1+0:] // Error.
+TS[1 + 0:] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (4,5) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[:1+0:] // Error.
+TS[:1 + 0:] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (5,6) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[::1+0] // Error.
+TS[::1 + 0] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (6,7) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[-1::1+0] // Error.
+TS[-1::1 + 0] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (8,9) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[:-1:1+0] // Error.
+TS[:-1:1 + 0] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (8,9) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> TS[-1:-1:1+0] // Error.
+TS[-1:-1:1 + 0] : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(TS), Error(ErrBadTupleSliceRange)):v*))
+*** Error: (10,11) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+###
+> ForEach(t:TS, t[:2] & (true,) )[:]
+ForEach(t : TS, t[:2] & (true,))[:] : (i8, s, b)*
+BndKind:Call, Type:(i8, s, b)*, Bnd:(Call(∂.With([with:1] (true:b,):(b), Call(∂.ForEach([map:2] Global(TS), TupleConcat(GetSlice(Scope(2), 0:2:1):(i8, s), Scope(1))):(i8, s, b)*)):(i8, s, b)*))
+Func sig: (TS:(i8, s, b)*) to (i8, s, b)*
+Sequence: Seq<(i8,str,bool)>
+ 0) (0, a, true )
+ 1) (1, b, true )
+ 2) (2, c, true )
+ 3) (3, d, true )
+ 4) (4, e, true )
+###
+
+**** New definitions: T1, type: (i8, b)
+**** New definitions: T2, type: (r8)
+**** New definitions: T3, type: (s)
+
+> T1 & T3
+T1 & T3 : (i8, b, s)
+BndKind:VariadicOp, Type:(i8, b, s), Bnd:(TupleConcat(Global(T1), Global(T3)))
+Func sig: (T1:(i8, b), T3:(s)) to (i8, b, s)
+Type: (i8,bool,str), Value: (3, true , hi)
+###
+> T2 & T3
+T2 & T3 : (r8, s)
+BndKind:VariadicOp, Type:(r8, s), Bnd:(TupleConcat(Global(T2), Global(T3)))
+Func sig: (T2:(r8), T3:(s)) to (r8, s)
+Type: (r8,str), Value: (2.5, hi)
+###
+> T1 & ("hi",)
+T1 & ("hi",) : (i8, b, s)
+BndKind:VariadicOp, Type:(i8, b, s), Bnd:(TupleConcat(Global(T1), (str(hi),):(s)))
+Func sig: (T1:(i8, b)) to (i8, b, s)
+Type: (i8,bool,str), Value: (3, true , hi)
+###
+> (3, true) & T3
+(3, true) & T3 : (i8, b, s)
+BndKind:VariadicOp, Type:(i8, b, s), Bnd:(TupleConcat((3:i8, true:b):(i8, b), Global(T3)))
+Func sig: (T3:(s)) to (i8, b, s)
+Type: (i8,bool,str), Value: (3, true , hi)
+###

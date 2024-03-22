@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>Microsoft.Rexl.Bind</AssemblyName>
+    <RootNamespace>Microsoft.Rexl</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!-- NuGet Package Settings -->
+  <Import Project="..\..\..\nuget\nuget-package.props" />
+  <PropertyGroup>
+    <Title>REXL Bind</Title>
+    <Description>The Rexl lexer, parser, and binder.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\CharUtils.cs" Link="Shared\CharUtils.cs" />
+    <Compile Include="..\..\Shared\Sorting.cs" Link="Shared\Sorting.cs" />
+    <Compile Include="..\..\Shared\Validation.cs" Link="Shared\Validation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rexl.Base\Rexl.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Bind\BndVisitor.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BndVisitor.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Lex\Keywords.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Keywords.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Lex\TokKind.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TokKind.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Parse\NodeVisitor.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NodeVisitor.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Strings\ErrorStrings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorStrings.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Strings\RexlStrings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RexlStrings.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Bind\BndVisitor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BndVisitor.cs</LastGenOutput>
+    </None>
+    <None Update="Lex\Keywords.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Keywords.cs</LastGenOutput>
+    </None>
+    <None Update="Lex\TokKind.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TokKind.cs</LastGenOutput>
+    </None>
+    <None Update="Parse\NodeVisitor.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeVisitor.cs</LastGenOutput>
+    </None>
+    <None Update="Strings\ErrorStrings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ErrorStrings.cs</LastGenOutput>
+    </None>
+    <None Update="Strings\RexlStrings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RexlStrings.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

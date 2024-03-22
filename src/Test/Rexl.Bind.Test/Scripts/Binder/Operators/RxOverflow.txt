@@ -1,0 +1,43 @@
+﻿:: {g:g, o:o, s:s, b:b, qb:b?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+// REVIEW: Many of the below don't produce warnings. Should they?
+
+// Largest finite r4 is between 2^127 and 2^128.
+2d^127 | CastR4(_)
+2d^128 | CastR4(_) // Overflow, no warning.
+// Largest finite r8 is between 2^1023 and 2^1024.
+2d^1023
+2d^1024 // Overflow, no warning.
+
+// Smallest positive r4 is 2^-149.
+2d^-149 | CastR4(_)
+2d^-149 / 2 | CastR4(_) // Underflow, no warning.
+// Smallest positive r8 is 2^-1074.
+2d^-1074
+2d^-1074 / 2 // Underflow, no warning.
+
+// No overflow on i to r4 conversion.
+(1ia shl 127)
+(1ia shl 127) | CastR4(_)
+(1ia shl 127) * 2d | CastR4(_) // Overflow, no warning.
+
+// Overflow on i to r4 conversion.
+(1ia shl 128)
+(1ia shl 128) | CastR4(_) // Overflow, no warning.
+
+// No overflow on i to r8 conversion.
+(1ia shl 1023)
+(1ia shl 1023) | CastR8(_)
+(1ia shl 1023) * 1d
+(1ia shl 1023) * r8
+(1ia shl 1023) | CastR4(_) // Overflow, no warning.
+(1ia shl 1023) * 1d | CastR4(_) // Overflow, no warning.
+(1ia shl 1023) * 2d // Overflow, no warning.
+(1ia shl 1023) * 2d * r8 // Overflow, no warning.
+(1ia shl 1023) * 2 * r8 // Overflow, WITH warning.
+
+// Overflow on i to r8 conversion.
+(1ia shl 1024)
+(1ia shl 1024) | CastR8(_) // Overflow, no warning.
+(1ia shl 1024) | CastR4(_) // Overflow, no warning.
+(1ia shl 1024) * r8 // Overflow, WITH warning.

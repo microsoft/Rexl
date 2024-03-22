@@ -1,0 +1,41 @@
+﻿// This file is parallel to JoinText.txt. Keep it that way to easily compare outputs.
+``` A := Range(20)->{ ID: "A" & ToText(it), V: it       }->Filter(V mod 3 != 2)->{ ID, V: V if V mod  7 != 3 else null };
+``` B := Range(40)->{ ID: "B" & ToText(it), V: it div 2 }->Filter(V mod 4 != 1)->{ ID, V: V if V mod  5 != 3 else null };
+``` C := Range( 3)->{ ID: "C" & ToText(it), V: it if it > 1000 else null }; // All null values.
+``` D := Range( 3)->{ ID: "D" & ToText(it), V: it + 11 if it < 1000 else null }; // All non-null values.
+``` E := A->Filter(V > 1000); // Empty.
+``` XS := [ A, B, C, D, E, null ];
+``` YS := [ A, B, C, D, E, null ];
+``` Bad := -1;
+``` func F(x) := x;
+
+A
+B
+C
+D
+
+// The outer CrossJoin is to iterate over all pairs coming from XS, YS.
+
+// Inner.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,  Wrap(x.V =      y.V), { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,       x.V =      y.V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,         V,         V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      (V,),      (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      {V,},      {V,} , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,  V ?? Bad,  V ?? Bad , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }))
+
+// Left outer.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,  Wrap(x.V =      y.V), { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,       x.V =      y.V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,         V,         V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      (V,),      (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      {V,},      {V,} , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,  V ?? Bad,  V ?? Bad , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }))
+
+// Full outer.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,  Wrap(x.V =      y.V), { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,       x.V =      y.V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,         V,         V , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      (V,),      (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,      {V,},      {V,} , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,  V ?? Bad,  V ?? Bad , { IDX:x.ID, IDY:y.ID, VX:x.V->F(), VY:y.V->F() }, { IDX:ID, VX:V->F(), VY:Bad->F() }, { IDY:ID, VX:Bad->F(), VY:V->F() }))

@@ -1,0 +1,246 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Collections.Generic;
+
+using Microsoft.Rexl.Utility;
+
+namespace Microsoft.Rexl.Code;
+
+using Integer = System.Numerics.BigInteger;
+
+partial class SumBaseGen
+{
+<#
+var typesSansSel = new (string type, string sumType, string resType, string suffix)[]
+{
+    ("double",  "double",  "double",  "S"),
+    ("long",    "long",    "long",    "S"),
+    ("ulong",   "ulong",   "ulong",   "S"),
+    ("Integer", "Integer", "Integer", "S"),
+    ("float",   "double",  "double",  "Sum"),
+    ("int",     "long",    "long",    "Sum"),
+    ("short",   "long",    "long",    "Sum"),
+    ("sbyte",   "long",    "long",    "Sum"),
+    ("uint",    "long",    "long",    "Sum"),
+    ("ushort",  "long",    "long",    "Sum"),
+    ("byte",    "long",    "long",    "Sum"),
+    ("bool",    "long",    "long",    "Sum"),
+    ("long",    "Integer", "Integer", "Big"),
+    ("int",     "Integer", "Integer", "Big"),
+    ("short",   "long",    "Integer", "Big"),
+    ("sbyte",   "long",    "Integer", "Big"),
+    ("ulong",   "Integer", "Integer", "Big"),
+    ("uint",    "Integer", "Integer", "Big"),
+    ("ushort",  "long",    "Integer", "Big"),
+    ("byte",    "long",    "Integer", "Big"),
+    ("bool",    "long",    "Integer", "Big"),
+};
+
+var typesWithSel = new string[]
+{
+    "double",
+    "long",
+    "ulong",
+    "Integer",
+};
+
+var bools = new[] { false, true };
+#>
+    #region Exec on single sequence of number type
+<#  foreach (var (type, sumType, resType, suffix) in typesSansSel) {#>
+<#      string agg = type == "bool" ? "if (val) sum++;" : "sum += val;";#>
+<#      foreach (bool opt in bools) {#>
+<#          string typeItem = !opt ? type : type + "?";#>
+<#          string cur = !opt ? "var val = e.Current;" : "var raw = e.Current; if (raw == null) continue; var val = raw.GetValueOrDefault();";#>
+    public static <#=resType#> Exec<#=suffix#>(IEnumerable<<#=typeItem#>> items, ExecCtx ctx, int id, out long c)
+    {
+        long count = 0;
+<#          if (sumType != resType) {#>
+        // <#=sumType#> is sufficient to avoid overflow.
+<#          }#>
+        <#=sumType#> sum = 0;
+        if (items != null)
+        {
+            using var e = items.GetEnumerator();
+            for (; ; )
+            {
+                ctx.Ping(id); if (!e.MoveNext()) break;
+                <#=cur#>
+                <#=agg#>
+                count++;
+            }
+        }
+        c = count;
+        return sum;
+    }
+<#      }#>
+<#  }#>
+    #endregion Exec on single sequence of number type
+
+    #region Exec with one sequence and selector function
+<#  foreach (var type in typesWithSel) {#>
+<#      foreach (bool opt in bools) {#>
+<#          string typeItem = !opt ? type : type + "?";#>
+<#          foreach (var ind in bools) {#>
+<#              string init = !ind || !opt ? "long count = 0;" : "long count = 0, idx = 0;";#>
+<#              string inv = !ind ? "fn(e.Current)" : !opt ? "fn(count, e.Current)" : "fn(idx++, e.Current)";#>
+<#              string cur = !opt ? "var val = " + inv + ";" : "var raw = " + inv + "; if (raw == null) continue; var val = raw.GetValueOrDefault();";#>
+<#              if (!ind) {#>
+    public static <#=type#> Exec<T>(IEnumerable<T> s, Func<T, <#=typeItem#>> fn, ExecCtx ctx, int id, out long c)
+<#              } else {#>
+    public static <#=type#> ExecInd<T>(IEnumerable<T> s, Func<long, T, <#=typeItem#>> fn, ExecCtx ctx, int id, out long c)
+<#              }#>
+    {
+        <#=init#>
+        <#=type#> sum = 0;
+        if (s != null)
+        {
+            using var e = s.GetEnumerator();
+            for (; ; )
+            {
+                ctx.Ping(id); if (!e.MoveNext()) break;
+                <#=cur#>
+                sum += val;
+                count++;
+            }
+        }
+        c = count;
+        return sum;
+    }
+<#          }#>
+<#      }#>
+<#  }#>
+    #endregion Exec with one sequence and selector function
+
+    #region Neumaier / Kahan-Babuska on single sequence of number type
+<# var types1 = new string[]
+{
+    "double",
+    "float",
+    "Integer",
+    "long",
+    "int",
+    "ulong",
+    "uint",
+};
+
+var types2 = new string[]
+{
+    "short",
+    "sbyte",
+    "ushort",
+    "byte",
+    "bool"
+};
+#>
+<#  foreach (var type in types1) {#>
+<#      foreach (var opt in bools) {#>
+<#          string typeItem = !opt ? type : type + "?";#>
+<#          string cur = !opt ? "var val = e.Current.ToR8();" : "var raw = e.Current; if (raw == null) continue; var val = raw.GetValueOrDefault().ToR8();";#>
+    public static double ExecK(IEnumerable<<#=typeItem#>> items, ExecCtx ctx, int id, out long c)
+    {
+        long count = 0;
+        double sum = 0;
+        double cor = 0;
+        if (items != null)
+        {
+            using var e = items.GetEnumerator();
+            for (; ; )
+            {
+                ctx.Ping(id); if (!e.MoveNext()) break;
+                <#=cur#>
+                var pre = sum;
+                sum += val;
+                cor += Math.Abs(pre) >= Math.Abs(val) ? pre - sum + val : val - sum + pre;
+                count++;
+            }
+        }
+        c = count;
+        return sum + cor;
+    }
+<#      }#>
+<#  }#>
+<#  foreach (var type in types2) { #>
+<#      foreach (var opt in bools) {#>
+<#          string typeItem = !opt ? type : type + "?";#>
+    public static double ExecK(IEnumerable<<#=typeItem#>> items, ExecCtx ctx, int id, out long c)
+    {
+        return ExecSum(items, ctx, id, out c);
+    }
+<#      }#>
+<#  }#>
+
+<#  foreach (var opt in bools) {#>
+<#      string typeItem = !opt ? "double" : "double?";#>
+<#      foreach (var ind in bools) {#>
+<#          string init = !ind || !opt ? "long count = 0;" : "long count = 0, idx = 0;";#>
+<#          string inv = !ind ? "fn(e.Current)" : !opt ? "fn(count, e.Current)" : "fn(idx++, e.Current)";#>
+<#          string cur = !opt ? "var val = " + inv + ";" : "var raw = " + inv + "; if (raw == null) continue; var val = raw.GetValueOrDefault();";#>
+<#          if (!ind) {#>
+    public static double ExecK<T>(IEnumerable<T> s, Func<T, <#=typeItem#>> fn, ExecCtx ctx, int id, out long c)
+<#          } else {#>
+    public static double ExecIndK<T>(IEnumerable<T> s, Func<long, T, <#=typeItem#>> fn, ExecCtx ctx, int id, out long c)
+<#          }#>
+    {
+        <#=init#>
+        double sum = 0;
+        double cor = 0;
+        if (s != null)
+        {
+            using var e = s.GetEnumerator();
+            for (; ; )
+            {
+                ctx.Ping(id); if (!e.MoveNext()) break;
+                <#=cur#>
+                var pre = sum;
+                sum += val;
+                cor += Math.Abs(pre) >= Math.Abs(val) ? pre - sum + val : val - sum + pre;
+                count++;
+            }
+        }
+        c = count;
+        return sum + cor;
+    }
+<#      }#>
+<#  }#>
+    #endregion Neumaier / Kahan-Babuska on single sequence of number type
+
+    #region Mean
+<#  foreach (var type in types1.Concat(types2)) {#>
+<#      foreach (var opt in bools) {#>
+<#          string typeItem = !opt ? type : type + "?";#>
+    public static double ExecMean(IEnumerable<<#=typeItem#>> items, ExecCtx ctx, int id, out long c)
+    {
+        double sum = ExecK(items, ctx, id, out c);
+        return sum / Math.Max(c, 1);
+    }
+<#      }#>
+<#  }#>
+
+<#  foreach (var opt in bools) {#>
+<#      string typeItem = !opt ? "double" : "double?";#>
+<#      foreach (var ind in bools) {#>
+<#          string suf = ind ? "Ind" : "";#>
+<#          if (!ind) {#>
+    public static double ExecMean<T0>(IEnumerable<T0> s0, Func<T0, double<#=opt ? "?" : ""#>> fn, ExecCtx ctx, int id, out long c)
+<#          } else {#>
+    public static double ExecIndMean<T0>(IEnumerable<T0> s0, Func<long, T0, double<#=opt ? "?" : ""#>> fn, ExecCtx ctx, int id, out long c)
+<#          }#>
+    {
+        double sum = Exec<#=suf#>K(s0, fn, ctx, id, out c);
+        return sum / Math.Max(c, 1);
+    }
+<#      }#>
+<#  }#>
+    #endregion Mean
+}

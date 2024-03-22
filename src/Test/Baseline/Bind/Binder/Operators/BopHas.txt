@@ -1,0 +1,535 @@
+**** New globals: {B:b, N:r8, X:r8, Y:r8, Z:r8, b:b?, g:g, n:r8?, o:o, s:s, ss:s*}
+
+> "ABCD"   has "B"
+"ABCD" has "B" : b
+Binder : Has("ABCD", "B")
+Reducer: true
+###
+> "ABCD"  !has "B"
+"ABCD" !has "B" : b
+Binder : HasNot("ABCD", "B")
+Reducer: false
+###
+> "ABCD"  ~has "B"
+"ABCD" ~has "B" : b
+Binder : HasCi("ABCD", "B")
+Reducer: true
+###
+> "ABCD" !~has "B"
+"ABCD" !~has "B" : b
+Binder : HasCiNot("ABCD", "B")
+Reducer: false
+###
+> "AbCD"   has "B"
+"AbCD" has "B" : b
+Binder : Has("AbCD", "B")
+Reducer: false
+###
+> "AbCD"  !has "B"
+"AbCD" !has "B" : b
+Binder : HasNot("AbCD", "B")
+Reducer: true
+###
+> "AbCD"  ~has "B"
+"AbCD" ~has "B" : b
+Binder : HasCi("AbCD", "B")
+Reducer: true
+###
+> "AbCD" !~has "B"
+"AbCD" !~has "B" : b
+Binder : HasCiNot("AbCD", "B")
+Reducer: false
+###
+> "A CD"   has "B"
+"A CD" has "B" : b
+Binder : Has("A CD", "B")
+Reducer: false
+###
+> "A CD"  !has "B"
+"A CD" !has "B" : b
+Binder : HasNot("A CD", "B")
+Reducer: true
+###
+> "A CD"  ~has "B"
+"A CD" ~has "B" : b
+Binder : HasCi("A CD", "B")
+Reducer: false
+###
+> "A CD" !~has "B"
+"A CD" !~has "B" : b
+Binder : HasCiNot("A CD", "B")
+Reducer: true
+###
+> null   has "B"
+null has "B" : b
+Binder : Has(str(<null>), "B")
+Reducer: false
+###
+> null  !has "B"
+null !has "B" : b
+Binder : HasNot(str(<null>), "B")
+Reducer: true
+###
+> null  ~has "B"
+null ~has "B" : b
+Binder : HasCi(str(<null>), "B")
+Reducer: false
+###
+> null !~has "B"
+null !~has "B" : b
+Binder : HasCiNot(str(<null>), "B")
+Reducer: true
+###
+> "ABCD"   has ""
+"ABCD" has "" : b
+Binder : Has("ABCD", "")
+Reducer: true
+###
+> "ABCD"  !has ""
+"ABCD" !has "" : b
+Binder : HasNot("ABCD", "")
+Reducer: false
+###
+> "ABCD"  ~has ""
+"ABCD" ~has "" : b
+Binder : HasCi("ABCD", "")
+Reducer: true
+###
+> "ABCD" !~has ""
+"ABCD" !~has "" : b
+Binder : HasCiNot("ABCD", "")
+Reducer: false
+###
+> "ABCD"   has null
+"ABCD" has null : b
+Binder : Has("ABCD", str(<null>))
+Reducer: true
+###
+> "ABCD"  !has null
+"ABCD" !has null : b
+Binder : HasNot("ABCD", str(<null>))
+Reducer: false
+###
+> "ABCD"  ~has null
+"ABCD" ~has null : b
+Binder : HasCi("ABCD", str(<null>))
+Reducer: true
+###
+> "ABCD" !~has null
+"ABCD" !~has null : b
+Binder : HasCiNot("ABCD", str(<null>))
+Reducer: false
+###
+> ""   has "B"
+"" has "B" : b
+Binder : Has("", "B")
+Reducer: false
+###
+> ""  !has "B"
+"" !has "B" : b
+Binder : HasNot("", "B")
+Reducer: true
+###
+> ""  ~has "B"
+"" ~has "B" : b
+Binder : HasCi("", "B")
+Reducer: false
+###
+> "" !~has "B"
+"" !~has "B" : b
+Binder : HasCiNot("", "B")
+Reducer: true
+###
+> null   has "B"
+null has "B" : b
+Binder : Has(str(<null>), "B")
+Reducer: false
+###
+> null  !has "B"
+null !has "B" : b
+Binder : HasNot(str(<null>), "B")
+Reducer: true
+###
+> null  ~has "B"
+null ~has "B" : b
+Binder : HasCi(str(<null>), "B")
+Reducer: false
+###
+> null !~has "B"
+null !~has "B" : b
+Binder : HasCiNot(str(<null>), "B")
+Reducer: true
+###
+> ""   has ""
+"" has "" : b
+Binder : Has("", "")
+Reducer: true
+###
+> ""  !has ""
+"" !has "" : b
+Binder : HasNot("", "")
+Reducer: false
+###
+> ""  ~has ""
+"" ~has "" : b
+Binder : HasCi("", "")
+Reducer: true
+###
+> "" !~has ""
+"" !~has "" : b
+Binder : HasCiNot("", "")
+Reducer: false
+###
+> null   has ""
+null has "" : b
+Binder : Has(str(<null>), "")
+Reducer: true
+###
+> null  !has ""
+null !has "" : b
+Binder : HasNot(str(<null>), "")
+Reducer: false
+###
+> null  ~has ""
+null ~has "" : b
+Binder : HasCi(str(<null>), "")
+Reducer: true
+###
+> null !~has ""
+null !~has "" : b
+Binder : HasCiNot(str(<null>), "")
+Reducer: false
+###
+> ""   has null
+"" has null : b
+Binder : Has("", str(<null>))
+Reducer: true
+###
+> ""  !has null
+"" !has null : b
+Binder : HasNot("", str(<null>))
+Reducer: false
+###
+> ""  ~has null
+"" ~has null : b
+Binder : HasCi("", str(<null>))
+Reducer: true
+###
+> "" !~has null
+"" !~has null : b
+Binder : HasCiNot("", str(<null>))
+Reducer: false
+###
+> null   has null
+null has null : b
+Binder : Has(str(<null>), str(<null>))
+Reducer: true
+###
+> null  !has null
+null !has null : b
+Binder : HasNot(str(<null>), str(<null>))
+Reducer: false
+###
+> null  ~has null
+null ~has null : b
+Binder : HasCi(str(<null>), str(<null>))
+Reducer: true
+###
+> null !~has null
+null !~has null : b
+Binder : HasCiNot(str(<null>), str(<null>))
+Reducer: false
+###
+> s   has "B"
+s has "B" : b
+Binder : Has(s, "B")
+###
+> s  !has "B"
+s !has "B" : b
+Binder : HasNot(s, "B")
+###
+> s  ~has "B"
+s ~has "B" : b
+Binder : HasCi(s, "B")
+###
+> s !~has "B"
+s !~has "B" : b
+Binder : HasCiNot(s, "B")
+###
+> s   has ""
+s has "" : b
+Binder : Has(s, "")
+Reducer: true
+###
+> s  !has ""
+s !has "" : b
+Binder : HasNot(s, "")
+Reducer: false
+###
+> s  ~has ""
+s ~has "" : b
+Binder : HasCi(s, "")
+Reducer: true
+###
+> s !~has ""
+s !~has "" : b
+Binder : HasCiNot(s, "")
+Reducer: false
+###
+> s   has null
+s has null : b
+Binder : Has(s, str(<null>))
+Reducer: true
+###
+> s  !has null
+s !has null : b
+Binder : HasNot(s, str(<null>))
+Reducer: false
+###
+> s  ~has null
+s ~has null : b
+Binder : HasCi(s, str(<null>))
+Reducer: true
+###
+> s !~has null
+s !~has null : b
+Binder : HasCiNot(s, str(<null>))
+Reducer: false
+###
+> "B"   has s
+"B" has s : b
+Binder : Has("B", s)
+###
+> "B"  !has s
+"B" !has s : b
+Binder : HasNot("B", s)
+###
+> "B"  ~has s
+"B" ~has s : b
+Binder : HasCi("B", s)
+###
+> "B" !~has s
+"B" !~has s : b
+Binder : HasCiNot("B", s)
+###
+> ""   has s
+"" has s : b
+Binder : Has("", s)
+###
+> ""  !has s
+"" !has s : b
+Binder : HasNot("", s)
+###
+> ""  ~has s
+"" ~has s : b
+Binder : HasCi("", s)
+###
+> "" !~has s
+"" !~has s : b
+Binder : HasCiNot("", s)
+###
+> null   has s
+null has s : b
+Binder : Has(str(<null>), s)
+###
+> null  !has s
+null !has s : b
+Binder : HasNot(str(<null>), s)
+###
+> null  ~has s
+null ~has s : b
+Binder : HasCi(str(<null>), s)
+###
+> null !~has s
+null !~has s : b
+Binder : HasCiNot(str(<null>), s)
+###
+> "hello" & " world" has s
+"hello" & " world" has s : b
+Binder : Has(StrConcat("hello", " world"), s)
+Reducer: Has("hello world", s)
+###
+> s has "hello" & " world"
+s has "hello" & " world" : b
+Binder : Has(s, StrConcat("hello", " world"))
+Reducer: Has(s, "hello world")
+###
+> "ABC" ! has "B"
+"ABC" !has "B" : b
+Binder : HasNot("ABC", "B")
+Reducer: false
+###
+> "ABC" ~ has "b"
+"ABC" ~has "b" : b
+Binder : HasCi("ABC", "b")
+Reducer: true
+###
+> "ABC" ! ~has "b"
+"ABC" !~has "b" : b
+Binder : HasCiNot("ABC", "b")
+Reducer: false
+###
+> "ABC" !~ has "b"
+"ABC" !~has "b" : b
+Binder : HasCiNot("ABC", "b")
+Reducer: false
+###
+> "ABC" ! ~ has "b"
+"ABC" !~has "b" : b
+Binder : HasCiNot("ABC", "b")
+Reducer: false
+###
+> null not has null
+null not has null : b
+Binder : HasNot(str(<null>), str(<null>))
+Reducer: false
+###
+> null not~has null
+null not ~has null : b
+Binder : HasCiNot(str(<null>), str(<null>))
+Reducer: false
+###
+> null not ~has null
+null not ~has null : b
+Binder : HasCiNot(str(<null>), str(<null>))
+Reducer: false
+###
+> "ABCD" not has null
+"ABCD" not has null : b
+Binder : HasNot("ABCD", str(<null>))
+Reducer: false
+###
+> "ABCD" not~has null
+"ABCD" not ~has null : b
+Binder : HasCiNot("ABCD", str(<null>))
+Reducer: false
+###
+> "ABCD" not ~has null
+"ABCD" not ~has null : b
+Binder : HasCiNot("ABCD", str(<null>))
+Reducer: false
+###
+> null not has "B"
+null not has "B" : b
+Binder : HasNot(str(<null>), "B")
+Reducer: true
+###
+> null not~has "B"
+null not ~has "B" : b
+Binder : HasCiNot(str(<null>), "B")
+Reducer: true
+###
+> null not ~has "B"
+null not ~has "B" : b
+Binder : HasCiNot(str(<null>), "B")
+Reducer: true
+###
+> "" not has null
+"" not has null : b
+Binder : HasNot("", str(<null>))
+Reducer: false
+###
+> "" not~has null
+"" not ~has null : b
+Binder : HasCiNot("", str(<null>))
+Reducer: false
+###
+> "" not ~has null
+"" not ~has null : b
+Binder : HasCiNot("", str(<null>))
+Reducer: false
+###
+> null not has ""
+null not has "" : b
+Binder : HasNot(str(<null>), "")
+Reducer: false
+###
+> null not~has ""
+null not ~has "" : b
+Binder : HasCiNot(str(<null>), "")
+Reducer: false
+###
+> null not ~has ""
+null not ~has "" : b
+Binder : HasCiNot(str(<null>), "")
+Reducer: false
+###
+> "ABC" not has "b"
+"ABC" not has "b" : b
+Binder : HasNot("ABC", "b")
+Reducer: true
+###
+> "ABC" not ~has "b"
+"ABC" not ~has "b" : b
+Binder : HasCiNot("ABC", "b")
+Reducer: false
+###
+> "ABC" not~has "b"
+"ABC" not ~has "b" : b
+Binder : HasCiNot("ABC", "b")
+Reducer: false
+###
+> s not has "B"
+s not has "B" : b
+Binder : HasNot(s, "B")
+###
+> s not~has "B"
+s not ~has "B" : b
+Binder : HasCiNot(s, "B")
+###
+> s not ~has "B"
+s not ~has "B" : b
+Binder : HasCiNot(s, "B")
+###
+
+**** New globals: {s:s*, ss:s**}
+
+> s has "B"
+s has "B" : b*
+Binder : ForEach(*1: s, Has(*1, "B"))
+###
+> s has ""
+s has "" : b*
+Binder : ForEach(*1: s, Has(*1, ""))
+Reducer: ForEach(*1: s, true)
+###
+> s has null
+s has null : b*
+Binder : ForEach(*1: s, Has(*1, str(<null>)))
+Reducer: ForEach(*1: s, true)
+###
+> s has s
+s has s : b*
+Binder : ForEach(*1: s, *2: s, Has(*1, *2))
+Reducer: ForEach(*1: s, Has(*1, *1))
+###
+> "B" has s
+"B" has s : b*
+Binder : ForEach(*1: s, Has("B", *1))
+###
+> "" has s
+"" has s : b*
+Binder : ForEach(*1: s, Has("", *1))
+###
+> null has s
+null has s : b*
+Binder : ForEach(*1: s, Has(str(<null>), *1))
+###
+> ss has "B"
+ss has "B" : b**
+Binder : ForEach(*1: ss, ForEach(*2: *1, Has(*2, "B")))
+###
+> ss has ""
+ss has "" : b**
+Binder : ForEach(*1: ss, ForEach(*2: *1, Has(*2, "")))
+Reducer: ForEach(*1: ss, ForEach(*2: *1, true))
+###
+> ss has null
+ss has null : b**
+Binder : ForEach(*1: ss, ForEach(*2: *1, Has(*2, str(<null>))))
+Reducer: ForEach(*1: ss, ForEach(*2: *1, true))
+###
+> ss has s
+ss has s : b**
+Binder : ForEach(*1: ss, *2: s, ForEach(*3: *1, Has(*3, *2)))
+###

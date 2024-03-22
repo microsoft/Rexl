@@ -1,0 +1,28 @@
+T := Range(1, 10);
+T;
+
+"*** Factorial ***";
+T->Fold(as n, p: 1, p * n);
+
+"*** Binding Error ***";
+T->Filter(it = "hello");
+
+"*** Filter ***";
+T->Filter(it > 3);
+
+"*** this must be explicitly set ***";
+this := 17;
+this + 1;
+this + 1;
+this := -12;
+this + 1;
+this + 1;
+
+"*** this and tasks ***";
+this := 23;
+finish Pipe(Range(3)); // Doesn't affect "this".
+this;
+play Pipe(Range(3)); // Doesn't affect "this".
+this;
+this := Pipe(Range(3)); // Affects "this".
+this;

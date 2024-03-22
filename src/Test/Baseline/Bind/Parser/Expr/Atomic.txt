@@ -1,0 +1,280 @@
+> 3
+Node: [3]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:3, rng:(0,1) [3], full:(0,1) [3], extra=[3]]
+###
+> 3.0
+Node: [3]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:3, rng:(0,3) [3.0], full:(0,3) [3.0], extra=[3]]
+###
+> 0xABCU
+Node: [2748]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:2748, rng:(0,6) [0xABCU], full:(0,6) [0xABCU], extra=[2748]]
+###
+> 0x_123
+Node: [291]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:291, rng:(0,6) [0x_123], full:(0,6) [0x_123], extra=[291]]
+Error: (0,6) Tok: '291', Message: Invalid numeric literal
+###
+> 123_.456
+Node: [123.456]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:123.456, rng:(0,8) [123_.456], full:(0,8) [123_.456], extra=[123.456]]
+Error: (0,8) Tok: '123.456', Message: Invalid numeric literal
+###
+> "Hello there"
+Node: ["Hello there"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:Hello there, rng:(0,13) ["Hello there"], full:(0,13) ["Hello there"]]
+###
+> /* This is a comment */ "Whatever"
+Node: ["Whatever"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:Whatever, rng:(24,34) ["Whatever"], full:(24,34) ["Whatever"]]
+Comment: Range=(0,23), Tid=CommentBlock, Text=[/* This is a comment */]
+###
+> // Line comment
+> "A string"
+Node: ["A string"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:A string, rng:(16,26) ["A string"], full:(16,26) ["A string"]]
+Comment: Range=(0,15), Tid=CommentLine, Text=[// Line comment]
+###
+> "Another string" // Line comment 2
+Node: ["Another string"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:Another string, rng:(0,16) ["Another string"], full:(0,16) ["Another string"]]
+Comment: Range=(17,34), Tid=CommentLine, Text=[// Line comment 2]
+###
+> "Blah blah" /* Multi-line comment
+>   continuation */
+Node: ["Blah blah"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:Blah blah, rng:(0,11) ["Blah blah"], full:(0,11) ["Blah blah"]]
+Comment: Range=(12,51), Tid=CommentBlock, Text=[/* Multi-line comment
+  continuation */]
+###
+> "With escapes ""quotes"""
+Node: ["With escapes \"quotes\""]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:With escapes "quotes", rng:(0,25) ["With escapes ""quotes"""], full:(0,25) ["With escapes ""quotes"""]]
+###
+> Identifier
+Node: [Identifier]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:Identifier, rng:(0,10) [Identifier], full:(0,10) [Identifier], extra=[Identifier]]
+###
+> @Identifier
+Node: [@Identifier]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:Identifier, rng:(1,11) [Identifier], full:(0,11) [@Identifier], extra=[@Identifier]]
+###
+> @   Identifier
+Node: [@Identifier]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:Identifier, rng:(4,14) [Identifier], full:(0,14) [@   Identifier], extra=[@Identifier]]
+###
+> @   'Identi''fier'
+Node: [@'Identi''fier']
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:'Identi''fier', rng:(4,18) ['Identi''fier'], full:(0,18) [@   'Identi''fier'], extra=[@'Identi''fier']]
+###
+> name_123xyz
+Node: [name_123xyz]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:name_123xyz, rng:(0,11) [name_123xyz], full:(0,11) [name_123xyz], extra=[name_123xyz]]
+###
+> 'Quoted ident because of spaces'
+Node: ['Quoted ident because of spaces']
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:'Quoted ident because of spaces', rng:(0,32) ['Quoted ident because of spaces'], full:(0,32) ['Quoted ident because of spaces'], extra=['Quoted ident because of spaces']]
+###
+> null
+Node: [null]
+Dump:
+  00 Node[id:0, kind:NullLit, depth:1, tok:KwdNull, rng:(0,4) [null], full:(0,4) [null]]
+###
+> 'null'
+Node: ['null']
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:'null', rng:(0,6) ['null'], full:(0,6) ['null'], extra=['null']]
+###
+> true
+Node: [true]
+Dump:
+  00 Node[id:0, kind:BoolLit, depth:1, tok:KwdTrue, rng:(0,4) [true], full:(0,4) [true], extra=[true]]
+###
+> false
+Node: [false]
+Dump:
+  00 Node[id:0, kind:BoolLit, depth:1, tok:KwdFalse, rng:(0,5) [false], full:(0,5) [false], extra=[false]]
+###
+> TRUE
+Node: [TRUE]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:TRUE, rng:(0,4) [TRUE], full:(0,4) [TRUE], extra=[TRUE]]
+###
+> FALSE
+Node: [FALSE]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:FALSE, rng:(0,5) [FALSE], full:(0,5) [FALSE], extra=[FALSE]]
+###
+> THIS
+Node: [THIS]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:THIS, rng:(0,4) [THIS], full:(0,4) [THIS], extra=[THIS]]
+###
+> NULL
+Node: [NULL]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:NULL, rng:(0,4) [NULL], full:(0,4) [NULL], extra=[NULL]]
+###
+> TrUe tRuE
+Node: [((TrUe) <error> (tRuE))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:tRuE, rng:(5,9) [tRuE], full:(0,9) [TrUe tRuE], extra=[Error]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:TrUe, rng:(0,4) [TrUe], full:(0,4) [TrUe], extra=[TrUe]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:tRuE, rng:(5,9) [tRuE], full:(5,9) [tRuE], extra=[tRuE]]
+Error: (5,9) Tok: 'tRuE', Message: Expected an operator
+###
+> NuLl nUlL
+Node: [((NuLl) <error> (nUlL))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:nUlL, rng:(5,9) [nUlL], full:(0,9) [NuLl nUlL], extra=[Error]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:NuLl, rng:(0,4) [NuLl], full:(0,4) [NuLl], extra=[NuLl]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:nUlL, rng:(5,9) [nUlL], full:(5,9) [nUlL], extra=[nUlL]]
+Error: (5,9) Tok: 'nUlL', Message: Expected an operator
+###
+> tHiS ThIs
+Node: [((tHiS) <error> (ThIs))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:ThIs, rng:(5,9) [ThIs], full:(0,9) [tHiS ThIs], extra=[Error]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:tHiS, rng:(0,4) [tHiS], full:(0,4) [tHiS], extra=[tHiS]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:ThIs, rng:(5,9) [ThIs], full:(5,9) [ThIs], extra=[ThIs]]
+Error: (5,9) Tok: 'ThIs', Message: Expected an operator
+###
+>    'true'  
+Node: ['true']
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:'true', rng:(3,9) ['true'], full:(3,9) ['true'], extra=['true']]
+###
+> this
+Node: [this]
+Dump:
+  00 Node[id:0, kind:ThisName, depth:1, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]]
+###
+> this.A + this
+Node: [this.A + this]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:Add, rng:(7,8) [+], full:(0,13) [this.A + this], extra=[Add]], count=2
+  01   Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(4,5) [.], full:(0,6) [this.A], extra=[A]], count=1
+  02     Node[id:0, kind:ThisName, depth:1, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]]
+  01   Node[id:2, kind:ThisName, depth:1, tok:KwdThis, rng:(9,13) [this], full:(9,13) [this]]
+###
+> parent
+Node: [parent]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:parent, rng:(0,6) [parent], full:(0,6) [parent], extra=[parent]]
+###
+> it
+Node: [it]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(0,2) [it], full:(0,2) [it], extra=[slot=0]]
+###
+> It
+Node: [It]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:It, rng:(0,2) [It], full:(0,2) [It], extra=[It]]
+###
+> up
+Node: [up]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:up, rng:(0,2) [up], full:(0,2) [up], extra=[up]]
+###
+> it.up
+Node: [it.up]
+Dump:
+  00 Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(2,3) [.], full:(0,5) [it.up], extra=[up]], count=1
+  01   Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(0,2) [it], full:(0,2) [it], extra=[slot=0]]
+###
+> it.parent
+Node: [it.parent]
+Dump:
+  00 Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(2,3) [.], full:(0,9) [it.parent], extra=[parent]], count=1
+  01   Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(0,2) [it], full:(0,2) [it], extra=[slot=0]]
+###
+> this.up
+Node: [this.up]
+Dump:
+  00 Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(4,5) [.], full:(0,7) [this.up], extra=[up]], count=1
+  01   Node[id:0, kind:ThisName, depth:1, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]]
+###
+> parent.up
+Node: [parent.up]
+Dump:
+  00 Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(6,7) [.], full:(0,9) [parent.up], extra=[up]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:parent, rng:(0,6) [parent], full:(0,6) [parent], extra=[parent]]
+###
+> it$
+Node: [it]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:it$0, rng:(0,3) [it$], full:(0,3) [it$], extra=[slot=0]]
+###
+> it$0
+Node: [it]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:it$0, rng:(0,4) [it$0], full:(0,4) [it$0], extra=[slot=0]]
+###
+> it$1
+Node: [it$1]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:it$1, rng:(0,4) [it$1], full:(0,4) [it$1], extra=[slot=1]]
+###
+> it$123
+Node: [it$123]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:it$123, rng:(0,6) [it$123], full:(0,6) [it$123], extra=[slot=123]]
+###
+> it$12345678901234567890
+Node: [it$2147483647]
+Dump:
+  00 Node[id:0, kind:ItName, depth:1, tok:it$2147483647, rng:(0,23) [it$12345678901234567890], full:(0,23) [it$12345678901234567890], extra=[slot=2147483647]]
+###
+> _
+Node: [_]
+Dump:
+  00 Node[id:0, kind:Box, depth:1, tok:Box, rng:(0,1) [_], full:(0,1) [_]]
+###
+> "Unterminated
+Node: ["Unterminated"]
+Dump:
+  00 Node[id:0, kind:TextLit, depth:1, tok:Unterminated, rng:(0,13) ["Unterminated], full:(0,13) ["Unterminated]]
+Error: (0,13) Tok: 'Unterminated', Message: Text literal needs a closing double quote
+###
+> 0xFFr3
+Node: [((255) <error> (r3))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:r3, rng:(4,6) [r3], full:(0,6) [0xFFr3], extra=[Error]], count=2
+  01   Node[id:0, kind:NumLit, depth:1, tok:255, rng:(0,4) [0xFF], full:(0,4) [0xFF], extra=[255]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:r3, rng:(4,6) [r3], full:(4,6) [r3], extra=[r3]]
+Error: (4,6) Tok: 'r3', Message: Expected an operator
+###
+> 12.3u
+Node: [((12.3) <error> (u))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:u, rng:(4,5) [u], full:(0,5) [12.3u], extra=[Error]], count=2
+  01   Node[id:0, kind:NumLit, depth:1, tok:12.3, rng:(0,4) [12.3], full:(0,4) [12.3], extra=[12.3]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:u, rng:(4,5) [u], full:(4,5) [u], extra=[u]]
+Error: (4,5) Tok: 'u', Message: Expected an operator
+###
+> 0x1r4
+Node: [((1) <error> (r4))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:r4, rng:(3,5) [r4], full:(0,5) [0x1r4], extra=[Error]], count=2
+  01   Node[id:0, kind:NumLit, depth:1, tok:1, rng:(0,3) [0x1], full:(0,3) [0x1], extra=[1]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:r4, rng:(3,5) [r4], full:(3,5) [r4], extra=[r4]]
+Error: (3,5) Tok: 'r4', Message: Expected an operator
+###

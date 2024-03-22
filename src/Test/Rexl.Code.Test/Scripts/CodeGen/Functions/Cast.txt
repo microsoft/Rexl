@@ -1,0 +1,37 @@
+﻿:: {b:b, n:n, r8:r8, r4:r4, i:i, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1}
+
+CastI1(b)
+CastI1(n)
+CastI1(r8)
+CastI1(r4)
+CastI1(i8)
+CastI1(i4)
+CastI1(i2)
+CastI1(i1)
+CastI1(i)
+CastI1(u8)
+CastI1(u4)
+CastI1(u2)
+CastI1(u1)
+
+CastI1([0x80i1, null])
+CastU1([0x80, null])
+CastR4([4e30])
+CastI1([true, null])
+
+// Make sure values for CodeGen and Reduce paths are equivalent.
+CastI1(0xFFFFi2) = CastI1(Wrap(0xFFFFi2))
+CastI2(0xFFFFi4) = CastI2(Wrap(0xFFFFi4))
+CastI4(0xFFFFi2) = CastI4(Wrap(0xFFFFi2))
+CastI8(0xFFFFi2) = CastI8(Wrap(0xFFFFi2))
+CastU1(0xFFFFU2) = CastU1(Wrap(0xFFFFU2))
+CastU2(0xFFFFU4) = CastU2(Wrap(0xFFFFU4))
+CastU4(0xFFFFU2) = CastU4(Wrap(0xFFFFU2))
+CastU8(0xFFFFU2) = CastU8(Wrap(0xFFFFU2))
+CastR4(-2e300) = CastR4(Wrap(-2e300)) 
+CastR8(2) = CastR8(Wrap(2))
+CastR4(-2e-310) = CastR4(Wrap(-2e-310))
+CastR8(true) = CastR8(Wrap(true))
+
+CastTime(-Time(1).TotalTicks)
+CastTime(-Time(0, 1).TotalTicks)

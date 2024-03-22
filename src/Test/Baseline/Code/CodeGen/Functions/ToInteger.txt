@@ -1,0 +1,543 @@
+> 3    = ToIA(Wrap(3.14))
+3 @= ToIA(Wrap(3.14)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(1/0))
+null @= ToIA(Wrap(1 / 0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(3.14), null)
+3 @= ToIA(Wrap(3.14), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(1/0),  null)
+null @= ToIA(Wrap(1 / 0), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(3.14), Null(5))
+3 @= ToIA(Wrap(3.14), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(3.14), Opt (5))
+3 @= ToIA(Wrap(3.14), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), Opt<i?>(5:i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(1/0),  Null(5))
+null @= ToIA(Wrap(1 / 0), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToIA(Wrap(1/0),  Opt (5))
+5 @= ToIA(Wrap(1 / 0), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), Opt<i?>(5:i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(3.14), 5)
+3 @= ToIA(Wrap(3.14), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToIA(Wrap(1/0),  5)
+5 @= ToIA(Wrap(1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Null(3.14)))
+null @= ToIA(Wrap(Null(3.14))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(Opt (3.14)))
+3 @= ToIA(Wrap(Opt(3.14))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Opt (1/0 )))
+null @= ToIA(Wrap(Opt(1 / 0))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Null(3.14)), null)
+null @= ToIA(Wrap(Null(3.14)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(Opt (3.14)), null)
+3 @= ToIA(Wrap(Opt(3.14)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Opt (1/0 )), null)
+null @= ToIA(Wrap(Opt(1 / 0)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Null(3.14)), Null(5))
+null @= ToIA(Wrap(Null(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Null(3.14)), Opt (5))
+null @= ToIA(Wrap(Null(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(Opt (3.14)), Null(5))
+3 @= ToIA(Wrap(Opt(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(Opt (3.14)), Opt (5))
+3 @= ToIA(Wrap(Opt(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Opt (1/0 )), Null(5))
+null @= ToIA(Wrap(Opt(1 / 0)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToIA(Wrap(Opt (1/0 )), Opt (5))
+5 @= ToIA(Wrap(Opt(1 / 0)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(Null(3.14)), 5)
+null @= ToIA(Wrap(Null(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToIA(Wrap(Opt (3.14)), 5)
+3 @= ToIA(Wrap(Opt(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToIA(Wrap(Opt (1/0 )), 5)
+5 @= ToIA(Wrap(Opt(1 / 0)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), Null(5ia))
+3 @= To(Wrap(3.14), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), Opt (5ia))
+3 @= To(Wrap(3.14), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), Opt<i?>(5:i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(1/0),  Null(5ia))
+null @= To(Wrap(1 / 0), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), null:i?):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(1/0),  Opt (5ia))
+5 @= To(Wrap(1 / 0), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), Opt<i?>(5:i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), 5ia)
+3 @= To(Wrap(3.14), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.14:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(1/0),  5ia)
+5 @= To(Wrap(1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), Null(5ia))
+null @= To(Wrap(Null(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), Opt (5ia))
+null @= To(Wrap(Null(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), Null(5ia))
+3 @= To(Wrap(Opt(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), Opt (5ia))
+3 @= To(Wrap(Opt(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Opt (1/0 )), Null(5ia))
+null @= To(Wrap(Opt(1 / 0)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), null:i?):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(Opt (1/0 )), Opt (5ia))
+5 @= To(Wrap(Opt(1 / 0)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), Opt<i?>(5:i)):i?)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), 5ia)
+null @= To(Wrap(Null(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), 5ia)
+3 @= To(Wrap(Opt(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(Opt (1/0 )), 5ia)
+5 @= To(Wrap(Opt(1 / 0)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToIA(Scope(1), 5:i):i)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToIA(["", "0"])
+ToIA(["", "0"]) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [str(), str(0)]:s*, Call(∂.ToIA(Scope(1)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) 0
+###
+> ToIA([0r8, CastR8(0/0)])
+ToIA([0, CastR8(0 / 0)]) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [0:r8, NaN:r8]:r8*, Call(∂.ToIA(Scope(1)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) 0
+ 1) <null>
+###
+> ToIA([0r4, CastR4(0/0)])
+ToIA([0, CastR4(0 / 0)]) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [0:r4, NaN:r4]:r4*, Call(∂.ToIA(Scope(1)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) 0
+ 1) <null>
+###
+> ToIA([null, 0r8, CastR8(0/0)])
+ToIA([null, 0, CastR8(0 / 0)]) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [null:r8?, Opt<r8?>(0:r8), Opt<r8?>(NaN:r8)]:r8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToIA(Scope(2)):i?)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToIA([null, 0r4, CastR4(0/0)])
+ToIA([null, 0, CastR4(0 / 0)]) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [null:r4?, Opt<r4?>(0:r4), Opt<r4?>(NaN:r4)]:r4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToIA(Scope(2)):i?)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> To([null, "", "0"], 5ia)
+To([null, "", "0"], 5) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] [str(<null>), str(), str(0)]:s*, Call(∂.ToIA(Scope(1), 5:i):i)):i*))
+Func sig: () to i*
+Sequence: Seq<ia>
+ 0) 5
+ 1) 5
+ 2) 0
+###
+> To([null, 0r8, CastR8(0/0)], 5ia)
+To([null, 0, CastR8(0 / 0)], 5) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [null:r8?, Opt<r8?>(0:r8), Opt<r8?>(NaN:r8)]:r8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToIA(Scope(2), 5:i):i)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToIA([null, 0r4, CastR4(0/0)], 5ia)
+ToIA([null, 0, CastR4(0 / 0)], 5) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.ForEach([map:1] [null:r4?, Opt<r4?>(0:r4), Opt<r4?>(NaN:r4)]:r4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToIA(Scope(2), 5:i):i)):i?)):i?*))
+Func sig: () to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> null = ToIA(Wrap(-1/0))
+null @= ToIA(Wrap(-1 / 0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(-∞:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(1/0))
+null @= ToIA(Wrap(1 / 0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(0/0))
+null @= ToIA(Wrap(0 / 0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(NaN:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(-1/0), 5ia)
+5 @= To(Wrap(-1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(-∞:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(1/0), 5ia)
+5 @= To(Wrap(1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(∞:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap(0/0), 5ia)
+5 @= ToIA(Wrap(0 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(NaN:r8):r8), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0 = ToIA(Wrap(-0x1FFFFFFFFFFFFF * 2d ^ -53))
+0 @= ToIA(Wrap(-9007199254740991 * 2^-53)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i @= Call(∂.ToIA(Call(∂.Test.Wrap(-0.9999999999999999:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0 = ToIA(Wrap(CastR4(-0x7FFFFF  * 2d ^ -23)))
+0 @= ToIA(Wrap(CastR4(-8388607 * 2^-23))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i @= Call(∂.ToIA(Call(∂.Test.Wrap(-0.9999998807907104:r4):r4)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0xFFFFFFia         shl 104 = ToIA(Wrap(CastR4(0xFFFFFF  * 2d ^ 104)))
+16777215 shl 104 @= ToIA(Wrap(CastR4(16777215 * 2^104))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(340282346638528859811704183484516925440:i @= Call(∂.ToIA(Call(∂.Test.Wrap(3.4028234663852886E+38:r4):r4)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0x1FFFFFFFFFFFFFia shl 971 = ToIA(Wrap(0x1FFFFFFFFFFFFF * 2d ^ 971))
+9007199254740991 shl 971 @= ToIA(Wrap(9007199254740991 * 2^971)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858368:i @= Call(∂.ToIA(Call(∂.Test.Wrap(1.7976931348623157E+308:r8):r8)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(""))
+null @= ToIA(Wrap("")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str()):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap(" "))
+null @= ToIA(Wrap(" ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str( )):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(""), 5ia)
+5 @= To(Wrap(""), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str()):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap(" "), 5ia)
+5 @= ToIA(Wrap(" "), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str( )):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("false"))
+null @= ToIA(Wrap("false")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(false)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("true"))
+null @= ToIA(Wrap("true")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(true)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To("false", 5ia)
+5 @= To("false", 5) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA("true", 5ia)
+5 @= ToIA("true", 5) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("1 234"))
+null @= ToIA(Wrap("1 234")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(1 234)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("1 234"), 5ia)
+5 @= To(Wrap("1 234"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(1 234)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0     = ToIA(Wrap("-0"))
+0 @= ToIA(Wrap("-0")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-0)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 12345 = ToIA(Wrap("12,345 "))
+12345 @= ToIA(Wrap("12,345 ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(12345:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(12,345 )):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> -123  = ToIA(Wrap(" (123) "))
+-123 @= ToIA(Wrap(" (123) ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-123:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str( (123) )):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("-0.0"))
+null @= ToIA(Wrap("-0.0")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-0.0)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("12.34"))
+null @= ToIA(Wrap("12.34")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(12.34)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("2e20"))
+null @= ToIA(Wrap("2e20")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(2e20)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("∞"))
+null @= ToIA(Wrap("∞")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(∞)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("-∞"))
+null @= ToIA(Wrap("-∞")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-∞)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("Infinity"))
+null @= ToIA(Wrap("Infinity")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(Infinity)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("-Infinity"))
+null @= ToIA(Wrap("-Infinity")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-Infinity)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToIA(Wrap("NaN"))
+null @= ToIA(Wrap("NaN")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:i? @= Call(∂.ToIA(Call(∂.Test.Wrap(str(NaN)):s)):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("-0.0"), 5ia)
+5 @= To(Wrap("-0.0"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-0.0)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("12.34"), 5ia)
+5 @= To(Wrap("12.34"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(12.34)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("2e20"), 5ia)
+5 @= To(Wrap("2e20"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(2e20)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("∞"), 5ia)
+5 @= To(Wrap("∞"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(∞)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap("-∞"), 5ia)
+5 @= ToIA(Wrap("-∞"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-∞)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap("Infinity"), 5ia)
+5 @= ToIA(Wrap("Infinity"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(Infinity)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap("-Infinity"), 5ia)
+5 @= ToIA(Wrap("-Infinity"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(-Infinity)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToIA(Wrap("NaN"), 5ia)
+5 @= ToIA(Wrap("NaN"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i @= Call(∂.ToIA(Call(∂.Test.Wrap(str(NaN)):s), 5:i):i)))
+Func sig: () to b
+Type: bool, Value: true 
+###

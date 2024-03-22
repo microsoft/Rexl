@@ -1,0 +1,2896 @@
+**** New definitions: T, type: {A:i8, B:i1}*
+**** New definitions: S, type: {A:i8, B:i1}*
+
+> T
+T : {A:i8, B:i1}*
+BndKind:Global, Type:{A:i8, B:i1}*, Bnd:(Global(T))
+Func sig: (T:{A:i8, B:i1}*) to {A:i8, B:i1}*
+Sequence: Seq<{i8,i1}>
+ 0) { A: 0, B: 0 }
+ 1) { A: 0, B: 10 }
+ 2) { A: 524288, B: 2 }
+ 3) { A: 524288, B: 10 }
+###
+> S
+S : {A:i8, B:i1}*
+BndKind:Global, Type:{A:i8, B:i1}*, Bnd:(Global(S))
+Func sig: (S:{A:i8, B:i1}*) to {A:i8, B:i1}*
+Sequence: Seq<{i8,i1}>
+ 0) { A: 0, B: 0 }
+ 1) { A: 0, B: 10 }
+ 2) { A: 524288, B: 2 }
+ 3) { A: 524288, B: 10 }
+ 4) { A: 0, B: 0 }
+ 5) { A: 0, B: 10 }
+ 6) { A: 524288, B: 2 }
+ 7) { A: 524288, B: 10 }
+###
+> GroupBy(T, A, X)
+GroupBy(T, A, X) : {A:i8, X:{B:i1}*}*
+BndKind:GroupBy, Type:{A:i8, X:{B:i1}*}*, Bnd:(GroupBy([scope:1] Global(T), [key] A:GetField(Scope(1), A), [auto] X:<auto>))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to {A:i8, X:{B:i1}*}*
+Sequence: Seq<{i8,Seq<{i1}>}>
+ 0) { A: 0, 
+      X: Sequence: Seq<{i1}>
+         0) { B: 0 }
+         1) { B: 10 }
+    }
+ 1) { A: 524288, 
+      X: Sequence: Seq<{i1}>
+         0) { B: 2 }
+         1) { B: 10 }
+    }
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] A:*1.A, [auto] X:<auto>)
+###
+> GroupBy(T, #it mod 2, X)
+GroupBy(T, #it mod 2, X) : {X:{A:i8, B:i1}*}*
+BndKind:GroupBy, Type:{X:{A:i8, B:i1}*}*, Bnd:(GroupBy([scope:2] Global(T), [key] IntMod(Scope(1), 2:i8), [auto] X:<auto>))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to {X:{A:i8, B:i1}*}*
+Sequence: Seq<{Seq<{i8,i1}>}>
+ 0) { X: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 0 }
+         1) { A: 524288, B: 2 }
+    }
+ 1) { X: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 10 }
+         1) { A: 524288, B: 10 }
+    }
+*** Ctx ping count: 5
+    [0](5): GroupBy(*2: T, [key] IntMod(#1, 2), [auto] X:<auto>)
+###
+> GroupBy(S, B, Y)
+GroupBy(S, B, Y) : {B:i1, Y:{A:i8}*}*
+BndKind:GroupBy, Type:{B:i1, Y:{A:i8}*}*, Bnd:(GroupBy([scope:1] Global(S), [key] B:GetField(Scope(1), B), [auto] Y:<auto>))
+Func sig: (<ctx>:x, S:{A:i8, B:i1}*) to {B:i1, Y:{A:i8}*}*
+Sequence: Seq<{i1,Seq<{i8}>}>
+ 0) { B: 0, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 0 }
+         1) { A: 0 }
+    }
+ 1) { B: 10, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 0 }
+         1) { A: 524288 }
+         2) { A: 0 }
+         3) { A: 524288 }
+    }
+ 2) { B: 2, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 524288 }
+         1) { A: 524288 }
+    }
+*** Ctx ping count: 9
+    [0](9): GroupBy(*1: S, [key] B:*1.B, [auto] Y:<auto>)
+###
+> GroupBy(S, #it mod 2, Y)
+GroupBy(S, #it mod 2, Y) : {Y:{A:i8, B:i1}*}*
+BndKind:GroupBy, Type:{Y:{A:i8, B:i1}*}*, Bnd:(GroupBy([scope:2] Global(S), [key] IntMod(Scope(1), 2:i8), [auto] Y:<auto>))
+Func sig: (<ctx>:x, S:{A:i8, B:i1}*) to {Y:{A:i8, B:i1}*}*
+Sequence: Seq<{Seq<{i8,i1}>}>
+ 0) { Y: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 0 }
+         1) { A: 524288, B: 2 }
+         2) { A: 0, B: 0 }
+         3) { A: 524288, B: 2 }
+    }
+ 1) { Y: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 10 }
+         1) { A: 524288, B: 10 }
+         2) { A: 0, B: 10 }
+         3) { A: 524288, B: 10 }
+    }
+*** Ctx ping count: 9
+    [0](9): GroupBy(*2: S, [key] IntMod(#1, 2), [auto] Y:<auto>)
+###
+> GroupBy(S, B, #it mod 2, Y)
+GroupBy(S, B, #it mod 2, Y) : {B:i1, Y:{A:i8}*}*
+BndKind:GroupBy, Type:{B:i1, Y:{A:i8}*}*, Bnd:(GroupBy([scope:2] Global(S), [key] IntMod(Scope(1), 2:i8), [key] B:GetField(Scope(2), B), [auto] Y:<auto>))
+Func sig: (<ctx>:x, S:{A:i8, B:i1}*) to {B:i1, Y:{A:i8}*}*
+Sequence: Seq<{i1,Seq<{i8}>}>
+ 0) { B: 0, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 0 }
+         1) { A: 0 }
+    }
+ 1) { B: 10, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 0 }
+         1) { A: 524288 }
+         2) { A: 0 }
+         3) { A: 524288 }
+    }
+ 2) { B: 2, 
+      Y: Sequence: Seq<{i8}>
+         0) { A: 524288 }
+         1) { A: 524288 }
+    }
+*** Ctx ping count: 9
+    [0](9): GroupBy(*2: S, [key] IntMod(#1, 2), [key] B:*2.B, [auto] Y:<auto>)
+###
+> GroupBy(S, EvenInd: #it mod 2 = 0, Y)
+GroupBy(S, EvenInd : #it mod 2 @= 0, Y) : {EvenInd:b, Y:{A:i8, B:i1}*}*
+BndKind:GroupBy, Type:{EvenInd:b, Y:{A:i8, B:i1}*}*, Bnd:(GroupBy([scope:2] Global(S), [key] EvenInd:Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), [auto] Y:<auto>))
+Func sig: (<ctx>:x, S:{A:i8, B:i1}*) to {EvenInd:b, Y:{A:i8, B:i1}*}*
+Sequence: Seq<{bool,Seq<{i8,i1}>}>
+ 0) { EvenInd: true , 
+      Y: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 0 }
+         1) { A: 524288, B: 2 }
+         2) { A: 0, B: 0 }
+         3) { A: 524288, B: 2 }
+    }
+ 1) { EvenInd: false, 
+      Y: Sequence: Seq<{i8,i1}>
+         0) { A: 0, B: 10 }
+         1) { A: 524288, B: 10 }
+         2) { A: 0, B: 10 }
+         3) { A: 524288, B: 10 }
+    }
+*** Ctx ping count: 9
+    [0](9): GroupBy(*2: S, [key] EvenInd:IntMod(#1, 2) @= 0, [auto] Y:<auto>)
+###
+> Map(r: GroupBy(T, A, X), Map(r.X, B > 5i1))
+Map(r : GroupBy(T, A, X), Map(r.X, B $> 5)) : b**
+BndKind:Call, Type:b**, Bnd:(Call(∂.ForEach([map:3] GroupBy([scope:1] Global(T), [key] A:GetField(Scope(1), A), [auto] X:<auto>), Call(∂.ForEach([map:4] GetField(Scope(3), X), Cmp(GetField(Scope(4), B) @> 5:i1)):b*)):b**))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to b**
+Sequence: Seq<Seq<bool>>
+ 0) Sequence: Seq<bool>
+     0) false
+     1) true 
+ 1) Sequence: Seq<bool>
+     0) false
+     1) true 
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] A:*1.A, [auto] X:<auto>)
+###
+> GroupBy(T, --A, [map] B > 5i1)
+GroupBy(T, --A, [map] B $> 5) : b**
+BndKind:GroupBy, Type:b**, Bnd:(GroupBy([scope:1] Global(T), [key] GetField(Scope(1), A), [map] Cmp(GetField(Scope(2), B) @> 5:i1)))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to b**
+Sequence: Seq<Seq<bool>>
+ 0) Sequence: Seq<bool>
+     0) false
+     1) true 
+ 1) Sequence: Seq<bool>
+     0) false
+     1) true 
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] *1.A, [map] *2.B @> 5)
+###
+> GroupBy(T, --A, [map] B > #)
+GroupBy(T, --A, [map] B $> #) : b**
+BndKind:GroupBy, Type:b**, Bnd:(GroupBy([scope:1] Global(T), [key] GetField(Scope(1), A), [map] Cmp(Num<i8>(GetField(Scope(3), B)) @> Scope(2))))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to b**
+Sequence: Seq<Seq<bool>>
+ 0) Sequence: Seq<bool>
+     0) false
+     1) true 
+ 1) Sequence: Seq<bool>
+     0) false
+     1) true 
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] *1.A, [map] Num<i8>(*3.B) @> #2)
+###
+> GroupBy(T, --A, [map] 5 > #)
+GroupBy(T, --A, [map] 5 $> #) : b**
+BndKind:GroupBy, Type:b**, Bnd:(GroupBy([scope:1] Global(T), [key] GetField(Scope(1), A), [map] Cmp(5:i8 @> Scope(2))))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to b**
+Sequence: Seq<Seq<bool>>
+ 0) Sequence: Seq<bool>
+     0) true 
+     1) true 
+ 1) Sequence: Seq<bool>
+     0) true 
+     1) true 
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] *1.A, [map] 5 @> #2)
+###
+> GroupBy(T, --A, [key] Ind: #, [map] XMap: B > 5i1)
+GroupBy(T, --A, [key] Ind : #, [map] XMap : B $> 5) : {Ind:i8, XMap:b*}*
+BndKind:GroupBy, Type:{Ind:i8, XMap:b*}*, Bnd:(GroupBy([scope:2] Global(T), [key] GetField(Scope(2), A), [key] Ind:Scope(1), [map] XMap:Cmp(GetField(Scope(3), B) @> 5:i1)))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to {Ind:i8, XMap:b*}*
+Sequence: Seq<{i8,Seq<bool>}>
+ 0) { Ind: 0, 
+      XMap: Sequence: Seq<bool>
+         0) false
+    }
+ 1) { Ind: 1, 
+      XMap: Sequence: Seq<bool>
+         0) true 
+    }
+ 2) { Ind: 2, 
+      XMap: Sequence: Seq<bool>
+         0) false
+    }
+ 3) { Ind: 3, 
+      XMap: Sequence: Seq<bool>
+         0) true 
+    }
+*** Ctx ping count: 5
+    [0](5): GroupBy(*2: T, [key] *2.A, [key] Ind:#1, [map] XMap:*3.B @> 5)
+###
+> GroupBy(T, [key] A, [map] B, [map] XInd: #, X)
+GroupBy(T, [key] A, [map] B, [map] XInd : #, X) : {A:i8, B:i1*, X:{B:i1}*, XInd:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i1*, X:{B:i1}*, XInd:i8*}*, Bnd:(GroupBy([scope:1] Global(T), [key] A:GetField(Scope(1), A), [map] B:GetField(Scope(3), B), [auto] X:<auto>, [map] XInd:Scope(2)))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to {A:i8, B:i1*, X:{B:i1}*, XInd:i8*}*
+Sequence: Seq<{i8,Seq<i1>,Seq<{i1}>,Seq<i8>}>
+ 0) { A: 0, 
+      B: Sequence: Seq<i1>
+         0) 0
+         1) 10
+      X: Sequence: Seq<{i1}>
+         0) { B: 0 }
+         1) { B: 10 }
+      XInd: Sequence: Seq<i8>
+         0) 0
+         1) 1
+    }
+ 1) { A: 524288, 
+      B: Sequence: Seq<i1>
+         0) 2
+         1) 10
+      X: Sequence: Seq<{i1}>
+         0) { B: 2 }
+         1) { B: 10 }
+      XInd: Sequence: Seq<i8>
+         0) 2
+         1) 3
+    }
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] A:*1.A, [map] B:*3.B, [auto] X:<auto>, [map] XInd:#2)
+###
+> GuardMap(GroupBy(T, A, X).X, B > 5i1)
+GuardMap(GroupBy(T, A, X).X, B $> 5) : b**
+BndKind:Call, Type:b**, Bnd:(Call(∂.ForEach([map:3] GroupBy([scope:1] Global(T), [key] A:GetField(Scope(1), A), [auto] X:<auto>), Call(∂.ForEach([map:4] GetField(Scope(3), X), Cmp(GetField(Scope(4), B) @> 5:i1)):b*)):b**))
+Func sig: (<ctx>:x, T:{A:i8, B:i1}*) to b**
+Sequence: Seq<Seq<bool>>
+ 0) Sequence: Seq<bool>
+     0) false
+     1) true 
+ 1) Sequence: Seq<bool>
+     0) false
+     1) true 
+*** Ctx ping count: 5
+    [0](5): GroupBy(*1: T, [key] A:*1.A, [auto] X:<auto>)
+###
+
+**** New definitions: <this>, type: {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*
+**** New definitions: <this>, type: {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*
+**** New definitions: Games, type: {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*
+
+> Games
+Games : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*
+BndKind:Global, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*, Bnd:(Global(Games))
+Func sig: (Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*
+Sequence: Seq<{i8,str,i8,str,i8}>
+ 0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+ 1) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+ 2) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+ 3) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+ 4) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+ 5) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+ 6) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+ 7) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+ 8) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+ 9) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+10) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+11) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+12) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+13) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+14) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+15) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+16) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+17) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+18) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+19) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+20) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+21) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+22) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+23) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+24) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+25) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+26) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+27) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+28) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+29) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+30) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+31) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+###
+> Games | GroupBy(_, Home, XGames)
+Games | GroupBy(_, Home, XGames) : {Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*}*
+BndKind:GroupBy, Type:{Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*}*
+Sequence: Seq<{str,Seq<{i8,str,i8,i8}>}>
+ 0) { Home: STL, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Week: 16 }
+    }
+ 1) { Home: SEA, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Week: 17 }
+    }
+ 2) { Home: SF_, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Week: 17 }
+    }
+ 3) { Home: ARI, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Week: 16 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>)
+###
+> GroupBy(Games, [key] Team: Home & "", [auto] XGames)
+GroupBy(Games, [key] Team : Home & "", [auto] XGames) : {Team:s, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{Team:s, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Team:StrConcat(GetField(Scope(1), Home)), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Team:s, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{str,Seq<{i8,str,i8,str,i8}>}>
+ 0) { Team: STL, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+    }
+ 1) { Team: SEA, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 2) { Team: SF_, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 3) { Team: ARI, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Team:StrConcat(*1.Home), [auto] XGames:<auto>)
+###
+> Games | GroupBy(_, Home)
+Games | GroupBy(_, Home) : {Home:s}*
+BndKind:GroupBy, Type:{Home:s}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s}*
+Sequence: Seq<{str}>
+ 0) { Home: STL }
+ 1) { Home: SEA }
+ 2) { Home: SF_ }
+ 3) { Home: ARI }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home)
+###
+> Games | GroupBy(_, Home & "") // Note the silliness!
+Games | GroupBy(_, Home & "") : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+BndKind:GroupBy, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**, Bnd:(GroupBy([scope:1] Global(Games), [key] StrConcat(GetField(Scope(1), Home))))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+Sequence: Seq<Seq<{i8,str,i8,str,i8}>>
+ 0) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+     1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+     2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+     3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+     4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+     5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+     6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+     7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+ 1) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+     1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+     2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+     3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+     4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+     5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+     6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+     7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+ 2) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+     1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+     2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+     3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+     4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+     5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+     6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+     7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+ 3) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+     1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+     2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+     3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+     4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+     5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+     6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+     7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] StrConcat(*1.Home))
+###
+> Games | GroupBy(_, Home | _) // Note the silliness!
+Games | GroupBy(_, Home | _) : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+BndKind:GroupBy, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**, Bnd:(GroupBy([scope:1] Global(Games), [key] GetField(Scope(1), Home)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+Sequence: Seq<Seq<{i8,str,i8,str,i8}>>
+ 0) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+     1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+     2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+     3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+     4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+     5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+     6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+     7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+ 1) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+     1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+     2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+     3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+     4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+     5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+     6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+     7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+ 2) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+     1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+     2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+     3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+     4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+     5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+     6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+     7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+ 3) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+     1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+     2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+     3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+     4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+     5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+     6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+     7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] *1.Home)
+###
+> Games | GroupBy(_, Home & "", [agg] it) // Note the silliness!
+Games | GroupBy(_, Home & "", [agg] it) : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+BndKind:GroupBy, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**, Bnd:(GroupBy([scope:1] Global(Games), [key] StrConcat(GetField(Scope(1), Home)), [agg] Scope(2)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}**
+Sequence: Seq<Seq<{i8,str,i8,str,i8}>>
+ 0) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+     1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+     2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+     3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+     4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+     5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+     6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+     7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+ 1) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+     1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+     2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+     3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+     4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+     5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+     6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+     7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+ 2) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+     1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+     2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+     3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+     4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+     5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+     6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+     7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+ 3) Sequence: Seq<{i8,str,i8,str,i8}>
+     0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+     1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+     2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+     3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+     4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+     5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+     6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+     7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] StrConcat(*1.Home), [agg] !2)
+###
+> Games | GroupBy(_, Home, [agg] Num: Count(it))
+Games | GroupBy(_, Home, [agg] Num : Count(it)) : {Home:s, Num:i8}*
+BndKind:GroupBy, Type:{Home:s, Num:i8}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [agg] Num:Call(∂.Count(Scope(2)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8}*
+Sequence: Seq<{str,i8}>
+ 0) { Home: STL, Num: 8 }
+ 1) { Home: SEA, Num: 8 }
+ 2) { Home: SF_, Num: 8 }
+ 3) { Home: ARI, Num: 8 }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [agg] Num:Count(!2))
+###
+> Games | GroupBy(_, Home, [agg] HWins:Count(it, HScore > AScore))
+Games | GroupBy(_, Home, [agg] HWins : Count(it, HScore $> AScore)) : {HWins:i8, Home:s}*
+BndKind:GroupBy, Type:{HWins:i8, Home:s}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [agg] HWins:Call(∂.Count([map:3] Scope(2), Cmp(GetField(Scope(3), HScore) @> GetField(Scope(3), AScore))):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {HWins:i8, Home:s}*
+Sequence: Seq<{i8,str}>
+ 0) { HWins: 5, Home: STL }
+ 1) { HWins: 5, Home: SEA }
+ 2) { HWins: 5, Home: SF_ }
+ 3) { HWins: 4, Home: ARI }
+*** Ctx ping count: 69
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [agg] HWins:Count(*3: !2, *3.HScore @> *3.AScore))
+    [1](36): Count(*2: !1x, *2.HScore @> *2.AScore)
+###
+> Games | GroupBy(_, Home & "", [agg] Count(it, HScore > AScore)) // Note the silliness!
+Games | GroupBy(_, Home & "", [agg] Count(it, HScore $> AScore)) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:1] Global(Games), [key] StrConcat(GetField(Scope(1), Home)), [agg] Call(∂.Count([map:3] Scope(2), Cmp(GetField(Scope(3), HScore) @> GetField(Scope(3), AScore))):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 5
+ 2) 5
+ 3) 4
+*** Ctx ping count: 69
+    [0](33): GroupBy(*1: Games, [key] StrConcat(*1.Home), [agg] Count(*3: !2, *3.HScore @> *3.AScore))
+    [1](36): Count(*2: !1x, *2.HScore @> *2.AScore)
+###
+> Games | GroupBy(_, Home & "", [map] HScore + 0) // Note the extra silliness!
+Games | GroupBy(_, Home & "", [map] HScore + 0) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:1] Global(Games), [key] StrConcat(GetField(Scope(1), Home)), [map] GetField(Scope(2), HScore)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 13
+     1) 30
+     2) 20
+     3) 20
+     4) 20
+     5) 17
+     6) 13
+     7) 25
+ 1) Sequence: Seq<i8>
+     0) 31
+     1) 27
+     2) 22
+     3) 7
+     4) 24
+     5) 31
+     6) 18
+     7) 16
+ 2) Sequence: Seq<i8>
+     0) 22
+     1) 24
+     2) 17
+     3) 24
+     4) 23
+     5) 0
+     6) 40
+     7) 38
+ 3) Sequence: Seq<i8>
+     0) 24
+     1) 30
+     2) 35
+     3) 18
+     4) 6
+     5) 6
+     6) 43
+     7) 27
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] StrConcat(*1.Home), [map] *2.HScore)
+###
+> Games | GroupBy(_, Home, [agg] HPts: Sum(it, HScore), [agg] APts: Sum(it, AScore))
+Games | GroupBy(_, Home, [agg] HPts : Sum(it, HScore), [agg] APts : Sum(it, AScore)) : {APts:i8, HPts:i8, Home:s}*
+BndKind:GroupBy, Type:{APts:i8, HPts:i8, Home:s}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [agg] APts:Call(∂.Sum([map:3] Scope(2), GetField(Scope(3), AScore)):i8), [agg] HPts:Call(∂.Sum([map:4] Scope(2), GetField(Scope(4), HScore)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {APts:i8, HPts:i8, Home:s}*
+Sequence: Seq<{i8,i8,str}>
+ 0) { APts: 141, HPts: 158, Home: STL }
+ 1) { APts: 173, HPts: 176, Home: SEA }
+ 2) { APts: 146, HPts: 188, Home: SF_ }
+ 3) { APts: 202, HPts: 189, Home: ARI }
+*** Ctx ping count: 105
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [agg] APts:Sum(*3: !2, *3.AScore), [agg] HPts:Sum(*4: !2, *4.HScore))
+    [1](36): Sum(*2: !1x, *2.AScore)
+    [2](36): Sum(*2: !1x, *2.HScore)
+###
+> Games | GroupBy(_, Home, [agg] Num: Count(it), [agg] Wins: Count(it, HScore > AScore))
+Games | GroupBy(_, Home, [agg] Num : Count(it), [agg] Wins : Count(it, HScore $> AScore)) : {Home:s, Num:i8, Wins:i8}*
+BndKind:GroupBy, Type:{Home:s, Num:i8, Wins:i8}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [agg] Num:Call(∂.Count(Scope(2)):i8), [agg] Wins:Call(∂.Count([map:3] Scope(2), Cmp(GetField(Scope(3), HScore) @> GetField(Scope(3), AScore))):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8, Wins:i8}*
+Sequence: Seq<{str,i8,i8}>
+ 0) { Home: STL, Num: 8, Wins: 5 }
+ 1) { Home: SEA, Num: 8, Wins: 5 }
+ 2) { Home: SF_, Num: 8, Wins: 5 }
+ 3) { Home: ARI, Num: 8, Wins: 4 }
+*** Ctx ping count: 69
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [agg] Num:Count(!2), [agg] Wins:Count(*3: !2, *3.HScore @> *3.AScore))
+    [2](36): Count(*2: !1x, *2.HScore @> *2.AScore)
+###
+> Games.HScore | Sort([>] _) | GroupBy(_, it, [agg] Count(it))
+Games.HScore | Sort([>] _) | GroupBy(_, it, [agg] Count(it)) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:2] Call(∂.Sort([>] Call(∂.ForEach([map:1] Global(Games), GetField(Scope(1), HScore)):i8*)):i8*), [key] Scope(2), [agg] Call(∂.Count(Scope(3)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 1
+ 2) 1
+ 3) 1
+ 4) 2
+ 5) 2
+ 6) 2
+ 7) 1
+ 8) 4
+ 9) 1
+10) 2
+11) 3
+12) 2
+13) 2
+14) 1
+15) 2
+16) 1
+17) 2
+18) 1
+*** Ctx ping count: 66
+    [0](33): Sort([>] ForEach(*1: Games, *1.HScore))
+    [1](33): GroupBy(*2: Sort([>] ForEach(*1: Games, *1.HScore)), [key] *2, [agg] Count(!3))
+###
+> Games.HScore | Sort([<] _) | GroupBy(_, it, [agg] Count(it))
+Games.HScore | Sort([<] _) | GroupBy(_, it, [agg] Count(it)) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:2] Call(∂.Sort([<] Call(∂.ForEach([map:1] Global(Games), GetField(Scope(1), HScore)):i8*)):i8*), [key] Scope(2), [agg] Call(∂.Count(Scope(3)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 1
+ 3) 2
+ 4) 1
+ 5) 2
+ 6) 2
+ 7) 3
+ 8) 2
+ 9) 1
+10) 4
+11) 1
+12) 2
+13) 2
+14) 2
+15) 1
+16) 1
+17) 1
+18) 1
+*** Ctx ping count: 66
+    [0](33): Sort([<] ForEach(*1: Games, *1.HScore))
+    [1](33): GroupBy(*2: Sort([<] ForEach(*1: Games, *1.HScore)), [key] *2, [agg] Count(!3))
+###
+> Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [>] Score)
+Games.HScore | GroupBy(_, Score : it, [agg] Num : Count(it)) | Sort(_, [>] Score) : {Num:i8, Score:i8}*
+BndKind:Call, Type:{Num:i8, Score:i8}*, Bnd:(Call(∂.Sort([map:4] GroupBy([scope:2] Call(∂.ForEach([map:1] Global(Games), GetField(Scope(1), HScore)):i8*), [key] Score:Scope(2), [agg] Num:Call(∂.Count(Scope(3)):i8)), [>] GetField(Scope(4), Score))))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Num:i8, Score:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { Num: 1, Score: 43 }
+ 1) { Num: 1, Score: 40 }
+ 2) { Num: 1, Score: 38 }
+ 3) { Num: 1, Score: 35 }
+ 4) { Num: 2, Score: 31 }
+ 5) { Num: 2, Score: 30 }
+ 6) { Num: 2, Score: 27 }
+ 7) { Num: 1, Score: 25 }
+ 8) { Num: 4, Score: 24 }
+ 9) { Num: 1, Score: 23 }
+10) { Num: 2, Score: 22 }
+11) { Num: 3, Score: 20 }
+12) { Num: 2, Score: 18 }
+13) { Num: 2, Score: 17 }
+14) { Num: 1, Score: 16 }
+15) { Num: 2, Score: 13 }
+16) { Num: 1, Score: 7 }
+17) { Num: 2, Score: 6 }
+18) { Num: 1, Score: 0 }
+*** Ctx ping count: 53
+    [0](33): GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3))
+    [2](20): Sort(*4: GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3)), [>] *4.Score)
+###
+> Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [<] Num, [>] Score)
+Games.HScore | GroupBy(_, Score : it, [agg] Num : Count(it)) | Sort(_, [<] Num, [>] Score) : {Num:i8, Score:i8}*
+BndKind:Call, Type:{Num:i8, Score:i8}*, Bnd:(Call(∂.Sort([map:4] GroupBy([scope:2] Call(∂.ForEach([map:1] Global(Games), GetField(Scope(1), HScore)):i8*), [key] Score:Scope(2), [agg] Num:Call(∂.Count(Scope(3)):i8)), [<] GetField(Scope(4), Num), [>] GetField(Scope(4), Score))))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Num:i8, Score:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { Num: 1, Score: 43 }
+ 1) { Num: 1, Score: 40 }
+ 2) { Num: 1, Score: 38 }
+ 3) { Num: 1, Score: 35 }
+ 4) { Num: 1, Score: 25 }
+ 5) { Num: 1, Score: 23 }
+ 6) { Num: 1, Score: 16 }
+ 7) { Num: 1, Score: 7 }
+ 8) { Num: 1, Score: 0 }
+ 9) { Num: 2, Score: 31 }
+10) { Num: 2, Score: 30 }
+11) { Num: 2, Score: 27 }
+12) { Num: 2, Score: 22 }
+13) { Num: 2, Score: 18 }
+14) { Num: 2, Score: 17 }
+15) { Num: 2, Score: 13 }
+16) { Num: 2, Score: 6 }
+17) { Num: 3, Score: 20 }
+18) { Num: 4, Score: 24 }
+*** Ctx ping count: 53
+    [0](33): GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3))
+    [2](20): Sort(*4: GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3)), [<] *4.Num, [>] *4.Score)
+###
+> Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [>] Num, [<] Score)
+Games.HScore | GroupBy(_, Score : it, [agg] Num : Count(it)) | Sort(_, [>] Num, [<] Score) : {Num:i8, Score:i8}*
+BndKind:Call, Type:{Num:i8, Score:i8}*, Bnd:(Call(∂.Sort([map:4] GroupBy([scope:2] Call(∂.ForEach([map:1] Global(Games), GetField(Scope(1), HScore)):i8*), [key] Score:Scope(2), [agg] Num:Call(∂.Count(Scope(3)):i8)), [>] GetField(Scope(4), Num), [<] GetField(Scope(4), Score))))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Num:i8, Score:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { Num: 4, Score: 24 }
+ 1) { Num: 3, Score: 20 }
+ 2) { Num: 2, Score: 6 }
+ 3) { Num: 2, Score: 13 }
+ 4) { Num: 2, Score: 17 }
+ 5) { Num: 2, Score: 18 }
+ 6) { Num: 2, Score: 22 }
+ 7) { Num: 2, Score: 27 }
+ 8) { Num: 2, Score: 30 }
+ 9) { Num: 2, Score: 31 }
+10) { Num: 1, Score: 0 }
+11) { Num: 1, Score: 7 }
+12) { Num: 1, Score: 16 }
+13) { Num: 1, Score: 23 }
+14) { Num: 1, Score: 25 }
+15) { Num: 1, Score: 35 }
+16) { Num: 1, Score: 38 }
+17) { Num: 1, Score: 40 }
+18) { Num: 1, Score: 43 }
+*** Ctx ping count: 53
+    [0](33): GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3))
+    [2](20): Sort(*4: GroupBy(*2: ForEach(*1: Games, *1.HScore), [key] Score:*2, [agg] Num:Count(!3)), [>] *4.Num, [<] *4.Score)
+###
+> Games | GroupBy(_, [key] Home, [map] XOpps: Away, [map] XWks: Week, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [map] XOpps : Away, [map] XWks : Week, [agg] Num : Count(it)) : {Home:s, Num:i8, XOpps:s*, XWks:i8*}*
+BndKind:GroupBy, Type:{Home:s, Num:i8, XOpps:s*, XWks:i8*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [map] XOpps:GetField(Scope(2), Away), [map] XWks:GetField(Scope(2), Week), [agg] Num:Call(∂.Count(Scope(3)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8, XOpps:s*, XWks:i8*}*
+Sequence: Seq<{str,i8,Seq<str>,Seq<i8>}>
+ 0) { Home: STL, Num: 8, 
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+         4) CAR
+         5) ATL
+         6) KC_
+         7) SF_
+      XWks: Sequence: Seq<i8>
+         0) 1
+         1) 3
+         2) 4
+         3) 6
+         4) 8
+         5) 11
+         6) 15
+         7) 16
+    }
+ 1) { Home: SEA, Num: 8, 
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) KC_
+         5) CAR
+         6) ATL
+         7) STL
+      XWks: Sequence: Seq<i8>
+         0) 1
+         1) 3
+         2) 7
+         3) 9
+         4) 12
+         5) 13
+         6) 15
+         7) 17
+    }
+ 2) { Home: SF_, Num: 8, 
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+      XWks: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 6
+         3) 8
+         4) 10
+         5) 11
+         6) 14
+         7) 17
+    }
+ 3) { Home: ARI, Num: 8, 
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+         2) TB_
+         3) SEA
+         4) SF_
+         5) STL
+         6) DEN
+         7) DAL
+      XWks: Sequence: Seq<i8>
+         0) 3
+         1) 5
+         2) 8
+         3) 10
+         4) 12
+         5) 13
+         6) 14
+         7) 16
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [map] XOpps:*2.Away, [map] XWks:*2.Week, [agg] Num:Count(!3))
+###
+> Games | GroupBy(_, [key] Home, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [map] XOpps : Away, [map] XInd : #, [agg] Num : Count(it)) : {Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+BndKind:GroupBy, Type:{Home:s, Num:i8, XInd:i8*, XOpps:s*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [map] XInd:Scope(2), [map] XOpps:GetField(Scope(3), Away), [agg] Num:Call(∂.Count(Scope(4)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+Sequence: Seq<{str,i8,Seq<i8>,Seq<str>}>
+ 0) { Home: STL, Num: 8, 
+      XInd: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+         4) 13
+         5) 19
+         6) 26
+         7) 29
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+         4) CAR
+         5) ATL
+         6) KC_
+         7) SF_
+    }
+ 1) { Home: SEA, Num: 8, 
+      XInd: Sequence: Seq<i8>
+         0) 1
+         1) 5
+         2) 11
+         3) 15
+         4) 20
+         5) 23
+         6) 27
+         7) 31
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) KC_
+         5) CAR
+         6) ATL
+         7) STL
+    }
+ 2) { Home: SF_, Num: 8, 
+      XInd: Sequence: Seq<i8>
+         0) 2
+         1) 8
+         2) 10
+         3) 12
+         4) 16
+         5) 18
+         6) 24
+         7) 30
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+    }
+ 3) { Home: ARI, Num: 8, 
+      XInd: Sequence: Seq<i8>
+         0) 4
+         1) 7
+         2) 14
+         3) 17
+         4) 21
+         5) 22
+         6) 25
+         7) 28
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+         2) TB_
+         3) SEA
+         4) SF_
+         5) STL
+         6) DEN
+         7) DAL
+    }
+*** Ctx ping count: 69
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [map] XInd:#2, [map] XOpps:*3.Away, [agg] Num:Count(!4))
+    [1](36): Count(!1x)
+###
+> Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XOpps: Away, [map] XWks: Week, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd : #it mod 2 @= 0, [map] XOpps : Away, [map] XWks : Week, [agg] Num : Count(it)) : {EvenInd:b, Home:s, Num:i8, XOpps:s*, XWks:i8*}*
+BndKind:GroupBy, Type:{EvenInd:b, Home:s, Num:i8, XOpps:s*, XWks:i8*}*, Bnd:(GroupBy([scope:2] Global(Games), [key] EvenInd:Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), [key] Home:GetField(Scope(2), Home), [map] XOpps:GetField(Scope(3), Away), [map] XWks:GetField(Scope(3), Week), [agg] Num:Call(∂.Count(Scope(4)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {EvenInd:b, Home:s, Num:i8, XOpps:s*, XWks:i8*}*
+Sequence: Seq<{bool,str,i8,Seq<str>,Seq<i8>}>
+ 0) { EvenInd: true , Home: STL, Num: 3, 
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) SEA
+         2) KC_
+      XWks: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 15
+    }
+ 1) { EvenInd: false, Home: SEA, Num: 7, 
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) CAR
+         5) ATL
+         6) STL
+      XWks: Sequence: Seq<i8>
+         0) 1
+         1) 3
+         2) 7
+         3) 9
+         4) 13
+         5) 15
+         6) 17
+    }
+ 2) { EvenInd: true , Home: SF_, Num: 8, 
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+      XWks: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 6
+         3) 8
+         4) 10
+         5) 11
+         6) 14
+         7) 17
+    }
+ 3) { EvenInd: false, Home: STL, Num: 5, 
+      XOpps: Sequence: Seq<str>
+         0) WAS
+         1) SD_
+         2) CAR
+         3) ATL
+         4) SF_
+      XWks: Sequence: Seq<i8>
+         0) 3
+         1) 6
+         2) 8
+         3) 11
+         4) 16
+    }
+ 4) { EvenInd: true , Home: ARI, Num: 4, 
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) TB_
+         2) STL
+         3) DAL
+      XWks: Sequence: Seq<i8>
+         0) 3
+         1) 8
+         2) 13
+         3) 16
+    }
+ 5) { EvenInd: false, Home: ARI, Num: 4, 
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) SEA
+         2) SF_
+         3) DEN
+      XWks: Sequence: Seq<i8>
+         0) 5
+         1) 10
+         2) 12
+         3) 14
+    }
+ 6) { EvenInd: true , Home: SEA, Num: 1, 
+      XOpps: Sequence: Seq<str>
+         0) KC_
+      XWks: Sequence: Seq<i8>
+         0) 12
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*2: Games, [key] EvenInd:IntMod(#1, 2) @= 0, [key] Home:*2.Home, [map] XOpps:*3.Away, [map] XWks:*3.Week, [agg] Num:Count(!4))
+###
+> Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd : #it mod 2 @= 0, [map] XOpps : Away, [map] XInd : #, [agg] Num : Count(it)) : {EvenInd:b, Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+BndKind:GroupBy, Type:{EvenInd:b, Home:s, Num:i8, XInd:i8*, XOpps:s*}*, Bnd:(GroupBy([scope:2] Global(Games), [key] EvenInd:Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), [key] Home:GetField(Scope(2), Home), [map] XInd:Scope(3), [map] XOpps:GetField(Scope(4), Away), [agg] Num:Call(∂.Count(Scope(5)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {EvenInd:b, Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+Sequence: Seq<{bool,str,i8,Seq<i8>,Seq<str>}>
+ 0) { EvenInd: true , Home: STL, Num: 3, 
+      XInd: Sequence: Seq<i8>
+         0) 0
+         1) 6
+         2) 26
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) SEA
+         2) KC_
+    }
+ 1) { EvenInd: false, Home: SEA, Num: 7, 
+      XInd: Sequence: Seq<i8>
+         0) 1
+         1) 5
+         2) 11
+         3) 15
+         4) 23
+         5) 27
+         6) 31
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) CAR
+         5) ATL
+         6) STL
+    }
+ 2) { EvenInd: true , Home: SF_, Num: 8, 
+      XInd: Sequence: Seq<i8>
+         0) 2
+         1) 8
+         2) 10
+         3) 12
+         4) 16
+         5) 18
+         6) 24
+         7) 30
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+    }
+ 3) { EvenInd: false, Home: STL, Num: 5, 
+      XInd: Sequence: Seq<i8>
+         0) 3
+         1) 9
+         2) 13
+         3) 19
+         4) 29
+      XOpps: Sequence: Seq<str>
+         0) WAS
+         1) SD_
+         2) CAR
+         3) ATL
+         4) SF_
+    }
+ 4) { EvenInd: true , Home: ARI, Num: 4, 
+      XInd: Sequence: Seq<i8>
+         0) 4
+         1) 14
+         2) 22
+         3) 28
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) TB_
+         2) STL
+         3) DAL
+    }
+ 5) { EvenInd: false, Home: ARI, Num: 4, 
+      XInd: Sequence: Seq<i8>
+         0) 7
+         1) 17
+         2) 21
+         3) 25
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) SEA
+         2) SF_
+         3) DEN
+    }
+ 6) { EvenInd: true , Home: SEA, Num: 1, 
+      XInd: Sequence: Seq<i8>
+         0) 20
+      XOpps: Sequence: Seq<str>
+         0) KC_
+    }
+*** Ctx ping count: 72
+    [0](33): GroupBy(*2: Games, [key] EvenInd:IntMod(#1, 2) @= 0, [key] Home:*2.Home, [map] XInd:#3, [map] XOpps:*4.Away, [agg] Num:Count(!5))
+    [1](39): Count(!1x)
+###
+> Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XIndOpps: (#, Away), [auto] XAuto, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd : #it mod 2 @= 0, [map] XIndOpps : (#, Away), [auto] XAuto, [agg] Num : Count(it)) : {EvenInd:b, Home:s, Num:i8, XAuto:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XIndOpps:(i8, s)*}*
+BndKind:GroupBy, Type:{EvenInd:b, Home:s, Num:i8, XAuto:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XIndOpps:(i8, s)*}*, Bnd:(GroupBy([scope:2] Global(Games), [key] EvenInd:Cmp(IntMod(Scope(1), 2:i8) @= 0:i8), [key] Home:GetField(Scope(2), Home), [auto] XAuto:<auto>, [map] XIndOpps:(Scope(3), GetField(Scope(4), Away)):(i8, s), [agg] Num:Call(∂.Count(Scope(5)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {EvenInd:b, Home:s, Num:i8, XAuto:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XIndOpps:(i8, s)*}*
+Sequence: Seq<{bool,str,i8,Seq<{i8,str,i8,i8}>,Seq<(i8,str)>}>
+ 0) { EvenInd: true , Home: STL, Num: 3, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Week: 1 }
+         1) { AScore: 3, Away: SEA, HScore: 20, Week: 4 }
+         2) { AScore: 27, Away: KC_, HScore: 13, Week: 15 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (0, ARI)
+         1) (6, SEA)
+         2) (26, KC_)
+    }
+ 1) { EvenInd: false, Home: SEA, Num: 7, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Week: 9 }
+         4) { AScore: 14, Away: CAR, HScore: 31, Week: 13 }
+         5) { AScore: 34, Away: ATL, HScore: 18, Week: 15 }
+         6) { AScore: 6, Away: STL, HScore: 16, Week: 17 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (1, SF_)
+         1) (5, SD_)
+         2) (11, ARI)
+         3) (15, NYG)
+         4) (23, CAR)
+         5) (27, ATL)
+         6) (31, STL)
+    }
+ 2) { EvenInd: true , Home: SF_, Num: 8, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Week: 17 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (2, NO_)
+         1) (8, PHI)
+         2) (10, OAK)
+         3) (12, DEN)
+         4) (16, STL)
+         5) (18, TB_)
+         6) (24, SEA)
+         7) (30, ARI)
+    }
+ 3) { EvenInd: false, Home: STL, Num: 5, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 16, Away: WAS, HScore: 30, Week: 3 }
+         1) { AScore: 17, Away: SD_, HScore: 20, Week: 6 }
+         2) { AScore: 10, Away: CAR, HScore: 20, Week: 8 }
+         3) { AScore: 34, Away: ATL, HScore: 17, Week: 11 }
+         4) { AScore: 17, Away: SF_, HScore: 25, Week: 16 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (3, WAS)
+         1) (9, SD_)
+         2) (13, CAR)
+         3) (19, ATL)
+         4) (29, SF_)
+    }
+ 4) { EvenInd: true , Home: ARI, Num: 4, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Week: 3 }
+         1) { AScore: 38, Away: TB_, HScore: 35, Week: 8 }
+         2) { AScore: 19, Away: STL, HScore: 6, Week: 13 }
+         3) { AScore: 26, Away: DAL, HScore: 27, Week: 16 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (4, OAK)
+         1) (14, TB_)
+         2) (22, STL)
+         3) (28, DAL)
+    }
+ 5) { EvenInd: false, Home: ARI, Num: 4, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 20, Away: NO_, HScore: 30, Week: 5 }
+         1) { AScore: 36, Away: SEA, HScore: 18, Week: 10 }
+         2) { AScore: 27, Away: SF_, HScore: 6, Week: 12 }
+         3) { AScore: 13, Away: DEN, HScore: 43, Week: 14 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (7, NO_)
+         1) (17, SEA)
+         2) (21, SF_)
+         3) (25, DEN)
+    }
+ 6) { EvenInd: true , Home: SEA, Num: 1, 
+      XAuto: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 42, Away: KC_, HScore: 24, Week: 12 }
+      XIndOpps: Sequence: Seq<(i8,str)>
+         0) (20, KC_)
+    }
+*** Ctx ping count: 72
+    [0](33): GroupBy(*2: Games, [key] EvenInd:IntMod(#1, 2) @= 0, [key] Home:*2.Home, [auto] XAuto:<auto>, [map] XIndOpps:(#3, *4.Away), [agg] Num:Count(!5))
+    [1](39): Count(!1x)
+###
+> Games | GroupBy(_, [key] Home, [key] #it div 10, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] #it div 10, [map] XOpps : Away, [map] XInd : #, [agg] Num : Count(it)) : {Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+BndKind:GroupBy, Type:{Home:s, Num:i8, XInd:i8*, XOpps:s*}*, Bnd:(GroupBy([scope:2] Global(Games), [key] IntDiv(Scope(1), 10:i8), [key] Home:GetField(Scope(2), Home), [map] XInd:Scope(3), [map] XOpps:GetField(Scope(4), Away), [agg] Num:Call(∂.Count(Scope(5)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8, XInd:i8*, XOpps:s*}*
+Sequence: Seq<{str,i8,Seq<i8>,Seq<str>}>
+ 0) { Home: STL, Num: 4, 
+      XInd: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+    }
+ 1) { Home: SEA, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 1
+         1) 5
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+    }
+ 2) { Home: SF_, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 2
+         1) 8
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+    }
+ 3) { Home: ARI, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 4
+         1) 7
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+    }
+ 4) { Home: SF_, Num: 4, 
+      XInd: Sequence: Seq<i8>
+         0) 10
+         1) 12
+         2) 16
+         3) 18
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) DEN
+         2) STL
+         3) TB_
+    }
+ 5) { Home: SEA, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 11
+         1) 15
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) NYG
+    }
+ 6) { Home: STL, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 13
+         1) 19
+      XOpps: Sequence: Seq<str>
+         0) CAR
+         1) ATL
+    }
+ 7) { Home: ARI, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 14
+         1) 17
+      XOpps: Sequence: Seq<str>
+         0) TB_
+         1) SEA
+    }
+ 8) { Home: SEA, Num: 3, 
+      XInd: Sequence: Seq<i8>
+         0) 20
+         1) 23
+         2) 27
+      XOpps: Sequence: Seq<str>
+         0) KC_
+         1) CAR
+         2) ATL
+    }
+ 9) { Home: ARI, Num: 4, 
+      XInd: Sequence: Seq<i8>
+         0) 21
+         1) 22
+         2) 25
+         3) 28
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) STL
+         2) DEN
+         3) DAL
+    }
+10) { Home: SF_, Num: 1, 
+      XInd: Sequence: Seq<i8>
+         0) 24
+      XOpps: Sequence: Seq<str>
+         0) SEA
+    }
+11) { Home: STL, Num: 2, 
+      XInd: Sequence: Seq<i8>
+         0) 26
+         1) 29
+      XOpps: Sequence: Seq<str>
+         0) KC_
+         1) SF_
+    }
+12) { Home: SF_, Num: 1, 
+      XInd: Sequence: Seq<i8>
+         0) 30
+      XOpps: Sequence: Seq<str>
+         0) ARI
+    }
+13) { Home: SEA, Num: 1, 
+      XInd: Sequence: Seq<i8>
+         0) 31
+      XOpps: Sequence: Seq<str>
+         0) STL
+    }
+*** Ctx ping count: 79
+    [0](33): GroupBy(*2: Games, [key] IntDiv(#1, 10), [key] Home:*2.Home, [map] XInd:#3, [map] XOpps:*4.Away, [agg] Num:Count(!5))
+    [1](46): Count(!1x)
+###
+> Games | GroupBy(_, [key] Home, [map] XOpps: Away, [auto] XGames, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [map] XOpps : Away, [auto] XGames, [agg] Num : Count(it)) : {Home:s, Num:i8, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XOpps:s*}*
+BndKind:GroupBy, Type:{Home:s, Num:i8, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XOpps:s*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Home:GetField(Scope(1), Home), [auto] XGames:<auto>, [map] XOpps:GetField(Scope(2), Away), [agg] Num:Call(∂.Count(Scope(3)):i8)))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, Num:i8, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}*, XOpps:s*}*
+Sequence: Seq<{str,i8,Seq<{i8,str,i8,i8}>,Seq<str>}>
+ 0) { Home: STL, Num: 8, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Week: 16 }
+      XOpps: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+         4) CAR
+         5) ATL
+         6) KC_
+         7) SF_
+    }
+ 1) { Home: SEA, Num: 8, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Week: 17 }
+      XOpps: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) KC_
+         5) CAR
+         6) ATL
+         7) STL
+    }
+ 2) { Home: SF_, Num: 8, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Week: 17 }
+      XOpps: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+    }
+ 3) { Home: ARI, Num: 8, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Week: 16 }
+      XOpps: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+         2) TB_
+         3) SEA
+         4) SF_
+         5) STL
+         6) DEN
+         7) DAL
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>, [map] XOpps:*2.Away, [agg] Num:Count(!3))
+###
+> Games->Count()
+Games->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Global(Games)):i8))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8
+Type: i8, Value: 32
+*** Ctx ping count: 0
+###
+> Games->GroupBy(HScore, AScore, XGames)->Count()
+Games->GroupBy(HScore, AScore, XGames)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(GroupBy([scope:1] Global(Games), [key] AScore:GetField(Scope(1), AScore), [key] HScore:GetField(Scope(1), HScore), [auto] XGames:<auto>)):i8))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to i8
+Type: i8, Value: 32
+*** Ctx ping count: 66
+    [0](33): GroupBy(*1: Games, [key] AScore:*1.AScore, [key] HScore:*1.HScore, [auto] XGames:<auto>)
+    [1](33): Count(GroupBy(*1: Games, [key] AScore:*1.AScore, [key] HScore:*1.HScore, [auto] XGames:<auto>))
+###
+> Games->GroupBy(A: Bin(HScore, 20), B: Bin(AScore, 20), XGames)
+Games->GroupBy(A : Bin(HScore, 20), B : Bin(AScore, 20), XGames) : {A:i8, B:i8, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] A:Call(∂.Bin(GetField(Scope(1), HScore), 20:i8):i8), [key] B:Call(∂.Bin(GetField(Scope(1), AScore), 20:i8):i8), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {A:i8, B:i8, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{i8,i8,Seq<{i8,str,i8,str,i8}>}>
+ 0) { A: 0, B: 0, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+         1) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+         2) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+         3) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 1) { A: 20, B: 0, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+         4) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+         5) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+         6) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+         7) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+         8) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+         9) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 2) { A: 20, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+         1) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+         2) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+         3) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+         4) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+         5) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+         6) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+    }
+ 3) { A: 0, B: 40, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+    }
+ 4) { A: 0, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+         1) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+         2) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+         3) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+         4) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+         5) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+    }
+ 5) { A: 20, B: 40, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+    }
+ 6) { A: 40, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+    }
+ 7) { A: 40, B: 0, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] A:Bin(*1.HScore, 20), [key] B:Bin(*1.AScore, 20), [auto] XGames:<auto>)
+###
+> Games->SetFields(A: Bin(HScore if HScore >= 20 else null, 20), B: Bin(AScore if AScore >= 20 else null, 20))->GroupBy(A, B, XGames)
+Games->SetFields(A : Bin(HScore if HScore $>= 20 else null, 20), B : Bin(AScore if AScore $>= 20 else null, 20))->GroupBy(A, B, XGames) : {A:i8?, B:i8?, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{A:i8?, B:i8?, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:5] Call(∂.ForEach([map:1] Global(Games), SetFields([with:2] Scope(1), A : Call(∂.Guard([guard:3] If(Cmp(GetField(Scope(2), HScore) @>= 20:i8), Opt<i8?>(GetField(Scope(2), HScore)), null:i8?), Call(∂.Bin(Scope(3), 20:i8):i8)):i8?), B : Call(∂.Guard([guard:4] If(Cmp(GetField(Scope(2), AScore) @>= 20:i8), Opt<i8?>(GetField(Scope(2), AScore)), null:i8?), Call(∂.Bin(Scope(4), 20:i8):i8)):i8?)))), [key] A:GetField(Scope(5), A), [key] B:GetField(Scope(5), B), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {A:i8?, B:i8?, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{i8,i8,Seq<{i8,str,i8,str,i8}>}>
+ 0) { A: <null>, B: <null>, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+         1) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+         2) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+         3) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 1) { A: 20, B: <null>, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+         4) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+         5) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+         6) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+         7) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+         8) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+         9) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 2) { A: 20, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+         1) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+         2) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+         3) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+         4) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+         5) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+         6) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+    }
+ 3) { A: <null>, B: 40, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+    }
+ 4) { A: <null>, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+         1) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+         2) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+         3) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+         4) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+         5) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+    }
+ 5) { A: 20, B: 40, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+    }
+ 6) { A: 40, B: 20, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+    }
+ 7) { A: 40, B: <null>, 
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*5: ForEach(*1: Games, SetFields(!2: *1, A : Guard(?3: If(!2.HScore @>= 20, Opt<i8?>(!2.HScore), null), Bin(?3, 20)), B : Guard(?4: If(!2.AScore @>= 20, Opt<i8?>(!2.AScore), null), Bin(?4, 20)))), [key] A:*5.A, [key] B:*5.B, [auto] XGames:<auto>)
+###
+> Games->SetFields(A: HScore if HScore >= 20 else null, B: AScore if AScore >= 20 else null)->GroupBy(A: Bin(A, 20), B: Bin(B, 20), XGames)
+Games->SetFields(A : HScore if HScore $>= 20 else null, B : AScore if AScore $>= 20 else null)->GroupBy(A : Bin(A, 20), B : Bin(B, 20), XGames) : {A:i8?, B:i8?, XGames:{A:i8?, AScore:i8, Away:s, B:i8?, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{A:i8?, B:i8?, XGames:{A:i8?, AScore:i8, Away:s, B:i8?, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:3] Call(∂.ForEach([map:1] Global(Games), SetFields([with:2] Scope(1), A : If(Cmp(GetField(Scope(2), HScore) @>= 20:i8), Opt<i8?>(GetField(Scope(2), HScore)), null:i8?), B : If(Cmp(GetField(Scope(2), AScore) @>= 20:i8), Opt<i8?>(GetField(Scope(2), AScore)), null:i8?)))), [key] A:Call(∂.Guard([guard:4] GetField(Scope(3), A), Call(∂.Bin(Scope(4), 20:i8):i8)):i8?), [key] B:Call(∂.Guard([guard:5] GetField(Scope(3), B), Call(∂.Bin(Scope(5), 20:i8):i8)):i8?), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {A:i8?, B:i8?, XGames:{A:i8?, AScore:i8, Away:s, B:i8?, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{i8,i8,Seq<{i8,i8,str,i8,i8,str,i8}>}>
+ 0) { A: <null>, B: <null>, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: <null>, AScore: 17, Away: ARI, B: <null>, HScore: 13, Home: STL, Week: 1 }
+         1) { A: <null>, AScore: 9, Away: OAK, B: <null>, HScore: 17, Home: SF_, Week: 6 }
+         2) { A: <null>, AScore: 19, Away: STL, B: <null>, HScore: 6, Home: ARI, Week: 13 }
+         3) { A: <null>, AScore: 6, Away: STL, B: <null>, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 1) { A: 20, B: <null>, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: 31, AScore: 6, Away: SF_, B: <null>, HScore: 31, Home: SEA, Week: 1 }
+         1) { A: 30, AScore: 16, Away: WAS, B: <null>, HScore: 30, Home: STL, Week: 3 }
+         2) { A: 20, AScore: 3, Away: SEA, B: <null>, HScore: 20, Home: STL, Week: 4 }
+         3) { A: 20, AScore: 17, Away: SD_, B: <null>, HScore: 20, Home: STL, Week: 6 }
+         4) { A: 22, AScore: 10, Away: ARI, B: <null>, HScore: 22, Home: SEA, Week: 7 }
+         5) { A: 24, AScore: 16, Away: DEN, B: <null>, HScore: 24, Home: SF_, Week: 8 }
+         6) { A: 20, AScore: 10, Away: CAR, B: <null>, HScore: 20, Home: STL, Week: 8 }
+         7) { A: 31, AScore: 14, Away: CAR, B: <null>, HScore: 31, Home: SEA, Week: 13 }
+         8) { A: 25, AScore: 17, Away: SF_, B: <null>, HScore: 25, Home: STL, Week: 16 }
+         9) { A: 38, AScore: 7, Away: ARI, B: <null>, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 2) { A: 20, B: 20, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: 22, AScore: 25, Away: NO_, B: 25, HScore: 22, Home: SF_, Week: 2 }
+         1) { A: 24, AScore: 23, Away: OAK, B: 23, HScore: 24, Home: ARI, Week: 3 }
+         2) { A: 27, AScore: 20, Away: SD_, B: 20, HScore: 27, Home: SEA, Week: 3 }
+         3) { A: 30, AScore: 20, Away: NO_, B: 20, HScore: 30, Home: ARI, Week: 5 }
+         4) { A: 24, AScore: 27, Away: PHI, B: 27, HScore: 24, Home: SF_, Week: 5 }
+         5) { A: 35, AScore: 38, Away: TB_, B: 38, HScore: 35, Home: ARI, Week: 8 }
+         6) { A: 23, AScore: 20, Away: STL, B: 20, HScore: 23, Home: SF_, Week: 10 }
+         7) { A: 27, AScore: 26, Away: DAL, B: 26, HScore: 27, Home: ARI, Week: 16 }
+    }
+ 3) { A: <null>, B: 40, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: <null>, AScore: 41, Away: NYG, B: 41, HScore: 7, Home: SEA, Week: 9 }
+    }
+ 4) { A: <null>, B: 20, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: <null>, AScore: 36, Away: SEA, B: 36, HScore: 18, Home: ARI, Week: 10 }
+         1) { A: <null>, AScore: 21, Away: TB_, B: 21, HScore: 0, Home: SF_, Week: 11 }
+         2) { A: <null>, AScore: 34, Away: ATL, B: 34, HScore: 17, Home: STL, Week: 11 }
+         3) { A: <null>, AScore: 27, Away: SF_, B: 27, HScore: 6, Home: ARI, Week: 12 }
+         4) { A: <null>, AScore: 27, Away: KC_, B: 27, HScore: 13, Home: STL, Week: 15 }
+         5) { A: <null>, AScore: 34, Away: ATL, B: 34, HScore: 18, Home: SEA, Week: 15 }
+    }
+ 5) { A: 20, B: 40, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: 24, AScore: 42, Away: KC_, B: 42, HScore: 24, Home: SEA, Week: 12 }
+    }
+ 6) { A: 40, B: 20, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: 40, AScore: 21, Away: SEA, B: 21, HScore: 40, Home: SF_, Week: 14 }
+    }
+ 7) { A: 40, B: <null>, 
+      XGames: Sequence: Seq<{i8,i8,str,i8,i8,str,i8}>
+         0) { A: 43, AScore: 13, Away: DEN, B: <null>, HScore: 43, Home: ARI, Week: 14 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*3: ForEach(*1: Games, SetFields(!2: *1, A : If(!2.HScore @>= 20, Opt<i8?>(!2.HScore), null), B : If(!2.AScore @>= 20, Opt<i8?>(!2.AScore), null))), [key] A:Guard(?4: *3.A, Bin(?4, 20)), [key] B:Guard(?5: *3.B, Bin(?5, 20)), [auto] XGames:<auto>)
+###
+> Games->Chain([null])->GroupBy(Home, XGames)
+Games->Chain([null])->GroupBy(Home, XGames) : {Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}?*}*
+BndKind:GroupBy, Type:{Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}?*}*, Bnd:(GroupBy([scope:1] SeqConcat(Ref<{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}?*>(Global(Games)), [null:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}?]:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}?*), [key] Home:Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), Home)):s), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Home:s, XGames:{AScore:i8, Away:s, HScore:i8, Week:i8}?*}*
+Sequence: Seq<{str,Seq<{i8,str,i8,i8}>}>
+ 0) { Home: STL, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Week: 16 }
+    }
+ 1) { Home: SEA, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Week: 17 }
+    }
+ 2) { Home: SF_, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Week: 17 }
+    }
+ 3) { Home: ARI, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Week: 16 }
+    }
+ 4) { Home: <null>, 
+      XGames: Sequence: Seq<{i8,str,i8,i8}>
+         0) <null>
+    }
+*** Ctx ping count: 34
+    [0](34): GroupBy(*1: SeqConcat(Ref<{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}?*>(Games), [null]), [key] Home:Guard(?2: *1, ?2.Home), [auto] XGames:<auto>)
+###
+> Games->GroupBy(Key: "H_" & Home, [auto] XGames, [map] X: it.Away)
+Games->GroupBy(Key : "H_" & Home, [auto] XGames, [map] X : it.Away) : {Key:s, X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{Key:s, X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] Key:StrConcat(str(H_), GetField(Scope(1), Home)), [map] X:GetField(Scope(2), Away), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {Key:s, X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{str,Seq<str>,Seq<{i8,str,i8,str,i8}>}>
+ 0) { Key: H_STL, 
+      X: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+         4) CAR
+         5) ATL
+         6) KC_
+         7) SF_
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+    }
+ 1) { Key: H_SEA, 
+      X: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) KC_
+         5) CAR
+         6) ATL
+         7) STL
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 2) { Key: H_SF_, 
+      X: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 3) { Key: H_ARI, 
+      X: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+         2) TB_
+         3) SEA
+         4) SF_
+         5) STL
+         6) DEN
+         7) DAL
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] Key:StrConcat("H_", *1.Home), [map] X:*2.Away, [auto] XGames:<auto>)
+###
+> Games->GroupBy("H_" & Home, [auto] XGames, [map] X: it.Away)
+Games->GroupBy("H_" & Home, [auto] XGames, [map] X : it.Away) : {X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+BndKind:GroupBy, Type:{X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*, Bnd:(GroupBy([scope:1] Global(Games), [key] StrConcat(str(H_), GetField(Scope(1), Home)), [map] X:GetField(Scope(2), Away), [auto] XGames:<auto>))
+Func sig: (<ctx>:x, Games:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*) to {X:s*, XGames:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8}*}*
+Sequence: Seq<{Seq<str>,Seq<{i8,str,i8,str,i8}>}>
+ 0) { X: Sequence: Seq<str>
+         0) ARI
+         1) WAS
+         2) SEA
+         3) SD_
+         4) CAR
+         5) ATL
+         6) KC_
+         7) SF_
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1 }
+         1) { AScore: 16, Away: WAS, HScore: 30, Home: STL, Week: 3 }
+         2) { AScore: 3, Away: SEA, HScore: 20, Home: STL, Week: 4 }
+         3) { AScore: 17, Away: SD_, HScore: 20, Home: STL, Week: 6 }
+         4) { AScore: 10, Away: CAR, HScore: 20, Home: STL, Week: 8 }
+         5) { AScore: 34, Away: ATL, HScore: 17, Home: STL, Week: 11 }
+         6) { AScore: 27, Away: KC_, HScore: 13, Home: STL, Week: 15 }
+         7) { AScore: 17, Away: SF_, HScore: 25, Home: STL, Week: 16 }
+    }
+ 1) { X: Sequence: Seq<str>
+         0) SF_
+         1) SD_
+         2) ARI
+         3) NYG
+         4) KC_
+         5) CAR
+         6) ATL
+         7) STL
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 6, Away: SF_, HScore: 31, Home: SEA, Week: 1 }
+         1) { AScore: 20, Away: SD_, HScore: 27, Home: SEA, Week: 3 }
+         2) { AScore: 10, Away: ARI, HScore: 22, Home: SEA, Week: 7 }
+         3) { AScore: 41, Away: NYG, HScore: 7, Home: SEA, Week: 9 }
+         4) { AScore: 42, Away: KC_, HScore: 24, Home: SEA, Week: 12 }
+         5) { AScore: 14, Away: CAR, HScore: 31, Home: SEA, Week: 13 }
+         6) { AScore: 34, Away: ATL, HScore: 18, Home: SEA, Week: 15 }
+         7) { AScore: 6, Away: STL, HScore: 16, Home: SEA, Week: 17 }
+    }
+ 2) { X: Sequence: Seq<str>
+         0) NO_
+         1) PHI
+         2) OAK
+         3) DEN
+         4) STL
+         5) TB_
+         6) SEA
+         7) ARI
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 25, Away: NO_, HScore: 22, Home: SF_, Week: 2 }
+         1) { AScore: 27, Away: PHI, HScore: 24, Home: SF_, Week: 5 }
+         2) { AScore: 9, Away: OAK, HScore: 17, Home: SF_, Week: 6 }
+         3) { AScore: 16, Away: DEN, HScore: 24, Home: SF_, Week: 8 }
+         4) { AScore: 20, Away: STL, HScore: 23, Home: SF_, Week: 10 }
+         5) { AScore: 21, Away: TB_, HScore: 0, Home: SF_, Week: 11 }
+         6) { AScore: 21, Away: SEA, HScore: 40, Home: SF_, Week: 14 }
+         7) { AScore: 7, Away: ARI, HScore: 38, Home: SF_, Week: 17 }
+    }
+ 3) { X: Sequence: Seq<str>
+         0) OAK
+         1) NO_
+         2) TB_
+         3) SEA
+         4) SF_
+         5) STL
+         6) DEN
+         7) DAL
+      XGames: Sequence: Seq<{i8,str,i8,str,i8}>
+         0) { AScore: 23, Away: OAK, HScore: 24, Home: ARI, Week: 3 }
+         1) { AScore: 20, Away: NO_, HScore: 30, Home: ARI, Week: 5 }
+         2) { AScore: 38, Away: TB_, HScore: 35, Home: ARI, Week: 8 }
+         3) { AScore: 36, Away: SEA, HScore: 18, Home: ARI, Week: 10 }
+         4) { AScore: 27, Away: SF_, HScore: 6, Home: ARI, Week: 12 }
+         5) { AScore: 19, Away: STL, HScore: 6, Home: ARI, Week: 13 }
+         6) { AScore: 13, Away: DEN, HScore: 43, Home: ARI, Week: 14 }
+         7) { AScore: 26, Away: DAL, HScore: 27, Home: ARI, Week: 16 }
+    }
+*** Ctx ping count: 33
+    [0](33): GroupBy(*1: Games, [key] StrConcat("H_", *1.Home), [map] X:*2.Away, [auto] XGames:<auto>)
+###
+
+**** New definitions: X, type: i8
+
+> GroupBy(Range(10), it->Div(5), [agg] X)
+GroupBy(Range(10), it->Div(5), [agg] X) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] Call(∂.Div(Scope(1), 5:i8):i8), [agg] Global(X)))
+Func sig: (<ctx>:x, X:i8) to i8*
+Sequence: Seq<i8>
+ 0) 17
+ 1) 17
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] Div(*1, 5), [agg] X)
+###
+> GroupBy(Range(10), it->Div(5), [agg] Sum(it) + X)
+GroupBy(Range(10), it->Div(5), [agg] Sum(it) + X) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] Call(∂.Div(Scope(1), 5:i8):i8), [agg] Add(Call(∂.Sum(Scope(2)):i8), Global(X))))
+Func sig: (<ctx>:x, X:i8) to i8*
+Sequence: Seq<i8>
+ 0) 27
+ 1) 52
+*** Ctx ping count: 23
+    [0](11): GroupBy(*1: Range(10), [key] Div(*1, 5), [agg] Add(Sum(!2), X))
+    [1](12): Sum(!1x)
+###
+> GroupBy(Range(10), it->Div(5), [agg] it + X)
+GroupBy(Range(10), it->Div(5), [agg] it + X) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] Call(∂.Div(Scope(1), 5:i8):i8), [agg] Call(∂.ForEach([map:3] Scope(2), Add(Scope(3), Global(X))):i8*)))
+Func sig: (<ctx>:x, X:i8) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 17
+     1) 18
+     2) 19
+     3) 20
+     4) 21
+ 1) Sequence: Seq<i8>
+     0) 22
+     1) 23
+     2) 24
+     3) 25
+     4) 26
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] Div(*1, 5), [agg] ForEach(*3: !2, Add(*3, X)))
+###
+> GroupBy(Range(10), it->Div(5), [map] it + X)
+GroupBy(Range(10), it->Div(5), [map] it + X) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] Call(∂.Div(Scope(1), 5:i8):i8), [map] Add(Scope(2), Global(X))))
+Func sig: (<ctx>:x, X:i8) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 17
+     1) 18
+     2) 19
+     3) 20
+     4) 21
+ 1) Sequence: Seq<i8>
+     0) 22
+     1) 23
+     2) 24
+     3) 25
+     4) 26
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] Div(*1, 5), [map] Add(*2, X))
+###
+> GroupBy(Range(5, 15), it->Div(# + 5), [agg] X)
+GroupBy(Range(5, 15), it->Div(# + 5), [agg] X) : i8*
+BndKind:GroupBy, Type:i8*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] Call(∂.Div(Scope(2), Add(Scope(1), 5:i8)):i8), [agg] Global(X)))
+Func sig: (<ctx>:x, X:i8) to i8*
+Sequence: Seq<i8>
+ 0) 17
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] Div(*2, Add(#1, 5)), [agg] X)
+###
+> GroupBy(Range(10)        , it div 5)
+GroupBy(Range(10), it div 5) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] IntDiv(Scope(1), 5:i8)))
+Func sig: (<ctx>:x) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+     3) 3
+     4) 4
+ 1) Sequence: Seq<i8>
+     0) 5
+     1) 6
+     2) 7
+     3) 8
+     4) 9
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] IntDiv(*1, 5))
+###
+> GroupBy(Range(10)->Null(), it div 5)
+GroupBy(Range(10)->Null(), it div 5) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:1] null:i8*, [key] IntDiv(Scope(1), 5:i8)))
+Func sig: (<ctx>:x) to i8**
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> GroupBy(Range(10)->Null(), #it div 5)
+GroupBy(Range(10)->Null(), #it div 5) : i8**
+BndKind:GroupBy, Type:i8**, Bnd:(GroupBy([scope:2] null:i8*, [key] IntDiv(Scope(1), 5:i8)))
+Func sig: (<ctx>:x) to i8**
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Range(10)->GroupBy(A: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, Z) : {A:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, Z:i8*}*
+Sequence: Seq<{i8,Seq<i8>}>
+ 0) { A: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, Z) : {A:i8, B:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->ForEach(null if it mod 5 = 3 else it)->GroupBy(A: it mod 3, Z)
+Range(10)->ForEach(null if it mod 5 @= 3 else it)->GroupBy(A : it mod 3, Z) : {A:i8?, Z:i8?*}*
+BndKind:GroupBy, Type:{A:i8?, Z:i8?*}*, Bnd:(GroupBy([scope:2] Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), If(Cmp(IntMod(Scope(1), 5:i8) @= 3:i8), null:i8?, Opt<i8?>(Scope(1)))):i8?*), [key] A:Call(∂.Guard([guard:3] Scope(2), IntMod(Scope(3), 3:i8)):i8?), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8?, Z:i8?*}*
+Sequence: Seq<{i8,Seq<Opt<i8>>}>
+ 0) { A: 0, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 0
+         1) 6
+         2) 9
+    }
+ 1) { A: 1, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 2
+         1) 5
+    }
+ 3) { A: <null>, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) <null>
+         1) <null>
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: ForEach(*1: Range(10), If(IntMod(*1, 5) @= 3, null, Opt<i8?>(*1))), [key] A:Guard(?3: *2, IntMod(?3, 3)), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: #it mod 3, Z)
+Range(5, 15)->GroupBy(A : #it mod 3, Z) : {A:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, Z:i8*}*
+Sequence: Seq<{i8,Seq<i8>}>
+ 0) { A: 0, 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: 1, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: 2, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:IntMod(#1, 3), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: #it mod 3, B: it mod 3, Z)
+Range(5, 15)->GroupBy(A : #it mod 3, B : it mod 3, Z) : {A:i8, B:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(2), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 2, 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: 1, B: 0, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: 2, B: 1, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:IntMod(#1, 3), [key] B:IntMod(*2, 3), [auto] Z:<auto>)
+###
+> Range(10)->ForEach(null if #it mod 5 = 3 else it)->GroupBy(A: #it mod 3, Z)
+Range(10)->ForEach(null if #it mod 5 @= 3 else it)->GroupBy(A : #it mod 3, Z) : {A:i8, Z:i8?*}*
+BndKind:GroupBy, Type:{A:i8, Z:i8?*}*, Bnd:(GroupBy([scope:4] Call(∂.ForEach([map:2] Call(∂.Range(10:i8):i8*), If(Cmp(IntMod(Scope(1), 5:i8) @= 3:i8), null:i8?, Opt<i8?>(Scope(2)))):i8?*), [key] A:IntMod(Scope(3), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, Z:i8?*}*
+Sequence: Seq<{i8,Seq<Opt<i8>>}>
+ 0) { A: 0, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 0
+         1) <null>
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, 
+      Z: Sequence: Seq<Opt<i8>>
+         0) 2
+         1) 5
+         2) <null>
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*4: ForEach(*2: Range(10), If(IntMod(#1, 5) @= 3, null, Opt<i8?>(*2))), [key] A:IntMod(#3, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: (it mod 3,), Z)
+Range(10)->GroupBy(A : (it mod 3,), Z) : {A:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8), Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8), Z:i8*}*
+Sequence: Seq<{(i8),Seq<i8>}>
+ 0) { A: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:(IntMod(*1, 3),), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: (#it mod 3,), Z)
+Range(5, 15)->GroupBy(A : (#it mod 3,), Z) : {A:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8), Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8), Z:i8*}*
+Sequence: Seq<{(i8),Seq<i8>}>
+ 0) { A: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:(IntMod(#1, 3),), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: (it mod 3,), B: (it mod 3,), Z)
+Range(10)->GroupBy(A : (it mod 3,), B : (it mod 3,), Z) : {A:(i8), B:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8), B:(i8), Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8),):(i8), [key] B:(IntMod(Scope(1), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8), B:(i8), Z:i8*}*
+Sequence: Seq<{(i8),(i8),Seq<i8>}>
+ 0) { A: (0,), B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: (1,), B: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: (2,), B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:(IntMod(*1, 3),), [key] B:(IntMod(*1, 3),), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: (#it mod 3,), B: (it mod 3,), Z)
+Range(5, 15)->GroupBy(A : (#it mod 3,), B : (it mod 3,), Z) : {A:(i8), B:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8), B:(i8), Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8),):(i8), [key] B:(IntMod(Scope(2), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8), B:(i8), Z:i8*}*
+Sequence: Seq<{(i8),(i8),Seq<i8>}>
+ 0) { A: (0,), B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: (1,), B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: (2,), B: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:(IntMod(#1, 3),), [key] B:(IntMod(*2, 3),), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3), B: (#it mod 3,), Z)
+Range(5, 15)->GroupBy(A : (#it mod 3, it mod 3), B : (#it mod 3,), Z) : {A:(i8, i8), B:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8, i8), B:(i8), Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8), IntMod(Scope(2), 3:i8)):(i8, i8), [key] B:(IntMod(Scope(1), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8, i8), B:(i8), Z:i8*}*
+Sequence: Seq<{(i8,i8),(i8),Seq<i8>}>
+ 0) { A: (0, 2), B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: (1, 0), B: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: (2, 1), B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:(IntMod(#1, 3), IntMod(*2, 3)), [key] B:(IntMod(#1, 3),), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3) if it mod 5 != 0 else null, B: (#it mod 3,), Z)
+Range(5, 15)->GroupBy(A : (#it mod 3, it mod 3) if it mod 5 !@= 0 else null, B : (#it mod 3,), Z) : {A:(i8, i8)?, B:(i8), Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8, i8)?, B:(i8), Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:If(Cmp(IntMod(Scope(2), 5:i8) !@= 0:i8), Ref<(i8, i8)?>((IntMod(Scope(1), 3:i8), IntMod(Scope(2), 3:i8)):(i8, i8)), null:(i8, i8)?), [key] B:(IntMod(Scope(1), 3:i8),):(i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8, i8)?, B:(i8), Z:i8*}*
+Sequence: Seq<{(i8,i8),(i8),Seq<i8>}>
+ 0) { A: <null>, B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 5
+    }
+ 1) { A: (1, 0), B: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: (2, 1), B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 13
+    }
+ 3) { A: (0, 2), B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 8
+         1) 11
+         2) 14
+    }
+ 4) { A: <null>, B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 10
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:If(IntMod(*2, 5) !@= 0, Ref<(i8, i8)?>((IntMod(#1, 3), IntMod(*2, 3))), null), [key] B:(IntMod(#1, 3),), [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3), B: (#it mod 3,) if it mod 5 != 0 else null, Z)
+Range(5, 15)->GroupBy(A : (#it mod 3, it mod 3), B : (#it mod 3,) if it mod 5 !@= 0 else null, Z) : {A:(i8, i8), B:(i8)?, Z:i8*}*
+BndKind:GroupBy, Type:{A:(i8, i8), B:(i8)?, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:(IntMod(Scope(1), 3:i8), IntMod(Scope(2), 3:i8)):(i8, i8), [key] B:If(Cmp(IntMod(Scope(2), 5:i8) !@= 0:i8), Ref<(i8)?>((IntMod(Scope(1), 3:i8),):(i8)), null:(i8)?), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:(i8, i8), B:(i8)?, Z:i8*}*
+Sequence: Seq<{(i8,i8),(i8),Seq<i8>}>
+ 0) { A: (0, 2), B: <null>, 
+      Z: Sequence: Seq<i8>
+         0) 5
+    }
+ 1) { A: (1, 0), B: (1,), 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: (2, 1), B: (2,), 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 13
+    }
+ 3) { A: (0, 2), B: (0,), 
+      Z: Sequence: Seq<i8>
+         0) 8
+         1) 11
+         2) 14
+    }
+ 4) { A: (2, 1), B: <null>, 
+      Z: Sequence: Seq<i8>
+         0) 10
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:(IntMod(#1, 3), IntMod(*2, 3)), [key] B:If(IntMod(*2, 5) !@= 0, Ref<(i8)?>((IntMod(#1, 3),)), null), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: {X:it mod 3}, Z)
+Range(10)->GroupBy(A : { X : it mod 3 }, Z) : {A:{X:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8}, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8}, Z:i8*}*
+Sequence: Seq<{{i8},Seq<i8>}>
+ 0) { A: { X: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: { X: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: { X: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:{X:IntMod(*1, 3)}, [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: {X:#it mod 3}, Z)
+Range(5, 15)->GroupBy(A : { X : #it mod 3 }, Z) : {A:{X:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8}, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8}, Z:i8*}*
+Sequence: Seq<{{i8},Seq<i8>}>
+ 0) { A: { X: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: { X: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: { X: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:{X:IntMod(#1, 3)}, [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: {X:it mod 3}, B: {Y:it mod 3}, Z)
+Range(10)->GroupBy(A : { X : it mod 3 }, B : { Y : it mod 3 }, Z) : {A:{X:i8}, B:{Y:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8}, B:{Y:i8}, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8)}, [key] B:{Y:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8}, B:{Y:i8}, Z:i8*}*
+Sequence: Seq<{{i8},{i8},Seq<i8>}>
+ 0) { A: { X: 0 }, B: { Y: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: { X: 1 }, B: { Y: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: { X: 2 }, B: { Y: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:{X:IntMod(*1, 3)}, [key] B:{Y:IntMod(*1, 3)}, [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: {X:it mod 3}, B: {Y:it mod 3}, Z)
+Range(5, 15)->GroupBy(A : { X : it mod 3 }, B : { Y : it mod 3 }, Z) : {A:{X:i8}, B:{Y:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8}, B:{Y:i8}, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8)}, [key] B:{Y:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8}, B:{Y:i8}, Z:i8*}*
+Sequence: Seq<{{i8},{i8},Seq<i8>}>
+ 0) { A: { X: 2 }, B: { Y: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: { X: 0 }, B: { Y: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: { X: 1 }, B: { Y: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(5, 15), [key] A:{X:IntMod(*1, 3)}, [key] B:{Y:IntMod(*1, 3)}, [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3}, B: {Z:#it mod 3}, Z)
+Range(5, 15)->GroupBy(A : { X : #it mod 3, Y : it mod 3 }, B : { Z : #it mod 3 }, Z) : {A:{X:i8, Y:i8}, B:{Z:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8, Y:i8}, B:{Z:i8}, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8), Y:IntMod(Scope(2), 3:i8)}, [key] B:{Z:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8, Y:i8}, B:{Z:i8}, Z:i8*}*
+Sequence: Seq<{{i8,i8},{i8},Seq<i8>}>
+ 0) { A: { X: 0, Y: 2 }, B: { Z: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { A: { X: 1, Y: 0 }, B: { Z: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: { X: 2, Y: 1 }, B: { Z: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:{X:IntMod(#1, 3), Y:IntMod(*2, 3)}, [key] B:{Z:IntMod(#1, 3)}, [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3} if it mod 5 != 0 else null, B: {Z:#it mod 3}, Z)
+Range(5, 15)->GroupBy(A : { X : #it mod 3, Y : it mod 3 } if it mod 5 !@= 0 else null, B : { Z : #it mod 3 }, Z) : {A:{X:i8, Y:i8}?, B:{Z:i8}, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8, Y:i8}?, B:{Z:i8}, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:If(Cmp(IntMod(Scope(2), 5:i8) !@= 0:i8), Ref<{X:i8, Y:i8}?>({X:IntMod(Scope(1), 3:i8), Y:IntMod(Scope(2), 3:i8)}), null:{X:i8, Y:i8}?), [key] B:{Z:IntMod(Scope(1), 3:i8)}, [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8, Y:i8}?, B:{Z:i8}, Z:i8*}*
+Sequence: Seq<{{i8,i8},{i8},Seq<i8>}>
+ 0) { A: <null>, B: { Z: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 5
+    }
+ 1) { A: { X: 1, Y: 0 }, B: { Z: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: { X: 2, Y: 1 }, B: { Z: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 13
+    }
+ 3) { A: { X: 0, Y: 2 }, B: { Z: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 8
+         1) 11
+         2) 14
+    }
+ 4) { A: <null>, B: { Z: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 10
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:If(IntMod(*2, 5) !@= 0, Ref<{X:i8, Y:i8}?>({X:IntMod(#1, 3), Y:IntMod(*2, 3)}), null), [key] B:{Z:IntMod(#1, 3)}, [auto] Z:<auto>)
+###
+> Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3}, B: {Z:#it mod 3} if it mod 5 != 0 else null, Z)
+Range(5, 15)->GroupBy(A : { X : #it mod 3, Y : it mod 3 }, B : { Z : #it mod 3 } if it mod 5 !@= 0 else null, Z) : {A:{X:i8, Y:i8}, B:{Z:i8}?, Z:i8*}*
+BndKind:GroupBy, Type:{A:{X:i8, Y:i8}, B:{Z:i8}?, Z:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] A:{X:IntMod(Scope(1), 3:i8), Y:IntMod(Scope(2), 3:i8)}, [key] B:If(Cmp(IntMod(Scope(2), 5:i8) !@= 0:i8), Ref<{Z:i8}?>({Z:IntMod(Scope(1), 3:i8)}), null:{Z:i8}?), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:{X:i8, Y:i8}, B:{Z:i8}?, Z:i8*}*
+Sequence: Seq<{{i8,i8},{i8},Seq<i8>}>
+ 0) { A: { X: 0, Y: 2 }, B: <null>, 
+      Z: Sequence: Seq<i8>
+         0) 5
+    }
+ 1) { A: { X: 1, Y: 0 }, B: { Z: 1 }, 
+      Z: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { A: { X: 2, Y: 1 }, B: { Z: 2 }, 
+      Z: Sequence: Seq<i8>
+         0) 7
+         1) 13
+    }
+ 3) { A: { X: 0, Y: 2 }, B: { Z: 0 }, 
+      Z: Sequence: Seq<i8>
+         0) 8
+         1) 11
+         2) 14
+    }
+ 4) { A: { X: 2, Y: 1 }, B: <null>, 
+      Z: Sequence: Seq<i8>
+         0) 10
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*2: Range(5, 15), [key] A:{X:IntMod(#1, 3), Y:IntMod(*2, 3)}, [key] B:If(IntMod(*2, 5) !@= 0, Ref<{Z:i8}?>({Z:IntMod(#1, 3)}), null), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, Z) : {A:i8, B:i8, C:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, E : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, E:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, E:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [key] E:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, E:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, E: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, E: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, E: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [key] E:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, E : it mod 3, F : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [key] E:IntMod(Scope(1), 3:i8), [key] F:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, E: 1, F: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, E: 2, F: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [key] E:IntMod(*1, 3), [key] F:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, E : it mod 3, F : it mod 3, G : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [key] E:IntMod(Scope(1), 3:i8), [key] F:IntMod(Scope(1), 3:i8), [key] G:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, E: 1, F: 1, G: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, E: 2, F: 2, G: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [key] E:IntMod(*1, 3), [key] F:IntMod(*1, 3), [key] G:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, H: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, E : it mod 3, F : it mod 3, G : it mod 3, H : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [key] E:IntMod(Scope(1), 3:i8), [key] F:IntMod(Scope(1), 3:i8), [key] G:IntMod(Scope(1), 3:i8), [key] H:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, E: 1, F: 1, G: 1, H: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, E: 2, F: 2, G: 2, H: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [key] E:IntMod(*1, 3), [key] F:IntMod(*1, 3), [key] G:IntMod(*1, 3), [key] H:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, H: it mod 3, I: it mod 3, Z)
+Range(10)->GroupBy(A : it mod 3, B : it mod 3, C : it mod 3, D : it mod 3, E : it mod 3, F : it mod 3, G : it mod 3, H : it mod 3, I : it mod 3, Z) : {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, I:i8, Z:i8*}*
+BndKind:GroupBy, Type:{A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, I:i8, Z:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] A:IntMod(Scope(1), 3:i8), [key] B:IntMod(Scope(1), 3:i8), [key] C:IntMod(Scope(1), 3:i8), [key] D:IntMod(Scope(1), 3:i8), [key] E:IntMod(Scope(1), 3:i8), [key] F:IntMod(Scope(1), 3:i8), [key] G:IntMod(Scope(1), 3:i8), [key] H:IntMod(Scope(1), 3:i8), [key] I:IntMod(Scope(1), 3:i8), [auto] Z:<auto>))
+Func sig: (<ctx>:x) to {A:i8, B:i8, C:i8, D:i8, E:i8, F:i8, G:i8, H:i8, I:i8, Z:i8*}*
+Sequence: Seq<{i8,i8,i8,i8,i8,i8,i8,i8,i8,Seq<i8>}>
+ 0) { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0, G: 0, H: 0, I: 0, 
+      Z: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { A: 1, B: 1, C: 1, D: 1, E: 1, F: 1, G: 1, H: 1, I: 1, 
+      Z: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { A: 2, B: 2, C: 2, D: 2, E: 2, F: 2, G: 2, H: 2, I: 2, 
+      Z: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 11
+    [0](11): GroupBy(*1: Range(10), [key] A:IntMod(*1, 3), [key] B:IntMod(*1, 3), [key] C:IntMod(*1, 3), [key] D:IntMod(*1, 3), [key] E:IntMod(*1, 3), [key] F:IntMod(*1, 3), [key] G:IntMod(*1, 3), [key] H:IntMod(*1, 3), [key] I:IntMod(*1, 3), [auto] Z:<auto>)
+###
+> GroupBy(n: Range(10)   , Key:  n mod 3, [group] V1: Sum(group), [group] V2: MinMaxC(group), [item] XNegs: -n, [auto] XVals)
+GroupBy(n : Range(10), Key : n mod 3, [agg] V1 : Sum(group), [agg] V2 : MinMaxC(group), [map] XNegs : -n, [auto] XVals) : {Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*
+BndKind:GroupBy, Type:{Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*, Bnd:(GroupBy([scope:1] Call(∂.Range(10:i8):i8*), [key] Key:IntMod(Scope(1), 3:i8), [map] XNegs:Add([-] Scope(2)), [auto] XVals:<auto>, [agg] V1:Call(∂.Sum(Scope(3)):i8), [agg] V2:Call(∂.MinMaxC(Scope(3)))))
+Func sig: (<ctx>:x) to {Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*
+Sequence: Seq<{i8,i8,{i8,i8,i8},Seq<i8>,Seq<i8>}>
+ 0) { Key: 0, V1: 18, V2: { Count: 4, Max: 9, Min: 0 }, 
+      XNegs: Sequence: Seq<i8>
+         0) 0
+         1) -3
+         2) -6
+         3) -9
+      XVals: Sequence: Seq<i8>
+         0) 0
+         1) 3
+         2) 6
+         3) 9
+    }
+ 1) { Key: 1, V1: 12, V2: { Count: 3, Max: 7, Min: 1 }, 
+      XNegs: Sequence: Seq<i8>
+         0) -1
+         1) -4
+         2) -7
+      XVals: Sequence: Seq<i8>
+         0) 1
+         1) 4
+         2) 7
+    }
+ 2) { Key: 2, V1: 15, V2: { Count: 3, Max: 8, Min: 2 }, 
+      XNegs: Sequence: Seq<i8>
+         0) -2
+         1) -5
+         2) -8
+      XVals: Sequence: Seq<i8>
+         0) 2
+         1) 5
+         2) 8
+    }
+*** Ctx ping count: 37
+    [0](11): GroupBy(*1: Range(10), [key] Key:IntMod(*1, 3), [map] XNegs:Add([-] *2), [auto] XVals:<auto>, [agg] V1:Sum(!3), [agg] V2:MinMaxC(!3))
+    [1](13): Sum(!1x)
+    [2](13): MinMaxC(!1x)
+###
+> GroupBy(n: Range(5, 15), Key: #n mod 3, [group] V1: Sum(group), [group] V2: MinMaxC(group), [item] XNegs: -#, [auto] XVals)
+GroupBy(n : Range(5, 15), Key : #n mod 3, [agg] V1 : Sum(group), [agg] V2 : MinMaxC(group), [map] XNegs : -#, [auto] XVals) : {Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*
+BndKind:GroupBy, Type:{Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*, Bnd:(GroupBy([scope:2] Call(∂.Range(5:i8, 15:i8):i8*), [key] Key:IntMod(Scope(1), 3:i8), [map] XNegs:Add([-] Scope(3)), [auto] XVals:<auto>, [agg] V1:Call(∂.Sum(Scope(5)):i8), [agg] V2:Call(∂.MinMaxC(Scope(5)))))
+Func sig: (<ctx>:x) to {Key:i8, V1:i8, V2:{Count:i8, Max:i8, Min:i8}, XNegs:i8*, XVals:i8*}*
+Sequence: Seq<{i8,i8,{i8,i8,i8},Seq<i8>,Seq<i8>}>
+ 0) { Key: 0, V1: 38, V2: { Count: 4, Max: 14, Min: 5 }, 
+      XNegs: Sequence: Seq<i8>
+         0) 0
+         1) -3
+         2) -6
+         3) -9
+      XVals: Sequence: Seq<i8>
+         0) 5
+         1) 8
+         2) 11
+         3) 14
+    }
+ 1) { Key: 1, V1: 27, V2: { Count: 3, Max: 12, Min: 6 }, 
+      XNegs: Sequence: Seq<i8>
+         0) -1
+         1) -4
+         2) -7
+      XVals: Sequence: Seq<i8>
+         0) 6
+         1) 9
+         2) 12
+    }
+ 2) { Key: 2, V1: 30, V2: { Count: 3, Max: 13, Min: 7 }, 
+      XNegs: Sequence: Seq<i8>
+         0) -2
+         1) -5
+         2) -8
+      XVals: Sequence: Seq<i8>
+         0) 7
+         1) 10
+         2) 13
+    }
+*** Ctx ping count: 37
+    [0](11): GroupBy(*2: Range(5, 15), [key] Key:IntMod(#1, 3), [map] XNegs:Add([-] #3), [auto] XVals:<auto>, [agg] V1:Sum(!5), [agg] V2:MinMaxC(!5))
+    [1](13): Sum(!1x)
+    [2](13): MinMaxC(!1x)
+###

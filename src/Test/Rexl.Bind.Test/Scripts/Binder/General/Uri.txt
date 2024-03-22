@@ -1,0 +1,32 @@
+﻿`` func Uri.MakeGen(path) := Link.Local("", "/" & path);
+`` func Uri.MakeFile(path) := Link.Local("File", "File/" & path);
+`` func Uri.MakeImage(path) := Link.Local("Image", "Image/" & path);
+`` func Uri.MakeJpeg(path) := Link.Local("Image.Jpeg", "Image.Jpeg/" & path);
+`` func Uri.MakeXray(path) := Link.Local("Image.Jpeg.Xray", "Image.Jpeg.Xray/" & path);
+`` func Uri.MakePdf(path) := Link.Local("Pdf", "Pdf/" & path);
+
+Uri.MakeGen("gen.txt")
+Uri.MakeImage("puppy.bmp")
+Uri.MakeJpeg("sunset.jpg")
+Uri.MakePdf("FermatsLastThm.pdf")
+
+[ Uri.MakeImage("puppy.bmp")->Opt(), Uri.MakePdf("FermatsLastThm.pdf") ]
+
+:: { blob:U<>, file:U<file>, image:U<Image>, xray:U<Image.Jpeg.Xray>, other:U<Other.Huh> }
+
+blob
+file
+image
+xray
+other
+
+Link.Path(blob)
+Link.Path(file)
+Link.Path(image)
+Link.Path(xray)
+Link.Path(other)
+
+blob.Path
+
+[ blob, file, image, xray, other, null ].Path
+[ blob, file, image, xray, other, null ]->Path()

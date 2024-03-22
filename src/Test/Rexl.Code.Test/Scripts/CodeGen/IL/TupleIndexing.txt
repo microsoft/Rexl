@@ -1,0 +1,73 @@
+﻿`` I := [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5];
+
+`` rec1 := {A:10,B:"foo10"};
+`` rec2 := {A:20,B:"foo20"};
+`` rec3 := {A:30,B:"foo30"};
+`` rec4 := {A:40,B:"foo40"};
+`` rec5 := {A:50,B:"foo50"};
+
+// Tuples are of arity 5 to avoid falling back to test classes.
+
+`` homr := (rec1, rec2, rec3, rec4, rec5);
+`` homi := (7, 10, 20, 30, 40);
+`` het := (100, "bar", 200, rec1, (2, 3));
+
+homr
+homi
+
+// Dynamic
+Map(i:I, (i, homr[i]))
+Map(i:I, (i, homi[i]))
+
+// Reduce out-of-bounds constants to default
+homr[^6]
+homr[5]
+homr[^3 + 3]
+homi[2 + 3]
+homi[^Wrap(6)]
+homi[^Wrap(5)]
+
+// Reduce in-bounds constants to GetSlot
+homr[0]
+homr[^5]
+homr[-2 + 2]
+homr[^2 + 3]
+
+homr[1]
+homr[^4]
+homr[-2 + 3]
+homr[^2 + 2]
+
+homr[2]
+homr[^3]
+homr[-2 + 4]
+homr[^2 + 1]
+
+homi[3]
+homi[^2]
+homi[1 + 2]
+homi[^4 - 2]
+
+homi[4]
+homi[^1]
+homi[2 + 2]
+homi[^4 - 3]
+
+het
+
+// Heterogeneous requires constant index, always reduces to GetSlot
+// REVIEW: Support simple expressions as constants.
+het[0]
+het[^5]
+het[1]
+het[^4]
+het[2]
+het[^3]
+het[3]
+het[^2]
+het[4]
+het[^1]
+
+`` HT := (1, 2, 3);
+
+Range(-2, 6)->(HT[it], HT[&it], HT[%it], HT[^it], HT[^&it], HT[^%it])

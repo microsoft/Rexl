@@ -1,0 +1,62 @@
+<Project>
+  <PropertyGroup>
+    <!-- Platform and Configuration might not be defined, eg, when running "dotnet restore" from the command line in a project directory -->
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+
+    <!-- Define symbols -->
+    <CAFlag>false</CAFlag>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CAFlag>true</CAFlag>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunStyleCopAnalysis>$(CAFlag)</RunStyleCopAnalysis>
+    <EnableNETAnalyzers>$(CAFlag)</EnableNETAnalyzers>
+    <RunAnalyzersDuringLiveAnalysis>$(CAFlag)</RunAnalyzersDuringLiveAnalysis>
+    <RunAnalyzersDuringBuild>$(CAFlag)</RunAnalyzersDuringBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <!-- Common properties across all projects. Individual projects may override these. -->
+  <PropertyGroup>
+    <LangVersion>10.0</LangVersion>
+    <Platforms>x64</Platforms>
+    <Configurations>Debug;Release</Configurations>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)stylecop.ruleset</CodeAnalysisRuleSet>
+    <Company>Microsoft</Company>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Get the directory containing Rexl.sln -->
+    <RexlDir>$(MSBuildThisFileDirectory)</RexlDir>
+
+    <RexlXoutDir>$(RexlDir)xout\</RexlXoutDir>
+
+    <!-- Intermediate paths -->
+    <BaseIntermediateOutputPath>$(RexlXoutDir)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+
+    <!-- Output paths -->
+    <BaseOutputPath>$(RexlXoutDir)bin\$(MSBuildProjectName)\</BaseOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Nullable)' == '' ">
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+</Project>

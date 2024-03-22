@@ -1,0 +1,348 @@
+> Wrap(1i4) max Wrap(2i4) = 1i4 max 2i4
+Wrap(1) max Wrap(2) @= 1 max 2 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(1:i4):i4), Call(∂.Test.Wrap(2:i4):i4)) @= 2:i4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0x7FFFFFFFi4) max Wrap(10i4) = 0x7FFFFFFFi4 max 10i4
+Wrap(2147483647) max Wrap(10) @= 2147483647 max 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(2147483647:i4):i4), Call(∂.Test.Wrap(10:i4):i4)) @= 2147483647:i4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0xFFFFFFFFi8) max Wrap(10i8) = 0xFFFFFFFFi8 max 10i8
+Wrap(4294967295) max Wrap(10) @= 4294967295 max 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(4294967295:i8):i8), Call(∂.Test.Wrap(10:i8):i8)) @= 4294967295:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0xFFFFFFFFu4) max Wrap(10u4) = 0xFFFFFFFFu4 max 10u4
+Wrap(4294967295) max Wrap(10) @= 4294967295 max 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(4294967295:u4):u4), Call(∂.Test.Wrap(10:u4):u4)) @= 4294967295:u4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, 1i4])) max Wrap(10i4) = null max 10i4
+First(Wrap([null, 1])) max Wrap(10) @= null max 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:i4?, Opt<i4?>(1:i4)]:i4?*):i4?*)):i4?), Max(Scope(1), Call(∂.Test.Wrap(10:i4):i4))):i4?) @= null:i4?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1.0) max Wrap(2) = 1.0 max 2
+Wrap(1) max Wrap(2) @= 1 max 2 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(1:r8):r8), Num<r8>(Call(∂.Test.Wrap(2:i8):i8))) @= 2:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(-0.0) max Wrap(0.0) = -0.0 max 0.0
+Wrap(-0) max Wrap(0) @= -0 max 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(-0:r8):r8), Call(∂.Test.Wrap(0:r8):r8)) @= 0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0.0) max Wrap(-0.0) = 0.0 max -0.0
+Wrap(0) max Wrap(-0) @= 0 max -0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(0:r8):r8), Call(∂.Test.Wrap(-0:r8):r8)) @= 0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(-0.0) max Wrap(-0.0) = -0.0 max -0.0
+Wrap(-0) max Wrap(-0) @= -0 max -0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(-0:r8):r8), Call(∂.Test.Wrap(-0:r8):r8)) @= -0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1e20) max Wrap(1e30) = 1e20 max 1e30
+Wrap(1E+20) max Wrap(1E+30) @= 1E+20 max 1E+30 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(1E+20:r8):r8), Call(∂.Test.Wrap(1E+30:r8):r8)) @= 1E+30:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) max Wrap(1/0) = 1 max 1/0
+Wrap(1) max Wrap(1 / 0) @= 1 max 1 / 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(∞:r8):r8)) @= ∞:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) max Wrap(-1/0) = 1 max -1/0
+Wrap(1) max Wrap(-1 / 0) @= 1 max -1 / 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(-∞:r8):r8)) @= 1:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, 2.0])) max Wrap(4.5) = null max 4.5
+First(Wrap([null, 2])) max Wrap(4.5) @= null max 4.5 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:r8?, Opt<r8?>(2:r8)]:r8?*):r8?*)):r8?), Max(Scope(1), Call(∂.Test.Wrap(4.5:r8):r8))):r8?) @= null:r8?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(true) max Wrap(false) = true max false
+Wrap(true) max Wrap(false) @= true max false : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(true:b):b), Call(∂.Test.Wrap(false:b):b)) @= true:b))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, false])) max Wrap(false) = null max false
+First(Wrap([null, false])) max Wrap(false) @= null max false : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:b?, Opt<b?>(false:b)]:b?*):b?*)):b?), Max(Scope(1), Call(∂.Test.Wrap(false:b):b))):b?) @= null:b?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("hello") max Wrap("world") = "hello" max "world"
+Wrap("hello") max Wrap("world") @= "hello" max "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(str(hello)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(world)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("hello") max Wrap("HELLO") = "hello" max "HELLO"
+Wrap("hello") max Wrap("HELLO") @= "hello" max "HELLO" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(str(hello)):s), Call(∂.Test.Wrap(str(HELLO)):s)) @= str(HELLO)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("") max Wrap("world") = "" max "world"
+Wrap("") max Wrap("world") @= "" max "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(str()):s), Call(∂.Test.Wrap(str(world)):s)) @= str(world)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(Null("x")) max Wrap("world") = Null("x") max "world"
+Wrap(Null("x")) max Wrap("world") @= Null("x") max "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(str(<null>)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(world)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(Null("x")) max Wrap("world") = null max "world"
+Wrap(Null("x")) max Wrap("world") @= null max "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Max(Call(∂.Test.Wrap(str(<null>)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(world)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) max Wrap(0/0)
+Wrap(1) max Wrap(0 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Max(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(NaN:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(1) max Wrap(-0/0)
+Wrap(1) max Wrap(-0 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Max(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(NaN:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(0/0) max Wrap(1/0)
+Wrap(0 / 0) max Wrap(1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Max(Call(∂.Test.Wrap(NaN:r8):r8), Call(∂.Test.Wrap(∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(0/0) max Wrap(-1/0)
+Wrap(0 / 0) max Wrap(-1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Max(Call(∂.Test.Wrap(NaN:r8):r8), Call(∂.Test.Wrap(-∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(1/0) max Wrap(-1/0)
+Wrap(1 / 0) max Wrap(-1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Max(Call(∂.Test.Wrap(∞:r8):r8), Call(∂.Test.Wrap(-∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: ∞
+###
+> Date(2000, 1, 1) max Date(2020, 1, 1)
+Date(2000, 1, 1) max Date(2020, 1, 1) : d
+BndKind:BinaryOp, Type:d, Bnd:(Max(Call(∂.Date(2000:i8, 1:i8, 1:i8):d), Call(∂.Date(2020:i8, 1:i8, 1:i8):d)))
+Func sig: () to d
+Type: Date, Value: DT(2020, 1, 1, 0, 0, 0, 0)
+###
+> Date(1, 1, 1) max Date(1, 1, 1)
+Date(1, 1, 1) max Date(1, 1, 1) : d
+BndKind:BinaryOp, Type:d, Bnd:(Max(Call(∂.Date(1:i8, 1:i8, 1:i8):d), Call(∂.Date(1:i8, 1:i8, 1:i8):d)))
+Func sig: () to d
+Type: Date, Value: DT(1, 1, 1, 0, 0, 0, 0)
+###
+> Time(8, 0, 0) max Time(0, 8, 0)
+Time(8, 0, 0) max Time(0, 8, 0) : t
+BndKind:BinaryOp, Type:t, Bnd:(Max(Call(∂.Time(8:i8, 0:i8, 0:i8):t), Call(∂.Time(0:i8, 8:i8, 0:i8):t)))
+Func sig: () to t
+Type: Time, Value: 8.00:00:00
+###
+> Time(0, 0, 0) max Time(0, 8, 0)
+Time(0, 0, 0) max Time(0, 8, 0) : t
+BndKind:BinaryOp, Type:t, Bnd:(Max(Call(∂.Time(0:i8, 0:i8, 0:i8):t), Call(∂.Time(0:i8, 8:i8, 0:i8):t)))
+Func sig: () to t
+Type: Time, Value: 08:00:00
+###
+> Wrap(1i4) min Wrap(2i4) = 1i4 min 2i4
+Wrap(1) min Wrap(2) @= 1 min 2 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(1:i4):i4), Call(∂.Test.Wrap(2:i4):i4)) @= 1:i4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0x7FFFFFFFi4) min Wrap(10i4) = 0x7FFFFFFFi4 min 10i4
+Wrap(2147483647) min Wrap(10) @= 2147483647 min 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(2147483647:i4):i4), Call(∂.Test.Wrap(10:i4):i4)) @= 10:i4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0xFFFFFFFFi8) min Wrap(10i8) = 0xFFFFFFFFi8 min 10i8
+Wrap(4294967295) min Wrap(10) @= 4294967295 min 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(4294967295:i8):i8), Call(∂.Test.Wrap(10:i8):i8)) @= 10:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0xFFFFFFFFu4) min Wrap(10u4) = 0xFFFFFFFFu4 min 10u4
+Wrap(4294967295) min Wrap(10) @= 4294967295 min 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(4294967295:u4):u4), Call(∂.Test.Wrap(10:u4):u4)) @= 10:u4))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, 1i4])) min Wrap(10i4) = null min 10i4
+First(Wrap([null, 1])) min Wrap(10) @= null min 10 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:i4?, Opt<i4?>(1:i4)]:i4?*):i4?*)):i4?), Min(Scope(1), Call(∂.Test.Wrap(10:i4):i4))):i4?) @= null:i4?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1.0) min Wrap(2) = 1.0 min 2
+Wrap(1) min Wrap(2) @= 1 min 2 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(1:r8):r8), Num<r8>(Call(∂.Test.Wrap(2:i8):i8))) @= 1:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(-0.0) min Wrap(0.0) = -0.0 min 0.0
+Wrap(-0) min Wrap(0) @= -0 min 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(-0:r8):r8), Call(∂.Test.Wrap(0:r8):r8)) @= -0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(0.0) min Wrap(-0.0) = 0.0 min -0.0
+Wrap(0) min Wrap(-0) @= 0 min -0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(0:r8):r8), Call(∂.Test.Wrap(-0:r8):r8)) @= -0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(-0.0) min Wrap(-0.0) = -0.0 min -0.0
+Wrap(-0) min Wrap(-0) @= -0 min -0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(-0:r8):r8), Call(∂.Test.Wrap(-0:r8):r8)) @= -0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1e20) min Wrap(1e30) = 1e20 min 1e30
+Wrap(1E+20) min Wrap(1E+30) @= 1E+20 min 1E+30 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(1E+20:r8):r8), Call(∂.Test.Wrap(1E+30:r8):r8)) @= 1E+20:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) min Wrap(1/0) = 1 min 1/0
+Wrap(1) min Wrap(1 / 0) @= 1 min 1 / 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(∞:r8):r8)) @= 1:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) min Wrap(-1/0) = 1 min -1/0
+Wrap(1) min Wrap(-1 / 0) @= 1 min -1 / 0 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(-∞:r8):r8)) @= -∞:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, 1.0])) min Wrap(4.5) = null min 4.5
+First(Wrap([null, 1])) min Wrap(4.5) @= null min 4.5 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:r8?, Opt<r8?>(1:r8)]:r8?*):r8?*)):r8?), Min(Scope(1), Call(∂.Test.Wrap(4.5:r8):r8))):r8?) @= null:r8?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(true) min Wrap(false) = true min false
+Wrap(true) min Wrap(false) @= true min false : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(true:b):b), Call(∂.Test.Wrap(false:b):b)) @= false:b))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> First(Wrap([null, false])) min Wrap(false) = null min false
+First(Wrap([null, false])) min Wrap(false) @= null min false : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Guard([guard:1] Call(∂.TakeOne(Call(∂.Test.Wrap([null:b?, Opt<b?>(false:b)]:b?*):b?*)):b?), Min(Scope(1), Call(∂.Test.Wrap(false:b):b))):b?) @= null:b?))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("hello") min Wrap("world") = "hello" min "world"
+Wrap("hello") min Wrap("world") @= "hello" min "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(str(hello)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(hello)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("hello") min Wrap("HELLO") = "hello" min "HELLO"
+Wrap("hello") min Wrap("HELLO") @= "hello" min "HELLO" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(str(hello)):s), Call(∂.Test.Wrap(str(HELLO)):s)) @= str(hello)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap("") min Wrap("world") = "" min "world"
+Wrap("") min Wrap("world") @= "" min "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(str()):s), Call(∂.Test.Wrap(str(world)):s)) @= str()))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(Null("x")) min Wrap("world") = Null("x") min "world"
+Wrap(Null("x")) min Wrap("world") @= Null("x") min "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(str(<null>)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(<null>)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(Null("x")) min Wrap("world") = null min "world"
+Wrap(Null("x")) min Wrap("world") @= null min "world" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Min(Call(∂.Test.Wrap(str(<null>)):s), Call(∂.Test.Wrap(str(world)):s)) @= str(<null>)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Wrap(1) min Wrap(0/0)
+Wrap(1) min Wrap(0 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Min(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(NaN:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(1) min Wrap(-0/0)
+Wrap(1) min Wrap(-0 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Min(Num<r8>(Call(∂.Test.Wrap(1:i8):i8)), Call(∂.Test.Wrap(NaN:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(0/0) min Wrap(1/0)
+Wrap(0 / 0) min Wrap(1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Min(Call(∂.Test.Wrap(NaN:r8):r8), Call(∂.Test.Wrap(∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(0/0) min Wrap(-1/0)
+Wrap(0 / 0) min Wrap(-1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Min(Call(∂.Test.Wrap(NaN:r8):r8), Call(∂.Test.Wrap(-∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: NaN
+###
+> Wrap(1/0) min Wrap(-1/0)
+Wrap(1 / 0) min Wrap(-1 / 0) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Min(Call(∂.Test.Wrap(∞:r8):r8), Call(∂.Test.Wrap(-∞:r8):r8)))
+Func sig: () to r8
+Type: r8, Value: -∞
+###
+> Date(2000, 1, 1) min Date(2020, 1, 1)
+Date(2000, 1, 1) min Date(2020, 1, 1) : d
+BndKind:BinaryOp, Type:d, Bnd:(Min(Call(∂.Date(2000:i8, 1:i8, 1:i8):d), Call(∂.Date(2020:i8, 1:i8, 1:i8):d)))
+Func sig: () to d
+Type: Date, Value: DT(2000, 1, 1, 0, 0, 0, 0)
+###
+> Date(1, 1, 1) min Date(1, 1, 1)
+Date(1, 1, 1) min Date(1, 1, 1) : d
+BndKind:BinaryOp, Type:d, Bnd:(Min(Call(∂.Date(1:i8, 1:i8, 1:i8):d), Call(∂.Date(1:i8, 1:i8, 1:i8):d)))
+Func sig: () to d
+Type: Date, Value: DT(1, 1, 1, 0, 0, 0, 0)
+###
+> Time(8, 0, 0) min Time(0, 8, 0)
+Time(8, 0, 0) min Time(0, 8, 0) : t
+BndKind:BinaryOp, Type:t, Bnd:(Min(Call(∂.Time(8:i8, 0:i8, 0:i8):t), Call(∂.Time(0:i8, 8:i8, 0:i8):t)))
+Func sig: () to t
+Type: Time, Value: 08:00:00
+###
+> Time(0, 0, 0) min Time(0, 8, 0)
+Time(0, 0, 0) min Time(0, 8, 0) : t
+BndKind:BinaryOp, Type:t, Bnd:(Min(Call(∂.Time(0:i8, 0:i8, 0:i8):t), Call(∂.Time(0:i8, 8:i8, 0:i8):t)))
+Func sig: () to t
+Type: Time, Value: 00:00:00
+###

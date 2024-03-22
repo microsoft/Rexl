@@ -1,0 +1,39 @@
+﻿T0 := Range(22_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+T0;
+PNK := "nocomp-chkd.rbin";
+finish W1 as WriteRbin(T0, "temp/" & PNK, true, false);
+
+PNU := "nocomp-unchunked.rbin";
+finish W2 as WriteRbin(T0, "temp/" & PNU, false, false);
+
+PCK := "comp-chunked.rbin";
+finish W3 as WriteRbin(T0, "temp/" & PCK, true, true);
+
+PCU := "comp-unchunked.rbin";
+finish W4 as WriteRbin(T0, "temp/" & PCU, false, true);
+
+(W1.Size, W1.Compression);
+(W2.Size, W2.Compression);
+(W3.Size, W3.Compression);
+(W4.Size, W4.Compression);
+
+play R1 as ReadRbin(W1.Link);
+play R2 as ReadRbin(W2.Link);
+play R3 as ReadRbin(W3.Link);
+play R4 as ReadRbin(W4.Link);
+finish R1;
+finish R2;
+finish R3;
+finish R4;
+T1 := R1.Data;
+T2 := R2.Data;
+T3 := R3.Data;
+T4 := R4.Data;
+
+(R1.RowCount, R2.RowCount, R3.RowCount, R4.RowCount);
+(T1->Count(), T2->Count(), T3->Count(), T4->Count(), T4->Count());
+
+ForEach(a:T0, b:T1, c:T2, d:T3, e:T4, (#, a.A = b.A = c.A = d.A = e.A))->TakeIf(!it[1]);
+ForEach(a:T0, b:T1, c:T2, d:T3, e:T4, (#, a.B = b.B = c.B = d.B = e.B))->TakeIf(!it[1]);
+ForEach(a:T0, b:T1, c:T2, d:T3, e:T4, (#, a.C = b.C = c.C = d.C = e.C))->TakeIf(!it[1]);
+ForEach(a:T0, b:T1, c:T2, d:T3, e:T4, (#, a.D = b.D = c.D = d.D = e.D))->TakeIf(!it[1]);

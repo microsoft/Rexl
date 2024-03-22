@@ -1,0 +1,113 @@
+﻿func PI() := Atan(1) * 4;
+func PI2() := Asin(1) * 2;
+
+PI();
+PI2();
+PI2() - PI();
+
+func F(x) := x max false;
+
+S := [-4, 0, 2];
+S->CastI1()->F();
+S->CastI2()->F();
+S->CastR4()->F();
+
+func G(x) := F(x) + F(-x);
+
+S->CastI1()->G();
+S->CastI8()->G();
+S->CastIA()->G();
+S->CastR4()->G();
+S->CastR8()->G();
+
+func F(x) := x * x;
+
+S->CastI1()->G();
+S->CastI8()->G();
+S->CastIA()->G();
+S->CastR4()->G();
+S->CastR8()->G();
+
+"*** Arity zero functions vs globals ***";
+
+GA := 3;
+func FA() := 3;
+
+GB := GA * GA;
+func FB() := FA() * FA();
+
+GB;
+FB();
+
+// Redefine the A's.
+GA := 7;
+func FA() := 7;
+
+GB; // Didn't change.
+FB(); // Different.
+
+// Fuzzy.
+gA;
+Fa();
+Gb;
+fB();
+abs(-12);
+
+// Copied from the binder basic tests.
+
+i8 := 17i8;
+r8 := 3.5;
+func F(x) := x + Abs(x);
+func G(x, y) := x + Abs(y);
+func H(x) := F(x) * G(x, x);
+func H(x, y, z) := F(x) * G(y, z);
+
+F(i8);
+F(r8);
+F(3);
+F(-7);
+F(-7.5);
+F(3.5);
+F(i8 * i8);
+F(i8 + r8);
+
+G(i8, i8);
+G(i8, r8);
+G(i8, -12);
+G(3, -12);
+
+H(i8);
+H(3);
+
+H(i8, i8, i8);
+H(i8, r8, 7);
+H(3, i8, -12);
+H(3, -12, 5);
+
+// Wrong arity.
+F();
+F(3, -12);
+
+H();
+H(3, -12);
+H(3, -12, 5, 4);
+
+// Case correction.
+f(-7);
+f();
+f(3, -12);
+h();
+h(3, -12);
+h(3, -12, 5, 4);
+
+// Remove F and get errors.
+func F(x) := _;
+
+F(i8);
+G(3, -12);
+H(i8);
+H(3);
+
+// Prop without namespace.
+// REVIEW: Should this produce an error/warning?
+prop P(x) := 3;

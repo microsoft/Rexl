@@ -1,0 +1,92 @@
+> FirstNRev(Range(100), it->Mod(2) != 0, 5)
+FirstNRev(Range(100), it->Mod(2) !@= 0, 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Test.FirstNRev([map:1] Call(∂.Range(100:i8):i8*), Cmp(Call(∂.Mod(Scope(1), 2:i8):i8) !@= 0:i8), 5:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 3
+ 2) 5
+ 3) 7
+ 4) 9
+###
+> FirstNRev(Range(100), it->Mod(2) != 0, -5)
+FirstNRev(Range(100), it->Mod(2) !@= 0, -5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Test.FirstNRev([map:1] Call(∂.Range(100:i8):i8*), Cmp(Call(∂.Mod(Scope(1), 2:i8):i8) !@= 0:i8), -5:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+###
+> FirstNRev(Range(100) if 1 = 0 else null, it->Mod(2) != 0, 5)
+FirstNRev(Range(100) if 1 @= 0 else null, it->Mod(2) !@= 0, 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Test.FirstNRev([map:1] null:i8*, Cmp(Call(∂.Mod(Scope(1), 2:i8):i8) !@= 0:i8), 5:i8):i8*))
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> DblMap(Range(10), 2.5 + it, ["hi", "bye", "whatever"], Text.Len(it))
+DblMap(Range(10), 2.5 + it, ["hi", "bye", "whatever"], Text.Len(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Test.DblMap([map:1] Call(∂.Range(10:i8):i8*), Add(2.5:r8, Num<r8>(Scope(1))), [map:2] [str(hi), str(bye), str(whatever)]:s*, Num<r8>(Call(∂.Text.Len(Scope(2)):i8))):r8*))
+Func sig: () to r8*
+Sequence: Seq<r8>
+ 0) 2.5
+ 1) 2
+ 2) 3.5
+ 3) 3
+ 4) 4.5
+ 5) 8
+ 6) 5.5
+ 7) 6.5
+ 8) 7.5
+ 9) 8.5
+10) 9.5
+11) 10.5
+12) 11.5
+###
+> DblMap(["hi", "bye", "whatever"], Text.Len(it), Range(10), 2.5 + it)
+DblMap(["hi", "bye", "whatever"], Text.Len(it), Range(10), 2.5 + it) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Test.DblMap([map:1] [str(hi), str(bye), str(whatever)]:s*, Num<r8>(Call(∂.Text.Len(Scope(1)):i8)), [map:2] Call(∂.Range(10:i8):i8*), Add(2.5:r8, Num<r8>(Scope(2)))):r8*))
+Func sig: () to r8*
+Sequence: Seq<r8>
+ 0) 2
+ 1) 2.5
+ 2) 3
+ 3) 3.5
+ 4) 8
+ 5) 4.5
+ 6) 5.5
+ 7) 6.5
+ 8) 7.5
+ 9) 8.5
+10) 9.5
+11) 10.5
+12) 11.5
+###
+> DblMap(Range(10) if 1 = 1 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 = 0 else null, Text.Len(it))
+DblMap(Range(10) if 1 @= 1 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 @= 0 else null, Text.Len(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Test.DblMap([map:1] Call(∂.Range(10:i8):i8*), Add(2.5:r8, Num<r8>(Scope(1))), [map:2] null:s*, Num<r8>(Call(∂.Text.Len(Scope(2)):i8))):r8*))
+Func sig: () to r8*
+Sequence: Seq<r8>
+ 0) 2.5
+ 1) 3.5
+ 2) 4.5
+ 3) 5.5
+ 4) 6.5
+ 5) 7.5
+ 6) 8.5
+ 7) 9.5
+ 8) 10.5
+ 9) 11.5
+###
+> DblMap(Range(10) if 1 = 0 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 = 1 else null, Text.Len(it))
+DblMap(Range(10) if 1 @= 0 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 @= 1 else null, Text.Len(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Test.DblMap([map:1] null:i8*, Add(2.5:r8, Num<r8>(Scope(1))), [map:2] [str(hi), str(bye), str(whatever)]:s*, Num<r8>(Call(∂.Text.Len(Scope(2)):i8))):r8*))
+Func sig: () to r8*
+Sequence: Seq<r8>
+ 0) 2
+ 1) 3
+ 2) 8
+###
+> DblMap(Range(10) if 1 = 0 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 = 0 else null, Text.Len(it))
+DblMap(Range(10) if 1 @= 0 else null, 2.5 + it, ["hi", "bye", "whatever"] if 1 @= 0 else null, Text.Len(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Test.DblMap([map:1] null:i8*, Add(2.5:r8, Num<r8>(Scope(1))), [map:2] null:s*, Num<r8>(Call(∂.Text.Len(Scope(2)):i8))):r8*))
+Func sig: () to r8*
+Type: <null>, Value: <null>
+###

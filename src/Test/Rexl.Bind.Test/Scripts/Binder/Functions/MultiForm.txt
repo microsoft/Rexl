@@ -1,0 +1,308 @@
+﻿:: { TA: {A:s, X:r8}*, TB: {B:s, X:r8}*, TC: {C:s, X:r8}*, S: s* }
+
+// Simple form.
+MultiDS_A(TA)
+MultiDSMA(TA)
+MultiDS_A(TA->{A})
+MultiDSMA(TA->{A})
+MultiDS_A(TB) // Error.
+MultiDSMA(TB) // Error.
+MultiDS_A(TB->{A:B})
+MultiDSMA(TB->{A:B})
+MultiDS_A(TC) // Error.
+MultiDSMA(TC) // Error.
+MultiDS_A(TC->{A:C})
+MultiDSMA(TC->{A:C})
+
+// No 1-arg form.
+Multi_SMB(TA)  // Error.
+
+// SeqRec form.
+MultiDSMA( TA,    A)
+MultiDSMA( TA, A: A)
+MultiDSMA( TC,    C)
+MultiDSMA( TC, A: C)
+MultiDSMA( TB,    B)
+MultiDSMA( TB, A: B)
+MultiDSMA(x:S,    x)
+MultiDSMA(x:S, A: x)
+
+// REVIEW: Should try to optimize the double Map!
+MultiDSMA(x: S & "more",    x)
+MultiDSMA(x: S & "more", A: x)
+
+// REVIEW: It would be nice if these supplied the missing defaults.
+MultiDSMB(TA) // Error.
+MultiDSMB(TC) // Error.
+MultiDSMB(TB) // Error.
+
+// One field.
+MultiDSMB( TA,    A)
+MultiDSMB( TA, A: A)
+MultiDSMB( TA, B: A)
+MultiDSMB( TB,    B)
+MultiDSMB( TB, A: B)
+MultiDSMB( TB, B: B)
+MultiDSMB(x:S,    x)
+MultiDSMB(x:S, A: x)
+MultiDSMB(x:S, B: x)
+MultiDSMB(TA->TakeIf(false), A)
+
+// Two fields.
+MultiDSMB( TA,    A & "_1",    A & "_2")
+MultiDSMB( TA, A: A & "_1", B: A & "_2")
+MultiDSMB( TA, B: A & "_1", A: A & "_2")
+MultiDSMB( TB,    B & "_1",    B & "_2")
+MultiDSMB( TB, A: B & "_1", B: B & "_2")
+MultiDSMB( TB, B: B & "_1", A: B & "_2")
+MultiDSMB(x:S,    x & "_1",    x & "_2")
+MultiDSMB(x:S, A: x & "_1", B: x & "_2")
+MultiDSMB(x:S, B: x & "_1", A: x & "_2")
+MultiDSMB(TA->TakeIf(false), A, A)
+
+// Default arguments.
+MultiDSMC( TA, A: A)
+MultiDSMCc(TA, A: A) // Error.
+
+// Dup fields.
+MultiDSMB( TA, B: A & "_1", B: A & "_2") // Error.
+MultiDSMB( TB, B: B & "_1", B: B & "_2") // Error.
+MultiDSMB(x:S, B: x & "_1", B: x & "_2") // Error.
+
+// Bad field.
+MultiDSMB( TA, B: A & "_1", C: A & "_2") // Error.
+MultiDSMB( TB, B: B & "_1", C: B & "_2") // Error.
+MultiDSMB(x:S, B: x & "_1", C: x & "_2") // Error.
+
+// Non-named after named.
+MultiDSMB( TA, A: A & "_1",    A & "_2") // Error.
+MultiDSMB( TA, B: A & "_1",    A & "_2")
+
+// Coverage for reduction.
+MultiDsMB( TB, {A: B & "_1", B: B & "_2"})
+MultiDsMB(TB->TakeIf(false), {A: B & "_1", B: B & "_2"})
+MultiDsMB(x:S, {A: x & "_1", B: x & "_2"})
+MultiDrMB( TB, {A: B & "_1", B: B & "_2"})
+MultiDrMB(TB->TakeIf(false), {A: B & "_1", B: B & "_2"})
+MultiDrMB(x:S, {A: x & "_1", B: x & "_2"})
+MultiDSMBW( TB, A: B & "_1", B: B & "_2")
+MultiDSMBW(x:S, A: x & "_1", B: x & "_2")
+MultiDRMBW(x:S, A: x & "_1", B: x & "_2", S1: "/suf", S2: 7)
+MultiDRMBW(TB, B, B)
+MultiDRMBW(TB, B, B, "/suf", 5)
+MultiDRMB(TB->TakeIf(false), B, B, "/suf", 5)
+
+// With wild cards.
+:: { TA: {A:s, X:r8, G:(r8,i8)}*, TB: {B:s, X:r8, G:s*}*, TC: {C:s, X:r8, G:{P:i8}*}*, S: s* }
+
+// Simple form.
+MultiDGSMA(TA)
+MultiDGSMA(TA->{A, G})
+MultiDGSMA(TB) // Error.
+MultiDGSMA(TB->{A:B, G})
+MultiDGSMA(TC) // Error.
+MultiDGSMA(TC->{A:C, G})
+
+// No 1-arg form.
+Multi_GSMB(TA) // Error.
+
+// SeqRec form.
+MultiDGSMA( TA, G,    A)
+MultiDGSMA( TA, G, A: A)
+MultiDGSMA( TC, G,    C)
+MultiDGSMA( TC, G, A: C)
+MultiDGSMA( TB, G,    B)
+MultiDGSMA( TB, G, A: B)
+MultiDGSMA(x:S, x,    x)
+MultiDGSMA(x:S, x, A: x)
+
+// REVIEW: Should try to optimize the double Map!
+MultiDGSMA(x: S & "more", x,    x)
+MultiDGSMA(x: S & "more", x, A: x)
+
+// REVIEW: It would be nice if these supplied the missing defaults.
+MultiDGSMB(TA) // Error.
+MultiDGSMB(TC) // Error.
+MultiDGSMB(TB) // Error.
+
+// One field.
+MultiDGSMB( TA, G,    A)
+MultiDGSMB( TA, G, A: A)
+MultiDGSMB( TA, G, B: A)
+MultiDGSMB( TB, G,    B)
+MultiDGSMB( TB, G, A: B)
+MultiDGSMB( TB, G, B: B)
+MultiDGSMB(x:S, x,    x)
+MultiDGSMB(x:S, x, A: x)
+MultiDGSMB(x:S, x, B: x)
+
+// Two fields.
+MultiDGSMB( TA, G,    A & "_1",    A & "_2")
+MultiDGSMB( TA, G, A: A & "_1", B: A & "_2")
+MultiDGSMB( TA, G, B: A & "_1", A: A & "_2")
+MultiDGSMB( TB, G,    B & "_1",    B & "_2")
+MultiDGSMB( TB, G, A: B & "_1", B: B & "_2")
+MultiDGSMB( TB, G, B: B & "_1", A: B & "_2")
+MultiDGSMB(x:S, x,    x & "_1",    x & "_2")
+MultiDGSMB(x:S, x, A: x & "_1", B: x & "_2")
+MultiDGSMB(x:S, x, B: x & "_1", A: x & "_2")
+
+// Default arguments.
+MultiDGSMC( TA, G, A: A)
+MultiDGSMCc(TA, G, A: A) // Error.
+
+// Dup fields.
+MultiDGSMB( TA, G, B: A & "_1", B: A & "_2") // Error.
+MultiDGSMB( TB, G, B: B & "_1", B: B & "_2") // Error.
+MultiDGSMB(x:S, x, B: x & "_1", B: x & "_2") // Error.
+
+// Bad field.
+MultiDGSMB( TA, G, B: A & "_1", C: A & "_2") // Error.
+MultiDGSMB( TB, G, B: B & "_1", C: B & "_2") // Error.
+MultiDGSMB(x:S, x, B: x & "_1", C: x & "_2") // Error.
+
+// Non-named after named.
+MultiDGSMB( TA, G, A: A & "_1",    A & "_2") // Error.
+MultiDGSMB( TA, G, B: A & "_1",    A & "_2")
+
+// Coverage for reduction.
+MultiDGsMB( TB, {G   , A: B & "_1", B: B & "_2"})
+MultiDGsMB(x:S, {G: x, A: x & "_1", B: x & "_2"})
+MultiDGrMB( TB, {G   , A: B & "_1", B: B & "_2"})
+MultiDGrMB(x:S, {G: x, A: x & "_1", B: x & "_2"})
+MultiDGSMBW( TB, G, A: B & "_1", B: B & "_2")
+MultiDGSMBW(x:S, x, A: x & "_1", B: x & "_2")
+MultiDGRMBW(x:S, x, A: x & "_1", B: x & "_2", S1: "/suf", S2: 7)
+MultiDGRMBW(TB, G, B, B)
+MultiDGRMBW(TB, G, B, B, "/suf", 5)
+
+// Overloads.
+:: { TA: { A:s, B:s }*, S:s*, s:s, i8:i8 }
+ManyDRMB([{ A:s, B:s }])
+ManyDRMB({ Mis: TA, S1:s})
+ManyDRMB({ Mis: TA, S2:i8})
+ManyDRMB({ Mis: TA, S1:s, S2:i8})
+ManyDRMB(S, it, it, s)
+ManyDRMB(S, it, it, i8)
+ManyDRMB(S, it, it, s, i8)
+ManyDRMB(S, it, it, i8, s)
+ManyDRMB(x:S, A: x, B: x, S1:s)
+ManyDRMB(x:S, A: x, B: x, S2:i8)
+ManyDRMB(x:S, A: x, B: x, S1:s, S2:i8)
+ManyDRMB(x:S, A: x, B: x, S2:i8, S1:s)
+ManyDRMB(x:S, B: x, A: x, s)
+ManyDRMB(x:S, A: x, B: x, s) // Error.
+ManyDRMB(x:S, B: x, A: x, i8)
+ManyDRMB(x:S, A: x, B: x, i8) // Error.
+ManyDRMB(x:S, A: x, A: x, i8) // Error.
+ManyDRMB(S, it, it, S2:s) // Error.
+ManyDRMB(S, it, it, S1:i8) // Error.
+
+ManyDRM([{ A:s, B:s }])
+ManyDRM({ Mis: TA, S1:s})
+ManyDRM({ Mis: TA, S2:i8})
+ManyDRM({ Mis: TA, S1:s, S2:i8})
+ManyDRM(TA, A)
+ManyDRM(TA, A: A)
+ManyDRM(TA, B: A)
+ManyDRM(TA, A, s)
+ManyDRM(TA, B:A, s)
+ManyDRM(TA, A, S1:s)
+ManyDRM(TA, A, [top] s)
+ManyDRM(TA, A, i8)
+ManyDRM(TA, A, s, i8)
+ManyDRM(TA, B:A, s, i8)
+ManyDRM(TA, A, S1:s, i8)
+ManyDRM(TA, A, [top]s, i8)
+ManyDRM(TA, A, s, [top] i8)
+ManyDRM(TA, A, i8, s)
+ManyDRM(TA, A, i8, i8) // Error.
+ManyDRM(TA, A, A)
+ManyDRM(TA, A, A, s)
+ManyDRM(TA, A, A, i8)
+ManyDRM(TA, A, A, s, i8)
+ManyDRM(TA, A, A, i8, s)
+ManyDRM(TA, A, A, i8, i8) // Error.
+ManyDRM(TA, A:A, A:A, i8, i8) // Error.
+
+// Bad directives.
+ManyDRM(TA, A, [key] s) // Error.
+ManyDRM(TA, [key] A, [top] s) // Error.
+ManyDRM(TA, [top] s, [key] s) // Error.
+ManyDRM(TA, [key] s, [key] s) // Error.
+
+ManyDRM(TA, s, s)
+ManyDRM(TA, s, S1:s)
+ManyDRM(TA, s, [top] s)
+ManyDRM(TA, [top] s, s) // Error.
+ManyDRM(TA, i8, s) // Error.
+ManyDRM(TA, i8, i8) // Error.
+ManyDRM(TA, s, s, s)
+ManyDRM(TA, s, s, i8)
+ManyDRM(TA, s, s, S2:i8)
+ManyDRM(TA, s, s, [top] i8)
+ManyDRM(TA, s, S1:s, i8)
+ManyDRM(TA, s, [top] s, i8)
+ManyDRM(TA, [top] s, s, i8) // Error.
+ManyDRM(TA, i8, s, i8) // Error.
+ManyDRM(TA, s, i8, i8) // Error.
+ManyDRM(TA, s, s, s, i8)
+ManyDRM(TA, s, i8, s, i8) // Error.
+ManyDRM(TA, s, s, i8, s)
+ManyDRM(TA, s, s, i8, i8) // Error.
+
+ManyDRM_Def(TA, s, s)
+ManyDRM_Def(TA, s, S1:s)
+ManyDRM_Def(TA, S1:s, A:A) // Error.
+ManyDRM_Def(TA, S1:s, S2:i8, A:A) // Error.
+ManyDRM_Def(TA, s, s, s)
+ManyDRM_Def(TA, s, s, s, i8)
+ManyDRM_Def(TA, s, S1:s, i8)
+ManyDRM_Def(TA, s, [top] s, i8)
+ManyDRM_Def(TA, [top] s, s, i8) // Error.
+ManyDRM_Def(TA, s, s, i8)
+
+// Single to sequence transformations.
+:: { TA: {A:s}*, RA: {A:s*}, TB: {A:s, B:s}*, RB: {A:s*,B:s*}, TC: {A:s, C:{D:s, E:s}*}*, s:s, i8:i8 }
+MultiS_DSMA_AD(RA)
+MultiS_DSMA_AD(TA, A)
+MultiS_DSMB_ABD(RB)
+MultiS_DSMB_ABD(TB, B)
+MultiS_DSMB_ABD(TB, B: [B], A: A)
+MultiS_DSMC_ACD(TC, C: C, A: A)
+MultiS_DSMC_ACD(TC, C: [C], A: A)
+MultiS_DSMC_ACD(TC, D: C, A: A) // Error.
+MultiS_DSMC_ACD(TC, D: [C], A: A) // Error.
+MultiS_DRMB_ABD12(TB, A, B, s, [i8])
+MultiS_DRMB_ABD12(TB, B: [B], A: A, S1:[s], S2:i8)
+MultiS_DfMB_ABDM12({A:s, B:s}, s, i8) // Error.
+MultiS_DfMB_ABDM12({A:[s], B:[s]}, s, i8)
+MultiS_DsMB_ABDM(TB, {A:[s], B:[s]})
+MultiS_DrMB_ABDM12(TB, {A:[s], B:[s]}, S2:i8, S1:s)
+
+// Null handling.
+MultiS_DSMA_AD(TA, null)
+MultiS_DRMB_ABD12(TB, null, null, null, null)
+MultiS_DfMB_ABDM12({A:null, B:null}, null, i8)
+MultiS_DsMB_ABDM(TB, {A:null, B:null})
+MultiS_DrMB_ABDM12(TB, {A:null, B:null}, S2:i8, S1:null)
+
+// Wild card handling.
+:: { TA: {A:s, X:i8}*, RA: {A:s*, G:g*}, TB: {A:s, B:s, X:i8}*, RB: {A:s*,B:s*, G:g*}, TC: {C:s*, X:r8}*, s:s, i8:i8 }
+MultiS_DGSMA_AGD(RA)
+MultiS_DGSMA_AGD(TA, X, A)
+MultiS_DGSMB_ABGD(RB)
+MultiS_DGSMB_ABGD(TB, X, B)
+MultiS_DGSMB_ABGD(TB, B: [B], G: X, A: A)
+MultiS_DGRMB_ABGD12(TB, X, A, B, s, [i8])
+MultiS_DGRMB_ABGD12(TB, B: [B], A: A, G:X, S1:[s], S2:i8)
+MultiS_DGfMB_ABGDM12({A:s, B:s, G:i8}, s, i8) // Error.
+MultiS_DGfMB_ABGDM12({A:[s], B:[s], G:[i8]}, s, i8)
+MultiS_DGsMB_ABGDM(TB, {A:[s], B:[s], G:[i8]})
+MultiS_DGrMB_ABGDM12(TB, {A:[s], B:[s], G:[i8]}, S2:i8, S1:s)
+
+MultiS_DGSMA_AGD(TA, null)
+MultiS_DGRMB_ABGD12(TB, null, null, null, null)
+MultiS_DGfMB_ABGDM12({A:null, B:null, G:null}, null, i8)
+MultiS_DGsMB_ABGDM(TB, {A:null, B:null, G:null})
+MultiS_DGrMB_ABGDM12(TB, {A:null, B:null, G:null}, S2:i8, S1:null)

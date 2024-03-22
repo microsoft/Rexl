@@ -1,0 +1,202 @@
+*** Create node
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i4*
+###
+Ren: 00000001 [A.X] <= [SomeName]
+Status: 1 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.A
+  Node changes:
+    00000001 [A.X]: [ N     B       ], Base: i4*
+###
+*** Undo(1)
+Ren: 00000001 [SomeName] <= [A.X]
+Status: 1 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂
+  Node changes:
+    00000001 [SomeName]: [ N     B       ], Base: i4*
+###
+*** Redo(1)
+Ren: 00000001 [A.X] <= [SomeName]
+Status: 1 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.A
+  Node changes:
+    00000001 [A.X]: [ N     B       ], Base: i4*
+###
+*** Create exp ns
+Status: 1 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, <exp>∂.A
+###
+*** Undo(1)
+Status: 1 nodes, 2 undos, 1 redos
+  Namespaces changed: ∂, ∂.A
+###
+*** Redo(1)
+Status: 1 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, <exp>∂.A
+###
+*** Delete exp ns and contents
+Del: 00000001 [A.X]
+Status: 0 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 3 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+###
+*** Redo(1)
+Del: 00000001 [A.X]
+Status: 0 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 3 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+###
+*** Delete exp ns only
+Status: 1 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂, ∂.A
+###
+*** Undo(1)
+Status: 1 nodes, 3 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A
+###
+*** Create node
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B
+  Node changes:
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Undo(1)
+Del: 00000002 [A.B.X]
+Status: 1 nodes, 3 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A
+###
+*** Redo(1)
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B
+  Node changes:
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Delete named ns only
+Status: 2 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂, ∂.A, ∂.A.B
+###
+*** Undo(1)
+Status: 2 nodes, 4 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B
+###
+*** Delete named ns and contents
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 4 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Redo(1)
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 4 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Create exp ns
+Status: 2 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B, ∂.A.C, <exp>∂.A.C.D
+###
+*** Delete exp ns and contents
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 6 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 5 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B, ∂.A.C, <exp>∂.A.C.D
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Redo(1)
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 6 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 5 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B, ∂.A.C, <exp>∂.A.C.D
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Delete named ns and contents
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 6 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 5 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B, ∂.A.C, <exp>∂.A.C.D
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Redo(1)
+Del: 00000001 [A.X]
+Del: 00000002 [A.B.X]
+Status: 0 nodes, 6 undos, 0 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Add: 00000001 [A.X], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Add: 00000002 [A.B.X], Fma: [A.X * 3]
+Status: 2 nodes, 5 undos, 1 redos
+  Namespaces changed: ∂, <exp>∂.A, ∂.A.B, ∂.A.C, <exp>∂.A.C.D
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i4*
+    00000002 [A.B.X]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Rename ns without fixing up formulas, hence the errors.
+Ren: 00000001 [N.P.X] <= [A.X]
+Ren: 00000002 [N.P.B.X] <= [A.B.X]
+Status: 2 nodes, 6 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, <exp>∂.N.P, ∂.N.P.B, ∂.N.P.C, <exp>∂.N.P.C.D
+  Node changes:
+    00000001 [N.P.X]: [ N     B       ], Base: i4*
+    00000002 [N.P.B.X]: [ N tTuUB C dDE ], Base: i8
+      *) Error: (0,1) Node: A, Message: Name does not exist in the current context
+      *) Error: (1,2) Node: A.X, Message: Invalid use of '.'
+###

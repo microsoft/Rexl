@@ -1,0 +1,365 @@
+>>> *** Source:
+    @X := "@X";
+    @M.X := "@M.X";
+    @M.M.X := "@M.M.X";
+    import "ImportScript2.rexl";
+    import "ImportScript2.rexl" in namespace @;
+    namespace @M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M;
+    namespace @M.M { import "ImportScript2.rexl"; }
+    import "ImportScript2.rexl" in namespace @M.M;
+    with @M {
+        import "ImportScript2.rexl";
+        import "ImportScript2.rexl" in namespace @;
+        namespace @M { import "ImportScript2.rexl"; }
+        import "ImportScript2.rexl" in namespace @M;
+        namespace @M.M { import "ImportScript2.rexl"; }
+        import "ImportScript2.rexl" in namespace @M.M;
+    }
+    with @M.M {
+        import "ImportScript2.rexl";
+        import "ImportScript2.rexl" in namespace @;
+        namespace @M { import "ImportScript2.rexl"; }
+        import "ImportScript2.rexl" in namespace @M;
+        namespace @M.M { import "ImportScript2.rexl"; }
+        import "ImportScript2.rexl" in namespace @M.M;
+    }
+
+>>> *** Instructions:
+   0) [0] Define @X <- "@X"
+   1) [0] Define @M.X <- "@M.X"
+   2) [0] Define @M.M.X <- "@M.M.X"
+   3) [0] Import: "ImportScript2.rexl"
+   4) [0] Import in @: "ImportScript2.rexl"
+   5) [0] Enter (0=>1) @M
+   6) [1] Import: "ImportScript2.rexl"
+   7) [1] Leave (1=>0)
+   8) [0] Import in @M: "ImportScript2.rexl"
+   9) [0] Enter (0=>1) @M.M
+  10) [1] Import: "ImportScript2.rexl"
+  11) [1] Leave (1=>0)
+  12) [0] Import in @M.M: "ImportScript2.rexl"
+  13) [0] Enter (0=>1)
+  14) [1] With @M
+  15) [1] Import: "ImportScript2.rexl"
+  16) [1] Import in @: "ImportScript2.rexl"
+  17) [1] Enter (1=>2) @M
+  18) [2] Import: "ImportScript2.rexl"
+  19) [2] Leave (2=>1)
+  20) [1] Import in @M: "ImportScript2.rexl"
+  21) [1] Enter (1=>2) @M.M
+  22) [2] Import: "ImportScript2.rexl"
+  23) [2] Leave (2=>1)
+  24) [1] Import in @M.M: "ImportScript2.rexl"
+  25) [1] Leave (1=>0)
+  26) [0] Enter (0=>1)
+  27) [1] With @M.M
+  28) [1] Import: "ImportScript2.rexl"
+  29) [1] Import in @: "ImportScript2.rexl"
+  30) [1] Enter (1=>2) @M
+  31) [2] Import: "ImportScript2.rexl"
+  32) [2] Leave (2=>1)
+  33) [1] Import in @M: "ImportScript2.rexl"
+  34) [1] Enter (1=>2) @M.M
+  35) [2] Import: "ImportScript2.rexl"
+  36) [2] Leave (2=>1)
+  37) [1] Import in @M.M: "ImportScript2.rexl"
+  38) [1] Leave (1=>0)
+  39) [0] End
+
+>    0) [0] Define @X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define @M.X <- "@M.X"
+Global 'M.X' has DType: s, SysType: str
+>    2) [0] Define @M.M.X <- "@M.M.X"
+Global 'M.M.X' has DType: s, SysType: str
+>    3) [0] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] End
+>    4) [0] Import in @: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] End
+>    5) [0] Enter (0=>1) @M
+>    6) [1] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>    7) [1] Leave (1=>0)
+>    8) [0] Import in @M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>    9) [0] Enter (0=>1) @M.M
+>   10) [1] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   11) [1] Leave (1=>0)
+>   12) [0] Import in @M.M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.M.X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   13) [0] Enter (0=>1)
+>   14) [1] With @M
+>   15) [1] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>   16) [1] Import in @: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] End
+>   17) [1] Enter (1=>2) @M
+>   18) [2] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>   19) [2] Leave (2=>1)
+>   20) [1] Import in @M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>   21) [1] Enter (1=>2) @M.M
+>   22) [2] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>   23) [2] Leave (2=>1)
+>   24) [1] Import in @M.M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.M.X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   25) [1] Leave (1=>0)
+>   26) [0] Enter (0=>1)
+>   27) [1] With @M.M
+>   28) [1] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   29) [1] Import in @: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] End
+>   30) [1] Enter (1=>2) @M
+>   31) [2] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   32) [2] Leave (2=>1)
+>   33) [1] Import in @M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.X
+>    1) [0] Expr X
+@M.X
+>    2) [0] End
+>   34) [1] Enter (1=>2) @M.M
+>   35) [2] Import: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   36) [2] Leave (2=>1)
+>   37) [1] Import in @M.M: "ImportScript2.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] End
+
+>    0) [0] Expr @X
+@M.M.X
+>    1) [0] Expr X
+@M.M.X
+>    2) [0] End
+>   38) [1] Leave (1=>0)
+>   39) [0] End
+

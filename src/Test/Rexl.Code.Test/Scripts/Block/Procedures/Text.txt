@@ -1,0 +1,23 @@
+﻿// UDF to drop all CR characters.
+func Cleanse(src) := src->Replace("\u000D", "");
+
+// UDF to drop directories before "Data" in a path.
+func Clean(path) := path[path->LastIndexOf("Data") : ]->Replace("\\", "/");
+
+"*** ReadText ***";
+finish R as ReadText(_DATA_ & "Presidents.rexl");
+(R$Finished, R$Failed, R$ResultNames);
+R.Link.Path->Clean();
+
+T := R.Data->Cleanse();
+T.Len;
+T;
+
+"*** ReadLines ***";
+finish R as ReadLines(_DATA_ & "Presidents.rexl");
+(R$Finished, R$Failed, R$ResultNames);
+(R.Link.Path->Clean(), R.LineCount);
+
+R.Data->Count();
+R.Data->Sum(Len + 1);
+R.Data;

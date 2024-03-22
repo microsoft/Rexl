@@ -1,0 +1,176 @@
+﻿``` A := Range(20)->{ ID: "A" & ToText(it), V: it       }->Filter(V mod 3 != 2)->{ ID, V: V if V mod  7 != 3 else null };
+``` B := Range(40)->{ ID: "B" & ToText(it), V: it div 2 }->Filter(V mod 4 != 1)->{ ID, V: V if V mod  5 != 3 else null };
+``` C := Range( 3)->{ ID: "C" & ToText(it), V: it if it > 1000 else null }; // All null values.
+``` D := Range( 3)->{ ID: "D" & ToText(it), V: it + 11 if it < 1000 else null }; // All non-null values.
+``` E := A->Filter(V > 1000); // Empty.
+``` XS := [ A, B, C, D, E, null ];
+``` YS := [ A, B, C, D, E, null ];
+
+A
+B
+C
+D
+
+// The outer CrossJoin is to iterate over all pairs coming from XS, YS.
+
+// Inner.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y, Wrap(x.V  = y.V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V  = y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V $= y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,        V,     V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,     (V,),  (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }))
+
+// Left outer.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y, Wrap(x.V  = y.V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V  = y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V $= y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,        V,     V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,     (V,),  (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }))
+
+// Full outer.
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y, Wrap(x.V  = y.V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }, { IDY:ID, VX:-1, VY:V }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V  = y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }, { IDY:ID, VX:-1, VY:V }))
+CrossJoin(X:XS, Y:YS, true, CrossJoin(x:X, y:Y,      x.V $= y.V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }, { IDY:ID, VX:-1, VY:V }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,        V,     V , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }, { IDY:ID, VX:-1, VY:V }))
+CrossJoin(X:XS, Y:YS, true,   KeyJoin(x:X, y:Y,     (V,),  (V,) , { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V }, { IDX:ID, VX:V, VY:-1 }, { IDY:ID, VX:-1, VY:V }))
+
+// Pound scopes.
+``` Ai := A+>{ ID: ToText(V) & "_#" & ToText(#) };
+``` Bi := B+>{ ID: ToText(V) & "_#" & ToText(#) };
+``` Ci := C+>{ ID: ToText(V) & "_#" & ToText(#) };
+``` Di := D+>{ ID: ToText(V) & "_#" & ToText(#) };
+``` XSi := [ Ai, Bi, Ci, Di, E, null ];
+``` YSi := [ Ai, Bi, Ci, Di, E, null ];
+
+Ai
+Bi
+Ci
+Di
+CrossJoin(X:XSi, Y:YSi, true, CrossJoin(x:X, y:Y, Wrap(#x + 2 =  #y), { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }))
+CrossJoin(X:XSi, Y:YSi, true, CrossJoin(x:X, y:Y, Wrap(#x + 2 =  #y), { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }, { iX: #, IDX:ID }))
+CrossJoin(X:XSi, Y:YSi, true, CrossJoin(x:X, y:Y, Wrap(   x.V = y.V), { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }, { iX: #, IDX:ID }, { iY: #, IDY:ID }))
+CrossJoin(X:XSi, Y:YSi, true, CrossJoin(x:X, y:Y, Wrap(   x.V = y.V), { iX: #x, IDX:x.ID,         IDY:y.ID }, { iX: #, IDX:ID }, {        IDY:ID }))
+CrossJoin(X:XSi, Y:YSi, true, CrossJoin(x:X, y:Y, Wrap(   x.V = y.V), {         IDX:x.ID, iY: #y, IDY:y.ID }, {        IDX:ID }, { iY: #, IDY:ID }))
+CrossJoin(X:XSi, Y:YSi, true,   KeyJoin(x:X, y:Y,      #x + 2,   #y , { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }))
+CrossJoin(X:XSi, Y:YSi, true,   KeyJoin(x:X, y:Y,      #x + 2,   #y , { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }, { iX: #, IDX:ID }))
+CrossJoin(X:XSi, Y:YSi, true,   KeyJoin(x:X, y:Y,           V,    V , { iX: #x, IDX:x.ID, iY: #y, IDY:y.ID }, { iX: #, IDX:ID }, { iY: #, IDY:ID }))
+CrossJoin(X:XSi, Y:YSi, true,   KeyJoin(x:X, y:Y,           V,    V , { iX: #x, IDX:x.ID,         IDY:y.ID }, { iX: #, IDX:ID }, {        IDY:ID }))
+CrossJoin(X:XSi, Y:YSi, true,   KeyJoin(x:X, y:Y,           V,    V , {         IDX:x.ID, iY: #y, IDY:y.ID }, {        IDX:ID }, { iY: #, IDY:ID }))
+
+// Records.
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: { U: it^2, V: it^3 / 2 } } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: (it^2, it^3 / 2) } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: { U: it^2, V: it^3 / 2 if it != 2 else null } } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: { U: it^2, V: it^3 / 2 if it != 2 else 0/0 } } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: (it^2, it^3 / 2 if it != 2 else null) } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: (it^2, it^3 / 2 if it != 2 else 0/0) } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: { U: it^2, V: it^3 / 2 } if it != 2 else null } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: { X: it, Y: (it^2, it^3 / 2) if it != 2 else null } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+// Tuples.
+`` TA := Range(5)->{ Id: it, Key: (it, (it^2, it^3 / 2)) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it, {U: it^2, V: it^3 / 2}) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it, (it^2, it^3 / 2 if it != 2 else null)) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it, {U: it^2, V: it^3 / 2 if it != 2 else null}) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it, (it^2, it^3 / 2) if it != 2 else null) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it, {U: it^2, V: it^3 / 2} if it != 2 else null) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+// Uris.
+`` TA := Range(5)->{ Id: it, Key: Link.LocalImage("X" & it->ToText() & ".bmp") };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: Link.LocalImage("X" & it->ToText() & ".bmp") if it != 2 else null };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it^2, Link.LocalImage("X" & it->ToText() & ".bmp")) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+`` TA := Range(5)->{ Id: it, Key: (it^2, Link.LocalImage("X" & it->ToText() & ".bmp") if it != 2 else null) };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})
+
+// Record with more than 8 fields.
+`` TA := Range(5)->{ Id: it, Key: { A:it, B:it, C:it, D:it, E:it, F:it, G:it, H:it, I:it } };
+`` TB := Range(20)->{ A: it, B: TA->TakeAt(it * 3 mod 5).Key };
+TA
+TB
+KeyJoin(b:TB, a:TA, B, Key, b+>{Id})

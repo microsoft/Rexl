@@ -1,0 +1,26 @@
+`` x0 := 1L;
+`` x1 := 4;
+`` S := "hello";
+`` T := true;
+`` s1 := Range(5);
+`` s0 := Null(s1);
+
+// 'a' should share the local for S, b and c should get their own locals (not be the same), since they have different types.
+// The final tuple ensures that the scopes don't collapse (since each is used at least twice).
+Guard([with] a: S, [with] b: a if T else null, [guard] c: b if true else "x", [c if T else "y", a, b, c])
+
+// Lots of args to With.
+
+// This one is reduced completely since + is associative and commutative.
+With(x0:x0, x1:x0+1, x2:x1+1, x3:x2+1, x4:x3+1, x5:x4+1, x6:x5+1, x7:x6+1, x8:x7+1, x9:x8+1, x10:x9+1, x11:x10+1, x12:x11+1, x13:x12+1, x14:x13+1, x15:x14+1, x16:x15+1, x17:x16+1, x18:x17+1, x19:x18+1, x20:x19+1, x21:x20+1, x22:x21+1, x23:x22+1, x24:x23+1, x25:x24+1, x26:x25+1, x27:x26+1, x28:x27+1, x29:x28+1, x30:x29+1, x31:x30+1, x32:x31+1, x33:x32+1, x34:x33+1, x35:x34+1, x36:x35+1, x37:x36+1, x38:x37+1, x39:x38+1, x40:x39+1, x40)
+
+// This one doesn't fully reduce.
+With(x0:x0, x1:x0+x0, x2:x1+x1, x3:x2+x2, x4:x3+x3, x5:x4+x4, x6:x5+x5, x7:x6+x6, x8:x7+x7, x9:x8+x8, x10:x9+x9, x11:x10+x10, x12:x11+x11, x13:x12+x12, x14:x13+x13, x15:x14+x14, x16:x15+x15, x17:x16+x16, x18:x17+x17, x19:x18+x18, x20:x19+x19, x21:x20+x20, x22:x21+x21, x23:x22+x22, x24:x23+x23, x25:x24+x24, x26:x25+x25, x27:x26+x26, x28:x27+x27, x29:x28+x28, x30:x29+x29, x31:x30+x30, x32:x31+x31, x33:x32+x32, x34:x33+x33, x35:x34+x34, x36:x35+x35, x37:x36+x36, x38:x37+x37, x39:x38+x38, x40:x39+x39, x40)
+
+// With and Map nested in each other.
+With(w:x1, Map(x2: s1, Range(x2) ++ Range(w)))
+Map(m:s1, With(w:m, w+Count(s1)))
+With(w1:Count(s1), Map(m:s1, With(w2:m, Count(s1)+w1)))
+
+// Test Guard on empty sequence, which should be treated the same as a null sequence.
+ForEach([ s0, s1, s1->TakeIf(it > 3), s1->TakeIf(it > 100) ], Guard(it, Count(it)))

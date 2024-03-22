@@ -1,0 +1,59 @@
+import 3;
+###
+import X;
+###
+import "hi";
+###
+import Link.Local("Text.Rexl", "hi");
+###
+import Link.Local("Text", "hi");
+###
+execute X;
+###
+execute 3;
+###
+execute Null("3");
+###
+func Expect(e, a) := (a, "PASS" if e = a else "*** FAIL!!! ***");
+X := 0;
+C0 := "X := X + 1";
+C1 := "execute C0";
+C2 := "execute C1";
+C3 := "execute C2";
+C4 := "execute C3";
+C5 := "execute C4";
+C6 := "execute C5";
+C7 := "execute C6";
+C8 := "execute C7";
+C9 := "execute C8";
+CA := "execute C9";
+execute C1; Expect(1, X);
+execute C3; Expect(2, X);
+execute C9; Expect(3, X);
+// This fails (nesting too deep), so X should be unchanged.
+execute CA; Expect(3, X);
+###
+func Expect(e, a) := (a, "PASS" if e = a else "*** FAIL!!! ***");
+X := 0;
+F := Link.Local("Text.Rexl", "IncX.rexl");
+C0 := "import F";
+C1 := "execute C0";
+C2 := "execute C1";
+C3 := "execute C2";
+C4 := "execute C3";
+C5 := "execute C4";
+C6 := "execute C5";
+C7 := "execute C6";
+C8 := "execute C7";
+C9 := "execute C8";
+execute C1; Expect(1, X);
+execute C3; Expect(2, X);
+execute C8; Expect(3, X);
+// This fails (nesting too deep).
+execute C9; Expect(3, X);
+###
+if (X) "Bad";
+else "Good";
+###
+if (3) "Bad";
+else "Good";

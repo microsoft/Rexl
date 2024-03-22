@@ -1,0 +1,64 @@
+﻿`` N := Range(10)->Null();
+`` S := Range(100);
+`` T := Range(1_000_000_000_000);
+`` U := S->Filter(it < 50);
+`` X := Sequence(100);
+`` Y := Sequence(1_000_000_000_000, 0.5, 0.5);
+
+N->Count()
+N->Count(it > 5)
+N->Count([if] it > 5)
+N->Count([while] it > 5)
+
+S->CantCount()->Count()
+S->CantCount()->Count(it > 5)
+S->CantCount()->Count([if] it > 5)
+S->CantCount()->Count([while] it > 5)
+S->CantCount()->Count([while] it < 50)
+S->CantCount()->Count([while] it < 200)
+
+// Tests of ICanCount implementations.
+
+// On Range.
+S->Count()
+S->Count() + S->Count()
+T->Count()
+T->Count() + T->Count()
+
+// On Sequence.
+X->Count()
+X->Count() + X->Count()
+Y->Count()
+Y->Count() + Y->Count()
+
+// On Map.
+S->(it * it)->Count()
+T->(it * it)->Count()
+X->(it * it)->Count()
+Y->(it * it)->Count()
+
+// On Sort.
+S->Sort()->Count()
+T->Sort()->Count()
+[1, 2, 3]->Sort()->Count()
+Wrap([1, 2, 3])->Sort()->Count()
+
+// With CachingEnumerable, etc.
+U->Count()
+U->Count() + U->Count()
+U->(it * it)->Count()
+U->Sort()->Count()
+
+// Should limit to long.MaxValue items.
+Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8)->Count()
+Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8)->Wrap()->Count()
+Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8, 1)->Count()
+Range(0x8000_0000_0000_0000i8, 0x7FFF_FFFF_FFFF_FFFFi8, 1)->Wrap()->Count()
+
+// Indexed.
+N->Count(# < 20 or it > 30)
+N->Count([if] # < 20 or it > 30)
+N->Count([while] # < 20 or it > 30)
+S->Count(# < 20 or it > 30)
+S->Count([if] # < 20 or it > 30)
+S->Count([while] # < 20 or it > 30)

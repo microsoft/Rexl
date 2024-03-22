@@ -1,0 +1,56 @@
+﻿`` func N.F(x) := x * x;
+`` func N.P.G(x) := F(x) + x;
+`` func N.H(x, y) := (F(x), P.G(y));
+`` func N.P.I(x) := (G(x), H(x, x*x));
+`` func N.Q.J(x) := (P.I(x), F(x));
+
+:: {i4:i4, i8:i8, r8:r8}
+
+%% Other
+
+N.H(i4, i8)
+N.H(i8, r8)
+N.H(3, 7)
+
+N.P.I(i4)
+N.P.I(i8)
+N.P.I(r8)
+N.P.I(17)
+
+N.Q.J(i4)
+N.Q.J(i8)
+N.Q.J(r8)
+N.Q.J(17)
+
+// Errors.
+H(i8, r8)
+P.I(i8)
+I(i8)
+
+%% N
+
+H(i4, i8)
+H(i8, r8)
+H(3, 7)
+
+P.I(i4)
+P.I(i8)
+P.I(r8)
+P.I(17)
+
+// Errors.
+I(i8)
+
+%% N.P
+
+H(i4, i8)
+H(i8, r8)
+H(3, 7)
+
+P.I(i4)
+P.I(i8)
+P.I(r8)
+P.I(17)
+
+// Errors.
+I(i8)

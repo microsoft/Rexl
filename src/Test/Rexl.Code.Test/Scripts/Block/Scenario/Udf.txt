@@ -1,0 +1,49 @@
+﻿import "UdfScript.rexl" in namespace N;
+
+func G(x) := "G not nested!";
+func H(x) := "H not nested!";
+
+N.F(3);
+N.G(3);
+N.H(3);
+
+namespace N {
+    F(3);
+    G(3);
+    H(3);
+
+    @G(3);
+    @H(3);
+}
+
+with N {
+    F(3);
+    G(3);
+    H(3);
+
+    @G(3);
+    @H(3);
+
+    Div(5);
+    Div(5, 2);
+
+    // Note that in UdfScript.rexl, the Text namespace for core functions
+    // and the N.Text namespace for UDFs are essentially "unified", but here
+    // they are not. That is because in UdfScript.rexl, the "root" namespace
+    // (transparently to that script) set to N, and root namespace has no
+    // effect on core function lookup.
+    with Text {
+        Len("stuff");
+        Len("stuff", "other"); // Error
+    }
+
+    with N.Text {
+        Len("stuff"); // Error.
+        Len("stuff", "other");
+    }
+
+    with Text, N.Text {
+        Len("stuff");
+        Len("stuff", "other");
+    }
+}

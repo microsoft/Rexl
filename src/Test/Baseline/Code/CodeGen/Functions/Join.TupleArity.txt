@@ -1,0 +1,339 @@
+**** New definitions: A, type: {ID:s, V:i8?}*
+**** New definitions: B, type: {ID:s, V:i8?}*
+
+> KeyJoin(x:A, y:B, ((V,),), ((V,),), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,),), ((V,),), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?),):((i8?)), ((GetField(Scope(2), V),):(i8?),):((i8?)), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,),), ((*2.V,),), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1), ((V,),V+1), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1), ((V,), V + 1), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?)):((i8?), i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:4] GetField(Scope(2), V), Add(Scope(4), 1:i8)):i8?)):((i8?), i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1))), ((*2.V,), Guard(?4: *2.V, Add(?4, 1))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5), ((V,),V+1,V+1.5), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5), ((V,), V + 1, V + 1.5), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?)):((i8?), i8?, r8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:5] GetField(Scope(2), V), Add(Scope(5), 1:i8)):i8?), Call(∂.Guard([guard:6] GetField(Scope(2), V), Add(Num<r8>(Scope(6)), 1.5:r8)):r8?)):((i8?), i8?, r8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5))), ((*2.V,), Guard(?5: *2.V, Add(?5, 1)), Guard(?6: *2.V, Add(Num<r8>(?6), 1.5))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia), ((V,),V+1,V+1.5,V+2ia), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2), ((V,), V + 1, V + 1.5, V + 2), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?)):((i8?), i8?, r8?, i?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:6] GetField(Scope(2), V), Add(Scope(6), 1:i8)):i8?), Call(∂.Guard([guard:7] GetField(Scope(2), V), Add(Num<r8>(Scope(7)), 1.5:r8)):r8?), Call(∂.Guard([guard:8] GetField(Scope(2), V), Add(Num<i>(Scope(8)), 2:i)):i?)):((i8?), i8?, r8?, i?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2))), ((*2.V,), Guard(?6: *2.V, Add(?6, 1)), Guard(?7: *2.V, Add(Num<r8>(?7), 1.5)), Guard(?8: *2.V, Add(Num<i>(?8), 2))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1), ((V,),V+1,V+1.5,V+2ia,V/1), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1), ((V,), V + 1, V + 1.5, V + 2, V / 1), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?)):((i8?), i8?, r8?, i?, r8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:7] GetField(Scope(2), V), Add(Scope(7), 1:i8)):i8?), Call(∂.Guard([guard:8] GetField(Scope(2), V), Add(Num<r8>(Scope(8)), 1.5:r8)):r8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Num<i>(Scope(9)), 2:i)):i?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Num<r8>(Scope(10))):r8?)):((i8?), i8?, r8?, i?, r8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6))), ((*2.V,), Guard(?7: *2.V, Add(?7, 1)), Guard(?8: *2.V, Add(Num<r8>(?8), 1.5)), Guard(?9: *2.V, Add(Num<i>(?9), 2)), Guard(?10: *2.V, Num<r8>(?10))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8)):((i8?), i8?, r8?, i?, r8?, b), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:7] GetField(Scope(2), V), Add(Scope(7), 1:i8)):i8?), Call(∂.Guard([guard:8] GetField(Scope(2), V), Add(Num<r8>(Scope(8)), 1.5:r8)):r8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Num<i>(Scope(9)), 2:i)):i?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Num<r8>(Scope(10))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8)):((i8?), i8?, r8?, i?, r8?, b), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0), ((*2.V,), Guard(?7: *2.V, Add(?7, 1)), Guard(?8: *2.V, Add(Num<r8>(?8), 1.5)), Guard(?9: *2.V, Add(Num<i>(?9), 2)), Guard(?10: *2.V, Num<r8>(?10)), *2.V !@= 0), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8)):((i8?), i8?, r8?, i?, r8?, b, b), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:7] GetField(Scope(2), V), Add(Scope(7), 1:i8)):i8?), Call(∂.Guard([guard:8] GetField(Scope(2), V), Add(Num<r8>(Scope(8)), 1.5:r8)):r8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Num<i>(Scope(9)), 2:i)):i?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Num<r8>(Scope(10))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8)):((i8?), i8?, r8?, i?, r8?, b, b), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5), ((*2.V,), Guard(?7: *2.V, Add(?7, 1)), Guard(?8: *2.V, Add(Num<r8>(?8), 1.5)), Guard(?9: *2.V, Add(Num<i>(?9), 2)), Guard(?10: *2.V, Num<r8>(?10)), *2.V !@= 0, *2.V $> 5), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V)), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V)), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V)), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V)), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?)):((i8?), i8?, r8?, i?, r8?, b, b, t?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:8] GetField(Scope(2), V), Add(Scope(8), 1:i8)):i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Num<r8>(Scope(9)), 1.5:r8)):r8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<i>(Scope(10)), 2:i)):i?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Num<r8>(Scope(11))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:12] GetField(Scope(2), V), Call(∂.Time(Scope(12)):t)):t?)):((i8?), i8?, r8?, i?, r8?, b, b, t?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7))), ((*2.V,), Guard(?8: *2.V, Add(?8, 1)), Guard(?9: *2.V, Add(Num<r8>(?9), 1.5)), Guard(?10: *2.V, Add(Num<i>(?10), 2)), Guard(?11: *2.V, Num<r8>(?11)), *2.V !@= 0, *2.V $> 5, Guard(?12: *2.V, Time(?12))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V)), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V)), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V)), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V)), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8))), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14))), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?), GetField(Scope(1), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?), GetField(Scope(2), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8)), *1.V), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14)), *2.V), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?), GetField(Scope(1), V), GetField(Scope(1), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?), GetField(Scope(2), V), GetField(Scope(2), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8)), *1.V, *1.V), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14)), *2.V, *2.V), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8)), *1.V, *1.V, *1.V), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14)), *2.V, *2.V, *2.V), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V, V), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V, V), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?, i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?, i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8)), *1.V, *1.V, *1.V, *1.V), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14)), *2.V, *2.V, *2.V, *2.V), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###
+> KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x : A, y : B, ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V, V, V), ((V,), V + 1, V + 1.5, V + 2, V / 1, V !@= 0, V $> 5, Time(V), ToDate(V), V, V, V, V, V), { IDX : x.ID, IDY : y.ID, VX : x.V, VY : y.V }) : {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+BndKind:Call, Type:{IDX:s, IDY:s, VX:i8?, VY:i8?}*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(B), ((GetField(Scope(1), V),):(i8?), Call(∂.Guard([guard:3] GetField(Scope(1), V), Add(Scope(3), 1:i8)):i8?), Call(∂.Guard([guard:4] GetField(Scope(1), V), Add(Num<r8>(Scope(4)), 1.5:r8)):r8?), Call(∂.Guard([guard:5] GetField(Scope(1), V), Add(Num<i>(Scope(5)), 2:i)):i?), Call(∂.Guard([guard:6] GetField(Scope(1), V), Num<r8>(Scope(6))):r8?), Cmp(GetField(Scope(1), V) !@= 0:i8), Cmp(GetField(Scope(1), V) $> 5:i8), Call(∂.Guard([guard:7] GetField(Scope(1), V), Call(∂.Time(Scope(7)):t)):t?), Call(∂.Guard([guard:8] GetField(Scope(1), V), Call(∂.ToDate(Scope(8)):d?)):d?), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V), GetField(Scope(1), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?, i8?, i8?), ((GetField(Scope(2), V),):(i8?), Call(∂.Guard([guard:9] GetField(Scope(2), V), Add(Scope(9), 1:i8)):i8?), Call(∂.Guard([guard:10] GetField(Scope(2), V), Add(Num<r8>(Scope(10)), 1.5:r8)):r8?), Call(∂.Guard([guard:11] GetField(Scope(2), V), Add(Num<i>(Scope(11)), 2:i)):i?), Call(∂.Guard([guard:12] GetField(Scope(2), V), Num<r8>(Scope(12))):r8?), Cmp(GetField(Scope(2), V) !@= 0:i8), Cmp(GetField(Scope(2), V) $> 5:i8), Call(∂.Guard([guard:13] GetField(Scope(2), V), Call(∂.Time(Scope(13)):t)):t?), Call(∂.Guard([guard:14] GetField(Scope(2), V), Call(∂.ToDate(Scope(14)):d?)):d?), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V), GetField(Scope(2), V)):((i8?), i8?, r8?, i?, r8?, b, b, t?, d?, i8?, i8?, i8?, i8?, i8?), {IDX:GetField(Scope(1), ID), IDY:GetField(Scope(2), ID), VX:GetField(Scope(1), V), VY:GetField(Scope(2), V)})))
+Func sig: (<ctx>:x, A:{ID:s, V:i8?}*, B:{ID:s, V:i8?}*) to {IDX:s, IDY:s, VX:i8?, VY:i8?}*
+Sequence: Seq<{str,str,i8,i8}>
+ 0) { IDX: A0, IDY: B0, VX: 0, VY: 0 }
+ 1) { IDX: A0, IDY: B1, VX: 0, VY: 0 }
+ 2) { IDX: A4, IDY: B8, VX: 4, VY: 4 }
+ 3) { IDX: A4, IDY: B9, VX: 4, VY: 4 }
+ 4) { IDX: A6, IDY: B12, VX: 6, VY: 6 }
+ 5) { IDX: A6, IDY: B13, VX: 6, VY: 6 }
+ 6) { IDX: A7, IDY: B14, VX: 7, VY: 7 }
+ 7) { IDX: A7, IDY: B15, VX: 7, VY: 7 }
+ 8) { IDX: A12, IDY: B24, VX: 12, VY: 12 }
+ 9) { IDX: A12, IDY: B25, VX: 12, VY: 12 }
+10) { IDX: A15, IDY: B30, VX: 15, VY: 15 }
+11) { IDX: A15, IDY: B31, VX: 15, VY: 15 }
+12) { IDX: A16, IDY: B32, VX: 16, VY: 16 }
+13) { IDX: A16, IDY: B33, VX: 16, VY: 16 }
+14) { IDX: A19, IDY: B38, VX: 19, VY: 19 }
+15) { IDX: A19, IDY: B39, VX: 19, VY: 19 }
+*** Ctx ping count: 34
+    [0:3](34=6+0+28): KeyJoin(*1: A, *2: B, ((*1.V,), Guard(?3: *1.V, Add(?3, 1)), Guard(?4: *1.V, Add(Num<r8>(?4), 1.5)), Guard(?5: *1.V, Add(Num<i>(?5), 2)), Guard(?6: *1.V, Num<r8>(?6)), *1.V !@= 0, *1.V $> 5, Guard(?7: *1.V, Time(?7)), Guard(?8: *1.V, ToDate(?8)), *1.V, *1.V, *1.V, *1.V, *1.V), ((*2.V,), Guard(?9: *2.V, Add(?9, 1)), Guard(?10: *2.V, Add(Num<r8>(?10), 1.5)), Guard(?11: *2.V, Add(Num<i>(?11), 2)), Guard(?12: *2.V, Num<r8>(?12)), *2.V !@= 0, *2.V $> 5, Guard(?13: *2.V, Time(?13)), Guard(?14: *2.V, ToDate(?14)), *2.V, *2.V, *2.V, *2.V, *2.V), {IDX:*1.ID, IDY:*2.ID, VX:*1.V, VY:*2.V})
+###

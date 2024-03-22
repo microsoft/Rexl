@@ -1,0 +1,127 @@
+::: { s:s, r8:r8, r4:r4, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1 }
+
+5
+5.0
+"hello"
+null
+
+5.1
+5 + 3
+5 * 4
+
+r8 + 1
+r8 + r4 * i1
+(r8 + 3) + (r4 + 4) * (i1 + 1)
+Wrap(3) + Wrap(4.0f) * Wrap(1)
+Wrap(3) + Wrap(4.0d) * Wrap(1)
+
+(r4 + 3f) ^ (r4)
+(r4 + 3f) ^ (r4 + 2)
+(r8 + 3f) ^ (r4)
+(r8 + 3f) ^ (r4 + 2)
+(r8 + 3f) ^ (r8)
+(r8 + 3f) ^ (r8 + 2)
+
+// Finite
+r8  = r4
+r8 != r4
+r8  = r4 + 1f
+r8 != r4 + 1f
+r8 + 1f  = r4 + 1f
+r8 + 1f != r4 + 1f
+
+// Infinity
+1 / r8  @= 1 / r4
+1 / r8  $= 1 / r4
+1 / r8 !@= 1 / r4
+1 / r8 !$= 1 / r4
+1 / r8  @= 1 / r4 + 1f
+1 / r8  $= 1 / r4 + 1f
+1 / r8 !@= 1 / r4 + 1f
+1 / r8 !$= 1 / r4 + 1f
+1 / r8 + 1f  @= 1 / r4 + 1f
+1 / r8 + 1f  $= 1 / r4 + 1f
+1 / r8 + 1f !@= 1 / r4 + 1f
+1 / r8 + 1f !$= 1 / r4 + 1f
+
+// NaN
+0 / r8  @= 0 / r4
+0 / r8  $= 0 / r4
+0 / r8 !@= 0 / r4
+0 / r8 !$= 0 / r4
+0 / r8  @= 0 / r4 + 1f
+0 / r8  $= 0 / r4 + 1f
+0 / r8 !@= 0 / r4 + 1f
+0 / r8 !$= 0 / r4 + 1f
+0 / r8 + 1f  @=  0 / r4 + 1f
+0 / r8 + 1f  $=  0 / r4 + 1f
+0 / r8 + 1f !@= 0 / r4 + 1f
+0 / r8 + 1f !$= 0 / r4 + 1f
+
+0 / r8  @<  1
+0 / r8  @>= 1
+0 / r8  @ = 1
+0 / r8  $<  1
+0 / r8  $>= 1
+0 / r8  $ = 1
+0 / r8 !@<  1
+0 / r8 !@>= 1
+0 / r8 !@ = 1
+0 / r8 !$<  1
+0 / r8 !$>= 1
+0 / r8 !$ = 1
+
+// Chains
+-1 < i4 < 3 >= i4
+-1 < i4 < 3 < i4
+-1 < i4 < 3 >= -5 < i4
+
+// Strings
+s =  "hello"
+s != "hello"
+
+s & "" // One arg concat
+s & "A" // Two arg concat
+s & "A" & s // Three arg concat
+s & "A" & s & "B" // Four arg concat
+s & "A" & s & "B" & s // Five arg concat
+s & "A" & s & "B" & s & "C" // Six arg concat
+
+// Sequences
+"B" in ["B"]
+"B" in ["A"]
+"B" in ["B", null]
+"B" in ["B", null, 1] // Error
+
+null in [1, null]
+null in ["B"]
+
+1 in [1]
+1 in [2]
+1 in [1, null]
+
+0xFFi1 in [0xFFu1]
+0xFFi2 in [0xFFu1]
+
+Wrap(3ia) + 5
+
+`` hello := "hello";
+`` empty := "";
+`` snull := empty->Null();
+`` S := Range(10);
+`` SN := S->Null();
+
+IsEmpty(hello)
+IsEmpty(empty)
+IsEmpty(snull)
+IsEmpty(S)
+IsEmpty(S->TakeIf(it > 1000))
+IsEmpty(SN)
+
+// Reduction test case found through fuzz testing.
+``` X := 1r;
+``` Y := 1000000000000000000.0;
+``` Z := 12.345;
+``` A := X / (Y / Z);
+``` B := 1 / (Y / Z);
+(A, B, A = B)

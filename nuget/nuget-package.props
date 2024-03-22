@@ -1,0 +1,43 @@
+<Project>
+  <PropertyGroup>
+    <!-- Central version prefix - applies to all Rexl nuget packages. -->
+    <!-- 1.0.1: Initial -->
+    <!-- 1.0.2: Change from newtonsoft to System.Text.Json -->
+    <!-- 1.0.2: Change DType.String to DType.Text -->
+    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <IsPackable>true</IsPackable>
+
+    <!-- Default description and tags. Packages can override. -->
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft</Company>
+    <Product>Research EXpression Language</Product>
+    <PackageTags>Rexl</PackageTags>
+    <PackageId Condition=" '$(Configuration)' == 'Release'">$(AssemblyName)</PackageId>
+    <PackageId Condition=" '$(Configuration)' != 'Release'">$(AssemblyName).$(Configuration)</PackageId>
+
+    <!-- Required license, copyright, and repo information. Packages can override. -->
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+
+    <!-- Use icon and NUGET readme from dotnet/nuget folder -->
+    <PackageReadmeFile>NUGET.md</PackageReadmeFile>
+
+    <!-- Build symbol package (.snupkg) to distribute the PDB containing Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Include the XML documentation file in the NuGet package. -->
+    <!--<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>-->
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include icon.png and NUGET.md in the project. -->
+    <None Include="$(MSBuildThisFileDirectory)NUGET.md" Link="NUGET.md" Pack="true" PackagePath="." />
+  </ItemGroup>
+</Project>

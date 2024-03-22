@@ -1,0 +1,60 @@
+﻿`` func MakeU1(h, w, c) := Range(h * w * c)->CastU1()->Tensor.From(h, w, c);
+`` func U4(n, s) := ((n + 1) band 0xFF) shl s;
+`` func MakeU4(h, w) := (Range(h * w) * 4)->ForEach(as a, (U4(a, 0) bor U4(a+1, 8) bor U4(a+2, 16) bor U4(a+3, 24))->CastU4())->Tensor.From(h, w);
+
+With(t:MakeU1( 1,  1, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU1(10, 20, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU1( 0, 20, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU1(10,  0, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU1(10, 20, 3), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+With(t:MakeU4( 1,  1), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU4( 3,  2), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU4(10, 20), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU4( 0, 20), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:MakeU4(10,  0), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Not regular.
+With(t:MakeU1(3, 2, 4)[::-1], p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Regular but delta != 1.
+With(t:MakeU1(3, 2, 8)[:, :, ::2], p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Mapping based buffer.
+With(t:Range(10 * 20)->CastU2()->Tensor.From(10, 20), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Fails since count doesn't fit in i4.
+With(t:Tensor.Fill(0xFFu1, 1_000_000_000, 1_000_000_000, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:Tensor.Fill(0xFFFFFFu4, 1_000_000_000, 1_000_000_000), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Fails since height doesn't fit in i4.
+With(t:Tensor.Fill(0xFFu1, 1_000_000_000_000, 10, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:Tensor.Fill(0xFFFFFFu4, 1_000_000_000_000, 10), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+// Fails since width doesn't fit in i4.
+With(t:Tensor.Fill(0xFFu1, 10, 1_000_000_000_000, 4), p:t->PixelsToPng(), (p, p->ToBase64()))
+With(t:Tensor.Fill(0xFFFFFFu4, 10, 1_000_000_000_000), p:t->PixelsToPng(), (p, p->ToBase64()))
+
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d:p->GetPixels(), (not (d = t).Values->All(), (d[:,:,:3] = t[:,:,:3]).Values->All(), (d[:,:,3] = 0xFF).Values->All()))
+With(t:MakeU4( 3,  2), p:t->PixelsToPng(), d:p->GetPixelsU4(), (not (d = t).Values->All(), (d band 0xFFFFFFU4 = t band 0xFFFFFFU4).Values->All(), (d shr 24 = 0xFF).Values->All()))
+
+// Fails since count doesn't fit in i4.
+Tensor.Fill(0xFFu1, 1_000_000_000_000)->GetPixels()
+Tensor.Fill(0xFFu1, 1_000_000_000_000)->GetPixelsU4()
+
+// Fails because of zero size.
+Tensor.Fill(0xFFu1, 0)->GetPixels()
+Tensor.Fill(0xFFu1, 0)->GetPixelsU4()
+
+// Fails because of bad data.
+Tensor.Fill(0xFFu1, 20)->GetPixels()
+Tensor.Fill(0xFFu1, 20)->GetPixelsU4()
+
+// Fails because of truncated data.
+// REVIEW: Truncating any bytes should result in null, but doesn't! Apparently Skia isn't requireint everything.
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), (p->Int.Hex(), p[:^20]->Int.Hex()))
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^20]->GetPixels(), d2:p[:^20]->GetPixelsU4(), (d1->IsNull(), d2->IsNull()))
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^21]->GetPixels(), d2:p[:^21]->GetPixelsU4(), (d1->IsNull(), d2->IsNull()))
+// This one ensures the truncated data is in a new memory block, so Skia can't just keep reading past the end of the tensor.
+With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^20].Values->Tensor.From()->GetPixels(), d2:p[:^21].Values->Tensor.From()->GetPixels(), (d1->IsNull(), d2->IsNull()))

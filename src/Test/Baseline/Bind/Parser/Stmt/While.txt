@@ -1,0 +1,283 @@
+> N := 0;
+> S := 0;
+> while (N < 10) {
+>     S := S + N;
+>     N := N + 1;
+> }
+> X;
+Node: [N := 0; S := 0; while (N $< 10) { S := S + N; N := N + 1 } X]
+Dump:
+  00 Node[id:21, kind:StmtList, depth:7, tok:Semi, rng:(6,7) [;], full:(0,69) [N := 0;\nS := 0;\nwhile (N < 10) {\n    S := S + N;\n    N := N + 1;\n}\nX;]], count=4
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,6) [N := 0], extra=[N]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:0, rng:(5,6) [0], full:(5,6) [0], extra=[0]]
+  01   Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(10,12) [:=], full:(8,14) [S := 0], extra=[S]], count=1
+  02     Node[id:2, kind:NumLit, depth:1, tok:0, rng:(13,14) [0], full:(13,14) [0], extra=[0]]
+  01   Node[id:18, kind:WhileStmt, depth:6, tok:KwdWhile, rng:(16,21) [while], full:(16,66) [while (N < 10) {\n    S := S + N;\n    N := N + 1;\n}]], count=2
+  02     Node[id:7, kind:Paren, depth:3, tok:ParenOpen, rng:(22,23) [(], full:(22,30) [(N < 10)]], count=1
+  03       Node[id:6, kind:Compare, depth:2, tok:Lss, rng:(25,26) [<], full:(23,29) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:4, kind:FirstName, depth:1, tok:N, rng:(23,24) [N], full:(23,24) [N], extra=[N]]
+  04         Node[id:5, kind:NumLit, depth:1, tok:10, rng:(27,29) [10], full:(27,29) [10], extra=[10]]
+  02     Node[id:17, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(31,32) [{], full:(31,66) [{\n    S := S + N;\n    N := N + 1;\n}]], count=1
+  03       Node[id:16, kind:StmtList, depth:4, tok:Semi, rng:(47,48) [;], full:(37,64) [S := S + N;\n    N := N + 1;]], count=2
+  04         Node[id:11, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(39,41) [:=], full:(37,47) [S := S + N], extra=[S]], count=1
+  05           Node[id:10, kind:BinaryOp, depth:2, tok:Add, rng:(44,45) [+], full:(42,47) [S + N], extra=[Add]], count=2
+  06             Node[id:8, kind:FirstName, depth:1, tok:S, rng:(42,43) [S], full:(42,43) [S], extra=[S]]
+  06             Node[id:9, kind:FirstName, depth:1, tok:N, rng:(46,47) [N], full:(46,47) [N], extra=[N]]
+  04         Node[id:15, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(55,57) [:=], full:(53,63) [N := N + 1], extra=[N]], count=1
+  05           Node[id:14, kind:BinaryOp, depth:2, tok:Add, rng:(60,61) [+], full:(58,63) [N + 1], extra=[Add]], count=2
+  06             Node[id:12, kind:FirstName, depth:1, tok:N, rng:(58,59) [N], full:(58,59) [N], extra=[N]]
+  06             Node[id:13, kind:NumLit, depth:1, tok:1, rng:(62,63) [1], full:(62,63) [1], extra=[1]]
+  01   Node[id:20, kind:ExprStmt, depth:2, tok:X, rng:(67,68) [X], full:(67,68) [X]], count=1
+  02     Node[id:19, kind:FirstName, depth:1, tok:X, rng:(67,68) [X], full:(67,68) [X], extra=[X]]
+
+   0) [0] Define N <- 0
+   1) [0] Define S <- 0
+   2) [0] JumpIfNot 8 (0=>0) N $< 10
+   3) [0] Enter (0=>1)
+   4) [1] Define S <- S + N
+   5) [1] Define N <- N + 1
+   6) [1] Leave (1=>0)
+   7) [0] Jump 2 (0=>0)
+   8) [0] Expr X
+   9) [0] End
+###
+> while (N < 10)
+>     N := N + 1;
+> X;
+Node: [while (N $< 10) N := N + 1; X]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:5, tok:Semi, rng:(29,30) [;], full:(0,33) [while (N < 10)\n    N := N + 1;\nX;]], count=2
+  01   Node[id:8, kind:WhileStmt, depth:4, tok:KwdWhile, rng:(0,5) [while], full:(0,29) [while (N < 10)\n    N := N + 1]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(6,14) [(N < 10)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(9,10) [<], full:(7,13) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:10, rng:(11,13) [10], full:(11,13) [10], extra=[10]]
+  02     Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(21,23) [:=], full:(19,29) [N := N + 1], extra=[N]], count=1
+  03       Node[id:6, kind:BinaryOp, depth:2, tok:Add, rng:(26,27) [+], full:(24,29) [N + 1], extra=[Add]], count=2
+  04         Node[id:4, kind:FirstName, depth:1, tok:N, rng:(24,25) [N], full:(24,25) [N], extra=[N]]
+  04         Node[id:5, kind:NumLit, depth:1, tok:1, rng:(28,29) [1], full:(28,29) [1], extra=[1]]
+  01   Node[id:10, kind:ExprStmt, depth:2, tok:X, rng:(31,32) [X], full:(31,32) [X]], count=1
+  02     Node[id:9, kind:FirstName, depth:1, tok:X, rng:(31,32) [X], full:(31,32) [X], extra=[X]]
+
+   0) [0] JumpIfNot 3 (0=>0) N $< 10
+   1) [0] Define N <- N + 1
+   2) [0] Jump 0 (0=>0)
+   3) [0] Expr X
+   4) [0] End
+###
+> while (N < 10) N := N + 1 // Needs semi.
+> X;
+Node: [while (N $< 10) N := N + 1; X]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:5, tok:KwdWhile, rng:(0,5) [while], full:(0,43) [while (N < 10) N := N + 1 // Needs semi.\nX;]], count=2
+  01   Node[id:8, kind:WhileStmt, depth:4, tok:KwdWhile, rng:(0,5) [while], full:(0,25) [while (N < 10) N := N + 1]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(6,14) [(N < 10)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(9,10) [<], full:(7,13) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:10, rng:(11,13) [10], full:(11,13) [10], extra=[10]]
+  02     Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(17,19) [:=], full:(15,25) [N := N + 1], extra=[N]], count=1
+  03       Node[id:6, kind:BinaryOp, depth:2, tok:Add, rng:(22,23) [+], full:(20,25) [N + 1], extra=[Add]], count=2
+  04         Node[id:4, kind:FirstName, depth:1, tok:N, rng:(20,21) [N], full:(20,21) [N], extra=[N]]
+  04         Node[id:5, kind:NumLit, depth:1, tok:1, rng:(24,25) [1], full:(24,25) [1], extra=[1]]
+  01   Node[id:10, kind:ExprStmt, depth:2, tok:X, rng:(41,42) [X], full:(41,42) [X]], count=1
+  02     Node[id:9, kind:FirstName, depth:1, tok:X, rng:(41,42) [X], full:(41,42) [X], extra=[X]]
+Error: (41,42) Tok: 'X', Message: Expected: ';', Found: 'X'
+Comment: Range=(26,40), Tid=CommentLine, Text=[// Needs semi.]
+
+   0) [0] JumpIfNot 3 (0=>0) N $< 10
+   1) [0] Define N <- N + 1
+   2) [0] Jump 0 (0=>0)
+   3) [0] Expr X
+   4) [0] End
+###
+> while (N < 10) { N := N + 1 }
+> X;
+Node: [while (N $< 10) { N := N + 1 } X]
+Dump:
+  00 Node[id:13, kind:StmtList, depth:7, tok:KwdWhile, rng:(0,5) [while], full:(0,32) [while (N < 10) { N := N + 1 }\nX;]], count=2
+  01   Node[id:10, kind:WhileStmt, depth:6, tok:KwdWhile, rng:(0,5) [while], full:(0,29) [while (N < 10) { N := N + 1 }]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(6,14) [(N < 10)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(9,10) [<], full:(7,13) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:10, rng:(11,13) [10], full:(11,13) [10], extra=[10]]
+  02     Node[id:9, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(15,16) [{], full:(15,29) [{ N := N + 1 }]], count=1
+  03       Node[id:8, kind:StmtList, depth:4, tok:N, rng:(17,18) [N], full:(17,27) [N := N + 1]], count=1
+  04         Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(19,21) [:=], full:(17,27) [N := N + 1], extra=[N]], count=1
+  05           Node[id:6, kind:BinaryOp, depth:2, tok:Add, rng:(24,25) [+], full:(22,27) [N + 1], extra=[Add]], count=2
+  06             Node[id:4, kind:FirstName, depth:1, tok:N, rng:(22,23) [N], full:(22,23) [N], extra=[N]]
+  06             Node[id:5, kind:NumLit, depth:1, tok:1, rng:(26,27) [1], full:(26,27) [1], extra=[1]]
+  01   Node[id:12, kind:ExprStmt, depth:2, tok:X, rng:(30,31) [X], full:(30,31) [X]], count=1
+  02     Node[id:11, kind:FirstName, depth:1, tok:X, rng:(30,31) [X], full:(30,31) [X], extra=[X]]
+
+   0) [0] JumpIfNot 5 (0=>0) N $< 10
+   1) [0] Enter (0=>1)
+   2) [1] Define N <- N + 1
+   3) [1] Leave (1=>0)
+   4) [0] Jump 0 (0=>0)
+   5) [0] Expr X
+   6) [0] End
+###
+> while (N.I < 10)
+>     namespace N { I := I + 1; } // Needs semi.
+> X;
+Node: [while (N.I $< 10) namespace N { I := I + 1 }; X]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:8, tok:KwdWhile, rng:(0,5) [while], full:(0,66) [while (N.I < 10)\n    namespace N { I := I + 1; } // Needs semi.\nX;]], count=2
+  01   Node[id:12, kind:WhileStmt, depth:7, tok:KwdWhile, rng:(0,5) [while], full:(0,48) [while (N.I < 10)\n    namespace N { I := I + 1; }]], count=2
+  02     Node[id:4, kind:Paren, depth:4, tok:ParenOpen, rng:(6,7) [(], full:(6,16) [(N.I < 10)]], count=1
+  03       Node[id:3, kind:Compare, depth:3, tok:Lss, rng:(11,12) [<], full:(7,15) [N.I < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(8,9) [.], full:(7,10) [N.I], extra=[I]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:2, kind:NumLit, depth:1, tok:10, rng:(13,15) [10], full:(13,15) [10], extra=[10]]
+  02     Node[id:11, kind:NamespaceStmt, depth:6, tok:KwdNamespace, rng:(21,30) [namespace], full:(21,48) [namespace N { I := I + 1; }], extra=[N]], count=1
+  03       Node[id:10, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(33,34) [{], full:(33,48) [{ I := I + 1; }]], count=1
+  04         Node[id:9, kind:StmtList, depth:4, tok:I, rng:(35,36) [I], full:(35,46) [I := I + 1;]], count=1
+  05           Node[id:8, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(37,39) [:=], full:(35,45) [I := I + 1], extra=[I]], count=1
+  06             Node[id:7, kind:BinaryOp, depth:2, tok:Add, rng:(42,43) [+], full:(40,45) [I + 1], extra=[Add]], count=2
+  07               Node[id:5, kind:FirstName, depth:1, tok:I, rng:(40,41) [I], full:(40,41) [I], extra=[I]]
+  07               Node[id:6, kind:NumLit, depth:1, tok:1, rng:(44,45) [1], full:(44,45) [1], extra=[1]]
+  01   Node[id:14, kind:ExprStmt, depth:2, tok:X, rng:(64,65) [X], full:(64,65) [X]], count=1
+  02     Node[id:13, kind:FirstName, depth:1, tok:X, rng:(64,65) [X], full:(64,65) [X], extra=[X]]
+Error: (64,65) Tok: 'X', Message: Expected: ';', Found: 'X'
+Comment: Range=(49,63), Tid=CommentLine, Text=[// Needs semi.]
+
+   0) [0] JumpIfNot 5 (0=>0) N.I $< 10
+   1) [0] Enter (0=>1) N
+   2) [1] Define I <- I + 1
+   3) [1] Leave (1=>0)
+   4) [0] Jump 0 (0=>0)
+   5) [0] Expr X
+   6) [0] End
+###
+> while (N.I < 10)
+>     namespace N { I := I + 1; };
+> X;
+Node: [while (N.I $< 10) namespace N { I := I + 1 }; X]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:8, tok:Semi, rng:(48,49) [;], full:(0,52) [while (N.I < 10)\n    namespace N { I := I + 1; };\nX;]], count=2
+  01   Node[id:12, kind:WhileStmt, depth:7, tok:KwdWhile, rng:(0,5) [while], full:(0,48) [while (N.I < 10)\n    namespace N { I := I + 1; }]], count=2
+  02     Node[id:4, kind:Paren, depth:4, tok:ParenOpen, rng:(6,7) [(], full:(6,16) [(N.I < 10)]], count=1
+  03       Node[id:3, kind:Compare, depth:3, tok:Lss, rng:(11,12) [<], full:(7,15) [N.I < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(8,9) [.], full:(7,10) [N.I], extra=[I]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:2, kind:NumLit, depth:1, tok:10, rng:(13,15) [10], full:(13,15) [10], extra=[10]]
+  02     Node[id:11, kind:NamespaceStmt, depth:6, tok:KwdNamespace, rng:(21,30) [namespace], full:(21,48) [namespace N { I := I + 1; }], extra=[N]], count=1
+  03       Node[id:10, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(33,34) [{], full:(33,48) [{ I := I + 1; }]], count=1
+  04         Node[id:9, kind:StmtList, depth:4, tok:I, rng:(35,36) [I], full:(35,46) [I := I + 1;]], count=1
+  05           Node[id:8, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(37,39) [:=], full:(35,45) [I := I + 1], extra=[I]], count=1
+  06             Node[id:7, kind:BinaryOp, depth:2, tok:Add, rng:(42,43) [+], full:(40,45) [I + 1], extra=[Add]], count=2
+  07               Node[id:5, kind:FirstName, depth:1, tok:I, rng:(40,41) [I], full:(40,41) [I], extra=[I]]
+  07               Node[id:6, kind:NumLit, depth:1, tok:1, rng:(44,45) [1], full:(44,45) [1], extra=[1]]
+  01   Node[id:14, kind:ExprStmt, depth:2, tok:X, rng:(50,51) [X], full:(50,51) [X]], count=1
+  02     Node[id:13, kind:FirstName, depth:1, tok:X, rng:(50,51) [X], full:(50,51) [X], extra=[X]]
+
+   0) [0] JumpIfNot 5 (0=>0) N.I $< 10
+   1) [0] Enter (0=>1) N
+   2) [1] Define I <- I + 1
+   3) [1] Leave (1=>0)
+   4) [0] Jump 0 (0=>0)
+   5) [0] Expr X
+   6) [0] End
+###
+> while (N < 10) {
+>     if (N mod 5 = 0) goto LBreak;
+>     N := N + 1;
+> }
+> LBreak:
+> X;
+Node: [while (N $< 10) { if (N mod 5 @= 0) goto LBreak; N := N + 1 } LBreak: X]
+Dump:
+  00 Node[id:22, kind:StmtList, depth:9, tok:KwdWhile, rng:(0,5) [while], full:(0,79) [while (N < 10) {\n    if (N mod 5 = 0) goto LBreak;\n    N := N + 1;\n}\nLBreak:\nX;]], count=3
+  01   Node[id:18, kind:WhileStmt, depth:8, tok:KwdWhile, rng:(0,5) [while], full:(0,68) [while (N < 10) {\n    if (N mod 5 = 0) goto LBreak;\n    N := N + 1;\n}]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(6,14) [(N < 10)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(9,10) [<], full:(7,13) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:10, rng:(11,13) [10], full:(11,13) [10], extra=[10]]
+  02     Node[id:17, kind:BlockStmt, depth:7, tok:CurlyOpen, rng:(15,16) [{], full:(15,68) [{\n    if (N mod 5 = 0) goto LBreak;\n    N := N + 1;\n}]], count=1
+  03       Node[id:16, kind:StmtList, depth:6, tok:Semi, rng:(49,50) [;], full:(21,66) [if (N mod 5 = 0) goto LBreak;\n    N := N + 1;]], count=2
+  04         Node[id:11, kind:IfStmt, depth:5, tok:KwdIf, rng:(21,23) [if], full:(21,49) [if (N mod 5 = 0) goto LBreak]], count=2
+  05           Node[id:9, kind:Paren, depth:4, tok:ParenOpen, rng:(24,25) [(], full:(24,37) [(N mod 5 = 0)]], count=1
+  06             Node[id:8, kind:Compare, depth:3, tok:Equ, rng:(33,34) [=], full:(25,36) [N mod 5 = 0]], count=2
+  07               Op:Equal
+  07               Node[id:6, kind:BinaryOp, depth:2, tok:KtxMod, rng:(27,30) [mod], full:(25,32) [N mod 5], extra=[IntMod]], count=2
+  08                 Node[id:4, kind:FirstName, depth:1, tok:N, rng:(25,26) [N], full:(25,26) [N], extra=[N]]
+  08                 Node[id:5, kind:NumLit, depth:1, tok:5, rng:(31,32) [5], full:(31,32) [5], extra=[5]]
+  07               Node[id:7, kind:NumLit, depth:1, tok:0, rng:(35,36) [0], full:(35,36) [0], extra=[0]]
+  05           Node[id:10, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(38,42) [goto], full:(38,49) [goto LBreak], extra=[LBreak]]
+  04         Node[id:15, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(57,59) [:=], full:(55,65) [N := N + 1], extra=[N]], count=1
+  05           Node[id:14, kind:BinaryOp, depth:2, tok:Add, rng:(62,63) [+], full:(60,65) [N + 1], extra=[Add]], count=2
+  06             Node[id:12, kind:FirstName, depth:1, tok:N, rng:(60,61) [N], full:(60,61) [N], extra=[N]]
+  06             Node[id:13, kind:NumLit, depth:1, tok:1, rng:(64,65) [1], full:(64,65) [1], extra=[1]]
+  01   Node[id:19, kind:LabelStmt, depth:1, tok:Colon, rng:(75,76) [:], full:(69,76) [LBreak:], extra=[LBreak]]
+  01   Node[id:21, kind:ExprStmt, depth:2, tok:X, rng:(77,78) [X], full:(77,78) [X]], count=1
+  02     Node[id:20, kind:FirstName, depth:1, tok:X, rng:(77,78) [X], full:(77,78) [X], extra=[X]]
+
+   0) [0] JumpIfNot 6 (0=>0) N $< 10
+   1) [0] Enter (0=>1)
+   2) [1] JumpIf 6 (1=>0) N mod 5 @= 0
+   3) [1] Define N <- N + 1
+   4) [1] Leave (1=>0)
+   5) [0] Jump 0 (0=>0)
+   6) [0] Expr X
+   7) [0] End
+###
+> while N < 10 { N := N + 1; }
+> X;
+Node: [while (N $< 10) { N := N + 1 } X]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:7, tok:KwdWhile, rng:(0,5) [while], full:(0,31) [while N < 10 { N := N + 1; }\nX;]], count=2
+  01   Node[id:9, kind:WhileStmt, depth:6, tok:KwdWhile, rng:(0,5) [while], full:(0,28) [while N < 10 { N := N + 1; }]], count=2
+  02     Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(8,9) [<], full:(6,12) [N < 10]], count=2
+  03       Op:StrictLess
+  03       Node[id:0, kind:FirstName, depth:1, tok:N, rng:(6,7) [N], full:(6,7) [N], extra=[N]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:10, rng:(10,12) [10], full:(10,12) [10], extra=[10]]
+  02     Node[id:8, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(13,14) [{], full:(13,28) [{ N := N + 1; }]], count=1
+  03       Node[id:7, kind:StmtList, depth:4, tok:N, rng:(15,16) [N], full:(15,26) [N := N + 1;]], count=1
+  04         Node[id:6, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(17,19) [:=], full:(15,25) [N := N + 1], extra=[N]], count=1
+  05           Node[id:5, kind:BinaryOp, depth:2, tok:Add, rng:(22,23) [+], full:(20,25) [N + 1], extra=[Add]], count=2
+  06             Node[id:3, kind:FirstName, depth:1, tok:N, rng:(20,21) [N], full:(20,21) [N], extra=[N]]
+  06             Node[id:4, kind:NumLit, depth:1, tok:1, rng:(24,25) [1], full:(24,25) [1], extra=[1]]
+  01   Node[id:11, kind:ExprStmt, depth:2, tok:X, rng:(29,30) [X], full:(29,30) [X]], count=1
+  02     Node[id:10, kind:FirstName, depth:1, tok:X, rng:(29,30) [X], full:(29,30) [X], extra=[X]]
+Error: (6,7) Tok: 'N', Message: Expected: '(', Found: 'N'
+
+   0) [0] JumpIfNot 5 (0=>0) N $< 10
+   1) [0] Enter (0=>1)
+   2) [1] Define N <- N + 1
+   3) [1] Leave (1=>0)
+   4) [0] Jump 0 (0=>0)
+   5) [0] Expr X
+   6) [0] End
+###
+> While (N < 10) N := N + 1;
+> X;
+Node: [While(N $< 10); N := N + 1; X]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:6, tok:While, rng:(0,5) [While], full:(0,29) [While (N < 10) N := N + 1;\nX;]], count=3
+  01   Node[id:5, kind:ExprStmt, depth:5, tok:ParenOpen, rng:(6,7) [(], full:(0,14) [While (N < 10)]], count=1
+  02     Node[id:4, kind:Call, depth:4, tok:ParenOpen, rng:(6,7) [(], full:(0,14) [While (N < 10)], extra=[While]], count=1
+  03       Node[id:3, kind:ExprList, depth:3, tok:N, rng:(7,8) [N], full:(7,13) [N < 10]], count=1
+  04         Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(9,10) [<], full:(7,13) [N < 10]], count=2
+  05           Op:StrictLess
+  05           Node[id:0, kind:FirstName, depth:1, tok:N, rng:(7,8) [N], full:(7,8) [N], extra=[N]]
+  05           Node[id:1, kind:NumLit, depth:1, tok:10, rng:(11,13) [10], full:(11,13) [10], extra=[10]]
+  01   Node[id:9, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(17,19) [:=], full:(15,25) [N := N + 1], extra=[N]], count=1
+  02     Node[id:8, kind:BinaryOp, depth:2, tok:Add, rng:(22,23) [+], full:(20,25) [N + 1], extra=[Add]], count=2
+  03       Node[id:6, kind:FirstName, depth:1, tok:N, rng:(20,21) [N], full:(20,21) [N], extra=[N]]
+  03       Node[id:7, kind:NumLit, depth:1, tok:1, rng:(24,25) [1], full:(24,25) [1], extra=[1]]
+  01   Node[id:11, kind:ExprStmt, depth:2, tok:X, rng:(27,28) [X], full:(27,28) [X]], count=1
+  02     Node[id:10, kind:FirstName, depth:1, tok:X, rng:(27,28) [X], full:(27,28) [X], extra=[X]]
+Error: (15,16) Tok: 'N', Message: Expected: ';', Found: 'N'
+
+   0) [0] Expr While(N $< 10)
+   1) [0] Define N <- N + 1
+   2) [0] Expr X
+   3) [0] End
+###

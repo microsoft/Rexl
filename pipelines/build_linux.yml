@@ -1,0 +1,44 @@
+# The linux core pipeline definition for Rexl build pipeline. 
+
+parameters:
+- name: buildConfig
+  displayName: The build configuration
+  type: string
+  default: Release
+- name: buildPlatform
+  displayName: Build platform
+  type: string
+- name: poolName
+  displayName: Pool name
+  type: string
+- name: workFolder
+  displayName: Work folder
+  type: string
+
+jobs:
+- job: Build_Linux_${{ parameters.buildConfig }}
+  displayName: Build Rexl Linux - ${{ parameters.buildConfig }}
+  timeoutInMinutes: 20
+  pool:
+    name: ${{ parameters.poolName }}
+    demands: ImageOverride -equals MMSUbuntu2204-Compliant
+
+  steps:
+  - checkout: self
+    clean: true
+    lfs: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Build Rexl.sln
+    inputs:
+      command: 'build'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      arguments: Rexl.sln -c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }} -p:EnableWindowsTargeting=true
+
+  - task: DotNetCoreCLI@2
+    displayName: Test Rexl.sln
+    timeoutInMinutes: 5
+    inputs:
+      command: 'test'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      arguments: --no-build Rexl.sln -c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }} -p:EnableWindowsTargeting=true

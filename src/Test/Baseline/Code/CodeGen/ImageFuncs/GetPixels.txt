@@ -1,0 +1,102 @@
+**** New udf: MakeU1, arity: 3
+**** New udf: U4, arity: 2
+**** New udf: MakeU4, arity: 2
+
+> With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d:p->GetPixels(), (not (d = t).Values->All(), (d[:,:,:3] = t[:,:,:3]).Values->All(), (d[:,:,3] = 0xFF).Values->All()))
+With(t : MakeU1(3, 2, 4), p : t->PixelsToPng(), d : p->GetPixels(), (not (d @= t).Values->All(), (d[:, :, :3] @= t[:, :, :3]).Values->All(), (d[:, :, 3] @= 255).Values->All())) : (b, b, b)
+BndKind:Call, Type:(b, b, b), Bnd:(Call(∂.With([with:2] Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(24:i8):i8*), Call(∂.CastU1(Scope(1)):u1)):u1*), 3:i8, 2:i8, 4:i8):u1[*,*,*]), [with:4] Call(∂.Guard([guard:3] Call(∂.PixelsToPng(Scope(2)):u1[*]?), Call(∂.GetPixels(Scope(3)):u1[*,*,*]?)):u1[*,*,*]?), (Xor(Call(∂.All(Call(∂.Guard([guard:5] Scope(4), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:6] Scope(5), [ten:7] Scope(2), Cmp(Scope(6) @= Scope(7))):b[*,*,*])):b*)):b*)):b), true:b), Call(∂.All(Call(∂.Guard([guard:8] Scope(4), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:9] GetSlice(Scope(8), Slice(null:i8?:null:i8?:null:i8?), Slice(null:i8?:null:i8?:null:i8?), Slice(null:i8?:3:i8:null:i8?)):u1[*,*,*], [ten:10] GetSlice(Scope(2), Slice(null:i8?:null:i8?:null:i8?), Slice(null:i8?:null:i8?:null:i8?), Slice(null:i8?:3:i8:null:i8?)):u1[*,*,*], Cmp(Scope(9) @= Scope(10))):b[*,*,*])):b*)):b*)):b), Call(∂.All(Call(∂.Guard([guard:11] Scope(4), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:12] GetSlice(Scope(11), Slice(null:i8?:null:i8?:null:i8?), Slice(null:i8?:null:i8?:null:i8?), Index(3:i8, None)):u1[*,*], Cmp(Num<i8>(Scope(12)) @= 255:i8)):b[*,*])):b*)):b*)):b)):(b, b, b)):(b, b, b)))
+Func sig: (<ctx>:x) to (b, b, b)
+Type: (bool,bool,bool), Value: (
+    true ,
+    true ,
+    true )
+*** Ctx ping count: 0
+###
+> With(t:MakeU4( 3,  2), p:t->PixelsToPng(), d:p->GetPixelsU4(), (not (d = t).Values->All(), (d band 0xFFFFFFU4 = t band 0xFFFFFFU4).Values->All(), (d shr 24 = 0xFF).Values->All()))
+With(t : MakeU4(3, 2), p : t->PixelsToPng(), d : p->GetPixelsU4(), (not (d @= t).Values->All(), (d band 16777215 @= t band 16777215).Values->All(), (d shr 24 @= 255).Values->All())) : (b, b, b)
+BndKind:Call, Type:(b, b, b), Bnd:(Call(∂.With([with:3] Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(6:i8):i8*), Call(∂.With([with:2] Mul(Scope(1), 4:i8), Call(∂.CastU4(BitOr(BitAnd(Add(Scope(2), 1:i8), 255:i8), Shl(BitAnd(Add(Scope(2), 2:i8), 255:i8), 8:i8), Shl(BitAnd(Add(Scope(2), 3:i8), 255:i8), 16:i8), Shl(BitAnd(Add(Scope(2), 4:i8), 255:i8), 24:i8))):u4)):u4)):u4*), 3:i8, 2:i8):u4[*,*]), [with:5] Call(∂.Guard([guard:4] Call(∂.PixelsToPng(Scope(3)):u1[*]?), Call(∂.GetPixelsU4(Scope(4)):u4[*,*]?)):u4[*,*]?), (Xor(Call(∂.All(Call(∂.Guard([guard:6] Scope(5), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:7] Scope(6), [ten:8] Scope(3), Cmp(Scope(7) @= Scope(8))):b[*,*])):b*)):b*)):b), true:b), Call(∂.All(Call(∂.Guard([guard:9] Scope(5), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:10] Scope(9), [ten:11] Scope(3), Cmp(BitAnd(Scope(10), 16777215:u4) @= BitAnd(Scope(11), 16777215:u4))):b[*,*])):b*)):b*)):b), Call(∂.All(Call(∂.Guard([guard:12] Scope(5), Call(∂.Tensor.Values(Call(∂.Tensor.ForEach([ten:13] Scope(12), Cmp(Num<i8>(Shru(Scope(13), 24:i8)) @= 255:i8)):b[*,*])):b*)):b*)):b)):(b, b, b)):(b, b, b)))
+Func sig: (<ctx>:x) to (b, b, b)
+Type: (bool,bool,bool), Value: (
+    true ,
+    true ,
+    true )
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 1_000_000_000_000)->GetPixels()
+Tensor.Fill(255, 1000000000000)->GetPixels() : u1[*,*,*]?
+BndKind:Call, Type:u1[*,*,*]?, Bnd:(Call(∂.GetPixels(Call(∂.Tensor.Fill(255:u1, 1000000000000:i8):u1[*])):u1[*,*,*]?))
+Func sig: (<ctx>:x) to u1[*,*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 1_000_000_000_000)->GetPixelsU4()
+Tensor.Fill(255, 1000000000000)->GetPixelsU4() : u4[*,*]?
+BndKind:Call, Type:u4[*,*]?, Bnd:(Call(∂.GetPixelsU4(Call(∂.Tensor.Fill(255:u1, 1000000000000:i8):u1[*])):u4[*,*]?))
+Func sig: (<ctx>:x) to u4[*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 0)->GetPixels()
+Tensor.Fill(255, 0)->GetPixels() : u1[*,*,*]?
+BndKind:Call, Type:u1[*,*,*]?, Bnd:(Call(∂.GetPixels(Call(∂.Tensor.Fill(255:u1, 0:i8):u1[*])):u1[*,*,*]?))
+Func sig: (<ctx>:x) to u1[*,*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 0)->GetPixelsU4()
+Tensor.Fill(255, 0)->GetPixelsU4() : u4[*,*]?
+BndKind:Call, Type:u4[*,*]?, Bnd:(Call(∂.GetPixelsU4(Call(∂.Tensor.Fill(255:u1, 0:i8):u1[*])):u4[*,*]?))
+Func sig: (<ctx>:x) to u4[*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 20)->GetPixels()
+Tensor.Fill(255, 20)->GetPixels() : u1[*,*,*]?
+BndKind:Call, Type:u1[*,*,*]?, Bnd:(Call(∂.GetPixels(Call(∂.Tensor.Fill(255:u1, 20:i8):u1[*])):u1[*,*,*]?))
+Func sig: (<ctx>:x) to u1[*,*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Tensor.Fill(0xFFu1, 20)->GetPixelsU4()
+Tensor.Fill(255, 20)->GetPixelsU4() : u4[*,*]?
+BndKind:Call, Type:u4[*,*]?, Bnd:(Call(∂.GetPixelsU4(Call(∂.Tensor.Fill(255:u1, 20:i8):u1[*])):u4[*,*]?))
+Func sig: (<ctx>:x) to u4[*,*]?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), (p->Int.Hex(), p[:^20]->Int.Hex()))
+With(t : MakeU1(3, 2, 4), p : t->PixelsToPng(), (p->Int.Hex(), p[:^20]->Int.Hex())) : (s[*]?, s[*]?)
+BndKind:Call, Type:(s[*]?, s[*]?), Bnd:(Call(∂.With([with:2] Call(∂.PixelsToPng(Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(24:i8):i8*), Call(∂.CastU1(Scope(1)):u1)):u1*), 3:i8, 2:i8, 4:i8):u1[*,*,*])):u1[*]?), (Call(∂.Guard([guard:3] Scope(2), Call(∂.Tensor.ForEach([ten:4] Scope(3), Call(∂.Int.Hex(Scope(4)):s)):s[*])):s[*]?), Call(∂.Guard([guard:5] Scope(2), Call(∂.Tensor.ForEach([ten:6] GetSlice(Scope(5), Slice(null:i8?:^(20:i8):null:i8?)):u1[*], Call(∂.Int.Hex(Scope(6)):s)):s[*])):s[*]?)):(s[*]?, s[*]?)):(s[*]?, s[*]?)))
+Func sig: (<ctx>:x) to (s[*]?, s[*]?)
+Type: (Ten<str>,Ten<str>), Value: (
+    Ten<str>(92)<1> [89, 50, 4E, 47, 0D, 0A, 1A, 0A, 00, 00, 00, 0D, 49, 48, 44, 52, 00, 00, 00, 02, 00, 00, 00, 03, 08, 02, 00, 00, 00, 36, 88, 49, D6, 00, 00, 00, 03, 73, 42, 49, 54, 08, 08, 08, DB, E1, 4F, E0, 00, 00, 00, 14, 49, 44, 41, 54, 08, 99, 63, 64, 60, 64, 62, 61, 61, 61, E1, E0, E0, 40, 50, 00, 03, 91, 00, 61, F4, B8, 1F, A3, 00, 00, 00, 00, 49, 45, 4E, 44, AE, 42, 60, 82],
+    Ten<str>(72)<1> [89, 50, 4E, 47, 0D, 0A, 1A, 0A, 00, 00, 00, 0D, 49, 48, 44, 52, 00, 00, 00, 02, 00, 00, 00, 03, 08, 02, 00, 00, 00, 36, 88, 49, D6, 00, 00, 00, 03, 73, 42, 49, 54, 08, 08, 08, DB, E1, 4F, E0, 00, 00, 00, 14, 49, 44, 41, 54, 08, 99, 63, 64, 60, 64, 62, 61, 61, 61, E1, E0, E0, 40, 50, 00])
+*** Ctx ping count: 0
+###
+> With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^20]->GetPixels(), d2:p[:^20]->GetPixelsU4(), (d1->IsNull(), d2->IsNull()))
+With(t : MakeU1(3, 2, 4), p : t->PixelsToPng(), d1 : p[:^20]->GetPixels(), d2 : p[:^20]->GetPixelsU4(), (d1->IsNull(), d2->IsNull())) : (b, b)
+BndKind:Call, Type:(b, b), Bnd:(Call(∂.With([with:2] Call(∂.PixelsToPng(Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(24:i8):i8*), Call(∂.CastU1(Scope(1)):u1)):u1*), 3:i8, 2:i8, 4:i8):u1[*,*,*])):u1[*]?), (Call(∂.IsNull(Call(∂.Guard([guard:3] Scope(2), Call(∂.GetPixels(GetSlice(Scope(3), Slice(null:i8?:^(20:i8):null:i8?)):u1[*]):u1[*,*,*]?)):u1[*,*,*]?)):b), Call(∂.IsNull(Call(∂.Guard([guard:4] Scope(2), Call(∂.GetPixelsU4(GetSlice(Scope(4), Slice(null:i8?:^(20:i8):null:i8?)):u1[*]):u4[*,*]?)):u4[*,*]?)):b)):(b, b)):(b, b)))
+Func sig: (<ctx>:x) to (b, b)
+Type: (bool,bool), Value: (
+    false,
+    false)
+*** Ctx ping count: 0
+###
+> With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^21]->GetPixels(), d2:p[:^21]->GetPixelsU4(), (d1->IsNull(), d2->IsNull()))
+With(t : MakeU1(3, 2, 4), p : t->PixelsToPng(), d1 : p[:^21]->GetPixels(), d2 : p[:^21]->GetPixelsU4(), (d1->IsNull(), d2->IsNull())) : (b, b)
+BndKind:Call, Type:(b, b), Bnd:(Call(∂.With([with:2] Call(∂.PixelsToPng(Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(24:i8):i8*), Call(∂.CastU1(Scope(1)):u1)):u1*), 3:i8, 2:i8, 4:i8):u1[*,*,*])):u1[*]?), (Call(∂.IsNull(Call(∂.Guard([guard:3] Scope(2), Call(∂.GetPixels(GetSlice(Scope(3), Slice(null:i8?:^(21:i8):null:i8?)):u1[*]):u1[*,*,*]?)):u1[*,*,*]?)):b), Call(∂.IsNull(Call(∂.Guard([guard:4] Scope(2), Call(∂.GetPixelsU4(GetSlice(Scope(4), Slice(null:i8?:^(21:i8):null:i8?)):u1[*]):u4[*,*]?)):u4[*,*]?)):b)):(b, b)):(b, b)))
+Func sig: (<ctx>:x) to (b, b)
+Type: (bool,bool), Value: (
+    true ,
+    true )
+*** Ctx ping count: 0
+###
+> With(t:MakeU1( 3,  2, 4), p:t->PixelsToPng(), d1:p[:^20].Values->Tensor.From()->GetPixels(), d2:p[:^21].Values->Tensor.From()->GetPixels(), (d1->IsNull(), d2->IsNull()))
+With(t : MakeU1(3, 2, 4), p : t->PixelsToPng(), d1 : p[:^20].Values->Tensor.From()->GetPixels(), d2 : p[:^21].Values->Tensor.From()->GetPixels(), (d1->IsNull(), d2->IsNull())) : (b, b)
+BndKind:Call, Type:(b, b), Bnd:(Call(∂.With([with:2] Call(∂.PixelsToPng(Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(24:i8):i8*), Call(∂.CastU1(Scope(1)):u1)):u1*), 3:i8, 2:i8, 4:i8):u1[*,*,*])):u1[*]?), (Call(∂.IsNull(Call(∂.GetPixels(Call(∂.Tensor.From(Call(∂.Guard([guard:3] Scope(2), Call(∂.Tensor.Values(GetSlice(Scope(3), Slice(null:i8?:^(20:i8):null:i8?)):u1[*]):u1*)):u1*)):u1[*])):u1[*,*,*]?)):b), Call(∂.IsNull(Call(∂.GetPixels(Call(∂.Tensor.From(Call(∂.Guard([guard:4] Scope(2), Call(∂.Tensor.Values(GetSlice(Scope(4), Slice(null:i8?:^(21:i8):null:i8?)):u1[*]):u1*)):u1*)):u1[*])):u1[*,*,*]?)):b)):(b, b)):(b, b)))
+Func sig: (<ctx>:x) to (b, b)
+Type: (bool,bool), Value: (
+    false,
+    true )
+*** Ctx ping count: 0
+###

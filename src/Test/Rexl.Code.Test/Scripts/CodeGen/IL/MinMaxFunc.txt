@@ -1,0 +1,173 @@
+﻿`` V := [ 3.0, -1.0, 2.5, ];
+`` V2 := [ -1.0, 2.5, 3.0, ];
+`` R__ := V ++ V;
+`` R__2 := V2 ++ V2;
+`` RB_ := V ++ [ 0/0 ] ++ V;
+`` R_I := V ++ [ 1/0, -1/0 ] ++ V;
+`` RBI := V ++ [ 1/0, 0/0, -1/0 ] ++ V;
+`` Req := [R__, RB_, R_I, RBI, Range(10)->TakeIf(it < -3), null, R__2 ];
+`` O__ := V ++ [ null ] ++ V;
+`` O__2 := V2 ++ [ null ] ++ V2;
+`` OB_ := V ++ [ null, 0/0 ] ++ V;
+`` O_I := V ++ [ null, 1/0, -1/0 ] ++ V;
+`` OBI := V ++ [ null, 1/0, 0/0, -1/0 ] ++ V;
+`` Opt := [O__, OB_, O_I, OBI, Range(10)->TakeIf(it < -3), [null], null, O__2 ];
+`` B := [true, true, true];
+`` RB := [B ++ B, !B ++ !B, B ++ !B, !B ++ B, B->TakeIf(!it), null];
+`` OB := [B ++ [null] ++ B, !B ++ [null] ++ !B, B ++ [null] ++ !B, !B ++ [null] ++ B, B->TakeIf(!it), [null], null];
+``
+`` RR8 := Req->CastR8();
+`` RR4 := Req->CastR4();
+`` RIA := Req->CastIA();
+`` RI8 := Req->CastI8();
+`` RI4 := Req->CastI4();
+`` RI2 := Req->CastI2();
+`` RI1 := Req->CastI1();
+`` RU8 := Req->CastU8();
+`` RU4 := Req->CastU4();
+`` RU2 := Req->CastU2();
+`` RU1 := Req->CastU1();
+`` OR8 := Opt->CastR8();
+`` OR4 := Opt->CastR4();
+`` OIA := Opt->CastIA();
+`` OI8 := Opt->CastI8();
+`` OI4 := Opt->CastI4();
+`` OI2 := Opt->CastI2();
+`` OI1 := Opt->CastI1();
+`` OU8 := Opt->CastU8();
+`` OU4 := Opt->CastU4();
+`` OU2 := Opt->CastU2();
+`` OU1 := Opt->CastU1();
+`` SIA := Req->ToIA();
+`` SI8 := Req->ToI8();
+`` SI4 := Req->ToI4();
+`` SI2 := Req->ToI2();
+`` SI1 := Req->ToI1();
+`` SU8 := Req->ToU8();
+`` SU4 := Req->ToU4();
+`` SU2 := Req->ToU2();
+`` SU1 := Req->ToU1();
+
+// Note: the first time has slightly higher ping counts because after the first,
+// the caching enumerable wrapper around Range(10)->TakeIf(it < -3) is known to be
+// empty, so when ...->ForEach(it->CastXX()) is passed to WrapWithCount.Create<T>,
+// the result is null. The null input to the aggregates causes zero pings.
+// REVIEW: Perhaps the aggregates should ping on each item consumed rather
+// than ping before each MoveNext() call.
+RR8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RR4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RIA->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RI8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RI4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RI2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RI1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RU8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RU4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RU2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RU1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+RB->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+
+SIA->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SI8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SI4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SI2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SI1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SU8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SU4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SU2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+SU1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+
+OR8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OR4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OIA->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OI8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OI4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OI2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OI1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OU8->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OU4->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OU2->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OU1->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+OB->Map((it->Min(), it->Max(), it->MinMax(), it->MinC(), it->MaxC(), it->MinMaxC()))
+
+Req
+
+Req->Map((it->Min(it->CastR8()), it->Max(it->CastR8()), it->MinMax(it->CastR8()), it->MinC(it->CastR8()), it->MaxC(it->CastR8()), it->MinMaxC(it->CastR8())))
+Req->Map((it->Min(it->CastR4()), it->Max(it->CastR4()), it->MinMax(it->CastR4()), it->MinC(it->CastR4()), it->MaxC(it->CastR4()), it->MinMaxC(it->CastR4())))
+Req->Map((it->Min(it->CastIA()), it->Max(it->CastIA()), it->MinMax(it->CastIA()), it->MinC(it->CastIA()), it->MaxC(it->CastIA()), it->MinMaxC(it->CastIA())))
+Req->Map((it->Min(it->CastI8()), it->Max(it->CastI8()), it->MinMax(it->CastI8()), it->MinC(it->CastI8()), it->MaxC(it->CastI8()), it->MinMaxC(it->CastI8())))
+Req->Map((it->Min(it->CastI4()), it->Max(it->CastI4()), it->MinMax(it->CastI4()), it->MinC(it->CastI4()), it->MaxC(it->CastI4()), it->MinMaxC(it->CastI4())))
+Req->Map((it->Min(it->CastI2()), it->Max(it->CastI2()), it->MinMax(it->CastI2()), it->MinC(it->CastI2()), it->MaxC(it->CastI2()), it->MinMaxC(it->CastI2())))
+Req->Map((it->Min(it->CastI1()), it->Max(it->CastI1()), it->MinMax(it->CastI1()), it->MinC(it->CastI1()), it->MaxC(it->CastI1()), it->MinMaxC(it->CastI1())))
+Req->Map((it->Min(it->CastU8()), it->Max(it->CastU8()), it->MinMax(it->CastU8()), it->MinC(it->CastU8()), it->MaxC(it->CastU8()), it->MinMaxC(it->CastU8())))
+Req->Map((it->Min(it->CastU4()), it->Max(it->CastU4()), it->MinMax(it->CastU4()), it->MinC(it->CastU4()), it->MaxC(it->CastU4()), it->MinMaxC(it->CastU4())))
+Req->Map((it->Min(it->CastU2()), it->Max(it->CastU2()), it->MinMax(it->CastU2()), it->MinC(it->CastU2()), it->MaxC(it->CastU2()), it->MinMaxC(it->CastU2())))
+Req->Map((it->Min(it->CastU1()), it->Max(it->CastU1()), it->MinMax(it->CastU1()), it->MinC(it->CastU1()), it->MaxC(it->CastU1()), it->MinMaxC(it->CastU1())))
+RB->Map((it->Min(!it), it->Max(!it), it->MinMax(!it), it->MinC(!it), it->MaxC(!it), it->MinMaxC(!it)))
+
+Req->Map((it->Min(it->ToIA()), it->Max(it->ToIA()), it->MinMax(it->ToIA()), it->MinC(it->ToIA()), it->MaxC(it->ToIA()), it->MinMaxC(it->ToIA())))
+Req->Map((it->Min(it->ToI8()), it->Max(it->ToI8()), it->MinMax(it->ToI8()), it->MinC(it->ToI8()), it->MaxC(it->ToI8()), it->MinMaxC(it->ToI8())))
+Req->Map((it->Min(it->ToI4()), it->Max(it->ToI4()), it->MinMax(it->ToI4()), it->MinC(it->ToI4()), it->MaxC(it->ToI4()), it->MinMaxC(it->ToI4())))
+Req->Map((it->Min(it->ToI2()), it->Max(it->ToI2()), it->MinMax(it->ToI2()), it->MinC(it->ToI2()), it->MaxC(it->ToI2()), it->MinMaxC(it->ToI2())))
+Req->Map((it->Min(it->ToI1()), it->Max(it->ToI1()), it->MinMax(it->ToI1()), it->MinC(it->ToI1()), it->MaxC(it->ToI1()), it->MinMaxC(it->ToI1())))
+Req->Map((it->Min(it->ToU8()), it->Max(it->ToU8()), it->MinMax(it->ToU8()), it->MinC(it->ToU8()), it->MaxC(it->ToU8()), it->MinMaxC(it->ToU8())))
+Req->Map((it->Min(it->ToU4()), it->Max(it->ToU4()), it->MinMax(it->ToU4()), it->MinC(it->ToU4()), it->MaxC(it->ToU4()), it->MinMaxC(it->ToU4())))
+Req->Map((it->Min(it->ToU2()), it->Max(it->ToU2()), it->MinMax(it->ToU2()), it->MinC(it->ToU2()), it->MaxC(it->ToU2()), it->MinMaxC(it->ToU2())))
+Req->Map((it->Min(it->ToU1()), it->Max(it->ToU1()), it->MinMax(it->ToU1()), it->MinC(it->ToU1()), it->MaxC(it->ToU1()), it->MinMaxC(it->ToU1())))
+
+Opt
+
+Opt->Map((it->Min(it->CastR8()), it->Max(it->CastR8()), it->MinMax(it->CastR8()), it->MinC(it->CastR8()), it->MaxC(it->CastR8()), it->MinMaxC(it->CastR8())))
+Opt->Map((it->Min(it->CastR4()), it->Max(it->CastR4()), it->MinMax(it->CastR4()), it->MinC(it->CastR4()), it->MaxC(it->CastR4()), it->MinMaxC(it->CastR4())))
+Opt->Map((it->Min(it->CastIA()), it->Max(it->CastIA()), it->MinMax(it->CastIA()), it->MinC(it->CastIA()), it->MaxC(it->CastIA()), it->MinMaxC(it->CastIA())))
+Opt->Map((it->Min(it->CastI8()), it->Max(it->CastI8()), it->MinMax(it->CastI8()), it->MinC(it->CastI8()), it->MaxC(it->CastI8()), it->MinMaxC(it->CastI8())))
+Opt->Map((it->Min(it->CastI4()), it->Max(it->CastI4()), it->MinMax(it->CastI4()), it->MinC(it->CastI4()), it->MaxC(it->CastI4()), it->MinMaxC(it->CastI4())))
+Opt->Map((it->Min(it->CastI2()), it->Max(it->CastI2()), it->MinMax(it->CastI2()), it->MinC(it->CastI2()), it->MaxC(it->CastI2()), it->MinMaxC(it->CastI2())))
+Opt->Map((it->Min(it->CastI1()), it->Max(it->CastI1()), it->MinMax(it->CastI1()), it->MinC(it->CastI1()), it->MaxC(it->CastI1()), it->MinMaxC(it->CastI1())))
+Opt->Map((it->Min(it->CastU8()), it->Max(it->CastU8()), it->MinMax(it->CastU8()), it->MinC(it->CastU8()), it->MaxC(it->CastU8()), it->MinMaxC(it->CastU8())))
+Opt->Map((it->Min(it->CastU4()), it->Max(it->CastU4()), it->MinMax(it->CastU4()), it->MinC(it->CastU4()), it->MaxC(it->CastU4()), it->MinMaxC(it->CastU4())))
+Opt->Map((it->Min(it->CastU2()), it->Max(it->CastU2()), it->MinMax(it->CastU2()), it->MinC(it->CastU2()), it->MaxC(it->CastU2()), it->MinMaxC(it->CastU2())))
+Opt->Map((it->Min(it->CastU1()), it->Max(it->CastU1()), it->MinMax(it->CastU1()), it->MinC(it->CastU1()), it->MaxC(it->CastU1()), it->MinMaxC(it->CastU1())))
+OB->Map((it->Min(!it), it->Max(!it), it->MinMax(!it), it->MinC(!it), it->MaxC(!it), it->MinMaxC(!it)))
+
+Opt->Map((it->Min(it->ToIA()), it->Max(it->ToIA()), it->MinMax(it->ToIA()), it->MinC(it->ToIA()), it->MaxC(it->ToIA()), it->MinMaxC(it->ToIA())))
+Opt->Map((it->Min(it->ToI8()), it->Max(it->ToI8()), it->MinMax(it->ToI8()), it->MinC(it->ToI8()), it->MaxC(it->ToI8()), it->MinMaxC(it->ToI8())))
+Opt->Map((it->Min(it->ToI4()), it->Max(it->ToI4()), it->MinMax(it->ToI4()), it->MinC(it->ToI4()), it->MaxC(it->ToI4()), it->MinMaxC(it->ToI4())))
+Opt->Map((it->Min(it->ToI2()), it->Max(it->ToI2()), it->MinMax(it->ToI2()), it->MinC(it->ToI2()), it->MaxC(it->ToI2()), it->MinMaxC(it->ToI2())))
+Opt->Map((it->Min(it->ToI1()), it->Max(it->ToI1()), it->MinMax(it->ToI1()), it->MinC(it->ToI1()), it->MaxC(it->ToI1()), it->MinMaxC(it->ToI1())))
+Opt->Map((it->Min(it->ToU8()), it->Max(it->ToU8()), it->MinMax(it->ToU8()), it->MinC(it->ToU8()), it->MaxC(it->ToU8()), it->MinMaxC(it->ToU8())))
+Opt->Map((it->Min(it->ToU4()), it->Max(it->ToU4()), it->MinMax(it->ToU4()), it->MinC(it->ToU4()), it->MaxC(it->ToU4()), it->MinMaxC(it->ToU4())))
+Opt->Map((it->Min(it->ToU2()), it->Max(it->ToU2()), it->MinMax(it->ToU2()), it->MinC(it->ToU2()), it->MaxC(it->ToU2()), it->MinMaxC(it->ToU2())))
+Opt->Map((it->Min(it->ToU1()), it->Max(it->ToU1()), it->MinMax(it->ToU1()), it->MinC(it->ToU1()), it->MaxC(it->ToU1()), it->MinMaxC(it->ToU1())))
+
+Req->Map(it->Map(it + #it - 5))
+
+Req->Map((it->Min((it + #it - 5)->CastR8()), it->Max((it + #it - 5)->CastR8()), it->MinMax((it + #it - 5)->CastR8()), it->MinC((it + #it - 5)->CastR8()), it->MaxC((it + #it - 5)->CastR8()), it->MinMaxC((it + #it - 5)->CastR8())))
+Req->Map((it->Min((it + #it - 5)->CastR4()), it->Max((it + #it - 5)->CastR4()), it->MinMax((it + #it - 5)->CastR4()), it->MinC((it + #it - 5)->CastR4()), it->MaxC((it + #it - 5)->CastR4()), it->MinMaxC((it + #it - 5)->CastR4())))
+Req->Map((it->Min((it + #it - 5)->CastIA()), it->Max((it + #it - 5)->CastIA()), it->MinMax((it + #it - 5)->CastIA()), it->MinC((it + #it - 5)->CastIA()), it->MaxC((it + #it - 5)->CastIA()), it->MinMaxC((it + #it - 5)->CastIA())))
+Req->Map((it->Min((it + #it - 5)->CastI8()), it->Max((it + #it - 5)->CastI8()), it->MinMax((it + #it - 5)->CastI8()), it->MinC((it + #it - 5)->CastI8()), it->MaxC((it + #it - 5)->CastI8()), it->MinMaxC((it + #it - 5)->CastI8())))
+Req->Map((it->Min((it + #it - 5)->CastI4()), it->Max((it + #it - 5)->CastI4()), it->MinMax((it + #it - 5)->CastI4()), it->MinC((it + #it - 5)->CastI4()), it->MaxC((it + #it - 5)->CastI4()), it->MinMaxC((it + #it - 5)->CastI4())))
+Req->Map((it->Min((it + #it - 5)->CastI2()), it->Max((it + #it - 5)->CastI2()), it->MinMax((it + #it - 5)->CastI2()), it->MinC((it + #it - 5)->CastI2()), it->MaxC((it + #it - 5)->CastI2()), it->MinMaxC((it + #it - 5)->CastI2())))
+Req->Map((it->Min((it + #it - 5)->CastI1()), it->Max((it + #it - 5)->CastI1()), it->MinMax((it + #it - 5)->CastI1()), it->MinC((it + #it - 5)->CastI1()), it->MaxC((it + #it - 5)->CastI1()), it->MinMaxC((it + #it - 5)->CastI1())))
+Req->Map((it->Min((it + #it - 5)->CastU8()), it->Max((it + #it - 5)->CastU8()), it->MinMax((it + #it - 5)->CastU8()), it->MinC((it + #it - 5)->CastU8()), it->MaxC((it + #it - 5)->CastU8()), it->MinMaxC((it + #it - 5)->CastU8())))
+Req->Map((it->Min((it + #it - 5)->CastU4()), it->Max((it + #it - 5)->CastU4()), it->MinMax((it + #it - 5)->CastU4()), it->MinC((it + #it - 5)->CastU4()), it->MaxC((it + #it - 5)->CastU4()), it->MinMaxC((it + #it - 5)->CastU4())))
+Req->Map((it->Min((it + #it - 5)->CastU2()), it->Max((it + #it - 5)->CastU2()), it->MinMax((it + #it - 5)->CastU2()), it->MinC((it + #it - 5)->CastU2()), it->MaxC((it + #it - 5)->CastU2()), it->MinMaxC((it + #it - 5)->CastU2())))
+Req->Map((it->Min((it + #it - 5)->CastU1()), it->Max((it + #it - 5)->CastU1()), it->MinMax((it + #it - 5)->CastU1()), it->MinC((it + #it - 5)->CastU1()), it->MaxC((it + #it - 5)->CastU1()), it->MinMaxC((it + #it - 5)->CastU1())))
+RB->Map((it->Min(it and #it mod 2 = 0), it->Max(it and #it mod 2 = 0), it->MinMax(it and #it mod 2 = 0), it->MinC(it and #it mod 2 = 0), it->MaxC(it and #it mod 2 = 0), it->MinMaxC(it and #it mod 2 = 0)))
+RB->Map((it->Min(it or #it mod 2 = 0), it->Max(it or #it mod 2 = 0), it->MinMax(it or #it mod 2 = 0), it->MinC(it or #it mod 2 = 0), it->MaxC(it or #it mod 2 = 0), it->MinMaxC(it or #it mod 2 = 0)))
+
+Opt->Map(it->Map(it + #it - 5))
+
+Opt->Map((it->Min((it + #it - 5)->CastR8()), it->Max((it + #it - 5)->CastR8()), it->MinMax((it + #it - 5)->CastR8()), it->MinC((it + #it - 5)->CastR8()), it->MaxC((it + #it - 5)->CastR8()), it->MinMaxC((it + #it - 5)->CastR8())))
+Opt->Map((it->Min((it + #it - 5)->CastR4()), it->Max((it + #it - 5)->CastR4()), it->MinMax((it + #it - 5)->CastR4()), it->MinC((it + #it - 5)->CastR4()), it->MaxC((it + #it - 5)->CastR4()), it->MinMaxC((it + #it - 5)->CastR4())))
+Opt->Map((it->Min((it + #it - 5)->CastIA()), it->Max((it + #it - 5)->CastIA()), it->MinMax((it + #it - 5)->CastIA()), it->MinC((it + #it - 5)->CastIA()), it->MaxC((it + #it - 5)->CastIA()), it->MinMaxC((it + #it - 5)->CastIA())))
+Opt->Map((it->Min((it + #it - 5)->CastI8()), it->Max((it + #it - 5)->CastI8()), it->MinMax((it + #it - 5)->CastI8()), it->MinC((it + #it - 5)->CastI8()), it->MaxC((it + #it - 5)->CastI8()), it->MinMaxC((it + #it - 5)->CastI8())))
+Opt->Map((it->Min((it + #it - 5)->CastI4()), it->Max((it + #it - 5)->CastI4()), it->MinMax((it + #it - 5)->CastI4()), it->MinC((it + #it - 5)->CastI4()), it->MaxC((it + #it - 5)->CastI4()), it->MinMaxC((it + #it - 5)->CastI4())))
+Opt->Map((it->Min((it + #it - 5)->CastI2()), it->Max((it + #it - 5)->CastI2()), it->MinMax((it + #it - 5)->CastI2()), it->MinC((it + #it - 5)->CastI2()), it->MaxC((it + #it - 5)->CastI2()), it->MinMaxC((it + #it - 5)->CastI2())))
+Opt->Map((it->Min((it + #it - 5)->CastI1()), it->Max((it + #it - 5)->CastI1()), it->MinMax((it + #it - 5)->CastI1()), it->MinC((it + #it - 5)->CastI1()), it->MaxC((it + #it - 5)->CastI1()), it->MinMaxC((it + #it - 5)->CastI1())))
+Opt->Map((it->Min((it + #it - 5)->CastU8()), it->Max((it + #it - 5)->CastU8()), it->MinMax((it + #it - 5)->CastU8()), it->MinC((it + #it - 5)->CastU8()), it->MaxC((it + #it - 5)->CastU8()), it->MinMaxC((it + #it - 5)->CastU8())))
+Opt->Map((it->Min((it + #it - 5)->CastU4()), it->Max((it + #it - 5)->CastU4()), it->MinMax((it + #it - 5)->CastU4()), it->MinC((it + #it - 5)->CastU4()), it->MaxC((it + #it - 5)->CastU4()), it->MinMaxC((it + #it - 5)->CastU4())))
+Opt->Map((it->Min((it + #it - 5)->CastU2()), it->Max((it + #it - 5)->CastU2()), it->MinMax((it + #it - 5)->CastU2()), it->MinC((it + #it - 5)->CastU2()), it->MaxC((it + #it - 5)->CastU2()), it->MinMaxC((it + #it - 5)->CastU2())))
+Opt->Map((it->Min((it + #it - 5)->CastU1()), it->Max((it + #it - 5)->CastU1()), it->MinMax((it + #it - 5)->CastU1()), it->MinC((it + #it - 5)->CastU1()), it->MaxC((it + #it - 5)->CastU1()), it->MinMaxC((it + #it - 5)->CastU1())))
+OB->Map((it->Min(it and #it mod 2 = 0), it->Max(it and #it mod 2 = 0), it->MinMax(it and #it mod 2 = 0), it->MinC(it and #it mod 2 = 0), it->MaxC(it and #it mod 2 = 0), it->MinMaxC(it and #it mod 2 = 0)))
+OB->Map((it->Min(it or #it mod 2 = 0), it->Max(it or #it mod 2 = 0), it->MinMax(it or #it mod 2 = 0), it->MinC(it or #it mod 2 = 0), it->MaxC(it or #it mod 2 = 0), it->MinMaxC(it or #it mod 2 = 0)))

@@ -1,0 +1,48 @@
+﻿``` T:=[{A:true},{A:false},{A:null}];
+``` S:=[{A:true},{A:false}];
+
+// AND truth table.
+Map(T, Map(T, it$0.A and it$1.A))
+Map(S, Map(T, it$0.A and it$1.A))
+Map(S, Map(T, it$1.A and it$0.A))
+Map(S, Map(S, it$0.A and it$1.A))
+
+// OR truth table.
+Map(T, Map(T, it$0.A or it$1.A))
+Map(S, Map(T, it$0.A or it$1.A))
+Map(S, Map(T, it$1.A or it$0.A))
+Map(S, Map(S, it$0.A or it$1.A))
+
+// Three or more operands
+Map(T, Map(T, it$0.A and it$1.A and Wrap(true)))
+Map(S, Map(T, it$0.A and it$1.A and Wrap(true)))
+Map(S, Map(T, it$1.A and it$0.A and Wrap(true)))
+Map(S, Map(S, it$0.A and it$1.A and Wrap(true)))
+Map(T, Map(T, it$0.A and it$1.A and Wrap(false)))
+Map(S, Map(T, it$0.A and it$1.A and Wrap(false)))
+Map(S, Map(T, it$1.A and it$0.A and Wrap(false)))
+Map(S, Map(S, it$0.A and it$1.A and Wrap(false)))
+Map(T, Map(T, it$0.A and it$1.A and Wrap(null)))
+Map(S, Map(T, it$0.A and it$1.A and Wrap(null)))
+Map(S, Map(T, it$1.A and it$0.A and Wrap(null)))
+Map(S, Map(S, it$0.A and it$1.A and Wrap(null)))
+
+Map(T, Map(T, it$0.A or it$1.A or Wrap(true)))
+Map(S, Map(T, it$0.A or it$1.A or Wrap(true)))
+Map(S, Map(T, it$1.A or it$0.A or Wrap(true)))
+Map(S, Map(S, it$0.A or it$1.A or Wrap(true)))
+Map(T, Map(T, it$0.A or it$1.A or Wrap(false)))
+Map(S, Map(T, it$0.A or it$1.A or Wrap(false)))
+Map(S, Map(T, it$1.A or it$0.A or Wrap(false)))
+Map(S, Map(S, it$0.A or it$1.A or Wrap(false)))
+Map(T, Map(T, it$0.A or it$1.A or Wrap(null)))
+Map(S, Map(T, it$0.A or it$1.A or Wrap(null)))
+Map(S, Map(T, it$1.A or it$0.A or Wrap(null)))
+Map(S, Map(S, it$0.A or it$1.A or Wrap(null)))
+
+// NOT truth table.
+Map(S, not it$0.A)
+Map(T, not it$0.A)
+
+// Test with nested scopes.
+[[true, false, true], [false, true], [true]] | Map(_, First(it$0, not it$0) or Count(it$0) > 2)

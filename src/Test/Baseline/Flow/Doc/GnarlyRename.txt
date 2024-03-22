@@ -1,0 +1,63 @@
+Add: 00000001 [B], Fma: [1+1]
+Add: 00000002 [X.Y.B], Fma: [1]
+Add: 00000003 [X.Y.C], Fma: [Y.B + @X.Y.B + B + @B]
+Add: 00000004 [F], Fma: [X.Y.B + B]
+Add: 00000005 [X.Y.G], Fma: [B]
+Status: 5 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y
+  Node changes:
+    00000001 [B]: [A  tT  B C dD  ], Base: i8
+    00000002 [X.Y.B]: [A  tT  B C dD  ], Base: i8
+    00000003 [X.Y.C]: [A  tTuUB C dD  ], Base: i8
+    00000004 [F]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Y.G]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 00000002 [Y.B] <= [X.Y.B]
+Fma: 00000003 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [@Y.B + @Y.B + @Y.B + @B]
+Fma: 00000004 [F], Main: [X.Y.B + B] => [Y.B + B]
+Fma: 00000005 [X.Y.G], Main: [B] => [@Y.B]
+Status: 5 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.Y
+  Node changes:
+    00000002 [Y.B]: [ N     B       ], Base: i8
+    00000003 [X.Y.C]: [       B       ], Base: i8
+    00000004 [F]: [       B       ], Base: i8
+    00000005 [X.Y.G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000002 [X.Y.B] <= [Y.B]
+Fma: 00000003 [X.Y.C], Main: [@Y.B + @Y.B + @Y.B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000004 [F], Main: [Y.B + B] => [X.Y.B + B]
+Fma: 00000005 [X.Y.G], Main: [@Y.B] => [B]
+Status: 5 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y
+  Node changes:
+    00000002 [X.Y.B]: [ N     B       ], Base: i8
+    00000003 [X.Y.C]: [       B       ], Base: i8
+    00000004 [F]: [       B       ], Base: i8
+    00000005 [X.Y.G]: [       B       ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [B]
+Del: 00000002 [X.Y.B]
+Del: 00000003 [X.Y.C]
+Del: 00000004 [F]
+Del: 00000005 [X.Y.G]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [B], Fma: [1+1]
+Add: 00000002 [Y.B], Fma: [1]
+Add: 00000003 [X.Y.C], Fma: [@Y.B + @Y.B + @Y.B + @B]
+Add: 00000004 [F], Fma: [Y.B + B]
+Add: 00000005 [X.Y.G], Fma: [@Y.B]
+Status: 5 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.Y
+  Node changes:
+    00000001 [B]: [A  tT  B C dD  ], Base: i8
+    00000002 [Y.B]: [A  tT  B C dD  ], Base: i8
+    00000003 [X.Y.C]: [A  tTuUB C dD  ], Base: i8
+    00000004 [F]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Y.G]: [A  tTuUB C dD  ], Base: i8
+###

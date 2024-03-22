@@ -1,0 +1,100 @@
+﻿namespace Linear;
+
+    namespace Linear.Private;
+
+        // Given non-negative integer n, produce the sequence of true/false bits from low to high.
+        func Bits(n) :=
+            Range(64)
+                ->ScanX(cur: n max 0, cur shru 1)
+                ->TakeWhile(it > 0)
+                ->ForEach(it band 1 != 0);
+
+        // Return the identity matrix of dimension d.
+        func Id(d) :=
+            Tensor.From(
+                Range(d)->ChainMap(as i, Range(d)->ForEach(as j, 1ia if i = j else 0)),
+                d, d
+            );
+
+        func TM(d, coefs) :=
+            Tensor.From(
+                Range(d - 1)->ChainMap(as i, Range(d)->ForEach(as j, 1ia if i + 1 = j else 0)) ++ coefs,
+                d, d
+            );
+
+        // Raise tm to the power n and then multiply be v.
+        func PowTimes(n, d, tm, v) :=
+            Bits(n)->Fold(as bit,
+                cur: (Id(d), tm, false),
+                With(
+                    // For the first we don't square the matrix M.
+                    M: cur[1]->Dot(cur[1]) if cur[2] else cur[1],
+                    ( cur[0]->Dot(M) if bit else cur[0], M, true)
+                ),
+                cur[0]->Dot(v)
+            );
+
+        // Compute the nth item of the linear recurrence defined by the given transition matrix
+        // and initial values.
+        func One(n, d, tm, vals) := vals[n] if n < d else PowTimes(n - d + 1, d, tm, vals)[d - 1];
+
+        // Compute the sequence form 0 through n of the linear recurrence defined by the given
+        // transition matrix and initial values.
+        func Seq(n, d, tm, vals) :=
+            Range(n)->ScanX(
+                cur: (vals, 1),
+                (cur[0] if cur[1] < d else tm->Dot(cur[0]), cur[1] + 1),
+                cur[0][(cur[1] min d) - 1]
+            );
+
+        // Compute the sequence form 0 through n of the linear recurrence defined by the given
+        // transition matrix and initial values. Include the index in the result.
+        func SeqInd(n, d, tm, vals) :=
+            Range(n)->ScanX(
+                cur: (vals, 1),
+                (cur[0] if cur[1] < d else tm->Dot(cur[0]), cur[1] + 1),
+                (cur[1] - 1, cur[0][(cur[1] min d) - 1])
+            );
+
+    namespace Linear;
+
+    func One(n, ts, init) :=
+        With(
+            d: ts->Count(),
+            Private.One(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+        );
+
+    func Seq(n, ts, init) :=
+        With(
+            d: ts->Count(),
+            Private.Seq(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+        );
+
+    func SeqInd(n, ts, init) :=
+        With(
+            d: ts->Count(),
+            Private.SeqInd(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+        );
+
+    func FibOne(n) := One(n, [1, 1], [0, 1]);
+    func FibSeq(n) := Seq(n, [1, 1], [0, 1]);
+    func FibSeqInd(n) := SeqInd(n, [1, 1], [0, 1]);
+
+namespace;
+
+Linear.FibOne(10);
+Linear.FibSeq(10);
+Linear.FibSeqInd(10);
+"*** Golden Ratio ***";
+(1 + Sqrt(5)) / 2;
+Range(11)->ForEach(With(n: 1 shl it, (n, Linear.FibOne(n))))->ForEach(Exp(Ln(it[1]) / it[0]));
+
+// Sum the previous three.
+Coefs := [1, 1, 1];
+Inits := [0, 0, 1];
+
+Linear.One(10, Coefs, Inits);
+Linear.Seq(10, Coefs, Inits);
+Linear.SeqInd(10, Coefs, Inits);
+"*** Largest Eigenvalue ***";
+Range(11)->ForEach(With(n: 1 shl it, (n, Linear.One(n, Coefs, Inits))))->ForEach(Exp(Ln(it[1]) / it[0]));

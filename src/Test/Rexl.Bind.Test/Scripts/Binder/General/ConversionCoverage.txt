@@ -1,0 +1,19 @@
+﻿`` func G(x) := CastGen(x);
+:: { s:s }
+
+Tensor.Add(Tensor.Fill(3, 5), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.From(Range(5)), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(7.5, 5))
+Tensor.Add(Tensor.Add(Tensor.From([0, 1, 2, 3, 4]), Tensor.Fill(3, 5)), Tensor.Fill(7.5, 5))
+
+[ 3, "hi" ]
+[ { A: 3, B:   "hi"  }, { A: 3.5, B: 17 } ]
+[ { A: 3, B: G("hi") }, { A: 3.5, B: 17 } ]
+[ { A: 3, B: G("hi") }, { A:   (3, true) , B: 17 } ]
+[ { A: 3, B: G("hi") }, { A: G((3, true)), B: 17 } ]
+[ { A: 3, B: G("hi"), C:   7  }, { A: G((3, true)), B: 17, C: "bye" } ]
+[ { A: 3, B: G("hi"), C: G(7) }, { A: G((3, true)), B: 17, C: "bye" } ]
+
+3 min "hi"
+s ?? 3
+s if false else 3

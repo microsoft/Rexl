@@ -1,0 +1,124 @@
+﻿`` Acct := "SomeAccount";
+`` Path := "SomePath";
+`` Url := "https://microsoft.com/Resource.blah";
+`` File := @"c:\MyDir\MyFile.blah";
+`` E := "";
+`` func Props(link) := (link.Kind, link.Account, link.Path);
+`` func PropFuncs(link) := (Link.Kind(link), Link.Account(link), Link.Path(link));
+
+// The return type varies in optness depending on the args.
+Link.LocalText(File)
+Link.LocalData(File)
+Link.LocalImage(File)
+Link.LocalAudio(File)
+Link.LocalVideo(File)
+Link.LocalPDF(File)
+Link.LocalText("C:\\Whatever.blah")
+Link.LocalData("C:\\Whatever.blah")
+Link.LocalImage("C:\\Whatever.blah")
+Link.LocalAudio("C:\\Whatever.blah")
+Link.LocalVideo("C:\\Whatever.blah")
+Link.LocalPDF("C:\\Whatever.blah")
+
+Link.LocalText(File)->IsNull()
+Link.LocalText(E)->IsNull()
+
+Link.WebText(Url)
+Link.WebData(Url)
+Link.WebImage(Url)
+Link.WebAudio(Url)
+Link.WebVideo(Url)
+Link.WebPDF(Url)
+Link.WebText("https://microsoft.com/something.blah")
+Link.WebData("https://microsoft.com/something.blah")
+Link.WebImage("https://microsoft.com/something.blah")
+Link.WebAudio("https://microsoft.com/something.blah")
+Link.WebVideo("https://microsoft.com/something.blah")
+Link.WebPDF("https://microsoft.com/something.blah")
+
+Link.BlobText(Acct, Path)
+Link.BlobData(Acct, Path)
+Link.BlobImage(Acct, Path)
+Link.BlobAudio(Acct, Path)
+Link.BlobVideo(Acct, Path)
+Link.BlobPDF(Acct, Path)
+Link.BlobText(Acct, "path")
+Link.BlobData(Acct, "path")
+Link.BlobImage(Acct, "path")
+Link.BlobAudio(Acct, "path")
+Link.BlobVideo(Acct, "path")
+Link.BlobPDF(Acct, "file")
+Link.BlobText("acct", Path)
+Link.BlobData("acct", Path)
+Link.BlobImage("acct", Path)
+Link.BlobAudio("acct", Path)
+Link.BlobVideo("acct", Path)
+Link.BlobPDF("acct", Path)
+Link.BlobText("acct", "path")
+Link.BlobData("acct", "path")
+Link.BlobImage("acct", "path")
+Link.BlobAudio("acct", "path")
+Link.BlobVideo("acct", "path")
+Link.BlobPDF("acct", "path")
+
+Link.DataLakeText(Acct, Path)
+Link.DataLakeData(Acct, Path)
+Link.DataLakeImage(Acct, Path)
+Link.DataLakeAudio(Acct, Path)
+Link.DataLakeVideo(Acct, Path)
+Link.DataLakePDF(Acct, Path)
+
+Link.LegacyDataLakeText(Acct, Path)
+Link.LegacyDataLakeData(Acct, Path)
+Link.LegacyDataLakeImage(Acct, Path)
+Link.LegacyDataLakeAudio(Acct, Path)
+Link.LegacyDataLakeVideo(Acct, Path)
+Link.LegacyDataLakePDF(Acct, Path)
+
+Link.LocalText(E)
+Link.BlobText(E, Path)
+Link.BlobText(Acct, E)
+Link.BlobText(E, E)
+
+Props(Link.LocalText(File))
+Props(Link.LocalText(E))
+Props(Link.WebText(Url))
+Props(Link.BlobText(Acct, Path))
+Props(Link.BlobText(E, Path))
+Props(Link.DataLakeText(Acct, Path))
+Props(Link.LegacyDataLakeText(Acct, Path))
+
+PropFuncs(Link.LocalText(File))
+PropFuncs(Link.LocalText(E))
+
+Tensor.From([Link.LocalText("A"), Link.LocalText("B")], 3)[2].Kind
+
+Link.Local("Text", File)
+Link.Local("PDF", "C:\\Whatever.blah")
+Link.Local("", File)
+Link.Local(null, File)
+Link.Local(1234, "C:\\Whatever.blah")   // Error
+Link.Local("Ima ge", "C:\\Whatever.blah")   // Error
+
+Link.Local("Text", E)->IsNull()
+Link.Local(null, File)->IsNull()
+Link.Local(1234, "C:\\Whatever.blah")->IsNull() // Error
+Link.Local("Ima ge", "C:\\Whatever.blah")->IsNull() // Error
+
+Link.Web("Txt", Url)
+Link.Web("Mof", "https://microsoft.com/something.blah")
+Link.Web("", Url)
+Link.Web("-", "https://microsoft.com/something.blah")   // Error
+
+Link.Blob("PDF", Acct, Path)
+Link.Blob("", Acct, Path)
+Link.Blob(null, Acct, Path)
+Link.Blob(1234, Acct, Path) // Error
+
+Link.Blob("Txt", Acct, "file")
+Link.Blob("Txt", "acct", Path)
+Link.Blob("PDF", "acct", "path")
+Link.DataLake("PDF", Acct, Path)
+Link.DataLake("", Acct, Path)
+Link.LegacyDataLake("PDF", Acct, Path)
+Link.LegacyDataLake(null, Acct, Path)

@@ -1,0 +1,30 @@
+﻿import _DATA_ & "Games.rexl";
+
+TeamGames :=
+  Games->{ Team: Home, Against: Away, Pts: HScore, PtsAgainst: AScore, IsHome: true,  When } ++
+  Games->{ Team: Away, Against: Home, Pts: AScore, PtsAgainst: HScore, IsHome: false, When };
+TeamGames->Count();
+
+Teams := TeamGames
+  ->GroupBy(Team, XGames)
+  ->Sort(Team)
+  +>{ Wins: XGames->Count(Pts > PtsAgainst), XPtsDiff: XGames->Sum(Pts - PtsAgainst) };
+
+// Show the team info without the individual games.
+Teams
+  +>{ XGames: null }
+  ->Sort(Wins, XPtsDiff, Team);
+
+// Find rivals.
+Teams->{ Team, XRivals: XGames->GroupBy(Against, G)->Filter(G->Count() > 1).Against->Text.Concat("|") };
+
+// Find divisions.
+Divisions := Teams
+  +>{ Team, Div: (XGames->GroupBy(Against, G)->Filter(G->Count() > 1).Against ++ [Team])->Sort()->Text.Concat("|") }
+  ->GroupBy(Div, Teams)
+  +>{ Wins: Teams->Sum(Wins), XPtsDiff: Teams->Sum(XPtsDiff) };
+
+// Show the division info without the individual teams.
+Divisions
+  +>{ Teams: null }
+  ->Sort(Wins, XPtsDiff, Div);

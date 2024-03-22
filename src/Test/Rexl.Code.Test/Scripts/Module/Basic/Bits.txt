@@ -1,0 +1,37 @@
+BitPlan := plan {
+  param Domain := Range(10)->(1 shl it);
+  param N := 19;
+
+  var Bits from Domain def [];
+  msr Num := Count(Bits);
+  msr Sum := Sum(Bits);
+  msr Dif := N - Sum;
+  msr Neg := Sum - N;
+
+  con Limit := Sum <= N;
+};
+
+"*** Symbols ***";
+BitPlan.Domain;
+BitPlan.N;
+BitPlan.Bits;
+BitPlan.Sum;
+BitPlan.Num;
+BitPlan.Limit;
+
+"*** Evals ***";
+BitPlan;
+BitPlan with { Bits: [ 16 ] };
+BitPlan with { Bits: [ 16, 2, 1 ] };
+
+R := { Bits: [ 4, 8, 1 ] };
+BitPlan with (R+>{ N: 13 });
+BitPlan with { Bits: [ 4, 8, 1 ] } => { N: 13 };
+
+BitPlan with { Bits: Domain };
+
+BitPlan with { Bits: BitPlan.Domain };
+
+BitPlan with { Bits: [ "hi" ] }; // Type error.
+
+BitPlan with ("hi"); // Need record error.

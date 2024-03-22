@@ -1,0 +1,19 @@
+﻿Range(5)->Map(Range(it,it+5)->Map(Range(it,it+5)))
+Range(5)->Map(Range(it,it+5)->Map({a:Range(it,it+5), b:it}))
+Range(5)->Map(Range(it,it+5)->Map((Range(it,it+5), it)))
+
+Range(5)->Map({a:Range(it,it+5)->Map(Range(it,it+5)), b:it})
+Range(5)->Map((Range(it,it+5)->Map(Range(it,it+5)), it))
+
+Range(5)->Map({a:Range(it,it+5)->Map({c:Range(it,it+5), d:-it}), b:it})
+Range(5)->Map((Range(it,it+5)->Map((Range(it,it+5), -it)), it))
+Range(5)->Map((Range(it,it+5)->Map({c:Range(it,it+5), d:-it}), it))
+Range(5)->Map({a:Range(it,it+5)->Map((Range(it,it+5), -it)), b:it})
+
+// The nested sequences are shared.
+Repeat(Range(10), 5)
+Repeat({a:Range(10)}, 5)
+Repeat((Range(10),), 5)
+
+// The sequence S is used after it has been processed (removed from the queue).
+With(S: Range(5), { A:S, B:[S, S]})

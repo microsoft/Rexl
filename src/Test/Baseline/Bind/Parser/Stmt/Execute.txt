@@ -1,0 +1,63 @@
+> execute code
+Node: [import code]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,12) [execute code]], count=1
+  01   Node[id:1, kind:ExecuteStmt, depth:2, tok:KwdExecute, rng:(0,7) [execute], full:(0,12) [execute code]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:code, rng:(8,12) [code], full:(8,12) [code], extra=[code]]
+
+   0) [0] Execute: code
+   1) [0] End
+###
+> execute code in namespace A;
+Node: [import code in namespace A]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,28) [execute code in namespace A;]], count=1
+  01   Node[id:1, kind:ExecuteStmt, depth:2, tok:KwdExecute, rng:(0,7) [execute], full:(0,12) [execute code], extra=[in namespace A]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:code, rng:(8,12) [code], full:(8,12) [code], extra=[code]]
+
+   0) [0] Execute in A: code
+   1) [0] End
+###
+> execute code in namespace A.B;
+Node: [import code in namespace A.B]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,30) [execute code in namespace A.B;]], count=1
+  01   Node[id:1, kind:ExecuteStmt, depth:2, tok:KwdExecute, rng:(0,7) [execute], full:(0,12) [execute code], extra=[in namespace A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:code, rng:(8,12) [code], full:(8,12) [code], extra=[code]]
+
+   0) [0] Execute in A.B: code
+   1) [0] End
+###
+> execute code in namespace @A.B;
+Node: [import code in namespace @A.B]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,31) [execute code in namespace @A.B;]], count=1
+  01   Node[id:1, kind:ExecuteStmt, depth:2, tok:KwdExecute, rng:(0,7) [execute], full:(0,12) [execute code], extra=[in namespace @A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:code, rng:(8,12) [code], full:(8,12) [code], extra=[code]]
+
+   0) [0] Execute in @A.B: code
+   1) [0] End
+###
+> execute code in A;
+Node: [import code in A]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:KwdExecute, rng:(0,7) [execute], full:(0,18) [execute code in A;]], count=1
+  01   Node[id:3, kind:ExecuteStmt, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,17) [execute code in A]], count=1
+  02     Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(13,15) [in], full:(8,17) [code in A], extra=[In]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:code, rng:(8,12) [code], full:(8,12) [code], extra=[code]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:A, rng:(16,17) [A], full:(16,17) [A], extra=[A]]
+
+   0) [0] Execute: code in A
+   1) [0] End
+###
+> execute in namespace A.B;
+Node: [import (<missing>) in namespace A.B]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdExecute, rng:(0,7) [execute], full:(0,25) [execute in namespace A.B;]], count=1
+  01   Node[id:1, kind:ExecuteStmt, depth:2, tok:KwdExecute, rng:(0,7) [execute], full:(0,10) [execute in], extra=[in namespace A.B]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:KwdIn, rng:(8,10) [in], full:(8,10) [in], extra=[<missing>]]
+Error: (8,10) Tok: 'in', Message: Expected an operand
+
+   0) [0] Execute in A.B: (<missing>)
+   1) [0] End
+###

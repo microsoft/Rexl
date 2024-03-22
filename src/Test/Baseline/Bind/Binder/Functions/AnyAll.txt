@@ -1,0 +1,282 @@
+**** New globals: {N:i2?*, T:{A:b?, X:i4, Y:i2, Z:r4?}*, b:b, g:g*, ns:i8, o:o*, qb:b?, s:s*, sb:b*, sbq:b?*}
+
+> Any(ns)
+Any(ns) : b
+*** Error: (4,6) Node: ns, Message: Invalid operand type: cannot convert type 'i8' to 'b*'
+Binder : Any(Error(ErrBadType_Src_Dst))
+###
+> Any(ns, b)
+Any(ns, b) : b
+*** Error: (4,6) Node: ns, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Any(*1: Error(ErrBadType_Src_Dst), b)
+###
+> Any(g, b)
+Any(g, b) : b
+Binder : Any(*1: g, b)
+###
+> Any(o, b)
+Any(o, b) : b
+Binder : Any(*1: o, b)
+###
+> Any(g, qb)
+Any(g, qb) : b?
+Binder : Any(*1: g, qb)
+###
+> Any(o, qb)
+Any(o, qb) : b?
+Binder : Any(*1: o, qb)
+###
+> Any(sb)
+Any(sb) : b
+Binder : Any(sb)
+###
+> Any(sbq)
+Any(sbq) : b?
+Binder : Any(sbq)
+###
+> Any(T, X > Y)
+Any(T, X $> Y) : b
+Binder : Any(*1: T, *1.X @> Num<i4>(*1.Y))
+###
+> Any(T, X > Z)
+Any(T, X $> Z) : b
+Binder : Any(*1: T, Num<r4>(*1.X) $> *1.Z)
+###
+> Any(T, b)
+Any(T, b) : b
+Binder : Any(*1: T, b)
+###
+> Any(T, qb)
+Any(T, qb) : b?
+Binder : Any(*1: T, qb)
+###
+> Any(T, A)
+Any(T, A) : b?
+Binder : Any(*1: T, *1.A)
+###
+> Any(n : N, n > 2i2)
+Any(n : N, n $> 2) : b
+Binder : Any(*1: N, *1 $> 2)
+###
+> Any(T, true) // REVIEW: Worth reducing to `!IsEmpty(T)`?
+Any(T, true) : b
+Binder : Any(*1: T, true)
+###
+> Any(T, false)
+Any(T, false) : b
+Binder : Any(*1: T, false)
+Reducer: false
+###
+> Any(T, null) // REVIEW: Worth reducing to `If(IsEmpty(T), false, null)`?
+Any(T, null) : b?
+Binder : Any(*1: T, null)
+###
+> Any(T, Opt(true))
+Any(T, Opt(true)) : b?
+Binder : Any(*1: T, Opt*(true))
+Reducer: Any(*1: T, Opt<b?>(true))
+###
+> Any(T, Opt(false))
+Any(T, Opt(false)) : b?
+Binder : Any(*1: T, Opt*(false))
+Reducer: Opt<b?>(false)
+###
+> Any(T, Null(false))
+Any(T, Null(false)) : b?
+Binder : Any(*1: T, DefOpt*(false))
+Reducer: Any(*1: T, null)
+###
+> Any([], true)
+Any([], true) : b
+Binder : Any(*1: null, true)
+Reducer: false
+###
+> Any([], false)
+Any([], false) : b
+Binder : Any(*1: null, false)
+Reducer: false
+###
+> Any([], null)
+Any([], null) : b?
+Binder : Any(*1: null, null)
+Reducer: Opt<b?>(false)
+###
+> Any([1], true)
+Any([1], true) : b
+Binder : Any(*1: [1], true)
+Reducer: true
+###
+> Any([1], false)
+Any([1], false) : b
+Binder : Any(*1: [1], false)
+Reducer: false
+###
+> Any([1], null)
+Any([1], null) : b?
+Binder : Any(*1: [1], null)
+Reducer: null
+###
+> Any([1], Opt(true))
+Any([1], Opt(true)) : b?
+Binder : Any(*1: [1], Opt*(true))
+Reducer: Opt<b?>(true)
+###
+> Any([1], Opt(false))
+Any([1], Opt(false)) : b?
+Binder : Any(*1: [1], Opt*(false))
+Reducer: Opt<b?>(false)
+###
+> Any([1], Null(false))
+Any([1], Null(false)) : b?
+Binder : Any(*1: [1], DefOpt*(false))
+Reducer: null
+###
+> All(g, b)
+All(g, b) : b
+Binder : All(*1: g, b)
+###
+> All(o, b)
+All(o, b) : b
+Binder : All(*1: o, b)
+###
+> All(g, qb)
+All(g, qb) : b?
+Binder : All(*1: g, qb)
+###
+> All(o, qb)
+All(o, qb) : b?
+Binder : All(*1: o, qb)
+###
+> All(sb)
+All(sb) : b
+Binder : All(sb)
+###
+> All(sbq)
+All(sbq) : b?
+Binder : All(sbq)
+###
+> All(T, X > Y)
+All(T, X $> Y) : b
+Binder : All(*1: T, *1.X @> Num<i4>(*1.Y))
+###
+> All(T, X > Z)
+All(T, X $> Z) : b
+Binder : All(*1: T, Num<r4>(*1.X) $> *1.Z)
+###
+> All(T, b)
+All(T, b) : b
+Binder : All(*1: T, b)
+###
+> All(T, qb)
+All(T, qb) : b?
+Binder : All(*1: T, qb)
+###
+> All(T, A)
+All(T, A) : b?
+Binder : All(*1: T, *1.A)
+###
+> All(n : N, n > 2i2)
+All(n : N, n $> 2) : b
+Binder : All(*1: N, *1 $> 2)
+###
+> All(T, true)
+All(T, true) : b
+Binder : All(*1: T, true)
+Reducer: true
+###
+> All(T, false)
+All(T, false) : b
+Binder : All(*1: T, false)
+###
+> All(T, null)
+All(T, null) : b?
+Binder : All(*1: T, null)
+###
+> All(T, Opt(true))
+All(T, Opt(true)) : b?
+Binder : All(*1: T, Opt*(true))
+Reducer: Opt<b?>(true)
+###
+> All(T, Opt(false))
+All(T, Opt(false)) : b?
+Binder : All(*1: T, Opt*(false))
+Reducer: All(*1: T, Opt<b?>(false))
+###
+> All(T, Null(false))
+All(T, Null(false)) : b?
+Binder : All(*1: T, DefOpt*(false))
+Reducer: All(*1: T, null)
+###
+> All([], true)
+All([], true) : b
+Binder : All(*1: null, true)
+Reducer: true
+###
+> All([], false)
+All([], false) : b
+Binder : All(*1: null, false)
+Reducer: true
+###
+> All([], null)
+All([], null) : b?
+Binder : All(*1: null, null)
+Reducer: Opt<b?>(true)
+###
+> All([1], true)
+All([1], true) : b
+Binder : All(*1: [1], true)
+Reducer: true
+###
+> All([1], false)
+All([1], false) : b
+Binder : All(*1: [1], false)
+Reducer: false
+###
+> All([1], null)
+All([1], null) : b?
+Binder : All(*1: [1], null)
+Reducer: null
+###
+> All([1], Opt(true))
+All([1], Opt(true)) : b?
+Binder : All(*1: [1], Opt*(true))
+Reducer: Opt<b?>(true)
+###
+> All([1], Opt(false))
+All([1], Opt(false)) : b?
+Binder : All(*1: [1], Opt*(false))
+Reducer: Opt<b?>(false)
+###
+> All([1], Null(false))
+All([1], Null(false)) : b?
+Binder : All(*1: [1], DefOpt*(false))
+Reducer: null
+###
+> Any(T, [if] X > Y)
+Any(T, [if] X $> Y) : b
+Binder : Any(*1: T, [if] *1.X @> Num<i4>(*1.Y))
+###
+> All(T, [if] X > Y)
+All(T, [if] X $> Y) : b
+Binder : All(*1: T, [if] *1.X @> Num<i4>(*1.Y))
+###
+> Any(T, [else] X > Y) // Error.
+Any(T, [else] X $> Y) : b
+*** Error: (7,13) Node: [else] X $> Y, Tok: '[else]', Message: Unexpected directive
+Binder : Any(*1: T, *1.X @> Num<i4>(*1.Y))
+###
+> All(T, [else] X > Y) // Error.
+All(T, [else] X $> Y) : b
+*** Error: (7,13) Node: [else] X $> Y, Tok: '[else]', Message: Unexpected directive
+Binder : All(*1: T, *1.X @> Num<i4>(*1.Y))
+###
+> Any([if] T, X > Y) // Error.
+Any([if] T, X $> Y) : b
+*** Error: (4,8) Node: [if] T, Tok: '[if]', Message: Unexpected directive
+Binder : Any(*1: T, *1.X @> Num<i4>(*1.Y))
+###
+> All([if] T, X > Y) // Error.
+All([if] T, X $> Y) : b
+*** Error: (4,8) Node: [if] T, Tok: '[if]', Message: Unexpected directive
+Binder : All(*1: T, *1.X @> Num<i4>(*1.Y))
+###

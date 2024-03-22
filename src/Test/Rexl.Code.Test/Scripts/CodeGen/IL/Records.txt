@@ -1,0 +1,30 @@
+﻿``` T := ForEach(Range(10), { X: it, Y: it * it + 3 } if Mod(it, 3) != 2 else null);
+
+T->&{ X }
+T->&{ X: null }
+T->&{ X: null, Z: X + 17 }
+
+T ++ [ { X:1.5, Z:-17 } ]
+
+[{A:3, B:true}, {A:2.5}]
+
+[{A:3, B:true}, {A:2.5}] & { B: "hi" }
+
+T & { A: "stuff" }
+{ A: "stuff" } & T
+T & { X: "stuff" }
+{ X: "stuff" } & T
+T & { Y: "stuff" }
+{ Y: "stuff" } & T
+
+// Record with Vac field.
+Wrap([])->{X:it}
+
+``` R1 := { A:3, B:true };
+``` R2 := { A:2.5 };
+``` R3 := { B: "hi" };
+
+R1 & R3
+R2 & R3
+R1 & { B: "hi" }
+{ A:3, B:true } & R3

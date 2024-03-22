@@ -1,0 +1,55 @@
+﻿C := true;
+
+if (C) "Pass"; else "Fail";
+if (!C) "Fail"; else "Pass";
+if (C) { "Pass" } else { "Fail" }
+if (!C) { "Fail" } else { "Pass" }
+
+// Covers the no else case.
+if (!C) "Fail";
+
+"*** Optimizations with goto. ***";
+if (C) goto L0;
+"Fail";
+L0:
+
+if (C) goto L1;
+else "Fail";
+L1:
+
+if (!C) "Fail";
+else goto L2;
+"Fail2";
+L2:
+
+if (!C) { }
+else goto L3;
+"Fail2";
+L3:
+
+"*** Error in condition. ***";
+if (3 + 5) "Fail";
+
+"*** Blocks popping namespace ***";
+X := 1;
+if (C) {
+    namespace N;
+    X := 2;
+}
+(X, N.X);
+
+"*** Loop for first Fib bigger than....";
+// REVIEW: Optimize to avoid repeated binding and code gen.
+P := (0, 1);
+LLoop0:
+    P := (P[1], P[0] + P[1]);
+    if (P[1] <= 1000) goto LLoop0;
+P;
+
+P := (0, 1);
+LLoop1:
+if (P[1] <= 1000) {
+    P := (P[1], P[0] + P[1]);
+    goto LLoop1;
+}
+P;

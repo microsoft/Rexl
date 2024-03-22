@@ -1,0 +1,184 @@
+﻿// Invocation variations
+
+null = ToR4(Wrap(""))
+3    = ToR4(Wrap("3"))
+null = ToR4(Wrap(""),  null)
+3    = ToR4(Wrap("3"), null)
+null = ToR4(Wrap(""),  Null(5))
+5    = ToR4(Wrap(""),  Opt (5))
+3    = ToR4(Wrap("3"), Null(5))
+3    = ToR4(Wrap("3"), Opt (5))
+5    = ToR4(Wrap(""),  5)
+3    = ToR4(Wrap("3"), 5)
+
+null = To(Wrap(""),  Null(5r4))
+5    = To(Wrap(""),  Opt (5r4))
+3    = To(Wrap("3"), Null(5r4))
+3    = To(Wrap("3"), Opt (5r4))
+5    = To(Wrap(""),  5r4)
+3    = To(Wrap("3"), 5r4)
+
+// Lifting
+
+ToR4(["", "0"])
+
+To([null, "", "0"], 3r4)
+
+// String
+
+null = ToR4(Wrap(""))
+null = ToR4(Wrap(" "))
+5 = To(Wrap(""), 5r4)
+5 = ToR4(Wrap(" "), 5r4)
+
+// Integer strings
+
+null = ToR4(Wrap("false"))
+null = ToR4(Wrap("true"))
+5 = To(Wrap("false"), 5r4)
+5 = ToR4(Wrap("true"), 5r4)
+
+null = ToR4(Wrap("1_234"))
+5 = To("1_234", 5r4)
+
+0      = ToR4(Wrap("-0"))
+-12.34 = ToR4(Wrap("(12.34)"))
+
+// Fractional strings
+
+null = ToR4(Wrap("-4 e37"))
+5 = To(Wrap("-4 e37"), 5r4)
+
+null = ToR8(Wrap("-4 e37"))
+5    = To(Wrap("-4 e37"), 5r8)
+
+CastR4("0")         = ToR4(Wrap("0"))
+CastR4("0.0")       = ToR4(Wrap("0.0"))
+CastR4("-0")        = ToR4(Wrap("-0"))
+CastR4("-0.0")      = ToR4(Wrap("-0.0"))
+CastR4("12.34")     = ToR4(Wrap("12.34"))
+CastR4(" 12.34 ")   = ToR4(Wrap(" 12.34 "))
+CastR4("12,345")    = ToR4(Wrap("12,345"))
+CastR4("(123)")     = ToR4(Wrap("(123)"))
+CastR4("2e20")      = ToR4(Wrap("2e20"))
+CastR4("∞")         = ToR4(Wrap("∞"))
+CastR4("-∞")        = ToR4(Wrap("-∞"))
+CastR4("Infinity")  = ToR4(Wrap("Infinity"))
+CastR4("-Infinity") = ToR4(Wrap("-Infinity"))
+
+CastR8("0")         = ToR8(Wrap("0"))
+CastR8("0.0")       = ToR8(Wrap("0.0"))
+CastR8("-0")        = ToR8(Wrap("-0"))
+CastR8("-0.0")      = ToR8(Wrap("-0.0"))
+CastR8("12.34")     = ToR8(Wrap("12.34"))
+CastR8(" 12.34 ")   = ToR8(Wrap(" 12.34 "))
+CastR8("12,345")    = ToR8(Wrap("12,345"))
+CastR8("(123)")     = ToR8(Wrap("(123)"))
+CastR8("2e20")      = ToR8(Wrap("2e20"))
+CastR8("∞")         = ToR8(Wrap("∞"))
+CastR8("-∞")        = ToR8(Wrap("-∞"))
+CastR8("Infinity")  = ToR8(Wrap("Infinity"))
+CastR8("-Infinity") = ToR8(Wrap("-Infinity"))
+
+ToR4(Wrap("NaN"))
+ToR8(Wrap("NaN"))
+
+`` func F8(x) := (x->CastR8() = x->Wrap()->CastR8(), x->CastR8().Bits.Hex, x->CastR8(), x.Hex);
+`` func F4(x) := (x->CastR4() = x->Wrap()->CastR4(), x->CastR4().Bits.Hex, x->CastR4(), x.Hex);
+
+// NOTE: These cases are modeled after those in the corresponding bind/reduce test. They ensure
+// that the value produced at reduce time matches the value produced at evaluation time.
+
+// Cover u8 to r8. Has a custom implementation.
+0x8000_0000_0000_0000u8->F8()
+0x8000_0000_0000_0400u8->F8()
+0x8000_0000_0000_0401u8->F8()
+0x8000_0000_0000_0800u8->F8()
+0x8000_0000_0000_0BFFu8->F8()
+0x8000_0000_0000_0C00u8->F8()
+
+0xC123_4567_89AB_C000u8->F8()
+0xC123_4567_89AB_C400u8->F8()
+0xC123_4567_89AB_C401u8->F8()
+0xC123_4567_89AB_C800u8->F8()
+0xC123_4567_89AB_CBFFu8->F8()
+0xC123_4567_89AB_CC00u8->F8()
+
+0xFFFF_FFFF_FFFF_F800u8->F8()
+0xFFFF_FFFF_FFFF_FBFFu8->F8()
+0xFFFF_FFFF_FFFF_FC00u8->F8()
+0xFFFF_FFFF_FFFF_FC00u8->F8()
+0xFFFF_FFFF_FFFF_FFFFu8->F8()
+
+// Cover u4 to r4. The standard conversion seems to work.
+0x8000_0000u4->F4()
+0x8000_0080u4->F4()
+0x8000_0081u4->F4()
+0x8000_0100u4->F4()
+0x8000_017Fu4->F4()
+0x8000_0180u4->F4()
+
+// Cover u8 to r4.
+0x8000_0000_0000_0000u8->F4()
+0x8000_0080_0000_0000u8->F4()
+0x8000_0080_0000_0001u8->F4()
+0x8000_0100_0000_0000u8->F4()
+0x8000_017F_FFFF_FFFFu8->F4()
+0x8000_0180_0000_0000u8->F4()
+
+// Cover i8 to r4.
+0x4000_0000_0000_0000i8->F4()
+0x4000_0040_0000_0000i8->F4()
+0x4000_0040_0000_0001i8->F4()
+0x4000_0080_0000_0000i8->F4()
+0x4000_00BF_FFFF_FFFFi8->F4()
+0x4000_00C0_0000_0000i8->F4()
+
+// Cover ia to r8, just past u8 range.
+0x1_0000_0000_0000_0000ia->F8()
+0x1_0000_0000_0000_0800ia->F8()
+0x1_0000_0000_0000_0801ia->F8()
+0x1_0000_0000_0000_0900ia->F8()
+0x1_0000_0000_0000_1000ia->F8()
+0x1_0000_0000_0000_17FFia->F8()
+0x1_0000_0000_0000_1800ia->F8()
+
+// Cover ia to r4, just past u8 range.
+0x1_0000_0000_0000_0000ia->F4()
+0x1_0000_0100_0000_0000ia->F4()
+0x1_0000_0100_0000_0001ia->F4()
+0x1_0000_0101_0000_0000ia->F4()
+0x1_0000_0180_0000_0000ia->F4()
+0x1_0000_0200_0000_0000ia->F4()
+0x1_0000_02FF_FFFF_FFFFia->F4()
+0x1_0000_0300_0000_0000ia->F4()
+
+// Cover ia to r8, much larger than u8 range.
+0x1_0000_0000_0000_0000_0000ia->F8()
+0x1_0000_0000_0000_0800_0000ia->F8()
+0x1_0000_0000_0000_0800_0001ia->F8()
+0x1_0000_0000_0000_1000_0000ia->F8()
+0x1_0000_0000_0000_17FF_FFFFia->F8()
+0x1_0000_0000_0000_1800_0000ia->F8()
+
+// Cover ia to r4, much larger than u8 range.
+0x1_0000_0000_0000_0000_0000ia->F4()
+0x1_0000_0100_0000_0000_0000ia->F4()
+0x1_0000_0100_0000_0000_0001ia->F4()
+0x1_0000_0200_0000_0000_0000ia->F4()
+0x1_0000_02FF_FFFF_FFFF_FFFFia->F4()
+0x1_0000_0300_0000_0000_0000ia->F4()
+
+// Cover ia to r8, near infinity.
+(0x8000ia shl 48)->(it - 0x000ia)->(it shl 961)->(it - 0)->F8()
+(0x8000ia shl 48)->(it - 0x200ia)->(it shl 961)->(it - 0)->F8()
+(0x8000ia shl 48)->(it - 0x200ia)->(it shl 961)->(it - 1)->F8()
+(0x8000ia shl 48)->(it - 0x201ia)->(it shl 961)->(it - 0)->F8()
+(0x8000ia shl 48)->(it - 0x400ia)->(it shl 961)->(it - 0)->F8()
+
+// Cover ia to r4, near infinity.
+(0x8000ia shl 16)->(it - 0x0000ia)->(it shl 97)->(it - 0)->F4()
+(0x8000ia shl 16)->(it - 0x0040ia)->(it shl 97)->(it - 0)->F4()
+(0x8000ia shl 16)->(it - 0x0040ia)->(it shl 97)->(it - 1)->F4()
+(0x8000ia shl 16)->(it - 0x0041ia)->(it shl 97)->(it - 0)->F4()
+(0x8000ia shl 16)->(it - 0x0080ia)->(it shl 97)->(it - 0)->F4()

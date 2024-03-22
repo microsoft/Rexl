@@ -1,0 +1,60 @@
+﻿:: { GA:i8, GB:r8 }
+
+// No externals.
+With(
+    M : module{
+        param N := module {
+            param A := 3;
+            const B := A * A
+        };
+        const C := N.B^2;
+    },
+    (M.C, M.N.A, M.N.B))
+###
+// Inner referencing outer.
+With(
+    M : module {
+        param P := 17;
+        param N := module {
+            param A := P;
+            const B := A * A
+        };
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+###
+// Inner referencing outer with intervening scopes.
+With(
+    M : module {
+        param P := 17;
+        param N := Range(10)->ForEach(as k, module {
+            param A := k * P * k * P;
+            const B := A * A
+        });
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+###
+// Inner referencing scope outside outer.
+With(
+    Q : 37,
+    M : module {
+        param P := 17 * Q;
+        param N := module {
+            param A := P * Q * Q;
+            const B := A * A * Q
+        };
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+###
+// With globals.
+With(
+    M : module {
+        param N := module {
+            param A := GA;
+            const B := A * A
+        };
+        const C := N.B + GA * GB;
+    },
+    (M.C, M.N.A, M.N.B))

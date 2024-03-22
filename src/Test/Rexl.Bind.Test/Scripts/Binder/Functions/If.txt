@@ -1,0 +1,119 @@
+﻿:: { b:b, qb:b?, x:i8, i8:i8, i4:i4, u8:u8, u4:u4, r8:r8, r4:r4, bit:b }
+
+If(b, 3)
+If(!b, 3)
+If([if] b, 3)
+If(b, [if] 3) // Error.
+If(b, [else] 3) // Error.
+If([while] b, 3) // Error.
+
+If(b, 3, 5)
+If(!b, 3, 5)
+If(b, 3, null)
+If(b, 3, [else] 5)
+If([if] b, 3, 5)
+If([if] b, 3, [else] 5)
+If([if] b, 3, [if] 5) // Error.
+If([else] b, 3, 5) // Error.
+
+If(b, 3, b, 5)
+If(b, 3, b, 5, 7)
+If(b, 3, b, 5, b, 7)
+If(b, 3, b, 5, b, 7, 9)
+
+// Conditions must be bool
+If(3, 5, 7)
+
+// Various result types.
+If(b, i8, r4) // Type r4
+If(b, bit, i4) // Type i4
+If(b, u4, i4) // Type i8
+If(b, "hi", i4) // Type g
+
+If(b, i8, b, r4) // Type r4?
+If(b, bit, b, i4) // Type i4?
+If(b, u4, b, i4) // Type i8?
+If(b, "hi", b, i4) // Type g
+
+If(b, i8, b, r4, i4) // Type r4
+If(b, i8, b, "hi", i4) // Type g
+
+If(b, i8, b, r4, b, i4) // Type r4?
+If(b, i8, b, "hi", b, i4) // Type g
+
+If(x < 5, "A")
+If(3 < 5, "A")
+If(7 < 5, "A")
+
+If(x < 5, "A", "B")
+If(3 < 5, "A", "B")
+If(7 < 5, "A", "B")
+
+If(x < 5, "A", null)
+If(3 < 5, "A", null)
+If(7 < 5, "A", null)
+
+If(x < 5, null, "B")
+If(3 < 5, null, "B")
+If(7 < 5, null, "B")
+
+If(x < 5, "A", x < 5, "B")
+If(x < 5, "A", 3 < 5, "B")
+If(x < 5, "A", 7 < 5, "B")
+If(3 < 5, "A", x < 5, "B")
+If(3 < 5, "A", 3 < 5, "B")
+If(3 < 5, "A", 7 < 5, "B")
+If(7 < 5, "A", x < 5, "B")
+If(7 < 5, "A", 3 < 5, "B")
+If(7 < 5, "A", 7 < 5, "B")
+
+If(x < 5, "A", x < 5, "B", "C")
+If(x < 5, "A", 3 < 5, "B", "C")
+If(x < 5, "A", 7 < 5, "B", "C")
+If(3 < 5, "A", x < 5, "B", "C")
+If(3 < 5, "A", 3 < 5, "B", "C")
+If(3 < 5, "A", 7 < 5, "B", "C")
+If(7 < 5, "A", x < 5, "B", "C")
+If(7 < 5, "A", 3 < 5, "B", "C")
+If(7 < 5, "A", 7 < 5, "B", "C")
+
+If(x < 5, "A", x < 5, "B", null)
+If(x < 5, "A", 3 < 5, "B", null)
+If(x < 5, "A", 7 < 5, "B", null)
+If(3 < 5, "A", x < 5, "B", null)
+If(3 < 5, "A", 3 < 5, "B", null)
+If(3 < 5, "A", 7 < 5, "B", null)
+If(7 < 5, "A", x < 5, "B", null)
+If(7 < 5, "A", 3 < 5, "B", null)
+If(7 < 5, "A", 7 < 5, "B", null)
+
+If(x < 5, "A", x < 5, null, "C")
+If(x < 5, "A", 3 < 5, null, "C")
+If(x < 5, "A", 7 < 5, null, "C")
+If(3 < 5, "A", x < 5, null, "C")
+If(3 < 5, "A", 3 < 5, null, "C")
+If(3 < 5, "A", 7 < 5, null, "C")
+If(7 < 5, "A", x < 5, null, "C")
+If(7 < 5, "A", 3 < 5, null, "C")
+If(7 < 5, "A", 7 < 5, null, "C")
+
+If(x < 5, null, x < 5, "B", "C")
+If(x < 5, null, 3 < 5, "B", "C")
+If(x < 5, null, 7 < 5, "B", "C")
+If(3 < 5, null, x < 5, "B", "C")
+If(3 < 5, null, 3 < 5, "B", "C")
+If(3 < 5, null, 7 < 5, "B", "C")
+If(7 < 5, null, x < 5, "B", "C")
+If(7 < 5, null, 3 < 5, "B", "C")
+If(7 < 5, null, 7 < 5, "B", "C")
+
+Range(10)->(If(it mod 3 != 0, it))
+Range(10)->(If(it mod 3 != 0, it, null))
+Range(10)->(If(it mod 3 = 0, null, it))
+
+// Lifting not supported.
+If(qb, 3)
+If(qb, 3, 5)
+If(b, 3, qb, 5)
+If(b, 3, qb, 5, 7)
+If(Range(10) mod 3 = 0, 0, 1)

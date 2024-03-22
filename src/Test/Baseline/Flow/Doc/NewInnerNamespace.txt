@@ -1,0 +1,73 @@
+Add: 00000001 [A.X], Fma: [1]
+Status: 1 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.A
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i8
+###
+Add: 00000002 [A.Y], Fma: [A.X + @A.X]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [A.Y]: [A  tTuUB C dD  ], Base: i8
+###
+Add: 00000003 [A.A.X], Fma: [2i8]
+Status: 3 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.A, ∂.A.A
+  Node changes:
+    00000002 [A.Y]: [     uUB C dD  ], Base: i8
+    00000003 [A.A.X]: [A  tT  B C dD  ], Base: i8
+###
+*** Undo(1)
+Del: 00000003 [A.A.X]
+Status: 2 nodes, 2 undos, 1 redos
+  Namespaces changed: ∂, ∂.A
+  Node changes:
+    00000002 [A.Y]: [     uUB C dD  ], Base: i8
+###
+*** Undo(1)
+Del: 00000002 [A.Y]
+Status: 1 nodes, 1 undos, 2 redos
+###
+*** Undo(1)
+Del: 00000001 [A.X]
+Status: 0 nodes, 0 undos, 3 redos
+  Namespaces changed: ∂
+###
+*** Redo(1)
+Add: 00000001 [A.X], Fma: [1]
+Status: 1 nodes, 1 undos, 2 redos
+  Namespaces changed: ∂, ∂.A
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i8
+###
+*** Redo(1)
+Add: 00000002 [A.Y], Fma: [A.X + @A.X]
+Status: 2 nodes, 2 undos, 1 redos
+  Node changes:
+    00000002 [A.Y]: [A  tTuUB C dD  ], Base: i8
+###
+*** Redo(1)
+Add: 00000003 [A.A.X], Fma: [2i8]
+Status: 3 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.A, ∂.A.A
+  Node changes:
+    00000002 [A.Y]: [     uUB C dD  ], Base: i8
+    00000003 [A.A.X]: [A  tT  B C dD  ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [A.X]
+Del: 00000002 [A.Y]
+Del: 00000003 [A.A.X]
+Status: 0 nodes, 0 undos, 3 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [A.X], Fma: [1]
+Add: 00000002 [A.Y], Fma: [A.X + @A.X]
+Add: 00000003 [A.A.X], Fma: [2i8]
+Status: 3 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.A, ∂.A.A
+  Node changes:
+    00000001 [A.X]: [A  tT  B C dD  ], Base: i8
+    00000002 [A.Y]: [A  tTuUB C dD  ], Base: i8
+    00000003 [A.A.X]: [A  tT  B C dD  ], Base: i8
+###

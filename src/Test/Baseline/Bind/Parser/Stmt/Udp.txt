@@ -1,0 +1,456 @@
+> proc P(x) play { publish X := x; }
+Node: [proc P(x) play { publish X := x }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,34) [proc P(x) play { publish X := x; }]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,34) [proc P(x) play { publish X := x; }], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(15,16) [{], full:(15,34) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(17,24) [publish], full:(17,32) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(27,29) [:=], full:(17,31) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(30,31) [x], full:(30,31) [x], extra=[x]]
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc
+Node: [proc]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:proc, rng:(0,4) [proc], full:(0,4) [proc]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:proc, rng:(0,4) [proc], full:(0,4) [proc]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:proc, rng:(0,4) [proc], full:(0,4) [proc], extra=[proc]]
+
+   0) [0] Expr proc
+   1) [0] End
+###
+> proc P
+Node: [proc; P]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:proc, rng:(0,4) [proc], full:(0,6) [proc P]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:proc, rng:(0,4) [proc], full:(0,4) [proc]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:proc, rng:(0,4) [proc], full:(0,4) [proc], extra=[proc]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:P, rng:(5,6) [P], full:(5,6) [P]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:P, rng:(5,6) [P], full:(5,6) [P], extra=[P]]
+Error: (5,6) Tok: 'P', Message: Expected: ';', Found: 'P'
+
+   0) [0] Expr proc
+   1) [0] Expr P
+   2) [0] End
+###
+> proc P(
+Node: [proc P() play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,7) [proc P(]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,7) [proc P(], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(7,7) [], full:(7,7) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) []], count=0
+Error: (7,7) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (7,7) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (7,7) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (7,7) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P() play { ... }
+   1) [0] End
+###
+> proc P(x
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,8) [proc P(x]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,8) [proc P(x], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(8,8) [], full:(8,8) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) []], count=0
+Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x)
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,9) [proc P(x)]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,9) [proc P(x)], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(9,9) [], full:(9,9) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(9,9) [], full:(9,9) []], count=0
+Error: (9,9) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (9,9) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (9,9) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) play
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,14) [proc P(x) play]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,14) [proc P(x) play], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(14,14) [], full:(14,14) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(14,14) [], full:(14,14) []], count=0
+Error: (14,14) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (14,14) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) play {
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,16) [proc P(x) play {]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,16) [proc P(x) play {], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(15,16) [{], full:(15,16) [{]], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(16,16) [], full:(16,16) []], count=0
+Error: (16,16) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) play { publish X := x;
+Node: [proc P(x) play { publish X := x }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,32) [proc P(x) play { publish X := x;]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,32) [proc P(x) play { publish X := x;], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(15,16) [{], full:(15,32) [{ publish X := x;]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(17,24) [publish], full:(17,32) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(27,29) [:=], full:(17,31) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(30,31) [x], full:(30,31) [x], extra=[x]]
+Error: (32,32) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) as
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,12) [proc P(x) as]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,12) [proc P(x) as], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(12,12) [], full:(12,12) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(12,12) [], full:(12,12) []], count=0
+Error: (12,12) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (12,12) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) as {
+Node: [proc P(x) play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,14) [proc P(x) as {]], count=1
+  01   Node[id:2, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,14) [proc P(x) as {], extra=[KtxProc]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(13,14) [{], full:(13,14) [{]], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(14,14) [], full:(14,14) []], count=0
+Error: (14,14) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) as { publish X := x;
+Node: [proc P(x) play { publish X := x }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,30) [proc P(x) as { publish X := x;]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,30) [proc P(x) as { publish X := x;], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,30) [{ publish X := x;]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(15,22) [publish], full:(15,30) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(15,29) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(28,29) [x], full:(28,29) [x], extra=[x]]
+Error: (30,30) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x) as { publish X := x; }
+Node: [proc P(x) play { publish X := x }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,32) [proc P(x) as { publish X := x; }]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,32) [proc P(x) as { publish X := x; }], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,32) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(15,22) [publish], full:(15,30) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(15,29) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(28,29) [x], full:(28,29) [x], extra=[x]]
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prIme
+Node: [proc P(x) prime {  } play {  }]
+Corrected: [proc P(x)
+    prime]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,19) [proc P(x)\n    prIme]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,19) [proc P(x)\n    prIme], extra=[KtxProc]], count=2
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(19,19) [], full:(19,19) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(19,19) [], full:(19,19) []], count=0
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:Eof, rng:(19,19) [], full:(19,19) []], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:Eof, rng:(19,19) [], full:(19,19) []], count=0
+Error: (14,19) Tok: 'prIme', Message: Expected 'prime' but got 'prIme'
+Error: (19,19) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (19,19) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Error: (19,19) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (19,19) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (19,19) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime {
+Node: [proc P(x) prime {  } play {  }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:proc, rng:(0,4) [proc], full:(0,21) [proc P(x)\n    prime {]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:3, tok:KtxProc, rng:(0,4) [proc], full:(0,21) [proc P(x)\n    prime {], extra=[KtxProc]], count=2
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(20,21) [{], full:(20,21) [{]], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(21,21) [], full:(21,21) []], count=0
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:Eof, rng:(21,21) [], full:(21,21) []], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:Eof, rng:(21,21) [], full:(21,21) []], count=0
+Error: (21,21) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Error: (21,21) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (21,21) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (21,21) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x;
+Node: [proc P(x) prime { publish X := x } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,37) [proc P(x)\n    prime { publish X := x;]], count=1
+  01   Node[id:6, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,37) [proc P(x)\n    prime { publish X := x;], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,37) [{ publish X := x;]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(37,37) [], full:(37,37) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(37,37) [], full:(37,37) []], count=0
+Error: (37,37) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Error: (37,37) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (37,37) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (37,37) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+Node: [proc P(x) prime { publish X := x } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,39) [proc P(x)\n    prime { publish X := x; }]], count=1
+  01   Node[id:6, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,39) [proc P(x)\n    prime { publish X := x; }], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(39,39) [], full:(39,39) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(39,39) [], full:(39,39) []], count=0
+Error: (39,39) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (39,39) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (39,39) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+>     play
+Node: [proc P(x) prime { publish X := x } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,48) [proc P(x)\n    prime { publish X := x; }\n    play]], count=1
+  01   Node[id:6, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,48) [proc P(x)\n    prime { publish X := x; }\n    play], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(48,48) [], full:(48,48) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(48,48) [], full:(48,48) []], count=0
+Error: (48,48) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (48,48) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+>     play {
+Node: [proc P(x) prime { publish X := x } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,50) [proc P(x)\n    prime { publish X := x; }\n    play {]], count=1
+  01   Node[id:6, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,50) [proc P(x)\n    prime { publish X := x; }\n    play {], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(49,50) [{], full:(49,50) [{]], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(50,50) [], full:(50,50) []], count=0
+Error: (50,50) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+>     play { publish Y := x * x;
+Node: [proc P(x) prime { publish X := x } play { publish Y := x * x }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:7, tok:proc, rng:(0,4) [proc], full:(0,70) [proc P(x)\n    prime { publish X := x; }\n    play { publish Y := x * x;]], count=1
+  01   Node[id:10, kind:UserProcStmt, depth:6, tok:KtxProc, rng:(0,4) [proc], full:(0,70) [proc P(x)\n    prime { publish X := x; }\n    play { publish Y := x * x;], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:9, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(49,50) [{], full:(49,70) [{ publish Y := x * x;]], count=1
+  03       Node[id:8, kind:StmtList, depth:4, tok:publish, rng:(51,58) [publish], full:(51,70) [publish Y := x * x;]], count=1
+  04         Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(61,63) [:=], full:(51,69) [publish Y := x * x], extra=[Y]], count=1
+  05           Node[id:6, kind:BinaryOp, depth:2, tok:Mul, rng:(66,67) [*], full:(64,69) [x * x], extra=[Mul]], count=2
+  06             Node[id:4, kind:FirstName, depth:1, tok:x, rng:(64,65) [x], full:(64,65) [x], extra=[x]]
+  06             Node[id:5, kind:FirstName, depth:1, tok:x, rng:(68,69) [x], full:(68,69) [x], extra=[x]]
+Error: (70,70) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+>     play { publish Y := x * x; }
+Node: [proc P(x) prime { publish X := x } play { publish Y := x * x }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:7, tok:proc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    prime { publish X := x; }\n    play { publish Y := x * x; }]], count=1
+  01   Node[id:10, kind:UserProcStmt, depth:6, tok:KtxProc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    prime { publish X := x; }\n    play { publish Y := x * x; }], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:9, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(49,50) [{], full:(49,72) [{ publish Y := x * x; }]], count=1
+  03       Node[id:8, kind:StmtList, depth:4, tok:publish, rng:(51,58) [publish], full:(51,70) [publish Y := x * x;]], count=1
+  04         Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(61,63) [:=], full:(51,69) [publish Y := x * x], extra=[Y]], count=1
+  05           Node[id:6, kind:BinaryOp, depth:2, tok:Mul, rng:(66,67) [*], full:(64,69) [x * x], extra=[Mul]], count=2
+  06             Node[id:4, kind:FirstName, depth:1, tok:x, rng:(64,65) [x], full:(64,65) [x], extra=[x]]
+  06             Node[id:5, kind:FirstName, depth:1, tok:x, rng:(68,69) [x], full:(68,69) [x], extra=[x]]
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     priMe { publish X := x; }
+>     play { publish Y := x * x; }
+Node: [proc P(x) prime { publish X := x } play { publish Y := x * x }]
+Corrected: [proc P(x)
+    prime { publish X := x; }
+    play { publish Y := x * x; }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:7, tok:proc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    priMe { publish X := x; }\n    play { publish Y := x * x; }]], count=1
+  01   Node[id:10, kind:UserProcStmt, depth:6, tok:KtxProc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    priMe { publish X := x; }\n    play { publish Y := x * x; }], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:9, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(49,50) [{], full:(49,72) [{ publish Y := x * x; }]], count=1
+  03       Node[id:8, kind:StmtList, depth:4, tok:publish, rng:(51,58) [publish], full:(51,70) [publish Y := x * x;]], count=1
+  04         Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(61,63) [:=], full:(51,69) [publish Y := x * x], extra=[Y]], count=1
+  05           Node[id:6, kind:BinaryOp, depth:2, tok:Mul, rng:(66,67) [*], full:(64,69) [x * x], extra=[Mul]], count=2
+  06             Node[id:4, kind:FirstName, depth:1, tok:x, rng:(64,65) [x], full:(64,65) [x], extra=[x]]
+  06             Node[id:5, kind:FirstName, depth:1, tok:x, rng:(68,69) [x], full:(68,69) [x], extra=[x]]
+Error: (14,19) Tok: 'priMe', Message: Expected 'prime' but got 'priMe'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P(x)
+>     prime { publish X := x; }
+>     pLay { publish Y := x * x; }
+Node: [proc P(x) prime { publish X := x } play { publish Y := x * x }]
+Corrected: [proc P(x)
+    prime { publish X := x; }
+    play { publish Y := x * x; }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:7, tok:proc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    prime { publish X := x; }\n    pLay { publish Y := x * x; }]], count=1
+  01   Node[id:10, kind:UserProcStmt, depth:6, tok:KtxProc, rng:(0,4) [proc], full:(0,72) [proc P(x)\n    prime { publish X := x; }\n    pLay { publish Y := x * x; }], extra=[KtxProc]], count=2
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(20,21) [{], full:(20,39) [{ publish X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(22,29) [publish], full:(22,37) [publish X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(22,36) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(35,36) [x], full:(35,36) [x], extra=[x]]
+  02     Node[id:9, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(49,50) [{], full:(49,72) [{ publish Y := x * x; }]], count=1
+  03       Node[id:8, kind:StmtList, depth:4, tok:publish, rng:(51,58) [publish], full:(51,70) [publish Y := x * x;]], count=1
+  04         Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(61,63) [:=], full:(51,69) [publish Y := x * x], extra=[Y]], count=1
+  05           Node[id:6, kind:BinaryOp, depth:2, tok:Mul, rng:(66,67) [*], full:(64,69) [x * x], extra=[Mul]], count=2
+  06             Node[id:4, kind:FirstName, depth:1, tok:x, rng:(64,65) [x], full:(64,65) [x], extra=[x]]
+  06             Node[id:5, kind:FirstName, depth:1, tok:x, rng:(68,69) [x], full:(68,69) [x], extra=[x]]
+Error: (44,48) Tok: 'pLay', Message: Expected 'play' but got 'pLay'
+
+   0) [0] DefineProc P(x) prime { ... } play { ... }
+   1) [0] End
+###
+> proc P() play { publish X := 17; }
+Node: [proc P() play { publish X := 17 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,34) [proc P() play { publish X := 17; }]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,34) [proc P() play { publish X := 17; }], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(14,15) [{], full:(14,34) [{ publish X := 17; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(16,23) [publish], full:(16,32) [publish X := 17;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(26,28) [:=], full:(16,31) [publish X := 17], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:17, rng:(29,31) [17], full:(29,31) [17], extra=[17]]
+
+   0) [0] DefineProc P() play { ... }
+   1) [0] End
+###
+> proc P(x, y) play {
+>     publish X := x;
+>     publish Y := y;
+>     primary Both := { X, Y };
+> }
+Node: [proc P(x, y) play { publish X := x; publish Y := y; primaryBoth := { X, Y } }]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:8, tok:proc, rng:(0,4) [proc], full:(0,91) [proc P(x, y) play {\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}]], count=1
+  01   Node[id:11, kind:UserProcStmt, depth:7, tok:KtxProc, rng:(0,4) [proc], full:(0,91) [proc P(x, y) play {\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}], extra=[KtxProc]], count=1
+  02     Node[id:10, kind:BlockStmt, depth:6, tok:CurlyOpen, rng:(18,19) [{], full:(18,91) [{\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}]], count=1
+  03       Node[id:9, kind:StmtList, depth:5, tok:Semi, rng:(38,39) [;], full:(24,89) [publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };]], count=3
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(34,36) [:=], full:(24,38) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(37,38) [x], full:(37,38) [x], extra=[x]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(54,56) [:=], full:(44,58) [publish Y := y], extra=[Y]], count=1
+  05           Node[id:2, kind:FirstName, depth:1, tok:y, rng:(57,58) [y], full:(57,58) [y], extra=[y]]
+  04         Node[id:8, kind:DefinitionStmt, depth:4, tok:ColEqu, rng:(77,79) [:=], full:(64,88) [primary Both := { X, Y }], extra=[Both]], count=1
+  05           Node[id:7, kind:Record, depth:3, tok:CurlyOpen, rng:(80,81) [{], full:(80,88) [{ X, Y }]], count=1
+  06             Node[id:6, kind:ExprList, depth:2, tok:Comma, rng:(83,84) [,], full:(82,86) [X, Y]], count=2
+  07               Node[id:4, kind:FirstName, depth:1, tok:X, rng:(82,83) [X], full:(82,83) [X], extra=[X]]
+  07               Node[id:5, kind:FirstName, depth:1, tok:Y, rng:(85,86) [Y], full:(85,86) [Y], extra=[Y]]
+
+   0) [0] DefineProc P(x, y) play { ... }
+   1) [0] End
+###
+> proc P(x, x) play {
+>     publish X := x;
+>     publish Y := y;
+>     primary Both := { X, Y };
+> }
+Node: [proc P(x, x) play { publish X := x; publish Y := y; primaryBoth := { X, Y } }]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:8, tok:proc, rng:(0,4) [proc], full:(0,91) [proc P(x, x) play {\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}]], count=1
+  01   Node[id:11, kind:UserProcStmt, depth:7, tok:KtxProc, rng:(0,4) [proc], full:(0,91) [proc P(x, x) play {\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}], extra=[KtxProc]], count=1
+  02     Node[id:10, kind:BlockStmt, depth:6, tok:CurlyOpen, rng:(18,19) [{], full:(18,91) [{\n    publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };\n}]], count=1
+  03       Node[id:9, kind:StmtList, depth:5, tok:Semi, rng:(38,39) [;], full:(24,89) [publish X := x;\n    publish Y := y;\n    primary Both := { X, Y };]], count=3
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(34,36) [:=], full:(24,38) [publish X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(37,38) [x], full:(37,38) [x], extra=[x]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(54,56) [:=], full:(44,58) [publish Y := y], extra=[Y]], count=1
+  05           Node[id:2, kind:FirstName, depth:1, tok:y, rng:(57,58) [y], full:(57,58) [y], extra=[y]]
+  04         Node[id:8, kind:DefinitionStmt, depth:4, tok:ColEqu, rng:(77,79) [:=], full:(64,88) [primary Both := { X, Y }], extra=[Both]], count=1
+  05           Node[id:7, kind:Record, depth:3, tok:CurlyOpen, rng:(80,81) [{], full:(80,88) [{ X, Y }]], count=1
+  06             Node[id:6, kind:ExprList, depth:2, tok:Comma, rng:(83,84) [,], full:(82,86) [X, Y]], count=2
+  07               Node[id:4, kind:FirstName, depth:1, tok:X, rng:(82,83) [X], full:(82,83) [X], extra=[X]]
+  07               Node[id:5, kind:FirstName, depth:1, tok:Y, rng:(85,86) [Y], full:(85,86) [Y], extra=[Y]]
+Error: (10,11) Tok: 'x', Message: Duplicate parameter name: 'x'
+
+   0) [0] DefineProc P(x, x) play { ... }
+   1) [0] End
+###
+> proc P(x) play { stream X := x; }
+Node: [proc P(x) play { stream X := x }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:proc, rng:(0,4) [proc], full:(0,33) [proc P(x) play { stream X := x; }]], count=1
+  01   Node[id:4, kind:UserProcStmt, depth:5, tok:KtxProc, rng:(0,4) [proc], full:(0,33) [proc P(x) play { stream X := x; }], extra=[KtxProc]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(15,16) [{], full:(15,33) [{ stream X := x; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:stream, rng:(17,23) [stream], full:(17,31) [stream X := x;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(26,28) [:=], full:(17,30) [stream X := x], extra=[X]], count=1
+  05           Node[id:0, kind:FirstName, depth:1, tok:x, rng:(29,30) [x], full:(29,30) [x], extra=[x]]
+
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] End
+###

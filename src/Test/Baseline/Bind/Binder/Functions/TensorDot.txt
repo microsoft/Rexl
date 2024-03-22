@@ -1,0 +1,152 @@
+**** New globals: {Ti1:i1[*,*], Ti2:i2[*,*], Ti4:i4[*,*], Ti8:i8[*,*], Tia:i[*,*], Tr4:r4[*,*], Tr8:r8[*,*], Ts:s[*,*], Tu1:u1[*,*], Tu2:u2[*,*], Tu4:u4[*,*], Tu8:u8[*,*]}
+
+> Ti1->Dot(Ti1)
+Ti1->Dot(Ti1) : i1[*,*]
+Binder : Tensor.Dot(Ti1, Ti1)
+###
+> Ti2->Dot(Ti2)
+Ti2->Dot(Ti2) : i2[*,*]
+Binder : Tensor.Dot(Ti2, Ti2)
+###
+> Ti4->Dot(Ti4)
+Ti4->Dot(Ti4) : i4[*,*]
+Binder : Tensor.Dot(Ti4, Ti4)
+###
+> Ti8->Dot(Ti8)
+Ti8->Dot(Ti8) : i8[*,*]
+Binder : Tensor.Dot(Ti8, Ti8)
+###
+> Tia->Dot(Tia)
+Tia->Dot(Tia) : i[*,*]
+Binder : Tensor.Dot(Tia, Tia)
+###
+> Tu1->Dot(Tu1)
+Tu1->Dot(Tu1) : u1[*,*]
+Binder : Tensor.Dot(Tu1, Tu1)
+###
+> Tu2->Dot(Tu2)
+Tu2->Dot(Tu2) : u2[*,*]
+Binder : Tensor.Dot(Tu2, Tu2)
+###
+> Tu4->Dot(Tu4)
+Tu4->Dot(Tu4) : u4[*,*]
+Binder : Tensor.Dot(Tu4, Tu4)
+###
+> Tu8->Dot(Tu8)
+Tu8->Dot(Tu8) : u8[*,*]
+Binder : Tensor.Dot(Tu8, Tu8)
+###
+> Tr4->Dot(Tr4)
+Tr4->Dot(Tr4) : r4[*,*]
+Binder : Tensor.Dot(Tr4, Tr4)
+###
+> Tr8->Dot(Tr8)
+Tr8->Dot(Tr8) : r8[*,*]
+Binder : Tensor.Dot(Tr8, Tr8)
+###
+> Ti2->Dot(Ti8)
+Ti2->Dot(Ti8) : i8[*,*]
+Binder : Tensor.Dot(Tensor.ForEachLazy(@1: Ti2, Num<i8>(@1)), Ti8)
+###
+> Ti8->Dot(Ti2)
+Ti8->Dot(Ti2) : i8[*,*]
+Binder : Tensor.Dot(Ti8, Tensor.ForEachLazy(@1: Ti2, Num<i8>(@1)))
+###
+> Ti8->Dot(Tr8)
+Ti8->Dot(Tr8) : r8[*,*]
+Binder : Tensor.Dot(Tensor.ForEachLazy(@1: Ti8, Num<r8>(@1)), Tr8)
+###
+> Tr8->Dot(Ti8)
+Tr8->Dot(Ti8) : r8[*,*]
+Binder : Tensor.Dot(Tr8, Tensor.ForEachLazy(@1: Ti8, Num<r8>(@1)))
+###
+> Ts ->Dot(Ts)
+Ts->Dot(Ts) : r8[*,*]
+*** Error: (0,2) Node: Ts, Message: Invalid operand type: cannot convert type 's[*,*]' to 'r8[*,*]'
+*** Error: (9,11) Node: Ts, Message: Invalid operand type: cannot convert type 's[*,*]' to 'r8[*,*]'
+Binder : Tensor.Dot(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Ts ->Dot(Ti8)
+Ts->Dot(Ti8) : i8[*,*]
+*** Error: (0,2) Node: Ts, Message: Invalid operand type: cannot convert type 's[*,*]' to 'i8[*,*]'
+Binder : Tensor.Dot(Error(ErrBadType_Src_Dst), Ti8)
+###
+> Ti8->Dot(Ts)
+Ti8->Dot(Ts) : i8[*,*]
+*** Error: (9,11) Node: Ts, Message: Invalid operand type: cannot convert type 's[*,*]' to 'i8[*,*]'
+Binder : Tensor.Dot(Ti8, Error(ErrBadType_Src_Dst))
+###
+
+**** New globals: {T:i8[*], U:i8[*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[]
+Binder : Tensor.Dot(T, U)
+###
+
+**** New globals: {T:i8[*,*], U:i8[*,*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*,*]
+Binder : Tensor.Dot(T, U)
+###
+
+**** New globals: {T:i8[*,*,*], U:i8[*,*,*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*,*,*,*]
+Binder : Tensor.Dot(T, U)
+###
+
+**** New globals: {T:i8[*,*,*], U:i8[*,*,*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*,*,*,*]
+Binder : Tensor.Dot(T, U)
+###
+> U->Dot(T)
+U->Dot(T) : i8[*,*,*,*]
+Binder : Tensor.Dot(U, T)
+###
+
+**** New globals: {T:i8[*], U:i8[*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[]
+Binder : Tensor.Dot(T, U)
+###
+> U->Dot(T)
+U->Dot(T) : i8[]
+Binder : Tensor.Dot(U, T)
+###
+
+**** New globals: {T:i8[*,*,*], U:i8[*,*,*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*,*,*,*]
+Binder : Tensor.Dot(T, U)
+###
+
+**** New globals: {T:i8[], U:i8[*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*]
+Binder : Tensor.Dot*(T, U)
+Reducer: Tensor.Mul(T, U)
+###
+> U->Dot(T)
+U->Dot(T) : i8[*]
+Binder : Tensor.Dot*(U, T)
+Reducer: Tensor.Mul(U, T)
+###
+
+**** New globals: {T:i8[*,*,*], U:i8[*,*,*]}
+
+> T->Dot(U)
+T->Dot(U) : i8[*,*,*,*]
+Binder : Tensor.Dot(T, U)
+###
+> U->Dot(T)
+U->Dot(T) : i8[*,*,*,*]
+Binder : Tensor.Dot(U, T)
+###

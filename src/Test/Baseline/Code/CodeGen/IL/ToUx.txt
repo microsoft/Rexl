@@ -1,0 +1,1127 @@
+**** New definitions: Ss, type: s*
+
+> ToU8(Ss)
+ToU8(Ss) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+// (∂.Ss:s*) : u8?*
+ForEach_1(Arr<obj>, str):Opt<u8>
+      1) ldarg.1 [str]
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryParseU8(str, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [1]:
+      1) ret
+  Total Size: 30
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) <null>
+ 2) 18446744073709551615
+ 3) <null>
+###
+> ToU8(Ss, 3u)
+ToU8(Ss, 3) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToU8(Scope(1), 3:u8):u8)):u8*))
+// (∂.Ss:s*) : u8*
+ForEach_1(Arr<obj>, str):u8
+      1) ldarg.1 [str]
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryParseU8(str, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.3
+      1) conv.u8
+  Label [1]:
+      1) ret
+  Total Size: 22
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,u8>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to u8*
+Sequence: Seq<u8>
+ 0) 3
+ 1) 3
+ 2) 18446744073709551615
+ 3) 3
+###
+> ToU8(Ss, Opt(3u))
+ToU8(Ss, Opt(3)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToU8(Scope(1), Opt<u8?>(3:u8)):u8?)):u8?*))
+// (∂.Ss:s*) : u8?*
+ForEach_1(Arr<obj>, str):Opt<u8>
+      1) ldarg.1 [str]
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryParseU8(str, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.3
+      1) conv.u8
+      5) newobj Opt<u8>(u8)
+  Label [1]:
+      1) ret
+  Total Size: 32
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 3
+ 1) 3
+ 2) 18446744073709551615
+ 3) 3
+###
+> ToU2([null, "", "65535", "65536"])
+ToU2([null, "", "65535", "65536"]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [str(<null>), str(), str(65535), str(65536)]:s*, Call(∂.ToU2(Scope(1)):u2?)):u2?*))
+// () : u2?*
+ForEach_1(Arr<obj>, str):Opt<u2>
+      1) ldarg.1 [str]
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryParseU8(str, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      1) stloc.0 [u8]
+      1) ldloc.0 [u8]
+      5) ldc.i4 [65535]
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u2>(u2)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u2>
+  Label [1]:
+      1) ret
+  Total Size: 44
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.4
+      5) newarr [str]
+      1) dup
+      1) ldc.i4.0
+      1) ldnull
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.1
+      5) ldstr []
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.2
+      5) ldstr [65535]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.3
+      5) ldstr [65536]
+      5) stelem [str]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,Opt<u2>>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,Opt<u2>>):Seq<Opt<u2>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u2>>):Seq<Opt<u2>>
+      1) ret
+  Total Size: 68
+
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) <null>
+ 2) 65535
+ 3) <null>
+###
+
+**** New definitions: R8s, type: r8*
+
+> ToU8(R8s)
+ToU8(R8s) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+// (∂.R8s:r8*) : u8?*
+ForEach_1(Arr<obj>, r8):Opt<u8>
+      1) ldarg.1 [r8]
+      2) ldloca.s [u8 (0)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [1]:
+      1) ret
+  Total Size: 30
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) <null>
+ 2) 3
+ 3) <null>
+###
+> ToU8(R8s, 3u)
+ToU8(R8s, 3) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.ToU8(Scope(1), 3:u8):u8)):u8*))
+// (∂.R8s:r8*) : u8*
+ForEach_1(Arr<obj>, r8):u8
+      1) ldarg.1 [r8]
+      2) ldloca.s [u8 (0)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.3
+      1) conv.u8
+  Label [1]:
+      1) ret
+  Total Size: 22
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,u8>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u8*
+Sequence: Seq<u8>
+ 0) 3
+ 1) 3
+ 2) 3
+ 3) 3
+###
+> ToU8(R8s, Opt(3u))
+ToU8(R8s, Opt(3)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.ToU8(Scope(1), Opt<u8?>(3:u8)):u8?)):u8?*))
+// (∂.R8s:r8*) : u8?*
+ForEach_1(Arr<obj>, r8):Opt<u8>
+      1) ldarg.1 [r8]
+      2) ldloca.s [u8 (0)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.3
+      1) conv.u8
+      5) newobj Opt<u8>(u8)
+  Label [1]:
+      1) ret
+  Total Size: 32
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 3
+ 1) 3
+ 2) 3
+ 3) 3
+###
+
+**** New definitions: QR8s, type: r8?*
+
+> ToU8(QR8s)
+ToU8(QR8s) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(QR8s), Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2)):u8?)):u8?)):u8?*))
+// (∂.QR8s:r8?*) : u8?*
+ForEach_1(Arr<obj>, Opt<r8>):Opt<u8>
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) stloc.0 [r8]
+      1) ldloc.0 [r8]
+      2) ldloca.s [u8 (1)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [1]
+      1) ldloc.1 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [2]
+  Label [1]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [2]:
+      5) br [3]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [3]:
+      1) ret
+  Total Size: 60
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<r8>>
+      1) stloc.0 [Seq<Opt<r8>>]
+      1) ldloc.0 [Seq<Opt<r8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Opt<r8>,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<Opt<r8>>, Func<Opt<r8>,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (QR8s:r8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 3
+ 4) <null>
+###
+> ToU8(QR8s, 3u)
+ToU8(QR8s, 3) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(QR8s), Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), 3:u8):u8)):u8?)):u8?*))
+// (∂.QR8s:r8?*) : u8?*
+ForEach_1(Arr<obj>, Opt<r8>):Opt<u8>
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) stloc.0 [r8]
+      1) ldloc.0 [r8]
+      2) ldloca.s [u8 (1)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [1]
+      1) ldloc.1 [u8]
+      5) br [2]
+  Label [1]:
+      1) ldc.i4.3
+      1) conv.u8
+  Label [2]:
+      5) newobj Opt<u8>(u8)
+      5) br [3]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [3]:
+      1) ret
+  Total Size: 57
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<r8>>
+      1) stloc.0 [Seq<Opt<r8>>]
+      1) ldloc.0 [Seq<Opt<r8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Opt<r8>,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<Opt<r8>>, Func<Opt<r8>,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (QR8s:r8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 3
+ 2) 3
+ 3) 3
+ 4) 3
+###
+> ToU8(QR8s, Opt(3u))
+ToU8(QR8s, Opt(3)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] Global(QR8s), Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), Opt<u8?>(3:u8)):u8?)):u8?)):u8?*))
+// (∂.QR8s:r8?*) : u8?*
+ForEach_1(Arr<obj>, Opt<r8>):Opt<u8>
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldarga.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) stloc.0 [r8]
+      1) ldloc.0 [r8]
+      2) ldloca.s [u8 (1)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [1]
+      1) ldloc.1 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [2]
+  Label [1]:
+      1) ldc.i4.3
+      1) conv.u8
+      5) newobj Opt<u8>(u8)
+  Label [2]:
+      5) br [3]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [3]:
+      1) ret
+  Total Size: 62
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<r8>>
+      1) stloc.0 [Seq<Opt<r8>>]
+      1) ldloc.0 [Seq<Opt<r8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Opt<r8>,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<Opt<r8>>, Func<Opt<r8>,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (QR8s:r8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 3
+ 2) 3
+ 3) 3
+ 4) 3
+###
+> ToU1([0/0, -1, 0, 255, 256, 1/0])
+ToU1([0 / 0, -1, 0, 255, 256, 1 / 0]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [NaN:r8, -1:r8, 0:r8, 255:r8, 256:r8, ∞:r8]:r8*, Call(∂.ToU1(Scope(1)):u1?)):u1?*))
+// () : u1?*
+ForEach_1(Arr<obj>, r8):Opt<u1>
+      1) ldarg.1 [r8]
+      2) ldloca.s [u8 (0)]
+      5) call static NumUtil::TryToU8(r8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      1) stloc.1 [u8]
+      1) ldloc.1 [u8]
+      5) ldc.i4 [255]
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.1 [u8]
+      5) newobj Opt<u1>(u1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u1>
+  Label [1]:
+      1) ret
+  Total Size: 44
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.6
+      5) newarr [r8]
+      1) dup
+      1) ldc.i4.0
+      9) ldc.r8 [NaN]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.1
+      9) ldc.r8 [-1]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.2
+      9) ldc.r8 [0]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.3
+      9) ldc.r8 [255]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.4
+      9) ldc.r8 [256]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.5
+      9) ldc.r8 [∞]
+      5) stelem [r8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,Opt<u1>>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,Opt<u1>>):Seq<Opt<u1>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u1>>):Seq<Opt<u1>>
+      1) ret
+  Total Size: 120
+
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) <null>
+ 2) 0
+ 3) 255
+ 4) <null>
+ 5) <null>
+###
+> ToU8([-1ia, 0, (1ia shl 64) - 1, 1ia shl 64])
+ToU8([-1, 0, (1 shl 64) - 1, 1 shl 64]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [-1:i, 0:i, 18446744073709551615:i, 18446744073709551616:i]:i*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+// () : u8?*
+ForEach_1(Arr<obj>, ia):Opt<u8>
+      1) ldarg.1 [ia]
+      1) ldc.i4.m1
+      1) conv.i8
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryToU8(ia, u8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [1]:
+      1) ret
+  Total Size: 32
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.4
+      5) newarr [ia]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.2
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) unbox.any [ia]
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.3
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) unbox.any [ia]
+      5) stelem [ia]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<ia,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 80
+
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 18446744073709551615
+ 3) <null>
+###
+> ToU1([-1ia, 0ia, 255ia, 256ia])
+ToU1([-1, 0, 255, 256]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [-1:i, 0:i, 255:i, 256:i]:i*, Call(∂.ToU1(Scope(1)):u1?)):u1?*))
+// () : u1?*
+ForEach_1(Arr<obj>, ia):Opt<u1>
+      1) ldarg.1 [ia]
+      5) ldc.i4 [255]
+      1) conv.u8
+      2) ldloca.s [u8 (0)]
+      5) call static CastUtil::TryToU8(ia, u8, out u8):bool
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      1) conv.u4
+      5) newobj Opt<u1>(u1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u1>
+  Label [1]:
+      1) ret
+  Total Size: 37
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.4
+      5) newarr [ia]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.2
+      5) ldc.i4 [255]
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) dup
+      1) ldc.i4.3
+      5) ldc.i4 [256]
+      5) newobj ia(i4)
+      5) stelem [ia]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,Opt<u1>>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,Opt<u1>>):Seq<Opt<u1>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u1>>):Seq<Opt<u1>>
+      1) ret
+  Total Size: 84
+
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 0
+ 2) 255
+ 3) <null>
+###
+> ToU4([-1i8, 0i8, (1i8 shl 32) - 1            , 1i8 shl 32]) // Single boundary test
+ToU4([-1, 0, (1 shl 32) - 1, 1 shl 32]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [-1:i8, 0:i8, 4294967295:i8, 4294967296:i8]:i8*, Call(∂.ToU4(Scope(1)):u4?)):u4?*))
+// () : u4?*
+ForEach_1(Arr<obj>, i8):Opt<u4>
+      1) ldarg.1 [i8]
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) ldc.i4.m1
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.0 [i8]
+      5) newobj Opt<u4>(u4)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u4>
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.4
+      5) newarr [i8]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stelem [i8]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      1) conv.i8
+      5) stelem [i8]
+      1) dup
+      1) ldc.i4.2
+      9) ldc.i8 [4294967295]
+      5) stelem [i8]
+      1) dup
+      1) ldc.i4.3
+      9) ldc.i8 [4294967296]
+      5) stelem [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,Opt<u4>>]
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Opt<u4>>):Seq<Opt<u4>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u4>>):Seq<Opt<u4>>
+      1) ret
+  Total Size: 74
+
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) 4294967295
+ 3) <null>
+###
+> ToU2([-1i4, 0i4, (1i4 shl 16) - 1 | CastI4(_), 1i4 shl 16]) // Single boundary test
+ToU2([-1, 0, (1 shl 16) - 1 | CastI4(_), 1 shl 16]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [-1:i4, 0:i4, 65535:i4, 65536:i4]:i4*, Call(∂.ToU2(Scope(1)):u2?)):u2?*))
+// () : u2?*
+ForEach_1(Arr<obj>, i4):Opt<u2>
+      1) ldarg.1 [i4]
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      5) ldc.i4 [65535]
+      5) bgt.un [0]
+      1) ldloc.0 [i4]
+      5) newobj Opt<u2>(u2)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u2>
+  Label [1]:
+      1) ret
+  Total Size: 30
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.4
+      5) newarr [i4]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.2
+      5) ldc.i4 [65535]
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.3
+      5) ldc.i4 [65536]
+      5) stelem [i4]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i4,Opt<u2>>]
+      5) call static ForEachGen::Exec(Seq<i4>, Func<i4,Opt<u2>>):Seq<Opt<u2>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u2>>):Seq<Opt<u2>>
+      1) ret
+  Total Size: 64
+
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) 0
+ 2) 65535
+ 3) <null>
+###
+> ToU8([-1i4, 0i4, 0x7FFFFFFFi4]) // Comparing in the narrow type
+ToU8([-1, 0, 2147483647]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [-1:i4, 0:i4, 2147483647:i4]:i4*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+// () : u8?*
+ForEach_1(Arr<obj>, i4):Opt<u8>
+      1) ldarg.1 [i4]
+      1) stloc.0 [i4]
+      1) ldc.i4.0
+      1) ldloc.0 [i4]
+      5) bgt [0]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.3
+      5) newarr [i4]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.2
+      5) ldc.i4 [2147483647]
+      5) stelem [i4]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i4,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<i4>, Func<i4,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 52
+
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 2147483647
+###
+> ToU4([-1i4, 0i4, 0x7FFFFFFFi4])         // Single boundary test
+ToU4([-1, 0, 2147483647]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [-1:i4, 0:i4, 2147483647:i4]:i4*, Call(∂.ToU4(Scope(1)):u4?)):u4?*))
+// () : u4?*
+ForEach_1(Arr<obj>, i4):Opt<u4>
+      1) ldarg.1 [i4]
+      1) stloc.0 [i4]
+      1) ldc.i4.0
+      1) ldloc.0 [i4]
+      5) bgt [0]
+      1) ldloc.0 [i4]
+      5) newobj Opt<u4>(u4)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u4>
+  Label [1]:
+      1) ret
+  Total Size: 26
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.3
+      5) newarr [i4]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      5) stelem [i4]
+      1) dup
+      1) ldc.i4.2
+      5) ldc.i4 [2147483647]
+      5) stelem [i4]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i4,Opt<u4>>]
+      5) call static ForEachGen::Exec(Seq<i4>, Func<i4,Opt<u4>>):Seq<Opt<u4>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u4>>):Seq<Opt<u4>>
+      1) ret
+  Total Size: 52
+
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) 2147483647
+###
+> ToU4([(1u8 shl 32) - 1u8, 1u8 shl 32])  // Single boundary test
+ToU4([(1 shl 32) - 1, 1 shl 32]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [4294967295:u8, 4294967296:u8]:u8*, Call(∂.ToU4(Scope(1)):u4?)):u4?*))
+// () : u4?*
+ForEach_1(Arr<obj>, u8):Opt<u4>
+      1) ldarg.1 [u8]
+      1) stloc.0 [u8]
+      1) ldloc.0 [u8]
+      1) ldc.i4.m1
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.0 [u8]
+      5) newobj Opt<u4>(u4)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u4>
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.2
+      5) newarr [u8]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.m1
+      1) conv.u8
+      5) stelem [u8]
+      1) dup
+      1) ldc.i4.1
+      9) ldc.i8 [4294967296]
+      5) stelem [u8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u8,Opt<u4>>]
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,Opt<u4>>):Seq<Opt<u4>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u4>>):Seq<Opt<u4>>
+      1) ret
+  Total Size: 49
+
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) 4294967295
+ 1) <null>
+###
+> ToU2([Date(1, 1, 1, 0, 0, 0, 0, 256), Date(1, 1, 1, 0, 0, 0, 0, 256)]) // Single boundary test
+ToU2([Date(1, 1, 1, 0, 0, 0, 0, 256), Date(1, 1, 1, 0, 0, 0, 0, 256)]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 256:i8):d), Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 256:i8):d)]:d*, Call(∂.ToU2(Call(∂.Date.TotalTicks(Scope(1)):i8)):u2?)):u2?*))
+// () : u2?*
+ForEach_1(Arr<obj>, Date):Opt<u2>
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Ticks():i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      5) ldc.i4 [65535]
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.1 [i8]
+      5) newobj Opt<u2>(u2)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u2>
+  Label [1]:
+      1) ret
+  Total Size: 39
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.2
+      5) newarr [Date]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      5) ldc.i4 [256]
+      1) conv.i8
+      5) call static DateGen::Exec(i8, i8, i8, i8, i8, i8, i8, i8):Date
+      5) stelem [Date]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      5) ldc.i4 [256]
+      1) conv.i8
+      5) call static DateGen::Exec(i8, i8, i8, i8, i8, i8, i8, i8):Date
+      5) stelem [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Opt<u2>>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Opt<u2>>):Seq<Opt<u2>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u2>>):Seq<Opt<u2>>
+      1) ret
+  Total Size: 88
+
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 256
+ 1) 256
+###
+> ToU8([Time(0, 0, 0, 0, 0, -2), Time(0, 0, 0, 0, 0, 2)])    // Single boundary test
+ToU8([Time(0, 0, 0, 0, 0, -2), Time(0, 0, 0, 0, 0, 2)]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, -2:i8):t), Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 2:i8):t)]:t*, Call(∂.ToU8(Call(∂.Time.TotalTicks(Scope(1)):i8)):u8?)):u8?*))
+// () : u8?*
+ForEach_1(Arr<obj>, Time):Opt<u8>
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Ticks():i8
+      1) stloc.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      5) bgt [0]
+      1) ldloc.1 [i8]
+      5) newobj Opt<u8>(u8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u8>
+  Label [1]:
+      1) ret
+  Total Size: 35
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.2
+      5) newarr [Time]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [-2]
+      1) conv.i8
+      5) call static TimeGen::Exec(i8, i8, i8, i8, i8, i8):Time
+      5) stelem [Time]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      5) call static TimeGen::Exec(i8, i8, i8, i8, i8, i8):Time
+      5) stelem [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,Opt<u8>>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<u8>>):Seq<Opt<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u8>>):Seq<Opt<u8>>
+      1) ret
+  Total Size: 73
+
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 2
+###
+> ToU1([Time(0, 0, 0, 0, 0, 255), Time(0, 0, 0, 0, 0, 256)]) // Single boundary test
+ToU1([Time(0, 0, 0, 0, 0, 255), Time(0, 0, 0, 0, 0, 256)]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 255:i8):t), Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 256:i8):t)]:t*, Call(∂.ToU1(Call(∂.Time.TotalTicks(Scope(1)):i8)):u1?)):u1?*))
+// () : u1?*
+ForEach_1(Arr<obj>, Time):Opt<u1>
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Ticks():i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      5) ldc.i4 [255]
+      1) conv.u8
+      5) bgt.un [0]
+      1) ldloc.1 [i8]
+      5) newobj Opt<u1>(u1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<u1>
+  Label [1]:
+      1) ret
+  Total Size: 39
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.2
+      5) newarr [Time]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      5) ldc.i4 [255]
+      1) conv.i8
+      5) call static TimeGen::Exec(i8, i8, i8, i8, i8, i8):Time
+      5) stelem [Time]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      5) ldc.i4 [256]
+      1) conv.i8
+      5) call static TimeGen::Exec(i8, i8, i8, i8, i8, i8):Time
+      5) stelem [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,Opt<u1>>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<u1>>):Seq<Opt<u1>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<u1>>):Seq<Opt<u1>>
+      1) ret
+  Total Size: 80
+
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 255
+ 1) <null>
+###

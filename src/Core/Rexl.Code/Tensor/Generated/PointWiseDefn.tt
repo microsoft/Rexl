@@ -1,0 +1,315 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+
+using Microsoft.Rexl.Private;
+
+<#
+var bops = new[] {
+    "Add",
+    "Sub",
+    "Mul",
+    "Div",
+    "Min",
+    "Max",
+};
+
+var kinds = new[] {
+    "R8",
+    "R4",
+    "IA",
+    "I8",
+    "I4",
+    "I2",
+    "I1",
+    "U8",
+    "U4",
+    "U2",
+    "U1",
+    "BI"
+};
+
+foreach (var kind in kinds) {
+    var type = kind switch {
+        "R8" => "Double",
+        "R4" => "Single",
+        "IA" => "System.Numerics.BigInteger",
+        "I8" => "Int64",
+        "I4" => "Int32",
+        "I2" => "Int16",
+        "I1" => "SByte",
+        "U8" => "UInt64",
+        "U4" => "UInt32",
+        "U2" => "UInt16",
+        "U1" => "Byte",
+        "BI" => "Boolean",
+        _ => null,
+    };
+
+    bool rx = kind[0] == 'R';
+    bool ix = kind[0] == 'I' && kind != "IA";
+    bool ux = kind[0] == 'U';
+    bool bit = kind == "BI";
+#>
+// Note: don't use new style namespace decl since we need the T using alias.
+namespace Microsoft.Rexl
+{
+    using T = <#= type #>;
+
+    partial class Tensor
+    {
+<#
+    foreach (var bop in bops) {
+        var name = bop;
+        var op0 = "(T)";
+        var op1 = ", ";
+        var ident = "";
+        var sink0 = "";
+        var sink1 = "";
+
+        bool com = true;
+        switch (bop) {
+        case "Add":
+            if (bit)
+               name = "AddSub";
+            op1 = bit ? " ^ " : " + ";
+            ident = "default";
+            if (rx) {
+                sink0 = type + ".IsNaN(";
+                sink1 = ")";
+            }
+            break;
+        case "Sub":
+            if (bit)
+                continue; // Same as Add.
+            com = false;
+            ident = "default";
+            op1 = " - ";
+            break;
+        case "Mul":
+            if (bit)
+                name = "MulDivMin";
+            op1 = bit ? " & " : " * ";
+            ident = bit ? "true" : "(T)1";
+            if (!rx)
+                sink1 = " == default";
+            break;
+        case "Div":
+            if (bit)
+                continue; // Same as Mul.
+            com = false;
+            ident = "(T)1";
+            if (rx)
+                op1 = " / ";
+            else {
+                op0 = "DivBop";
+                sink1 = " == default";
+            }
+            break;
+        case "Min":
+            if (bit)
+                continue; // Same as Mul.
+            if (ix | ux)
+                sink1 = " == T.MinValue";
+            op0 = kind == "IA" ? "T.Min" : "Math.Min";
+            break;
+        case "Max":
+            if (ix | ux)
+                sink1 = " == T.MaxValue";
+            if (bit)
+                op1 = " | ";
+            else
+                op0 = kind == "IA" ? "T.Max" : "Math.Max";
+            break;
+        }
+
+        if (rx) {
+            sink0 = "T.IsNaN(";
+            sink1 = ")";
+        }
+#>
+        public static Tensor<T> <#= name #>(Tensor<T> ten0, Tensor<T> ten1, out bool shrunk)
+        {
+            Validation.AssertValue(ten0);
+            Validation.AssertValue(ten1);
+
+            var pw = new PointWise(ten0, ten1);
+            shrunk = pw.Arg0.Shrunk | pw.Arg1.Shrunk;
+            if (pw.CountRes == 0)
+                return pw.CreateEmpty<T>();
+            return pw.<#= name #>(ten0._buf, ten1._buf);
+        }
+
+        partial struct PointWise
+        {
+<#      if (bop == "Div" && !rx && kind != "BI") { #>
+            private static T DivBop(T a, T b)
+            {
+                if (b == default)
+                    return default;
+<#      if (ix) { #>
+                if (b == (T)(-1))
+                    return (T)(-a);
+<#      } #>
+                return (T)(a / b);
+            }
+
+<#      } #>
+            public Tensor<T> <#= name #>(Buffer<T> buf0, Buffer<T> buf1)
+            {
+                bool con0 = Arg0.Ten._delta == 0 && Arg0.Ten._regular;
+                bool con1 = Arg1.Ten._delta == 0 && Arg1.Ten._regular;
+
+                if (con1)
+                {
+                    var val = buf1[Arg1.Ten._root];
+                    if (con0)
+                        return CreateConstant<T>(<#= op0 #>(buf0[Arg0.Ten._root]<#= op1 #>val)); // op
+<#      if (sink1 != "") { #>
+                    if (<#= sink0 #>val<#= sink1 #>) // sink
+                        return CreateConstant<T>(val);
+<#      } #>
+<#      if (ident != "") { #>
+                    <#= bit && bop == "Mul" ? "else" : $"if (val == {ident})" #> // ident
+                        return FixShape<T>(in Arg0, buf0);
+<#      } #>
+<#      if (bop == "Sub") { #>
+                    return Add((T)(0 - val), in Arg0, buf0);
+<#      } else if (bop == "Div") { #>
+<#          if (ix) { #>
+                    // REVIEW: Perhaps negating should use a map buffer.
+                    if (val == (T)(-1))
+                        return Sub(default, in Arg0, buf0);
+<#          } #>
+                    return Div(in Arg0, buf0, val);
+<#      } else if (!bit || bop != "Mul") { #>
+                    return <#= name #>(val, in Arg0, buf0);
+<#      } #>
+                }
+                if (con0)
+                {
+                    var val = buf0[Arg0.Ten._root];
+<#      if (sink1 != "") { #>
+                    if (<#= sink0 #>val<#= sink1 #>) // sink
+                        return CreateConstant<T>(val);
+<#      } #>
+<#      if (ident != "" && com) { #>
+                    <#= bit && bop == "Mul" ? "else" : $"if (val == {ident})" #> // ident
+                        return FixShape<T>(in Arg1, buf1);
+<#      } #>
+<#      if (!bit || bop != "Mul") { #>
+                    return <#= name #>(val, in Arg1, buf1);
+<#      }#>
+                }
+
+                var count = CountRes;
+                var dst = new T[count];
+                if (Arg0.Regular && Arg1.Regular)
+                {
+                    // The simple case: both are regular.
+                    long off0 = Arg0.Ten._root, off1 = Arg1.Ten._root;
+                    long delta0 = Arg0.Ten._delta, delta1 = Arg1.Ten._delta;
+                    for (long i = 0; i < count; i++, off0 += delta0, off1 += delta1)
+                        dst[i] = <#= op0 #>(buf0[off0]<#= op1 #>buf1[off1]); // op
+                }
+                else
+                {
+                    long i = 0;
+                    using var ator0 = GetValues(in Arg0, buf0).GetEnumerator();
+                    using var ator1 = GetValues(in Arg1, buf1).GetEnumerator();
+                    while (ator0.MoveNext() && ator1.MoveNext())
+                    {
+                        Validation.AssertIndex(i, count);
+                        dst[i++] = <#= op0 #>(ator0.Current<#= op1 #>ator1.Current); // op
+                    }
+                    Validation.Assert(i == count);
+                }
+                return CreateFull<T>(dst);
+            }
+<#      if (bop == "Div") { #>
+
+            private Tensor<T> <#= name #>(in Arg arg, Buffer<T> src, T b)
+            {
+<#      if (rx) { #>
+                Validation.Assert(!T.IsNaN(b)); // sink
+<#      } else { #>
+                Validation.Assert(b != default); // sink
+                Validation.Assert(b != (T)1); // ident
+<#          if (ix) { #>
+                Validation.Assert(b != (T)(-1)); // negate
+<#          } #>
+<#      } #>
+                // REVIEW: When the input shares cells, the output could as well.
+                var count = CountRes;
+                var dst = new T[count];
+                if (arg.Regular)
+                {
+                    Validation.Assert(arg.Ten._delta != 0);
+                    var off = arg.Ten._root;
+                    var delta = arg.Ten._delta;
+                    for (long i = 0; i < count; i++, off += delta)
+                        dst[i] = (T)(src[off] / b); // op
+                }
+                else
+                {
+                    long i = 0;
+                    foreach (var val in GetValues(in arg, src))
+                    {
+                        Validation.AssertIndex(i, count);
+                        dst[i++] = (T)(val / b); // op
+                    }
+                    Validation.Assert(i == count);
+                }
+                return CreateFull<T>(dst);
+            }
+<#      } #>
+
+<#      if (!bit || bop != "Mul") { #>
+            private Tensor<T> <#= name #>(T a, in Arg arg, Buffer<T> src)
+            {
+<#      if (sink1 != "") { #>
+                Validation.Assert(!(<#= sink0 #>a<#= sink1 #>)); // sink
+<#      } #>
+<#      if (ident != "" && com) { #>
+                Validation.Assert(a != <#= ident #>); // ident
+<#      } #>
+                // REVIEW: When the input shares cells, the output could as well.
+                var count = CountRes;
+                var dst = new T[count];
+                if (arg.Regular)
+                {
+                    Validation.Assert(arg.Ten._delta != 0);
+                    var off = arg.Ten._root;
+                    var delta = arg.Ten._delta;
+                    for (long i = 0; i < count; i++, off += delta)
+                        dst[i] = <#= op0 #>(a<#= op1 #>src[off]); // op
+                }
+                else
+                {
+                    long i = 0;
+                    foreach (var val in GetValues(in arg, src))
+                    {
+                        Validation.AssertIndex(i, count);
+                        dst[i++] = <#= op0 #>(a<#= op1 #>val); // op
+                    }
+                    Validation.Assert(i == count);
+                }
+                return CreateFull<T>(dst);
+            }
+<#      }#>
+        }
+
+<#
+    }
+#>
+    }
+}
+
+<#
+}
+#>

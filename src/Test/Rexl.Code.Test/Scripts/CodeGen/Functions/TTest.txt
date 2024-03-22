@@ -1,0 +1,121 @@
+﻿"Compare these results with CrossChecks/TTest.ipynb."
+
+`` A0_1 := [-0.20470766,  0.47894334, -0.51943872, -0.5557303 ,  1.96578057,  1.39340583,  0.09290788,  0.28174615,  0.76902257,  1.24643474,  1.00718936, -1.29622111,  0.27499163,  0.22891288,  1.35291684,  0.88642934, -2.00163731, -0.37184254,  1.66902531, -0.43856974, -0.53974145,  0.47698501,  3.24894392, -1.02122752, -0.5770873 ,  0.12412128,  0.30261356,  0.52377207,  0.00094028,  1.34380979];
+`` B0_1 := [-0.71354399, -0.83115354, -2.37023165, -1.86076079, -0.8607574 ,  0.56014529, -1.26593449,  0.11982712, -1.06351245,  0.33288272, -2.35941881, -0.19954296, -1.54199553, -0.97073591, -1.30703025,  0.28634975,  0.37798411, -0.75388653,  0.33128565,  1.34974221,  0.06987669,  0.24667411, -0.0118616 ,  1.00481159,  1.32719461, -0.91926156, -1.54910644,  0.0221846 ,  0.75836315, -0.66052433];
+`` A0_5 := [  4.31290041,  -0.05015951,   0.25004678,   3.35107797,   4.26482516,  -4.77934426,  -0.1174666 , -11.52116939,  -3.26234421,  -6.09150988,  -6.66304854,   5.37311345,   3.61820753,   3.45000926,   5.00771721,  -2.51543696,  -3.11137113,  -4.60584304,  -3.63106746,   1.11447773,   0.2565805 ,  -5.78859733,   4.08353468,   2.16804803,   5.05368473,   9.12437606,  -4.98759124,   4.25295549,  -0.65788801,   4.56207076];
+`` A1_1 := [ 1.18821068,  3.16946144,  0.8850718 ,  3.00369736,  1.02961015,  1.79525316,  1.11810975,  0.25146845,  1.58496974,  1.15267657, -0.56565729,  0.43745981,  0.96733586,  0.0709938 ,  0.51742735,  0.96373615,  2.09539006,  1.98092848,  0.41051231,  2.58170009,  0.47126517,  1.45700187,  1.92996876, -0.56927061, -0.02248698,  0.59717308,  1.22048686,  0.80659889,  1.66915834, -0.64898482];
+`` N0_1 := [    0.0/0.0, -0.20470766,  0.47894334, -0.51943872, -0.5557303 ,  1.96578057,  1.39340583,  0.09290788,  0.28174615,  0.76902257,  1.24643474,  1.00718936, -1.29622111,  0.27499163,  0.22891288,  1.35291684,  0.88642934, -2.00163731, -0.37184254,  1.66902531, -0.43856974, -0.53974145,  0.47698501,  3.24894392, -1.02122752, -0.5770873 ,  0.12412128,  0.30261356,  0.52377207,  0.00094028,  1.34380979];
+
+`` Samps := [ (A0_1, "A0_1"), (B0_1, "B0_1"), (A0_5, "A0_5"), (A1_1, "A1_1"), (N0_1, "N0_1"), (null, "null") ];
+`` Pairs := [ ((A0_1, "A0_1"), (B0_1, "B0_1")), ((A0_1, "A0_1"), (A0_5, "A0_5")), ((A0_1, "A0_1"), (A1_1, "A1_1")), ((A0_1, "A0_1"), (N0_1, "N0_1")), ((B0_1, "B0_1"), (A0_5, "A0_5")), ((B0_1, "B0_1"), (A1_1, "A1_1")), ((B0_1, "B0_1"), (N0_1, "N0_1")), ((A0_5, "A0_5"), (A1_1, "A1_1")), ((A0_5, "A0_5"), (N0_1, "N0_1")), ((A1_1, "A1_1"), (N0_1, "N0_1")), ((null, "null"), (null, "null")), ((A0_1, "A0_1"), (null, "null")), ((null, "null"), (A0_1, "A0_1")) ];
+`` Means := [-1, 0, 1];
+`` EqualVars := [false, true];
+
+"One-sample"
+ForEach(s: Samps, ForEach(mean: Means, (s[1], mean, TTest.OneSample(s[0], mean))))->ChainMap()
+With(s: Samps->TakeAt(0), (s[1], TTest.OneSample(s[0]))) // Default to mean of 0.
+
+"Two-sample"
+ForEach(p: Pairs, ForEach(eqv: EqualVars, (p[0][1], p[1][1], eqv, TTest.TwoSample(p[0][0], p[1][0], equal_var: eqv))))->ChainMap()
+With(p: Pairs->TakeAt(1), (p[0][1], p[1][1], TTest.TwoSample(p[0][0], p[1][0]))) // Default to unequal variance.
+
+"Paired"
+ForEach(p: Pairs, (p[0][1], p[1][1], TTest.Paired(p[0][0], p[1][0])))->Chain()
+
+"Paired with selectors"
+`` ZippedPairs := ForEach(p: Pairs, Zip(x: p[0][0], y: p[1][0], (x, y)));
+ForEach(p: ZippedPairs, TTest.Paired(p, it[0], it[1]))
+"Paired with selectors: add index to each datapoint. Pairs remain unchanged"
+ForEach(p: ZippedPairs, TTest.Paired(p, it[0] + #, it[1] + #))
+
+"End cross checking section."
+
+"Two-sample standard error calculations. For the given data, the reported standard errors are 3.58067 and 3.05833 for equal and unequal variances respectively."
+// Example drawn from:
+// Mindrila, Diana. (n.d.) Two-Sample Problems [Lecture Notes]. University of West Georgia.
+// https://www.westga.edu/academics/research/vrc/assets/docs/TwoSampleProblems_LectureNotes.pdf
+`` Males := [95, 78, 68, 95, 98, 79, 98, 86, 78, 89, 89, 94];
+`` Females := [100, 100, 95, 90, 95, 98, 100, 100];
+
+TTest.TwoSample(Males, Females, equal_var: true ).Stderr
+TTest.TwoSample(Males, Females, equal_var: false).Stderr
+
+"Check proper null filtering."
+`` nA0_1 := [ null ] ++ A0_1;
+`` B0_1n := B0_1 ++ [ null ];
+
+"One-sample"
+ForEach(mean: Means, ("nA0_1", mean, TTest.OneSample(nA0_1, mean)))
+
+"Two-sample"
+ForEach(eqv: EqualVars, ("nA0_1", "B0_1n", eqv, TTest.TwoSample(nA0_1, B0_1n, eqv)))
+ForEach(eqv: EqualVars, ("A0_1", "B0_1n", eqv, TTest.TwoSample(A0_1, B0_1n, eqv)))
+ForEach(eqv: EqualVars, ("nA0_1", "B0_1", eqv, TTest.TwoSample(nA0_1, B0_1, eqv)))
+
+"Paired"
+// Ensure rejected pairs don't alter results- keep all good pairs.
+`` PA0_1 := nA0_1 ++ [ 0, null ];
+`` PB0_1 := [ 0 ] ++ B0_1n ++ [ null ];
+// For the one-opt cases.
+`` A0_1z  := A0_1 ++ [ 0 ];
+`` zB0_1  := [ 0 ] ++ B0_1;
+
+TTest.Paired(PA0_1, PB0_1)
+TTest.Paired(A0_1z, B0_1n)
+TTest.Paired(nA0_1, zB0_1)
+
+"Paired with selectors"
+TTest.Paired(Zip(x: PA0_1, y: PB0_1, (x, y)), it[0], it[1])
+TTest.Paired(Zip(x: A0_1z, y: B0_1n, (x, y)), it[0], it[1])
+TTest.Paired(Zip(x: nA0_1, y: zB0_1, (x, y)), it[0], it[1])
+
+"Paired with selectors: add index to each datapoint. Pairs remain unchanged."
+// REVIEW: Suggests reductions are possible.
+TTest.Paired(Zip(x: PA0_1, y: PB0_1, (x, y)), it[0] + #, it[1] + #)
+TTest.Paired(Zip(x: A0_1z, y: B0_1n, (x, y)), it[0] + #, it[1] + #)
+TTest.Paired(Zip(x: nA0_1, y: zB0_1, (x, y)), it[0] + #, it[1] + #)
+
+"Check dof behavior with insufficient count(s)."
+`` Dn  := ([], "Dn");
+`` D1  := ([ 1 ], "D1");
+`` D1n := ([ 1, null ], "D1n");
+`` D2  := ([ 1, 2 ], "D2");
+
+`` Ds  := [Dn, D1, D1n, D2];
+// REVIEW: Would be nice to have a permutations/combinations function for this...
+// count of elements would need to be a bind-time constant.
+// e.g. Permutations(x*, count) => homogenous tuple of arity <count>
+`` DPairs := ForEach(x: Ds, ForEach(y: Ds, [if] x[1] != y[1] or x[1] != "D2", (x, y)))->ChainMap();
+
+"One-sample"
+ForEach(x: Ds, [if] x[1] != "D2", (x[1], TTest.OneSample(x[0])))->Chain()
+TTest.OneSample([ 1 ]->Take(Wrap(0)))
+
+"Two-sample"
+ForEach(p: DPairs, ForEach(eqv: EqualVars, (p[0][1], p[1][1], eqv, TTest.TwoSample(p[0][0], p[1][0], equal_var: eqv))))->ChainMap()
+ForEach(eqv: EqualVars, (eqv, TTest.TwoSample([ 1 ]->Take(Wrap(0)), [ 1 ], equal_var: eqv)))
+
+"Coverage for null samples when one sample contains nulls."
+TTest.TwoSample([ 1 ]->Take(Wrap(0)), [ 1, null ])
+TTest.TwoSample([ 1 ], [ 1, null ]->Take(Wrap(0)))
+TTest.TwoSample([ 1, null ]->Take(Wrap(0)), [ 1 ])
+TTest.TwoSample([ 1, null ], [ 1 ]->Take(Wrap(0)))
+TTest.TwoSample([ 1, null ]->Take(Wrap(0)), [ 1, null ])
+TTest.TwoSample([ 1, null ], [ 1, null ]->Take(Wrap(0)))
+
+TTest.Paired([ 1 ]->Take(Wrap(0)), [ 1, null ])
+TTest.Paired([ 1 ], [ 1, null ]->Take(Wrap(0)))
+TTest.Paired([ 1, null ]->Take(Wrap(0)), [ 1 ])
+TTest.Paired([ 1, null ], [ 1 ]->Take(Wrap(0)))
+TTest.Paired([ 1, null ]->Take(Wrap(0)), [ 1, null ])
+TTest.Paired([ 1, null ], [ 1, null ]->Take(Wrap(0)))
+
+TTest.Paired([ 1 ]->Take(Wrap(0)), it, it)
+TTest.Paired([ 1 ]->Take(Wrap(0)), it, it if it > 10 else null)
+TTest.Paired([ 1 ]->Take(Wrap(0)), it if it > 10 else null, it)
+TTest.Paired([ 1 ]->Take(Wrap(0)), it if it > 10 else null, it if it > 10 else null)
+
+TTest.Paired([ 1 ]->Take(Wrap(0)), #, it)
+TTest.Paired([ 1 ]->Take(Wrap(0)), #, it if it > 10 else null)
+TTest.Paired([ 1 ]->Take(Wrap(0)), # if it > 10 else null, it)
+TTest.Paired([ 1 ]->Take(Wrap(0)), # if it > 10 else null, it if it > 10 else null)

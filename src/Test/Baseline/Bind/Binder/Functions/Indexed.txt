@@ -1,0 +1,861 @@
+**** New globals: {A:i8*, B:i8?*, Q:{S:{X:i8, Z:r8}?*, X:i8, Y:i2}?*, R:{S:{X:i8, Z:r8}*, X:i8, Y:i2}*, S:i8**, X:i8, b:b}
+
+> ForEach(  A, (#it, it))
+ForEach(A, (#it, it)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(a:A, (#a, it))
+ForEach(a : A, (#a, it)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(a:A, (#it, a))
+ForEach(a : A, (#it, a)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(a:A, (#a, a))
+ForEach(a : A, (#a, a)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(  A, (#, it))
+ForEach(A, (#, it)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(  A, (#0, it))
+ForEach(A, (#, it)) : (i8, i8)*
+Binder : ForEach(*2: A, (#1, *2))
+###
+> ForEach(  A, #it->{A:it})
+ForEach(A, #it->{ A : it }) : {A:i8}*
+Binder : ForEach(*2: A, Guard(!3: #1, {A:!3}))
+Reducer: ForEach(*2: A, {A:#1})
+###
+> ForEach(x: ForEach(A, it * #it), x + 3)
+ForEach(x : ForEach(A, it * #it), x + 3) : i8*
+Binder : ForEach(*3: ForEach(*2: A, Mul(*2, #1)), Add(*3, 3))
+Reducer: ForEach(*2: A, Add(Mul(*2, #1), 3))
+###
+> ForEach(x: ForEach(A, it * #it), x + #x)
+ForEach(x : ForEach(A, it * #it), x + #x) : i8*
+Binder : ForEach(*4: ForEach(*2: A, Mul(*2, #1)), Add(*4, #3))
+Reducer: ForEach(*2: A, Add(Mul(*2, #1), #1))
+###
+> ForEach(x: ForEach(A, it * #), x + #)
+ForEach(x : ForEach(A, it * #), x + #) : i8*
+Binder : ForEach(*4: ForEach(*2: A, Mul(*2, #1)), Add(*4, #3))
+Reducer: ForEach(*2: A, Add(Mul(*2, #1), #1))
+###
+> ForEachIf(A, #it < it, (#it, it))
+ForEachIf(A, #it $< it, (#it, it)) : (i8, i8)*
+Binder : ForEachIf*(*2: A, #1 @< *2, (#1, *2))
+Reducer: ForEach(*2: A, [if] #1 @< *2, (#1, *2))
+###
+> ForEach(A, [if] #it < it, (#it, it))
+ForEach(A, [if] #it $< it, (#it, it)) : (i8, i8)*
+Binder : ForEach(*2: A, [if] #1 @< *2, (#1, *2))
+###
+> ForEachIf(A, #it < it, it)
+ForEachIf(A, #it $< it, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @< *2, *2)
+Reducer: Take(*2: A, [if] #1 @< *2)
+###
+> ForEach(A, [if] #it < it, it)
+ForEach(A, [if] #it $< it, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @< *2, *2)
+Reducer: Take(*2: A, [if] #1 @< *2)
+###
+> ForEachIf(A, #it < it, X)
+ForEachIf(A, #it $< it, X) : i8*
+Binder : ForEachIf*(*2: A, #1 @< *2, X)
+Reducer: ForEach(*2: A, [if] #1 @< *2, X)
+###
+> ForEach(A, [if] #it < it, X)
+ForEach(A, [if] #it $< it, X) : i8*
+Binder : ForEach(*2: A, [if] #1 @< *2, X)
+###
+> ForEachIf(A, X < it, X)
+ForEachIf(A, X $< it, X) : i8*
+Binder : ForEachIf*(*1: A, X @< *1, X)
+Reducer: ForEach(*1: A, [if] X @< *1, X)
+###
+> ForEach(A, [if] X < it, X)
+ForEach(A, [if] X $< it, X) : i8*
+Binder : ForEach(*1: A, [if] X @< *1, X)
+###
+> ForEachIf(A, #it < X, it)
+ForEachIf(A, #it $< X, it) : i8*
+Binder : ForEachIf*(*2: A, #1 @< X, *2)
+Reducer: Take(*2: A, [if] #1 @< X)
+###
+> ForEach(A, [if] #it < X, it)
+ForEach(A, [if] #it $< X, it) : i8*
+Binder : ForEach(*2: A, [if] #1 @< X, *2)
+Reducer: Take(*2: A, [if] #1 @< X)
+###
+> ForEachIf(A, #it < X, X)
+ForEachIf(A, #it $< X, X) : i8*
+Binder : ForEachIf*(*2: A, #1 @< X, X)
+Reducer: ForEach(*2: A, [if] #1 @< X, X)
+###
+> ForEach(A, [if] #it < X, X)
+ForEach(A, [if] #it $< X, X) : i8*
+Binder : ForEach(*2: A, [if] #1 @< X, X)
+###
+> ForEachWhile(A, #it < it, (#it, it))
+ForEachWhile(A, #it $< it, (#it, it)) : (i8, i8)*
+Binder : ForEachWhile*(*2: A, #1 @< *2, (#1, *2))
+Reducer: ForEach(*2: A, [while] #1 @< *2, (#1, *2))
+###
+> ForEach(A, [while] #it < it, (#it, it))
+ForEach(A, [while] #it $< it, (#it, it)) : (i8, i8)*
+Binder : ForEach(*2: A, [while] #1 @< *2, (#1, *2))
+###
+> ForEachWhile(A, #it < it, it)
+ForEachWhile(A, #it $< it, it) : i8*
+Binder : ForEachWhile*(*2: A, #1 @< *2, *2)
+Reducer: Take(*2: A, [while] #1 @< *2)
+###
+> ForEach(A, [while] #it < it, it)
+ForEach(A, [while] #it $< it, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @< *2, *2)
+Reducer: Take(*2: A, [while] #1 @< *2)
+###
+> ForEachWhile(A, #it < it, X)
+ForEachWhile(A, #it $< it, X) : i8*
+Binder : ForEachWhile*(*2: A, #1 @< *2, X)
+Reducer: ForEach(*2: A, [while] #1 @< *2, X)
+###
+> ForEach(A, [while] #it < it, X)
+ForEach(A, [while] #it $< it, X) : i8*
+Binder : ForEach(*2: A, [while] #1 @< *2, X)
+###
+> ForEachWhile(A, X < it, X)
+ForEachWhile(A, X $< it, X) : i8*
+Binder : ForEachWhile*(*1: A, X @< *1, X)
+Reducer: ForEach(*1: A, [while] X @< *1, X)
+###
+> ForEach(A, [while] X < it, X)
+ForEach(A, [while] X $< it, X) : i8*
+Binder : ForEach(*1: A, [while] X @< *1, X)
+###
+> ForEachWhile(A, #it < X, it)
+ForEachWhile(A, #it $< X, it) : i8*
+Binder : ForEachWhile*(*2: A, #1 @< X, *2)
+Reducer: Take(*2: A, [while] #1 @< X)
+###
+> ForEach(A, [while] #it < X, it)
+ForEach(A, [while] #it $< X, it) : i8*
+Binder : ForEach(*2: A, [while] #1 @< X, *2)
+Reducer: Take(*2: A, [while] #1 @< X)
+###
+> ForEachWhile(A, #it < X, X)
+ForEachWhile(A, #it $< X, X) : i8*
+Binder : ForEachWhile*(*2: A, #1 @< X, X)
+Reducer: ForEach(*2: A, [while] #1 @< X, X)
+###
+> ForEach(A, [while] #it < X, X)
+ForEach(A, [while] #it $< X, X) : i8*
+Binder : ForEach(*2: A, [while] #1 @< X, X)
+###
+> Sum(A, #it * it)
+Sum(A, #it * it) : i8
+Binder : Sum(*2: A, Mul(#1, *2))
+###
+> Sum(A, #it$0 * it$0)
+Sum(A, #it * it) : i8
+Binder : Sum(*2: A, Mul(#1, *2))
+###
+> Sum(A, #it$1 * it$0) // Error, bad scope.
+Sum(A, #it$1 * it) : i8
+*** Error: (8,12) Node: #it$1, Tok: 'it$1', Message: Invalid scope index; there are not enough values in scope
+Binder : Sum(*1: A, Mul(Error(ErrBadItSlot), *1))
+###
+> Sum(a:A, #a * a)
+Sum(a : A, #a * a) : i8
+Binder : Sum(*2: A, Mul(#1, *2))
+###
+> Sum(a:A, #b * a) // Error, bad scope.
+Sum(a : A, #b * a) : i8
+*** Error: (9,10) Node: #b, Message: Operand must be an active scope
+Binder : Sum(*1: A, Mul(Error(ErrNotActiveScope), *1))
+###
+> ForEach(n:Range(5), Sum(A, #it$1 * it))
+ForEach(n : Range(5), Sum(A, #it$1 * it)) : i8*
+Binder : ForEach(*2: Range(5), Sum(*3: A, Mul(#1, *3)))
+Reducer: ForEach(*1: Range(5), Sum(*2: A, Mul(*1, *2)))
+###
+> ForEach(n:Range(5), Sum(A, #it$1 * #it * n * it))
+ForEach(n : Range(5), Sum(A, #it$1 * #it * n * it)) : i8*
+Binder : ForEach(*2: Range(5), Sum(*4: A, Mul(#1, #3, *2, *4)))
+Hoister: ForEach(*2: Range(5), With(!3: Mul(#1, *2), Sum(*5: A, Mul(!3, #4, *5))))
+###
+> ForEach(n:Range(5), Sum(A, #n * #it * n * it))
+ForEach(n : Range(5), Sum(A, #n * #it * n * it)) : i8*
+Binder : ForEach(*2: Range(5), Sum(*4: A, Mul(#1, #3, *2, *4)))
+Hoister: ForEach(*2: Range(5), With(!3: Mul(#1, *2), Sum(*5: A, Mul(!3, #4, *5))))
+###
+> ForEach(n:Range(5), Sum(A, #1 * # * n * it))
+ForEach(n : Range(5), Sum(A, #1 * # * n * it)) : i8*
+Binder : ForEach(*2: Range(5), Sum(*4: A, Mul(#1, #3, *2, *4)))
+Hoister: ForEach(*2: Range(5), With(!3: Mul(#1, *2), Sum(*5: A, Mul(!3, #4, *5))))
+###
+> ForEach(n:Range(5), Sum(A, #0000001 * #00000 * n * it))
+ForEach(n : Range(5), Sum(A, #1 * # * n * it)) : i8*
+Binder : ForEach(*2: Range(5), Sum(*4: A, Mul(#1, #3, *2, *4)))
+Hoister: ForEach(*2: Range(5), With(!3: Mul(#1, *2), Sum(*5: A, Mul(!3, #4, *5))))
+###
+> ForEach(n:Range(5), Sum(A, #2 * # * n * it)) // Error.
+ForEach(n : Range(5), Sum(A, #2 * # * n * it)) : i8*
+*** Error: (27,29) Node: #2, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ForEach(*1: Range(5), Sum(*3: A, Mul(Error(ErrBadItIndSlot), #2, *1, *3)))
+###
+> ForEach(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(A, z * #1 * #0 * n * it)))
+ForEach(n : Range(5), With(x : n * n, y : x * x, z : y * y, Sum(A, z * #1 * # * n * it))) : i8*
+Binder : ForEach(*2: Range(5), With(!3: Mul(*2, *2), !4: Mul(!3, !3), !5: Mul(!4, !4), Sum(*7: A, Mul(!5, #1, #6, *2, *7))))
+Hoister: ForEach(*2: Range(5), With(!3: Mul(*2, *2), !4: Mul(!3, !3), !5: Mul(!4, !4), With(!6: Mul(!5, #1, *2), Sum(*8: A, Mul(!6, #7, *8)))))
+Reducer: ForEach(*2: Range(5), With(!3: Mul(*2, *2), !4: Mul(!3, !3), !5: Mul(!4, !4, #1, *2), Sum(*7: A, Mul(!5, #6, *7))))
+###
+> ForEach(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(A, z * #2 * #0 * n * it))) // Error.
+ForEach(n : Range(5), With(x : n * n, y : x * x, z : y * y, Sum(A, z * #2 * # * n * it))) : i8*
+*** Error: (57,59) Node: #2, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ForEach(*1: Range(5), With(!2: Mul(*1, *1), !3: Mul(!2, !2), !4: Mul(!3, !3), Sum(*6: A, Mul(!4, Error(ErrBadItIndSlot), #5, *1, *6))))
+###
+> ForEach(n:[Count(A), Count(B)], Sum(A, #it$1))
+ForEach(n : [Count(A), Count(B)], Sum(A, #it$1)) : i8*
+Binder : ForEach(*2: [Count(A), Count(B)], Sum(*3: A, #1))
+Reducer: ForEach(*1: Range(2), Sum(*2: A, *1))
+###
+> ForEachIf(n:[Count(A), Count(B)], true, Sum(A, #it$1))
+ForEachIf(n : [Count(A), Count(B)], true, Sum(A, #it$1)) : i8*
+Binder : ForEachIf*(*2: [Count(A), Count(B)], true, Sum(*3: A, #1))
+Reducer: ForEach(*1: Range(2), Sum(*2: A, *1))
+###
+> ForEachWhile(n:[Count(A), Count(B)], true, Sum(A, #it$1))
+ForEachWhile(n : [Count(A), Count(B)], true, Sum(A, #it$1)) : i8*
+Binder : ForEachWhile*(*2: [Count(A), Count(B)], true, Sum(*3: A, #1))
+Reducer: ForEach(*1: Range(2), Sum(*2: A, *1))
+###
+> ForEach(n:[Count(A), Count(B)], [if] true, Sum(A, #it$1))
+ForEach(n : [Count(A), Count(B)], [if] true, Sum(A, #it$1)) : i8*
+Binder : ForEach(*2: [Count(A), Count(B)], [if] true, Sum(*3: A, #1))
+Reducer: ForEach(*1: Range(2), Sum(*2: A, *1))
+###
+> ForEach(n:[Count(A), Count(B)], [while] true, Sum(A, #it$1))
+ForEach(n : [Count(A), Count(B)], [while] true, Sum(A, #it$1)) : i8*
+Binder : ForEach(*2: [Count(A), Count(B)], [while] true, Sum(*3: A, #1))
+Reducer: ForEach(*1: Range(2), Sum(*2: A, *1))
+###
+> ForEachIf(Range(10), Range(20), b, #it)
+ForEachIf(Range(10), Range(20), b, #it) : i8*
+Binder : ForEachIf*(*2: Range(10), *3: Range(20), b, #1)
+Reducer: Take(*1: Range(10), [if] b)
+###
+> ForEachWhile(Range(10), Range(20), b, #it)
+ForEachWhile(Range(10), Range(20), b, #it) : i8*
+Binder : ForEachWhile*(*2: Range(10), *3: Range(20), b, #1)
+Reducer: Take(*1: Range(10), [while] b)
+###
+> ForEach(Range(10), Range(20), [if] b, #it)
+ForEach(Range(10), Range(20), [if] b, #it) : i8*
+Binder : ForEach(*2: Range(10), *3: Range(20), [if] b, #1)
+Reducer: Take(*1: Range(10), [if] b)
+###
+> ForEach(Range(10), Range(20), [while] b, #it)
+ForEach(Range(10), Range(20), [while] b, #it) : i8*
+Binder : ForEach(*2: Range(10), *3: Range(20), [while] b, #1)
+Reducer: Take(*1: Range(10), [while] b)
+###
+> Min(A, #it * it)
+Min(A, #it * it) : i8
+Binder : Min(*2: A, Mul(#1, *2))
+###
+> Max(A, #it * it)
+Max(A, #it * it) : i8
+Binder : Max(*2: A, Mul(#1, *2))
+###
+> Take(A, 5, it > #it)
+Take(A, 5, it $> #it) : i8*
+Binder : Take(*2: A, 5, *2 @> #1)
+###
+> Drop(A, 5, it > #it)
+Drop(A, 5, it $> #it) : i8*
+Binder : Drop(*2: A, 5, *2 @> #1)
+###
+> TakeIf(A, it > #it)
+TakeIf(A, it $> #it) : i8*
+Binder : TakeIf*(*2: A, *2 @> #1)
+Reducer: Take(*2: A, [if] *2 @> #1)
+###
+> DropIf(A, it > #it)
+DropIf(A, it $> #it) : i8*
+Binder : DropIf*(*2: A, *2 @> #1)
+Reducer: Drop(*2: A, [if] *2 @> #1)
+###
+> TakeWhile(A, it > #it)
+TakeWhile(A, it $> #it) : i8*
+Binder : TakeWhile*(*2: A, *2 @> #1)
+Reducer: Take(*2: A, [while] *2 @> #1)
+###
+> DropWhile(A, it > #it)
+DropWhile(A, it $> #it) : i8*
+Binder : DropWhile*(*2: A, *2 @> #1)
+Reducer: Drop(*2: A, [while] *2 @> #1)
+###
+> Sort(A, it * #it)
+Sort(A, it * #it) : i8*
+Binder : Sort(*2: A, Mul(*2, #1))
+###
+> SortUp(A, it * #it)
+SortUp(A, it * #it) : i8*
+Binder : SortUp(*2: A, Mul(*2, #1))
+###
+> SortDown(A, it * #it)
+SortDown(A, it * #it) : i8*
+Binder : SortDown(*2: A, Mul(*2, #1))
+###
+> TakeOne(A, #it < it)
+TakeOne(A, #it $< it) : i8
+Binder : TakeOne(*2: A, #1 @< *2)
+###
+> TakeOne(A, #it < it, null)
+TakeOne(A, #it $< it, null) : i8?
+Binder : TakeOne(*2: A, #1 @< *2, null)
+###
+> TakeOne(A, [if] #it < it, null)
+TakeOne(A, [if] #it $< it, null) : i8?
+Binder : TakeOne(*2: A, [if] #1 @< *2, null)
+###
+> TakeOne(A, #it < it, [else] null)
+TakeOne(A, #it $< it, [else] null) : i8?
+Binder : TakeOne(*2: A, #1 @< *2, [else] null)
+###
+> TakeOne(A, [if] #it < it, [else] null)
+TakeOne(A, [if] #it $< it, [else] null) : i8?
+Binder : TakeOne(*2: A, [if] #1 @< *2, [else] null)
+###
+> TakeOne([], #it < it, null)
+TakeOne([], #it $< it, null) : o
+Binder : TakeOne(*2: null, #1 @< Unit<i8>(*2), null)
+Reducer: null
+###
+> DropOne(A, #it < it)
+DropOne(A, #it $< it) : i8*
+Binder : DropOne*(*2: A, #1 @< *2)
+Reducer: Drop(*2: A, 1, #1 @< *2)
+###
+> DropOne(A, [if] #it < it)
+DropOne(A, [if] #it $< it) : i8*
+Binder : DropOne*(*2: A, [if] #1 @< *2)
+Reducer: Drop(*2: A, 1, [if] #1 @< *2)
+###
+> DropOne([], #it < it)
+DropOne([], #it $< it) : v*
+Binder : DropOne*(*2: null, #1 @< Unit<i8>(*2))
+Reducer: null
+###
+> Count(A, it > #it)
+Count(A, it $> #it) : i8
+Binder : Count(*2: A, *2 @> #1)
+###
+> Count(A, it > #0)
+Count(A, it $> #) : i8
+Binder : Count(*2: A, *2 @> #1)
+###
+> Count(a:A, a > #a)
+Count(a : A, a $> #a) : i8
+Binder : Count(*2: A, *2 @> #1)
+###
+> Count(A, [if] it > #)
+Count(A, [if] it $> #) : i8
+Binder : Count(*2: A, [if] *2 @> #1)
+###
+> Count(A, [while] it > #)
+Count(A, [while] it $> #) : i8
+Binder : Count(*2: A, [while] *2 @> #1)
+###
+> First(A, it > #it)
+First(A, it $> #it) : i8?
+Binder : First*(*2: A, *2 @> #1)
+Reducer: TakeOne(*2: A, *2 @> #1, [else] null)
+###
+> Any(A, it > #it)
+Any(A, it $> #it) : b
+Binder : Any(*2: A, *2 @> #1)
+###
+> Any(B, it > #it)
+Any(B, it $> #it) : b
+Binder : Any(*2: B, *2 $> #1)
+###
+> All(A, it > #it)
+All(A, it $> #it) : b
+Binder : All(*2: A, *2 @> #1)
+###
+> All(B, it > #it)
+All(B, it $> #it) : b
+Binder : All(*2: B, *2 $> #1)
+###
+> KeyJoin(A, B, #, #, #1 + #0, #, #)
+KeyJoin(A, B, #, #, #1 + #, #, #) : i8*
+Binder : KeyJoin(*2: A, *4: B, #1, #3, Add(#1, #3), #1, #3)
+###
+> KeyJoin(a:A, b:B, #a, #b, #1 + #0, #, #)
+KeyJoin(a : A, b : B, #a, #b, #1 + #, #, #) : i8*
+Binder : KeyJoin(*2: A, *4: B, #1, #3, Add(#1, #3), #1, #3)
+###
+> KeyJoin(a:A, b:B, #b, #a, 1, #b, #a) // Error, not in scope.
+KeyJoin(a : A, b : B, #b, #a, 1, #b, #a) : i8*
+*** Error: (18,19) Node: #b, Message: Operand must be an active scope
+*** Error: (22,23) Node: #a, Message: Operand must be an active scope
+*** Error: (29,30) Node: #b, Message: Operand must be an active scope
+*** Error: (33,34) Node: #a, Message: Operand must be an active scope
+Binder : KeyJoin(*1: A, *2: B, Error(ErrNotActiveScope), Error(ErrNotActiveScope), 1, Error(ErrNotActiveScope), Error(ErrNotActiveScope))
+###
+> CrossJoin(A, B, (#1 + #0) mod 2 = 0, #1 + #0, #, #)
+CrossJoin(A, B, (#1 + #) mod 2 @= 0, #1 + #, #, #) : i8*
+Binder : CrossJoin(*2: A, *4: B, IntMod(Add(#1, #3), 2) @= 0, Add(#1, #3), #1, #3)
+###
+> CrossJoin(a:A, b:B, (#a + #b) mod 2 = 0, #1 + #0, #, #)
+CrossJoin(a : A, b : B, (#a + #b) mod 2 @= 0, #1 + #, #, #) : i8*
+Binder : CrossJoin(*2: A, *4: B, IntMod(Add(#1, #3), 2) @= 0, Add(#1, #3), #1, #3)
+###
+> CrossJoin(a:A, b:B, true, 1, #b, #a) // Error, not in scope.
+CrossJoin(a : A, b : B, true, 1, #b, #a) : i8*
+*** Error: (29,30) Node: #b, Message: Operand must be an active scope
+*** Error: (33,34) Node: #a, Message: Operand must be an active scope
+Binder : CrossJoin(*1: A, *2: B, true, 1, Error(ErrNotActiveScope), Error(ErrNotActiveScope))
+###
+> ChainMap(x: A->GroupBy(it mod 5), x * #)
+ChainMap(x : A->GroupBy(it mod 5), x * #) : i8*
+Binder : ChainMap(*3: GroupBy(*1: A, [key] IntMod(*1, 5)), ForEach(*4: *3, Mul(*4, #2)))
+###
+> ChainMap(x: A->GroupBy(it mod 5), x * #x)
+ChainMap(x : A->GroupBy(it mod 5), x * #x) : i8*
+Binder : ChainMap(*3: GroupBy(*1: A, [key] IntMod(*1, 5)), ForEach(*4: *3, Mul(*4, #2)))
+###
+> ChainMap(x: Range(10), y: Range(1, 10), [#0, #1, x, y]) // Error, #1 slot too big.
+ChainMap(x : Range(10), y : Range(1, 10), [#, #1, x, y]) : i8*
+*** Error: (45,47) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ChainMap(*2: Range(10), *3: Range(1, 10), [#1, Error(ErrBadItIndSlot), *2, *3])
+###
+> GroupBy(a:A, [key] Key: #0 + #a + a)
+GroupBy(a : A, [key] Key : # + #a + a) : {Key:i8}*
+Binder : GroupBy(*2: A, [key] Key:Add(#1, #1, *2))
+###
+> GroupBy(a:A, [key] Key0: #0, [key] Key1: #a, [key] Key2: a, [item] Item: (#0, #a, a))
+GroupBy(a : A, [key] Key0 : #, [key] Key1 : #a, [key] Key2 : a, [map] Item : (#, #a, a)) : {Item:(i8, i8, i8)*, Key0:i8, Key1:i8, Key2:i8}*
+Binder : GroupBy(*2: A, [key] Key0:#1, [key] Key1:#1, [key] Key2:*2, [map] Item:(#3, #3, *4))
+###
+> GroupBy(a:A, [key] Key: #1) // Error, slot too big.
+GroupBy(a : A, [key] Key : #1) : {Key:i8}*
+*** Error: (24,26) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : GroupBy(*1: A, [key] Key:Error(ErrBadItIndSlot))
+###
+> Map(k:A, Range(k)->GroupBy(as a, [key] Key: #0 + #a + a + #1 + #k + k))
+Map(k : A, Range(k)->GroupBy(as a, [key] Key : # + #a + a + #1 + #k + k)) : {Key:i8}**
+Binder : ForEach(*2: A, GroupBy(*4: Range(*2), [key] Key:Add(#3, #3, *4, #1, #1, *2)))
+Hoister: ForEach(*2: A, With(!3: Add(#1, #1, *2), GroupBy(*5: Range(*2), [key] Key:Add(!3, #4, #4, *5))))
+###
+> Map(k:A, Range(k)->GroupBy(as a, [key] Key0: #0 + #1, [key] Key1: #a + #k, [key] Key2: a + k, [item] Item: (#0, #a, a, #1, #k, k)))
+Map(k : A, Range(k)->GroupBy(as a, [key] Key0 : # + #1, [key] Key1 : #a + #k, [key] Key2 : a + k, [map] Item : (#, #a, a, #1, #k, k))) : {Item:(i8, i8, i8, i8, i8, i8)*, Key0:i8, Key1:i8, Key2:i8}**
+Binder : ForEach(*2: A, GroupBy(*4: Range(*2), [key] Key0:Add(#3, #1), [key] Key1:Add(#3, #1), [key] Key2:Add(*4, *2), [map] Item:(#5, #5, *6, #1, #1, *2)))
+###
+> Map(k:A, Range(k)->GroupBy(as a, [key] Key: #2)) // Error, slot too big.
+Map(k : A, Range(k)->GroupBy(as a, [key] Key : #2)) : {Key:i8}**
+*** Error: (44,46) Node: #2, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ForEach(*1: A, GroupBy(*2: Range(*1), [key] Key:Error(ErrBadItIndSlot)))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Vals: item * 3) // REVIEW: Perhaps both "item" and "a" should work?
+GroupBy(a : A, [key] Key : a mod 5, [map] Vals : item * 3) : {Key:i8, Vals:i8*}*
+*** Error: (46,50) Node: item, Message: Name does not exist in the current context
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Vals:Mul(Unit<i8>(Error(ErrNameDoesNotExist)), 3))
+Reducer: GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Vals:0)
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Vals: a * 3)
+GroupBy(a : A, [key] Key : a mod 5, [map] Vals : a * 3) : {Key:i8, Vals:i8*}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Vals:Mul(*2, 3))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Items: (#a, #0, a))
+GroupBy(a : A, [key] Key : a mod 5, [map] Items : (#a, #, a)) : {Items:(i8, i8, i8)*, Key:i8}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Items:(#2, #2, *3))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Pairs: (a, #a))
+GroupBy(a : A, [key] Key : a mod 5, [map] Pairs : (a, #a)) : {Key:i8, Pairs:(i8, i8)*}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Pairs:(*3, #2))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Pairs: (a, #1)) // Error, #1 slot too big.
+GroupBy(a : A, [key] Key : a mod 5, [map] Pairs : (a, #1)) : {Key:i8, Pairs:(i8, i8)*}*
+*** Error: (51,53) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Pairs:(*2, Error(ErrBadItIndSlot)))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * 3))
+GroupBy(a : A, [key] Key : a mod 5, [map] Sums : Sum(i : Range(a), i * 3)) : {Key:i8, Sums:i8*}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Sums:Sum(*3: Range(*2), Mul(*3, 3)))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * #))
+GroupBy(a : A, [key] Key : a mod 5, [map] Sums : Sum(i : Range(a), i * #)) : {Key:i8, Sums:i8*}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Sums:Sum(*4: Range(*2), Mul(*4, #3)))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * #1))
+GroupBy(a : A, [key] Key : a mod 5, [map] Sums : Sum(i : Range(a), i * #1)) : {Key:i8, Sums:i8*}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Sums:Sum(*4: Range(*3), Mul(*4, #2)))
+###
+> GroupBy(a:A, [key] Key: a mod 5, [item] Items: Sum(i:Range(a), i * (#0 + #i + i + #1 + #a + a)))
+GroupBy(a : A, [key] Key : a mod 5, [map] Items : Sum(i : Range(a), i * (# + #i + i + #1 + #a + a))) : {Items:i8*, Key:i8}*
+Binder : GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Items:Sum(*5: Range(*3), Mul(*5, Add(#4, #4, *5, #2, #2, *3))))
+Hoister: GroupBy(*1: A, [key] Key:IntMod(*1, 5), [map] Items:With(!4: Add(#2, #2, *3), Sum(*6: Range(*3), Mul(*6, Add(!4, #5, #5, *6)))))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #k)))
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #k))) : {Key:i8, Pairs:(i8, i8)*}**
+Binder : ForEach(*2: A, GroupBy(*3: Range(*2), [key] Key:IntMod(*3, 5), [map] Pairs:(*4, #1)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #0)))
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #))) : {Key:i8, Pairs:(i8, i8)*}**
+Binder : ForEach(*1: A, GroupBy(*2: Range(*1), [key] Key:IntMod(*2, 5), [map] Pairs:(*4, #3)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #)))
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #))) : {Key:i8, Pairs:(i8, i8)*}**
+Binder : ForEach(*1: A, GroupBy(*2: Range(*1), [key] Key:IntMod(*2, 5), [map] Pairs:(*4, #3)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #it$1)))
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #it$1))) : {Key:i8, Pairs:(i8, i8)*}**
+Binder : ForEach(*2: A, GroupBy(*3: Range(*2), [key] Key:IntMod(*3, 5), [map] Pairs:(*4, #1)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, [key] Key: #0 + #i + i + #1 + #k + k))
+ForEach(k : A, Range(k)->GroupBy(as i, [key] Key : # + #i + i + #1 + #k + k)) : {Key:i8}**
+Binder : ForEach(*2: A, GroupBy(*4: Range(*2), [key] Key:Add(#3, #3, *4, #1, #1, *2)))
+Hoister: ForEach(*2: A, With(!3: Add(#1, #1, *2), GroupBy(*5: Range(*2), [key] Key:Add(!3, #4, #4, *5))))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, [key] Key0: #0 + #1, [key] Key1: #i + #k, [key] Key2: i + k, [item] Item: (#0, #i, i, #1, #k, k)))
+ForEach(k : A, Range(k)->GroupBy(as i, [key] Key0 : # + #1, [key] Key1 : #i + #k, [key] Key2 : i + k, [map] Item : (#, #i, i, #1, #k, k))) : {Item:(i8, i8, i8, i8, i8, i8)*, Key0:i8, Key1:i8, Key2:i8}**
+Binder : ForEach(*2: A, GroupBy(*4: Range(*2), [key] Key0:Add(#3, #1), [key] Key1:Add(#3, #1), [key] Key2:Add(*4, *2), [map] Item:(#5, #5, *6, #1, #1, *2)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #K))) // Fuzzy.
+Corrected by binder: [ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, k K))) // Fuzzy.]
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #K))) : {Key:i8, Pairs:(i8, i8)*}**
+*** Error: (69,70) Node: #K, Message: Name does not exist in the current context, did you intend 'k'?
+Binder : ForEach(*2: A, GroupBy(*3: Range(*2), [key] Key:IntMod(*3, 5), [map] Pairs:(*4, #1)))
+###
+> ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #I))) // Fuzzy, but no index.
+Corrected by binder: [ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, i I))) // Fuzzy, but no index.]
+ForEach(k : A, Range(k)->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #I))) : {Key:i8, Pairs:(i8, i8)*}**
+*** Error: (69,70) Node: #I, Message: Name does not exist in the current context, did you intend 'i'?
+Binder : ForEach(*1: A, GroupBy(*2: Range(*1), [key] Key:IntMod(*2, 5), [map] Pairs:(*4, #3)))
+###
+> ForEach('k''k':A, Range('k''k')->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #'k''K'))) // Fuzzy.
+Corrected by binder: [ForEach('k''k':A, Range('k''k')->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, 'k''k' 'k''K'))) // Fuzzy.]
+ForEach('k''k' : A, Range('k''k')->GroupBy(as i, Key : i mod 5, [map] Pairs : (i, #'k''K'))) : {Key:i8, Pairs:(i8, i8)*}**
+*** Error: (79,80) Node: #'k''K', Message: Name does not exist in the current context, did you intend ''k''k''?
+Binder : ForEach(*2: A, GroupBy(*3: Range(*2), [key] Key:IntMod(*3, 5), [map] Pairs:(*4, #1)))
+###
+> #it
+#it : i8
+*** Error: (0,1) Node: #it, Message: There are no values in scope for 'it'
+Binder : Error(ErrBadIt)
+###
+> ForEach(a: Range(10), #a mod 2)
+ForEach(a : Range(10), #a mod 2) : i8*
+Binder : ForEach(*2: Range(10), IntMod(#1, 2))
+Reducer: ForEach(*1: Range(10), IntMod(*1, 2))
+###
+> ForEach(a: Range(10), # a mod 2)
+ForEach(a : Range(10), #a mod 2) : i8*
+Binder : ForEach(*2: Range(10), IntMod(#1, 2))
+Reducer: ForEach(*1: Range(10), IntMod(*1, 2))
+###
+> ForEach(a: Range(10), # mod 2)
+ForEach(a : Range(10), # mod 2) : i8*
+Binder : ForEach(*2: Range(10), IntMod(#1, 2))
+Reducer: ForEach(*1: Range(10), IntMod(*1, 2))
+###
+> ForEach(a: Range(10), #mod 2) // Error.
+ForEach(a : Range(10), ((#mod) <error> (2))) : v*
+=== Parse diagnostics:
+*** Error: (27,28) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (22,23) Node: #mod, Message: Operand must be an active scope
+*** Error: (27,28) Node: ((#mod) <error> (2)), Message: Expected an operator
+Binder : ForEach(*1: Range(10), Error(ErrOperatorExpected))
+Reducer: Repeat(Error(ErrOperatorExpected), 10)
+###
+> ForEach(mod: Range(10), # mod 2)
+ForEach(mod : Range(10), # mod 2) : i8*
+Binder : ForEach(*2: Range(10), IntMod(#1, 2))
+Reducer: ForEach(*1: Range(10), IntMod(*1, 2))
+###
+> ForEach(mod: Range(10), #mod 2) // Error.
+ForEach(mod : Range(10), ((#mod) <error> (2))) : v*
+=== Parse diagnostics:
+*** Error: (29,30) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (29,30) Node: ((#mod) <error> (2)), Message: Expected an operator
+Binder : ForEach(*1: Range(10), Error(ErrOperatorExpected))
+Reducer: Repeat(Error(ErrOperatorExpected), 10)
+###
+> With(div: 5, ForEach(mod: Range(10), # mod div))
+With(div : 5, ForEach(mod : Range(10), # mod div)) : i8*
+Binder : With(!1: 5, ForEach(*3: Range(10), IntMod(#2, !1)))
+Reducer: ForEach(*1: Range(10), IntMod(*1, 5))
+###
+> With(div: 5, ForEach(mod: Range(10), #mod div div))
+With(div : 5, ForEach(mod : Range(10), #mod div div)) : i8*
+Binder : With(!1: 5, ForEach(*3: Range(10), IntDiv(#2, !1)))
+Reducer: ForEach(*1: Range(10), IntDiv(*1, 5))
+###
+> With(div: 5, ForEach(mod: Range(10), #mod div)) // Error.
+With(div : 5, ForEach(mod : Range(10), #mod div (<missing>))) : i8*
+=== Parse diagnostics:
+*** Error: (45,46) Tok: ')', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (45,46) Node: (<missing>), Message: Expected an operand
+Binder : With(!1: 5, ForEach(*3: Range(10), IntDiv(#2, Unit<i8>(<missing>))))
+*** Warning: Node: IntDiv(#1x, Unit<i8>(<missing>)), Message: Integer division by zero
+Reducer: Repeat(0, 10)
+###
+> TTest.Paired(R, X, Y + #)
+TTest.Paired(R, X, Y + #) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*2: R, Num<r8>(*2.X), Num<r8>(Add(Num<i8>(*2.Y), #1)))
+###
+> TTest.Paired(R, X + #, Y)
+TTest.Paired(R, X + #, Y) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*2: R, Num<r8>(Add(*2.X, #1)), Num<r8>(*2.Y))
+###
+> TTest.Paired(R, X + #, Y + #)
+TTest.Paired(R, X + #, Y + #) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*2: R, Num<r8>(Add(*2.X, #1)), Num<r8>(Add(Num<i8>(*2.Y), #1)))
+###
+> TTest.Paired(x: R, X + #x, Y + #x)
+TTest.Paired(x : R, X + #x, Y + #x) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*2: R, Num<r8>(Add(*2.X, #1)), Num<r8>(Add(Num<i8>(*2.Y), #1)))
+###
+> TTest.Paired(R, X + #1, Y) // Error.
+TTest.Paired(R, X + #1, Y) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (20,22) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : TTest.Paired(*1: R, Num<r8>(Add(*1.X, Error(ErrBadItIndSlot))), Num<r8>(*1.Y))
+###
+> TTest.Paired(R, X, Y + #1) // Error.
+TTest.Paired(R, X, Y + #1) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (23,25) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : TTest.Paired(*1: R, Num<r8>(*1.X), Num<r8>(Add(Num<i8>(*1.Y), Error(ErrBadItIndSlot))))
+###
+
+**** New globals: {Orders:{Price:i8, Quantity:i8}*}
+
+> ForEach(order: Orders, index: Range(Count(Orders)), order+>{ Index: index })
+ForEach(order : Orders, index : Range(Count(Orders)), order+>{ Index : index }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*1: Orders, *2: Range(Count(Orders)), SetFields(!3: *1, Index : *2))
+###
+> ForEach(order: Orders, Range(Count(Orders)), order+>{ Index: it }) // Wrong - it refers to the left operand of +>
+ForEach(order : Orders, Range(Count(Orders)), order+>{ Index : it }) : {Index:{Price:i8, Quantity:i8}, Price:i8, Quantity:i8}*
+Binder : ForEach(*1: Orders, *2: Range(Count(Orders)), SetFields(!3: *1, Index : !3))
+###
+> ForEach(order: Orders, Range(Count(Orders)), order+>{ Index: it$1 }) // Correct
+ForEach(order : Orders, Range(Count(Orders)), order+>{ Index : it$1 }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*1: Orders, *2: Range(Count(Orders)), SetFields(!3: *1, Index : *2))
+###
+> ForEach(Orders, Range(Count(Orders)), it$1+>{ Index: it$1 })
+ForEach(Orders, Range(Count(Orders)), it$1+>{ Index : it$1 }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*1: Orders, *2: Range(Count(Orders)), SetFields(!3: *1, Index : *2))
+###
+> ForEach(order: Orders, order+>{ Index: #order })
+ForEach(order : Orders, order+>{ Index : #order }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> ForEach(Orders, it+>{ Index: #it }) // Error.
+ForEach(Orders, it+>{ Index : #it }) : {Index:i8, Price:i8, Quantity:i8}*
+*** Error: (29,30) Node: #it, Message: Operand must be an indexed scope
+Binder : ForEach(*1: Orders, SetFields(!2: *1, Index : Error(ErrNotIndexedScope)))
+###
+> ForEach(Orders, it+>{ Index: #it$1 })
+ForEach(Orders, it+>{ Index : #it$1 }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> ForEach(Orders, it+>{ Index: # })
+ForEach(Orders, it+>{ Index : # }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> Orders+>{ Index: #it } // Error.
+Orders+>{ Index : #it } : {Index:i8, Price:i8, Quantity:i8}*
+*** Error: (17,18) Node: #it, Message: Operand must be an indexed scope
+Binder : ForEach(*1: Orders, SetFields(!2: *1, Index : Error(ErrNotIndexedScope)))
+###
+> Orders+>{ Index: #it$1 }
+Orders+>{ Index : #it$1 } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> Orders+>{ Index: #0 }
+Orders+>{ Index : # } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> Orders+>{ Index: # }
+Orders+>{ Index : # } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> SetFields(Orders, Index: #it) // Error.
+SetFields(Orders, Index : #it) : {Index:i8, Price:i8, Quantity:i8}*
+*** Error: (25,26) Node: #it, Message: Operand must be an indexed scope
+Binder : ForEach(*1: Orders, SetFields(!2: *1, Index : Error(ErrNotIndexedScope)))
+###
+> SetFields(Orders, Index: #it$1)
+SetFields(Orders, Index : #it$1) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> SetFields(Orders, Index: #0)
+SetFields(Orders, Index : #) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> SetFields(Orders, Index: #)
+SetFields(Orders, Index : #) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, SetFields(!3: *2, Index : #1))
+###
+> Orders->{ Quantity, Price, Index: #it } // Error.
+Orders->{ Quantity, Price, Index : #it } : {Index:i8, Price:i8, Quantity:i8}*
+*** Error: (34,35) Node: #it, Message: Operand must be an indexed scope
+Binder : ForEach(*1: Orders, Guard(!2: *1, {Index:Error(ErrNotIndexedScope), Price:!2.Price, Quantity:!2.Quantity}))
+Reducer: ForEach(*1: Orders, {Index:Error(ErrNotIndexedScope), Price:*1.Price, Quantity:*1.Quantity})
+###
+> Orders->{ Quantity, Price, Index: #it$1 }
+Orders->{ Quantity, Price, Index : #it$1 } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, Guard(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+> Orders->{ Quantity, Price, Index: #0 }
+Orders->{ Quantity, Price, Index : # } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, Guard(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+> Orders->{ Quantity, Price, Index: # }
+Orders->{ Quantity, Price, Index : # } : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, Guard(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+> WithMap(Orders, { Quantity, Price, Index: #it })
+WithMap(Orders, { Quantity, Price, Index : #it }) : {Index:i8, Price:i8, Quantity:i8}*
+*** Error: (42,43) Node: #it, Message: Operand must be an indexed scope
+Binder : ForEach(*1: Orders, With(!2: *1, {Index:Error(ErrNotIndexedScope), Price:!2.Price, Quantity:!2.Quantity}))
+Reducer: ForEach(*1: Orders, {Index:Error(ErrNotIndexedScope), Price:*1.Price, Quantity:*1.Quantity})
+###
+> WithMap(Orders, { Quantity, Price, Index: #it$1 })
+WithMap(Orders, { Quantity, Price, Index : #it$1 }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, With(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+> WithMap(Orders, { Quantity, Price, Index: #0 })
+WithMap(Orders, { Quantity, Price, Index : # }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, With(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+> WithMap(Orders, { Quantity, Price, Index: # })
+WithMap(Orders, { Quantity, Price, Index : # }) : {Index:i8, Price:i8, Quantity:i8}*
+Binder : ForEach(*2: Orders, With(!3: *2, {Index:#1, Price:!3.Price, Quantity:!3.Quantity}))
+Reducer: ForEach(*2: Orders, {Index:#1, Price:*2.Price, Quantity:*2.Quantity})
+###
+
+**** New globals: {A:i8*}
+
+> Fold(a:A, s:0, # + #a)
+Fold(a : A, s : 0, # + #a) : i8
+Binder : Fold(*2: A, %3: 0, Add(#1, #1))
+###
+> Fold(a:A, s:0, #s) // Error.
+Fold(a : A, s : 0, #s) : i8
+*** Error: (15,16) Node: #s, Message: Operand must be an indexed scope
+Binder : Fold(*1: A, %2: 0, Error(ErrNotIndexedScope))
+###
+> Fold(a:A, s:0, #1) // Error.
+Fold(a : A, s : 0, #1) : i8
+*** Error: (15,17) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : Fold(*1: A, %2: 0, Error(ErrBadItIndSlot))
+###
+> Fold(a:A, s:0, s, #) // Error.
+Fold(a : A, s : 0, s, #) : i8
+*** Error: (18,19) Node: #, Message: There are no indexed values in scope for '#'
+Binder : Fold(*1: A, %2: 0, %2, Error(ErrBadItInd))
+###
+> ScanX(a:A, s:0, # + #a)
+ScanX(a : A, s : 0, # + #a) : i8*
+Binder : ScanX(*2: A, %3: 0, Add(#1, #1))
+###
+> ScanX(a:A, s:0, #s) // Error.
+ScanX(a : A, s : 0, #s) : i8*
+*** Error: (16,17) Node: #s, Message: Operand must be an indexed scope
+Binder : ScanX(*1: A, %2: 0, Error(ErrNotIndexedScope))
+###
+> ScanX(a:A, s:0, #1) // Error.
+ScanX(a : A, s : 0, #1) : i8*
+*** Error: (16,18) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ScanX(*1: A, %2: 0, Error(ErrBadItIndSlot))
+###
+> ScanX(a:A, s:0, s, #) // Error.
+ScanX(a : A, s : 0, s, #) : i8*
+*** Error: (19,20) Node: #, Message: There are no indexed values in scope for '#'
+Binder : ScanX(*1: A, %2: 0, %2, Error(ErrBadItInd))
+###
+> ScanZ(a:A, s:0, # + #a)
+ScanZ(a : A, s : 0, # + #a) : i8*
+Binder : ScanZ(*2: A, %3: 0, Add(#1, #1))
+###
+> ScanZ(a:A, s:0, s, # + #a)
+ScanZ(a : A, s : 0, s, # + #a) : i8*
+Binder : ScanZ(*2: A, %3: 0, %3, Add(#1, #1))
+###
+> ScanZ(a:A, s:0, #s) // Error.
+ScanZ(a : A, s : 0, #s) : i8*
+*** Error: (16,17) Node: #s, Message: Operand must be an indexed scope
+Binder : ScanZ(*1: A, %2: 0, Error(ErrNotIndexedScope))
+###
+> ScanZ(a:A, s:0, #1) // Error.
+ScanZ(a : A, s : 0, #1) : i8*
+*** Error: (16,18) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ScanZ(*1: A, %2: 0, Error(ErrBadItIndSlot))
+###
+> ScanZ(a:A, s:0, s, #1) // Error.
+ScanZ(a : A, s : 0, s, #1) : i8*
+*** Error: (19,21) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : ScanZ(*1: A, %2: 0, %2, Error(ErrBadItIndSlot))
+###
+> Generate(c:5, c + # + #c)
+Generate(c : 5, c + # + #c) : i8*
+Binder : Generate(^1: 5, Add(^1, ^1, ^1))
+###
+> Generate(c:5, #1) // Error.
+Generate(c : 5, #1) : i8*
+*** Error: (14,16) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : Generate(^1: 5, Error(ErrBadItIndSlot))
+###
+> Generate(c:5, s:0, c + # + #c)
+Generate(c : 5, s : 0, c + # + #c) : i8*
+Binder : Generate(^1: 5, %2: 0, Add(^1, ^1, ^1))
+###
+> Generate(c:5, s:0, #s) // Error.
+Generate(c : 5, s : 0, #s) : i8*
+*** Error: (19,20) Node: #s, Message: Operand must be an indexed scope
+Binder : Generate(^1: 5, %2: 0, Error(ErrNotIndexedScope))
+###
+> Generate(c:5, s:0, #1) // Error.
+Generate(c : 5, s : 0, #1) : i8*
+*** Error: (19,21) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : Generate(^1: 5, %2: 0, Error(ErrBadItIndSlot))
+###
+> Generate(c:5, s:0, s, c + # + #c)
+Generate(c : 5, s : 0, s, c + # + #c) : i8*
+Binder : Generate(^1: 5, %2: 0, %2, Add(^1, ^1, ^1))
+###
+> Generate(c:5, s:0, s, #s) // Error.
+Generate(c : 5, s : 0, s, #s) : i8*
+*** Error: (22,23) Node: #s, Message: Operand must be an indexed scope
+Binder : Generate(^1: 5, %2: 0, %2, Error(ErrNotIndexedScope))
+###
+> Generate(c:5, s:0, s, #1) // Error.
+Generate(c : 5, s : 0, s, #1) : i8*
+*** Error: (22,24) Node: #1, Message: Invalid scope index; there are not enough indexed values in scope
+Binder : Generate(^1: 5, %2: 0, %2, Error(ErrBadItIndSlot))
+###
+> RngSeq(c0: 3, s: ["A", "B", "C"], c1: 3, (#c0, #2, c0, #s, #1, s, #c1, #0, c1))
+RngSeq(c0 : 3, s : ["A", "B", "C"], c1 : 3, (#c0, #2, c0, #s, #1, s, #c1, #, c1)) : (i8, i8, i8, i8, i8, s, i8, i8, i8)*
+Binder : Test.RngSeq(^1: 3, *3: ["A", "B", "C"], ^4: 3, (^1, ^1, ^1, #2, #2, *3, ^4, ^4, ^4))
+###
+> Map(s1:Range(1, 4), Generate(c1:3, With(w:"foo", Map(s2:Range(4, 7), Generate(c2:5, ((#s1, #3, s1), (#c1, #2, c1), w, (#s2, #1, s2), (#c2, #0, c2)))))))
+Map(s1 : Range(1, 4), Generate(c1 : 3, With(w : "foo", Map(s2 : Range(4, 7), Generate(c2 : 5, ((#s1, #3, s1), (#c1, #2, c1), w, (#s2, #1, s2), (#c2, #, c2))))))) : ((i8, i8, i8), (i8, i8, i8), s, (i8, i8, i8), (i8, i8, i8))****
+Binder : ForEach(*2: Range(1, 4), Generate(^3: 3, With(!4: "foo", ForEach(*6: Range(4, 7), Generate(^7: 5, ((#1, #1, *2), (^3, ^3, ^3), !4, (#5, #5, *6), (^7, ^7, ^7)))))))
+Reducer: ForEach(*2: Range(1, 4), Generate(^3: 3, ForEach(*5: Range(4, 7), Generate(^6: 5, ((#1, #1, *2), (^3, ^3, ^3), "foo", (#4, #4, *5), (^6, ^6, ^6))))))
+Hoister: With(!1: Range(4, 7), ForEach(*3: Range(1, 4), With(!4: (#2, #2, *3), Generate(^5: 3, With(!6: (^5, ^5, ^5), ForEach(*8: !1, With(!9: (#7, #7, *8), Generate(^10: 5, (!4, !6, "foo", !9, (^10, ^10, ^10))))))))))
+###

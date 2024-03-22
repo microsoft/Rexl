@@ -1,0 +1,100 @@
+>>> *** Source:
+    func Clean(path) := path[path->LastIndexOf("Data") : ]->Replace("\\", "/");
+    DogBytes := ReadBytes(_DATA_ & "dog.jpeg");
+    Dog := DogBytes->GetPixels();
+    Cat := ReadPixels(_DATA_ & "kitten.jpg");
+    DogBytes.Shape;
+    Dog.Shape;
+    Cat.Shape;
+    Cat2 := ReadPixelsU4(_DATA_ & "kitten.jpg");
+    Cat.Shape;
+    Cat2.Shape;
+    finish T as ListFiles(_DATA_);
+    T.Data->(Path->Clean())->Sort();
+    ReadPixels(_DATA_ & "bad")->IsNull();
+    ReadPixelsU4(_DATA_ & "bad")->IsNull();
+    ReadPixels(Null(_DATA_ & "kitten.jpg"))->IsNull();
+    ReadPixelsU4(Null(_DATA_ & "kitten.jpg"))->IsNull();
+    ReadPixels(_DATA_ & "I4s.0105.rbin")->IsNull();
+    ReadPixelsU4(_DATA_ & "I4s.0105.rbin")->IsNull();
+
+>>> *** Instructions:
+   0) [0] DefineFunc Clean(path) <- path[path->LastIndexOf("Data"):]->Replace("\\", "/")
+   1) [0] Define DogBytes <- ReadBytes(_DATA_ & "dog.jpeg")
+   2) [0] Define Dog <- DogBytes->GetPixels()
+   3) [0] Define Cat <- ReadPixels(_DATA_ & "kitten.jpg")
+   4) [0] Expr DogBytes.Shape
+   5) [0] Expr Dog.Shape
+   6) [0] Expr Cat.Shape
+   7) [0] Define Cat2 <- ReadPixelsU4(_DATA_ & "kitten.jpg")
+   8) [0] Expr Cat.Shape
+   9) [0] Expr Cat2.Shape
+  10) [0] TaskProc finish T as ListFiles(_DATA_)
+  11) [0] Expr T.Data->(Path->Clean())->Sort()
+  12) [0] Expr ReadPixels(_DATA_ & "bad")->IsNull()
+  13) [0] Expr ReadPixelsU4(_DATA_ & "bad")->IsNull()
+  14) [0] Expr ReadPixels(Null(_DATA_ & "kitten.jpg"))->IsNull()
+  15) [0] Expr ReadPixelsU4(Null(_DATA_ & "kitten.jpg"))->IsNull()
+  16) [0] Expr ReadPixels(_DATA_ & "I4s.0105.rbin")->IsNull()
+  17) [0] Expr ReadPixelsU4(_DATA_ & "I4s.0105.rbin")->IsNull()
+  18) [0] End
+
+>    0) [0] DefineFunc Clean(path) <- path[path->LastIndexOf("Data"):]->Replace("\\", "/")
+UDF 'Clean' has arity 1
+>    1) [0] Define DogBytes <- ReadBytes(_DATA_ & "dog.jpeg")
+Global 'DogBytes' has DType: u1[*], SysType: Ten<u1>
+<Anonymous task> now playing
+<Anonymous task> finished
+>    2) [0] Define Dog <- DogBytes->GetPixels()
+Global 'Dog' has DType: u1[*,*,*]?, SysType: Ten<u1>
+>    3) [0] Define Cat <- ReadPixels(_DATA_ & "kitten.jpg")
+Global 'Cat' has DType: u1[*,*,*]?, SysType: Ten<u1>
+>    4) [0] Expr DogBytes.Shape
+(6888,)
+>    5) [0] Expr Dog.Shape
+(183, 275, 4)
+>    6) [0] Expr Cat.Shape
+(720, 720, 4)
+>    7) [0] Define Cat2 <- ReadPixelsU4(_DATA_ & "kitten.jpg")
+Global 'Cat2' has DType: u4[*,*]?, SysType: Ten<u4>
+>    8) [0] Expr Cat.Shape
+(720, 720, 4)
+>    9) [0] Expr Cat2.Shape
+(720, 720)
+>   10) [0] TaskProc finish T as ListFiles(_DATA_)
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>   11) [0] Expr T.Data->(Path->Clean())->Sort()
+Seq<str>
+   0) Data/dog.jpeg
+   1) Data/Games.0105.rbin
+   2) Data/Games.rexl
+   3) Data/I4s.0105.rbin
+   4) Data/I8s.0105.rbin
+   5) Data/kitten.jpg
+   6) Data/Presidents.rexl
+   7) Data/U4s.0105.rbin
+   8) Data/U8s.0105.rbin
+*** Ctx ping count: 10
+    [0](10): Sort(ForEach(*1: T.Data, Guard(?2: *1, !3: Link.Path(?2), Text.Replace(!3[Text.LastIndexOf(!3, "Data")::], "\\", "/"))))
+>   12) [0] Expr ReadPixels(_DATA_ & "bad")->IsNull()
+true
+*** Ctx ping count: 0
+>   13) [0] Expr ReadPixelsU4(_DATA_ & "bad")->IsNull()
+true
+*** Ctx ping count: 0
+>   14) [0] Expr ReadPixels(Null(_DATA_ & "kitten.jpg"))->IsNull()
+true
+*** Ctx ping count: 0
+>   15) [0] Expr ReadPixelsU4(Null(_DATA_ & "kitten.jpg"))->IsNull()
+true
+*** Ctx ping count: 0
+>   16) [0] Expr ReadPixels(_DATA_ & "I4s.0105.rbin")->IsNull()
+true
+*** Ctx ping count: 0
+>   17) [0] Expr ReadPixelsU4(_DATA_ & "I4s.0105.rbin")->IsNull()
+true
+*** Ctx ping count: 0
+>   18) [0] End
+

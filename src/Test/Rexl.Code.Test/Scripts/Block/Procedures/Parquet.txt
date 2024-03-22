@@ -1,0 +1,193 @@
+﻿func DoIA(t) := If(t->GetType()->IndexOf("IA:") < 0, "No IA :-(", "Has IA :-)");
+
+"*** Create a table and write it to parquet. ***";
+T1 := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+T1;
+
+P := "mytable1.parquet";
+finish Writer as WriteParquet(T1, "temp/" & P);
+"*** Wrote table to '" & Writer.Link.Path & "' ***";
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+(Writer.RowCount, Writer.GroupCount, Writer.Size);
+
+"*** Read the parquet. ***";
+finish Reader as ReadParquet(Writer.Link.Path);
+(Reader$State, Reader$Finished, Reader$Failed, Reader$ResultNames);
+"*** Read table from '" & Reader.Link.Path & "' ***";
+(Reader.FullLink.Path.Len > Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) >= 0, Reader.Link.Path->IndexOf(P) >= 0, Reader.RowCount);
+Reader.Data;
+"*** Run reader without capturing the output or runner. ***";
+finish ReadParquet(Writer.Link);
+"*** Read without assigning. ***";
+ReadParquet(Writer.Link);
+
+"*** Error - can't use proc as function. ***";
+Count := ReadParquet(Writer.FullLink)->Count();
+
+"*** Write/read non-opt primitive types. ***";
+T2 := [
+    (1ia shl 7) - 1,
+    (1ia shl 7),
+    (1ia shl 8) - 1,
+    (1ia shl 8),
+    (1ia shl 15) - 1,
+    (1ia shl 15),
+    (1ia shl 16) - 1,
+    (1ia shl 16),
+    (1ia shl 31) - 1,
+    (1ia shl 31),
+    (1ia shl 32) - 1,
+    (1ia shl 32),
+    (1ia shl 63) - 1,
+    (1ia shl 63),
+    (1ia shl 64) - 1,
+    (1ia shl 64),
+]
+->{
+    IA: CastIA(it),
+    I8: CastI8(it), I4: CastI4(it), I2: CastI2(it), I1: CastI1(it),
+    U8: CastU8(it), U4: CastU4(it), U2: CastU2(it), U1: CastU1(it),
+    R8: CastR8(it / 4), R4: CastR4(it / 4),
+    B:  it band 1 != 0,
+    S: ToText(it),
+    D1: CastDate(it), // Ticks.
+    T1: CastTime(it),
+    D2: CastDate(it * 10_000_000), // Seconds.
+    T2: CastTime(it * 10_000_000),
+    D3: CastDate(it * (10_000_000 * 60)), // Minutes.
+    T3: CastTime(it * (10_000_000 * 60)),
+};
+T2;
+T2.IA;
+T2.I8;
+T2.I4;
+T2.I2;
+T2.I1;
+T2.U8;
+T2.U4;
+T2.U2;
+T2.U1;
+T2.R8;
+T2.R4;
+T2.B;
+T2.S;
+T2.D1;
+T2.D2;
+T2.D3;
+T2.T1;
+T2.T2;
+T2.T3;
+
+"*** Write/read opt primitive types. ***";
+T3 := T2 ++ [{}];
+T3;
+finish Writer as WriteParquet(T3, Link.LocalData("temp/mytable3.parquet"));
+RT3 := ReadParquet(Writer.Link);
+RT3;
+DoIA(RT3); // REVIEW: Implement IA!
+RT3.I8;
+RT3.I4;
+RT3.I2;
+RT3.I1;
+RT3.U8;
+RT3.U4;
+RT3.U2;
+RT3.U1;
+RT3.R8;
+RT3.R4;
+RT3.B;
+RT3.S;
+RT3.D1;
+RT3.D2;
+RT3.D3;
+RT3.T1;
+RT3.T2;
+RT3.T3;
+ForEach(a:T3, b:RT3, (
+    "_" if a.I8 = b.I8 else "X",
+    "_" if a.I4 = b.I4 else "X",
+    "_" if a.I2 = b.I2 else "X",
+    "_" if a.I1 = b.I1 else "X",
+    "_" if a.U8 = b.U8 else "X",
+    "_" if a.U4 = b.U4 else "X",
+    "_" if a.U2 = b.U2 else "X",
+    "_" if a.U1 = b.U1 else "X",
+    "_" if a.R8 = b.R8 else "X",
+    "_" if a.R4 = b.R4 else "X",
+    "_" if a.B  = b.B  else "X",
+    "_" if a.S  = b.S  else "X",
+    "_" if a.D1 = b.D1 else "X",
+    "_" if a.D2 = b.D2 else "X",
+    "_" if a.D3 = b.D3 else "X",
+    "_" if a.T1 = b.T1 else "X", // REVIEW: The fractional microseconds are clipped.
+    "_" if a.T2 = b.T2 else "X",
+    "_" if a.T3 = b.T3 else "X",
+));
+
+"*** Read the opt file, suppressing opt-ness. ***";
+RT3 := ReadParquetReq(Writer.FullLink);
+RT3;
+DoIA(RT3); // REVIEW: Implement IA!
+RT3.I8;
+RT3.I4;
+RT3.I2;
+RT3.I1;
+RT3.U8;
+RT3.U4;
+RT3.U2;
+RT3.U1;
+RT3.R8;
+RT3.R4;
+RT3.B;
+RT3.S;
+RT3.D1;
+RT3.D2;
+RT3.D3;
+RT3.T1;
+RT3.T2;
+RT3.T3;
+ForEach(a:T3, b:RT3, (
+    "_" if a.I8 = b.I8 else "X",
+    "_" if a.I4 = b.I4 else "X",
+    "_" if a.I2 = b.I2 else "X",
+    "_" if a.I1 = b.I1 else "X",
+    "_" if a.U8 = b.U8 else "X",
+    "_" if a.U4 = b.U4 else "X",
+    "_" if a.U2 = b.U2 else "X",
+    "_" if a.U1 = b.U1 else "X",
+    "_" if a.R8 = b.R8 else "X",
+    "_" if a.R4 = b.R4 else "X",
+    "_" if a.B  = b.B  else "X",
+    "_" if a.S  = b.S  else "X",
+    "_" if a.D1 = b.D1 else "X",
+    "_" if a.D2 = b.D2 else "X",
+    "_" if a.D3 = b.D3 else "X",
+    "_" if a.T1 = b.T1 else "X", // REVIEW: The fractional microseconds are clipped.
+    "_" if a.T2 = b.T2 else "X",
+    "_" if a.T3 = b.T3 else "X",
+));
+
+"*** Write/read opt records. ***";
+finish Writer as WriteParquet(T3 ++ [null], "temp/mytable3-opt.parquet"); // Error.
+
+"*** Write/read zero rows. ***";
+T4 := T2->TakeIf(I8 = 1);
+T4;
+finish Writer as WriteParquet(T4, "temp/mytable4.parquet");
+RT4 := ReadParquet(Writer.FullLink);
+RT4;
+
+"*** Write/read zero columns (throws). ***";
+T5 := Range(10)->{ };
+T5;
+finish Writer as WriteParquet(T5, "temp/mytable5.parquet"); // Throws.
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+RT5 := ReadParquet(Writer.FullLink); // Writer.FullLink invalid.
+RT5;
+
+"*** Task verb on non-proc ***";
+play Sum(Range(10));
+finish Sum(Range(10));
+abort Sum(Range(10));
+
+"*** Done. ***";

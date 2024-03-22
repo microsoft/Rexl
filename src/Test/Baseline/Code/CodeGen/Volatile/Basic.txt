@@ -1,0 +1,228 @@
+> Date.Now()
+Date.Now() : {Local:d, Offset:t, Utc:d}
+BndKind:CallVolatile, Type:{Local:d, Offset:t, Utc:d}, Bnd:(CallVol(∂.Date.Now()))
+AllKinds: CallVolatile
+// (<ctx>) : {Local:d, Offset:t, Utc:d}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      5) newobj {Date,Time,Date}()
+      1) dup
+      1) ldc.i4.7
+      5) stfld {Date,Time,Date}::_B0:u1
+      1) stloc.1 [{Date,Time,Date}]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      1) ldloc.1 [{Date,Time,Date}]
+      5) ldflda {Date,Time,Date}::_F2:Date
+      1) ldloc.1 [{Date,Time,Date}]
+      5) ldflda {Date,Time,Date}::_F0:Date
+      1) ldloc.1 [{Date,Time,Date}]
+      5) ldflda {Date,Time,Date}::_F1:Time
+      5) call static DateNowGen::Exec(ExecCtx, i4, out Date, out Date, out Time):Void
+      1) ldloc.1 [{Date,Time,Date}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+Func sig: (<ctx>:x) to {Local:d, Offset:t, Utc:d}
+Type: {Date,Time,Date}, Value: { Local: DT(2023, 4, 10, 13, 30, 41, 123, 4567), Offset: -07:00:00, Utc: DT(2023, 4, 10, 20, 30, 41, 123, 4567) }
+*** Ctx ping count: 0
+###
+> Date.Now.Utc()
+Date.Now.Utc() : d
+BndKind:CallVolatile, Type:d, Bnd:(CallVol(∂.Date.Now.Utc():d))
+AllKinds: CallVolatile
+// (<ctx>) : d
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      5) box [Date]
+      1) ret
+  Total Size: 22
+
+Func sig: (<ctx>:x) to d
+Type: Date, Value: DT(2023, 4, 10, 20, 30, 41, 123, 4567)
+*** Ctx ping count: 0
+###
+> Date.Now.Local()
+Date.Now.Local() : d
+BndKind:CallVolatile, Type:d, Bnd:(CallVol(∂.Date.Now.Local():d))
+AllKinds: CallVolatile
+// (<ctx>) : d
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecLoc(ExecCtx, i4):Date
+      5) box [Date]
+      1) ret
+  Total Size: 22
+
+Func sig: (<ctx>:x) to d
+Type: Date, Value: DT(2023, 4, 10, 13, 30, 41, 123, 4567)
+*** Ctx ping count: 0
+###
+> (Date.Now.Utc(), Date.Now.Utc())
+(Date.Now.Utc(), Date.Now.Utc()) : (d, d)
+BndKind:Tuple, Type:(d, d), Bnd:((CallVol(∂.Date.Now.Utc():d), CallVol(∂.Date.Now.Utc():d)):(d, d))
+AllKinds: Tuple, CallVolatile
+// (<ctx>) : (d, d)
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      5) newobj (Date,Date)()
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      5) stfld (Date,Date)::_F0:Date
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      5) stfld (Date,Date)::_F1:Date
+      1) ret
+  Total Size: 41
+
+Func sig: (<ctx>:x) to (d, d)
+Type: (Date,Date), Value: (DT(2023, 4, 10, 20, 30, 41, 123, 4567), DT(2023, 4, 10, 20, 30, 42, 123, 4567))
+*** Ctx ping count: 0
+###
+> [Date.Now.Utc(), Date.Now.Utc()]
+[Date.Now.Utc(), Date.Now.Utc()] : d*
+BndKind:Sequence, Type:d*, Bnd:([CallVol(∂.Date.Now.Utc():d), CallVol(∂.Date.Now.Utc():d)]:d*)
+AllKinds: Sequence, CallVolatile
+// (<ctx>) : d*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.2
+      5) newarr [Date]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      5) stelem [Date]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      5) stelem [Date]
+      1) ret
+  Total Size: 44
+
+Func sig: (<ctx>:x) to d*
+Sequence: Seq<Date>
+ 0) DT(2023, 4, 10, 20, 30, 41, 123, 4567)
+ 1) DT(2023, 4, 10, 20, 30, 42, 123, 4567)
+*** Ctx ping count: 0
+###
+> Ping()
+Ping() : i8
+BndKind:CallVolatile, Type:i8, Bnd:(CallVol(∂.Test.Ping():i8))
+AllKinds: CallVolatile
+// (<ctx>) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 1
+    [_] 1
+###
+> (Ping(), Ping())
+(Ping(), Ping()) : (i8, i8)
+BndKind:Tuple, Type:(i8, i8), Bnd:((CallVol(∂.Test.Ping():i8), CallVol(∂.Test.Ping():i8)):(i8, i8))
+AllKinds: Tuple, CallVolatile
+// (<ctx>) : (i8, i8)
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 39
+
+Func sig: (<ctx>:x) to (i8, i8)
+Type: (i8,i8), Value: (1, 2)
+*** Ctx ping count: 2
+    [_] 2
+###
+> [Ping(), Ping()]
+[Ping(), Ping()] : i8*
+BndKind:Sequence, Type:i8*, Bnd:([CallVol(∂.Test.Ping():i8), CallVol(∂.Test.Ping():i8)]:i8*)
+AllKinds: Sequence, CallVolatile
+// (<ctx>) : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.2
+      5) newarr [i8]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stelem [i8]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stelem [i8]
+      1) ret
+  Total Size: 42
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+*** Ctx ping count: 2
+    [_] 2
+###

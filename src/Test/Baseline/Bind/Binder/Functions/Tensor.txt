@@ -1,0 +1,2098 @@
+> Tensor.Fill(3, 2, 4)
+Tensor.Fill(3, 2, 4) : i8[*,*]
+Binder : Tensor.Fill(3, 2, 4)
+###
+> Tensor.Fill(true, 2, 4)
+Tensor.Fill(true, 2, 4) : b[*,*]
+Binder : Tensor.Fill(true, 2, 4)
+###
+> Tensor.Fill("Hi", -5)
+Tensor.Fill("Hi", -5) : s[*]
+Binder : Tensor.Fill("Hi", -5)
+*** Warning: Node: -5, Message: Tensor dimension should be non-negative
+Reducer: Tensor.Fill("Hi", 0)
+###
+> Tensor.Fill(1.5r4, 1_000_000_000_000_000)
+Tensor.Fill(1.5, 1000000000000000) : r4[*]
+Binder : Tensor.Fill(1.5, 1000000000000000)
+###
+> Tensor.Fill("Hi", 5 - 7)
+Tensor.Fill("Hi", 5 - 7) : s[*]
+Binder : Tensor.Fill("Hi", Add(5, [-] 7))
+*** Warning: Node: -2, Message: Tensor dimension should be non-negative
+Reducer: Tensor.Fill("Hi", 0)
+###
+> Tensor.Fill(1.5r4, 1 shl 50)
+Tensor.Fill(1.5, 1 shl 50) : r4[*]
+Binder : Tensor.Fill(1.5, Shl(1, 50))
+Reducer: Tensor.Fill(1.5, 1125899906842624)
+###
+> Tensor.From([1, 2, 3])
+Tensor.From([1, 2, 3]) : i8[*]
+Binder : Tensor.From([1, 2, 3])
+Reducer: [! 1, 2, 3 !]:i8[3]
+###
+> Tensor.From(Range(10))
+Tensor.From(Range(10)) : i8[*]
+Binder : Tensor.From(Range(10))
+###
+> Tensor.From(Range(12), 2, 3, 2) // Precise type
+Tensor.From(Range(12), 2, 3, 2) : i8[*,*,*]
+Binder : Tensor.From(Range(12), 2, 3, 2)
+###
+> Tensor.From(Range(12), 3, 2, 2)
+Tensor.From(Range(12), 3, 2, 2) : i8[*,*,*]
+Binder : Tensor.From(Range(12), 3, 2, 2)
+###
+> Tensor.From(Range(12), 2 * 2, 3) // Loose type
+Tensor.From(Range(12), 2 * 2, 3) : i8[*,*]
+Binder : Tensor.From(Range(12), Mul(2, 2), 3)
+Reducer: Tensor.From(Range(12), 4, 3)
+###
+> Tensor.From(Range(12), 3, -3, 2)
+Tensor.From(Range(12), 3, -3, 2) : i8[*,*,*]
+Binder : Tensor.From(Range(12), 3, -3, 2)
+*** Warning: Node: -3, Message: Tensor dimension should be non-negative
+Reducer: Tensor.From(Range(12), 3, 0, 2)
+###
+> Tensor.From(Range(12), 3, 0x1_0000_0000, 2)
+Tensor.From(Range(12), 3, 4294967296, 2) : i8[*,*,*]
+Binder : Tensor.From(Range(12), 3, 4294967296, 2)
+###
+> Tensor.Fill(3, 0)
+Tensor.Fill(3, 0) : i8[*]
+Binder : Tensor.Fill(3, 0)
+###
+> Tensor.Fill(3, 0, 1)
+Tensor.Fill(3, 0, 1) : i8[*,*]
+Binder : Tensor.Fill(3, 0, 1)
+###
+> Tensor.Fill(3, 1, 0)
+Tensor.Fill(3, 1, 0) : i8[*,*]
+Binder : Tensor.Fill(3, 1, 0)
+###
+> Tensor.From(Range(12), 0)
+Tensor.From(Range(12), 0) : i8[*]
+Binder : Tensor.From(Range(12), 0)
+###
+> Tensor.From(Range(12), 0, 1)
+Tensor.From(Range(12), 0, 1) : i8[*,*]
+Binder : Tensor.From(Range(12), 0, 1)
+###
+> Tensor.From(Range(12), 1, 0)
+Tensor.From(Range(12), 1, 0) : i8[*,*]
+Binder : Tensor.From(Range(12), 1, 0)
+###
+> Tensor.From([1,2,3], -3, 10)
+Tensor.From([1, 2, 3], -3, 10) : i8[*,*]
+Binder : Tensor.From([1, 2, 3], -3, 10)
+*** Warning: Node: -3, Message: Tensor dimension should be non-negative
+Reducer: [!  !]:i8[0,10]
+###
+
+**** New globals: {QR:{A:s, B:b}?*, R:{A:s, B:b}*, b:b*, d:d*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qd:d?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*, x:i8, xs:i8*, y:i4, ys:i4*}
+
+> Tensor.From(i8)
+Tensor.From(i8) : i8[*]
+Binder : Tensor.From(i8)
+###
+> Tensor.From(i8, 3)
+Tensor.From(i8, 3) : i8[*]
+Binder : Tensor.From(i8, 3)
+###
+> Tensor.From(i8, x, x)
+Tensor.From(i8, x, x) : i8[*,*]
+Binder : Tensor.From(i8, x, x)
+###
+> Tensor.From(i8, x, y)
+Tensor.From(i8, x, y) : i8[*,*]
+Binder : Tensor.From(i8, x, Num<i8>(y))
+###
+> Tensor.From(i8, 3.0)
+Tensor.From(i8, 3) : i8[*]
+*** Error: (16,19) Node: 3, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Tensor.From(i8, Error(ErrBadType_Src_Dst))
+###
+> Tensor.From(g, 3, 4)
+Tensor.From(g, 3, 4) : g[*,*]
+Binder : Tensor.From(g, 3, 4)
+###
+> Tensor.From(s, 3, 4)
+Tensor.From(s, 3, 4) : s[*,*]
+Binder : Tensor.From(s, 3, 4)
+###
+> Tensor.From(b, 3, 4)
+Tensor.From(b, 3, 4) : b[*,*]
+Binder : Tensor.From(b, 3, 4)
+###
+> Tensor.From(qb, 3, 4)
+Tensor.From(qb, 3, 4) : b?[*,*]
+Binder : Tensor.From(qb, 3, 4)
+###
+> Tensor.From(d, 3, 4)
+Tensor.From(d, 3, 4) : d[*,*]
+Binder : Tensor.From(d, 3, 4)
+###
+> Tensor.From(qd, 3, 4)
+Tensor.From(qd, 3, 4) : d?[*,*]
+Binder : Tensor.From(qd, 3, 4)
+###
+> Tensor.From(n, 3, 4)
+Tensor.From(n, 3, 4) : r8[*,*]
+Binder : Tensor.From(n, 3, 4)
+###
+> Tensor.From(qn, 3, 4)
+Tensor.From(qn, 3, 4) : r8?[*,*]
+Binder : Tensor.From(qn, 3, 4)
+###
+> Tensor.From(r8, 3, 4)
+Tensor.From(r8, 3, 4) : r8[*,*]
+Binder : Tensor.From(r8, 3, 4)
+###
+> Tensor.From(qr8, 3, 4)
+Tensor.From(qr8, 3, 4) : r8?[*,*]
+Binder : Tensor.From(qr8, 3, 4)
+###
+> Tensor.From(r4, 3, 4)
+Tensor.From(r4, 3, 4) : r4[*,*]
+Binder : Tensor.From(r4, 3, 4)
+###
+> Tensor.From(qr4, 3, 4)
+Tensor.From(qr4, 3, 4) : r4?[*,*]
+Binder : Tensor.From(qr4, 3, 4)
+###
+> Tensor.From(i, 3, 4)
+Tensor.From(i, 3, 4) : i[*,*]
+Binder : Tensor.From(i, 3, 4)
+###
+> Tensor.From(qi, 3, 4)
+Tensor.From(qi, 3, 4) : i?[*,*]
+Binder : Tensor.From(qi, 3, 4)
+###
+> Tensor.From(i8, 3, 4)
+Tensor.From(i8, 3, 4) : i8[*,*]
+Binder : Tensor.From(i8, 3, 4)
+###
+> Tensor.From(qi8, 3, 4)
+Tensor.From(qi8, 3, 4) : i8?[*,*]
+Binder : Tensor.From(qi8, 3, 4)
+###
+> Tensor.From(i4, 3, 4)
+Tensor.From(i4, 3, 4) : i4[*,*]
+Binder : Tensor.From(i4, 3, 4)
+###
+> Tensor.From(qi4, 3, 4)
+Tensor.From(qi4, 3, 4) : i4?[*,*]
+Binder : Tensor.From(qi4, 3, 4)
+###
+> Tensor.From(i2, 3, 4)
+Tensor.From(i2, 3, 4) : i2[*,*]
+Binder : Tensor.From(i2, 3, 4)
+###
+> Tensor.From(qi2, 3, 4)
+Tensor.From(qi2, 3, 4) : i2?[*,*]
+Binder : Tensor.From(qi2, 3, 4)
+###
+> Tensor.From(i1, 3, 4)
+Tensor.From(i1, 3, 4) : i1[*,*]
+Binder : Tensor.From(i1, 3, 4)
+###
+> Tensor.From(qi1, 3, 4)
+Tensor.From(qi1, 3, 4) : i1?[*,*]
+Binder : Tensor.From(qi1, 3, 4)
+###
+> Tensor.From(u8, 3, 4)
+Tensor.From(u8, 3, 4) : u8[*,*]
+Binder : Tensor.From(u8, 3, 4)
+###
+> Tensor.From(qu8, 3, 4)
+Tensor.From(qu8, 3, 4) : u8?[*,*]
+Binder : Tensor.From(qu8, 3, 4)
+###
+> Tensor.From(u4, 3, 4)
+Tensor.From(u4, 3, 4) : u4[*,*]
+Binder : Tensor.From(u4, 3, 4)
+###
+> Tensor.From(qu4, 3, 4)
+Tensor.From(qu4, 3, 4) : u4?[*,*]
+Binder : Tensor.From(qu4, 3, 4)
+###
+> Tensor.From(u2, 3, 4)
+Tensor.From(u2, 3, 4) : u2[*,*]
+Binder : Tensor.From(u2, 3, 4)
+###
+> Tensor.From(qu2, 3, 4)
+Tensor.From(qu2, 3, 4) : u2?[*,*]
+Binder : Tensor.From(qu2, 3, 4)
+###
+> Tensor.From(u1, 3, 4)
+Tensor.From(u1, 3, 4) : u1[*,*]
+Binder : Tensor.From(u1, 3, 4)
+###
+> Tensor.From(qu1, 3, 4)
+Tensor.From(qu1, 3, 4) : u1?[*,*]
+Binder : Tensor.From(qu1, 3, 4)
+###
+> Tensor.From(R, 3, 4)
+Tensor.From(R, 3, 4) : {A:s, B:b}[*,*]
+Binder : Tensor.From(R, 3, 4)
+###
+> Tensor.From(QR, 3, 4)
+Tensor.From(QR, 3, 4) : {A:s, B:b}?[*,*]
+Binder : Tensor.From(QR, 3, 4)
+###
+> Tensor.From(i8, [3, 5], [4, 6])
+Tensor.From(i8, [3, 5], [4, 6]) : i8[*,*]*
+Binder : ForEach(*1: [3, 5], *2: [4, 6], Tensor.From(i8, *1, *2))
+###
+> Tensor.From(i8, xs, xs)
+Tensor.From(i8, xs, xs) : i8[*,*]*
+Binder : ForEach(*1: xs, *2: xs, Tensor.From(i8, *1, *2))
+Reducer: ForEach(*1: xs, Tensor.From(i8, *1, *1))
+###
+> Tensor.Fill(i8)
+Tensor.Fill(i8) : i8[]*
+Binder : ForEach(*1: i8, Tensor.Fill(*1))
+###
+> Tensor.Fill(i8, 3)
+Tensor.Fill(i8, 3) : i8[*]*
+Binder : ForEach(*1: i8, Tensor.Fill(*1, 3))
+###
+> Tensor.Fill(i8, x, x)
+Tensor.Fill(i8, x, x) : i8[*,*]*
+Binder : ForEach(*1: i8, Tensor.Fill(*1, x, x))
+###
+> Tensor.Fill(i8, x, y)
+Tensor.Fill(i8, x, y) : i8[*,*]*
+Binder : ForEach(*1: i8, Tensor.Fill(*1, x, Num<i8>(y)))
+###
+> Tensor.Fill(i8, xs, xs)
+Tensor.Fill(i8, xs, xs) : i8[*,*]*
+Binder : ForEach(*1: i8, *2: xs, *3: xs, Tensor.Fill(*1, *2, *3))
+Reducer: ForEach(*1: i8, *2: xs, Tensor.Fill(*1, *2, *2))
+###
+> Tensor.Fill(i8, xs, ys)
+Tensor.Fill(i8, xs, ys) : i8[*,*]*
+Binder : ForEach(*1: i8, *2: xs, *3: ys, Tensor.Fill(*1, *2, Num<i8>(*3)))
+###
+> Tensor.Fill(g, 3, 4)
+Tensor.Fill(g, 3, 4) : g[*,*]*
+Binder : ForEach(*1: g, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(s, 3, 4)
+Tensor.Fill(s, 3, 4) : s[*,*]*
+Binder : ForEach(*1: s, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(b, 3, 4)
+Tensor.Fill(b, 3, 4) : b[*,*]*
+Binder : ForEach(*1: b, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qb, 3, 4)
+Tensor.Fill(qb, 3, 4) : b[*,*]?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(d, 3, 4)
+Tensor.Fill(d, 3, 4) : d[*,*]*
+Binder : ForEach(*1: d, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qd, 3, 4)
+Tensor.Fill(qd, 3, 4) : d[*,*]?*
+Binder : ForEach(*1: qd, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(n, 3, 4)
+Tensor.Fill(n, 3, 4) : r8[*,*]*
+Binder : ForEach(*1: n, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qn, 3, 4)
+Tensor.Fill(qn, 3, 4) : r8[*,*]?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(r8, 3, 4)
+Tensor.Fill(r8, 3, 4) : r8[*,*]*
+Binder : ForEach(*1: r8, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qr8, 3, 4)
+Tensor.Fill(qr8, 3, 4) : r8[*,*]?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(r4, 3, 4)
+Tensor.Fill(r4, 3, 4) : r4[*,*]*
+Binder : ForEach(*1: r4, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qr4, 3, 4)
+Tensor.Fill(qr4, 3, 4) : r4[*,*]?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(i, 3, 4)
+Tensor.Fill(i, 3, 4) : i[*,*]*
+Binder : ForEach(*1: i, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qi, 3, 4)
+Tensor.Fill(qi, 3, 4) : i[*,*]?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(i8, 3, 4)
+Tensor.Fill(i8, 3, 4) : i8[*,*]*
+Binder : ForEach(*1: i8, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qi8, 3, 4)
+Tensor.Fill(qi8, 3, 4) : i8[*,*]?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(i4, 3, 4)
+Tensor.Fill(i4, 3, 4) : i4[*,*]*
+Binder : ForEach(*1: i4, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qi4, 3, 4)
+Tensor.Fill(qi4, 3, 4) : i4[*,*]?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(i2, 3, 4)
+Tensor.Fill(i2, 3, 4) : i2[*,*]*
+Binder : ForEach(*1: i2, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qi2, 3, 4)
+Tensor.Fill(qi2, 3, 4) : i2[*,*]?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(i1, 3, 4)
+Tensor.Fill(i1, 3, 4) : i1[*,*]*
+Binder : ForEach(*1: i1, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qi1, 3, 4)
+Tensor.Fill(qi1, 3, 4) : i1[*,*]?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(u8, 3, 4)
+Tensor.Fill(u8, 3, 4) : u8[*,*]*
+Binder : ForEach(*1: u8, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qu8, 3, 4)
+Tensor.Fill(qu8, 3, 4) : u8[*,*]?*
+Binder : ForEach(*1: qu8, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(u4, 3, 4)
+Tensor.Fill(u4, 3, 4) : u4[*,*]*
+Binder : ForEach(*1: u4, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qu4, 3, 4)
+Tensor.Fill(qu4, 3, 4) : u4[*,*]?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(u2, 3, 4)
+Tensor.Fill(u2, 3, 4) : u2[*,*]*
+Binder : ForEach(*1: u2, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qu2, 3, 4)
+Tensor.Fill(qu2, 3, 4) : u2[*,*]?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(u1, 3, 4)
+Tensor.Fill(u1, 3, 4) : u1[*,*]*
+Binder : ForEach(*1: u1, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(qu1, 3, 4)
+Tensor.Fill(qu1, 3, 4) : u1[*,*]?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+> Tensor.Fill(R, 3, 4)
+Tensor.Fill(R, 3, 4) : {A:s, B:b}[*,*]*
+Binder : ForEach(*1: R, Tensor.Fill(*1, 3, 4))
+###
+> Tensor.Fill(QR, 3, 4)
+Tensor.Fill(QR, 3, 4) : {A:s, B:b}[*,*]?*
+Binder : ForEach(*1: QR, Guard(?2: *1, Tensor.Fill(?2, 3, 4)))
+###
+
+**** New globals: {QR:{A:s, B:b}?, R:{A:s, B:b}, b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8, x:i8, y:i4}
+
+> Tensor.Fill(i8)
+Tensor.Fill(i8) : i8[]
+Binder : Tensor.Fill(i8)
+###
+> Tensor.Fill(i8, 3)
+Tensor.Fill(i8, 3) : i8[*]
+Binder : Tensor.Fill(i8, 3)
+###
+> Tensor.Fill(i8, x, x)
+Tensor.Fill(i8, x, x) : i8[*,*]
+Binder : Tensor.Fill(i8, x, x)
+###
+> Tensor.Fill(i8, x, y)
+Tensor.Fill(i8, x, y) : i8[*,*]
+Binder : Tensor.Fill(i8, x, Num<i8>(y))
+###
+> Tensor.Fill(i8, 3.0)
+Tensor.Fill(i8, 3) : i8[*]
+*** Error: (16,19) Node: 3, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Tensor.Fill(i8, Error(ErrBadType_Src_Dst))
+###
+> Tensor.Fill(g, 3, 4)
+Tensor.Fill(g, 3, 4) : g[*,*]
+Binder : Tensor.Fill(g, 3, 4)
+###
+> Tensor.Fill(s, 3, 4)
+Tensor.Fill(s, 3, 4) : s[*,*]
+Binder : Tensor.Fill(s, 3, 4)
+###
+> Tensor.Fill(b, 3, 4)
+Tensor.Fill(b, 3, 4) : b[*,*]
+Binder : Tensor.Fill(b, 3, 4)
+###
+> Tensor.Fill(qb, 3, 4)
+Tensor.Fill(qb, 3, 4) : b[*,*]?
+Binder : Guard(?1: qb, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(d, 3, 4)
+Tensor.Fill(d, 3, 4) : d[*,*]
+Binder : Tensor.Fill(d, 3, 4)
+###
+> Tensor.Fill(qd, 3, 4)
+Tensor.Fill(qd, 3, 4) : d[*,*]?
+Binder : Guard(?1: qd, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(n, 3, 4)
+Tensor.Fill(n, 3, 4) : r8[*,*]
+Binder : Tensor.Fill(n, 3, 4)
+###
+> Tensor.Fill(qn, 3, 4)
+Tensor.Fill(qn, 3, 4) : r8[*,*]?
+Binder : Guard(?1: qn, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(r8, 3, 4)
+Tensor.Fill(r8, 3, 4) : r8[*,*]
+Binder : Tensor.Fill(r8, 3, 4)
+###
+> Tensor.Fill(qr8, 3, 4)
+Tensor.Fill(qr8, 3, 4) : r8[*,*]?
+Binder : Guard(?1: qr8, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(r4, 3, 4)
+Tensor.Fill(r4, 3, 4) : r4[*,*]
+Binder : Tensor.Fill(r4, 3, 4)
+###
+> Tensor.Fill(qr4, 3, 4)
+Tensor.Fill(qr4, 3, 4) : r4[*,*]?
+Binder : Guard(?1: qr4, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(i, 3, 4)
+Tensor.Fill(i, 3, 4) : i[*,*]
+Binder : Tensor.Fill(i, 3, 4)
+###
+> Tensor.Fill(qi, 3, 4)
+Tensor.Fill(qi, 3, 4) : i[*,*]?
+Binder : Guard(?1: qi, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(i8, 3, 4)
+Tensor.Fill(i8, 3, 4) : i8[*,*]
+Binder : Tensor.Fill(i8, 3, 4)
+###
+> Tensor.Fill(qi8, 3, 4)
+Tensor.Fill(qi8, 3, 4) : i8[*,*]?
+Binder : Guard(?1: qi8, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(i4, 3, 4)
+Tensor.Fill(i4, 3, 4) : i4[*,*]
+Binder : Tensor.Fill(i4, 3, 4)
+###
+> Tensor.Fill(qi4, 3, 4)
+Tensor.Fill(qi4, 3, 4) : i4[*,*]?
+Binder : Guard(?1: qi4, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(i2, 3, 4)
+Tensor.Fill(i2, 3, 4) : i2[*,*]
+Binder : Tensor.Fill(i2, 3, 4)
+###
+> Tensor.Fill(qi2, 3, 4)
+Tensor.Fill(qi2, 3, 4) : i2[*,*]?
+Binder : Guard(?1: qi2, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(i1, 3, 4)
+Tensor.Fill(i1, 3, 4) : i1[*,*]
+Binder : Tensor.Fill(i1, 3, 4)
+###
+> Tensor.Fill(qi1, 3, 4)
+Tensor.Fill(qi1, 3, 4) : i1[*,*]?
+Binder : Guard(?1: qi1, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(u8, 3, 4)
+Tensor.Fill(u8, 3, 4) : u8[*,*]
+Binder : Tensor.Fill(u8, 3, 4)
+###
+> Tensor.Fill(qu8, 3, 4)
+Tensor.Fill(qu8, 3, 4) : u8[*,*]?
+Binder : Guard(?1: qu8, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(u4, 3, 4)
+Tensor.Fill(u4, 3, 4) : u4[*,*]
+Binder : Tensor.Fill(u4, 3, 4)
+###
+> Tensor.Fill(qu4, 3, 4)
+Tensor.Fill(qu4, 3, 4) : u4[*,*]?
+Binder : Guard(?1: qu4, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(u2, 3, 4)
+Tensor.Fill(u2, 3, 4) : u2[*,*]
+Binder : Tensor.Fill(u2, 3, 4)
+###
+> Tensor.Fill(qu2, 3, 4)
+Tensor.Fill(qu2, 3, 4) : u2[*,*]?
+Binder : Guard(?1: qu2, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(u1, 3, 4)
+Tensor.Fill(u1, 3, 4) : u1[*,*]
+Binder : Tensor.Fill(u1, 3, 4)
+###
+> Tensor.Fill(qu1, 3, 4)
+Tensor.Fill(qu1, 3, 4) : u1[*,*]?
+Binder : Guard(?1: qu1, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.Fill(R, 3, 4)
+Tensor.Fill(R, 3, 4) : {A:s, B:b}[*,*]
+Binder : Tensor.Fill(R, 3, 4)
+###
+> Tensor.Fill(QR, 3, 4)
+Tensor.Fill(QR, 3, 4) : {A:s, B:b}[*,*]?
+Binder : Guard(?1: QR, Tensor.Fill(?1, 3, 4))
+###
+> Tensor.From(i8)
+Tensor.From(i8) : i8[*]
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst))
+###
+> Tensor.From(i8, 3)
+Tensor.From(i8, 3) : i8[*]
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3)
+###
+> Tensor.From(i8, x, x)
+Tensor.From(i8, x, x) : i8[*,*]
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), x, x)
+###
+> Tensor.From(i8, x, y)
+Tensor.From(i8, x, y) : i8[*,*]
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), x, Num<i8>(y))
+###
+> Tensor.From(g, 3, 4)
+Tensor.From(g, 3, 4) : g[*,*]
+*** Error: (12,13) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'g*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(s, 3, 4)
+Tensor.From(s, 3, 4) : s[*,*]
+*** Error: (12,13) Node: s, Message: Invalid operand type: cannot convert type 's' to 's*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(b, 3, 4)
+Tensor.From(b, 3, 4) : b[*,*]
+*** Error: (12,13) Node: b, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qb, 3, 4)
+Tensor.From(qb, 3, 4) : b?[*,*]
+*** Error: (12,14) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 'b?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(d, 3, 4)
+Tensor.From(d, 3, 4) : d[*,*]
+*** Error: (12,13) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'd*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qd, 3, 4)
+Tensor.From(qd, 3, 4) : d?[*,*]
+*** Error: (12,14) Node: qd, Message: Invalid operand type: cannot convert type 'd?' to 'd?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(n, 3, 4)
+Tensor.From(n, 3, 4) : r8[*,*]
+*** Error: (12,13) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qn, 3, 4)
+Tensor.From(qn, 3, 4) : r8?[*,*]
+*** Error: (12,14) Node: qn, Message: Invalid operand type: cannot convert type 'r8?' to 'r8?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(r8, 3, 4)
+Tensor.From(r8, 3, 4) : r8[*,*]
+*** Error: (12,14) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qr8, 3, 4)
+Tensor.From(qr8, 3, 4) : r8?[*,*]
+*** Error: (12,15) Node: qr8, Message: Invalid operand type: cannot convert type 'r8?' to 'r8?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(r4, 3, 4)
+Tensor.From(r4, 3, 4) : r4[*,*]
+*** Error: (12,14) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'r4*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qr4, 3, 4)
+Tensor.From(qr4, 3, 4) : r4?[*,*]
+*** Error: (12,15) Node: qr4, Message: Invalid operand type: cannot convert type 'r4?' to 'r4?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(i, 3, 4)
+Tensor.From(i, 3, 4) : i[*,*]
+*** Error: (12,13) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qi, 3, 4)
+Tensor.From(qi, 3, 4) : i?[*,*]
+*** Error: (12,14) Node: qi, Message: Invalid operand type: cannot convert type 'i?' to 'i?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(i8, 3, 4)
+Tensor.From(i8, 3, 4) : i8[*,*]
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qi8, 3, 4)
+Tensor.From(qi8, 3, 4) : i8?[*,*]
+*** Error: (12,15) Node: qi8, Message: Invalid operand type: cannot convert type 'i8?' to 'i8?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(i4, 3, 4)
+Tensor.From(i4, 3, 4) : i4[*,*]
+*** Error: (12,14) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 'i4*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qi4, 3, 4)
+Tensor.From(qi4, 3, 4) : i4?[*,*]
+*** Error: (12,15) Node: qi4, Message: Invalid operand type: cannot convert type 'i4?' to 'i4?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(i2, 3, 4)
+Tensor.From(i2, 3, 4) : i2[*,*]
+*** Error: (12,14) Node: i2, Message: Invalid operand type: cannot convert type 'i2' to 'i2*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qi2, 3, 4)
+Tensor.From(qi2, 3, 4) : i2?[*,*]
+*** Error: (12,15) Node: qi2, Message: Invalid operand type: cannot convert type 'i2?' to 'i2?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(i1, 3, 4)
+Tensor.From(i1, 3, 4) : i1[*,*]
+*** Error: (12,14) Node: i1, Message: Invalid operand type: cannot convert type 'i1' to 'i1*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qi1, 3, 4)
+Tensor.From(qi1, 3, 4) : i1?[*,*]
+*** Error: (12,15) Node: qi1, Message: Invalid operand type: cannot convert type 'i1?' to 'i1?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(u8, 3, 4)
+Tensor.From(u8, 3, 4) : u8[*,*]
+*** Error: (12,14) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 'u8*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qu8, 3, 4)
+Tensor.From(qu8, 3, 4) : u8?[*,*]
+*** Error: (12,15) Node: qu8, Message: Invalid operand type: cannot convert type 'u8?' to 'u8?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(u4, 3, 4)
+Tensor.From(u4, 3, 4) : u4[*,*]
+*** Error: (12,14) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 'u4*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qu4, 3, 4)
+Tensor.From(qu4, 3, 4) : u4?[*,*]
+*** Error: (12,15) Node: qu4, Message: Invalid operand type: cannot convert type 'u4?' to 'u4?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(u2, 3, 4)
+Tensor.From(u2, 3, 4) : u2[*,*]
+*** Error: (12,14) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 'u2*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qu2, 3, 4)
+Tensor.From(qu2, 3, 4) : u2?[*,*]
+*** Error: (12,15) Node: qu2, Message: Invalid operand type: cannot convert type 'u2?' to 'u2?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(u1, 3, 4)
+Tensor.From(u1, 3, 4) : u1[*,*]
+*** Error: (12,14) Node: u1, Message: Invalid operand type: cannot convert type 'u1' to 'u1*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(qu1, 3, 4)
+Tensor.From(qu1, 3, 4) : u1?[*,*]
+*** Error: (12,15) Node: qu1, Message: Invalid operand type: cannot convert type 'u1?' to 'u1?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(R, 3, 4)
+Tensor.From(R, 3, 4) : {A:s, B:b}[*,*]
+*** Error: (12,13) Node: R, Message: Invalid operand type: cannot convert type '{A:s, B:b}' to '{A:s, B:b}*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+> Tensor.From(QR, 3, 4)
+Tensor.From(QR, 3, 4) : {A:s, B:b}?[*,*]
+*** Error: (12,14) Node: QR, Message: Invalid operand type: cannot convert type '{A:s, B:b}?' to '{A:s, B:b}?*'
+Binder : Tensor.From(Error(ErrBadType_Src_Dst), 3, 4)
+###
+
+**** New globals: {QR:{A:i4}?, QRs:{A:i4}?*, QT:i8[*,*]?, QTs:i8[*,*]?*, QU:i8[*,*,*]?, QUs:i8[*,*,*]?*, R:{A:i4}, Rs:{A:i4}*, T:i8[*,*], Ts:i8[*,*]*, U:i8[*,*,*], Us:i8[*,*,*]*, r:{}, s:s, ss:s*}
+
+> T.Rank
+T.Rank : i8
+Binder : Tensor.Rank*(T)
+Reducer: 2
+###
+> T->Rank()
+T->Rank() : i8
+Binder : Tensor.Rank*(T)
+Reducer: 2
+###
+> T->Tensor.Rank()
+T->Tensor.Rank() : i8
+Binder : Tensor.Rank*(T)
+Reducer: 2
+###
+> Ts.Rank
+Ts.Rank : i8*
+Binder : ForEach(*1: Ts, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Ts, 2)
+###
+> Ts->Rank()
+Ts->Rank() : i8*
+Binder : ForEach(*1: Ts, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Ts, 2)
+###
+> Ts->Tensor.Rank()
+Ts->Tensor.Rank() : i8*
+Binder : ForEach(*1: Ts, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Ts, 2)
+###
+> QT.Rank
+QT.Rank : i8?
+Binder : Guard(?1: QT, Tensor.Rank*(?1))
+Reducer: Guard(?1: QT, 2)
+###
+> QT->Rank()
+QT->Rank() : i8?
+Binder : Guard(?1: QT, Tensor.Rank*(?1))
+Reducer: Guard(?1: QT, 2)
+###
+> QT->Tensor.Rank()
+QT->Tensor.Rank() : i8?
+Binder : Guard(?1: QT, Tensor.Rank*(?1))
+Reducer: Guard(?1: QT, 2)
+###
+> QTs.Rank
+QTs.Rank : i8?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QTs, Guard(?2: *1, 2))
+###
+> QTs->Rank()
+QTs->Rank() : i8?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QTs, Guard(?2: *1, 2))
+###
+> QTs->Tensor.Rank()
+QTs->Tensor.Rank() : i8?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QTs, Guard(?2: *1, 2))
+###
+> U.Rank
+U.Rank : i8
+Binder : Tensor.Rank*(U)
+Reducer: 3
+###
+> U->Rank()
+U->Rank() : i8
+Binder : Tensor.Rank*(U)
+Reducer: 3
+###
+> U->Tensor.Rank()
+U->Tensor.Rank() : i8
+Binder : Tensor.Rank*(U)
+Reducer: 3
+###
+> Us.Rank
+Us.Rank : i8*
+Binder : ForEach(*1: Us, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Us, 3)
+###
+> Us->Rank()
+Us->Rank() : i8*
+Binder : ForEach(*1: Us, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Us, 3)
+###
+> Us->Tensor.Rank()
+Us->Tensor.Rank() : i8*
+Binder : ForEach(*1: Us, Tensor.Rank*(*1))
+Reducer: ForEach(*1: Us, 3)
+###
+> QU.Rank
+QU.Rank : i8?
+Binder : Guard(?1: QU, Tensor.Rank*(?1))
+Reducer: Guard(?1: QU, 3)
+###
+> QU->Rank()
+QU->Rank() : i8?
+Binder : Guard(?1: QU, Tensor.Rank*(?1))
+Reducer: Guard(?1: QU, 3)
+###
+> QU->Tensor.Rank()
+QU->Tensor.Rank() : i8?
+Binder : Guard(?1: QU, Tensor.Rank*(?1))
+Reducer: Guard(?1: QU, 3)
+###
+> QUs.Rank
+QUs.Rank : i8?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QUs, Guard(?2: *1, 3))
+###
+> QUs->Rank()
+QUs->Rank() : i8?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QUs, Guard(?2: *1, 3))
+###
+> QUs->Tensor.Rank()
+QUs->Tensor.Rank() : i8?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Rank*(?2)))
+Reducer: ForEach(*1: QUs, Guard(?2: *1, 3))
+###
+> R.Rank
+R.Rank : v
+*** Error: (2,6) Node: R.Rank, Tok: 'Rank', Message: Field does not exist in type: '{A:i4}'
+Binder : Error(ErrFieldDoesNotExist_Type)
+###
+> R->Rank()
+R->Rank() : v
+*** Error: (1,3) Node: R->Rank(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(R)
+###
+> R->Tensor.Rank()
+R->Tensor.Rank() : i8
+*** Error: (0,1) Node: R, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Tensor.Rank*(Error(ErrBadType_Src_Dst))
+Reducer: 0
+###
+> Rs.Rank
+Rs.Rank : v*
+*** Error: (3,7) Node: Rs.Rank, Tok: 'Rank', Message: Field does not exist in type: '{A:i4}'
+Binder : ForEach(*1: Rs, Error(ErrFieldDoesNotExist_Type))
+###
+> Rs->Rank()
+Rs->Rank() : v
+*** Error: (2,4) Node: Rs->Rank(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(Rs)
+###
+> Rs->Tensor.Rank()
+Rs->Tensor.Rank() : i8*
+*** Error: (0,2) Node: Rs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: Rs, Tensor.Rank*(Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: Rs, 0)
+###
+> QR.Rank
+QR.Rank : o
+*** Error: (3,7) Node: QR.Rank, Tok: 'Rank', Message: Field does not exist in type: '{A:i4}'
+Binder : Guard(?1: QR, Error(ErrFieldDoesNotExist_Type))
+Reducer: null
+###
+> QR->Rank()
+QR->Rank() : v
+*** Error: (2,4) Node: QR->Rank(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QR)
+###
+> QR->Tensor.Rank()
+QR->Tensor.Rank() : i8?
+*** Error: (0,2) Node: QR, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Guard(?1: QR, Tensor.Rank*(Error(ErrBadType_Src_Dst)))
+Reducer: Guard(?1: QR, 0)
+###
+> QRs.Rank
+QRs.Rank : o*
+*** Error: (4,8) Node: QRs.Rank, Tok: 'Rank', Message: Field does not exist in type: '{A:i4}'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Error(ErrFieldDoesNotExist_Type)))
+Reducer: ForEach(*1: QRs, null)
+###
+> QRs->Rank()
+QRs->Rank() : v
+*** Error: (3,5) Node: QRs->Rank(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QRs)
+###
+> QRs->Tensor.Rank()
+QRs->Tensor.Rank() : i8?*
+*** Error: (0,3) Node: QRs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Tensor.Rank*(Error(ErrBadType_Src_Dst))))
+Reducer: ForEach(*1: QRs, Guard(?2: *1, 0))
+###
+> T.Shape
+T.Shape : (i8, i8)
+Binder : Tensor.Shape(T)
+###
+> T->Shape()
+T->Shape() : (i8, i8)
+Binder : Tensor.Shape(T)
+###
+> T->Tensor.Shape()
+T->Tensor.Shape() : (i8, i8)
+Binder : Tensor.Shape(T)
+###
+> Ts.Shape
+Ts.Shape : (i8, i8)*
+Binder : ForEach(*1: Ts, Tensor.Shape(*1))
+###
+> Ts->Shape()
+Ts->Shape() : (i8, i8)*
+Binder : ForEach(*1: Ts, Tensor.Shape(*1))
+###
+> Ts->Tensor.Shape()
+Ts->Tensor.Shape() : (i8, i8)*
+Binder : ForEach(*1: Ts, Tensor.Shape(*1))
+###
+> QT.Shape
+QT.Shape : (i8, i8)?
+Binder : Guard(?1: QT, Tensor.Shape(?1))
+###
+> QT->Shape()
+QT->Shape() : (i8, i8)?
+Binder : Guard(?1: QT, Tensor.Shape(?1))
+###
+> QT->Tensor.Shape()
+QT->Tensor.Shape() : (i8, i8)?
+Binder : Guard(?1: QT, Tensor.Shape(?1))
+###
+> QTs.Shape
+QTs.Shape : (i8, i8)?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> QTs->Shape()
+QTs->Shape() : (i8, i8)?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> QTs->Tensor.Shape()
+QTs->Tensor.Shape() : (i8, i8)?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> U.Shape
+U.Shape : (i8, i8, i8)
+Binder : Tensor.Shape(U)
+###
+> U->Shape()
+U->Shape() : (i8, i8, i8)
+Binder : Tensor.Shape(U)
+###
+> U->Tensor.Shape()
+U->Tensor.Shape() : (i8, i8, i8)
+Binder : Tensor.Shape(U)
+###
+> Us.Shape
+Us.Shape : (i8, i8, i8)*
+Binder : ForEach(*1: Us, Tensor.Shape(*1))
+###
+> Us->Shape()
+Us->Shape() : (i8, i8, i8)*
+Binder : ForEach(*1: Us, Tensor.Shape(*1))
+###
+> Us->Tensor.Shape()
+Us->Tensor.Shape() : (i8, i8, i8)*
+Binder : ForEach(*1: Us, Tensor.Shape(*1))
+###
+> QU.Shape
+QU.Shape : (i8, i8, i8)?
+Binder : Guard(?1: QU, Tensor.Shape(?1))
+###
+> QU->Shape()
+QU->Shape() : (i8, i8, i8)?
+Binder : Guard(?1: QU, Tensor.Shape(?1))
+###
+> QU->Tensor.Shape()
+QU->Tensor.Shape() : (i8, i8, i8)?
+Binder : Guard(?1: QU, Tensor.Shape(?1))
+###
+> QUs.Shape
+QUs.Shape : (i8, i8, i8)?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> QUs->Shape()
+QUs->Shape() : (i8, i8, i8)?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> QUs->Tensor.Shape()
+QUs->Tensor.Shape() : (i8, i8, i8)?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Shape(?2)))
+###
+> R.Shape
+R.Shape : v
+*** Error: (2,7) Node: R.Shape, Tok: 'Shape', Message: Field does not exist in type: '{A:i4}'
+Binder : Error(ErrFieldDoesNotExist_Type)
+###
+> R->Shape()
+R->Shape() : v
+*** Error: (1,3) Node: R->Shape(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(R)
+###
+> R->Tensor.Shape()
+R->Tensor.Shape() : ()
+*** Error: (0,1) Node: R, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Tensor.Shape(Error(ErrBadType_Src_Dst))
+###
+> Rs.Shape
+Rs.Shape : v*
+*** Error: (3,8) Node: Rs.Shape, Tok: 'Shape', Message: Field does not exist in type: '{A:i4}'
+Binder : ForEach(*1: Rs, Error(ErrFieldDoesNotExist_Type))
+###
+> Rs->Shape()
+Rs->Shape() : v
+*** Error: (2,4) Node: Rs->Shape(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(Rs)
+###
+> Rs->Tensor.Shape()
+Rs->Tensor.Shape() : ()*
+*** Error: (0,2) Node: Rs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: Rs, Tensor.Shape(Error(ErrBadType_Src_Dst)))
+###
+> QR.Shape
+QR.Shape : o
+*** Error: (3,8) Node: QR.Shape, Tok: 'Shape', Message: Field does not exist in type: '{A:i4}'
+Binder : Guard(?1: QR, Error(ErrFieldDoesNotExist_Type))
+Reducer: null
+###
+> QR->Shape()
+QR->Shape() : v
+*** Error: (2,4) Node: QR->Shape(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QR)
+###
+> QR->Tensor.Shape()
+QR->Tensor.Shape() : ()?
+*** Error: (0,2) Node: QR, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Guard(?1: QR, Tensor.Shape(Error(ErrBadType_Src_Dst)))
+###
+> QRs.Shape
+QRs.Shape : o*
+*** Error: (4,9) Node: QRs.Shape, Tok: 'Shape', Message: Field does not exist in type: '{A:i4}'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Error(ErrFieldDoesNotExist_Type)))
+Reducer: ForEach(*1: QRs, null)
+###
+> QRs->Shape()
+QRs->Shape() : v
+*** Error: (3,5) Node: QRs->Shape(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QRs)
+###
+> QRs->Tensor.Shape()
+QRs->Tensor.Shape() : ()?*
+*** Error: (0,3) Node: QRs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Tensor.Shape(Error(ErrBadType_Src_Dst))))
+###
+> T.Values
+T.Values : i8*
+Binder : Tensor.Values(T)
+###
+> T->Values()
+T->Values() : i8*
+Binder : Tensor.Values(T)
+###
+> T->Tensor.Values()
+T->Tensor.Values() : i8*
+Binder : Tensor.Values(T)
+###
+> Ts.Values
+Ts.Values : i8**
+Binder : ForEach(*1: Ts, Tensor.Values(*1))
+###
+> Ts->Values()
+Ts->Values() : i8**
+Binder : ForEach(*1: Ts, Tensor.Values(*1))
+###
+> Ts->Tensor.Values()
+Ts->Tensor.Values() : i8**
+Binder : ForEach(*1: Ts, Tensor.Values(*1))
+###
+> QT.Values
+QT.Values : i8*
+Binder : Guard(?1: QT, Tensor.Values(?1))
+###
+> QT->Values()
+QT->Values() : i8*
+Binder : Tensor.Values(QT)
+###
+> QT->Tensor.Values()
+QT->Tensor.Values() : i8*
+Binder : Tensor.Values(QT)
+###
+> QTs.Values
+QTs.Values : i8**
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Values(?2)))
+###
+> QTs->Values()
+QTs->Values() : i8**
+Binder : ForEach(*1: QTs, Tensor.Values(*1))
+###
+> QTs->Tensor.Values()
+QTs->Tensor.Values() : i8**
+Binder : ForEach(*1: QTs, Tensor.Values(*1))
+###
+> U.Values
+U.Values : i8*
+Binder : Tensor.Values(U)
+###
+> U->Values()
+U->Values() : i8*
+Binder : Tensor.Values(U)
+###
+> U->Tensor.Values()
+U->Tensor.Values() : i8*
+Binder : Tensor.Values(U)
+###
+> Us.Values
+Us.Values : i8**
+Binder : ForEach(*1: Us, Tensor.Values(*1))
+###
+> Us->Values()
+Us->Values() : i8**
+Binder : ForEach(*1: Us, Tensor.Values(*1))
+###
+> Us->Tensor.Values()
+Us->Tensor.Values() : i8**
+Binder : ForEach(*1: Us, Tensor.Values(*1))
+###
+> QU.Values
+QU.Values : i8*
+Binder : Guard(?1: QU, Tensor.Values(?1))
+###
+> QU->Values()
+QU->Values() : i8*
+Binder : Tensor.Values(QU)
+###
+> QU->Tensor.Values()
+QU->Tensor.Values() : i8*
+Binder : Tensor.Values(QU)
+###
+> QUs.Values
+QUs.Values : i8**
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Values(?2)))
+###
+> QUs->Values()
+QUs->Values() : i8**
+Binder : ForEach(*1: QUs, Tensor.Values(*1))
+###
+> QUs->Tensor.Values()
+QUs->Tensor.Values() : i8**
+Binder : ForEach(*1: QUs, Tensor.Values(*1))
+###
+> Tensor.Values(Null(T))
+Tensor.Values(Null(T)) : i8*
+Binder : Tensor.Values(DefOpt*(T))
+Reducer: null
+###
+> T->Reshape(4, 7, 8)
+T->Reshape(4, 7, 8) : i8[*,*,*]
+Binder : Tensor.Reshape(T, 4, 7, 8)
+###
+> T->Tensor.Reshape(4, 7, 8)
+T->Tensor.Reshape(4, 7, 8) : i8[*,*,*]
+Binder : Tensor.Reshape(T, 4, 7, 8)
+###
+> Ts->Reshape(4, 7, 8)
+Ts->Reshape(4, 7, 8) : i8[*,*,*]*
+Binder : ForEach(*1: Ts, Tensor.Reshape(*1, 4, 7, 8))
+###
+> Ts->Tensor.Reshape(4, 7, 8)
+Ts->Tensor.Reshape(4, 7, 8) : i8[*,*,*]*
+Binder : ForEach(*1: Ts, Tensor.Reshape(*1, 4, 7, 8))
+###
+> QT->Reshape(4, 7, 8)
+QT->Reshape(4, 7, 8) : i8[*,*,*]?
+Binder : Guard(?1: QT, Tensor.Reshape(?1, 4, 7, 8))
+###
+> QT->Tensor.Reshape(4, 7, 8)
+QT->Tensor.Reshape(4, 7, 8) : i8[*,*,*]?
+Binder : Guard(?1: QT, Tensor.Reshape(?1, 4, 7, 8))
+###
+> QTs->Reshape(4, 7, 8)
+QTs->Reshape(4, 7, 8) : i8[*,*,*]?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Reshape(?2, 4, 7, 8)))
+###
+> QTs->Tensor.Reshape(4, 7, 8)
+QTs->Tensor.Reshape(4, 7, 8) : i8[*,*,*]?*
+Binder : ForEach(*1: QTs, Guard(?2: *1, Tensor.Reshape(?2, 4, 7, 8)))
+###
+> U->Reshape(4, 7, 8)
+U->Reshape(4, 7, 8) : i8[*,*,*]
+Binder : Tensor.Reshape(U, 4, 7, 8)
+###
+> U->Tensor.Reshape(4, 7, 8)
+U->Tensor.Reshape(4, 7, 8) : i8[*,*,*]
+Binder : Tensor.Reshape(U, 4, 7, 8)
+###
+> Us->Reshape(4, 7, 8)
+Us->Reshape(4, 7, 8) : i8[*,*,*]*
+Binder : ForEach(*1: Us, Tensor.Reshape(*1, 4, 7, 8))
+###
+> Us->Tensor.Reshape(4, 7, 8)
+Us->Tensor.Reshape(4, 7, 8) : i8[*,*,*]*
+Binder : ForEach(*1: Us, Tensor.Reshape(*1, 4, 7, 8))
+###
+> QU->Reshape(4, 7, 8)
+QU->Reshape(4, 7, 8) : i8[*,*,*]?
+Binder : Guard(?1: QU, Tensor.Reshape(?1, 4, 7, 8))
+###
+> QU->Tensor.Reshape(4, 7, 8)
+QU->Tensor.Reshape(4, 7, 8) : i8[*,*,*]?
+Binder : Guard(?1: QU, Tensor.Reshape(?1, 4, 7, 8))
+###
+> QUs->Reshape(4, 7, 8)
+QUs->Reshape(4, 7, 8) : i8[*,*,*]?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Reshape(?2, 4, 7, 8)))
+###
+> QUs->Tensor.Reshape(4, 7, 8)
+QUs->Tensor.Reshape(4, 7, 8) : i8[*,*,*]?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Reshape(?2, 4, 7, 8)))
+###
+> T->Reshape()
+T->Reshape() : i8[]
+Binder : Tensor.Reshape(T)
+###
+> T->Reshape(4)
+T->Reshape(4) : i8[*]
+Binder : Tensor.Reshape(T, 4)
+###
+> T->Reshape(4, 7)
+T->Reshape(4, 7) : i8[*,*]
+Binder : Tensor.Reshape(T, 4, 7)
+###
+> T->Reshape(4, 7, 8)->Reshape()
+T->Reshape(4, 7, 8)->Reshape() : i8[]
+Binder : Tensor.Reshape(Tensor.Reshape(T, 4, 7, 8))
+###
+> T->Reshape()->Reshape(4, 7, 8)
+T->Reshape()->Reshape(4, 7, 8) : i8[*,*,*]
+Binder : Tensor.Reshape(Tensor.Reshape(T), 4, 7, 8)
+###
+> T->Reshape(-1)
+T->Reshape(-1) : i8[*]
+Binder : Tensor.Reshape(T, -1)
+*** Warning: Node: -1, Message: Tensor dimension should be non-negative
+Reducer: Tensor.Reshape(T, 0)
+###
+> T->Reshape(-1, -2)
+T->Reshape(-1, -2) : i8[*,*]
+Binder : Tensor.Reshape(T, -1, -2)
+*** Warning: Node: -1, Message: Tensor dimension should be non-negative
+*** Warning: Node: -2, Message: Tensor dimension should be non-negative
+Reducer: Tensor.Reshape(T, 0, 0)
+###
+> R->Reshape(4, 7, 8)
+R->Reshape(4, 7, 8) : v
+*** Error: (1,3) Node: R->Reshape(4, 7, 8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(R, 4, 7, 8)
+###
+> R->Tensor.Reshape(4, 7, 8)
+R->Tensor.Reshape(4, 7, 8) : {A:i4}[*,*,*]
+*** Error: (0,1) Node: R, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Tensor.Reshape(Error(ErrBadType_Src_Dst), 4, 7, 8)
+###
+> Rs->Reshape(4, 7, 8)
+Rs->Reshape(4, 7, 8) : v
+*** Error: (2,4) Node: Rs->Reshape(4, 7, 8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(Rs, 4, 7, 8)
+###
+> Rs->Tensor.Reshape(4, 7, 8)
+Rs->Tensor.Reshape(4, 7, 8) : {A:i4}[*,*,*]*
+*** Error: (0,2) Node: Rs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: Rs, Tensor.Reshape(Error(ErrBadType_Src_Dst), 4, 7, 8))
+###
+> QR->Reshape(4, 7, 8)
+QR->Reshape(4, 7, 8) : v
+*** Error: (2,4) Node: QR->Reshape(4, 7, 8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QR, 4, 7, 8)
+###
+> QR->Tensor.Reshape(4, 7, 8)
+QR->Tensor.Reshape(4, 7, 8) : {A:i4}[*,*,*]?
+*** Error: (0,2) Node: QR, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : Guard(?1: QR, Tensor.Reshape(Error(ErrBadType_Src_Dst), 4, 7, 8))
+###
+> QRs->Reshape(4, 7, 8)
+QRs->Reshape(4, 7, 8) : v
+*** Error: (3,5) Node: QRs->Reshape(4, 7, 8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QRs, 4, 7, 8)
+###
+> QRs->Tensor.Reshape(4, 7, 8)
+QRs->Tensor.Reshape(4, 7, 8) : {A:i4}[*,*,*]?*
+*** Error: (0,3) Node: QRs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[]'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Tensor.Reshape(Error(ErrBadType_Src_Dst), 4, 7, 8)))
+###
+> T->Reshape(s)
+T->Reshape(s) : i8[*]
+*** Error: (11,12) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.Reshape(T, Error(ErrBadType_Src_Dst))
+###
+> T->Reshape(ss)
+T->Reshape(ss) : i8[*]*
+*** Error: (11,13) Node: ss, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: ss, Tensor.Reshape(T, Error(ErrBadType_Src_Dst)))
+###
+> T->Reshape(r)
+T->Reshape(r) : i8[*]
+*** Error: (11,12) Node: r, Message: Invalid operand type: cannot convert type '{}' to 'i8'
+Binder : Tensor.Reshape(T, Error(ErrBadType_Src_Dst))
+###
+> T->Reshape(4.0)
+T->Reshape(4) : i8[*]
+*** Error: (11,14) Node: 4, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Tensor.Reshape(T, Error(ErrBadType_Src_Dst))
+###
+
+**** New globals: {QR:{A:s, B:b}?[*,*], R:{A:s, B:b}[*,*], b:b[*,*], d:d[*,*], g:g[*,*], i:i[*,*], i1:i1[*,*], i2:i2[*,*], i4:i4[*,*], i8:i8[*,*], n:r8[*,*], o:o[*,*], qb:b?[*,*], qd:d?[*,*], qi:i?[*,*], qi1:i1?[*,*], qi2:i2?[*,*], qi4:i4?[*,*], qi8:i8?[*,*], qn:r8?[*,*], qr4:r4?[*,*], qr8:r8?[*,*], qu1:u1?[*,*], qu2:u2?[*,*], qu4:u4?[*,*], qu8:u8?[*,*], r4:r4[*,*], r8:r8[*,*], s:s[*,*], u1:u1[*,*], u2:u2[*,*], u4:u4[*,*], u8:u8[*,*], x:i4, y:i4}
+
+> Tensor.Transpose(g)
+Tensor.Transpose(g) : g[*,*]
+Binder : Tensor.Transpose(g)
+###
+> Tensor.Transpose(s)
+Tensor.Transpose(s) : s[*,*]
+Binder : Tensor.Transpose(s)
+###
+> Tensor.Transpose(b)
+Tensor.Transpose(b) : b[*,*]
+Binder : Tensor.Transpose(b)
+###
+> Tensor.Transpose(qb)
+Tensor.Transpose(qb) : b?[*,*]
+Binder : Tensor.Transpose(qb)
+###
+> Tensor.Transpose(d)
+Tensor.Transpose(d) : d[*,*]
+Binder : Tensor.Transpose(d)
+###
+> Tensor.Transpose(qd)
+Tensor.Transpose(qd) : d?[*,*]
+Binder : Tensor.Transpose(qd)
+###
+> Tensor.Transpose(n)
+Tensor.Transpose(n) : r8[*,*]
+Binder : Tensor.Transpose(n)
+###
+> Tensor.Transpose(qn)
+Tensor.Transpose(qn) : r8?[*,*]
+Binder : Tensor.Transpose(qn)
+###
+> Tensor.Transpose(r8)
+Tensor.Transpose(r8) : r8[*,*]
+Binder : Tensor.Transpose(r8)
+###
+> Tensor.Transpose(qr8)
+Tensor.Transpose(qr8) : r8?[*,*]
+Binder : Tensor.Transpose(qr8)
+###
+> Tensor.Transpose(r4)
+Tensor.Transpose(r4) : r4[*,*]
+Binder : Tensor.Transpose(r4)
+###
+> Tensor.Transpose(qr4)
+Tensor.Transpose(qr4) : r4?[*,*]
+Binder : Tensor.Transpose(qr4)
+###
+> Tensor.Transpose(i)
+Tensor.Transpose(i) : i[*,*]
+Binder : Tensor.Transpose(i)
+###
+> Tensor.Transpose(qi)
+Tensor.Transpose(qi) : i?[*,*]
+Binder : Tensor.Transpose(qi)
+###
+> Tensor.Transpose(i8)
+Tensor.Transpose(i8) : i8[*,*]
+Binder : Tensor.Transpose(i8)
+###
+> Tensor.Transpose(qi8)
+Tensor.Transpose(qi8) : i8?[*,*]
+Binder : Tensor.Transpose(qi8)
+###
+> Tensor.Transpose(i4)
+Tensor.Transpose(i4) : i4[*,*]
+Binder : Tensor.Transpose(i4)
+###
+> Tensor.Transpose(qi4)
+Tensor.Transpose(qi4) : i4?[*,*]
+Binder : Tensor.Transpose(qi4)
+###
+> Tensor.Transpose(i2)
+Tensor.Transpose(i2) : i2[*,*]
+Binder : Tensor.Transpose(i2)
+###
+> Tensor.Transpose(qi2)
+Tensor.Transpose(qi2) : i2?[*,*]
+Binder : Tensor.Transpose(qi2)
+###
+> Tensor.Transpose(i1)
+Tensor.Transpose(i1) : i1[*,*]
+Binder : Tensor.Transpose(i1)
+###
+> Tensor.Transpose(qi1)
+Tensor.Transpose(qi1) : i1?[*,*]
+Binder : Tensor.Transpose(qi1)
+###
+> Tensor.Transpose(u8)
+Tensor.Transpose(u8) : u8[*,*]
+Binder : Tensor.Transpose(u8)
+###
+> Tensor.Transpose(qu8)
+Tensor.Transpose(qu8) : u8?[*,*]
+Binder : Tensor.Transpose(qu8)
+###
+> Tensor.Transpose(u4)
+Tensor.Transpose(u4) : u4[*,*]
+Binder : Tensor.Transpose(u4)
+###
+> Tensor.Transpose(qu4)
+Tensor.Transpose(qu4) : u4?[*,*]
+Binder : Tensor.Transpose(qu4)
+###
+> Tensor.Transpose(u2)
+Tensor.Transpose(u2) : u2[*,*]
+Binder : Tensor.Transpose(u2)
+###
+> Tensor.Transpose(qu2)
+Tensor.Transpose(qu2) : u2?[*,*]
+Binder : Tensor.Transpose(qu2)
+###
+> Tensor.Transpose(u1)
+Tensor.Transpose(u1) : u1[*,*]
+Binder : Tensor.Transpose(u1)
+###
+> Tensor.Transpose(qu1)
+Tensor.Transpose(qu1) : u1?[*,*]
+Binder : Tensor.Transpose(qu1)
+###
+> Tensor.Transpose(R)
+Tensor.Transpose(R) : {A:s, B:b}[*,*]
+Binder : Tensor.Transpose(R)
+###
+> Tensor.Transpose(QR)
+Tensor.Transpose(QR) : {A:s, B:b}?[*,*]
+Binder : Tensor.Transpose(QR)
+###
+> Tensor.Transpose(g, 0, 1)
+Tensor.Transpose(g, 0, 1) : g[*,*]
+Binder : Tensor.Transpose(g, 0, 1)
+Reducer: g
+###
+> Tensor.Transpose(s, 0, 1)
+Tensor.Transpose(s, 0, 1) : s[*,*]
+Binder : Tensor.Transpose(s, 0, 1)
+Reducer: s
+###
+> Tensor.Transpose(i8, 0, 1)
+Tensor.Transpose(i8, 0, 1) : i8[*,*]
+Binder : Tensor.Transpose(i8, 0, 1)
+Reducer: i8
+###
+> Tensor.Transpose(r8, 0, 1)
+Tensor.Transpose(r8, 0, 1) : r8[*,*]
+Binder : Tensor.Transpose(r8, 0, 1)
+Reducer: r8
+###
+> Tensor.Transpose(i8, x)
+Tensor.Transpose(i8, x) : i8[*,*]
+*** Error: (21,22) Node: x, Message: Too few arguments for Tensor.Transpose, expected 1 additional
+Binder : Tensor.Transpose*(i8, Num<i8>(x))
+###
+> Tensor.Transpose(i8, x, y)
+Tensor.Transpose(i8, x, y) : i8[*,*]
+Binder : Tensor.Transpose(i8, Num<i8>(x), Num<i8>(y))
+###
+> Tensor.Transpose(i8, x, 1)
+Tensor.Transpose(i8, x, 1) : i8[*,*]
+Binder : Tensor.Transpose(i8, Num<i8>(x), 1)
+###
+> Tensor.Transpose(i8, 2, -2)
+Tensor.Transpose(i8, 2, -2) : i8[*,*]
+*** Warning: (21,22) Node: 2, Message: The number should be at least 0 and less than 2
+*** Warning: (24,25) Node: -2, Message: The number should be at least 0 and less than 2
+Binder : Tensor.Transpose(i8, 2, -2)
+###
+> Tensor.Transpose(i8, 0, 0)
+Tensor.Transpose(i8, 0, 0) : i8[*,*]
+*** Warning: (24,25) Node: 0, Message: The 0 axis has already been specified
+Binder : Tensor.Transpose(i8, 0, 0)
+###
+> Tensor.Transpose(i8, [], "")
+Tensor.Transpose(i8, [], "") : i8[*,*]
+*** Error: (21,22) Node: [], Message: Invalid operand type: cannot convert type 'v*' to 'i8'
+*** Error: (25,27) Node: "", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.Transpose(i8, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Tensor.Transpose(i8, 1i2, 0i1)
+Tensor.Transpose(i8, 1, 0) : i8[*,*]
+Binder : Tensor.Transpose(i8, 1, 0)
+###
+> Tensor.Transpose(i8, 1ia, 0ia)
+Tensor.Transpose(i8, 1, 0) : i8[*,*]
+*** Error: (21,24) Node: 1, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (26,29) Node: 0, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Tensor.Transpose(i8, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Tensor.Transpose(i8, 1+0, 0+0)
+Tensor.Transpose(i8, 1 + 0, 0 + 0) : i8[*,*]
+Binder : Tensor.Transpose(i8, Add(1, 0), Add(0, 0))
+Reducer: Tensor.Transpose(i8, 1, 0)
+###
+> Tensor.ExpandDims(g, 0)
+Tensor.ExpandDims(g, 0) : g[*,*,*]
+Binder : Tensor.ExpandDims(g, 0)
+###
+> Tensor.ExpandDims(s, 0)
+Tensor.ExpandDims(s, 0) : s[*,*,*]
+Binder : Tensor.ExpandDims(s, 0)
+###
+> Tensor.ExpandDims(b, 0)
+Tensor.ExpandDims(b, 0) : b[*,*,*]
+Binder : Tensor.ExpandDims(b, 0)
+###
+> Tensor.ExpandDims(qb, 0)
+Tensor.ExpandDims(qb, 0) : b?[*,*,*]
+Binder : Tensor.ExpandDims(qb, 0)
+###
+> Tensor.ExpandDims(d, 0)
+Tensor.ExpandDims(d, 0) : d[*,*,*]
+Binder : Tensor.ExpandDims(d, 0)
+###
+> Tensor.ExpandDims(qd, 0)
+Tensor.ExpandDims(qd, 0) : d?[*,*,*]
+Binder : Tensor.ExpandDims(qd, 0)
+###
+> Tensor.ExpandDims(n, 0)
+Tensor.ExpandDims(n, 0) : r8[*,*,*]
+Binder : Tensor.ExpandDims(n, 0)
+###
+> Tensor.ExpandDims(qn, 0)
+Tensor.ExpandDims(qn, 0) : r8?[*,*,*]
+Binder : Tensor.ExpandDims(qn, 0)
+###
+> Tensor.ExpandDims(r8, 0)
+Tensor.ExpandDims(r8, 0) : r8[*,*,*]
+Binder : Tensor.ExpandDims(r8, 0)
+###
+> Tensor.ExpandDims(qr8, 0)
+Tensor.ExpandDims(qr8, 0) : r8?[*,*,*]
+Binder : Tensor.ExpandDims(qr8, 0)
+###
+> Tensor.ExpandDims(r4, 0)
+Tensor.ExpandDims(r4, 0) : r4[*,*,*]
+Binder : Tensor.ExpandDims(r4, 0)
+###
+> Tensor.ExpandDims(qr4, 0)
+Tensor.ExpandDims(qr4, 0) : r4?[*,*,*]
+Binder : Tensor.ExpandDims(qr4, 0)
+###
+> Tensor.ExpandDims(i, 0)
+Tensor.ExpandDims(i, 0) : i[*,*,*]
+Binder : Tensor.ExpandDims(i, 0)
+###
+> Tensor.ExpandDims(qi, 0)
+Tensor.ExpandDims(qi, 0) : i?[*,*,*]
+Binder : Tensor.ExpandDims(qi, 0)
+###
+> Tensor.ExpandDims(i8, 0)
+Tensor.ExpandDims(i8, 0) : i8[*,*,*]
+Binder : Tensor.ExpandDims(i8, 0)
+###
+> Tensor.ExpandDims(qi8, 0)
+Tensor.ExpandDims(qi8, 0) : i8?[*,*,*]
+Binder : Tensor.ExpandDims(qi8, 0)
+###
+> Tensor.ExpandDims(i4, 0)
+Tensor.ExpandDims(i4, 0) : i4[*,*,*]
+Binder : Tensor.ExpandDims(i4, 0)
+###
+> Tensor.ExpandDims(qi4, 0)
+Tensor.ExpandDims(qi4, 0) : i4?[*,*,*]
+Binder : Tensor.ExpandDims(qi4, 0)
+###
+> Tensor.ExpandDims(i2, 0)
+Tensor.ExpandDims(i2, 0) : i2[*,*,*]
+Binder : Tensor.ExpandDims(i2, 0)
+###
+> Tensor.ExpandDims(qi2, 0)
+Tensor.ExpandDims(qi2, 0) : i2?[*,*,*]
+Binder : Tensor.ExpandDims(qi2, 0)
+###
+> Tensor.ExpandDims(i1, 0)
+Tensor.ExpandDims(i1, 0) : i1[*,*,*]
+Binder : Tensor.ExpandDims(i1, 0)
+###
+> Tensor.ExpandDims(qi1, 0)
+Tensor.ExpandDims(qi1, 0) : i1?[*,*,*]
+Binder : Tensor.ExpandDims(qi1, 0)
+###
+> Tensor.ExpandDims(u8, 0)
+Tensor.ExpandDims(u8, 0) : u8[*,*,*]
+Binder : Tensor.ExpandDims(u8, 0)
+###
+> Tensor.ExpandDims(qu8, 0)
+Tensor.ExpandDims(qu8, 0) : u8?[*,*,*]
+Binder : Tensor.ExpandDims(qu8, 0)
+###
+> Tensor.ExpandDims(u4, 0)
+Tensor.ExpandDims(u4, 0) : u4[*,*,*]
+Binder : Tensor.ExpandDims(u4, 0)
+###
+> Tensor.ExpandDims(qu4, 0)
+Tensor.ExpandDims(qu4, 0) : u4?[*,*,*]
+Binder : Tensor.ExpandDims(qu4, 0)
+###
+> Tensor.ExpandDims(u2, 0)
+Tensor.ExpandDims(u2, 0) : u2[*,*,*]
+Binder : Tensor.ExpandDims(u2, 0)
+###
+> Tensor.ExpandDims(qu2, 0)
+Tensor.ExpandDims(qu2, 0) : u2?[*,*,*]
+Binder : Tensor.ExpandDims(qu2, 0)
+###
+> Tensor.ExpandDims(u1, 0)
+Tensor.ExpandDims(u1, 0) : u1[*,*,*]
+Binder : Tensor.ExpandDims(u1, 0)
+###
+> Tensor.ExpandDims(qu1, 0)
+Tensor.ExpandDims(qu1, 0) : u1?[*,*,*]
+Binder : Tensor.ExpandDims(qu1, 0)
+###
+> Tensor.ExpandDims(R, 0)
+Tensor.ExpandDims(R, 0) : {A:s, B:b}[*,*,*]
+Binder : Tensor.ExpandDims(R, 0)
+###
+> Tensor.ExpandDims(QR, 0)
+Tensor.ExpandDims(QR, 0) : {A:s, B:b}?[*,*,*]
+Binder : Tensor.ExpandDims(QR, 0)
+###
+> Tensor.ExpandDims(g, 0, 3)
+Tensor.ExpandDims(g, 0, 3) : g[*,*,*,*]
+Binder : Tensor.ExpandDims(g, 0, 3)
+###
+> Tensor.ExpandDims(s, 0, 3)
+Tensor.ExpandDims(s, 0, 3) : s[*,*,*,*]
+Binder : Tensor.ExpandDims(s, 0, 3)
+###
+> Tensor.ExpandDims(i8, 0, 3)
+Tensor.ExpandDims(i8, 0, 3) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(i8, 0, 3)
+###
+> Tensor.ExpandDims(r8, 0, 3)
+Tensor.ExpandDims(r8, 0, 3) : r8[*,*,*,*]
+Binder : Tensor.ExpandDims(r8, 0, 3)
+###
+> Tensor.ExpandDims(i8, x)
+Tensor.ExpandDims(i8, x) : i8[*,*,*]
+Binder : Tensor.ExpandDims(i8, Num<i8>(x))
+###
+> Tensor.ExpandDims(i8, x, y)
+Tensor.ExpandDims(i8, x, y) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(i8, Num<i8>(x), Num<i8>(y))
+###
+> Tensor.ExpandDims(i8, x, 1)
+Tensor.ExpandDims(i8, x, 1) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(i8, Num<i8>(x), 1)
+###
+> Tensor.ExpandDims(i8, 4, -2)
+Tensor.ExpandDims(i8, 4, -2) : i8[*,*,*,*]
+*** Warning: (22,23) Node: 4, Message: The number should be at least 0 and less than 4
+*** Warning: (25,26) Node: -2, Message: The number should be at least 0 and less than 4
+Binder : Tensor.ExpandDims(i8, 4, -2)
+###
+> Tensor.ExpandDims(i8, 3, "")
+Tensor.ExpandDims(i8, 3, "") : i8[*,*,*,*]
+*** Error: (25,27) Node: "", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.ExpandDims(i8, 3, Error(ErrBadType_Src_Dst))
+###
+> Tensor.ExpandDims(i8, 0, 0)
+Tensor.ExpandDims(i8, 0, 0) : i8[*,*,*,*]
+*** Warning: (25,26) Node: 0, Message: The 0 axis has already been specified
+Binder : Tensor.ExpandDims(i8, 0, 0)
+###
+> Tensor.ExpandDims(i8, [], "")
+Tensor.ExpandDims(i8, [], "") : i8[*,*,*,*]
+*** Error: (22,23) Node: [], Message: Invalid operand type: cannot convert type 'v*' to 'i8'
+*** Error: (26,28) Node: "", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.ExpandDims(i8, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Tensor.ExpandDims(i8, 1i2, 0i1)
+Tensor.ExpandDims(i8, 1, 0) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(i8, 1, 0)
+###
+> Tensor.ExpandDims(i8, 1ia, 0ia)
+Tensor.ExpandDims(i8, 1, 0) : i8[*,*,*,*]
+*** Error: (22,25) Node: 1, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (27,30) Node: 0, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Tensor.ExpandDims(i8, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Tensor.ExpandDims(i8, 1+0, 0+0)
+Tensor.ExpandDims(i8, 1 + 0, 0 + 0) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(i8, Add(1, 0), Add(0, 0))
+Reducer: Tensor.ExpandDims(i8, 1, 0)
+###
+
+**** New globals: {QR:{A:i4}?, QRs:{A:i4}?*, QT:i8[*,*]?, QTs:i8[*,*]?*, QU:i8[*,*,*]?, QUs:i8[*,*,*]?*, R:{A:i4}, Rs:{A:i4}*, T:i8[*,*], Ts:i8[*,*]*, U:i8[*,*,*], Us:i8[*,*,*]*, r:{}, s:s, ss:s*}
+
+> T->Transpose()
+T->Transpose() : i8[*,*]
+Binder : Tensor.Transpose(T)
+###
+> Ts->Transpose()
+Ts->Transpose() : i8[*,*]*
+Binder : ForEach(*1: Ts, Tensor.Transpose(*1))
+###
+> QT->Transpose()
+QT->Transpose() : i8[*,*]?
+Binder : Guard(?1: QT, Tensor.Transpose(?1))
+###
+> U->Transpose()
+U->Transpose() : i8[*,*,*]
+Binder : Tensor.Transpose(U)
+###
+> QU->Transpose()
+QU->Transpose() : i8[*,*,*]?
+Binder : Guard(?1: QU, Tensor.Transpose(?1))
+###
+> QUs->Transpose()
+QUs->Transpose() : i8[*,*,*]?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Transpose(?2)))
+###
+> T->Transpose(1,0)
+T->Transpose(1, 0) : i8[*,*]
+Binder : Tensor.Transpose(T, 1, 0)
+###
+> Ts->Transpose(1,0)
+Ts->Transpose(1, 0) : i8[*,*]*
+Binder : ForEach(*1: Ts, Tensor.Transpose(*1, 1, 0))
+###
+> QT->Transpose(1,0)
+QT->Transpose(1, 0) : i8[*,*]?
+Binder : Guard(?1: QT, Tensor.Transpose(?1, 1, 0))
+###
+> U->Transpose(2,1,0)
+U->Transpose(2, 1, 0) : i8[*,*,*]
+Binder : Tensor.Transpose(U, 2, 1, 0)
+###
+> QU->Transpose(2,1,0)
+QU->Transpose(2, 1, 0) : i8[*,*,*]?
+Binder : Guard(?1: QU, Tensor.Transpose(?1, 2, 1, 0))
+###
+> QUs->Transpose(2,1,0)
+QUs->Transpose(2, 1, 0) : i8[*,*,*]?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.Transpose(?2, 2, 1, 0)))
+###
+> T->ExpandDims(0)
+T->ExpandDims(0) : i8[*,*,*]
+Binder : Tensor.ExpandDims(T, 0)
+###
+> Ts->ExpandDims(0)
+Ts->ExpandDims(0) : i8[*,*,*]*
+Binder : ForEach(*1: Ts, Tensor.ExpandDims(*1, 0))
+###
+> QT->ExpandDims(0)
+QT->ExpandDims(0) : i8[*,*,*]?
+Binder : Guard(?1: QT, Tensor.ExpandDims(?1, 0))
+###
+> U->ExpandDims(0)
+U->ExpandDims(0) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(U, 0)
+###
+> QU->ExpandDims(0)
+QU->ExpandDims(0) : i8[*,*,*,*]?
+Binder : Guard(?1: QU, Tensor.ExpandDims(?1, 0))
+###
+> QUs->ExpandDims(0)
+QUs->ExpandDims(0) : i8[*,*,*,*]?*
+Binder : ForEach(*1: QUs, Guard(?2: *1, Tensor.ExpandDims(?2, 0)))
+###
+> T.Transpose
+T.Transpose : v
+*** Error: (1,2) Node: T.Transpose, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> Ts.Transpose
+Ts.Transpose : v*
+*** Error: (2,3) Node: Ts.Transpose, Message: Invalid use of '.'
+Binder : ForEach(*1: Ts, Error(ErrInvalidDot))
+###
+> QT.Transpose
+QT.Transpose : o
+*** Error: (2,3) Node: QT.Transpose, Message: Invalid use of '.'
+Binder : Guard(?1: QT, Error(ErrInvalidDot))
+Reducer: null
+###
+> U.Transpose
+U.Transpose : v
+*** Error: (1,2) Node: U.Transpose, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> QU.Transpose
+QU.Transpose : o
+*** Error: (2,3) Node: QU.Transpose, Message: Invalid use of '.'
+Binder : Guard(?1: QU, Error(ErrInvalidDot))
+Reducer: null
+###
+> QUs.Transpose
+QUs.Transpose : o*
+*** Error: (3,4) Node: QUs.Transpose, Message: Invalid use of '.'
+Binder : ForEach(*1: QUs, Guard(?2: *1, Error(ErrInvalidDot)))
+Reducer: ForEach(*1: QUs, null)
+###
+> R->Transpose()
+R->Transpose() : v
+*** Error: (1,3) Node: R->Transpose(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(R)
+###
+> R->Tensor.Transpose()
+R->Tensor.Transpose() : {A:i4}[*,*]
+*** Error: (0,1) Node: R, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[*,*]'
+Binder : Tensor.Transpose(Error(ErrBadType_Src_Dst))
+###
+> Rs->Transpose()
+Rs->Transpose() : v
+*** Error: (2,4) Node: Rs->Transpose(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(Rs)
+###
+> Rs->Tensor.Transpose()
+Rs->Tensor.Transpose() : {A:i4}[*,*]*
+*** Error: (0,2) Node: Rs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[*,*]'
+Binder : ForEach(*1: Rs, Tensor.Transpose(Error(ErrBadType_Src_Dst)))
+###
+> QR->Transpose()
+QR->Transpose() : v
+*** Error: (2,4) Node: QR->Transpose(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QR)
+###
+> QR->Tensor.Transpose()
+QR->Tensor.Transpose() : {A:i4}[*,*]?
+*** Error: (0,2) Node: QR, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[*,*]'
+Binder : Guard(?1: QR, Tensor.Transpose(Error(ErrBadType_Src_Dst)))
+###
+> QRs->Transpose()
+QRs->Transpose() : v
+*** Error: (3,5) Node: QRs->Transpose(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(QRs)
+###
+> QRs->Tensor.Transpose()
+QRs->Tensor.Transpose() : {A:i4}[*,*]?*
+*** Error: (0,3) Node: QRs, Message: Invalid operand type: cannot convert type '{A:i4}' to '{A:i4}[*,*]'
+Binder : ForEach(*1: QRs, Guard(?2: *1, Tensor.Transpose(Error(ErrBadType_Src_Dst))))
+###
+
+**** New globals: {T0:i8[], T1:i8[*], T2:i8[*,*], T3:i8[*,*,*], T4:i8[*,*,*,*]}
+
+> T0->Transpose()
+T0->Transpose() : i8[]
+Binder : Tensor.Transpose(T0)
+Reducer: T0
+###
+> T1->Transpose()
+T1->Transpose() : i8[*]
+Binder : Tensor.Transpose(T1)
+Reducer: T1
+###
+> T2->Transpose()
+T2->Transpose() : i8[*,*]
+Binder : Tensor.Transpose(T2)
+###
+> T3->Transpose()
+T3->Transpose() : i8[*,*,*]
+Binder : Tensor.Transpose(T3)
+###
+> T4->Transpose()
+T4->Transpose() : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4)
+###
+> T0->Transpose(0)
+T0->Transpose(0) : i8[]
+*** Error: (14,15) Node: 0, Message: Too many arguments for Tensor.Transpose, expected 1 fewer
+Binder : Tensor.Transpose*(T0, 0)
+Reducer: T0
+###
+> T1->Transpose(0)
+T1->Transpose(0) : i8[*]
+Binder : Tensor.Transpose(T1, 0)
+Reducer: T1
+###
+> T1->Transpose(1)
+T1->Transpose(1) : i8[*]
+*** Warning: (14,15) Node: 1, Message: The number should be at least 0 and less than 1
+Binder : Tensor.Transpose(T1, 1)
+Reducer: T1
+###
+> T1->Transpose(0,1)
+T1->Transpose(0, 1) : i8[*]
+*** Error: (16,17) Node: 1, Message: Too many arguments for Tensor.Transpose, expected 1 fewer
+Binder : Tensor.Transpose*(T1, 0, 1)
+Reducer: T1
+###
+> T2->Transpose(0,1)
+T2->Transpose(0, 1) : i8[*,*]
+Binder : Tensor.Transpose(T2, 0, 1)
+Reducer: T2
+###
+> T2->Transpose(1,0)
+T2->Transpose(1, 0) : i8[*,*]
+Binder : Tensor.Transpose(T2, 1, 0)
+###
+> T2->Transpose(2,0,1)
+T2->Transpose(2, 0, 1) : i8[*,*]
+*** Error: (18,19) Node: 1, Message: Too many arguments for Tensor.Transpose, expected 1 fewer
+Binder : Tensor.Transpose*(T2, 2, 0, 1)
+###
+> T3->Transpose(0,1,2)
+T3->Transpose(0, 1, 2) : i8[*,*,*]
+Binder : Tensor.Transpose(T3, 0, 1, 2)
+Reducer: T3
+###
+> T3->Transpose(2,0,1)
+T3->Transpose(2, 0, 1) : i8[*,*,*]
+Binder : Tensor.Transpose(T3, 2, 0, 1)
+###
+> T3->Transpose(0,2,1)
+T3->Transpose(0, 2, 1) : i8[*,*,*]
+Binder : Tensor.Transpose(T3, 0, 2, 1)
+###
+> T3->Transpose(0,3,1,2)
+T3->Transpose(0, 3, 1, 2) : i8[*,*,*]
+*** Error: (20,21) Node: 2, Message: Too many arguments for Tensor.Transpose, expected 1 fewer
+Binder : Tensor.Transpose*(T3, 0, 3, 1, 2)
+###
+> T4->Transpose(0,1,2,3)
+T4->Transpose(0, 1, 2, 3) : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4, 0, 1, 2, 3)
+Reducer: T4
+###
+> T4->Transpose(2,0,3,1)
+T4->Transpose(2, 0, 3, 1) : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4, 2, 0, 3, 1)
+###
+> T4->Transpose(0,3,2,1)
+T4->Transpose(0, 3, 2, 1) : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4, 0, 3, 2, 1)
+###
+> T4->Transpose(0,3,1,2)
+T4->Transpose(0, 3, 1, 2) : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4, 0, 3, 1, 2)
+###
+> T4->Transpose(3,0,2,1)
+T4->Transpose(3, 0, 2, 1) : i8[*,*,*,*]
+Binder : Tensor.Transpose(T4, 3, 0, 2, 1)
+###
+> T4->Transpose(3,0,2,1,4)
+T4->Transpose(3, 0, 2, 1, 4) : i8[*,*,*,*]
+*** Error: (22,23) Node: 4, Message: Too many arguments for Tensor.Transpose, expected 1 fewer
+Binder : Tensor.Transpose*(T4, 3, 0, 2, 1, 4)
+###
+> T4->Transpose(3,1,4)
+T4->Transpose(3, 1, 4) : i8[*,*,*,*]
+*** Error: (18,19) Node: 4, Message: Too few arguments for Tensor.Transpose, expected 1 additional
+Binder : Tensor.Transpose*(T4, 3, 1, 4)
+###
+> T0->ExpandDims(0)
+T0->ExpandDims(0) : i8[*]
+Binder : Tensor.ExpandDims(T0, 0)
+###
+> T0->ExpandDims(1)
+T0->ExpandDims(1) : i8[*]
+*** Warning: (15,16) Node: 1, Message: The number should be at least 0 and less than 1
+Binder : Tensor.ExpandDims(T0, 1)
+###
+> T0->ExpandDims(1,0)
+T0->ExpandDims(1, 0) : i8[*,*]
+Binder : Tensor.ExpandDims(T0, 1, 0)
+###
+> T1->ExpandDims(0)
+T1->ExpandDims(0) : i8[*,*]
+Binder : Tensor.ExpandDims(T1, 0)
+###
+> T1->ExpandDims(0,2)
+T1->ExpandDims(0, 2) : i8[*,*,*]
+Binder : Tensor.ExpandDims(T1, 0, 2)
+###
+> T2->ExpandDims(0)
+T2->ExpandDims(0) : i8[*,*,*]
+Binder : Tensor.ExpandDims(T2, 0)
+###
+> T2->ExpandDims(2)
+T2->ExpandDims(2) : i8[*,*,*]
+Binder : Tensor.ExpandDims(T2, 2)
+###
+> T2->ExpandDims(0,3)
+T2->ExpandDims(0, 3) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(T2, 0, 3)
+###
+> T2->ExpandDims(1,3)
+T2->ExpandDims(1, 3) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(T2, 1, 3)
+###
+> T2->ExpandDims(2,3)
+T2->ExpandDims(2, 3) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(T2, 2, 3)
+###
+> T2->ExpandDims(5,2,0,4)
+T2->ExpandDims(5, 2, 0, 4) : i8[*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T2, 5, 2, 0, 4)
+###
+> T2->ExpandDims(5,0,7,4)
+T2->ExpandDims(5, 0, 7, 4) : i8[*,*,*,*,*,*]
+*** Warning: (19,20) Node: 7, Message: The number should be at least 0 and less than 6
+Binder : Tensor.ExpandDims(T2, 5, 0, 7, 4)
+###
+> T3->ExpandDims(0)
+T3->ExpandDims(0) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 0)
+###
+> T3->ExpandDims(3)
+T3->ExpandDims(3) : i8[*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 3)
+###
+> T3->ExpandDims(0,4)
+T3->ExpandDims(0, 4) : i8[*,*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 0, 4)
+###
+> T3->ExpandDims(1,4)
+T3->ExpandDims(1, 4) : i8[*,*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 1, 4)
+###
+> T3->ExpandDims(2,3)
+T3->ExpandDims(2, 3) : i8[*,*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 2, 3)
+###
+> T3->ExpandDims(5,2,0,4)
+T3->ExpandDims(5, 2, 0, 4) : i8[*,*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T3, 5, 2, 0, 4)
+###
+> T3->ExpandDims(5,0,8,4)
+T3->ExpandDims(5, 0, 8, 4) : i8[*,*,*,*,*,*,*]
+*** Warning: (19,20) Node: 8, Message: The number should be at least 0 and less than 7
+Binder : Tensor.ExpandDims(T3, 5, 0, 8, 4)
+###
+> T4->ExpandDims(0)
+T4->ExpandDims(0) : i8[*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 0)
+###
+> T4->ExpandDims(4)
+T4->ExpandDims(4) : i8[*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 4)
+###
+> T4->ExpandDims(0,5)
+T4->ExpandDims(0, 5) : i8[*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 0, 5)
+###
+> T4->ExpandDims(1,5)
+T4->ExpandDims(1, 5) : i8[*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 1, 5)
+###
+> T4->ExpandDims(2,3)
+T4->ExpandDims(2, 3) : i8[*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 2, 3)
+###
+> T4->ExpandDims(7,3,1,0,4,9,10)
+T4->ExpandDims(7, 3, 1, 0, 4, 9, 10) : i8[*,*,*,*,*,*,*,*,*,*,*]
+Binder : Tensor.ExpandDims(T4, 7, 3, 1, 0, 4, 9, 10)
+###
+> T4->ExpandDims(5,0,8,4)
+T4->ExpandDims(5, 0, 8, 4) : i8[*,*,*,*,*,*,*,*]
+*** Warning: (19,20) Node: 8, Message: The number should be at least 0 and less than 8
+Binder : Tensor.ExpandDims(T4, 5, 0, 8, 4)
+###

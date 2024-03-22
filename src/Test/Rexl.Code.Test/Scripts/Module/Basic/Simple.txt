@@ -1,0 +1,64 @@
+﻿plan { var X from 7; };
+plan { var X to   7; };
+plan { var X def  7; };
+plan { var X from 7 req; };
+plan { var X to   7 req; };
+plan { var X def  7 req; };
+plan { var X from 7 opt; };
+plan { var X to   7 opt; };
+plan { var X def  7 opt; };
+
+plan { var X from 3 to  7; };
+plan { var X from 3 def 7; };
+plan { var X def  3 to  7; };
+
+module { var X from (Opt (3)) req; }; // Warning: unexpected req.
+module { var X from (Opt (3)) opt; };
+module { var X from (Null(3)) opt; };
+
+P := plan {
+    param A := 3;
+    const B := A * A;
+    var X from A to B def 2 * A;
+};
+P;
+P with { };
+P2 := P => { A: 3 }; P2;
+
+P := plan {
+    param A := 3;
+    const B := A * A;
+
+    var X from A to B def 2 * A;
+    var Y from X; // Error.
+};
+
+P := plan {
+    param A := 3;
+    con C := A + 2; // Error.
+};
+
+P := plan {
+    param A := 3;
+    var X from A to A * A def 2 * A opt;
+};
+P;
+P with { X: null };
+P with { X: null + P.A };
+
+plan { var X to 7 opt; };
+plan { var X def 7 opt; };
+
+plan { var X from 3 to  7.5; };
+plan { var X from 3 def 7.5; };
+plan { var X to   3 def 7.5; };
+
+plan{ var X from "hello"; };
+
+plan { var X from 3 to  "hello"; }; // Error.
+plan { var X from 3 def "hello"; }; // Error.
+
+plan { var X from 0 to 1; var X from -3 to 5; }; // Error.
+
+plan { var X from U; }; // Error.
+plan { param A := 3; var X from a; }; // Error.

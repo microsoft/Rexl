@@ -1,0 +1,956 @@
+**** New globals: {i:i, i1:i1, i2:i2, i4:i4, i8:i8, u1:u1, u2:u2, u4:u4, u8:u8}
+**** Add globals: {j:i, j1:i1, j2:i2, j4:i4, j8:i8, v1:u1, v2:u2, v4:u4, v8:u8}
+
+> i * j * i
+i * j * i : i
+BndKind:VariadicOp, Type:i, Bnd:(Mul(Global(i), Global(j), Global(i)))
+// (∂.i:i, ∂.j:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      1) ldloc.0 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 37
+
+Func sig: (i:i, j:i) to i
+Type: ia, Value: 0
+###
+> -i * j * i
+-i * j * i : i
+BndKind:VariadicOp, Type:i, Bnd:(Add([-] Mul(Global(i), Global(j), Global(i))))
+// (∂.i:i, ∂.j:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      1) ldloc.0 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      5) call static ia::op_UnaryNegation(ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 42
+
+Func sig: (i:i, j:i) to i
+Type: ia, Value: 0
+###
+> i4 * j * i
+i4 * j * i : i
+BndKind:VariadicOp, Type:i, Bnd:(Mul(Num<i>(Global(i4)), Global(j), Global(i)))
+// (∂.i4:i4, ∂.j:i, ∂.i:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i4]
+      5) newobj ia(i4)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      1) ldloc.2 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 51
+
+Func sig: (i4:i4, j:i, i:i) to i
+Type: ia, Value: 0
+###
+> -i4 * j * i
+-i4 * j * i : i
+BndKind:VariadicOp, Type:i, Bnd:(Mul(Num<i>(Add([-] Num<i8>(Global(i4)))), Global(j), Global(i)))
+// (∂.i4:i4, ∂.j:i, ∂.i:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) neg
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      1) ldloc.2 [ia]
+      5) call static ia::op_Multiply(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 53
+
+Func sig: (i4:i4, j:i, i:i) to i
+Type: ia, Value: 0
+###
+> i   = j
+i @= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @= Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i  ~= j
+i ~@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @= Global(j)))
+*** Warning: (3,4) Node: i ~@= j, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i  != j
+i !@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) !@= Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Inequality(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: false
+###
+> i !~= j
+i !~@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) !@= Global(j)))
+*** Warning: (3,4) Node: i !~@= j, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Inequality(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: false
+###
+> i   < j
+i $< j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @< Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_LessThan(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: false
+###
+> i  <= j
+i $<= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @<= Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_LessThanOrEqual(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i  >= j
+i $>= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @>= Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i   > j
+i $> j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @> Global(j)))
+// (∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThan(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (i:i, j:i) to b
+Type: bool, Value: false
+###
+> i   = j = j8
+i @= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @= Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: true 
+###
+> i  ~= j = j8
+i ~@= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @= Global(j) @= Num<i>(Global(j8))))
+*** Warning: (3,4) Node: i ~@= j @= j8, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: true 
+###
+> i  != j = j8
+i !@= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) !@= Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brtrue [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: false
+###
+> i !~= j = j8
+i !~@= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) !@= Global(j) @= Num<i>(Global(j8))))
+*** Warning: (3,4) Node: i !~@= j @= j8, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brtrue [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: false
+###
+> i   < j = j8
+i $< j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @< Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_LessThan(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: false
+###
+> i  <= j = j8
+i $<= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @<= Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_LessThanOrEqual(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: true 
+###
+> i  >= j = j8
+i $>= j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @>= Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: true 
+###
+> i   > j = j8
+i $> j @= j8 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(i) @> Global(j) @= Num<i>(Global(j8))))
+// (∂.i:i, ∂.j:i, ∂.j8:i8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThan(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i:i, j:i, j8:i8) to b
+Type: bool, Value: false
+###
+> i8 = i   = j
+i8 @= i @= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @= Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i8 = i  ~= j
+i8 @= i ~@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @= Global(j)))
+*** Warning: (8,9) Node: i8 @= i ~@= j, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i8 = i  != j
+i8 @= i !@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) !@= Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_Inequality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: false
+###
+> i8 = i !~= j
+i8 @= i !~@= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) !@= Global(j)))
+*** Warning: (8,9) Node: i8 @= i !~@= j, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i'
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_Inequality(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: false
+###
+> i8 = i   < j
+i8 @= i $< j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @< Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_LessThan(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: false
+###
+> i8 = i  <= j
+i8 @= i $<= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @<= Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_LessThanOrEqual(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i8 = i  >= j
+i8 @= i $>= j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @>= Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: true 
+###
+> i8 = i   > j
+i8 @= i $> j : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i>(Global(i8)) @= Global(i) @> Global(j)))
+// (∂.i8:i8, ∂.i:i, ∂.j:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.2 [ia]
+      1) ldloc.0 [i8]
+      5) newobj ia(i8)
+      1) ldloc.1 [ia]
+      5) call static ia::op_Equality(ia, ia):bool
+      5) brfalse [0]
+      1) ldloc.1 [ia]
+      1) ldloc.2 [ia]
+      5) call static ia::op_GreaterThan(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 63
+
+Func sig: (i8:i8, i:i, j:i) to b
+Type: bool, Value: false
+###

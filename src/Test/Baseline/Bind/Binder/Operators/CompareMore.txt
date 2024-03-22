@@ -1,0 +1,277 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8, v:v}
+
+> 3.0 != null != "hello"
+3 !@= null !@= "hello" : b
+*** Error: (15,22) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'r8?'
+Binder : 3 !@= null !@= Error(ErrBadType_Src_Dst)
+Reducer: null !@= Error(ErrBadType_Src_Dst)
+###
+> g =  g
+g @= g : b
+*** Error: (0,1) Node: g, Message: Equality comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst) @= Error(ErrBadType_Src_Dst)
+###
+> g != g
+g !@= g : b
+*** Error: (0,1) Node: g, Message: Equality comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst) !@= Error(ErrBadType_Src_Dst)
+###
+> o =  o
+o @= o : b
+*** Error: (0,1) Node: o, Message: Equality comparison is not supported for items of type 'o'
+Binder : null @= null
+Reducer: true
+###
+> o != o
+o !@= o : b
+*** Error: (0,1) Node: o, Message: Equality comparison is not supported for items of type 'o'
+Binder : null !@= null
+Reducer: false
+###
+> s =  s
+s @= s : b
+Binder : s @= s
+###
+> s != s
+s !@= s : b
+Binder : s !@= s
+###
+> b =  b
+b @= b : b
+Binder : b @= b
+###
+> b != b
+b !@= b : b
+Binder : b !@= b
+###
+> b =  qb
+b @= qb : b
+Binder : b @= qb
+###
+> qb != b
+qb !@= b : b
+Binder : qb !@= b
+###
+> g <= g
+g $<= g : b
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : Error(ErrBadType_Src_Dst) $<= Error(ErrBadType_Src_Dst)
+###
+> o <= o
+o $<= o : b
+*** Error: (0,1) Node: o, Message: Ordered comparison is not supported for items of type 'o'
+Binder : null $<= null
+Reducer: false
+###
+> s <= s
+s $<= s : b
+Binder : s $<= s
+###
+> b <= qb
+b $<= qb : b
+Binder : b $<= qb
+###
+> qd <= d
+qd $<= d : b
+Binder : qd $<= d
+###
+> i != null
+i !@= null : b
+Binder : i !@= null
+Reducer: true
+###
+> i = null = qi // Reduces to false.
+i @= null @= qi : b
+Binder : i @= null @= qi
+Reducer: false
+###
+> b = null = qb // Reduces to false.
+b @= null @= qb : b
+Binder : b @= null @= qb
+Reducer: false
+###
+> i =  s
+i @= s : b
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i @= Error(ErrBadType_Src_Dst)
+###
+> i != s
+i !@= s : b
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i !@= Error(ErrBadType_Src_Dst)
+###
+> i < s
+i $< s : b
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i $< Error(ErrBadType_Src_Dst)
+###
+> i <= s
+i $<= s : b
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i $<= Error(ErrBadType_Src_Dst)
+###
+> i > s
+i $> s : b
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i $> Error(ErrBadType_Src_Dst)
+###
+> i >= s
+i $>= s : b
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i?'
+Binder : i $>= Error(ErrBadType_Src_Dst)
+###
+> s =  i
+s @= i : b
+*** Error: (5,6) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s @= Error(ErrBadType_Src_Dst)
+###
+> s != i
+s !@= i : b
+*** Error: (5,6) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s !@= Error(ErrBadType_Src_Dst)
+###
+> s < i
+s $< i : b
+*** Error: (4,5) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s $< Error(ErrBadType_Src_Dst)
+###
+> s <= i
+s $<= i : b
+*** Error: (5,6) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s $<= Error(ErrBadType_Src_Dst)
+###
+> s > i
+s $> i : b
+*** Error: (4,5) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s $> Error(ErrBadType_Src_Dst)
+###
+> s >= i
+s $>= i : b
+*** Error: (5,6) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+Binder : s $>= Error(ErrBadType_Src_Dst)
+###
+> 5U < 3U < 3U8 - 8U // false + warning
+5 $< 3 $< 3 - 8 : b
+Binder : 5 @< 3 @< Add(3, [-] 8)
+*** Warning: Node: Add(3, [-] 8), Message: Constant integer overflow
+Reducer: false
+###
+> d ~$= d
+Corrected by binder: [d $= d]
+d ~$= d : b
+*** Warning: (2,3) Node: d ~$= d, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'd'
+Binder : d @= d
+###
+> d !~$= d
+Corrected by binder: [d !$= d]
+d !~$= d : b
+*** Warning: (3,4) Node: d !~$= d, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'd'
+Binder : d !@= d
+###
+
+**** New globals: {b:b*, d:d*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qd:d?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> g =  g
+g @= g : b*
+*** Error: (0,1) Node: g, Message: Equality comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : ForEach(*1: g, *2: g, Error(ErrBadType_Src_Dst) @= Error(ErrBadType_Src_Dst))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst) @= Error(ErrBadType_Src_Dst))
+###
+> g != g
+g !@= g : b*
+*** Error: (0,1) Node: g, Message: Equality comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : ForEach(*1: g, *2: g, Error(ErrBadType_Src_Dst) !@= Error(ErrBadType_Src_Dst))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst) !@= Error(ErrBadType_Src_Dst))
+###
+> o =  o
+o @= o : b*
+*** Error: (0,1) Node: o, Message: Equality comparison is not supported for items of type 'o'
+Binder : ForEach(*1: o, *2: o, null @= null)
+Reducer: ForEach(*1: o, true)
+###
+> o != o
+o !@= o : b*
+*** Error: (0,1) Node: o, Message: Equality comparison is not supported for items of type 'o'
+Binder : ForEach(*1: o, *2: o, null !@= null)
+Reducer: ForEach(*1: o, false)
+###
+> s =  s
+s @= s : b*
+Binder : ForEach(*1: s, *2: s, *1 @= *2)
+Reducer: ForEach(*1: s, *1 @= *1)
+###
+> s != s
+s !@= s : b*
+Binder : ForEach(*1: s, *2: s, *1 !@= *2)
+Reducer: ForEach(*1: s, *1 !@= *1)
+###
+> b =  b
+b @= b : b*
+Binder : ForEach(*1: b, *2: b, *1 @= *2)
+Reducer: ForEach(*1: b, *1 @= *1)
+###
+> b != b
+b !@= b : b*
+Binder : ForEach(*1: b, *2: b, *1 !@= *2)
+Reducer: ForEach(*1: b, *1 !@= *1)
+###
+> b =  qb
+b @= qb : b*
+Binder : ForEach(*1: b, *2: qb, *1 @= *2)
+###
+> qb != b
+qb !@= b : b*
+Binder : ForEach(*1: qb, *2: b, *1 !@= *2)
+###
+> g <= g
+g $<= g : b*
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8?'
+Binder : ForEach(*1: g, *2: g, Error(ErrBadType_Src_Dst) $<= Error(ErrBadType_Src_Dst))
+Reducer: ForEach(*1: g, Error(ErrBadType_Src_Dst) $<= Error(ErrBadType_Src_Dst))
+###
+> o <= o
+o $<= o : b*
+*** Error: (0,1) Node: o, Message: Ordered comparison is not supported for items of type 'o'
+Binder : ForEach(*1: o, *2: o, null $<= null)
+Reducer: ForEach(*1: o, false)
+###
+> s <= s
+s $<= s : b*
+Binder : ForEach(*1: s, *2: s, *1 $<= *2)
+Reducer: ForEach(*1: s, *1 $<= *1)
+###
+> b <= qb
+b $<= qb : b*
+Binder : ForEach(*1: b, *2: qb, *1 $<= *2)
+###
+> qd <= d
+qd $<= d : b*
+Binder : ForEach(*1: qd, *2: d, *1 $<= *2)
+###
+> i != null
+i !@= null : b*
+Binder : ForEach(*1: i, *1 !@= null)
+Reducer: ForEach(*1: i, true)
+###
+> i = null = qi // Reduces to false.
+i @= null @= qi : b*
+Binder : ForEach(*1: i, *2: qi, *1 @= null @= *2)
+Reducer: ForEach(*1: i, *2: qi, false)
+###
+> b = null = qb // Reduces to false.
+b @= null @= qb : b*
+Binder : ForEach(*1: b, *2: qb, *1 @= null @= *2)
+Reducer: ForEach(*1: b, *2: qb, false)
+###

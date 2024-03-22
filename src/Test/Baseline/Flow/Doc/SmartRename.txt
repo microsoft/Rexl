@@ -1,0 +1,62 @@
+Add: 00000001 [A], Fma: [1+1]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+###
+Add: 00000002 [B], Fma: [A+1]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+###
+Add: 00000003 [C], Fma: [x + Map(x: Range(10), x+A)]
+Status: 3 nodes, 3 undos, 0 redos
+  Node changes:
+    00000003 [C]: [A  tTuUB C dDE ], Base: i8*
+      *) Error: (0,1) Node: x, Message: Name does not exist in the current context
+###
+Ren: 00000001 [x] <= [A]
+Fma: 00000002 [B], Main: [A+1] => [x+1]
+Fma: 00000003 [C], Main: [x + Map(x: Range(10), x+A)] => [x + Map(x: Range(10), x+@x)]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [x]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B C dD  ], Base: i8*
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [x]
+Fma: 00000002 [B], Main: [x+1] => [A+1]
+Fma: 00000003 [C], Main: [x + Map(x: Range(10), x+@x)] => [x + Map(x: Range(10), x+A)]
+Status: 3 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B C dDE ], Base: i8*
+      *) Error: (0,1) Node: x, Message: Name does not exist in the current context
+###
+*** Redo(1)
+Ren: 00000001 [x] <= [A]
+Fma: 00000002 [B], Main: [A+1] => [x+1]
+Fma: 00000003 [C], Main: [x + Map(x: Range(10), x+A)] => [x + Map(x: Range(10), x+@x)]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [x]: [ N     B       ], Base: i8
+    00000002 [B]: [       B       ], Base: i8
+    00000003 [C]: [       B C dD  ], Base: i8*
+###
+*** UndoAll
+Del: 00000001 [x]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Status: 0 nodes, 0 undos, 4 redos
+###
+*** RedoAll
+Add: 00000001 [x], Fma: [1+1]
+Add: 00000002 [B], Fma: [x+1]
+Add: 00000003 [C], Fma: [x + Map(x: Range(10), x+@x)]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [x]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+    00000003 [C]: [A  tTuUB C dD  ], Base: i8*
+###

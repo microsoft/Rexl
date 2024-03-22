@@ -1,0 +1,21 @@
+﻿"*** Create a table and write it to parquet. ***";
+T1 := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+T1;
+
+P := "sometable.parquet";
+finish Writer as WriteParquet(T1, "temp/" & P);
+"*** Wrote table to '" & Writer.Link.Path & "' ***";
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+(Writer.RowCount, Writer.GroupCount);
+
+"*** Read the parquet. ***";
+finish Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$Finished, Reader$Failed, Reader$ResultNames);
+"*** Read table from '" & Reader.Link.Path & "' ***";
+(Reader.FullLink.Path.Len > Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) >= 0, Reader.Link.Path->IndexOf(P) >= 0, Reader.RowCount);
+Reader.Data;
+
+"*** Writing rbin to '" & Writer.Link.Path & "' should fail. ***";
+P := "sometable.rbin";
+finish Writer as WriteRbin(T1, "temp/" & P);
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);

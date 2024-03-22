@@ -1,0 +1,491 @@
+**** New globals: {R:{A:i4, B:b, C:r8, D:d}, X:r8}
+
+> R.A
+R.A : i4
+Binder : R.A
+###
+> R.B
+R.B : b
+Binder : R.B
+###
+> R.B.X
+R.B.X : v
+*** Error: (3,4) Node: R.B.X, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> X
+X : r8
+Binder : X
+###
+> X.A
+X.A : v
+*** Error: (1,2) Node: X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> R.X
+R.X : v
+*** Error: (2,3) Node: R.X, Tok: 'X', Message: Field does not exist in type: '{A:i4, B:b, C:r8, D:d}'
+Binder : Error(ErrFieldDoesNotExist_Type)
+###
+
+**** Changed namespace to: N
+**** New globals for N: {X:{A:s}*}
+
+> R.A
+R.A : i4
+Binder : R.A
+###
+> R.B
+R.B : b
+Binder : R.B
+###
+> R.B.X
+R.B.X : v
+*** Error: (3,4) Node: R.B.X, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> X
+X : {A:s}*
+Binder : N.X
+###
+> X.A
+X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> N.X
+N.X : {A:s}*
+Binder : N.X
+###
+> N.X.A
+N.X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> @X
+@X : r8
+Binder : X
+###
+> @X.A
+@X.A : v
+*** Error: (2,3) Node: @X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+
+**** New definition: <this>, type: {R:{A:i4, B:b, C:r8, D:d}, X:r8}
+
+> this
+this : {R:{A:i4, B:b, C:r8, D:d}, X:r8}
+Binder : <this>
+###
+> this.R
+this.R : {A:i4, B:b, C:r8, D:d}
+Binder : <this>.R
+###
+> this.R.A
+this.R.A : i4
+Binder : <this>.R.A
+###
+> this.X
+this.X : r8
+Binder : <this>.X
+###
+> this.X.A
+this.X.A : v
+*** Error: (6,7) Node: this.X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+
+**** Changed namespace to: 'NS 1'
+**** New globals for 'NS 1': {X:{A:d}*}
+
+> X
+X : {A:d}*
+Binder : 'NS 1'.X
+###
+> X.A
+X.A : d*
+Binder : ForEach(*1: 'NS 1'.X, *1.A)
+###
+> N.X
+N.X : {A:s}*
+Binder : N.X
+###
+> N.X.A
+N.X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> 'NS 1'.X
+'NS 1'.X : {A:d}*
+Binder : 'NS 1'.X
+###
+> 'NS 1'.X.A
+'NS 1'.X.A : d*
+Binder : ForEach(*1: 'NS 1'.X, *1.A)
+###
+
+**** Changed namespace to: <root>
+
+> X
+X : r8
+Binder : X
+###
+> X.A
+X.A : v
+*** Error: (1,2) Node: X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> N.X
+N.X : {A:s}*
+Binder : N.X
+###
+> N.X.A
+N.X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> 'NS 1'.X
+'NS 1'.X : {A:d}*
+Binder : 'NS 1'.X
+###
+> 'NS 1'.X.A
+'NS 1'.X.A : d*
+Binder : ForEach(*1: 'NS 1'.X, *1.A)
+###
+
+**** Changed namespace to: N.P
+**** New globals for N.P: {Y:b, 'Y 2':s}
+
+> R.A
+R.A : i4
+Binder : R.A
+###
+> R.B
+R.B : b
+Binder : R.B
+###
+> R.B.X
+R.B.X : v
+*** Error: (3,4) Node: R.B.X, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> X
+X : {A:s}*
+Binder : N.X
+###
+> X.A
+X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> N.X
+N.X : {A:s}*
+Binder : N.X
+###
+> N.X.A
+N.X.A : s*
+Binder : ForEach(*1: N.X, *1.A)
+###
+> 'NS 1'.X
+'NS 1'.X : {A:d}*
+Binder : 'NS 1'.X
+###
+> 'NS 1'.X.A
+'NS 1'.X.A : d*
+Binder : ForEach(*1: 'NS 1'.X, *1.A)
+###
+> @X
+@X : r8
+Binder : X
+###
+> @X.A
+@X.A : v
+*** Error: (2,3) Node: @X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> Y
+Y : b
+Binder : N.P.Y
+###
+> P.Y
+P.Y : b
+Binder : N.P.Y
+###
+> N.P.Y
+N.P.Y : b
+Binder : N.P.Y
+###
+> 'Y 2'
+'Y 2' : s
+Binder : N.P.'Y 2'
+###
+> P.'Y 2'
+P.'Y 2' : s
+Binder : N.P.'Y 2'
+###
+> N.P.'Y 2'
+N.P.'Y 2' : s
+Binder : N.P.'Y 2'
+###
+> P
+P : v
+*** Error: (0,1) Node: P, Message: Namespace can't be used as value
+Binder : NS<N.P>
+###
+> N
+N : v
+*** Error: (0,1) Node: N, Message: Namespace can't be used as value
+Binder : NS<N>
+###
+> N.P
+N.P : v
+*** Error: (1,2) Node: N.P, Message: Namespace can't be used as value
+Binder : NS<N.P>
+###
+> 'NS 1'
+'NS 1' : v
+*** Error: (0,6) Node: 'NS 1', Message: Namespace can't be used as value
+Binder : NS<'NS 1'>
+###
+> @Y
+@Y : v
+*** Error: (1,2) Node: @Y, Message: Name does not exist in the current context
+Binder : Error(ErrNameDoesNotExist)
+###
+> @P.Y
+@P.Y : v
+*** Error: (1,2) Node: @P, Message: Name does not exist in the current context
+*** Error: (2,3) Node: @P.Y, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> @N.P.Y
+@N.P.Y : b
+Binder : N.P.Y
+###
+> @'Y 2'
+@'Y 2' : v
+*** Error: (1,6) Node: @'Y 2', Message: Name does not exist in the current context
+Binder : Error(ErrNameDoesNotExist)
+###
+> @P.'Y 2'
+@P.'Y 2' : v
+*** Error: (1,2) Node: @P, Message: Name does not exist in the current context
+*** Error: (2,3) Node: @P.'Y 2', Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> @N.P.'Y 2'
+@N.P.'Y 2' : s
+Binder : N.P.'Y 2'
+###
+> @P
+@P : v
+*** Error: (1,2) Node: @P, Message: Name does not exist in the current context
+Binder : Error(ErrNameDoesNotExist)
+###
+> @N
+@N : v
+*** Error: (1,2) Node: @N, Message: Namespace can't be used as value
+Binder : NS<N>
+###
+> @N.P
+@N.P : v
+*** Error: (2,3) Node: @N.P, Message: Namespace can't be used as value
+Binder : NS<N.P>
+###
+> @'NS 1'
+@'NS 1' : v
+*** Error: (1,7) Node: @'NS 1', Message: Namespace can't be used as value
+Binder : NS<'NS 1'>
+###
+> N.P.Z
+N.P.Z : v
+*** Error: (3,4) Node: N.P.Z, Message: Namespace 'N.P' doesn't contain 'Z'
+Binder : Error(ErrBadNamespaceChild_Ns_Child)
+###
+
+**** Changed namespace to: <root>
+
+> n
+Corrected by binder: [N]
+n : v
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+Binder : NS<N>
+###
+> n.P
+Corrected by binder: [N.P]
+n.P : v
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.P, Message: Namespace can't be used as value
+Binder : NS<N.P>
+###
+> N.p
+Corrected by binder: [N.P]
+N.p : v
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : NS<N.P>
+###
+> n.p
+Corrected by binder: [N.P]
+n.p : v
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : NS<N.P>
+###
+> n.P.Y
+Corrected by binder: [N.P.Y]
+n.P.Y : b
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+Binder : N.P.Y
+###
+> N.p.Y
+Corrected by binder: [N.P.Y]
+N.p.Y : b
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.Y
+###
+> n.p.Y
+Corrected by binder: [N.P.Y]
+n.p.Y : b
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.Y
+###
+> n.P.y
+Corrected by binder: [N.P.Y]
+n.P.y : b
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (3,4) Node: n.P.y, Message: Namespace 'N.P' doesn't contain 'y', did you intend 'Y'?
+Binder : N.P.y
+###
+> N.p.y
+Corrected by binder: [N.P.Y]
+N.p.y : b
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: N.p.y, Message: Namespace 'N.P' doesn't contain 'y', did you intend 'Y'?
+Binder : N.P.y
+###
+> n.p.y
+Corrected by binder: [N.P.Y]
+n.p.y : b
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: n.p.y, Message: Namespace 'N.P' doesn't contain 'y', did you intend 'Y'?
+Binder : N.P.y
+###
+> n.P.'Y 2'
+Corrected by binder: [N.P.'Y 2']
+n.P.'Y 2' : s
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+Binder : N.P.'Y 2'
+###
+> N.p.'Y 2'
+Corrected by binder: [N.P.'Y 2']
+N.p.'Y 2' : s
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.'Y 2'
+###
+> n.p.'Y 2'
+Corrected by binder: [N.P.'Y 2']
+n.p.'Y 2' : s
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.'Y 2'
+###
+> n.P.'y 2'
+Corrected by binder: [N.P.'Y 2']
+n.P.'y 2' : s
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (3,4) Node: n.P.'y 2', Message: Namespace 'N.P' doesn't contain ''y 2'', did you intend ''Y 2''?
+Binder : N.P.'y 2'
+###
+> N.p.'y 2'
+Corrected by binder: [N.P.'Y 2']
+N.p.'y 2' : s
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: N.p.'y 2', Message: Namespace 'N.P' doesn't contain ''y 2'', did you intend ''Y 2''?
+Binder : N.P.'y 2'
+###
+> n.p.'y 2'
+Corrected by binder: [N.P.'Y 2']
+n.p.'y 2' : s
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: n.p.'y 2', Message: Namespace 'N.P' doesn't contain ''y 2'', did you intend ''Y 2''?
+Binder : N.P.'y 2'
+###
+> n.P.Z
+Corrected by binder: [N.P.Z]
+n.P.Z : v
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (3,4) Node: n.P.Z, Message: Namespace 'N.P' doesn't contain 'Z'
+Binder : Error(ErrBadNamespaceChild_Ns_Child)
+###
+> N.p.Z
+Corrected by binder: [N.P.Z]
+N.p.Z : v
+*** Error: (1,2) Node: N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: N.p.Z, Message: Namespace 'N.P' doesn't contain 'Z'
+Binder : Error(ErrBadNamespaceChild_Ns_Child)
+###
+> n.p.Z
+Corrected by binder: [N.P.Z]
+n.p.Z : v
+*** Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (1,2) Node: n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+*** Error: (3,4) Node: n.p.Z, Message: Namespace 'N.P' doesn't contain 'Z'
+Binder : Error(ErrBadNamespaceChild_Ns_Child)
+###
+> 'nS 1'
+Corrected by binder: ['NS 1']
+'nS 1' : v
+*** Error: (0,6) Node: 'nS 1', Message: Name does not exist in the current context, did you intend ''NS 1''?
+Binder : NS<'NS 1'>
+###
+> 'nS 1'.X
+Corrected by binder: ['NS 1'.X]
+'nS 1'.X : {A:d}*
+*** Error: (0,6) Node: 'nS 1', Message: Name does not exist in the current context, did you intend ''NS 1''?
+Binder : 'NS 1'.X
+###
+> 'NS 1'.x
+Corrected by binder: ['NS 1'.X]
+'NS 1'.x : {A:d}*
+*** Error: (6,7) Node: 'NS 1'.x, Message: Namespace ''NS 1'' doesn't contain 'x', did you intend 'X'?
+Binder : 'NS 1'.x
+###
+> 'nS 1'.x
+Corrected by binder: ['NS 1'.X]
+'nS 1'.x : {A:d}*
+*** Error: (0,6) Node: 'nS 1', Message: Name does not exist in the current context, did you intend ''NS 1''?
+*** Error: (6,7) Node: 'nS 1'.x, Message: Namespace ''NS 1'' doesn't contain 'x', did you intend 'X'?
+Binder : 'NS 1'.x
+###
+> @n
+Corrected by binder: [@N]
+@n : v
+*** Error: (1,2) Node: @n, Message: Name does not exist in the current context, did you intend 'N'?
+Binder : NS<N>
+###
+> @n.P
+Corrected by binder: [@N.P]
+@n.P : v
+*** Error: (1,2) Node: @n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (2,3) Node: @n.P, Message: Namespace can't be used as value
+Binder : NS<N.P>
+###
+> @n.p.Y
+Corrected by binder: [@N.P.Y]
+@n.p.Y : b
+*** Error: (1,2) Node: @n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (2,3) Node: @n.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.Y
+###
+> @N.p.Y
+Corrected by binder: [@N.P.Y]
+@N.p.Y : b
+*** Error: (2,3) Node: @N.p, Message: Namespace 'N' doesn't contain 'p', did you intend 'P'?
+Binder : N.P.Y
+###
+> @n.P.y
+Corrected by binder: [@N.P.Y]
+@n.P.y : b
+*** Error: (1,2) Node: @n, Message: Name does not exist in the current context, did you intend 'N'?
+*** Error: (4,5) Node: @n.P.y, Message: Namespace 'N.P' doesn't contain 'y', did you intend 'Y'?
+Binder : N.P.y
+###

@@ -1,0 +1,838 @@
+**** New globals: {S:i4[], T:i8[*], T0:i4[*,*], T0s:i4[*,*]*, T1:i8[*,*], b:b, i4:i4, i8:i8, i8s:i8*, qi8:i8?, qi8s:i8?*}
+
+> [T0, T0]
+[T0, T0] : i4[*,*]*
+Binder : [T0, T0]
+###
+> [T0, T1]
+[T0, T1] : i8[*,*]*
+Binder : [Tensor.ForEachLazy(@1: T0, Num<i8>(@1)), T1]
+###
+> [T0] ++ [T1]
+[T0] ++ [T1] : i8[*,*]*
+Binder : SeqConcat([Tensor.ForEachLazy(@1: T0, Num<i8>(@1))], [T1])
+###
+> [S, T0] // g*
+[S, T0] : g*
+*** Error: (4,6) Node: T0, Message: The given types are incompatible: 'i4[]' and 'i4[*,*]'
+Binder : [Ref<g>(S), Ref<g>(T0)]
+###
+> S[]
+S[] : i4
+Binder : S[]
+###
+> S[3]
+S[3] : i4
+*** Error: (2,3) Node: 3, Message: Number of indices must not exceed the rank of the tensor, which is 0
+Binder : S[]
+###
+> S["3"]
+S["3"] : i4
+*** Error: (2,5) Node: "3", Message: Number of indices must not exceed the rank of the tensor, which is 0
+Binder : S[]
+###
+> T[]
+T[] : i8[*]
+Binder : T
+###
+> T[3]
+T[3] : i8
+Binder : T[3]
+###
+> T[^3]
+T[^3] : i8
+Binder : T[^(3)]
+###
+> T[%3]
+T[%3] : i8
+Binder : T[%(3)]
+###
+> T[&3]
+T[&3] : i8
+Binder : T[&(3)]
+###
+> T[^%3]
+T[^%3] : i8
+Binder : T[^%(3)]
+###
+> T[&^3]
+T[^&3] : i8
+Binder : T[^&(3)]
+###
+> T0[]
+T0[] : i4[*,*]
+Binder : T0
+###
+> T0[3]
+T0[3] : i4[*]
+Binder : T0[3, ::]
+###
+> T0[3, 5]
+T0[3, 5] : i4
+Binder : T0[3, 5]
+###
+> T0[3, 5, 0]
+T0[3, 5, 0] : i4
+*** Error: (9,10) Node: 0, Message: Number of indices must not exceed the rank of the tensor, which is 2
+Binder : T0[3, 5]
+###
+> T0[3.5, 2]
+T0[3.5, 2] : i4
+*** Error: (3,6) Node: 3.5, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : T0[Error(ErrBadType_Src_Dst), 2]
+###
+> T0["3", 2]
+T0["3", 2] : i4
+*** Error: (3,6) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : T0[Error(ErrBadType_Src_Dst), 2]
+###
+> T0["3"]
+T0["3"] : i4[*]
+*** Error: (3,6) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : T0[Error(ErrBadType_Src_Dst), ::]
+###
+> T0[0, 0, "3"]
+T0[0, 0, "3"] : i4
+*** Error: (9,12) Node: "3", Message: Number of indices must not exceed the rank of the tensor, which is 2
+Binder : T0[0, 0]
+###
+> T0[3, 3+2]
+T0[3, 3 + 2] : i4
+Binder : T0[3, Add(3, 2)]
+Reducer: T0[3, 5]
+###
+> T0[3]
+T0[3] : i4[*]
+Binder : T0[3, ::]
+###
+> T0[^3]
+T0[^3] : i4[*]
+Binder : T0[^(3), ::]
+###
+> T0[%3]
+T0[%3] : i4[*]
+Binder : T0[%(3), ::]
+###
+> T0[&3]
+T0[&3] : i4[*]
+Binder : T0[&(3), ::]
+###
+> T0[^%3]
+T0[^%3] : i4[*]
+Binder : T0[^%(3), ::]
+###
+> T0[^&3]
+T0[^&3] : i4[*]
+Binder : T0[^&(3), ::]
+###
+> T0[3, 5]
+T0[3, 5] : i4
+Binder : T0[3, 5]
+###
+> T0[3, i8]
+T0[3, i8] : i4
+Binder : T0[3, i8]
+###
+> T0[3, qi8]
+T0[3, qi8] : i4?
+Binder : Guard(?1: qi8, T0[3, ?1])
+###
+> T0[3, i8s]
+T0[3, i8s] : i4*
+Binder : ForEach(*1: i8s, T0[3, *1])
+###
+> T0[3, qi8s]
+T0[3, qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[3, ?2]))
+###
+> T0[i8, 5]
+T0[i8, 5] : i4
+Binder : T0[i8, 5]
+###
+> T0[i8, i8]
+T0[i8, i8] : i4
+Binder : T0[i8, i8]
+###
+> T0[i8, qi8]
+T0[i8, qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, ?1])
+###
+> T0[i8, i8s]
+T0[i8, i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, *1])
+###
+> T0[i8, qi8s]
+T0[i8, qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, ?2]))
+###
+> T0[qi8, 5]
+T0[qi8, 5] : i4?
+Binder : Guard(?1: qi8, T0[?1, 5])
+###
+> T0[qi8, i8]
+T0[qi8, i8] : i4?
+Binder : Guard(?1: qi8, T0[?1, i8])
+###
+> T0[qi8, qi8]
+T0[qi8, qi8] : i4?
+Binder : Guard(?1: qi8, ?2: qi8, T0[?1, ?2])
+Reducer: Guard(?1: qi8, T0[?1, ?1])
+###
+> T0[qi8, i8s]
+T0[qi8, i8s] : i4?*
+Binder : ForEach(*1: i8s, Guard(?2: qi8, T0[?2, *1]))
+###
+> T0[qi8, qi8s]
+T0[qi8, qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: qi8, ?3: *1, T0[?2, ?3]))
+###
+> T0[i8s, 5]
+T0[i8s, 5] : i4*
+Binder : ForEach(*1: i8s, T0[*1, 5])
+###
+> T0[i8s, i8]
+T0[i8s, i8] : i4*
+Binder : ForEach(*1: i8s, T0[*1, i8])
+###
+> T0[i8s, qi8]
+T0[i8s, qi8] : i4?*
+Binder : ForEach(*1: i8s, Guard(?2: qi8, T0[*1, ?2]))
+###
+> T0[i8s, i8s]
+T0[i8s, i8s] : i4*
+Binder : ForEach(*1: i8s, *2: i8s, T0[*1, *2])
+Reducer: ForEach(*1: i8s, T0[*1, *1])
+###
+> T0[i8s, qi8s]
+T0[i8s, qi8s] : i4?*
+Binder : ForEach(*1: i8s, *2: qi8s, Guard(?3: *2, T0[*1, ?3]))
+###
+> T0[qi8s, 5]
+T0[qi8s, 5] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[?2, 5]))
+###
+> T0[qi8s, i8]
+T0[qi8s, i8] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[?2, i8]))
+###
+> T0[qi8s, qi8]
+T0[qi8s, qi8] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, ?3: qi8, T0[?2, ?3]))
+###
+> T0[qi8s, i8s]
+T0[qi8s, i8s] : i4?*
+Binder : ForEach(*1: qi8s, *2: i8s, Guard(?3: *1, T0[?3, *2]))
+###
+> T0[qi8s, qi8s]
+T0[qi8s, qi8s] : i4?*
+Binder : ForEach(*1: qi8s, *2: qi8s, Guard(?3: *1, ?4: *2, T0[?3, ?4]))
+Reducer: ForEach(*1: qi8s, Guard(?2: *1, T0[?2, ?2]))
+###
+> T0s[3, 5]
+T0s[3, 5] : i4*
+Binder : ForEach(*1: T0s, *1[3, 5])
+###
+> T0s[3, i8]
+T0s[3, i8] : i4*
+Binder : ForEach(*1: T0s, *1[3, i8])
+###
+> T0s[3, qi8]
+T0s[3, qi8] : i4?*
+Binder : ForEach(*1: T0s, Guard(?2: qi8, *1[3, ?2]))
+###
+> T0s[3, i8s]
+T0s[3, i8s] : i4*
+Binder : ForEach(*1: T0s, *2: i8s, *1[3, *2])
+###
+> T0s[3, qi8s]
+T0s[3, qi8s] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, *1[3, ?3]))
+###
+> T0s[i8, 5]
+T0s[i8, 5] : i4*
+Binder : ForEach(*1: T0s, *1[i8, 5])
+###
+> T0s[i8, i8]
+T0s[i8, i8] : i4*
+Binder : ForEach(*1: T0s, *1[i8, i8])
+###
+> T0s[i8, qi8]
+T0s[i8, qi8] : i4?*
+Binder : ForEach(*1: T0s, Guard(?2: qi8, *1[i8, ?2]))
+###
+> T0s[i8, i8s]
+T0s[i8, i8s] : i4*
+Binder : ForEach(*1: T0s, *2: i8s, *1[i8, *2])
+###
+> T0s[i8, qi8s]
+T0s[i8, qi8s] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, *1[i8, ?3]))
+###
+> T0s[qi8, 5]
+T0s[qi8, 5] : i4?*
+Binder : ForEach(*1: T0s, Guard(?2: qi8, *1[?2, 5]))
+###
+> T0s[qi8, i8]
+T0s[qi8, i8] : i4?*
+Binder : ForEach(*1: T0s, Guard(?2: qi8, *1[?2, i8]))
+###
+> T0s[qi8, qi8]
+T0s[qi8, qi8] : i4?*
+Binder : ForEach(*1: T0s, Guard(?2: qi8, ?3: qi8, *1[?2, ?3]))
+Reducer: ForEach(*1: T0s, Guard(?2: qi8, *1[?2, ?2]))
+###
+> T0s[qi8, i8s]
+T0s[qi8, i8s] : i4?*
+Binder : ForEach(*1: T0s, *2: i8s, Guard(?3: qi8, *1[?3, *2]))
+###
+> T0s[qi8, qi8s]
+T0s[qi8, qi8s] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: qi8, ?4: *2, *1[?3, ?4]))
+###
+> T0s[i8s, 5]
+T0s[i8s, 5] : i4*
+Binder : ForEach(*1: T0s, *2: i8s, *1[*2, 5])
+###
+> T0s[i8s, i8]
+T0s[i8s, i8] : i4*
+Binder : ForEach(*1: T0s, *2: i8s, *1[*2, i8])
+###
+> T0s[i8s, qi8]
+T0s[i8s, qi8] : i4?*
+Binder : ForEach(*1: T0s, *2: i8s, Guard(?3: qi8, *1[*2, ?3]))
+###
+> T0s[i8s, i8s]
+T0s[i8s, i8s] : i4*
+Binder : ForEach(*1: T0s, *2: i8s, *3: i8s, *1[*2, *3])
+Reducer: ForEach(*1: T0s, *2: i8s, *1[*2, *2])
+###
+> T0s[i8s, qi8s]
+T0s[i8s, qi8s] : i4?*
+Binder : ForEach(*1: T0s, *2: i8s, *3: qi8s, Guard(?4: *3, *1[*2, ?4]))
+###
+> T0s[qi8s, 5]
+T0s[qi8s, 5] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, *1[?3, 5]))
+###
+> T0s[qi8s, i8]
+T0s[qi8s, i8] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, *1[?3, i8]))
+###
+> T0s[qi8s, qi8]
+T0s[qi8s, qi8] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, ?4: qi8, *1[?3, ?4]))
+###
+> T0s[qi8s, i8s]
+T0s[qi8s, i8s] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, *3: i8s, Guard(?4: *2, *1[?4, *3]))
+###
+> T0s[qi8s, qi8s]
+T0s[qi8s, qi8s] : i4?*
+Binder : ForEach(*1: T0s, *2: qi8s, *3: qi8s, Guard(?4: *2, ?5: *3, *1[?4, ?5]))
+Reducer: ForEach(*1: T0s, *2: qi8s, Guard(?3: *2, *1[?3, ?3]))
+###
+> T0[i8, ^5]
+T0[i8, ^5] : i4
+Binder : T0[i8, ^(5)]
+###
+> T0[i8, ^i8]
+T0[i8, ^i8] : i4
+Binder : T0[i8, ^(i8)]
+###
+> T0[i8, ^qi8]
+T0[i8, ^qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, ^(?1)])
+###
+> T0[i8, ^i8s]
+T0[i8, ^i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, ^(*1)])
+###
+> T0[i8, ^qi8s]
+T0[i8, ^qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, ^(?2)]))
+###
+> T0[i8, %5]
+T0[i8, %5] : i4
+Binder : T0[i8, %(5)]
+###
+> T0[i8, %i8]
+T0[i8, %i8] : i4
+Binder : T0[i8, %(i8)]
+###
+> T0[i8, %qi8]
+T0[i8, %qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, %(?1)])
+###
+> T0[i8, %i8s]
+T0[i8, %i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, %(*1)])
+###
+> T0[i8, %qi8s]
+T0[i8, %qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, %(?2)]))
+###
+> T0[i8, &5]
+T0[i8, &5] : i4
+Binder : T0[i8, &(5)]
+###
+> T0[i8, &i8]
+T0[i8, &i8] : i4
+Binder : T0[i8, &(i8)]
+###
+> T0[i8, &qi8]
+T0[i8, &qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, &(?1)])
+###
+> T0[i8, &i8s]
+T0[i8, &i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, &(*1)])
+###
+> T0[i8, &qi8s]
+T0[i8, &qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, &(?2)]))
+###
+> T0[i8, ^%5]
+T0[i8, ^%5] : i4
+Binder : T0[i8, ^%(5)]
+###
+> T0[i8, ^%i8]
+T0[i8, ^%i8] : i4
+Binder : T0[i8, ^%(i8)]
+###
+> T0[i8, ^%qi8]
+T0[i8, ^%qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, ^%(?1)])
+###
+> T0[i8, ^%i8s]
+T0[i8, ^%i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, ^%(*1)])
+###
+> T0[i8, ^%qi8s]
+T0[i8, ^%qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, ^%(?2)]))
+###
+> T0[i8, ^%5]
+T0[i8, ^%5] : i4
+Binder : T0[i8, ^%(5)]
+###
+> T0[i8, ^%i8]
+T0[i8, ^%i8] : i4
+Binder : T0[i8, ^%(i8)]
+###
+> T0[i8, ^%qi8]
+T0[i8, ^%qi8] : i4?
+Binder : Guard(?1: qi8, T0[i8, ^%(?1)])
+###
+> T0[i8, ^%i8s]
+T0[i8, ^%i8s] : i4*
+Binder : ForEach(*1: i8s, T0[i8, ^%(*1)])
+###
+> T0[i8, ^%qi8s]
+T0[i8, ^%qi8s] : i4?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[i8, ^%(?2)]))
+###
+> (T0 if true else T0)[i8]
+(T0 if true else T0)[i8] : i4[*]
+Binder : If(true, T0, T0)[i8, ::]
+Reducer: T0[i8, ::]
+###
+> S[:]
+S[:] : i4
+*** Error: (2,3) Node: :, Message: Number of indices must not exceed the rank of the tensor, which is 0
+Binder : S[]
+###
+> T0[:]
+T0[:] : i4[*,*]
+Binder : T0
+###
+> T0[0::1,::1]
+T0[0::1, ::1] : i4[*,*]
+Binder : T0
+###
+> T0[:, 7]
+T0[:, 7] : i4[*]
+Binder : T0[::, 7]
+###
+> T0[1:, 7]
+T0[1:, 7] : i4[*]
+Binder : T0[1::, 7]
+###
+> T0[:5, 7]
+T0[:5, 7] : i4[*]
+Binder : T0[:5:, 7]
+###
+> T0[1:5, 7]
+T0[1:5, 7] : i4[*]
+Binder : T0[1:5:, 7]
+###
+> T0[1:5:, 7]
+T0[1:5:, 7] : i4[*]
+Binder : T0[1:5:, 7]
+###
+> T0[1:5:0, 7]
+T0[1:5:0, 7] : i4[*]
+Binder : T0[1:5:0, 7]
+###
+> T0[1:5:2, 7]
+T0[1:5:2, 7] : i4[*]
+Binder : T0[1:5:2, 7]
+###
+> T0[1:5:100, 7]
+T0[1:5:100, 7] : i4[*]
+Binder : T0[1:5:100, 7]
+###
+> T0[5:1:, 7]
+T0[5:1:, 7] : i4[*]
+Binder : T0[5:1:, 7]
+###
+> T0[5:1:0, 7]
+T0[5:1:0, 7] : i4[*]
+Binder : T0[5:1:0, 7]
+###
+> T0[5:1:-1, 7]
+T0[5:1:-1, 7] : i4[*]
+Binder : T0[5:1:-1, 7]
+###
+> T0[5:1:-2, 7]
+T0[5:1:-2, 7] : i4[*]
+Binder : T0[5:1:-2, 7]
+###
+> T0[-1:5, 7]
+T0[-1:5, 7] : i4[*]
+Binder : T0[-1:5:, 7]
+###
+> T0[-1:-5, 7]
+T0[-1:-5, 7] : i4[*]
+Binder : T0[-1:-5:, 7]
+###
+> T0[-5:-1, 7]
+T0[-5:-1, 7] : i4[*]
+Binder : T0[-5:-1:, 7]
+###
+> T0[i4:i8:i4, i4]
+T0[i4:i8:i4, i4] : i4[*]
+Binder : T0[Num<i8>(i4):i8:Num<i8>(i4), Num<i8>(i4)]
+###
+> T0[0:i4:i8, i4]
+T0[0:i4:i8, i4] : i4[*]
+Binder : T0[0:Num<i8>(i4):i8, Num<i8>(i4)]
+###
+> T0[i8:2:i4, i4]
+T0[i8:2:i4, i4] : i4[*]
+Binder : T0[i8:2:Num<i8>(i4), Num<i8>(i4)]
+###
+> T0[::i4, 7]
+T0[::i4, 7] : i4[*]
+Binder : T0[::Num<i8>(i4), 7]
+###
+> T0[1+1:i8:i8, 3+4]
+T0[1 + 1:i8:i8, 3 + 4] : i4[*]
+Binder : T0[Add(1, 1):i8:i8, Add(3, 4)]
+Reducer: T0[2:i8:i8, 7]
+###
+> T0[3, i8:1+1:2+2]
+T0[3, i8:1 + 1:2 + 2] : i4[*]
+Binder : T0[3, i8:Add(1, 1):Add(2, 2)]
+Reducer: T0[3, i8:2:4]
+###
+> T0[3+1, i8:1+1:2+2]
+T0[3 + 1, i8:1 + 1:2 + 2] : i4[*]
+Binder : T0[Add(3, 1), i8:Add(1, 1):Add(2, 2)]
+Reducer: T0[4, i8:2:4]
+###
+> T0[qi8:qi8:qi8, qi8:qi8:i8]
+T0[qi8:qi8:qi8, qi8:qi8:i8] : i4[*,*]
+Binder : T0[qi8:qi8:qi8, qi8:qi8:i8]
+###
+> T0[i8:qi8:i8, qi8:i8:i8]
+T0[i8:qi8:i8, qi8:i8:i8] : i4[*,*]
+Binder : T0[i8:qi8:i8, qi8:i8:i8]
+###
+> T0[qi8:i8:i8, qi8:i8:qi8]
+T0[qi8:i8:i8, qi8:i8:qi8] : i4[*,*]
+Binder : T0[qi8:i8:i8, qi8:i8:qi8]
+###
+> T0[qi8:qi8:i8, qi8:qi8:qi8]
+T0[qi8:qi8:i8, qi8:qi8:qi8] : i4[*,*]
+Binder : T0[qi8:qi8:i8, qi8:qi8:qi8]
+###
+> T0[1-1::]
+T0[1 - 1::] : i4[*,*]
+Binder : T0[Add(1, [-] 1)::, ::]
+Reducer: T0
+###
+> T0[:Null(1):]
+T0[:Null(1):] : i4[*,*]
+Binder : T0[:DefOpt*(1):, ::]
+Reducer: T0
+###
+> T0[1-1::1+0]
+T0[1 - 1::1 + 0] : i4[*,*]
+Binder : T0[Add(1, [-] 1)::Add(1, 0), ::]
+Reducer: T0
+###
+> T0[1-1::0+0]
+T0[1 - 1::0 + 0] : i4[*,*]
+Binder : T0[Add(1, [-] 1)::Add(0, 0), ::]
+Reducer: T0
+###
+> T0[:2+3:1+0]
+T0[:2 + 3:1 + 0] : i4[*,*]
+Binder : T0[:Add(2, 3):Add(1, 0), ::]
+Reducer: T0[:5:1, ::]
+###
+> T0[3*2, 1:8:2]
+T0[3 * 2, 1:8:2] : i4[*]
+Binder : T0[Mul(3, 2), 1:8:2]
+Reducer: T0[6, 1:8:2]
+###
+> T0[qi8]
+T0[qi8] : i4[*]?
+Binder : Guard(?1: qi8, T0[?1, ::])
+###
+> T0[^0:] // Not full.
+T0[^0:] : i4[*,*]
+Binder : T0[^(0)::, ::]
+###
+> T0[:^0] // Full.
+T0[:^0] : i4[*,*]
+Binder : T0
+###
+> T0[:^-5] // Full.
+T0[:^-5] : i4[*,*]
+Binder : T0
+###
+> T0[::-1] // Not full.
+T0[::-1] : i4[*,*]
+Binder : T0[::-1, ::]
+###
+> T0[::0] // Full.
+T0[::0] : i4[*,*]
+Binder : T0
+###
+> T0[::1] // Full.
+T0[::1] : i4[*,*]
+Binder : T0
+###
+> T0[::2] // Not full.
+T0[::2] : i4[*,*]
+Binder : T0[::2, ::]
+###
+> T0[:^1] // Not full.
+T0[:^1] : i4[*,*]
+Binder : T0[:^(1):, ::]
+###
+> T0[:^i8] // Not full.
+T0[:^i8] : i4[*,*]
+Binder : T0[:^(i8):, ::]
+###
+> T0[null::] // Full.
+T0[null::] : i4[*,*]
+Binder : T0
+###
+> T0[^null::] // Full.
+T0[^null::] : i4[*,*]
+Binder : T0
+###
+> T0[^ Null(3)::] // Full.
+T0[^Null(3)::] : i4[*,*]
+Binder : T0[^(DefOpt*(3))::, ::]
+Reducer: T0
+###
+> T0[^ Null(3):^0:] // Full.
+T0[^Null(3):^0:] : i4[*,*]
+Binder : T0[^(DefOpt*(3)):^(0):, ::]
+Reducer: T0
+###
+> T0[^ Null(3):^ Opt(3):] // Not full.
+T0[^Null(3):^Opt(3):] : i4[*,*]
+Binder : T0[^(DefOpt*(3)):^(Opt*(3)):, ::]
+Reducer: T0[:^(3):, ::]
+###
+> T0[(1,2,3), 7]
+T0[(1, 2, 3), 7] : i4[*]
+Binder : T0[1:2:3, 7]
+###
+> T0[(1,2) & (3,), 7]
+T0[(1, 2) & (3,), 7] : i4[*]
+Binder : T0[TupleConcat((1, 2), (3,)), 7]
+Reducer: T0[1:2:3, 7]
+###
+> T0[(1, false, 2, false, 3), 7]
+T0[(1, false, 2, false, 3), 7] : i4[*]
+Binder : T0[1:2:3, 7]
+###
+> T0[(i8, true, 2, true, null), 7]
+T0[(i8, true, 2, true, null), 7] : i4[*]
+Binder : T0[^(i8):^(2):, 7]
+###
+> T0[(i8, true, 2, b, null), 7]
+T0[(i8, true, 2, b, null), 7] : i4[*]
+Binder : T0[(i8, true, 2, b, null), 7]
+###
+> T0[(i8, true and false, 2, true or false, null), 7]
+T0[(i8, true and false, 2, true or false, null), 7] : i4[*]
+Binder : T0[(i8, And(true, false), 2, Or(true, false), null), 7]
+Reducer: T0[i8:^(2):, 7]
+###
+> T0[(i8, true and false, 2, b or false, null), 7]
+T0[(i8, true and false, 2, b or false, null), 7] : i4[*]
+Binder : T0[(i8, And(true, false), 2, Or(b, false), null), 7]
+Reducer: T0[(i8, false, 2, b, null), 7]
+###
+> T0[(i8, true and b, 2, true or false, null), 7]
+T0[(i8, true and b, 2, true or false, null), 7] : i4[*]
+Binder : T0[(i8, And(true, b), 2, Or(true, false), null), 7]
+Reducer: T0[(i8, b, 2, true, null), 7]
+###
+> T0[3 + 5, (i8, true, 2, false, null)]
+T0[3 + 5, (i8, true, 2, false, null)] : i4[*]
+Binder : T0[Add(3, 5), ^(i8):2:]
+Reducer: T0[8, ^(i8):2:]
+###
+> T0[5, (1,2,3)]
+T0[5, (1, 2, 3)] : i4[*]
+Binder : T0[5, 1:2:3]
+###
+> T0[:*3]
+T0[:*3] : i4[*,*]
+Binder : T0[:*(3):, ::]
+###
+> T0[:*3:-1]
+T0[:*3:-1] : i4[*,*]
+Binder : T0[:*(3):-1, ::]
+###
+> T0[:*^0]
+T0[:^*0] : i4[*,*]
+Binder : T0
+###
+> T0[:*^0:-1]
+T0[:^*0:-1] : i4[*,*]
+Binder : T0[:^*(0):-1, ::]
+###
+> T0[17:*0]
+T0[17:*0] : i4[*,*]
+Binder : T0[17:*(0):, ::]
+###
+> T0[17:*^0]
+T0[17:^*0] : i4[*,*]
+Binder : T0[17:^*(0):, ::]
+###
+
+**** New globals: {T0:i4[*,*], t0:(i8, i8, i8), t1:(i8, i8?, i8), t2:(i8?, i8?, i8?), twb:(i8, b, i8?, b, i8)}
+
+> T0[t0, t1]
+T0[t0, t1] : i4[*,*]
+Binder : T0[t0, t1]
+###
+> T0[t0, t2]
+T0[t0, t2] : i4[*,*]
+Binder : T0[t0, t2]
+###
+> T0[twb, t2]
+T0[twb, t2] : i4[*,*]
+Binder : T0[twb, t2]
+###
+> T0[t0, twb]
+T0[t0, twb] : i4[*,*]
+Binder : T0[t0, twb]
+###
+
+**** New globals: {S:i4[], T0:i4[*,*], T0s:i4[*,*]*, T1:i8[*,*], i4:i4, i8:i8, i8s:i8*, qi8:i8?, qi8s:i8?*}
+
+> T0[:, qi8s]
+T0[:, qi8s] : i4[*]?*
+Binder : ForEach(*1: qi8s, Guard(?2: *1, T0[::, ?2]))
+###
+> T0[qi8s:qi8s, i8s]
+T0[qi8s:qi8s, i8s] : i4[*]*
+Binder : ForEach(*1: qi8s, *2: qi8s, *3: i8s, T0[*1:*2:, *3])
+Reducer: ForEach(*1: qi8s, *2: i8s, T0[*1:*1:, *2])
+###
+> T0[i8s:i8s:i8s, qi8s]
+T0[i8s:i8s:i8s, qi8s] : i4[*]?*
+Binder : ForEach(*1: i8s, *2: i8s, *3: i8s, *4: qi8s, Guard(?5: *4, T0[*1:*2:*3, ?5]))
+Reducer: ForEach(*1: i8s, *2: qi8s, Guard(?3: *2, T0[*1:*1:*1, ?3]))
+###
+> Tensor.From([])[0]
+Tensor.From([])[0] : v
+Binder : Tensor.From(null)[0]
+*** Warning: Node: Tensor.From(null)[0], Message: Tensor index out of range, this will produce the item type's default value
+Reducer: dflt<v>
+###
+> i8[3]
+i8[3] : i8
+*** Error: (2,3) Node: i8[3], Message: Operand must be either a tensor or a tuple
+Binder : Error(ErrNotIndexable)
+###
+> qi8[3]
+qi8[3] : i8?
+*** Error: (3,4) Node: qi8[3], Message: Operand must be either a tensor or a tuple
+Binder : Guard(?1: qi8, Error(ErrNotIndexable))
+###
+> i8s[3]
+i8s[3] : i8*
+*** Error: (3,4) Node: i8s[3], Message: Operand must be either a tensor or a tuple
+Binder : ForEach(*1: i8s, Error(ErrNotIndexable))
+###
+> qi8s[3]
+qi8s[3] : i8?*
+*** Error: (4,5) Node: qi8s[3], Message: Operand must be either a tensor or a tuple
+Binder : ForEach(*1: qi8s, Guard(?2: *1, Error(ErrNotIndexable)))
+###
+> T0["hi":3.5:3, 7]
+T0["hi":3.5:3, 7] : i4[*]
+*** Error: (3,7) Node: "hi", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+*** Error: (8,11) Node: 3.5, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : T0[Error(ErrBadType_Src_Dst):Error(ErrBadType_Src_Dst):3, 7]
+###
+> T0[("hi",3.5,3), 7]
+T0[("hi", 3.5, 3), 7] : i4[*]
+*** Error: (3,4) Node: ("hi", 3.5, 3), Message: Invalid operand type: cannot convert type '(s, r8, i8)' to '(i8?, i8, i8)'
+Binder : T0[Error(ErrBadType_Src_Dst), 7]
+###
+> T0[::, 5, ""]
+T0[::, 5, ""] : i4[*]
+*** Error: (10,12) Node: "", Message: Number of indices must not exceed the rank of the tensor, which is 2
+*** Error: (10,12) Node: "", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : T0[::, 5]
+###
+> T0[x:]
+T0[x:] : i4[*,*]
+*** Error: (3,4) Node: x, Message: Name does not exist in the current context
+Binder : T0[Unit<i8>(Error(ErrNameDoesNotExist))::, ::]
+Reducer: T0
+###
+> T0[:x:]
+T0[:x:] : i4[*,*]
+*** Error: (4,5) Node: x, Message: Name does not exist in the current context
+Binder : T0[:Unit<i8>(Error(ErrNameDoesNotExist)):, ::]
+Reducer: T0[:0:, ::]
+###
+> T0[::x]
+T0[::x] : i4[*,*]
+*** Error: (5,6) Node: x, Message: Name does not exist in the current context
+Binder : T0[::Unit<i8>(Error(ErrNameDoesNotExist)), ::]
+Reducer: T0
+###
+> T0[^(1,2,3)]
+T0[^(1, 2, 3)] : i4[*,*]
+*** Error: (3,4) Node: ^(1, 2, 3), Tok: '^', Message: Index modifier '^' not allowed with tuple slice value
+Binder : T0[1:2:3, ::]
+###
+> T0[%(1,2,3)]
+T0[%(1, 2, 3)] : i4[*,*]
+*** Error: (3,4) Node: %(1, 2, 3), Tok: '%', Message: Index modifier '%' not allowed with tuple slice value
+Binder : T0[1:2:3, ::]
+###
+> With(tup:(1,2,3), T0[&tup])
+With(tup : (1, 2, 3), T0[&tup]) : i4[*,*]
+*** Error: (21,22) Node: &tup, Tok: '&', Message: Index modifier '&' not allowed with tuple slice value
+Binder : With(!1: (1, 2, 3), T0[!1, ::])
+Reducer: T0[1:2:3, ::]
+###
+> T0[:, 2, (1,2,3)]
+T0[:, 2, (1, 2, 3)] : i4[*]
+*** Error: (9,10) Node: (1, 2, 3), Message: Number of indices must not exceed the rank of the tensor, which is 2
+Binder : T0[::, 2]
+###

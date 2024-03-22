@@ -1,0 +1,546 @@
+**** New globals: {A:i4*, B:i4?*, Q:{S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*, R:{S:{X:i4, Z:r8}*, X:i4, Y:i2}*, S:i4**, X:i4}
+
+> -A // Match
+-A : i8*
+Binder : ForEach(*1: A, Add([-] Num<i8>(*1)))
+###
+> Map(   A, -it)
+Map(A, -it) : i8*
+Binder : ForEach(*1: A, Add([-] Num<i8>(*1)))
+###
+> Map(_: A, -it)
+Map(_ : A, -it) : i8*
+Binder : ForEach(*1: A, Add([-] Num<i8>(*1)))
+###
+> Map(a: A, - a)
+Map(a : A, -a) : i8*
+Binder : ForEach(*1: A, Add([-] Num<i8>(*1)))
+###
+> Map(A as a, - a)
+Map(a : A, -a) : i8*
+Binder : ForEach(*1: A, Add([-] Num<i8>(*1)))
+###
+> A * A // Match
+A * A : i8*
+Binder : ForEach(*1: A, *2: A, Mul(Num<i8>(*1), Num<i8>(*2)))
+Reducer: ForEach(*1: A, Mul(Num<i8>(*1), Num<i8>(*1)))
+###
+> Map(   A, it * it)
+Map(A, it * it) : i8*
+Binder : ForEach(*1: A, Mul(Num<i8>(*1), Num<i8>(*1)))
+###
+> Map(a: A,  a *  a)
+Map(a : A, a * a) : i8*
+Binder : ForEach(*1: A, Mul(Num<i8>(*1), Num<i8>(*1)))
+###
+> B * B // Match
+B * B : i8?*
+Binder : ForEach(*1: B, *2: B, Guard(?3: *1, ?4: *2, Mul(Num<i8>(?3), Num<i8>(?4))))
+Reducer: ForEach(*1: B, Guard(?2: *1, Mul(Num<i8>(?2), Num<i8>(?2))))
+###
+> Map(   B, it * it)
+Map(B, it * it) : i8?*
+Binder : ForEach(*1: B, Guard(?2: *1, ?3: *1, Mul(Num<i8>(?2), Num<i8>(?3))))
+Reducer: ForEach(*1: B, Guard(?2: *1, Mul(Num<i8>(?2), Num<i8>(?2))))
+###
+> Map(b: B,  b *  b)
+Map(b : B, b * b) : i8?*
+Binder : ForEach(*1: B, Guard(?2: *1, ?3: *1, Mul(Num<i8>(?2), Num<i8>(?3))))
+Reducer: ForEach(*1: B, Guard(?2: *1, Mul(Num<i8>(?2), Num<i8>(?2))))
+###
+> -R.X // Match
+-R.X : i8*
+Binder : ForEach(*2: ForEach(*1: R, *1.X), Add([-] Num<i8>(*2)))
+Reducer: ForEach(*1: R, Add([-] Num<i8>(*1.X)))
+###
+> Map(    R, -   X)
+Map(R, -X) : i8*
+Binder : ForEach(*1: R, Add([-] Num<i8>(*1.X)))
+###
+> Map(    R, -it.X)
+Map(R, -it.X) : i8*
+Binder : ForEach(*1: R, Add([-] Num<i8>(*1.X)))
+###
+> Map(r : R, - r.X)
+Map(r : R, -r.X) : i8*
+Binder : ForEach(*1: R, Add([-] Num<i8>(*1.X)))
+###
+> R.X * R.Y // Match
+R.X * R.Y : i8*
+Binder : ForEach(*3: ForEach(*1: R, *1.X), *4: ForEach(*2: R, *2.Y), Mul(Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: R, Mul(Num<i8>(*1.X), Num<i8>(*1.Y)))
+###
+> Map(   R,    X *    Y)
+Map(R, X * Y) : i8*
+Binder : ForEach(*1: R, Mul(Num<i8>(*1.X), Num<i8>(*1.Y)))
+###
+> Map(   R, it.X * it.Y)
+Map(R, it.X * it.Y) : i8*
+Binder : ForEach(*1: R, Mul(Num<i8>(*1.X), Num<i8>(*1.Y)))
+###
+> Map(r: R,  r.X *  r.Y)
+Map(r : R, r.X * r.Y) : i8*
+Binder : ForEach(*1: R, Mul(Num<i8>(*1.X), Num<i8>(*1.Y)))
+###
+> -R.S.X // Match
+-R.S.X : i8**
+Binder : ForEach(*4: ForEach(*2: ForEach(*1: R, *1.S), ForEach(*3: *2, *3.X)), ForEach(*5: *4, Add([-] Num<i8>(*5))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> Map(R, -   S.X)
+Map(R, -S.X) : i8**
+Binder : ForEach(*1: R, ForEach(*3: ForEach(*2: *1.S, *2.X), Add([-] Num<i8>(*3))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> Map(R, -it.S.X)
+Map(R, -it.S.X) : i8**
+Binder : ForEach(*1: R, ForEach(*3: ForEach(*2: *1.S, *2.X), Add([-] Num<i8>(*3))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> Map(   R, Map(     S, -   X))
+Map(R, Map(S, -X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> Map(   R, Map(  it.S, -it.X))
+Map(R, Map(it.S, -it.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> Map(r: R, Map(s: r.S, - s.X))
+Map(r : R, Map(s : r.S, -s.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Add([-] Num<i8>(*2.X))))
+###
+> R.S.X * R.S.X // Match
+R.S.X * R.S.X : i8**
+Binder : ForEach(*7: ForEach(*2: ForEach(*1: R, *1.S), ForEach(*3: *2, *3.X)), *8: ForEach(*5: ForEach(*4: R, *4.S), ForEach(*6: *5, *6.X)), ForEach(*9: *7, *10: *8, Mul(Num<i8>(*9), Num<i8>(*10))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*2.X))))
+###
+> Map(   R, Map(     S,    X *    X))
+Map(R, Map(S, X * X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*2.X))))
+###
+> Map(   R, Map(  it.S, it.X * it.X))
+Map(R, Map(it.S, it.X * it.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*2.X))))
+###
+> Map(r: R, Map(s: r.S,  s.X *  s.X))
+Map(r : R, Map(s : r.S, s.X * s.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*2.X))))
+###
+> R.S.X * R.Y // Match
+R.S.X * R.Y : i8**
+Binder : ForEach(*5: ForEach(*2: ForEach(*1: R, *1.S), ForEach(*3: *2, *3.X)), *6: ForEach(*4: R, *4.Y), ForEach(*7: *5, Mul(Num<i8>(*7), Num<i8>(*6))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.Y))))
+###
+> Map(   R, Map(     S,    X *      Y))
+Map(R, Map(S, X * Y)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.Y))))
+###
+> Map(   R, Map(  it.S, it.X * it$1.Y))
+Map(R, Map(it.S, it.X * it$1.Y)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.Y))))
+###
+> Map(r: R, Map(s: r.S,  s.X *    r.Y))
+Map(r : R, Map(s : r.S, s.X * r.Y)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.Y))))
+###
+> R.S.X * R.X // Match - requires at least one up/var.
+R.S.X * R.X : i8**
+Binder : ForEach(*5: ForEach(*2: ForEach(*1: R, *1.S), ForEach(*3: *2, *3.X)), *6: ForEach(*4: R, *4.X), ForEach(*7: *5, Mul(Num<i8>(*7), Num<i8>(*6))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> Map(   R, Map(     S,    X * it$1.X))
+Map(R, Map(S, X * it$1.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> Map(   R, Map(  it.S, it.X * it$1.X))
+Map(R, Map(it.S, it.X * it$1.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> Map(r: R, Map(     S,    X *    r.X))
+Map(r : R, Map(S, X * r.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> Map(r: R, Map(   r.S,    X *    r.X))
+Map(r : R, Map(r.S, X * r.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> Map(r: R, Map(s: r.S,  s.X *    r.X))
+Map(r : R, Map(s : r.S, s.X * r.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X))))
+###
+> R.S.X * R.X * X // Match - requires at least one up/var.
+R.S.X * R.X * X : i8**
+Binder : ForEach(*8: ForEach(*5: ForEach(*2: ForEach(*1: R, *1.S), ForEach(*3: *2, *3.X)), *6: ForEach(*4: R, *4.X), ForEach(*7: *5, Mul(Num<i8>(*7), Num<i8>(*6)))), ForEach(*9: *8, Mul(*9, Num<i8>(X))))
+Reducer: ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(   R, Map(     S,    X * it$1.X * @X))
+Map(R, Map(S, X * it$1.X * @X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(   R, Map(  it.S, it.X * it$1.X * @X))
+Map(R, Map(it.S, it.X * it$1.X * @X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(r: R, Map(     S,    X *    r.X * @X))
+Map(r : R, Map(S, X * r.X * @X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(r: R, Map(   r.S,    X *    r.X * @X))
+Map(r : R, Map(r.S, X * r.X * @X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(r: R, Map(s: r.S,  s.X *    r.X * @X))
+Map(r : R, Map(s : r.S, s.X * r.X * @X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*2.X), Num<i8>(*1.X), Num<i8>(X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(X), Num<i8>(*1.X)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> A + B // Match
+A + B : i8?*
+Binder : ForEach(*1: A, *2: B, Guard(?3: *2, Add(Num<i8>(*1), Num<i8>(?3))))
+###
+> Zip(   A,    B, it$1 + it$0)
+Zip(A, B, it$1 + it) : i8?*
+Binder : ForEach(*1: A, *2: B, Guard(?3: *2, Add(Num<i8>(*1), Num<i8>(?3))))
+###
+> Zip(a: A, b: B,    a +    b)
+Zip(a : A, b : B, a + b) : i8?*
+Binder : ForEach(*1: A, *2: B, Guard(?3: *2, Add(Num<i8>(*1), Num<i8>(?3))))
+###
+> A * R.X // Match
+A * R.X : i8*
+Binder : ForEach(*2: A, *3: ForEach(*1: R, *1.X), Mul(Num<i8>(*2), Num<i8>(*3)))
+Reducer: ForEach(*1: A, *2: R, Mul(Num<i8>(*1), Num<i8>(*2.X)))
+###
+> Zip(   A,    R, it$1 +    X)
+Zip(A, R, it$1 + X) : i8*
+Binder : ForEach(*1: A, *2: R, Add(Num<i8>(*1), Num<i8>(*2.X)))
+###
+> Zip(   A,    R, it$1 + it.X)
+Zip(A, R, it$1 + it.X) : i8*
+Binder : ForEach(*1: A, *2: R, Add(Num<i8>(*1), Num<i8>(*2.X)))
+###
+> Zip(a: A, r: R,    a +  r.X)
+Zip(a : A, r : R, a + r.X) : i8*
+Binder : ForEach(*1: A, *2: R, Add(Num<i8>(*1), Num<i8>(*2.X)))
+###
+> R.X * R.Y * R.S.X // Match
+R.X * R.Y * R.S.X : i8**
+Binder : ForEach(*8: ForEach(*3: ForEach(*1: R, *1.X), *4: ForEach(*2: R, *2.Y), Mul(Num<i8>(*3), Num<i8>(*4))), *9: ForEach(*6: ForEach(*5: R, *5.S), ForEach(*7: *6, *7.X)), ForEach(*10: *9, Mul(*8, Num<i8>(*10))))
+Reducer: ForEach(*1: R, With(!2: Mul(Num<i8>(*1.X), Num<i8>(*1.Y)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(R, X * Y * S.X)
+Map(R, X * Y * S.X) : i8**
+Binder : ForEach(*1: R, With(!2: Mul(Num<i8>(*1.X), Num<i8>(*1.Y)), ForEach(*4: ForEach(*3: *1.S, *3.X), Mul(!2, Num<i8>(*4)))))
+Reducer: ForEach(*1: R, With(!2: Mul(Num<i8>(*1.X), Num<i8>(*1.Y)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(R, Map(S, it$1.X * Y * X))
+Map(R, Map(S, it$1.X * Y * X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*1.X), Num<i8>(*1.Y), Num<i8>(*2.X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(*1.X), Num<i8>(*1.Y)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> Map(r: R, Map(s: S, r.X * r.Y * s.X))
+Map(r : R, Map(s : S, r.X * r.Y * s.X)) : i8**
+Binder : ForEach(*1: R, ForEach(*2: *1.S, Mul(Num<i8>(*1.X), Num<i8>(*1.Y), Num<i8>(*2.X))))
+Hoister: ForEach(*1: R, With(!2: Mul(Num<i8>(*1.X), Num<i8>(*1.Y)), ForEach(*3: *1.S, Mul(!2, Num<i8>(*3.X)))))
+###
+> ForEach(a: Range(1, 11), b: Range(2, 13), c: Range(3, 15), d: Range(4, 17), e: Range(5, 19), f: Range(6, 21), g: Range(7, 23), h: Range(8, 25), a * b * c * d * e * f * g * h)
+ForEach(a : Range(1, 11), b : Range(2, 13), c : Range(3, 15), d : Range(4, 17), e : Range(5, 19), f : Range(6, 21), g : Range(7, 23), h : Range(8, 25), a * b * c * d * e * f * g * h) : i8*
+Binder : ForEach(*1: Range(1, 11), *2: Range(2, 13), *3: Range(3, 15), *4: Range(4, 17), *5: Range(5, 19), *6: Range(6, 21), *7: Range(7, 23), *8: Range(8, 25), Mul(*1, *2, *3, *4, *5, *6, *7, *8))
+Reducer: ForEach(*1: Range(1, 11), *2: Range(2, 12), *3: Range(3, 13), *4: Range(4, 14), *5: Range(5, 15), *6: Range(6, 16), *7: Range(7, 17), *8: Range(8, 18), Mul(*1, *2, *3, *4, *5, *6, *7, *8))
+###
+> ForEach(a: Range(1, 11), b: Range(2, 13), c: Range(3, 15), d: Range(4, 17), e: Range(5, 19), f: Range(6, 21), g: Range(7, 23), h: Range(8, 25), i: Range(9, 27), a * b * c * d * e * f * g * h * i)
+ForEach(a : Range(1, 11), b : Range(2, 13), c : Range(3, 15), d : Range(4, 17), e : Range(5, 19), f : Range(6, 21), g : Range(7, 23), h : Range(8, 25), i : Range(9, 27), a * b * c * d * e * f * g * h * i) : i8*
+Binder : ForEach(*1: Range(1, 11), *2: Range(2, 13), *3: Range(3, 15), *4: Range(4, 17), *5: Range(5, 19), *6: Range(6, 21), *7: Range(7, 23), *8: Range(8, 25), *9: Range(9, 27), Mul(*1, *2, *3, *4, *5, *6, *7, *8, *9))
+Reducer: ForEach(*1: Range(1, 11), *2: Range(2, 12), *3: Range(3, 13), *4: Range(4, 14), *5: Range(5, 15), *6: Range(6, 16), *7: Range(7, 17), *8: Range(8, 18), *9: Range(9, 19), Mul(*1, *2, *3, *4, *5, *6, *7, *8, *9))
+###
+> Range(1, 11) * Range(2, 13) * Range(3, 15) * Range(4, 17) * Range(5, 19) * Range(6, 21) * Range(7, 23) * Range(8, 25)
+Range(1, 11) * Range(2, 13) * Range(3, 15) * Range(4, 17) * Range(5, 19) * Range(6, 21) * Range(7, 23) * Range(8, 25) : i8*
+Binder : ForEach(*13: ForEach(*11: ForEach(*9: ForEach(*7: ForEach(*5: ForEach(*3: ForEach(*1: Range(1, 11), *2: Range(2, 13), Mul(*1, *2)), *4: Range(3, 15), Mul(*3, *4)), *6: Range(4, 17), Mul(*5, *6)), *8: Range(5, 19), Mul(*7, *8)), *10: Range(6, 21), Mul(*9, *10)), *12: Range(7, 23), Mul(*11, *12)), *14: Range(8, 25), Mul(*13, *14))
+Reducer: ForEach(*1: Range(1, 11), *2: Range(2, 12), *3: Range(3, 13), *4: Range(4, 14), *5: Range(5, 15), *6: Range(6, 16), *7: Range(7, 17), *8: Range(8, 18), Mul(*1, *2, *3, *4, *5, *6, *7, *8))
+###
+> Range(1, 11) * Range(2, 13) * Range(3, 15) * Range(4, 17) * Range(5, 19) * Range(6, 21) * Range(7, 23) * Range(8, 25) * Range(9, 27)
+Range(1, 11) * Range(2, 13) * Range(3, 15) * Range(4, 17) * Range(5, 19) * Range(6, 21) * Range(7, 23) * Range(8, 25) * Range(9, 27) : i8*
+Binder : ForEach(*15: ForEach(*13: ForEach(*11: ForEach(*9: ForEach(*7: ForEach(*5: ForEach(*3: ForEach(*1: Range(1, 11), *2: Range(2, 13), Mul(*1, *2)), *4: Range(3, 15), Mul(*3, *4)), *6: Range(4, 17), Mul(*5, *6)), *8: Range(5, 19), Mul(*7, *8)), *10: Range(6, 21), Mul(*9, *10)), *12: Range(7, 23), Mul(*11, *12)), *14: Range(8, 25), Mul(*13, *14)), *16: Range(9, 27), Mul(*15, *16))
+Reducer: ForEach(*1: Range(1, 11), *2: Range(2, 12), *3: Range(3, 13), *4: Range(4, 14), *5: Range(5, 15), *6: Range(6, 16), *7: Range(7, 17), *8: Range(8, 18), *9: Range(9, 19), Mul(*1, *2, *3, *4, *5, *6, *7, *8, *9))
+###
+> Map(A, it)
+Map(A, it) : i4*
+Binder : ForEach(*1: A, *1)
+Reducer: A
+###
+> Map(R, it)
+Map(R, it) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, *1)
+Reducer: R
+###
+> Map(S, it)
+Map(S, it) : i4**
+Binder : ForEach(*1: S, *1)
+Reducer: S
+###
+> Map(S, Map(it, it))
+Map(S, Map(it, it)) : i4**
+Binder : ForEach(*1: S, ForEach(*2: *1, *2))
+Reducer: S
+###
+> Map(s: S, Map(x: s, x))
+Map(s : S, Map(x : s, x)) : i4**
+Binder : ForEach(*1: S, ForEach(*2: *1, *2))
+Reducer: S
+###
+> Map(r: R, SetFields(r, X))
+Map(r : R, SetFields(r, X)) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, X : !2.X))
+Reducer: R
+###
+> SetFields(   R, S: SetFields(     S,      X))
+SetFields(R, S : SetFields(S, X)) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> SetFields(r: R, S: SetFields(s: r.S, X: s.X))
+SetFields(r : R, S : SetFields(s : r.S, X : s.X)) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(   R, SetFields(  it, S: Map(      S, SetFields(  it, X:    X))))
+Map(R, SetFields(it, S : Map(S, SetFields(it, X : X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(   r, S: Map(s:    S, SetFields(   s, X:    X))))
+Map(r : R, SetFields(r, S : Map(s : S, SetFields(s, X : X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(   r, S: Map(s: it.S, SetFields(   s, X: it.X))))
+Map(r : R, SetFields(r, S : Map(s : it.S, SetFields(s, X : it.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X: s2.X))))
+Map(r : R, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(   r, S: Map(s: r .S, SetFields(   s, X: s .X)))) // Wrong variables.
+Map(r : R, SetFields(r, S : Map(s : r.S, SetFields(s, X : s.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r .S, SetFields(s2:s, X: s .X)))) // Wrong variables.
+Map(r : R, SetFields(r2 : r, S : Map(s : r.S, SetFields(s2 : s, X : s.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: *1.S, SetFields(!4: *3, X : *3.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(   r, S: Map(s: r .S, SetFields(s2:s, X: s2.X)))) // Wrong r variable.
+Map(r : R, SetFields(r, S : Map(s : r.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r .S, SetFields(s2:s, X: s2.X)))) // Wrong r variable.
+Map(r : R, SetFields(r2 : r, S : Map(s : r.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: *1.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r2.S, SetFields(   s, X: s .X)))) // Wrong s variable.
+Map(r : R, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s, X : s.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X))))
+Reducer: R
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X: s .X)))) // Wrong s variable.
+Map(r : R, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : s.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : *3.X))))
+Reducer: R
+###
+> SetFields(R, S: SetFields(S, X, ZZ: Z))
+SetFields(R, S : SetFields(S, X, ZZ : Z)) : {S:{X:i4, ZZ:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : !4.X, ZZ : !4.Z))))
+Reducer: ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, ZZ : !4.Z))))
+###
+> SetFields(   Q, S: SetFields(     S,      X))
+SetFields(Q, S : SetFields(S, X)) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> SetFields(r: Q, S: SetFields(s: r.S, X: s.X))
+SetFields(r : Q, S : SetFields(s : r.S, X : s.X)) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(   Q, SetFields(  it, S: Map(      S, SetFields(  it, X:    X))))
+Map(Q, SetFields(it, S : Map(S, SetFields(it, X : X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(   r, S: Map(s:    S, SetFields(   s, X:    X))))
+Map(r : Q, SetFields(r, S : Map(s : S, SetFields(s, X : X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(   r, S: Map(s: it.S, SetFields(   s, X: it.X))))
+Map(r : Q, SetFields(r, S : Map(s : it.S, SetFields(s, X : it.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X: s2.X))))
+Map(r : Q, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(   r, S: Map(s: r .S, SetFields(   s, X: s .X)))) // Wrong variables, but implicit with/guard variables to the rescue.
+Map(r : Q, SetFields(r, S : Map(s : r.S, SetFields(s, X : s.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r .S, SetFields(s2:s, X: s .X)))) // Wrong variables.
+Map(r : Q, SetFields(r2 : r, S : Map(s : r.S, SetFields(s2 : s, X : s.X)))) : {S:{X:i4?, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*5: Guard(?4: *1, ?4.S), Guard(?6: *5, SetFields(!7: ?6, X : Guard(?8: *5, ?8.X)))))))
+Reducer: ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : Guard(?4: *1, ForEach(*5: ?4.S, Guard(?6: *5, SetFields(!7: ?6, X : Guard(?8: *5, ?8.X))))))))
+###
+> Map(r: Q, SetFields(   r, S: Map(s: r .S, SetFields(s2:s, X: s2.X)))) // Wrong r variable, but implicit with/guard variables to the rescue.
+Map(r : Q, SetFields(r, S : Map(s : r.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r .S, SetFields(s2:s, X: s2.X)))) // Wrong r variable.
+Map(r : Q, SetFields(r2 : r, S : Map(s : r.S, SetFields(s2 : s, X : s2.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*5: Guard(?4: *1, ?4.S), Guard(?6: *5, SetFields(!7: ?6, X : !7.X))))))
+Reducer: ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : Guard(?4: *1, ?4.S))))
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r2.S, SetFields(   s, X: s .X)))) // Wrong s variable, but implicit with/guard variables to the rescue.
+Map(r : Q, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s, X : s.X)))) : {S:{X:i4, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X))))))
+Reducer: Q
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X: s .X)))) // Wrong s variable.
+Map(r : Q, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : s.X)))) : {S:{X:i4?, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : Guard(?7: *4, ?7.X)))))))
+###
+> SetFields(Q, S: SetFields(S, X, ZZ: Z))
+SetFields(Q, S : SetFields(S, X, ZZ : Z)) : {S:{X:i4, ZZ:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : !6.X, ZZ : !6.Z))))))
+Reducer: ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, ZZ : !6.Z))))))
+###
+> Map(r: R, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X:  r.X))))
+Map(r : R, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : r.X)))) : {S:{X:i4, Z:r8}*, X:i4, Y:i2}*
+Binder : ForEach(*1: R, SetFields(!2: *1, S : ForEach(*3: !2.S, SetFields(!4: *3, X : *1.X))))
+###
+> Map(r: Q, SetFields(r2:r, S: Map(s: r2.S, SetFields(s2:s, X:  r.X))))
+Map(r : Q, SetFields(r2 : r, S : Map(s : r2.S, SetFields(s2 : s, X : r.X)))) : {S:{X:i4?, Z:r8}?*, X:i4, Y:i2}?*
+Binder : ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : ForEach(*4: !3.S, Guard(?5: *4, SetFields(!6: ?5, X : Guard(?7: *1, ?7.X)))))))
+Hoister: ForEach(*1: Q, Guard(?2: *1, SetFields(!3: ?2, S : With(!5: Guard(?4: *1, ?4.X), ForEach(*6: !3.S, Guard(?7: *6, SetFields(!8: ?7, X : !5)))))))
+Reducer: ForEach(*1: Q, Guard(?2: *1, !4: Guard(?3: *1, ?3.X), SetFields(!5: ?2, S : ForEach(*6: !5.S, Guard(?7: *6, SetFields(!8: ?7, X : !4))))))
+###
+> Map(Range(5,15), X)
+Map(Range(5, 15), X) : i4*
+Binder : ForEach(*1: Range(5, 15), X)
+Reducer: Repeat(X, 10)
+###
+> Map(Range(5,15), Range(20), X)
+Map(Range(5, 15), Range(20), X) : i4*
+Binder : ForEach(*1: Range(5, 15), *2: Range(20), X)
+Reducer: Repeat(X, 10)
+###
+> Map(Range(5,15), #)
+Map(Range(5, 15), #) : i8*
+Binder : ForEach(*2: Range(5, 15), #1)
+Reducer: Range(10)
+###
+> Map(Range(20), Range(5,15), #)
+Map(Range(20), Range(5, 15), #) : i8*
+Binder : ForEach(*2: Range(20), *3: Range(5, 15), #1)
+Reducer: Range(10)
+###
+> Map(5 - Range(10), X)
+Map(5 - Range(10), X) : i4*
+Binder : ForEach(*2: ForEach(*1: Range(10), Add(5, [-] *1)), X)
+Reducer: Repeat(X, 10)
+###
+> Map(5 - Range(10), Range(20), X)
+Map(5 - Range(10), Range(20), X) : i4*
+Binder : ForEach(*2: ForEach(*1: Range(10), Add(5, [-] *1)), *3: Range(20), X)
+Reducer: Repeat(X, 10)
+###
+> Map(5 - Range(10), #)
+Map(5 - Range(10), #) : i8*
+Binder : ForEach(*3: ForEach(*1: Range(10), Add(5, [-] *1)), #2)
+Reducer: Range(10)
+###
+> Map(Range(20), 5 - Range(10), #)
+Map(Range(20), 5 - Range(10), #) : i8*
+Binder : ForEach(*3: Range(20), *4: ForEach(*1: Range(10), Add(5, [-] *1)), #2)
+Reducer: Range(10)
+###
+
+**** New globals: {i8s:i8*}
+
+> Map(x:>> i8s, { B: x*x })
+Map(x : (<missing>) shr i8s, { B : x * x }) : {B:i8}*
+=== Parse diagnostics:
+*** Error: (6,8) Tok: '>>', Message: Expected an operand
+*** Warning: (6,8) Tok: '>>', Message: The binary operator '>>' is deprecated, use 'shr' instead
+=== Bind diagnostics:
+*** Error: (6,8) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*2: ForEach(*1: i8s, Shri(Unit<i8>(<missing>), *1)), {B:Mul(*2, *2)})
+Reducer: ForEach(*1: i8s, {B:0})
+Hoister: With(!1: {B:0}, ForEach(*2: i8s, !1))
+=== Corrected by parser: [Map(x:shr i8s, { B: x*x })]
+Map(x : ((shr) <error> (i8s)), { B : x * x }) : {B:i8}*
+=== Parse diagnostics:
+*** Error: (10,13) Tok: 'i8s', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (6,9) Node: shr, Message: Name does not exist in the current context
+*** Error: (10,13) Node: ((shr) <error> (i8s)), Message: Expected an operator
+Binder : ForEach(*1: Unit<v*>(Error(ErrOperatorExpected)), {B:Mul(Unit<i8>(*1), Unit<i8>(*1))})
+Reducer: null
+###
+> Map(i8s, Range(10)+[A]) // Error.
+Map(i8s, Range(10) + [A]) : i8**
+*** Error: (20,21) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: i8s, ForEach(*2: Range(10), *3: [Error(ErrNameDoesNotExist)], Add(*2, Unit<i8>(*3))))
+Reducer: ForEach(*1: i8s, Range(1))
+Hoister: With(!1: Range(1), ForEach(*2: i8s, !1))
+###
+> Map(i8s, Range(10)+[A, A]) // Error.
+Map(i8s, Range(10) + [A, A]) : i8**
+*** Error: (20,21) Node: A, Message: Name does not exist in the current context
+*** Error: (23,24) Node: A, Message: Name does not exist in the current context
+Binder : ForEach(*1: i8s, ForEach(*2: Range(10), *3: [Error(ErrNameDoesNotExist), Error(ErrNameDoesNotExist)], Add(*2, Unit<i8>(*3))))
+Reducer: ForEach(*1: i8s, Range(2))
+Hoister: With(!1: Range(2), ForEach(*2: i8s, !1))
+###
+> ForEach(x:Range(10), Range(2), x)
+ForEach(x : Range(10), Range(2), x) : i8*
+Binder : ForEach(*1: Range(10), *2: Range(2), *1)
+Reducer: Range(2)
+###
+
+**** New globals: {vs:v*}
+
+> []->ForEach({ x: it})
+[]->ForEach({ x : it }) : {x:v}*
+Binder : ForEach(*1: null, {x:*1})
+Reducer: null
+###
+> vs->ForEach({ x: it})
+vs->ForEach({ x : it }) : {x:v}*
+Binder : ForEach(*1: vs, {x:*1})
+###
+> ForEach(n: Range(10), GroupBy(Range(20), it mod #n))
+ForEach(n : Range(10), GroupBy(Range(20), it mod #n)) : i8***
+Binder : ForEach(*2: Range(10), GroupBy(*3: Range(20), [key] IntMod(*3, #1)))
+Reducer: ForEach(*1: Range(10), GroupBy(*2: Range(20), [key] IntMod(*2, *1)))
+Hoister: With(!1: Range(20), ForEach(*2: Range(10), GroupBy(*3: !1, [key] IntMod(*3, *2))))
+###
+> ForEach(n: Range(5, 10), GroupBy(Range(20), it mod #n))
+ForEach(n : Range(5, 10), GroupBy(Range(20), it mod #n)) : i8***
+Binder : ForEach(*2: Range(5, 10), GroupBy(*3: Range(20), [key] IntMod(*3, #1)))
+Reducer: ForEach(*1: Range(5), GroupBy(*2: Range(20), [key] IntMod(*2, *1)))
+Hoister: With(!1: Range(20), ForEach(*2: Range(5), GroupBy(*3: !1, [key] IntMod(*3, *2))))
+###

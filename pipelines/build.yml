@@ -1,0 +1,47 @@
+# Builds the Rexl projects and publish built artifacts to the internal artifact feed.
+# Note: If this pipeline is triggered for a Pull Request, no artifact is published, thus there will be nothing to deploy.
+# Note: The Debug and Release configurations will run in parallel.
+
+variables:
+  PoolName: HostedAgent-Windows2022
+  BuildPlatform: x64
+  WorkFolder: '$(System.DefaultWorkingDirectory)'
+
+trigger:
+  branches:
+    include:
+    - refs/heads/main
+  batch: true
+
+name: $(date:yyyyMMdd)$(rev:.r)
+
+jobs:
+- template: ./build_win.yml
+  parameters:
+    buildConfig: Release
+    buildPlatform: $(BuildPlatform)
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+    publishArtifacts: ${{ ne(variables['Build.Reason'], 'PullRequest') }}
+
+- template: ./build_win.yml
+  parameters:
+    buildConfig: Debug
+    buildPlatform: $(BuildPlatform)
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+    publishArtifacts: ${{ ne(variables['Build.Reason'], 'PullRequest') }}
+
+- template: ./build_linux.yml
+  parameters:
+    buildConfig: Release
+    buildPlatform: $(BuildPlatform)
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+
+- template: ./build_linux.yml
+  parameters:
+    buildConfig: Debug
+    buildPlatform: $(BuildPlatform)
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)

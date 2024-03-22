@@ -1,0 +1,87 @@
+﻿::: {b:b, qb:b?, i:i, i1:i1, i2:i2, i4:i4, i8:i8, u1:u1, u2:u2, u4:u4, u8:u8, r4:r4, r8:r8, si1:i1*, qi:i?, qi1:i1?, qi8:i8?, vs:v* }
+
+CastI1(b)
+CastI1(qb)
+CastI1(qi8)
+CastI1(CastI2(CastI4(CastI8(i))))
+CastI1(CastI2(CastShort(CastI8(i))))
+CastI1(CastI2(CastI4(CastInt(i))))
+CastI1(CastI2(CastI4(CastI8(i))))
+CastI1(CastI2(CastI4(CastI8(qi))))
+CastI8(CastI4(CastI2(CastI1(i1))))
+CastI8(CastI4(CastI2(CastI1(qi1))))
+CastI2(CastI2(i1))
+CastR8(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1))))))))))
+CastReal(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1))))))))))
+
+// Also checks v*.
+CastI1([])
+CastI1(vs)
+
+i + r8
+i + r4
+i + i8
+i + i4
+i + i2
+i + i1
+i + u8
+i + u4
+i + u2
+i + u1
+i + b
+
+``` R8s := [ 3.5d, -7.8d, 2d^7, 2d^8, 2d^15, 2d^16, 2d^31, 2d^32, 2d^63, 2d^64, 2d^127, 2d^128, 2d^1023, 2d^1024, 1d/0, -1d/0, 0d/0 ];
+``` R4s := R8s | CastR4(_);
+``` I_s := [ 3i , -7i , 0x7Fi , 0x80i , 0x100i , 0x7FFFi , 0x8000i , 0x10000i , 0x7FFFFFFFi , 0x80000000i , 0x100000000i , 0x7FFFFFFFFFFFFFFFi , 0x8000000000000000i , 0x1_0000_0000_0000_0000i, 0x7FFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFFi, 0x8000_0000_0000_0000_0000_0000_0000_0000i, 0x8000_0000_0000_0000_FEDC_BA98_7654_3210i ];
+``` I8s := [ 3i8, -7i8, 0x7Fi8, 0x80i8, 0x100i8, 0x7FFFi8, 0x8000i8, 0x10000i8, 0x7FFFFFFFi8, 0x80000000i8, 0x100000000i8, 0x7FFFFFFFFFFFFFFFi8, 0x8000000000000000i8 ];
+``` I4s := [ 3i4, -7i4, 0x7Fi4, 0x80i4, 0x100i4, 0x7FFFi4, 0x8000i4, 0x10000i4, 0x7FFFFFFFi4, 0x80000000i4 ];
+``` I2s := [ 3i2, -7i2, 0x7Fi2, 0x80i2, 0x100i2, 0x7FFFi2, 0x8000i2 ];
+``` I1s := [ 3i1, -7i1, 0x7Fi1, 0x80i1 ];
+``` U8s := [ 3u8,  7u8, 0x80u8, 0xFFu8, 0x100u8, 0x8000u8, 0xFFFFu8, 0x10000u8, 0x80000000u8, 0xFFFFFFFFu8, 0x100000000u8, 0x8000000000000000u8, 0xFFFFFFFFFFFFFFFFu8 ];
+``` U4s := [ 3u4,  7u4, 0x80u4, 0xFFu4, 0x100u4, 0x8000u4, 0xFFFFu4, 0x10000u4, 0x80000000u4, 0xFFFFFFFFu4 ];
+``` U2s := [ 3u2,  7u2, 0x80u2, 0xFFu2, 0x100u2, 0x8000u2, 0xFFFFu2 ];
+``` U1s := [ 3u1,  7u1, 0x80u1, 0xFFu1 ];
+``` Bs := [ false, true ];
+
+R8s->CastIA()
+R4s->CastIA()
+I_s->CastIA()
+I8s->CastIA()
+I4s->CastIA()
+I2s->CastIA()
+I1s->CastIA()
+U8s->CastIA()
+U4s->CastIA()
+U2s->CastIA()
+U1s->CastIA()
+Bs->CastIA()
+
+I_s->CastR8()
+I_s->CastR4()
+I_s->CastIA()
+I_s->CastI8()
+I_s->CastI4()
+I_s->CastI2()
+I_s->CastI1()
+I_s->CastU8()
+I_s->CastU4()
+I_s->CastU2()
+I_s->CastU1()
+
+R8s->CastI8()
+R8s->CastI4()
+R8s->CastI2()
+R8s->CastI1()
+R8s->CastU8()
+R8s->CastU4()
+R8s->CastU2()
+R8s->CastU1()
+
+R4s->CastI8()
+R4s->CastI4()
+R4s->CastI2()
+R4s->CastI1()
+R4s->CastU8()
+R4s->CastU4()
+R4s->CastU2()
+R4s->CastU1()

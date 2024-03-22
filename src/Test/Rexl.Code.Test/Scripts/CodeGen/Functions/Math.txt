@@ -1,0 +1,112 @@
+::: { s:s, r8:r8, r4:r4, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1 }
+``` T := Range(10)->{X: CastI1(it + 1)};
+``` U := T ++ [{X: Opt(7i1) }];
+``` IAs := [ -5ia, 7ia, -0x1_0000_0000_0000_0000ia ];
+
+// AbsFunc tests.
+Abs(r8 - 7f)
+Abs(r8 + 7f)
+Abs(r4 - 7f)
+Abs(r4 + 7f)
+Abs(i8 - 7)
+Abs(i8 + 7)
+Abs(i4 - 7)
+Abs(i4 + 7)
+
+Abs(i2)
+Abs(i1)
+Abs(Wrap(7i1))
+Abs(Wrap(-7i1))
+Abs(Wrap(7i2))
+Abs(Wrap(-7i2))
+
+Abs(IAs)
+
+// Abs(u8 - 7u) // Promotes to type i.
+Abs(u8 + 7u)
+// Abs(u4 - 7u) // Promotes to type i.
+Abs(u4 + 7u)
+
+Abs(u2)
+Abs(u1)
+Abs(Wrap(7u1))
+Abs(Wrap(7u2))
+
+// Abs(null) // REVIEW: Enable when opt float is implemented.
+
+// The absolute value of "evil" values should be themselves.
+Abs(Wrap(0x80i1))
+Abs(Wrap(0x8000i2))
+Abs(Wrap(0x80000000i4))
+Abs(Wrap(0x8000000000000000i8))
+
+Abs(Wrap(0.0r4))
+Abs(Wrap(-0.0r4))
+Abs(Wrap(0.0r8))
+Abs(Wrap(-0.0r8))
+
+// Sum
+Sum([1i1, 2i1, 3i1])
+Sum([1i1, 2i1, 3i1], it)
+Sum(x:[1i1, 2i1, 3i1], x)
+Sum([1i1, null, null])
+Sum([1i1, null, null], it) // Cast from i1? to i8?
+Sum([1i1, null], it) // Cast from i1? to i8?
+Sum([0x80i2, null], it) // Cast from i2? to i8?
+Sum([0x8000, null], it)
+Sum([0x80000000, null], it)
+Sum([1u1, null], it) // Cast from u1? to u8?
+Sum([0x100u2, null], it)  // Cast from u2? to u8?
+Sum([0x10000u, null], it)
+Sum([0x100000000u, null], it)
+Sum([1.0f, null], it)
+Sum([3.14159265358979, null], it)
+
+T.X->Sum()
+Sum(T, X)
+U.X->Sum()
+Sum(U, X)
+
+[1,1,1,1] | Sum(_, it * 0x40000000) // Should overflow instead of throwing an exception.
+[1,1,1,1] | Sum(_, it * 0x4000000000000000) // Should overflow instead of throwing an exception.
+
+[1i1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x80i2, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x8000, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x80000000, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[1u1, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x100u2, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x10000u, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[0x100000000u, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[1.0f, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+[3.14159265358979, null] | Wrap(_) | Filter(_, not IsNull(it)) | Sum(_, it)
+
+// Cast
+Chain(Wrap([1i1, 2i1, null]), [0x80i2])
+Chain(Wrap([1i1, 2i1, null]), [0x8000])
+Chain(Wrap([1i1, 2i1, null]), [0x80000000])
+Chain(Wrap([0x80i2, 0x81i2, null]), [0x8000])
+Chain(Wrap([0x80i2, 0x81i2, null]), [0x80000000])
+Chain(Wrap([0x8000, 0x8001, null]), [0x80000000])
+Chain(Wrap([1u1, 2u1, null]), [0x100u2])
+Chain(Wrap([1u1, 2u1, null]), [0x10000u])
+Chain(Wrap([1u1, 2u1, null]), [0x100000000u])
+Chain(Wrap([0x100u2, 0x101u2, null]), [0x10000u])
+Chain(Wrap([0x100u2, 0x101u2, null]), [0x100000000u])
+Chain(Wrap([0x10000u, 0x10001u, null]), [0x100000000u])
+Chain(Wrap([1i1, 2i1, null]), [3.5f])
+Chain(Wrap([1i1, 2i1, null]), [3.5d])
+Chain(Wrap([0x80i2, 0x81i2, null]), [3.5f])
+Chain(Wrap([0x80i2, 0x81i2, null]), [3.5d])
+Chain(Wrap([0x8000, 0x8001, null]), [3.5f])
+Chain(Wrap([0x8000, 0x8001, null]), [3.5d])
+Chain(Wrap([0x80000000, 0x80000001, null]), [3.5f])
+Chain(Wrap([0x80000000, 0x80000001, null]), [3.5d])
+Chain(Wrap([1u1, 2u1, null]), [3.5f])
+Chain(Wrap([1u1, 2u1, null]), [3.5d])
+Chain(Wrap([0x100u2, 0x101u2, null]), [3.5f])
+Chain(Wrap([0x100u2, 0x101u2, null]), [3.5d])
+Chain(Wrap([0x10000u, 0x10001u, null]), [3.5f])
+Chain(Wrap([0x10000u, 0x10001u, null]), [3.5d])
+Chain(Wrap([0x100000000u, 0x100000001u, null]), [3.5f])
+Chain(Wrap([0x100000000u, 0x100000001u, null]), [3.5d])

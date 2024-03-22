@@ -1,0 +1,18 @@
+**** New globals: {R:{A:i4}?, S:{A:i4}}
+
+> [{A:7i4},    null] | Map(_, Guard(it, A * 3))
+[{ A : 7 }, null] | Map(_, Guard(it, A * 3)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:1] [Ref<{A:i4}?>({A:7:i4}), null:{A:i4}?]:{A:i4}?*, Call(∂.Guard([guard:2] Scope(1), Mul(Num<i8>(GetField(Scope(2), A)), 3:i8)):i8?)):i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 21
+ 1) <null>
+###
+> [{A:7i4}, {A:5i4}] | Map(_, Guard(it, A * 3))
+[{ A : 7 }, { A : 5 }] | Map(_, Guard(it, A * 3)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [{A:7:i4}, {A:5:i4}]:{A:i4}*, Mul(Num<i8>(GetField(Scope(1), A)), 3:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 21
+ 1) 15
+###

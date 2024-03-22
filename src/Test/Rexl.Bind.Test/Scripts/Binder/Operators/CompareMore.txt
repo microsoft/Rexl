@@ -1,0 +1,71 @@
+:: {g:g, v:v, o:o, s:s, b:b, qb:b?, d:d, qd:d?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+3.0 != null != "hello"
+
+g =  g
+g != g
+o =  o
+o != o
+s =  s
+s != s
+b =  b
+b != b
+b =  qb
+qb != b
+
+g <= g
+o <= o
+s <= s
+b <= qb
+qd <= d
+
+i != null
+
+i = null = qi // Reduces to false.
+b = null = qb // Reduces to false.
+
+i =  s
+i != s
+i < s
+i <= s
+i > s
+i >= s
+s =  i
+s != i
+s < i
+s <= i
+s > i
+s >= i
+
+// The first comparison reduces the expression to false. The last arg generates an overflow warning.
+// This test case detects whether all args are reduced, even if early ones compare to false.
+5U < 3U < 3U8 - 8U // false + warning
+
+// Coverage.
+d ~$= d
+d !~$= d
+
+// *** Lifting
+:: {g:g*, o:o*, s:s*, b:b*, qb:b?*, d:d*, qd:d?*, n:n*, qn:n?*, r8:r8*, qr8:r8?*, r4:r4*, qr4:r4?*, i:i*, qi:i?*, i8:i8*, qi8:i8?*, i4:i4*, qi4:i4?*, i2:i2*, qi2:i2?*, i1:i1*, qi1:i1?*, u8:u8*, qu8:u8?*, u4:u4*, qu4:u4?*, u2:u2*, qu2:u2?*, u1:u1*, qu1:u1?*}
+
+g =  g
+g != g
+o =  o
+o != o
+s =  s
+s != s
+b =  b
+b != b
+b =  qb
+qb != b
+
+g <= g
+o <= o
+s <= s
+b <= qb
+qd <= d
+
+i != null
+
+i = null = qi // Reduces to false.
+b = null = qb // Reduces to false.

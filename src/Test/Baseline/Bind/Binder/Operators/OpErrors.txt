@@ -1,0 +1,88 @@
+**** New globals: {a:r4, b:r4, r:{b:(b, b)?}}
+
+> +-1
++-1 : i8
+Binder : -1
+###
+> /*
+(<error>) : v
+=== Parse diagnostics:
+*** Error: (0,2) Tok: '/*', Message: Unexpected token
+=== Bind diagnostics:
+*** Error: (0,2) Tok: '/*', Message: Unexpected token
+Binder : Error(ErrBadToken)
+###
+> NoT true
+((NoT) <error> (true)) : v
+=== Parse diagnostics:
+*** Error: (4,8) Tok: 'true', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (0,3) Node: NoT, Message: Name does not exist in the current context
+*** Error: (4,8) Node: ((NoT) <error> (true)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> not TrUe
+Corrected by binder: [not true]
+not TrUe : b
+*** Error: (4,8) Node: TrUe, Message: Name does not exist in the current context, did you intend 'true'?
+Binder : Xor(true, true)
+Reducer: false
+###
+> true OR falSe
+Corrected by binder: [true OR false]
+true or falSe : b
+=== Parse diagnostics:
+*** Error: (5,7) Tok: 'OR', Message: Expected an operator but got 'OR'. Did you intend 'or'?
+=== Bind diagnostics:
+*** Error: (8,13) Node: falSe, Message: Name does not exist in the current context, did you intend 'false'?
+Binder : Or(true, false)
+Reducer: true
+=== Corrected by parser: [true or falSe]
+Corrected by binder: [true or false]
+true or falSe : b
+*** Error: (8,13) Node: falSe, Message: Name does not exist in the current context, did you intend 'false'?
+Binder : Or(true, false)
+Reducer: true
+###
+> '+' + '-'
+'+' + '-' : i8
+*** Error: (0,3) Node: '+', Message: Name does not exist in the current context
+*** Error: (6,9) Node: '-', Message: Name does not exist in the current context
+Binder : Add(Unit<i8>(Error(ErrNameDoesNotExist)), Unit<i8>(Error(ErrNameDoesNotExist)))
+Reducer: 0
+###
+> With(r, a%/b)
+With(r, a% / b) : r8?
+*** Error: (11,12) Node: b, Message: Invalid operand type: cannot convert type '(b, b)' to 'r8'
+Binder : With(!1: r, Guard(?2: !1.b, Mul(Num<r8>(a), [/] 100, [/] Error(ErrBadType_Src_Dst))))
+Reducer: Guard(?1: r.b, Mul(Num<r8>(a), [/] 100, [/] Error(ErrBadType_Src_Dst)))
+###
+> With(r, a%/@b)
+With(r, a% / @b) : r8
+Binder : With(!1: r, Mul(Num<r8>(a), [/] 100, [/] Num<r8>(b)))
+Reducer: Mul(Num<r8>(a), [/] 100, [/] Num<r8>(b))
+###
+> With(r, -a%/b)
+With(r, -a% / b) : r8?
+*** Error: (12,13) Node: b, Message: Invalid operand type: cannot convert type '(b, b)' to 'r8'
+Binder : With(!1: r, Guard(?2: !1.b, Mul(Add([-] Mul(Num<r8>(a), [/] 100)), [/] Error(ErrBadType_Src_Dst))))
+Reducer: Guard(?1: r.b, Mul(Num<r8>(a), [/] -100, [/] Error(ErrBadType_Src_Dst)))
+###
+> With(r, a/b%)
+With(r, a / b%) : r8?
+*** Error: (10,11) Node: b, Message: Invalid operand type: cannot convert type '(b, b)' to 'r8'
+Binder : With(!1: r, Guard(?3: Guard(?2: !1.b, Mul(Error(ErrBadType_Src_Dst), [/] 100)), Mul(Num<r8>(a), [/] ?3)))
+Reducer: Guard(?1: r.b, Mul(Num<r8>(a), [/] Mul(Error(ErrBadType_Src_Dst), [/] 100)))
+###
+> With(r, a/-b%)
+With(r, a / -b%) : r8?
+*** Error: (11,12) Node: b, Message: Invalid operand type: cannot convert type '(b, b)' to 'r8'
+Binder : With(!1: r, Guard(?4: Guard(?3: Guard(?2: !1.b, Mul(Error(ErrBadType_Src_Dst), [/] 100)), Add([-] ?3)), Mul(Num<r8>(a), [/] ?4)))
+Reducer: Guard(?1: r.b, Mul(Num<r8>(a), [/] Mul(Error(ErrBadType_Src_Dst), [/] -100)))
+###
+> With(r, (a/b)%)
+With(r, (a / b)%) : r8?
+*** Error: (11,12) Node: b, Message: Invalid operand type: cannot convert type '(b, b)' to 'r8'
+Binder : With(!1: r, Guard(?3: Guard(?2: !1.b, Mul(Num<r8>(a), [/] Error(ErrBadType_Src_Dst))), Mul(?3, [/] 100)))
+Reducer: Guard(?1: r.b, Mul(Num<r8>(a), [/] Error(ErrBadType_Src_Dst), [/] 100))
+###

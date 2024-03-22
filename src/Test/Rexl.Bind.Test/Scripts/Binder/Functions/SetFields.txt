@@ -1,0 +1,119 @@
+:: {R:{A:n}, S:{A:n}?, T:{A:n}*, U:{A:n}?*, V:{A:n}**, X:{A:n, B:{A:n, C:s}*}*, s:s, n:n, o:o}
+
+AddFields(R, B : A)
+SetFields(R, B : A)
+AddFields(R, B : A + 1)
+SetFields(R, B : A + 1)
+AddFields(t: R, B : t.A)
+SetFields(t: R, B : t.A)
+
+AddFields(S, B : A)
+SetFields(S, B : A)
+AddFields(S, B : A + 1)
+SetFields(S, B : A + 1)
+AddFields(t: S, B : t.A)
+SetFields(t: S, B : t.A)
+
+AddFields(T, B : A)
+SetFields(T, B : A)
+AddFields(T, B : A + 1)
+SetFields(T, B : A + 1)
+AddFields(t: T, B : t.A)
+SetFields(t: T, B : t.A)
+
+AddFields(U, B : A)
+SetFields(U, B : A)
+AddFields(U, B : A + 1)
+SetFields(U, B : A + 1)
+AddFields(t: U, B : t.A)
+SetFields(t: U, B : t.A)
+
+AddFields(V, B : A)
+SetFields(V, B : A)
+AddFields(V, B : A + 1)
+SetFields(V, B : A + 1)
+AddFields(t: V, B : t.A)
+SetFields(t: V, B : t.A)
+
+AddFields(T, B : 1 * A)
+SetFields(T, B : 1 * A)
+AddFields(T, B : --A)
+SetFields(T, B : --A)
+
+SetFields(T, B : A * A, A : null)
+SetFields(T, A : null, B : A * A)
+SetFields(T, B : A, A : null)
+
+SetFields(T, A : A * A, A : null) // Redefine and drop is an error.
+SetFields(T, A : A * A, B : null) // Drop a non-existing field is an error.
+SetFields(T, C : A * A, C : null) // And and drop a new field.
+
+SetFields(s, B : A)
+SetFields(n, B : A)
+
+SetFields(X, B : SetFields(B, D : A))
+SetFields(X, B : SetFields(B, A : A * A, D : A))
+SetFields(X, B : SetFields(B, A : 3, D : A))
+
+SetFields(   X, B : SetFields(B, D: it$1.A))
+SetFields(   X, B : SetFields(B, D: it$2.A))
+SetFields(x: X, B : SetFields(B, D:    x.A))
+
+SetFields(X, "hi")
+
+R->AddFields(B : A)
+R->AddFields(B : A + 1)
+R->AddFields(B : it.A)
+R->SetFields(B : A)
+R->SetFields(B : A + 1)
+R->SetFields(B : it.A)
+
+R->AddFields(B: A + 1, T) // Simple name.
+
+X->AddFields(B: null) // Drop a field.
+X->AddFields(B: null, B : 3) // Drop and re-add a field is ok.
+X->AddFields(B: null, B : B) // Drop and re-add a field is ok.
+X->AddFields(B: null, B) // Drop and re-add a field is ok.
+X->AddFields(B: o, B: 3) // Duplicate name error. This is not dropping since the value isn't the null literal.
+
+// Coverage.
+SetFields([up] R, B : A)
+SetFields(R, [up] B : A)
+
+:: { S:v*, T:v[*,*], TQ:v?[*,*], TS:v*[*,*], QT:v[*,*]?, ST:v[*,*]*, STQ:v?[*,*]*, STS:v*[*,*]*, SQT:v[*,*]?* }
+
+S->AddFields(X: 3)
+T->AddFields(X: 3)
+TQ->AddFields(X: 3)
+TS->AddFields(X: 3)
+QT->AddFields(X: 3)
+ST->AddFields(X: 3)
+STQ->AddFields(X: 3)
+STS->AddFields(X: 3)
+SQT->AddFields(X: 3)
+
+// Lifting cases.
+:: { S:{A:i8}*, T:{A:i8}[*,*], TQ:{A:i8}?[*,*], TS:{A:i8}*[*,*], QT:{A:i8}[*,*]?, ST:{A:i8}[*,*]*, STQ:{A:i8}?[*,*]*, STS:{A:i8}*[*,*]*, SQT:{A:i8}[*,*]?* }
+
+S->AddFields(X: 3)
+T->AddFields(X: 3)
+TQ->AddFields(X: 3)
+TS->AddFields(X: 3)
+QT->AddFields(X: 3)
+ST->AddFields(X: 3)
+STQ->AddFields(X: 3)
+STS->AddFields(X: 3)
+SQT->AddFields(X: 3)
+
+// Lifting with non-record root type (errors).
+:: { S:i8*, T:i8[*,*], TQ:i8?[*,*], TS:i8*[*,*], QT:i8[*,*]?, ST:i8[*,*]*, STQ:i8?[*,*]*, STS:i8*[*,*]*, SQT:i8[*,*]?* }
+
+S->AddFields(X: 3)
+T->AddFields(X: 3)
+TQ->AddFields(X: 3)
+TS->AddFields(X: 3)
+QT->AddFields(X: 3)
+ST->AddFields(X: 3)
+STQ->AddFields(X: 3)
+STS->AddFields(X: 3)
+SQT->AddFields(X: 3)

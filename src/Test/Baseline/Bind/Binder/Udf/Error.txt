@@ -1,0 +1,62 @@
+**** New globals: {i8:i8}
+**** New udf: F, arity: 1
+**** New udf: G, arity: 1
+**** New udf: f, arity: 1
+
+> F(3)
+F(3) : i8
+Binder : With(!1: 3, Abs(Add(!1, [-] 7)))
+Reducer: 4
+###
+> F(i8)
+F(i8) : i8
+Binder : With(!1: i8, Abs(Add(!1, [-] 7)))
+Reducer: Abs(Add(i8, [-] 7))
+###
+> G(3)
+G(3) : v
+*** Error: (41-42;2:17-2:18) Node: Unk(x - 7), Message: Invocation of unknown or unsupported function
+Binder : With(!1: 3, __err__.Unknown(Add(!1, [-] 7)))
+Reducer: __err__.Unknown(-4)
+###
+> G(i8)
+G(i8) : v
+*** Error: (41-42;2:17-2:18) Node: Unk(x - 7), Message: Invocation of unknown or unsupported function
+Binder : With(!1: i8, __err__.Unknown(Add(!1, [-] 7)))
+Reducer: __err__.Unknown(Add(i8, [-] 7))
+###
+> f(3)
+f(3) : i8
+*** Error: (66-67;3:17-3:18) Node: abs(x - 7), Message: Invocation of unknown function, did you intend 'Abs'?
+Binder : With(!1: 3, Abs(Add(!1, [-] 7)))
+Reducer: 4
+###
+> f(i8)
+f(i8) : i8
+*** Error: (66-67;3:17-3:18) Node: abs(x - 7), Message: Invocation of unknown function, did you intend 'Abs'?
+Binder : With(!1: i8, Abs(Add(!1, [-] 7)))
+Reducer: Abs(Add(i8, [-] 7))
+###
+
+**** New udf: H, arity: 0
+
+> H(3)
+H(3) : i8
+*** Error: (2,3) Node: 3, Message: Too many arguments for H, expected 1 fewer
+Binder : 1
+###
+> 3->H()
+3->H() : i8
+*** Error: (0,1) Node: 3, Message: Too many arguments for H, expected 1 fewer
+Binder : 1
+###
+> H(3, i8)
+H(3, i8) : i8
+*** Error: (2,3) Node: 3, Message: Too many arguments for H, expected 2 fewer
+Binder : 1
+###
+> i8->H(3)
+i8->H(3) : i8
+*** Error: (0,2) Node: i8, Message: Too many arguments for H, expected 2 fewer
+Binder : 1
+###

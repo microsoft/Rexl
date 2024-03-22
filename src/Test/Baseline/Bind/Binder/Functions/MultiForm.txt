@@ -1,0 +1,1363 @@
+**** New globals: {S:s*, TA:{A:s, X:r8}*, TB:{B:s, X:r8}*, TC:{C:s, X:r8}*}
+
+> MultiDS_A(TA)
+MultiDS_A(TA) : {B:s*}*
+Binder : Test.MultiDS_A*(TA)
+Reducer: Test.MultiDS_A.Simple(ForEach(*1: TA, {A:*1.A}))
+###
+> MultiDSMA(TA)
+MultiDSMA(TA) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMA*(TA)
+Reducer: Test.MultiDSMA.MergeSeq(!1: TA, ForEach(*2: !1, {A:*2.A}), !1)
+###
+> MultiDS_A(TA->{A})
+MultiDS_A(TA->{ A }) : {B:s*}*
+Binder : Test.MultiDS_A*(ForEach(*1: TA, Guard(!2: *1, {A:!2.A})))
+Reducer: Test.MultiDS_A.Simple(ForEach(*1: TA, {A:*1.A}))
+###
+> MultiDSMA(TA->{A})
+MultiDSMA(TA->{ A }) : {A:s, B:s*}*
+Binder : Test.MultiDSMA*(ForEach(*1: TA, Guard(!2: *1, {A:!2.A})))
+Reducer: Test.MultiDSMA.MergeSeq(!2: ForEach(*1: TA, {A:*1.A}), !2, !2)
+###
+> MultiDS_A(TB) // Error.
+MultiDS_A(TB) : {B:s*}*
+*** Error: (10,12) Node: TB, Message: Invalid operand type: cannot convert type '{B:s, X:r8}*' to '{A:s}*'
+Binder : Test.MultiDS_A*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDS_A.Simple(Error(ErrBadType_Src_Dst))
+###
+> MultiDSMA(TB) // Error.
+MultiDSMA(TB) : {A:s, B:s*}*
+*** Error: (10,12) Node: TB, Message: Invalid operand type: cannot convert type '{B:s, X:r8}*' to '{A:s}*'
+Binder : Test.MultiDSMA*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDSMA.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDS_A(TB->{A:B})
+MultiDS_A(TB->{ A : B }) : {B:s*}*
+Binder : Test.MultiDS_A*(ForEach(*1: TB, Guard(!2: *1, {A:!2.B})))
+Reducer: Test.MultiDS_A.Simple(ForEach(*1: TB, {A:*1.B}))
+###
+> MultiDSMA(TB->{A:B})
+MultiDSMA(TB->{ A : B }) : {A:s, B:s*}*
+Binder : Test.MultiDSMA*(ForEach(*1: TB, Guard(!2: *1, {A:!2.B})))
+Reducer: Test.MultiDSMA.MergeSeq(!2: ForEach(*1: TB, {A:*1.B}), !2, !2)
+###
+> MultiDS_A(TC) // Error.
+MultiDS_A(TC) : {B:s*}*
+*** Error: (10,12) Node: TC, Message: Invalid operand type: cannot convert type '{C:s, X:r8}*' to '{A:s}*'
+Binder : Test.MultiDS_A*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDS_A.Simple(Error(ErrBadType_Src_Dst))
+###
+> MultiDSMA(TC) // Error.
+MultiDSMA(TC) : {A:s, B:s*}*
+*** Error: (10,12) Node: TC, Message: Invalid operand type: cannot convert type '{C:s, X:r8}*' to '{A:s}*'
+Binder : Test.MultiDSMA*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDSMA.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDS_A(TC->{A:C})
+MultiDS_A(TC->{ A : C }) : {B:s*}*
+Binder : Test.MultiDS_A*(ForEach(*1: TC, Guard(!2: *1, {A:!2.C})))
+Reducer: Test.MultiDS_A.Simple(ForEach(*1: TC, {A:*1.C}))
+###
+> MultiDSMA(TC->{A:C})
+MultiDSMA(TC->{ A : C }) : {A:s, B:s*}*
+Binder : Test.MultiDSMA*(ForEach(*1: TC, Guard(!2: *1, {A:!2.C})))
+Reducer: Test.MultiDSMA.MergeSeq(!2: ForEach(*1: TC, {A:*1.C}), !2, !2)
+###
+> Multi_SMB(TA)  // Error.
+Multi_SMB(TA) : {A:s, B:s*, X:r8}*
+*** Error: (9,10) Node: Multi_SMB(TA), Message: Too few arguments for Test.Multi_SMB, expected 1 additional
+Binder : Test.Multi_SMB*(*1: TA, Unit<s>(<missing>))
+Reducer: Guard(?1: TA, Test.Multi_SMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:str(<null>)}), !2))
+Hoister: Guard(?1: TA, Test.Multi_SMB.MergeSeq(!2: ?1, With(!3: {A:"A\'s default", B:str(<null>)}, ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TA, !2: {A:"A\'s default", B:str(<null>)}, Test.Multi_SMB.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiDSMA( TA,    A)
+MultiDSMA(TA, A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMA*(*1: TA, *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A}), !2))
+###
+> MultiDSMA( TA, A: A)
+MultiDSMA(TA, A : A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMA*(*1: TA, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A}), !2))
+###
+> MultiDSMA( TC,    C)
+MultiDSMA(TC, C) : {B:s*, C:s, X:r8}*
+Binder : Test.MultiDSMA*(*1: TC, *1.C)
+Reducer: Guard(?1: TC, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.C}), !2))
+###
+> MultiDSMA( TC, A: C)
+MultiDSMA(TC, A : C) : {B:s*, C:s, X:r8}*
+Binder : Test.MultiDSMA*(*1: TC, A : *1.C)
+Reducer: Guard(?1: TC, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.C}), !2))
+###
+> MultiDSMA( TB,    B)
+MultiDSMA(TB, B) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMA*(*1: TB, *1.B)
+Reducer: Guard(?1: TB, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B}), !2))
+###
+> MultiDSMA( TB, A: B)
+MultiDSMA(TB, A : B) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMA*(*1: TB, A : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B}), !2))
+###
+> MultiDSMA(x:S,    x)
+MultiDSMA(x : S, x) : {B:s*}*
+Binder : Test.MultiDSMA*(*1: S, *1)
+Reducer: Test.MultiDSMA.Simple(ForEach(*1: S, {A:*1}))
+###
+> MultiDSMA(x:S, A: x)
+MultiDSMA(x : S, A : x) : {B:s*}*
+Binder : Test.MultiDSMA*(*1: S, A : *1)
+Reducer: Test.MultiDSMA.Simple(ForEach(*1: S, {A:*1}))
+###
+> MultiDSMA(x: S & "more",    x)
+MultiDSMA(x : S & "more", x) : {B:s*}*
+Binder : Test.MultiDSMA*(*2: ForEach(*1: S, StrConcat(*1, "more")), *2)
+Reducer: Test.MultiDSMA.Simple(ForEach(*1: S, {A:StrConcat(*1, "more")}))
+###
+> MultiDSMA(x: S & "more", A: x)
+MultiDSMA(x : S & "more", A : x) : {B:s*}*
+Binder : Test.MultiDSMA*(*2: ForEach(*1: S, StrConcat(*1, "more")), A : *2)
+Reducer: Test.MultiDSMA.Simple(ForEach(*1: S, {A:StrConcat(*1, "more")}))
+###
+> MultiDSMB(TA) // Error.
+MultiDSMB(TA) : {A:s, B:s, B2:s*}*
+*** Error: (10,12) Node: TA, Message: Invalid operand type: cannot convert type '{A:s, X:r8}*' to '{A:s, B:s}*'
+Binder : Test.MultiDSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDSMB(TC) // Error.
+MultiDSMB(TC) : {A:s, B:s, B2:s*}*
+*** Error: (10,12) Node: TC, Message: Invalid operand type: cannot convert type '{C:s, X:r8}*' to '{A:s, B:s}*'
+Binder : Test.MultiDSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDSMB(TB) // Error.
+MultiDSMB(TB) : {A:s, B:s, B2:s*}*
+*** Error: (10,12) Node: TB, Message: Invalid operand type: cannot convert type '{B:s, X:r8}*' to '{A:s, B:s}*'
+Binder : Test.MultiDSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDSMB( TA,    A)
+MultiDSMB(TA, A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A}), !2))
+###
+> MultiDSMB( TA, A: A)
+MultiDSMB(TA, A : A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, B:"B def"}), !2))
+###
+> MultiDSMB( TA, B: A)
+MultiDSMB(TA, B : A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, B : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A}), !2))
+###
+> MultiDSMB( TB,    B)
+MultiDSMB(TB, B) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, *1.B)
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.B}), !2))
+###
+> MultiDSMB( TB, A: B)
+MultiDSMB(TB, A : B) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, A : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B, B:"B def"}), !2))
+###
+> MultiDSMB( TB, B: B)
+MultiDSMB(TB, B : B) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, B : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.B}), !2))
+###
+> MultiDSMB(x:S,    x)
+MultiDSMB(x : S, x) : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, *1)
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:"A\'s default", B:*1}))
+###
+> MultiDSMB(x:S, A: x)
+MultiDSMB(x : S, A : x) : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, A : *1)
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:*1, B:"B def"}))
+###
+> MultiDSMB(x:S, B: x)
+MultiDSMB(x : S, B : x) : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, B : *1)
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:"A\'s default", B:*1}))
+###
+> MultiDSMB(TA->TakeIf(false), A)
+MultiDSMB(TA->TakeIf(false), A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*2: TakeIf*(*1: TA, false), *2.A)
+Reducer: null
+###
+> MultiDSMB( TA,    A & "_1",    A & "_2")
+MultiDSMB(TA, A & "_1", A & "_2") : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1")}), !2))
+###
+> MultiDSMB( TA, A: A & "_1", B: A & "_2")
+MultiDSMB(TA, A : A & "_1", B : A & "_2") : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, A : StrConcat(*1.A, "_1"), B : StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_1"), B:StrConcat(*3.A, "_2")}), !2))
+###
+> MultiDSMB( TA, B: A & "_1", A: A & "_2")
+MultiDSMB(TA, B : A & "_1", A : A & "_2") : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, B : StrConcat(*1.A, "_1"), A : StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1")}), !2))
+###
+> MultiDSMB( TB,    B & "_1",    B & "_2")
+MultiDSMB(TB, B & "_1", B & "_2") : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, StrConcat(*1.B, "_1"), StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_2"), B:StrConcat(*3.B, "_1")}), !2))
+###
+> MultiDSMB( TB, A: B & "_1", B: B & "_2")
+MultiDSMB(TB, A : B & "_1", B : B & "_2") : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, A : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2")}), !2))
+###
+> MultiDSMB( TB, B: B & "_1", A: B & "_2")
+MultiDSMB(TB, B : B & "_1", A : B & "_2") : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TB, B : StrConcat(*1.B, "_1"), A : StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_2"), B:StrConcat(*3.B, "_1")}), !2))
+###
+> MultiDSMB(x:S,    x & "_1",    x & "_2")
+MultiDSMB(x : S, x & "_1", x & "_2") : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, StrConcat(*1, "_1"), StrConcat(*1, "_2"))
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_2"), B:StrConcat(*1, "_1")}))
+###
+> MultiDSMB(x:S, A: x & "_1", B: x & "_2")
+MultiDSMB(x : S, A : x & "_1", B : x & "_2") : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")}))
+###
+> MultiDSMB(x:S, B: x & "_1", A: x & "_2")
+MultiDSMB(x : S, B : x & "_1", A : x & "_2") : {B:s*}*
+Binder : Test.MultiDSMB*(*1: S, B : StrConcat(*1, "_1"), A : StrConcat(*1, "_2"))
+Reducer: Test.MultiDSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_2"), B:StrConcat(*1, "_1")}))
+###
+> MultiDSMB(TA->TakeIf(false), A, A)
+MultiDSMB(TA->TakeIf(false), A, A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*2: TakeIf*(*1: TA, false), *2.A, *2.A)
+Reducer: null
+###
+> MultiDSMC( TA, A: A)
+MultiDSMC(TA, A : A) : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMC*(*1: TA, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDSMC.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, C:null}), !2))
+###
+> MultiDSMCc(TA, A: A) // Error.
+MultiDSMCc(TA, A : A) : {A:s, B:s*, X:r8}*
+*** Error: (10,11) Node: MultiDSMCc(TA, A : A), Message: No overload can be found matching these names and directives.
+*** Error: (16,17) Node: A : A, Message: Missing argument: 'C'
+Binder : Test.MultiDSMCc*(*1: TA, A : *1.A)
+###
+> MultiDSMB( TA, B: A & "_1", B: A & "_2") // Error.
+MultiDSMB(TA, B : A & "_1", B : A & "_2") : {A:s, B:s*, X:r8}*
+*** Error: (9,10) Node: MultiDSMB(TA, B : A & "_1", B : A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDSMB*(*1: TA, B : StrConcat(*1.A, "_1"), B : StrConcat(*1.A, "_2"))
+###
+> MultiDSMB( TB, B: B & "_1", B: B & "_2") // Error.
+MultiDSMB(TB, B : B & "_1", B : B & "_2") : {B:s, B2:s*, X:r8}*
+*** Error: (9,10) Node: MultiDSMB(TB, B : B & "_1", B : B & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDSMB*(*1: TB, B : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+###
+> MultiDSMB(x:S, B: x & "_1", B: x & "_2") // Error.
+MultiDSMB(x : S, B : x & "_1", B : x & "_2") : {B:s*}*
+*** Error: (9,10) Node: MultiDSMB(x : S, B : x & "_1", B : x & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDSMB*(*1: S, B : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+###
+> MultiDSMB( TA, B: A & "_1", C: A & "_2") // Error.
+MultiDSMB(TA, B : A & "_1", C : A & "_2") : {A:s, B:s*, X:r8}*
+*** Error: (9,10) Node: MultiDSMB(TA, B : A & "_1", C : A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s}'
+Binder : Test.MultiDSMB*(*1: TA, B : StrConcat(*1.A, "_1"), C : StrConcat(*1.A, "_2"))
+###
+> MultiDSMB( TB, B: B & "_1", C: B & "_2") // Error.
+MultiDSMB(TB, B : B & "_1", C : B & "_2") : {B:s, B2:s*, X:r8}*
+*** Error: (9,10) Node: MultiDSMB(TB, B : B & "_1", C : B & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s}'
+Binder : Test.MultiDSMB*(*1: TB, B : StrConcat(*1.B, "_1"), C : StrConcat(*1.B, "_2"))
+###
+> MultiDSMB(x:S, B: x & "_1", C: x & "_2") // Error.
+MultiDSMB(x : S, B : x & "_1", C : x & "_2") : {B:s*}*
+*** Error: (9,10) Node: MultiDSMB(x : S, B : x & "_1", C : x & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (28,29) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s}'
+Binder : Test.MultiDSMB*(*1: S, B : StrConcat(*1, "_1"), C : StrConcat(*1, "_2"))
+###
+> MultiDSMB( TA, A: A & "_1",    A & "_2") // Error.
+MultiDSMB(TA, A : A & "_1", A & "_2") : {A:s, B:s*, X:r8}*
+*** Error: (9,10) Node: MultiDSMB(TA, A : A & "_1", A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (33,34) Node: A & "_2", Message: The argument in position 3 of 'MultiDSMB' should include a field name
+Binder : Test.MultiDSMB*(*1: TA, A : StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+###
+> MultiDSMB( TA, B: A & "_1",    A & "_2")
+MultiDSMB(TA, B : A & "_1", A & "_2") : {A:s, B:s*, X:r8}*
+Binder : Test.MultiDSMB*(*1: TA, B : StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1")}), !2))
+###
+> MultiDsMB( TB, {A: B & "_1", B: B & "_2"})
+MultiDsMB(TB, { A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDsMB*(*1: TB, {A:StrConcat(*1.B, "_1"), B:StrConcat(*1.B, "_2")})
+Reducer: Guard(?1: TB, Test.MultiDsMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2")}), !2))
+###
+> MultiDsMB(TB->TakeIf(false), {A: B & "_1", B: B & "_2"})
+MultiDsMB(TB->TakeIf(false), { A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDsMB*(*2: TakeIf*(*1: TB, false), {A:StrConcat(*2.B, "_1"), B:StrConcat(*2.B, "_2")})
+Reducer: null
+###
+> MultiDsMB(x:S, {A: x & "_1", B: x & "_2"})
+MultiDsMB(x : S, { A : x & "_1", B : x & "_2" }) : {B:s*}*
+Binder : Test.MultiDsMB*(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")})
+Reducer: Test.MultiDsMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")}))
+###
+> MultiDrMB( TB, {A: B & "_1", B: B & "_2"})
+MultiDrMB(TB, { A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDrMB*(*1: TB, {A:StrConcat(*1.B, "_1"), B:StrConcat(*1.B, "_2")})
+Reducer: Guard(?1: TB, Test.MultiDrMB.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2")}), S1:"/def", S2:3}, !2))
+###
+> MultiDrMB(TB->TakeIf(false), {A: B & "_1", B: B & "_2"})
+MultiDrMB(TB->TakeIf(false), { A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDrMB*(*2: TakeIf*(*1: TB, false), {A:StrConcat(*2.B, "_1"), B:StrConcat(*2.B, "_2")})
+Reducer: null
+###
+> MultiDrMB(x:S, {A: x & "_1", B: x & "_2"})
+MultiDrMB(x : S, { A : x & "_1", B : x & "_2" }) : {B:s*}*
+Binder : Test.MultiDrMB*(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")})
+Reducer: Test.MultiDrMB.Simple({Mis:ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")}), S1:"/def", S2:3})
+###
+> MultiDSMBW( TB, A: B & "_1", B: B & "_2")
+MultiDSMBW(TB, A : B & "_1", B : B & "_2") : {Mos:{B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDSMBW*(*1: TB, A : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+Reducer: Test.MultiDSMBW.MergeSeq(!1: TB, ForEach(*2: !1, {A:StrConcat(*2.B, "_1"), B:StrConcat(*2.B, "_2")}), !1)
+###
+> MultiDSMBW(x:S, A: x & "_1", B: x & "_2")
+MultiDSMBW(x : S, A : x & "_1", B : x & "_2") : {Mos:{B:s*}*, S1:s, S2:i8}
+Binder : Test.MultiDSMBW*(*1: S, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+Reducer: Test.MultiDSMBW.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")}))
+###
+> MultiDRMBW(x:S, A: x & "_1", B: x & "_2", S1: "/suf", S2: 7)
+MultiDRMBW(x : S, A : x & "_1", B : x & "_2", S1 : "/suf", S2 : 7) : {Mos:{B:s*}*, S1:s, S2:i8}
+Binder : Test.MultiDRMBW*(*1: S, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"), S1 : "/suf", S2 : 7)
+Reducer: Test.MultiDRMBW.Simple({Mis:ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2")}), S1:"/suf", S2:7})
+###
+> MultiDRMBW(TB, B, B)
+MultiDRMBW(TB, B, B) : {Mos:{B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDRMBW*(*1: TB, *1.B, *1.B)
+Reducer: Test.MultiDRMBW.MergeRec(!1: TB, {Mis:ForEach(*2: !1, {A:*2.B, B:*2.B}), S1:"/def", S2:3}, !1)
+###
+> MultiDRMBW(TB, B, B, "/suf", 5)
+MultiDRMBW(TB, B, B, "/suf", 5) : {Mos:{B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDRMBW*(*1: TB, *1.B, *1.B, "/suf", 5)
+Reducer: Test.MultiDRMBW.MergeRec(!1: TB, {Mis:ForEach(*2: !1, {A:*2.B, B:*2.B}), S1:"/suf", S2:5}, !1)
+###
+> MultiDRMB(TB->TakeIf(false), B, B, "/suf", 5)
+MultiDRMB(TB->TakeIf(false), B, B, "/suf", 5) : {B:s, B2:s*, X:r8}*
+Binder : Test.MultiDRMB*(*2: TakeIf*(*1: TB, false), *2.B, *2.B, "/suf", 5)
+Reducer: null
+###
+
+**** New globals: {S:s*, TA:{A:s, G:(r8, i8), X:r8}*, TB:{B:s, G:s*, X:r8}*, TC:{C:s, G:{P:i8}*, X:r8}*}
+
+> MultiDGSMA(TA)
+MultiDGSMA(TA) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMA*(TA)
+Reducer: Test.MultiDGSMA.MergeSeq(!1: TA, ForEach(*2: !1, {A:*2.A, G:*2.G}), !1)
+###
+> MultiDGSMA(TA->{A, G})
+MultiDGSMA(TA->{ A, G }) : {A:s, B:s*, G:(r8, i8)}*
+Binder : Test.MultiDGSMA*(ForEach(*1: TA, Guard(!2: *1, {A:!2.A, G:!2.G})))
+Reducer: Test.MultiDGSMA.MergeSeq(!2: ForEach(*1: TA, {A:*1.A, G:*1.G}), !2, !2)
+###
+> MultiDGSMA(TB) // Error.
+MultiDGSMA(TB) : {A:s, B:s*, G:s*}*
+*** Error: (11,13) Node: TB, Message: Invalid operand type: cannot convert type '{B:s, G:s*, X:r8}*' to '{A:s, G:s*}*'
+Binder : Test.MultiDGSMA*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDGSMA.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDGSMA(TB->{A:B, G})
+MultiDGSMA(TB->{ A : B, G }) : {A:s, B:s*, G:s*}*
+Binder : Test.MultiDGSMA*(ForEach(*1: TB, Guard(!2: *1, {A:!2.B, G:!2.G})))
+Reducer: Test.MultiDGSMA.MergeSeq(!2: ForEach(*1: TB, {A:*1.B, G:*1.G}), !2, !2)
+###
+> MultiDGSMA(TC) // Error.
+MultiDGSMA(TC) : {A:s, B:s*, G:{P:i8}*}*
+*** Error: (11,13) Node: TC, Message: Invalid operand type: cannot convert type '{C:s, G:{P:i8}*, X:r8}*' to '{A:s, G:{P:i8}*}*'
+Binder : Test.MultiDGSMA*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDGSMA.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDGSMA(TC->{A:C, G})
+MultiDGSMA(TC->{ A : C, G }) : {A:s, B:s*, G:{P:i8}*}*
+Binder : Test.MultiDGSMA*(ForEach(*1: TC, Guard(!2: *1, {A:!2.C, G:!2.G})))
+Reducer: Test.MultiDGSMA.MergeSeq(!2: ForEach(*1: TC, {A:*1.C, G:*1.G}), !2, !2)
+###
+> Multi_GSMB(TA) // Error.
+Multi_GSMB(TA) : {A:s, B:s*, G:(r8, i8), X:r8}*
+*** Error: (10,11) Node: Multi_GSMB(TA), Message: Too few arguments for Test.Multi_GSMB, expected 1 additional
+Binder : Test.Multi_GSMB*(*1: TA, <missing>)
+Reducer: Guard(?1: TA, Test.Multi_GSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:"B def", G:<missing>}), !2))
+###
+> MultiDGSMA( TA, G,    A)
+MultiDGSMA(TA, G, A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMA*(*1: TA, *1.G, *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, G:*3.G}), !2))
+###
+> MultiDGSMA( TA, G, A: A)
+MultiDGSMA(TA, G, A : A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMA*(*1: TA, *1.G, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, G:*3.G}), !2))
+###
+> MultiDGSMA( TC, G,    C)
+MultiDGSMA(TC, G, C) : {B:s*, C:s, G:{P:i8}*, X:r8}*
+Binder : Test.MultiDGSMA*(*1: TC, *1.G, *1.C)
+Reducer: Guard(?1: TC, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.C, G:*3.G}), !2))
+###
+> MultiDGSMA( TC, G, A: C)
+MultiDGSMA(TC, G, A : C) : {B:s*, C:s, G:{P:i8}*, X:r8}*
+Binder : Test.MultiDGSMA*(*1: TC, *1.G, A : *1.C)
+Reducer: Guard(?1: TC, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.C, G:*3.G}), !2))
+###
+> MultiDGSMA( TB, G,    B)
+MultiDGSMA(TB, G, B) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMA*(*1: TB, *1.G, *1.B)
+Reducer: Guard(?1: TB, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B, G:*3.G}), !2))
+###
+> MultiDGSMA( TB, G, A: B)
+MultiDGSMA(TB, G, A : B) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMA*(*1: TB, *1.G, A : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDGSMA.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B, G:*3.G}), !2))
+###
+> MultiDGSMA(x:S, x,    x)
+MultiDGSMA(x : S, x, x) : {B:s*}*
+Binder : Test.MultiDGSMA*(*1: S, *1, *1)
+Reducer: Test.MultiDGSMA.Simple(ForEach(*1: S, {A:*1, G:*1}))
+###
+> MultiDGSMA(x:S, x, A: x)
+MultiDGSMA(x : S, x, A : x) : {B:s*}*
+Binder : Test.MultiDGSMA*(*1: S, *1, A : *1)
+Reducer: Test.MultiDGSMA.Simple(ForEach(*1: S, {A:*1, G:*1}))
+###
+> MultiDGSMA(x: S & "more", x,    x)
+MultiDGSMA(x : S & "more", x, x) : {B:s*}*
+Binder : Test.MultiDGSMA*(*2: ForEach(*1: S, StrConcat(*1, "more")), *2, *2)
+Reducer: Test.MultiDGSMA.Simple(ForEach(*1: S, With(!2: StrConcat(*1, "more"), {A:!2, G:!2})))
+###
+> MultiDGSMA(x: S & "more", x, A: x)
+MultiDGSMA(x : S & "more", x, A : x) : {B:s*}*
+Binder : Test.MultiDGSMA*(*2: ForEach(*1: S, StrConcat(*1, "more")), *2, A : *2)
+Reducer: Test.MultiDGSMA.Simple(ForEach(*1: S, With(!2: StrConcat(*1, "more"), {A:!2, G:!2})))
+###
+> MultiDGSMB(TA) // Error.
+MultiDGSMB(TA) : {A:s, B:s, B2:s*, G:(r8, i8)}*
+*** Error: (11,13) Node: TA, Message: Invalid operand type: cannot convert type '{A:s, G:(r8, i8), X:r8}*' to '{A:s, B:s, G:(r8, i8)}*'
+Binder : Test.MultiDGSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDGSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDGSMB(TC) // Error.
+MultiDGSMB(TC) : {A:s, B:s, B2:s*, G:{P:i8}*}*
+*** Error: (11,13) Node: TC, Message: Invalid operand type: cannot convert type '{C:s, G:{P:i8}*, X:r8}*' to '{A:s, B:s, G:{P:i8}*}*'
+Binder : Test.MultiDGSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDGSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDGSMB(TB) // Error.
+MultiDGSMB(TB) : {A:s, B:s, B2:s*, G:s*}*
+*** Error: (11,13) Node: TB, Message: Invalid operand type: cannot convert type '{B:s, G:s*, X:r8}*' to '{A:s, B:s, G:s*}*'
+Binder : Test.MultiDGSMB*(Error(ErrBadType_Src_Dst))
+Reducer: Test.MultiDGSMB.MergeSeq(!1: Error(ErrBadType_Src_Dst), !1, !1)
+###
+> MultiDGSMB( TA, G,    A)
+MultiDGSMB(TA, G, A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A, G:*3.G}), !2))
+###
+> MultiDGSMB( TA, G, A: A)
+MultiDGSMB(TA, G, A : A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, B:"B def", G:*3.G}), !2))
+###
+> MultiDGSMB( TA, G, B: A)
+MultiDGSMB(TA, G, B : A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, B : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A, G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G,    B)
+MultiDGSMB(TB, G, B) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, *1.B)
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.B, G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G, A: B)
+MultiDGSMB(TB, G, A : B) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, A : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.B, B:"B def", G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G, B: B)
+MultiDGSMB(TB, G, B : B) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, B : *1.B)
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.B, G:*3.G}), !2))
+###
+> MultiDGSMB(x:S, x,    x)
+MultiDGSMB(x : S, x, x) : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, *1)
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:"A\'s default", B:*1, G:*1}))
+###
+> MultiDGSMB(x:S, x, A: x)
+MultiDGSMB(x : S, x, A : x) : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, A : *1)
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:*1, B:"B def", G:*1}))
+###
+> MultiDGSMB(x:S, x, B: x)
+MultiDGSMB(x : S, x, B : x) : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, B : *1)
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:"A\'s default", B:*1, G:*1}))
+###
+> MultiDGSMB( TA, G,    A & "_1",    A & "_2")
+MultiDGSMB(TA, G, A & "_1", A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1"), G:*3.G}), !2))
+###
+> MultiDGSMB( TA, G, A: A & "_1", B: A & "_2")
+MultiDGSMB(TA, G, A : A & "_1", B : A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, A : StrConcat(*1.A, "_1"), B : StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_1"), B:StrConcat(*3.A, "_2"), G:*3.G}), !2))
+###
+> MultiDGSMB( TA, G, B: A & "_1", A: A & "_2")
+MultiDGSMB(TA, G, B : A & "_1", A : A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, B : StrConcat(*1.A, "_1"), A : StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1"), G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G,    B & "_1",    B & "_2")
+MultiDGSMB(TB, G, B & "_1", B & "_2") : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, StrConcat(*1.B, "_1"), StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_2"), B:StrConcat(*3.B, "_1"), G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G, A: B & "_1", B: B & "_2")
+MultiDGSMB(TB, G, A : B & "_1", B : B & "_2") : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, A : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2"), G:*3.G}), !2))
+###
+> MultiDGSMB( TB, G, B: B & "_1", A: B & "_2")
+MultiDGSMB(TB, G, B : B & "_1", A : B & "_2") : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, B : StrConcat(*1.B, "_1"), A : StrConcat(*1.B, "_2"))
+Reducer: Guard(?1: TB, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_2"), B:StrConcat(*3.B, "_1"), G:*3.G}), !2))
+###
+> MultiDGSMB(x:S, x,    x & "_1",    x & "_2")
+MultiDGSMB(x : S, x, x & "_1", x & "_2") : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, StrConcat(*1, "_1"), StrConcat(*1, "_2"))
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_2"), B:StrConcat(*1, "_1"), G:*1}))
+###
+> MultiDGSMB(x:S, x, A: x & "_1", B: x & "_2")
+MultiDGSMB(x : S, x, A : x & "_1", B : x & "_2") : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1}))
+###
+> MultiDGSMB(x:S, x, B: x & "_1", A: x & "_2")
+MultiDGSMB(x : S, x, B : x & "_1", A : x & "_2") : {B:s*}*
+Binder : Test.MultiDGSMB*(*1: S, *1, B : StrConcat(*1, "_1"), A : StrConcat(*1, "_2"))
+Reducer: Test.MultiDGSMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_2"), B:StrConcat(*1, "_1"), G:*1}))
+###
+> MultiDGSMC( TA, G, A: A)
+MultiDGSMC(TA, G, A : A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMC*(*1: TA, *1.G, A : *1.A)
+Reducer: Guard(?1: TA, Test.MultiDGSMC.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, C:null, G:*3.G}), !2))
+###
+> MultiDGSMCc(TA, G, A: A) // Error.
+MultiDGSMCc(TA, G, A : A) : {A:s, B:s*, G:(r8, i8), X:r8}*
+*** Error: (11,12) Node: MultiDGSMCc(TA, G, A : A), Message: No overload can be found matching these names and directives.
+*** Error: (20,21) Node: A : A, Message: Missing argument: 'C'
+Binder : Test.MultiDGSMCc*(*1: TA, *1.G, A : *1.A)
+###
+> MultiDGSMB( TA, G, B: A & "_1", B: A & "_2") // Error.
+MultiDGSMB(TA, G, B : A & "_1", B : A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+*** Error: (10,11) Node: MultiDGSMB(TA, G, B : A & "_1", B : A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, B : StrConcat(*1.A, "_1"), B : StrConcat(*1.A, "_2"))
+###
+> MultiDGSMB( TB, G, B: B & "_1", B: B & "_2") // Error.
+MultiDGSMB(TB, G, B : B & "_1", B : B & "_2") : {B:s, B2:s*, G:s*, X:r8}*
+*** Error: (10,11) Node: MultiDGSMB(TB, G, B : B & "_1", B : B & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, B : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+###
+> MultiDGSMB(x:S, x, B: x & "_1", B: x & "_2") // Error.
+MultiDGSMB(x : S, x, B : x & "_1", B : x & "_2") : {B:s*}*
+*** Error: (10,11) Node: MultiDGSMB(x : S, x, B : x & "_1", B : x & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+Binder : Test.MultiDGSMB*(*1: S, *1, B : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+###
+> MultiDGSMB( TA, G, B: A & "_1", C: A & "_2") // Error.
+MultiDGSMB(TA, G, B : A & "_1", C : A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+*** Error: (10,11) Node: MultiDGSMB(TA, G, B : A & "_1", C : A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s, G:g}'
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, B : StrConcat(*1.A, "_1"), C : StrConcat(*1.A, "_2"))
+###
+> MultiDGSMB( TB, G, B: B & "_1", C: B & "_2") // Error.
+MultiDGSMB(TB, G, B : B & "_1", C : B & "_2") : {B:s, B2:s*, G:s*, X:r8}*
+*** Error: (10,11) Node: MultiDGSMB(TB, G, B : B & "_1", C : B & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s, G:g}'
+Binder : Test.MultiDGSMB*(*1: TB, *1.G, B : StrConcat(*1.B, "_1"), C : StrConcat(*1.B, "_2"))
+###
+> MultiDGSMB(x:S, x, B: x & "_1", C: x & "_2") // Error.
+MultiDGSMB(x : S, x, B : x & "_1", C : x & "_2") : {B:s*}*
+*** Error: (10,11) Node: MultiDGSMB(x : S, x, B : x & "_1", C : x & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (32,33) Tok: 'C', Message: Field does not exist in type: '{A:s, B:s, G:g}'
+Binder : Test.MultiDGSMB*(*1: S, *1, B : StrConcat(*1, "_1"), C : StrConcat(*1, "_2"))
+###
+> MultiDGSMB( TA, G, A: A & "_1",    A & "_2") // Error.
+MultiDGSMB(TA, G, A : A & "_1", A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+*** Error: (10,11) Node: MultiDGSMB(TA, G, A : A & "_1", A & "_2"), Message: No overload can be found matching these names and directives.
+*** Error: (37,38) Node: A & "_2", Message: The argument in position 4 of 'MultiDGSMB' should include a field name
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, A : StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+###
+> MultiDGSMB( TA, G, B: A & "_1",    A & "_2")
+MultiDGSMB(TA, G, B : A & "_1", A & "_2") : {A:s, B:s*, G:(r8, i8), X:r8}*
+Binder : Test.MultiDGSMB*(*1: TA, *1.G, B : StrConcat(*1.A, "_1"), StrConcat(*1.A, "_2"))
+Reducer: Guard(?1: TA, Test.MultiDGSMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.A, "_2"), B:StrConcat(*3.A, "_1"), G:*3.G}), !2))
+###
+> MultiDGsMB( TB, {G   , A: B & "_1", B: B & "_2"})
+MultiDGsMB(TB, { G, A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGsMB*(*1: TB, {A:StrConcat(*1.B, "_1"), B:StrConcat(*1.B, "_2"), G:*1.G})
+Reducer: Guard(?1: TB, Test.MultiDGsMB.MergeSeq(!2: ?1, ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2"), G:*3.G}), !2))
+###
+> MultiDGsMB(x:S, {G: x, A: x & "_1", B: x & "_2"})
+MultiDGsMB(x : S, { G : x, A : x & "_1", B : x & "_2" }) : {B:s*}*
+Binder : Test.MultiDGsMB*(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1})
+Reducer: Test.MultiDGsMB.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1}))
+###
+> MultiDGrMB( TB, {G   , A: B & "_1", B: B & "_2"})
+MultiDGrMB(TB, { G, A : B & "_1", B : B & "_2" }) : {B:s, B2:s*, G:s*, X:r8}*
+Binder : Test.MultiDGrMB*(*1: TB, {A:StrConcat(*1.B, "_1"), B:StrConcat(*1.B, "_2"), G:*1.G})
+Reducer: Guard(?1: TB, Test.MultiDGrMB.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:StrConcat(*3.B, "_1"), B:StrConcat(*3.B, "_2"), G:*3.G}), S1:"/def", S2:3}, !2))
+###
+> MultiDGrMB(x:S, {G: x, A: x & "_1", B: x & "_2"})
+MultiDGrMB(x : S, { G : x, A : x & "_1", B : x & "_2" }) : {B:s*}*
+Binder : Test.MultiDGrMB*(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1})
+Reducer: Test.MultiDGrMB.Simple({Mis:ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1}), S1:"/def", S2:3})
+###
+> MultiDGSMBW( TB, G, A: B & "_1", B: B & "_2")
+MultiDGSMBW(TB, G, A : B & "_1", B : B & "_2") : {Mos:{B:s, B2:s*, G:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDGSMBW*(*1: TB, *1.G, A : StrConcat(*1.B, "_1"), B : StrConcat(*1.B, "_2"))
+Reducer: Test.MultiDGSMBW.MergeSeq(!1: TB, ForEach(*2: !1, {A:StrConcat(*2.B, "_1"), B:StrConcat(*2.B, "_2"), G:*2.G}), !1)
+###
+> MultiDGSMBW(x:S, x, A: x & "_1", B: x & "_2")
+MultiDGSMBW(x : S, x, A : x & "_1", B : x & "_2") : {Mos:{B:s*}*, S1:s, S2:i8}
+Binder : Test.MultiDGSMBW*(*1: S, *1, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"))
+Reducer: Test.MultiDGSMBW.Simple(ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1}))
+###
+> MultiDGRMBW(x:S, x, A: x & "_1", B: x & "_2", S1: "/suf", S2: 7)
+MultiDGRMBW(x : S, x, A : x & "_1", B : x & "_2", S1 : "/suf", S2 : 7) : {Mos:{B:s*}*, S1:s, S2:i8}
+Binder : Test.MultiDGRMBW*(*1: S, *1, A : StrConcat(*1, "_1"), B : StrConcat(*1, "_2"), S1 : "/suf", S2 : 7)
+Reducer: Test.MultiDGRMBW.Simple({Mis:ForEach(*1: S, {A:StrConcat(*1, "_1"), B:StrConcat(*1, "_2"), G:*1}), S1:"/suf", S2:7})
+###
+> MultiDGRMBW(TB, G, B, B)
+MultiDGRMBW(TB, G, B, B) : {Mos:{B:s, B2:s*, G:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDGRMBW*(*1: TB, *1.G, *1.B, *1.B)
+Reducer: Test.MultiDGRMBW.MergeRec(!1: TB, {Mis:ForEach(*2: !1, {A:*2.B, B:*2.B, G:*2.G}), S1:"/def", S2:3}, !1)
+###
+> MultiDGRMBW(TB, G, B, B, "/suf", 5)
+MultiDGRMBW(TB, G, B, B, "/suf", 5) : {Mos:{B:s, B2:s*, G:s*, X:r8}*, S1:s, S2:i8}
+Binder : Test.MultiDGRMBW*(*1: TB, *1.G, *1.B, *1.B, "/suf", 5)
+Reducer: Test.MultiDGRMBW.MergeRec(!1: TB, {Mis:ForEach(*2: !1, {A:*2.B, B:*2.B, G:*2.G}), S1:"/suf", S2:5}, !1)
+###
+
+**** New globals: {S:s*, TA:{A:s, B:s}*, i8:i8, s:s}
+
+> ManyDRMB([{ A:s, B:s }])
+ManyDRMB([{ A : s, B : s }]) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRMB*([{A:s, B:s}])
+Reducer: Test.ManyDRMB.MergeSeq(!1: [{A:s, B:s}], !1, !1)
+###
+> ManyDRMB({ Mis: TA, S1:s})
+ManyDRMB({ Mis : TA, S1 : s }) : {B:s*}*
+Binder : Test.ManyDRMB*({Mis:TA, S1:s})
+Reducer: Test.ManyDRMB.Simple({Mis:TA, S1:s})
+###
+> ManyDRMB({ Mis: TA, S2:i8})
+ManyDRMB({ Mis : TA, S2 : i8 }) : {B:s*}*
+Binder : Test.ManyDRMB*({Mis:TA, S2:i8})
+Reducer: Test.ManyDRMB.Simple({Mis:TA, S2:i8})
+###
+> ManyDRMB({ Mis: TA, S1:s, S2:i8})
+ManyDRMB({ Mis : TA, S1 : s, S2 : i8 }) : {B:s*}*
+Binder : Test.ManyDRMB*({Mis:TA, S1:s, S2:i8})
+Reducer: Test.ManyDRMB.Simple({Mis:TA, S1:s})
+###
+> ManyDRMB(S, it, it, s)
+ManyDRMB(S, it, it, s) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, *1, *1, s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s})
+###
+> ManyDRMB(S, it, it, i8)
+ManyDRMB(S, it, it, i8) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, *1, *1, i8)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S2:i8})
+###
+> ManyDRMB(S, it, it, s, i8)
+ManyDRMB(S, it, it, s, i8) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, *1, *1, s, i8)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s, S2:i8})
+###
+> ManyDRMB(S, it, it, i8, s)
+ManyDRMB(S, it, it, i8, s) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, *1, *1, i8, s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s, S2:i8})
+###
+> ManyDRMB(x:S, A: x, B: x, S1:s)
+ManyDRMB(x : S, A : x, B : x, S1 : s) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, S1 : s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s})
+###
+> ManyDRMB(x:S, A: x, B: x, S2:i8)
+ManyDRMB(x : S, A : x, B : x, S2 : i8) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, S2 : i8)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S2:i8})
+###
+> ManyDRMB(x:S, A: x, B: x, S1:s, S2:i8)
+ManyDRMB(x : S, A : x, B : x, S1 : s, S2 : i8) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, S1 : s, S2 : i8)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s, S2:i8})
+###
+> ManyDRMB(x:S, A: x, B: x, S2:i8, S1:s)
+ManyDRMB(x : S, A : x, B : x, S2 : i8, S1 : s) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, S2 : i8, S1 : s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s, S2:i8})
+###
+> ManyDRMB(x:S, B: x, A: x, s)
+ManyDRMB(x : S, B : x, A : x, s) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, B : *1, A : *1, s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s})
+###
+> ManyDRMB(x:S, A: x, B: x, s) // Error.
+ManyDRMB(x : S, A : x, B : x, s) : {B:s*}*
+*** Error: (8,9) Node: ManyDRMB(x : S, A : x, B : x, s), Message: No overload can be found matching these names and directives.
+*** Error: (26,27) Node: s, Message: The argument in position 4 of 'ManyDRMB' should include a field name
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, s)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:s})
+###
+> ManyDRMB(x:S, B: x, A: x, i8)
+ManyDRMB(x : S, B : x, A : x, i8) : {B:s*}*
+Binder : Test.ManyDRMB*(*1: S, B : *1, A : *1, i8)
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S2:i8})
+###
+> ManyDRMB(x:S, A: x, B: x, i8) // Error.
+ManyDRMB(x : S, A : x, B : x, i8) : {B:s*}*
+*** Error: (8,9) Node: ManyDRMB(x : S, A : x, B : x, i8), Message: No overload can be found matching these names and directives.
+*** Error: (26,28) Node: i8, Message: The argument in position 4 of 'ManyDRMB' should include a field name
+*** Error: (26,28) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRMB*(*1: S, A : *1, B : *1, Error(ErrBadType_Src_Dst))
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:Error(ErrBadType_Src_Dst)})
+###
+> ManyDRMB(x:S, A: x, A: x, i8) // Error.
+ManyDRMB(x : S, A : x, A : x, i8) : {B:s*}*
+*** Error: (8,9) Node: ManyDRMB(x : S, A : x, A : x, i8), Message: No overload can be found matching these names and directives.
+*** Error: (20,21) Tok: 'A', Message: Parameter name 'A' already specified 1 position(s) prior
+*** Error: (26,28) Node: i8, Message: The argument in position 4 of 'ManyDRMB' should include a field name
+*** Error: (26,28) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRMB*(*1: S, A : *1, A : *1, Error(ErrBadType_Src_Dst))
+###
+> ManyDRMB(S, it, it, S2:s) // Error.
+ManyDRMB(S, it, it, S2 : s) : {B:s*}*
+*** Error: (23,24) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Test.ManyDRMB*(*1: S, *1, *1, S2 : Error(ErrBadType_Src_Dst))
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S2:Error(ErrBadType_Src_Dst)})
+###
+> ManyDRMB(S, it, it, S1:i8) // Error.
+ManyDRMB(S, it, it, S1 : i8) : {B:s*}*
+*** Error: (23,25) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRMB*(*1: S, *1, *1, S1 : Error(ErrBadType_Src_Dst))
+Reducer: Test.ManyDRMB.Simple({Mis:ForEach(*1: S, {A:*1, B:*1}), S1:Error(ErrBadType_Src_Dst)})
+###
+> ManyDRM([{ A:s, B:s }])
+ManyDRM([{ A : s, B : s }]) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*([{A:s, B:s}])
+Reducer: Test.ManyDRM.MergeSeq(!1: [{A:s, B:s}], ForEach(*2: !1, {A:*2.A}), !1)
+###
+> ManyDRM({ Mis: TA, S1:s})
+ManyDRM({ Mis : TA, S1 : s }) : {B:s*}*
+Binder : Test.ManyDRM*({Mis:TA, S1:s})
+Reducer: Test.ManyDRM.Simple({Mis:ForEach(*1: TA, {A:*1.A}), S1:s})
+###
+> ManyDRM({ Mis: TA, S2:i8})
+ManyDRM({ Mis : TA, S2 : i8 }) : {B:s*}*
+Binder : Test.ManyDRM*({Mis:TA, S2:i8})
+Reducer: Test.ManyDRM.Simple({Mis:ForEach(*1: TA, {A:*1.A}), S2:i8})
+###
+> ManyDRM({ Mis: TA, S1:s, S2:i8})
+ManyDRM({ Mis : TA, S1 : s, S2 : i8 }) : {B:s*}*
+Binder : Test.ManyDRM*({Mis:TA, S1:s, S2:i8})
+Reducer: Test.ManyDRM.Simple({Mis:ForEach(*1: TA, {A:*1.A}), S1:s})
+###
+> ManyDRM(TA, A)
+ManyDRM(TA, A) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A}), !2))
+###
+> ManyDRM(TA, A: A)
+ManyDRM(TA, A : A) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, A : *1.A)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A}), !2))
+###
+> ManyDRM(TA, B: A)
+ManyDRM(TA, B : A) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, B : *1.A)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:"A\'s default", B:*3.A}), !2))
+###
+> ManyDRM(TA, A, s)
+ManyDRM(TA, A, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:s, B:*3.A}), !2))
+###
+> ManyDRM(TA, B:A, s)
+ManyDRM(TA, B : A, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, B : *1.A, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:s, B:*3.A}), !2))
+###
+> ManyDRM(TA, A, S1:s)
+ManyDRM(TA, A, S1 : s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, S1 : s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s}, !2))
+###
+> ManyDRM(TA, A, [top] s)
+ManyDRM(TA, A, [top] s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, [top] s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s}, !2))
+###
+> ManyDRM(TA, A, i8)
+ManyDRM(TA, A, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S2:i8}, !2))
+###
+> ManyDRM(TA, A, s, i8)
+ManyDRM(TA, A, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:*3.A}), S2:i8}, !2))
+###
+> ManyDRM(TA, B:A, s, i8)
+ManyDRM(TA, B : A, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, B : *1.A, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:*3.A}), S2:i8}, !2))
+###
+> ManyDRM(TA, A, S1:s, i8)
+ManyDRM(TA, A, S1 : s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, S1 : s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s, S2:i8}, !2))
+###
+> ManyDRM(TA, A, [top]s, i8)
+ManyDRM(TA, A, [top] s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, [top] s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s, S2:i8}, !2))
+###
+> ManyDRM(TA, A, s, [top] i8)
+ManyDRM(TA, A, s, [top] i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, s, [top] i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:*3.A}), S2:i8}, !2))
+###
+> ManyDRM(TA, A, i8, s)
+ManyDRM(TA, A, i8, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, i8, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s, S2:i8}, !2))
+###
+> ManyDRM(TA, A, i8, i8) // Error.
+ManyDRM(TA, A, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (19,21) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, *1.A, i8, Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+###
+> ManyDRM(TA, A, A)
+ManyDRM(TA, A, A) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:*3.A, B:*3.A}), !2))
+###
+> ManyDRM(TA, A, A, s)
+ManyDRM(TA, A, A, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A, B:*3.A}), S1:s}, !2))
+###
+> ManyDRM(TA, A, A, i8)
+ManyDRM(TA, A, A, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A, B:*3.A}), S2:i8}, !2))
+###
+> ManyDRM(TA, A, A, s, i8)
+ManyDRM(TA, A, A, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A, B:*3.A}), S1:s, S2:i8}, !2))
+###
+> ManyDRM(TA, A, A, i8, s)
+ManyDRM(TA, A, A, i8, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A, i8, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A, B:*3.A}), S1:s, S2:i8}, !2))
+###
+> ManyDRM(TA, A, A, i8, i8) // Error.
+ManyDRM(TA, A, A, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (22,24) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, *1.A, *1.A, i8, Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A, B:*3.A}), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+###
+> ManyDRM(TA, A:A, A:A, i8, i8) // Error.
+ManyDRM(TA, A : A, A : A, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (7,8) Node: ManyDRM(TA, A : A, A : A, i8, i8), Message: No overload can be found matching these names and directives.
+*** Error: (17,18) Tok: 'A', Message: Parameter name 'A' already specified 1 position(s) prior
+*** Error: (22,24) Node: i8, Message: The argument in position 4 of 'ManyDRM' should include a field name
+*** Error: (26,28) Node: i8, Message: The argument in position 5 of 'ManyDRM' should include a field name
+*** Error: (22,24) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, A : *1.A, A : *1.A, Error(ErrBadType_Src_Dst), i8)
+###
+> ManyDRM(TA, A, [key] s) // Error.
+ManyDRM(TA, A, [key] s) : {A:s, B:s, B2:s*}*
+*** Error: (15,20) Node: [key] s, Tok: '[key]', Message: Unexpected directive
+*** Error: (7,8) Node: ManyDRM(TA, A, [key] s), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM*(*1: TA, *1.A, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s}, !2))
+###
+> ManyDRM(TA, [key] A, [top] s) // Error.
+ManyDRM(TA, [key] A, [top] s) : {A:s, B:s, B2:s*}*
+*** Error: (12,17) Node: [key] A, Tok: '[key]', Message: Unexpected directive
+Binder : Test.ManyDRM*(*1: TA, *1.A, [top] s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:*3.A}), S1:s}, !2))
+###
+> ManyDRM(TA, [top] s, [key] s) // Error.
+ManyDRM(TA, [top] s, [key] s) : {A:s, B:s, B2:s*}*
+*** Error: (21,26) Node: [key] s, Tok: '[key]', Message: Unexpected directive
+*** Error: (7,8) Node: ManyDRM(TA, [top] s, [key] s), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM*(*1: TA, [top] s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, [key] s, [key] s) // Error.
+ManyDRM(TA, [key] s, [key] s) : {A:s, B:s, B2:s*}*
+*** Error: (12,17) Node: [key] s, Tok: '[key]', Message: Unexpected directive
+*** Error: (21,26) Node: [key] s, Tok: '[key]', Message: Unexpected directive
+*** Error: (7,8) Node: ManyDRM(TA, [key] s, [key] s), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM*(*1: TA, s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, s, s)
+ManyDRM(TA, s, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, ForEach(*3: !2, {A:s, B:s}), !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeSeq(!2: ?1, With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> ManyDRM(TA, s, S1:s)
+ManyDRM(TA, s, S1 : s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, S1 : s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, s, [top] s)
+ManyDRM(TA, s, [top] s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, [top] s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, [top] s, s) // Error.
+ManyDRM(TA, [top] s, s) : {A:s, B:s, B2:s*}*
+*** Error: (7,8) Node: ManyDRM(TA, [top] s, s), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM*(*1: TA, [top] s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, i8, s) // Error.
+ManyDRM(TA, i8, s) : {A:s, B:s, B2:s*}*
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (16,17) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Test.ManyDRM*(*1: TA, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:Error(ErrBadType_Src_Dst)}), S2:Error(ErrBadType_Src_Dst)}, !2))
+###
+> ManyDRM(TA, i8, i8) // Error.
+ManyDRM(TA, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, Error(ErrBadType_Src_Dst), i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:Error(ErrBadType_Src_Dst)}), S2:i8}, !2))
+###
+> ManyDRM(TA, s, s, s)
+ManyDRM(TA, s, s, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:s}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:s}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s}, !3))
+###
+> ManyDRM(TA, s, s, i8)
+ManyDRM(TA, s, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S2:i8}, !3))
+###
+> ManyDRM(TA, s, s, S2:i8)
+ManyDRM(TA, s, s, S2 : i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, S2 : i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S2:i8}, !3))
+###
+> ManyDRM(TA, s, s, [top] i8)
+ManyDRM(TA, s, s, [top] i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, [top] i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S2:i8}, !3))
+###
+> ManyDRM(TA, s, S1:s, i8)
+ManyDRM(TA, s, S1 : s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, S1 : s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM(TA, s, [top] s, i8)
+ManyDRM(TA, s, [top] s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, [top] s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM(TA, [top] s, s, i8) // Error.
+ManyDRM(TA, [top] s, s, i8) : {A:s, B:s, B2:s*}*
+*** Error: (7,8) Node: ManyDRM(TA, [top] s, s, i8), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM*(*1: TA, [top] s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM(TA, i8, s, i8) // Error.
+ManyDRM(TA, i8, s, i8) : {A:s, B:s, B2:s*}*
+*** Error: (12,14) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (16,17) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (19,21) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:Error(ErrBadType_Src_Dst)}), S1:Error(ErrBadType_Src_Dst), S2:Error(ErrBadType_Src_Dst)}, !2))
+###
+> ManyDRM(TA, s, i8, i8) // Error.
+ManyDRM(TA, s, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (19,21) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, s, i8, Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:Error(ErrBadType_Src_Dst), S2:i8}, !3))
+###
+> ManyDRM(TA, s, s, s, i8)
+ManyDRM(TA, s, s, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM(TA, s, i8, s, i8) // Error.
+ManyDRM(TA, s, i8, s, i8) : {A:s, B:s, B2:s*}*
+*** Error: (15,17) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (19,20) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (22,24) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, s, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:Error(ErrBadType_Src_Dst), B:s}), S1:Error(ErrBadType_Src_Dst), S2:Error(ErrBadType_Src_Dst)}, !2))
+###
+> ManyDRM(TA, s, s, i8, s)
+ManyDRM(TA, s, s, i8, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM*(*1: TA, s, s, i8, s)
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM(TA, s, s, i8, i8) // Error.
+ManyDRM(TA, s, s, i8, i8) : {A:s, B:s, B2:s*}*
+*** Error: (22,24) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Test.ManyDRM*(*1: TA, s, s, i8, Error(ErrBadType_Src_Dst))
+Reducer: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:Error(ErrBadType_Src_Dst), S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:Error(ErrBadType_Src_Dst), S2:i8}, !3))
+###
+> ManyDRM_Def(TA, s, s)
+ManyDRM_Def(TA, s, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:"/def", S2:3}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:"/def", S2:3}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:"/def", S2:3}, !3))
+###
+> ManyDRM_Def(TA, s, S1:s)
+ManyDRM_Def(TA, s, S1 : s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, S1 : s)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:3}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:3}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:3}, !3))
+###
+> ManyDRM_Def(TA, S1:s, A:A) // Error.
+ManyDRM_Def(TA, S1 : s, A : A) : {A:s, B:s, B2:s*}*
+*** Error: (24,25) Node: A, Message: Name does not exist in the current context
+*** Error: (16,18) Tok: 'S1', Message: Field does not exist in type: '{A:s}'
+*** Error: (22,23) Tok: 'A', Message: Field does not exist in type: '{Mis:{A:s}*, S1:s, S2:i8}'
+Binder : Test.ManyDRM_Def*(*1: TA, S1 : s, A : Unit<s>(Error(ErrNameDoesNotExist)))
+Reducer: Test.ManyDRM_Def*(*1: TA, S1 : s, A : str(<null>))
+###
+> ManyDRM_Def(TA, S1:s, S2:i8, A:A) // Error.
+ManyDRM_Def(TA, S1 : s, S2 : i8, A : A) : {A:s, B:s, B2:s*}*
+*** Error: (31,32) Node: A, Message: Name does not exist in the current context
+*** Error: (16,18) Tok: 'S1', Message: Field does not exist in type: '{A:s}'
+*** Error: (29,30) Tok: 'A', Message: Field does not exist in type: '{Mis:{A:s}*, S1:s, S2:i8}'
+Binder : Test.ManyDRM_Def*(*1: TA, S1 : s, S2 : i8, A : Unit<i8>(Error(ErrNameDoesNotExist)))
+Reducer: Test.ManyDRM_Def*(*1: TA, S1 : s, S2 : i8, A : 0)
+###
+> ManyDRM_Def(TA, s, s, s)
+ManyDRM_Def(TA, s, s, s) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, s, s)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:s, S2:3}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:s, S2:3}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:3}, !3))
+###
+> ManyDRM_Def(TA, s, s, s, i8)
+ManyDRM_Def(TA, s, s, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s, B:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s, B:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s, B:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM_Def(TA, s, S1:s, i8)
+ManyDRM_Def(TA, s, S1 : s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, S1 : s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM_Def(TA, s, [top] s, i8)
+ManyDRM_Def(TA, s, [top] s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, [top] s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM_Def(TA, [top] s, s, i8) // Error.
+ManyDRM_Def(TA, [top] s, s, i8) : {A:s, B:s, B2:s*}*
+*** Error: (11,12) Node: ManyDRM_Def(TA, [top] s, s, i8), Message: No overload can be found matching these names and directives.
+Binder : Test.ManyDRM_Def*(*1: TA, [top] s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+> ManyDRM_Def(TA, s, s, i8)
+ManyDRM_Def(TA, s, s, i8) : {A:s, B:s, B2:s*}*
+Binder : Test.ManyDRM_Def*(*1: TA, s, s, i8)
+Reducer: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:s}), S1:s, S2:i8}, !2))
+Hoister: Guard(?1: TA, Test.ManyDRM_Def.MergeRec(!2: ?1, {Mis:With(!3: {A:s}, ForEach(*4: !2, !3)), S1:s, S2:i8}, !2))
+Reducer: Guard(?1: TA, !2: {A:s}, Test.ManyDRM_Def.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:s, S2:i8}, !3))
+###
+
+**** New globals: {RA:{A:s*}, RB:{A:s*, B:s*}, TA:{A:s}*, TB:{A:s, B:s}*, TC:{A:s, C:{D:s, E:s}*}*, i8:i8, s:s}
+
+> MultiS_DSMA_AD(RA)
+MultiS_DSMA_AD(RA) : {B:s*}*
+Binder : Test.MultiS_DSMA_AD*(RA)
+Reducer: Test.MultiS_DSMA_AD.Simple([RA])
+###
+> MultiS_DSMA_AD(TA, A)
+MultiS_DSMA_AD(TA, A) : {A:s, B:s*}*
+Binder : Test.MultiS_DSMA_AD*(*1: TA, *1.A)
+Reducer: Guard(?1: TA, Test.MultiS_DSMA_AD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A]}), !2))
+###
+> MultiS_DSMB_ABD(RB)
+MultiS_DSMB_ABD(RB) : {B:s*}*
+Binder : Test.MultiS_DSMB_ABD*(RB)
+Reducer: Test.MultiS_DSMB_ABD.Simple([RB])
+###
+> MultiS_DSMB_ABD(TB, B)
+MultiS_DSMB_ABD(TB, B) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DSMB_ABD*(*1: TB, *1.B)
+Reducer: Guard(?1: TB, Test.MultiS_DSMB_ABD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:null, B:[*3.B]}), !2))
+###
+> MultiS_DSMB_ABD(TB, B: [B], A: A)
+MultiS_DSMB_ABD(TB, B : [B], A : A) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DSMB_ABD*(*1: TB, B : [*1.B], A : *1.A)
+Reducer: Guard(?1: TB, Test.MultiS_DSMB_ABD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A], B:[*3.B]}), !2))
+###
+> MultiS_DSMC_ACD(TC, C: C, A: A)
+MultiS_DSMC_ACD(TC, C : C, A : A) : {A:s, B:s*, C:{D:s, E:s}*}*
+Binder : Test.MultiS_DSMC_ACD*(*1: TC, C : *1.C, A : *1.A)
+Reducer: Guard(?1: TC, Test.MultiS_DSMC_ACD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A], C:[*3.C]}), !2))
+###
+> MultiS_DSMC_ACD(TC, C: [C], A: A)
+MultiS_DSMC_ACD(TC, C : [C], A : A) : {A:s, B:s*, C:{D:s, E:s}*}*
+Binder : Test.MultiS_DSMC_ACD*(*1: TC, C : [*1.C], A : *1.A)
+Reducer: Guard(?1: TC, Test.MultiS_DSMC_ACD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A], C:[*3.C]}), !2))
+###
+> MultiS_DSMC_ACD(TC, D: C, A: A) // Error.
+MultiS_DSMC_ACD(TC, D : C, A : A) : {A:s, B:s*, C:{D:s, E:s}*}*
+*** Error: (15,16) Node: MultiS_DSMC_ACD(TC, D : C, A : A), Message: No overload can be found matching these names and directives.
+*** Error: (20,21) Tok: 'D', Message: Field does not exist in type: '{A:s*, C:{D:s, E:s}**}'
+Binder : Test.MultiS_DSMC_ACD*(*1: TC, D : *1.C, A : *1.A)
+###
+> MultiS_DSMC_ACD(TC, D: [C], A: A) // Error.
+MultiS_DSMC_ACD(TC, D : [C], A : A) : {A:s, B:s*, C:{D:s, E:s}*}*
+*** Error: (15,16) Node: MultiS_DSMC_ACD(TC, D : [C], A : A), Message: No overload can be found matching these names and directives.
+*** Error: (20,21) Tok: 'D', Message: Field does not exist in type: '{A:s*, C:{D:s, E:s}**}'
+Binder : Test.MultiS_DSMC_ACD*(*1: TC, D : [*1.C], A : *1.A)
+###
+> MultiS_DRMB_ABD12(TB, A, B, s, [i8])
+MultiS_DRMB_ABD12(TB, A, B, s, [i8]) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DRMB_ABD12*(*1: TB, *1.A, *1.B, s, [i8])
+Reducer: Guard(?1: TB, Test.MultiS_DRMB_ABD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:[*3.B], B:[*3.A]}), S1:[s], S2:[i8]}, !2))
+###
+> MultiS_DRMB_ABD12(TB, B: [B], A: A, S1:[s], S2:i8)
+MultiS_DRMB_ABD12(TB, B : [B], A : A, S1 : [s], S2 : i8) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DRMB_ABD12*(*1: TB, B : [*1.B], A : *1.A, S1 : [s], S2 : i8)
+Reducer: Guard(?1: TB, Test.MultiS_DRMB_ABD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:[*3.A], B:[*3.B]}), S1:[s], S2:[i8]}, !2))
+###
+> MultiS_DfMB_ABDM12({A:s, B:s}, s, i8) // Error.
+MultiS_DfMB_ABDM12({ A : s, B : s }, s, i8) : {B:s*}*
+*** Error: (19,20) Node: { A : s, B : s }, Message: Invalid operand type: cannot convert type '{A:s, B:s}' to '{A:s*, B:s*}'
+Binder : Test.MultiS_DfMB_ABDM12*(Error(ErrBadType_Src_Dst), s, i8)
+Reducer: Test.MultiS_DfMB_ABDM12.Simple({Mis:[Error(ErrBadType_Src_Dst)], S1:[s], S2:[i8]})
+###
+> MultiS_DfMB_ABDM12({A:[s], B:[s]}, s, i8)
+MultiS_DfMB_ABDM12({ A : [s], B : [s] }, s, i8) : {B:s*}*
+Binder : Test.MultiS_DfMB_ABDM12*({A:[s], B:[s]}, s, i8)
+Reducer: Test.MultiS_DfMB_ABDM12.Simple({Mis:[{A:[s], B:[s]}], S1:[s], S2:[i8]})
+###
+> MultiS_DsMB_ABDM(TB, {A:[s], B:[s]})
+MultiS_DsMB_ABDM(TB, { A : [s], B : [s] }) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DsMB_ABDM*(*1: TB, {A:[s], B:[s]})
+Reducer: Guard(?1: TB, Test.MultiS_DsMB_ABDM.MergeSeq(!2: ?1, ForEach(*3: !2, [{A:[s], B:[s]}]), !2))
+Hoister: Guard(?1: TB, Test.MultiS_DsMB_ABDM.MergeSeq(!2: ?1, With(!3: [{A:[s], B:[s]}], ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TB, !2: [{A:[s], B:[s]}], Test.MultiS_DsMB_ABDM.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DrMB_ABDM12(TB, {A:[s], B:[s]}, S2:i8, S1:s)
+MultiS_DrMB_ABDM12(TB, { A : [s], B : [s] }, S2 : i8, S1 : s) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DrMB_ABDM12*(*1: TB, {A:[s], B:[s]}, S2 : i8, S1 : s)
+Reducer: Guard(?1: TB, Test.MultiS_DrMB_ABDM12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, [{A:[s], B:[s]}]), S1:[s], S2:[i8]}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DrMB_ABDM12.MergeRec(!2: ?1, {Mis:With(!3: [{A:[s], B:[s]}], ForEach(*4: !2, !3)), S1:[s], S2:[i8]}, !2))
+Reducer: Guard(?1: TB, !2: [{A:[s], B:[s]}], Test.MultiS_DrMB_ABDM12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:[s], S2:[i8]}, !3))
+###
+> MultiS_DSMA_AD(TA, null)
+MultiS_DSMA_AD(TA, null) : {A:s, B:s*}*
+Binder : Test.MultiS_DSMA_AD*(*1: TA, null)
+Reducer: Guard(?1: TA, Test.MultiS_DSMA_AD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:null}), !2))
+Hoister: Guard(?1: TA, Test.MultiS_DSMA_AD.MergeSeq(!2: ?1, With(!3: {A:null}, ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TA, !2: {A:null}, Test.MultiS_DSMA_AD.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DRMB_ABD12(TB, null, null, null, null)
+MultiS_DRMB_ABD12(TB, null, null, null, null) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DRMB_ABD12*(*1: TB, null, null, null, null)
+Reducer: Guard(?1: TB, Test.MultiS_DRMB_ABD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:null, B:null}), S1:null, S2:null}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DRMB_ABD12.MergeRec(!2: ?1, {Mis:With(!3: {A:null, B:null}, ForEach(*4: !2, !3)), S1:null, S2:null}, !2))
+Reducer: Guard(?1: TB, !2: {A:null, B:null}, Test.MultiS_DRMB_ABD12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:null, S2:null}, !3))
+###
+> MultiS_DfMB_ABDM12({A:null, B:null}, null, i8)
+MultiS_DfMB_ABDM12({ A : null, B : null }, null, i8) : {B:s*}*
+Binder : Test.MultiS_DfMB_ABDM12*({A:null, B:null}, null, i8)
+Reducer: Test.MultiS_DfMB_ABDM12.Simple({Mis:[{A:null, B:null}], S1:null, S2:[i8]})
+###
+> MultiS_DsMB_ABDM(TB, {A:null, B:null})
+MultiS_DsMB_ABDM(TB, { A : null, B : null }) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DsMB_ABDM*(*1: TB, {A:null, B:null})
+Reducer: Guard(?1: TB, Test.MultiS_DsMB_ABDM.MergeSeq(!2: ?1, ForEach(*3: !2, [{A:null, B:null}]), !2))
+Hoister: Guard(?1: TB, Test.MultiS_DsMB_ABDM.MergeSeq(!2: ?1, With(!3: [{A:null, B:null}], ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TB, !2: [{A:null, B:null}], Test.MultiS_DsMB_ABDM.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DrMB_ABDM12(TB, {A:null, B:null}, S2:i8, S1:null)
+MultiS_DrMB_ABDM12(TB, { A : null, B : null }, S2 : i8, S1 : null) : {A:s, B:s, B2:s*}*
+Binder : Test.MultiS_DrMB_ABDM12*(*1: TB, {A:null, B:null}, S2 : i8, S1 : null)
+Reducer: Guard(?1: TB, Test.MultiS_DrMB_ABDM12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, [{A:null, B:null}]), S1:null, S2:[i8]}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DrMB_ABDM12.MergeRec(!2: ?1, {Mis:With(!3: [{A:null, B:null}], ForEach(*4: !2, !3)), S1:null, S2:[i8]}, !2))
+Reducer: Guard(?1: TB, !2: [{A:null, B:null}], Test.MultiS_DrMB_ABDM12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:null, S2:[i8]}, !3))
+###
+
+**** New globals: {RA:{A:s*, G:g*}, RB:{A:s*, B:s*, G:g*}, TA:{A:s, X:i8}*, TB:{A:s, B:s, X:i8}*, TC:{C:s*, X:r8}*, i8:i8, s:s}
+
+> MultiS_DGSMA_AGD(RA)
+MultiS_DGSMA_AGD(RA) : {B:s*}*
+Binder : Test.MultiS_DGSMA_AGD*(RA)
+Reducer: Test.MultiS_DGSMA_AGD.Simple([RA])
+###
+> MultiS_DGSMA_AGD(TA, X, A)
+MultiS_DGSMA_AGD(TA, X, A) : {A:s, B:s*, X:i8}*
+Binder : Test.MultiS_DGSMA_AGD*(*1: TA, *1.X, *1.A)
+Reducer: Guard(?1: TA, Test.MultiS_DGSMA_AGD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A], G:[*3.X]}), !2))
+###
+> MultiS_DGSMB_ABGD(RB)
+MultiS_DGSMB_ABGD(RB) : {B:s*}*
+Binder : Test.MultiS_DGSMB_ABGD*(RB)
+Reducer: Test.MultiS_DGSMB_ABGD.Simple([RB])
+###
+> MultiS_DGSMB_ABGD(TB, X, B)
+MultiS_DGSMB_ABGD(TB, X, B) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGSMB_ABGD*(*1: TB, *1.X, *1.B)
+Reducer: Guard(?1: TB, Test.MultiS_DGSMB_ABGD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:null, B:[*3.B], G:[*3.X]}), !2))
+###
+> MultiS_DGSMB_ABGD(TB, B: [B], G: X, A: A)
+MultiS_DGSMB_ABGD(TB, B : [B], G : X, A : A) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGSMB_ABGD*(*1: TB, B : [*1.B], G : *1.X, A : *1.A)
+Reducer: Guard(?1: TB, Test.MultiS_DGSMB_ABGD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:[*3.A], B:[*3.B], G:[*3.X]}), !2))
+###
+> MultiS_DGRMB_ABGD12(TB, X, A, B, s, [i8])
+MultiS_DGRMB_ABGD12(TB, X, A, B, s, [i8]) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGRMB_ABGD12*(*1: TB, *1.X, *1.A, *1.B, s, [i8])
+Reducer: Guard(?1: TB, Test.MultiS_DGRMB_ABGD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:[*3.B], B:[*3.A], G:[*3.X]}), S1:[s], S2:[i8]}, !2))
+###
+> MultiS_DGRMB_ABGD12(TB, B: [B], A: A, G:X, S1:[s], S2:i8)
+MultiS_DGRMB_ABGD12(TB, B : [B], A : A, G : X, S1 : [s], S2 : i8) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGRMB_ABGD12*(*1: TB, B : [*1.B], A : *1.A, G : *1.X, S1 : [s], S2 : i8)
+Reducer: Guard(?1: TB, Test.MultiS_DGRMB_ABGD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:[*3.A], B:[*3.B], G:[*3.X]}), S1:[s], S2:[i8]}, !2))
+###
+> MultiS_DGfMB_ABGDM12({A:s, B:s, G:i8}, s, i8) // Error.
+MultiS_DGfMB_ABGDM12({ A : s, B : s, G : i8 }, s, i8) : {B:s*}*
+*** Error: (21,22) Node: { A : s, B : s, G : i8 }, Message: Invalid operand type: cannot convert type '{A:s, B:s, G:i8}' to '{A:s*, B:s*, G:i8*}'
+Binder : Test.MultiS_DGfMB_ABGDM12*(Error(ErrBadType_Src_Dst), s, i8)
+Reducer: Test.MultiS_DGfMB_ABGDM12.Simple({Mis:[Error(ErrBadType_Src_Dst)], S1:[s], S2:[i8]})
+###
+> MultiS_DGfMB_ABGDM12({A:[s], B:[s], G:[i8]}, s, i8)
+MultiS_DGfMB_ABGDM12({ A : [s], B : [s], G : [i8] }, s, i8) : {B:s*}*
+Binder : Test.MultiS_DGfMB_ABGDM12*({A:[s], B:[s], G:[i8]}, s, i8)
+Reducer: Test.MultiS_DGfMB_ABGDM12.Simple({Mis:[{A:[s], B:[s], G:[i8]}], S1:[s], S2:[i8]})
+###
+> MultiS_DGsMB_ABGDM(TB, {A:[s], B:[s], G:[i8]})
+MultiS_DGsMB_ABGDM(TB, { A : [s], B : [s], G : [i8] }) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGsMB_ABGDM*(*1: TB, {A:[s], B:[s], G:[i8]})
+Reducer: Guard(?1: TB, Test.MultiS_DGsMB_ABGDM.MergeSeq(!2: ?1, ForEach(*3: !2, [{A:[s], B:[s], G:[i8]}]), !2))
+Hoister: Guard(?1: TB, Test.MultiS_DGsMB_ABGDM.MergeSeq(!2: ?1, With(!3: [{A:[s], B:[s], G:[i8]}], ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TB, !2: [{A:[s], B:[s], G:[i8]}], Test.MultiS_DGsMB_ABGDM.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DGrMB_ABGDM12(TB, {A:[s], B:[s], G:[i8]}, S2:i8, S1:s)
+MultiS_DGrMB_ABGDM12(TB, { A : [s], B : [s], G : [i8] }, S2 : i8, S1 : s) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGrMB_ABGDM12*(*1: TB, {A:[s], B:[s], G:[i8]}, S2 : i8, S1 : s)
+Reducer: Guard(?1: TB, Test.MultiS_DGrMB_ABGDM12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, [{A:[s], B:[s], G:[i8]}]), S1:[s], S2:[i8]}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DGrMB_ABGDM12.MergeRec(!2: ?1, {Mis:With(!3: [{A:[s], B:[s], G:[i8]}], ForEach(*4: !2, !3)), S1:[s], S2:[i8]}, !2))
+Reducer: Guard(?1: TB, !2: [{A:[s], B:[s], G:[i8]}], Test.MultiS_DGrMB_ABGDM12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:[s], S2:[i8]}, !3))
+###
+> MultiS_DGSMA_AGD(TA, null)
+MultiS_DGSMA_AGD(TA, null) : {A:s, B:s*, X:i8}*
+Binder : Test.MultiS_DGSMA_AGD*(*1: TA, null)
+Reducer: Guard(?1: TA, Test.MultiS_DGSMA_AGD.MergeSeq(!2: ?1, ForEach(*3: !2, {A:null, G:null}), !2))
+Hoister: Guard(?1: TA, Test.MultiS_DGSMA_AGD.MergeSeq(!2: ?1, With(!3: {A:null, G:null}, ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TA, !2: {A:null, G:null}, Test.MultiS_DGSMA_AGD.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DGRMB_ABGD12(TB, null, null, null, null)
+MultiS_DGRMB_ABGD12(TB, null, null, null, null) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGRMB_ABGD12*(*1: TB, null, null, null, null)
+Reducer: Guard(?1: TB, Test.MultiS_DGRMB_ABGD12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, {A:null, B:null, G:null}), S1:null, S2:null}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DGRMB_ABGD12.MergeRec(!2: ?1, {Mis:With(!3: {A:null, B:null, G:null}, ForEach(*4: !2, !3)), S1:null, S2:null}, !2))
+Reducer: Guard(?1: TB, !2: {A:null, B:null, G:null}, Test.MultiS_DGRMB_ABGD12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:null, S2:null}, !3))
+###
+> MultiS_DGfMB_ABGDM12({A:null, B:null, G:null}, null, i8)
+MultiS_DGfMB_ABGDM12({ A : null, B : null, G : null }, null, i8) : {B:s*}*
+Binder : Test.MultiS_DGfMB_ABGDM12*({A:null, B:null, G:null}, null, i8)
+Reducer: Test.MultiS_DGfMB_ABGDM12.Simple({Mis:[{A:null, B:null, G:null}], S1:null, S2:[i8]})
+###
+> MultiS_DGsMB_ABGDM(TB, {A:null, B:null, G:null})
+MultiS_DGsMB_ABGDM(TB, { A : null, B : null, G : null }) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGsMB_ABGDM*(*1: TB, {A:null, B:null, G:null})
+Reducer: Guard(?1: TB, Test.MultiS_DGsMB_ABGDM.MergeSeq(!2: ?1, ForEach(*3: !2, [{A:null, B:null, G:null}]), !2))
+Hoister: Guard(?1: TB, Test.MultiS_DGsMB_ABGDM.MergeSeq(!2: ?1, With(!3: [{A:null, B:null, G:null}], ForEach(*4: !2, !3)), !2))
+Reducer: Guard(?1: TB, !2: [{A:null, B:null, G:null}], Test.MultiS_DGsMB_ABGDM.MergeSeq(!3: ?1, ForEach(*4: !3, !2), !3))
+###
+> MultiS_DGrMB_ABGDM12(TB, {A:null, B:null, G:null}, S2:i8, S1:null)
+MultiS_DGrMB_ABGDM12(TB, { A : null, B : null, G : null }, S2 : i8, S1 : null) : {A:s, B:s, B2:s*, X:i8}*
+Binder : Test.MultiS_DGrMB_ABGDM12*(*1: TB, {A:null, B:null, G:null}, S2 : i8, S1 : null)
+Reducer: Guard(?1: TB, Test.MultiS_DGrMB_ABGDM12.MergeRec(!2: ?1, {Mis:ForEach(*3: !2, [{A:null, B:null, G:null}]), S1:null, S2:[i8]}, !2))
+Hoister: Guard(?1: TB, Test.MultiS_DGrMB_ABGDM12.MergeRec(!2: ?1, {Mis:With(!3: [{A:null, B:null, G:null}], ForEach(*4: !2, !3)), S1:null, S2:[i8]}, !2))
+Reducer: Guard(?1: TB, !2: [{A:null, B:null, G:null}], Test.MultiS_DGrMB_ABGDM12.MergeRec(!3: ?1, {Mis:ForEach(*4: !3, !2), S1:null, S2:[i8]}, !3))
+###

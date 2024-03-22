@@ -1,0 +1,2718 @@
+**** New definitions: T, type: {A:i8}*
+
+> Range(5)->ForEach(Ping())
+Range(5)->ForEach(Ping()) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Repeat(false:b, 5:i8):b*), CallVol(∂.Test.Ping():i8)):i8*))
+AllKinds: Int, Call, CallVolatile, ScopeOwner
+// (<ctx>) : i8*
+ForEach_1(Arr<obj>, bool):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ret
+  Total Size: 13
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.0
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RepeatGen::Exec(bool, i8):RepeatSequence<bool>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<bool,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<bool>, Func<bool,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 64
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+*** Ctx ping count: 5
+    [_] 5
+###
+> Range(5)->ForEach(Date.Now.Utc())
+Range(5)->ForEach(Date.Now.Utc()) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Repeat(false:b, 5:i8):b*), CallVol(∂.Date.Now.Utc():d)):d*))
+AllKinds: Int, Call, CallVolatile, ScopeOwner
+// (<ctx>) : d*
+ForEach_1(Arr<obj>, bool):Date
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.0
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RepeatGen::Exec(bool, i8):RepeatSequence<bool>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<bool,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<bool>, Func<bool,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 64
+
+Func sig: (<ctx>:x) to d*
+Sequence: Seq<Date>
+ 0) DT(2023, 4, 10, 20, 30, 41, 123, 4567)
+ 1) DT(2023, 4, 10, 20, 30, 42, 123, 4567)
+ 2) DT(2023, 4, 10, 20, 30, 43, 123, 4567)
+ 3) DT(2023, 4, 10, 20, 30, 44, 123, 4567)
+ 4) DT(2023, 4, 10, 20, 30, 45, 123, 4567)
+*** Ctx ping count: 0
+###
+> With(start: Date.Now.Utc(), Range(5)->ForEach(Date.Now.Utc() - start))
+With(start : Date.Now.Utc(), Range(5)->ForEach(Date.Now.Utc() - start)) : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.With([with:1] CallVol(∂.Date.Now.Utc():d), Call(∂.ForEach([map:2] Call(∂.Repeat(false:b, 5:i8):b*), ChronoSub(CallVol(∂.Date.Now.Utc():d), Scope(1))):t*)):t*))
+AllKinds: Int, ArgScopeRef, BinaryOp, Call, CallVolatile, ScopeOwner
+// (<ctx>) : t*
+ForEach_1(Arr<obj>, bool):Time
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.1
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Date)]
+      5) ldfld (Date)::_F0:Date
+      5) call static Date::Sub(Date, Date):Time
+      1) ret
+  Total Size: 31
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static DateNowGen::ExecUtc(ExecCtx, i4):Date
+      1) stloc.1 [Date]
+      1) ldc.i4.0
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RepeatGen::Exec(bool, i8):RepeatSequence<bool>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<bool,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Date)()
+      1) dup
+      1) ldloc.1 [Date]
+      5) stfld (Date)::_F0:Date
+      5) stelem [(Date)]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<bool>, Func<bool,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 91
+
+Func sig: (<ctx>:x) to t*
+Sequence: Seq<Time>
+ 0) 00:00:01
+ 1) 00:00:02
+ 2) 00:00:03
+ 3) 00:00:04
+ 4) 00:00:05
+*** Ctx ping count: 0
+###
+> With(S: Range(5)->ForEach(Guid.Make()), (S, S->Sort(), S->SortUp(), S->SortDown()))
+With(S : Range(5)->ForEach(Guid.Make()), (S, S->Sort(), S->SortUp(), S->SortDown())) : (G*, G*, G*, G*)
+BndKind:Call, Type:(G*, G*, G*, G*), Bnd:(Call(∂.With([with:2] Call(∂.ForEach([map:1] Call(∂.Repeat(false:b, 5:i8):b*), CallVol(∂.Guid.Make():G)):G*), (Scope(2), Call(∂.Sort(Scope(2)):G*), Call(∂.SortUp(Scope(2)):G*), Call(∂.SortDown(Scope(2)):G*)):(G*, G*, G*, G*)):(G*, G*, G*, G*)))
+AllKinds: Int, ArgScopeRef, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>) : (G*, G*, G*, G*)
+ForEach_1(Arr<obj>, bool):Guid
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static MakeGuidGen::Exec(ExecCtx, i4):Guid
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.0
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RepeatGen::Exec(bool, i8):RepeatSequence<bool>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<bool,Guid>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<bool>, Func<bool,Guid>):Seq<Guid>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<Guid>):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      5) newobj (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>)()
+      1) dup
+      1) ldloc.1 [Seq<Guid>]
+      5) stfld (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>)::_F0:Seq<Guid>
+      1) dup
+      1) ldloc.1 [Seq<Guid>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Guid>, ExecCtx, i4):Seq<Guid>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<Guid,Guid,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Guid>, Func<Guid,Guid,i4>):Seq<Guid>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Guid>, Seq<Guid>):Seq<Guid>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Guid>):Seq<Guid>
+      5) stfld (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>)::_F1:Seq<Guid>
+      1) dup
+      1) ldloc.1 [Seq<Guid>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.2
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Guid>, ExecCtx, i4):Seq<Guid>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<Guid,Guid,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Guid>, Func<Guid,Guid,i4>):Seq<Guid>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Guid>, Seq<Guid>):Seq<Guid>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Guid>):Seq<Guid>
+      5) stfld (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>)::_F2:Seq<Guid>
+      1) dup
+      1) ldloc.1 [Seq<Guid>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.3
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Guid>, ExecCtx, i4):Seq<Guid>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<Guid,Guid,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Guid>, Func<Guid,Guid,i4>):Seq<Guid>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Guid>, Seq<Guid>):Seq<Guid>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Guid>):Seq<Guid>
+      5) stfld (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>)::_F3:Seq<Guid>
+      1) ret
+  Total Size: 188
+
+Func sig: (<ctx>:x) to (G*, G*, G*, G*)
+Type: (Seq<Guid>,Seq<Guid>,Seq<Guid>,Seq<Guid>), Value: (Sequence: Seq<Guid>
+     0) 1fd45f46-0000-0000-0000-000000000000
+     1) 62b33471-0000-0000-0000-000000000000
+     2) 2592099d-0000-0000-0000-000000000000
+     3) 6870dec8-0000-0000-0000-000000000000
+     4) 2b4fb3f4-0000-0000-0000-000000000000
+  , Sequence: Seq<Guid>
+     0) 1fd45f46-0000-0000-0000-000000000000
+     1) 2592099d-0000-0000-0000-000000000000
+     2) 2b4fb3f4-0000-0000-0000-000000000000
+     3) 62b33471-0000-0000-0000-000000000000
+     4) 6870dec8-0000-0000-0000-000000000000
+  , Sequence: Seq<Guid>
+     0) 1fd45f46-0000-0000-0000-000000000000
+     1) 2592099d-0000-0000-0000-000000000000
+     2) 2b4fb3f4-0000-0000-0000-000000000000
+     3) 62b33471-0000-0000-0000-000000000000
+     4) 6870dec8-0000-0000-0000-000000000000
+  , Sequence: Seq<Guid>
+     0) 6870dec8-0000-0000-0000-000000000000
+     1) 62b33471-0000-0000-0000-000000000000
+     2) 2b4fb3f4-0000-0000-0000-000000000000
+     3) 2592099d-0000-0000-0000-000000000000
+     4) 1fd45f46-0000-0000-0000-000000000000
+)
+*** Ctx ping count: 18
+    [1](6): Sort(!1x)
+    [2](6): SortUp(!1x)
+    [3](6): SortDown(!1x)
+###
+> With(S: Range(10)->ForEach(Guid.Make() if it mod 4 != 0 else null), (S, S->Sort(), S->SortUp(), S->SortDown()))
+With(S : Range(10)->ForEach(Guid.Make() if it mod 4 !@= 0 else null), (S, S->Sort(), S->SortUp(), S->SortDown())) : (G?*, G?*, G?*, G?*)
+BndKind:Call, Type:(G?*, G?*, G?*, G?*), Bnd:(Call(∂.With([with:2] Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), If(Cmp(IntMod(Scope(1), 4:i8) !@= 0:i8), Opt<G?>(CallVol(∂.Guid.Make():G)), null:G?)):G?*), (Scope(2), Call(∂.Sort(Scope(2)):G?*), Call(∂.SortUp(Scope(2)):G?*), Call(∂.SortDown(Scope(2)):G?*)):(G?*, G?*, G?*, G?*)):(G?*, G?*, G?*, G?*)))
+AllKinds: Null, Int, ArgScopeRef, CastOpt, BinaryOp, Compare, If, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>) : (G?*, G?*, G?*, G?*)
+ForEach_1(Arr<obj>, i8):Opt<Guid>
+      1) ldarg.1 [i8]
+      1) ldc.i4.4
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+      5) brfalse [0]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static MakeGuidGen::Exec(ExecCtx, i4):Guid
+      5) newobj Opt<Guid>(Guid)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Guid>
+  Label [1]:
+      1) ret
+  Total Size: 45
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Opt<Guid>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Opt<Guid>>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      1) stloc.1 [Seq<Opt<Guid>>]
+      5) newobj (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>)()
+      1) dup
+      1) ldloc.1 [Seq<Opt<Guid>>]
+      5) stfld (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>)::_F0:Seq<Opt<Guid>>
+      1) dup
+      1) ldloc.1 [Seq<Opt<Guid>>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Opt<Guid>>, ExecCtx, i4):Seq<Opt<Guid>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<Opt<Guid>,Opt<Guid>,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Opt<Guid>>, Func<Opt<Guid>,Opt<Guid>,i4>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Opt<Guid>>, Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) stfld (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>)::_F1:Seq<Opt<Guid>>
+      1) dup
+      1) ldloc.1 [Seq<Opt<Guid>>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.2
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Opt<Guid>>, ExecCtx, i4):Seq<Opt<Guid>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<Opt<Guid>,Opt<Guid>,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Opt<Guid>>, Func<Opt<Guid>,Opt<Guid>,i4>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Opt<Guid>>, Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) stfld (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>)::_F2:Seq<Opt<Guid>>
+      1) dup
+      1) ldloc.1 [Seq<Opt<Guid>>]
+      1) dup
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.3
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<Opt<Guid>>, ExecCtx, i4):Seq<Opt<Guid>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<Opt<Guid>,Opt<Guid>,i4>]
+      5) call static CodeGenUtil::SortNoKey(Seq<Opt<Guid>>, Func<Opt<Guid>,Opt<Guid>,i4>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::WrapWithCounter(Seq<Opt<Guid>>, Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Guid>>):Seq<Opt<Guid>>
+      5) stfld (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>)::_F3:Seq<Opt<Guid>>
+      1) ret
+  Total Size: 188
+
+Func sig: (<ctx>:x) to (G?*, G?*, G?*, G?*)
+Type: (Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>,Seq<Opt<Guid>>), Value: (Sequence: Seq<Opt<Guid>>
+     0) <null>
+     1) 1fd45f46-0000-0000-0000-000000000000
+     2) 62b33471-0000-0000-0000-000000000000
+     3) 2592099d-0000-0000-0000-000000000000
+     4) <null>
+     5) 6870dec8-0000-0000-0000-000000000000
+     6) 2b4fb3f4-0000-0000-0000-000000000000
+     7) 6e2e891f-0000-0000-0000-000000000000
+     8) <null>
+     9) 310d5e4b-0000-0000-0000-000000000000
+  , Sequence: Seq<Opt<Guid>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) 1fd45f46-0000-0000-0000-000000000000
+     4) 2592099d-0000-0000-0000-000000000000
+     5) 2b4fb3f4-0000-0000-0000-000000000000
+     6) 310d5e4b-0000-0000-0000-000000000000
+     7) 62b33471-0000-0000-0000-000000000000
+     8) 6870dec8-0000-0000-0000-000000000000
+     9) 6e2e891f-0000-0000-0000-000000000000
+  , Sequence: Seq<Opt<Guid>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) 1fd45f46-0000-0000-0000-000000000000
+     4) 2592099d-0000-0000-0000-000000000000
+     5) 2b4fb3f4-0000-0000-0000-000000000000
+     6) 310d5e4b-0000-0000-0000-000000000000
+     7) 62b33471-0000-0000-0000-000000000000
+     8) 6870dec8-0000-0000-0000-000000000000
+     9) 6e2e891f-0000-0000-0000-000000000000
+  , Sequence: Seq<Opt<Guid>>
+     0) 6e2e891f-0000-0000-0000-000000000000
+     1) 6870dec8-0000-0000-0000-000000000000
+     2) 62b33471-0000-0000-0000-000000000000
+     3) 310d5e4b-0000-0000-0000-000000000000
+     4) 2b4fb3f4-0000-0000-0000-000000000000
+     5) 2592099d-0000-0000-0000-000000000000
+     6) 1fd45f46-0000-0000-0000-000000000000
+     7) <null>
+     8) <null>
+     9) <null>
+)
+*** Ctx ping count: 33
+    [1](11): Sort(!1x)
+    [2](11): SortUp(!1x)
+    [3](11): SortDown(!1x)
+###
+> With(x: Ping(), Range(5)->ForEach(x))
+With(x : Ping(), Range(5)->ForEach(x)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Repeat(CallVol(∂.Test.Ping():i8), 5:i8):i8*))
+AllKinds: Int, Call, CallVolatile
+// (<ctx>) : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RepeatGen::Exec(i8, i8):RepeatSequence<i8>
+      1) ret
+  Total Size: 23
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 1
+ 2) 1
+ 3) 1
+ 4) 1
+*** Ctx ping count: 1
+    [_] 1
+###
+> (Range(5) * 100 + 100)->ForEach(it + Ping())
+(Range(5) * 100 + 100)->ForEach(it + Ping()) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(5:i8):i8*), Add(Mul(Scope(1), 100:i8), CallVol(∂.Test.Ping():i8), 100:i8)):i8*))
+AllKinds: Int, ArgScopeRef, VariadicOp, Call, CallVolatile, ScopeOwner
+// (<ctx>) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) mul
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) add
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) add
+      1) ret
+  Total Size: 23
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 63
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 101
+ 1) 202
+ 2) 303
+ 3) 404
+ 4) 505
+*** Ctx ping count: 5
+    [_] 5
+###
+> Range(5) * 100 + 100 + Ping()
+Range(5) * 100 + 100 + Ping() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Add(CallVol(∂.Test.Ping():i8), 100:i8), Call(∂.ForEach([map:2] Call(∂.Range(5:i8):i8*), Add(Scope(1), Mul(Scope(2), 100:i8))):i8*)):i8*))
+AllKinds: Int, ArgScopeRef, VariadicOp, Call, CallVolatile, ScopeOwner
+// (<ctx>) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [i8]
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) mul
+      1) add
+      1) ret
+  Total Size: 19
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldloc.0 [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) add
+      1) stloc.1 [i8]
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 85
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 101
+ 1) 201
+ 2) 301
+ 3) 401
+ 4) 501
+*** Ctx ping count: 1
+    [_] 1
+###
+> T->Take([if] Ping() mod 3 = 0)
+T->Take([if] Ping() mod 3 @= 0) : {A:i8}*
+BndKind:Call, Type:{A:i8}*, Bnd:(Call(∂.Take([map:1] Global(T), [if] Cmp(IntMod(CallVol(∂.Test.Ping():i8), 3:i8) @= 0:i8))))
+AllKinds: Int, Global, BinaryOp, Compare, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : {A:i8}*
+Take_1(Arr<obj>, {i8}):bool
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 20
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecTakeIf(Seq<{i8}>, Func<{i8},bool>, ExecCtx, i4):Seq<{i8}>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<{i8}>):Seq<{i8}>
+      1) ret
+  Total Size: 68
+
+Func sig: (<ctx>:x, T:{A:i8}*) to {A:i8}*
+Sequence: Seq<{i8}>
+ 0) { A: 2 }
+ 1) { A: 5 }
+ 2) { A: 8 }
+*** Ctx ping count: 17
+    [_] 10
+    [0](7): Take(*1: T, [if] IntMod(Test.Ping(), 3) @= 0)
+###
+> T->Drop([if] Ping() mod 3 = 0)
+T->Drop([if] Ping() mod 3 @= 0) : {A:i8}*
+BndKind:Call, Type:{A:i8}*, Bnd:(Call(∂.Drop([map:1] Global(T), [if] Cmp(IntMod(CallVol(∂.Test.Ping():i8), 3:i8) @= 0:i8))))
+AllKinds: Int, Global, BinaryOp, Compare, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : {A:i8}*
+Drop_1(Arr<obj>, {i8}):bool
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 20
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecDropIf(Seq<{i8}>, Func<{i8},bool>, ExecCtx, i4):Seq<{i8}>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<{i8}>):Seq<{i8}>
+      1) ret
+  Total Size: 68
+
+Func sig: (<ctx>:x, T:{A:i8}*) to {A:i8}*
+Sequence: Seq<{i8}>
+ 0) { A: 0 }
+ 1) { A: 1 }
+ 2) { A: 3 }
+ 3) { A: 4 }
+ 4) { A: 6 }
+ 5) { A: 7 }
+ 6) { A: 9 }
+*** Ctx ping count: 13
+    [_] 10
+    [0](3): Drop(*1: T, [if] IntMod(Test.Ping(), 3) @= 0)
+###
+> With(S : T->GroupBy(A mod 3, [group] Ping()), (S, S))
+With(S : T->GroupBy(A mod 3, [agg] Ping()), (S, S)) : (i8*, i8*)
+BndKind:Call, Type:(i8*, i8*), Bnd:(Call(∂.With([with:3] GroupBy([scope:1] Global(T), [key] IntMod(GetField(Scope(1), A), 3:i8), [agg] CallVol(∂.Test.Ping():i8)), (Scope(3), Scope(3)):(i8*, i8*)):(i8*, i8*)))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Tuple, Call, CallVolatile, GroupBy, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8*, i8*)
+keySelector(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ret
+  Total Size: 10
+
+resultSelector(Arr<obj>, i8, Seq<{i8}>):i8
+      1) ldarg.2 [Seq<{i8}>]
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8}>):Seq<{i8}>
+      1) stloc.0 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ret
+  Total Size: 20
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldnull
+      5) br [1]
+  Label [0]:
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<{i8}>, ExecCtx, i4):Seq<{i8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<{i8}>,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static Enumerable::GroupBy(Seq<{i8}>, Func<{i8},i8>, Func<i8,Seq<{i8}>,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<i8>):Seq<i8>
+  Label [1]:
+      1) stloc.2 [Seq<i8>]
+      5) newobj (Seq<i8>,Seq<i8>)()
+      1) dup
+      1) ldloc.2 [Seq<i8>]
+      5) stfld (Seq<i8>,Seq<i8>)::_F0:Seq<i8>
+      1) dup
+      1) ldloc.2 [Seq<i8>]
+      5) stfld (Seq<i8>,Seq<i8>)::_F1:Seq<i8>
+      1) ret
+  Total Size: 113
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8*, i8*)
+Type: (Seq<i8>,Seq<i8>), Value: (Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+  , Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+)
+*** Ctx ping count: 14
+    [_] 3
+    [0](11): GroupBy(*1: T, [key] IntMod(*1.A, 3), [agg] Test.Ping())
+###
+> With(S : T->GroupBy(K: A mod 3, [group] V: Ping()), (S, S))
+With(S : T->GroupBy(K : A mod 3, [agg] V : Ping()), (S, S)) : ({K:i8, V:i8}*, {K:i8, V:i8}*)
+BndKind:Call, Type:({K:i8, V:i8}*, {K:i8, V:i8}*), Bnd:(Call(∂.With([with:3] GroupBy([scope:1] Global(T), [key] K:IntMod(GetField(Scope(1), A), 3:i8), [agg] V:CallVol(∂.Test.Ping():i8)), (Scope(3), Scope(3)):({K:i8, V:i8}*, {K:i8, V:i8}*)):({K:i8, V:i8}*, {K:i8, V:i8}*)))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Tuple, Call, CallVolatile, GroupBy, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : ({K:i8, V:i8}*, {K:i8, V:i8}*)
+keySelector(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ret
+  Total Size: 10
+
+resultSelector(Arr<obj>, i8, Seq<{i8}>):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,i8}::_F0:i8
+      1) ldarg.2 [Seq<{i8}>]
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8}>):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 66
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldnull
+      5) br [1]
+  Label [0]:
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<{i8}>, ExecCtx, i4):Seq<{i8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<{i8}>,{i8,i8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static Enumerable::GroupBy(Seq<{i8}>, Func<{i8},i8>, Func<i8,Seq<{i8}>,{i8,i8}>):Seq<{i8,i8}>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<{i8,i8}>):Seq<{i8,i8}>
+  Label [1]:
+      1) stloc.2 [Seq<{i8,i8}>]
+      5) newobj (Seq<{i8,i8}>,Seq<{i8,i8}>)()
+      1) dup
+      1) ldloc.2 [Seq<{i8,i8}>]
+      5) stfld (Seq<{i8,i8}>,Seq<{i8,i8}>)::_F0:Seq<{i8,i8}>
+      1) dup
+      1) ldloc.2 [Seq<{i8,i8}>]
+      5) stfld (Seq<{i8,i8}>,Seq<{i8,i8}>)::_F1:Seq<{i8,i8}>
+      1) ret
+  Total Size: 127
+
+Func sig: (<ctx>:x, T:{A:i8}*) to ({K:i8, V:i8}*, {K:i8, V:i8}*)
+Type: (Seq<{i8,i8}>,Seq<{i8,i8}>), Value: (Sequence: Seq<{i8,i8}>
+     0) { K: 0, V: 1 }
+     1) { K: 1, V: 2 }
+     2) { K: 2, V: 3 }
+  , Sequence: Seq<{i8,i8}>
+     0) { K: 0, V: 1 }
+     1) { K: 1, V: 2 }
+     2) { K: 2, V: 3 }
+)
+*** Ctx ping count: 14
+    [_] 3
+    [0](11): GroupBy(*1: T, [key] K:IntMod(*1.A, 3), [agg] V:Test.Ping())
+###
+> With(S : T->GroupBy(A mod 3, [item] (item, Ping())), (S, S))
+With(S : T->GroupBy(A mod 3, [map] (item, Ping())), (S, S)) : (({A:i8}, i8)**, ({A:i8}, i8)**)
+BndKind:Call, Type:(({A:i8}, i8)**, ({A:i8}, i8)**), Bnd:(Call(∂.With([with:3] GroupBy([scope:1] Global(T), [key] IntMod(GetField(Scope(1), A), 3:i8), [map] (Scope(2), CallVol(∂.Test.Ping():i8)):({A:i8}, i8)), (Scope(3), Scope(3)):(({A:i8}, i8)**, ({A:i8}, i8)**)):(({A:i8}, i8)**, ({A:i8}, i8)**)))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Tuple, Call, CallVolatile, GroupBy, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (({A:i8}, i8)**, ({A:i8}, i8)**)
+keySelector(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ret
+  Total Size: 10
+
+elementSelector(Arr<obj>, {i8}):({i8},i8)
+      5) newobj ({i8},i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) stfld ({i8},i8)::_F0:{i8}
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld ({i8},i8)::_F1:i8
+      1) ret
+  Total Size: 31
+
+resultSelector(Arr<obj>, i8, Seq<({i8},i8)>):Seq<({i8},i8)>
+      1) ldarg.2 [Seq<({i8},i8)>]
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<({i8},i8)>):Seq<({i8},i8)>
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldnull
+      5) br [1]
+  Label [0]:
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<{i8}>, ExecCtx, i4):Seq<{i8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},({i8},i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<i8,Seq<({i8},i8)>,Seq<({i8},i8)>>]
+      5) call static Enumerable::GroupBy(Seq<{i8}>, Func<{i8},i8>, Func<{i8},({i8},i8)>, Func<i8,Seq<({i8},i8)>,Seq<({i8},i8)>>):Seq<Seq<({i8},i8)>>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<Seq<({i8},i8)>>):Seq<Seq<({i8},i8)>>
+  Label [1]:
+      1) stloc.2 [Seq<Seq<({i8},i8)>>]
+      5) newobj (Seq<Seq<({i8},i8)>>,Seq<Seq<({i8},i8)>>)()
+      1) dup
+      1) ldloc.2 [Seq<Seq<({i8},i8)>>]
+      5) stfld (Seq<Seq<({i8},i8)>>,Seq<Seq<({i8},i8)>>)::_F0:Seq<Seq<({i8},i8)>>
+      1) dup
+      1) ldloc.2 [Seq<Seq<({i8},i8)>>]
+      5) stfld (Seq<Seq<({i8},i8)>>,Seq<Seq<({i8},i8)>>)::_F1:Seq<Seq<({i8},i8)>>
+      1) ret
+  Total Size: 120
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (({A:i8}, i8)**, ({A:i8}, i8)**)
+Type: (Seq<Seq<({i8},i8)>>,Seq<Seq<({i8},i8)>>), Value: (Sequence: Seq<Seq<({i8},i8)>>
+     0) Sequence: Seq<({i8},i8)>
+         0) ({ A: 0 }, 1)
+         1) ({ A: 3 }, 4)
+         2) ({ A: 6 }, 7)
+         3) ({ A: 9 }, 10)
+     1) Sequence: Seq<({i8},i8)>
+         0) ({ A: 1 }, 2)
+         1) ({ A: 4 }, 5)
+         2) ({ A: 7 }, 8)
+     2) Sequence: Seq<({i8},i8)>
+         0) ({ A: 2 }, 3)
+         1) ({ A: 5 }, 6)
+         2) ({ A: 8 }, 9)
+  , Sequence: Seq<Seq<({i8},i8)>>
+     0) Sequence: Seq<({i8},i8)>
+         0) ({ A: 0 }, 1)
+         1) ({ A: 3 }, 4)
+         2) ({ A: 6 }, 7)
+         3) ({ A: 9 }, 10)
+     1) Sequence: Seq<({i8},i8)>
+         0) ({ A: 1 }, 2)
+         1) ({ A: 4 }, 5)
+         2) ({ A: 7 }, 8)
+     2) Sequence: Seq<({i8},i8)>
+         0) ({ A: 2 }, 3)
+         1) ({ A: 5 }, 6)
+         2) ({ A: 8 }, 9)
+)
+*** Ctx ping count: 21
+    [_] 10
+    [0](11): GroupBy(*1: T, [key] IntMod(*1.A, 3), [map] (*2, Test.Ping()))
+###
+> With(S : T->GroupBy(K: A mod 3, [item] V: (item, Ping())), (S, S))
+With(S : T->GroupBy(K : A mod 3, [map] V : (item, Ping())), (S, S)) : ({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*)
+BndKind:Call, Type:({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*), Bnd:(Call(∂.With([with:3] GroupBy([scope:1] Global(T), [key] K:IntMod(GetField(Scope(1), A), 3:i8), [map] V:(Scope(2), CallVol(∂.Test.Ping():i8)):({A:i8}, i8)), (Scope(3), Scope(3)):({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*)):({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*)))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Tuple, Call, CallVolatile, GroupBy, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : ({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*)
+keySelector(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ret
+  Total Size: 10
+
+elementSelector(Arr<obj>, {i8}):({i8},i8)
+      5) newobj ({i8},i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) stfld ({i8},i8)::_F0:{i8}
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld ({i8},i8)::_F1:i8
+      1) ret
+  Total Size: 31
+
+resultSelector(Arr<obj>, i8, Seq<({i8},i8)>):{i8,Seq<({i8},i8)>}
+      5) newobj {i8,Seq<({i8},i8)>}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {i8,Seq<({i8},i8)>}::_B0:u1
+      1) stloc.0 [{i8,Seq<({i8},i8)>}]
+      1) ldloc.0 [{i8,Seq<({i8},i8)>}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,Seq<({i8},i8)>}::_F0:i8
+      1) ldloc.0 [{i8,Seq<({i8},i8)>}]
+      1) ldarg.2 [Seq<({i8},i8)>]
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<({i8},i8)>):Seq<({i8},i8)>
+      5) stfld {i8,Seq<({i8},i8)>}::_F1:Seq<({i8},i8)>
+      1) ldloc.0 [{i8,Seq<({i8},i8)>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 47
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldnull
+      5) br [1]
+  Label [0]:
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<{i8}>, ExecCtx, i4):Seq<{i8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},({i8},i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<i8,Seq<({i8},i8)>,{i8,Seq<({i8},i8)>}>]
+      5) call static Enumerable::GroupBy(Seq<{i8}>, Func<{i8},i8>, Func<{i8},({i8},i8)>, Func<i8,Seq<({i8},i8)>,{i8,Seq<({i8},i8)>}>):Seq<{i8,Seq<({i8},i8)>}>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<{i8,Seq<({i8},i8)>}>):Seq<{i8,Seq<({i8},i8)>}>
+  Label [1]:
+      1) stloc.2 [Seq<{i8,Seq<({i8},i8)>}>]
+      5) newobj (Seq<{i8,Seq<({i8},i8)>}>,Seq<{i8,Seq<({i8},i8)>}>)()
+      1) dup
+      1) ldloc.2 [Seq<{i8,Seq<({i8},i8)>}>]
+      5) stfld (Seq<{i8,Seq<({i8},i8)>}>,Seq<{i8,Seq<({i8},i8)>}>)::_F0:Seq<{i8,Seq<({i8},i8)>}>
+      1) dup
+      1) ldloc.2 [Seq<{i8,Seq<({i8},i8)>}>]
+      5) stfld (Seq<{i8,Seq<({i8},i8)>}>,Seq<{i8,Seq<({i8},i8)>}>)::_F1:Seq<{i8,Seq<({i8},i8)>}>
+      1) ret
+  Total Size: 120
+
+Func sig: (<ctx>:x, T:{A:i8}*) to ({K:i8, V:({A:i8}, i8)*}*, {K:i8, V:({A:i8}, i8)*}*)
+Type: (Seq<{i8,Seq<({i8},i8)>}>,Seq<{i8,Seq<({i8},i8)>}>), Value: (Sequence: Seq<{i8,Seq<({i8},i8)>}>
+     0) { K: 0, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 0 }, 1)
+             1) ({ A: 3 }, 4)
+             2) ({ A: 6 }, 7)
+             3) ({ A: 9 }, 10)
+        }
+     1) { K: 1, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 1 }, 2)
+             1) ({ A: 4 }, 5)
+             2) ({ A: 7 }, 8)
+        }
+     2) { K: 2, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 2 }, 3)
+             1) ({ A: 5 }, 6)
+             2) ({ A: 8 }, 9)
+        }
+  , Sequence: Seq<{i8,Seq<({i8},i8)>}>
+     0) { K: 0, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 0 }, 1)
+             1) ({ A: 3 }, 4)
+             2) ({ A: 6 }, 7)
+             3) ({ A: 9 }, 10)
+        }
+     1) { K: 1, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 1 }, 2)
+             1) ({ A: 4 }, 5)
+             2) ({ A: 7 }, 8)
+        }
+     2) { K: 2, 
+          V: Sequence: Seq<({i8},i8)>
+             0) ({ A: 2 }, 3)
+             1) ({ A: 5 }, 6)
+             2) ({ A: 8 }, 9)
+        }
+)
+*** Ctx ping count: 21
+    [_] 10
+    [0](11): GroupBy(*1: T, [key] K:IntMod(*1.A, 3), [map] V:(*2, Test.Ping()))
+###
+> With(S : T->TakeIf(Ping() mod 4 != 0)->GroupBy(Key: A mod 3, [group] Num: group->Count()), (S, S))
+With(S : T->TakeIf(Ping() mod 4 !@= 0)->GroupBy(Key : A mod 3, [agg] Num : group->Count()), (S, S)) : ({Key:i8, Num:i8}*, {Key:i8, Num:i8}*)
+BndKind:Call, Type:({Key:i8, Num:i8}*, {Key:i8, Num:i8}*), Bnd:(Call(∂.With([with:4] GroupBy([scope:2] Call(∂.Take([map:1] Global(T), [if] Cmp(IntMod(CallVol(∂.Test.Ping():i8), 4:i8) !@= 0:i8))), [key] Key:IntMod(GetField(Scope(2), A), 3:i8), [agg] Num:Call(∂.Count(Scope(3)):i8)), (Scope(4), Scope(4)):({Key:i8, Num:i8}*, {Key:i8, Num:i8}*)):({Key:i8, Num:i8}*, {Key:i8, Num:i8}*)))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Compare, Tuple, Call, CallVolatile, GroupBy, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : ({Key:i8, Num:i8}*, {Key:i8, Num:i8}*)
+Take_1(Arr<obj>, {i8}):bool
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ldc.i4.4
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 23
+
+keySelector(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ret
+  Total Size: 10
+
+resultSelector(Arr<obj>, i8, Seq<{i8}>):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,i8}::_F0:i8
+      1) ldarg.2 [Seq<{i8}>]
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8}>):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.0 [{i8,i8}]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.2
+      5) call static CountGen::Exec(Seq<{i8}>, ExecCtx, i4):i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 68
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecTakeIf(Seq<{i8}>, Func<{i8},bool>, ExecCtx, i4):Seq<{i8}>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<{i8}>):Seq<{i8}>
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) ldnull
+      5) br [1]
+  Label [0]:
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static CodeGenUtil::EnumerableToPinging(Seq<{i8}>, ExecCtx, i4):Seq<{i8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<{i8}>,{i8,i8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static Enumerable::GroupBy(Seq<{i8}>, Func<{i8},i8>, Func<i8,Seq<{i8}>,{i8,i8}>):Seq<{i8,i8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8,i8}>):Seq<{i8,i8}>
+  Label [1]:
+      1) stloc.2 [Seq<{i8,i8}>]
+      5) newobj (Seq<{i8,i8}>,Seq<{i8,i8}>)()
+      1) dup
+      1) ldloc.2 [Seq<{i8,i8}>]
+      5) stfld (Seq<{i8,i8}>,Seq<{i8,i8}>)::_F0:Seq<{i8,i8}>
+      1) dup
+      1) ldloc.2 [Seq<{i8,i8}>]
+      5) stfld (Seq<{i8,i8}>,Seq<{i8,i8}>)::_F1:Seq<{i8,i8}>
+      1) ret
+  Total Size: 175
+
+Func sig: (<ctx>:x, T:{A:i8}*) to ({Key:i8, Num:i8}*, {Key:i8, Num:i8}*)
+Type: (Seq<{i8,i8}>,Seq<{i8,i8}>), Value: (Sequence: Seq<{i8,i8}>
+     0) { Key: 0, Num: 3 }
+     1) { Key: 1, Num: 2 }
+     2) { Key: 2, Num: 3 }
+  , Sequence: Seq<{i8,i8}>
+     0) { Key: 0, Num: 3 }
+     1) { Key: 1, Num: 2 }
+     2) { Key: 2, Num: 3 }
+)
+*** Ctx ping count: 21
+    [_] 10
+    [0](2): Take(*1: T, [if] IntMod(Test.Ping(), 4) !@= 0)
+    [1](9): GroupBy(*2: Take(*1: T, [if] IntMod(Test.Ping(), 4) !@= 0), [key] Key:IntMod(*2.A, 3), [agg] Num:Count(!3))
+###
+> KeyJoin(T, T, A, A, Ping())
+KeyJoin(T, T, A, A, Ping()) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.KeyJoin([map:1] Global(T), [map:2] Global(T), GetField(Scope(1), A), GetField(Scope(2), A), CallVol(∂.Test.Ping():i8)):i8*))
+AllKinds: Global, ArgScopeRef, GetField, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : i8*
+KeyJoin_2(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ret
+  Total Size: 7
+
+KeyJoin_3(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ret
+  Total Size: 7
+
+KeyJoin_4(Arr<obj>, {i8}, {i8}):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ret
+  Total Size: 13
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},{i8},i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldnull
+      1) ldnull
+      1) ldnull
+      1) ldc.i4.0
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static KeyJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},i8>, Func<{i8},i8>, Func<{i8},{i8},i8>, Func<{i8},i8>, Func<{i8},i8>, EqualityComparer<i8>, bool, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 87
+
+Func sig: (<ctx>:x, T:{A:i8}*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+ 7) 8
+ 8) 9
+ 9) 10
+*** Ctx ping count: 19
+    [_] 10
+    [0:3](9=0+0+9): KeyJoin(*1: T, *2: T, *1.A, *2.A, Test.Ping())
+###
+> KeyJoin(T, T, A, A if A mod 3 != 0 else null, (A, -1), (A, Ping()))
+KeyJoin(T, T, A, A if A mod 3 !@= 0 else null, (A, -1), (A, Ping())) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.KeyJoin([map:1] Global(T), [map:2] Global(T), Opt<i8?>(GetField(Scope(1), A)), If(Cmp(IntMod(GetField(Scope(2), A), 3:i8) !@= 0:i8), Opt<i8?>(GetField(Scope(2), A)), null:i8?), (GetField(Scope(2), A), -1:i8):(i8, i8), (GetField(Scope(1), A), CallVol(∂.Test.Ping():i8)):(i8, i8)):(i8, i8)*))
+AllKinds: Null, Int, Global, ArgScopeRef, GetField, CastOpt, BinaryOp, Compare, If, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+KeyJoin_2(Arr<obj>, {i8}):Opt<i8>
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) newobj Opt<i8>(i8)
+      1) ret
+  Total Size: 12
+
+KeyJoin_3(Arr<obj>, {i8}):Opt<i8>
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+      5) brfalse [0]
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) newobj Opt<i8>(i8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [1]:
+      1) ret
+  Total Size: 43
+
+KeyJoin_4(Arr<obj>, {i8}, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 26
+
+KeyJoin_5(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 36
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<{i8},{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldnull
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [EqualityComparer<Opt<i8>>]
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static KeyJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},Opt<i8>>, Func<{i8},Opt<i8>>, Func<{i8},{i8},(i8,i8)>, Func<{i8},(i8,i8)>, Func<{i8},(i8,i8)>, EqualityComparer<Opt<i8>>, bool, ExecCtx, i4):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 99
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, -1)
+ 2) (2, -1)
+ 3) (3, 2)
+ 4) (4, -1)
+ 5) (5, -1)
+ 6) (6, 3)
+ 7) (7, -1)
+ 8) (8, -1)
+ 9) (9, 4)
+*** Ctx ping count: 14
+    [_] 4
+    [0:3](10=0+0+10): KeyJoin(*1: T, *2: T, Opt<i8?>(*1.A), If(IntMod(*2.A, 3) !@= 0, Opt<i8?>(*2.A), null), (*2.A, -1), (*1.A, Test.Ping()))
+###
+> KeyJoin(T, T, A if A mod 3 != 0 else null, A, (A, -1), (A, -2), (A, Ping()))
+KeyJoin(T, T, A if A mod 3 !@= 0 else null, A, (A, -1), (A, -2), (A, Ping())) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.KeyJoin([map:1] Global(T), [map:2] Global(T), If(Cmp(IntMod(GetField(Scope(1), A), 3:i8) !@= 0:i8), Opt<i8?>(GetField(Scope(1), A)), null:i8?), Opt<i8?>(GetField(Scope(2), A)), (GetField(Scope(2), A), -1:i8):(i8, i8), (GetField(Scope(1), A), -2:i8):(i8, i8), (GetField(Scope(2), A), CallVol(∂.Test.Ping():i8)):(i8, i8)):(i8, i8)*))
+AllKinds: Null, Int, Global, ArgScopeRef, GetField, CastOpt, BinaryOp, Compare, If, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+KeyJoin_2(Arr<obj>, {i8}):Opt<i8>
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+      5) brfalse [0]
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) newobj Opt<i8>(i8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [1]:
+      1) ret
+  Total Size: 43
+
+KeyJoin_3(Arr<obj>, {i8}):Opt<i8>
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) newobj Opt<i8>(i8)
+      1) ret
+  Total Size: 12
+
+KeyJoin_4(Arr<obj>, {i8}, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 26
+
+KeyJoin_5(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      2) ldc.i4.s [-2]
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 27
+
+KeyJoin_6(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 36
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<{i8},{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [EqualityComparer<Opt<i8>>]
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static KeyJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},Opt<i8>>, Func<{i8},Opt<i8>>, Func<{i8},{i8},(i8,i8)>, Func<{i8},(i8,i8)>, Func<{i8},(i8,i8)>, EqualityComparer<Opt<i8>>, bool, ExecCtx, i4):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 105
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, -2)
+ 1) (1, -1)
+ 2) (2, -1)
+ 3) (3, -2)
+ 4) (4, -1)
+ 5) (5, -1)
+ 6) (6, -2)
+ 7) (7, -1)
+ 8) (8, -1)
+ 9) (9, -2)
+10) (0, 1)
+11) (3, 2)
+12) (6, 3)
+13) (9, 4)
+*** Ctx ping count: 13
+    [_] 4
+    [0:3](9=0+0+9): KeyJoin(*1: T, *2: T, If(IntMod(*1.A, 3) !@= 0, Opt<i8?>(*1.A), null), Opt<i8?>(*2.A), (*2.A, -1), (*1.A, -2), (*2.A, Test.Ping()))
+###
+> CrossJoin(a:T, b:T, Ping() mod 3 = 0, (a.A, b.A))
+CrossJoin(a : T, b : T, Ping() mod 3 @= 0, (a.A, b.A)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.CrossJoin([map:1] Global(T), [map:2] Global(T), Cmp(IntMod(CallVol(∂.Test.Ping():i8), 3:i8) @= 0:i8), (GetField(Scope(1), A), GetField(Scope(2), A)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, Compare, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+CrossJoin_2(Arr<obj>, {i8}, {i8}):bool
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 20
+
+CrossJoin_3(Arr<obj>, {i8}, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 30
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},{i8},bool>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},{i8},(i8,i8)>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CrossJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},{i8},bool>, Func<{i8},{i8},(i8,i8)>, ExecCtx, i4):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 76
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 2)
+ 1) (0, 5)
+ 2) (0, 8)
+ 3) (1, 1)
+ 4) (1, 4)
+ 5) (1, 7)
+ 6) (2, 0)
+ 7) (2, 3)
+ 8) (2, 6)
+ 9) (2, 9)
+10) (3, 2)
+11) (3, 5)
+12) (3, 8)
+13) (4, 1)
+14) (4, 4)
+15) (4, 7)
+16) (5, 0)
+17) (5, 3)
+18) (5, 6)
+19) (5, 9)
+20) (6, 2)
+21) (6, 5)
+22) (6, 8)
+23) (7, 1)
+24) (7, 4)
+25) (7, 7)
+26) (8, 0)
+27) (8, 3)
+28) (8, 6)
+29) (8, 9)
+30) (9, 2)
+31) (9, 5)
+32) (9, 8)
+*** Ctx ping count: 221
+    [_] 100
+    [0:2](121=11+110): CrossJoin(*1: T, *2: T, IntMod(Test.Ping(), 3) @= 0, (*1.A, *2.A))
+###
+> CrossJoin(a:T, b:T, a.A + b.A = 10, (a.A, b.A, Ping()))
+CrossJoin(a : T, b : T, a.A + b.A @= 10, (a.A, b.A, Ping())) : (i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8)*, Bnd:(Call(∂.CrossJoin([map:1] Global(T), [map:2] Global(T), Cmp(Add(GetField(Scope(1), A), GetField(Scope(2), A)) @= 10:i8), (GetField(Scope(1), A), GetField(Scope(2), A), CallVol(∂.Test.Ping():i8)):(i8, i8, i8)):(i8, i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, VariadicOp, Compare, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8, i8)*
+CrossJoin_2(Arr<obj>, {i8}, {i8}):bool
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) add
+      2) ldc.i4.s [10]
+      1) conv.i8
+      2) ceq
+      1) ret
+  Total Size: 19
+
+CrossJoin_3(Arr<obj>, {i8}, {i8}):(i8,i8,i8)
+      5) newobj (i8,i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8,i8)::_F2:i8
+      1) ret
+  Total Size: 48
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},{i8},bool>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},{i8},(i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CrossJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},{i8},bool>, Func<{i8},{i8},(i8,i8,i8)>, ExecCtx, i4):Seq<(i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      1) ret
+  Total Size: 76
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8)>
+ 0) (1, 9, 1)
+ 1) (2, 8, 2)
+ 2) (3, 7, 3)
+ 3) (4, 6, 4)
+ 4) (5, 5, 5)
+ 5) (6, 4, 6)
+ 6) (7, 3, 7)
+ 7) (8, 2, 8)
+ 8) (9, 1, 9)
+*** Ctx ping count: 130
+    [_] 9
+    [0:2](121=11+110): CrossJoin(*1: T, *2: T, Add(*1.A, *2.A) @= 10, (*1.A, *2.A, Test.Ping()))
+###
+> CrossJoin(a:T, b:T, a.A = 10 - b.A, (a.A, b.A, Ping()))
+CrossJoin(a : T, b : T, a.A @= 10 - b.A, (a.A, b.A, Ping())) : (i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:1] Global(T), [map:2] Global(T), [=] GetField(Scope(1), A), Add([-] GetField(Scope(2), A), 10:i8), (GetField(Scope(1), A), GetField(Scope(2), A), CallVol(∂.Test.Ping():i8)):(i8, i8, i8)):(i8, i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8, i8)*
+KeyJoin_2(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ret
+  Total Size: 7
+
+KeyJoin_3(Arr<obj>, {i8}):i8
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) neg
+      2) ldc.i4.s [10]
+      1) conv.i8
+      1) add
+      1) ret
+  Total Size: 12
+
+KeyJoin_4(Arr<obj>, {i8}, {i8}):(i8,i8,i8)
+      5) newobj (i8,i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8,i8)::_F2:i8
+      1) ret
+  Total Size: 48
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},{i8},(i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldnull
+      1) ldnull
+      1) ldnull
+      1) ldc.i4.0
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static KeyJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},i8>, Func<{i8},i8>, Func<{i8},{i8},(i8,i8,i8)>, Func<{i8},(i8,i8,i8)>, Func<{i8},(i8,i8,i8)>, EqualityComparer<i8>, bool, ExecCtx, i4):Seq<(i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      1) ret
+  Total Size: 87
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8)>
+ 0) (1, 9, 1)
+ 1) (2, 8, 2)
+ 2) (3, 7, 3)
+ 3) (4, 6, 4)
+ 4) (5, 5, 5)
+ 5) (6, 4, 6)
+ 6) (7, 3, 7)
+ 7) (8, 2, 8)
+ 8) (9, 1, 9)
+*** Ctx ping count: 20
+    [_] 9
+    [0:3](11=1+0+10): KeyJoin(*1: T, *2: T, [=] *1.A, Add([-] *2.A, 10), (*1.A, *2.A, Test.Ping()))
+###
+> CrossJoin(a:T, b:T, a.A = b.A and a.A mod 3 != 0, (A, -1), (A, Ping()))
+CrossJoin(a : T, b : T, a.A @= b.A and a.A mod 3 !@= 0, (A, -1), (A, Ping())) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.CrossJoin([map:1] Global(T), [map:2] Global(T), And(Cmp(GetField(Scope(1), A) @= GetField(Scope(2), A)), Cmp(IntMod(GetField(Scope(1), A), 3:i8) !@= 0:i8)), (GetField(Scope(2), A), -1:i8):(i8, i8), (GetField(Scope(1), A), CallVol(∂.Test.Ping():i8)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, VariadicOp, Compare, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+CrossJoin_2(Arr<obj>, {i8}, {i8}):bool
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      2) ceq
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+  Label [0]:
+      1) ret
+  Total Size: 38
+
+CrossJoin_3(Arr<obj>, {i8}, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 26
+
+CrossJoin_4(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 36
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},{i8},bool>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CrossJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},{i8},bool>, Func<{i8},{i8},(i8,i8)>, Func<{i8},(i8,i8)>, ExecCtx, i4):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 83
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, -1)
+ 2) (2, -1)
+ 3) (3, 2)
+ 4) (4, -1)
+ 5) (5, -1)
+ 6) (6, 3)
+ 7) (7, -1)
+ 8) (8, -1)
+ 9) (9, 4)
+*** Ctx ping count: 125
+    [_] 4
+    [0:2](121=11+110): CrossJoin(*1: T, *2: T, And(*1.A @= *2.A, IntMod(*1.A, 3) !@= 0), (*2.A, -1), (*1.A, Test.Ping()))
+###
+> CrossJoin(a:T, b:T, a.A = b.A and a.A mod 3 != 0, (A, -1), (A, -2), (A, Ping()))
+CrossJoin(a : T, b : T, a.A @= b.A and a.A mod 3 !@= 0, (A, -1), (A, -2), (A, Ping())) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.CrossJoin([map:1] Global(T), [map:2] Global(T), And(Cmp(GetField(Scope(1), A) @= GetField(Scope(2), A)), Cmp(IntMod(GetField(Scope(1), A), 3:i8) !@= 0:i8)), (GetField(Scope(2), A), -1:i8):(i8, i8), (GetField(Scope(1), A), -2:i8):(i8, i8), (GetField(Scope(2), A), CallVol(∂.Test.Ping():i8)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, BinaryOp, VariadicOp, Compare, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+CrossJoin_2(Arr<obj>, {i8}, {i8}):bool
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      2) ceq
+      1) dup
+      5) brfalse [0]
+      1) pop
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) rem
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) ldc.i4.0
+      2) ceq
+  Label [0]:
+      1) ret
+  Total Size: 38
+
+CrossJoin_3(Arr<obj>, {i8}, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 26
+
+CrossJoin_4(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      2) ldc.i4.s [-2]
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 27
+
+CrossJoin_5(Arr<obj>, {i8}):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 36
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},{i8},bool>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<{i8},{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<{i8},(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CrossJoinGen::Exec(Seq<{i8}>, Seq<{i8}>, Func<{i8},{i8},bool>, Func<{i8},{i8},(i8,i8)>, Func<{i8},(i8,i8)>, Func<{i8},(i8,i8)>, ExecCtx, i4):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 90
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, -2)
+ 1) (1, -1)
+ 2) (2, -1)
+ 3) (3, -2)
+ 4) (4, -1)
+ 5) (5, -1)
+ 6) (6, -2)
+ 7) (7, -1)
+ 8) (8, -1)
+ 9) (9, -2)
+10) (0, 1)
+11) (3, 2)
+12) (6, 3)
+13) (9, 4)
+*** Ctx ping count: 125
+    [_] 4
+    [0:2](121=11+110): CrossJoin(*1: T, *2: T, And(*1.A @= *2.A, IntMod(*1.A, 3) !@= 0), (*2.A, -1), (*1.A, -2), (*2.A, Test.Ping()))
+###
+> ScanX(T, s:(0, -1), (s[0] + Ping(), A))
+ScanX(T, s : (0, -1), (s[0] + Ping(), A)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ScanX([map:1] Global(T), [iter:2] (0:i8, -1:i8):(i8, i8), (Add(GetSlot(Scope(2), 0), CallVol(∂.Test.Ping():i8)), GetField(Scope(1), A)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, GetSlot, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+ScanX_2(Arr<obj>, {i8}, (i8,i8)):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) add
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 43
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8),(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ScanGen::Exec(Seq<{i8}>, (i8,i8), Func<{i8},(i8,i8),(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 87
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, -1)
+ 1) (1, 0)
+ 2) (3, 1)
+ 3) (6, 2)
+ 4) (10, 3)
+ 5) (15, 4)
+ 6) (21, 5)
+ 7) (28, 6)
+ 8) (36, 7)
+ 9) (45, 8)
+10) (55, 9)
+*** Ctx ping count: 10
+    [_] 10
+###
+> ScanX(T, s:0, s + A, (Ping(), s))
+ScanX(T, s : 0, s + A, (Ping(), s)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ScanX([map:1] Global(T), [iter:2] 0:i8, Add(Scope(2), GetField(Scope(1), A)), (CallVol(∂.Test.Ping():i8), Scope(2)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+ScanX_2(Arr<obj>, {i8}, i8):i8
+      1) ldarg.2 [i8]
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) add
+      1) ret
+  Total Size: 9
+
+ScanX_3(Arr<obj>, i8):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 31
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8,i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ScanGen::ExecRes(Seq<{i8}>, i8, Func<{i8},i8,i8>, Func<i8,(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 75
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 0)
+ 1) (2, 0)
+ 2) (3, 1)
+ 3) (4, 3)
+ 4) (5, 6)
+ 5) (6, 10)
+ 6) (7, 15)
+ 7) (8, 21)
+ 8) (9, 28)
+ 9) (10, 36)
+10) (11, 45)
+*** Ctx ping count: 11
+    [_] 11
+###
+> ScanZ(T, s:(0, -1), (s[0] + Ping(), A))
+ScanZ(T, s : (0, -1), (s[0] + Ping(), A)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ScanZ([map:1] Global(T), [iter:2] (0:i8, -1:i8):(i8, i8), (Add(GetSlot(Scope(2), 0), CallVol(∂.Test.Ping():i8)), GetField(Scope(1), A)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, GetSlot, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8)*
+ScanZ_2(Arr<obj>, {i8}, (i8,i8)):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) add
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 43
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},(i8,i8),(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ScanGen::ExecZ(Seq<{i8}>, (i8,i8), Func<{i8},(i8,i8),(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 87
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 0)
+ 1) (3, 1)
+ 2) (6, 2)
+ 3) (10, 3)
+ 4) (15, 4)
+ 5) (21, 5)
+ 6) (28, 6)
+ 7) (36, 7)
+ 8) (45, 8)
+ 9) (55, 9)
+*** Ctx ping count: 10
+    [_] 10
+###
+> ScanZ(T, s:0, s + A, (Ping(), s, A))
+ScanZ(T, s : 0, s + A, (Ping(), s, A)) : (i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8)*, Bnd:(Call(∂.ScanZ([map:1] Global(T), [iter:2] 0:i8, Add(Scope(2), GetField(Scope(1), A)), (CallVol(∂.Test.Ping():i8), Scope(2), GetField(Scope(1), A)):(i8, i8, i8)):(i8, i8, i8)*))
+AllKinds: Int, Global, ArgScopeRef, GetField, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>, ∂.T:{A:i8}*) : (i8, i8, i8)*
+ScanZ_2(Arr<obj>, {i8}, i8):i8
+      1) ldarg.2 [i8]
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      1) add
+      1) ret
+  Total Size: 9
+
+ScanZ_3(Arr<obj>, {i8}, i8):(i8,i8,i8)
+      5) newobj (i8,i8,i8)()
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.2 [i8]
+      5) stfld (i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.1 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (i8,i8,i8)::_F2:i8
+      1) ret
+  Total Size: 43
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i8}>
+      1) stloc.1 [Seq<{i8}>]
+      1) ldloc.1 [Seq<{i8}>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i8},i8,i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{i8},i8,(i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ScanGen::ExecResZ(Seq<{i8}>, i8, Func<{i8},i8,i8>, Func<{i8},i8,(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      1) ret
+  Total Size: 75
+
+Func sig: (<ctx>:x, T:{A:i8}*) to (i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8)>
+ 0) (1, 0, 0)
+ 1) (2, 1, 1)
+ 2) (3, 3, 2)
+ 3) (4, 6, 3)
+ 4) (5, 10, 4)
+ 5) (6, 15, 5)
+ 6) (7, 21, 6)
+ 7) (8, 28, 7)
+ 8) (9, 36, 8)
+ 9) (10, 45, 9)
+*** Ctx ping count: 10
+    [_] 10
+###
+> Generate(a:10, (Ping(), a))
+Generate(a : 10, (Ping(), a)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Generate([rng:1] 10:i8, (CallVol(∂.Test.Ping():i8), Scope(1)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, ArgScopeRef, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>) : (i8, i8)*
+Generate_1(Arr<obj>, i8):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 31
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static GenerateGen::Exec(i8, Func<i8,(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 59
+
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 0)
+ 1) (2, 1)
+ 2) (3, 2)
+ 3) (4, 3)
+ 4) (5, 4)
+ 5) (6, 5)
+ 6) (7, 6)
+ 7) (8, 7)
+ 8) (9, 8)
+ 9) (10, 9)
+*** Ctx ping count: 10
+    [_] 10
+###
+> Generate(a:10, s:0, s + Ping(), (s, a))
+Generate(a : 10, s : 0, s + Ping(), (s, a)) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Generate([rng:1] 10:i8, [iter:2] 0:i8, Add(Scope(2), CallVol(∂.Test.Ping():i8)), (Scope(2), Scope(1)):(i8, i8)):(i8, i8)*))
+AllKinds: Int, ArgScopeRef, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>) : (i8, i8)*
+Generate_2(Arr<obj>, i8, i8):i8
+      1) ldarg.2 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      1) add
+      1) ret
+  Total Size: 15
+
+Generate_3(Arr<obj>, i8, i8):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.2 [i8]
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 20
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<i8,i8,(i8,i8)>]
+      5) call static GenerateGen::Exec(i8, i8, Func<i8,i8,i8>, Func<i8,i8,(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 68
+
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 0)
+ 1) (3, 1)
+ 2) (6, 2)
+ 3) (10, 3)
+ 4) (15, 4)
+ 5) (21, 5)
+ 6) (28, 6)
+ 7) (36, 7)
+ 8) (45, 8)
+ 9) (55, 9)
+*** Ctx ping count: 10
+    [_] 10
+###
+> Generate(a:10, s:0, s + a, (s, a, Ping()))
+Generate(a : 10, s : 0, s + a, (s, a, Ping())) : (i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8)*, Bnd:(Call(∂.Generate([rng:1] 10:i8, [iter:2] 0:i8, Add(Scope(2), Scope(1)), (Scope(2), Scope(1), CallVol(∂.Test.Ping():i8)):(i8, i8, i8)):(i8, i8, i8)*))
+AllKinds: Int, ArgScopeRef, VariadicOp, Tuple, Call, CallVolatile, ScopeOwner
+// (<ctx>) : (i8, i8, i8)*
+Generate_2(Arr<obj>, i8, i8):i8
+      1) ldarg.2 [i8]
+      1) ldarg.1 [i8]
+      1) add
+      1) ret
+  Total Size: 4
+
+Generate_3(Arr<obj>, i8, i8):(i8,i8,i8)
+      5) newobj (i8,i8,i8)()
+      1) dup
+      1) ldarg.2 [i8]
+      5) stfld (i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      5) call static PingFuncGen::Exec(ExecCtx):i8
+      5) stfld (i8,i8,i8)::_F2:i8
+      1) ret
+  Total Size: 38
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,i8,i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8,(i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static GenerateGen::Exec(i8, i8, Func<i8,i8,i8>, Func<i8,i8,(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCachingForced(Seq<(i8,i8,i8)>):Seq<(i8,i8,i8)>
+      1) ret
+  Total Size: 68
+
+Func sig: (<ctx>:x) to (i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8)>
+ 0) (0, 0, 1)
+ 1) (1, 1, 2)
+ 2) (3, 2, 3)
+ 3) (6, 3, 4)
+ 4) (10, 4, 5)
+ 5) (15, 5, 6)
+ 6) (21, 6, 7)
+ 7) (28, 7, 8)
+ 8) (36, 8, 9)
+ 9) (45, 9, 10)
+*** Ctx ping count: 10
+    [_] 10
+###

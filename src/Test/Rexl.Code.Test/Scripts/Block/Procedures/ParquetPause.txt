@@ -1,0 +1,147 @@
+﻿func Wait(n) := Sum(Range(n * 1_000_000));
+// REVIEW: Need tuple slicing so we can do t[:3].
+func Tup3(t) := (t[0], t[1], t[2]);
+
+"*** Create a table and write it to parquet. ***";
+T1 := Range(1_000_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+With(d : T1, (d->Count(), d->Sum(A), d->Sum(B)));
+
+play Writer as WriteParquet(T1, "temp/pp1.parquet");
+(Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+
+Wait(5);
+Writer$RealTimeState = null;
+Wait(5);
+
+pause Writer;
+(Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Writer.RowCount;
+
+play Writer;
+(Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+
+Wait(2);
+Writer$RealTimeState = null;
+
+pause Writer;
+(Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Writer.RowCount;
+
+finish Writer;
+
+(Writer$State, Writer$RealTimeState, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+(Writer.RowCount, Writer.GroupCount, Writer.Size);
+
+"";
+"*** Play/abort reading the parquet. ***";
+task Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+play Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+Wait(5);
+Reader$RealTimeState = null;
+Wait(5);
+
+abort Reader;
+// Can't baseline whether it failed and the error message since they aren't deterministic -
+// the reader may have completed successfully before being paused.
+// (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+(Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed = (Reader$ErrorMessage != null), Reader$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Reader.RowCount;
+
+"";
+"*** Play/pause/abort reading the parquet. ***";
+task Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+play Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+Wait(5);
+Reader$RealTimeState = null;
+Wait(5);
+
+pause Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Reader.RowCount;
+
+abort Reader;
+// Can't baseline whether it failed and the error message since they aren't deterministic -
+// the reader may have completed successfully before being paused.
+// (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+(Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed = (Reader$ErrorMessage != null), Reader$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Reader.RowCount;
+
+"";
+"*** Play/pause/finish reading the parquet. ***";
+task Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+play Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+Wait(5);
+Reader$RealTimeState = null;
+Wait(5);
+
+pause Reader;
+(Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Reader.RowCount;
+
+play Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+Wait(1);
+Reader$RealTimeState = null;
+Wait(1);
+
+pause Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+// Can't baseline the row count, since it isn't deterministic.
+// Reader.RowCount;
+
+finish Reader;
+(Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+Reader.RowCount;
+With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+
+"";
+"*** Prime/finish reading the parquet. ***";
+task Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+prime Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+finish Reader;
+(Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+Reader.RowCount;
+With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+
+"";
+"*** Pause/prime/finish reading the parquet. ***";
+task Reader as ReadParquet(Writer.Link);
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+pause Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+prime Reader;
+(Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+
+finish Reader;
+(Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+Reader.RowCount;
+With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+
+"*** Created tasks for coverage of BeginAbort ***";
+task W1 as WriteParquet    (T1, "temp/pp1.parquet");
+task R1 as ReadParquet     (    "temp/pp1.parquet");

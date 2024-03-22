@@ -1,0 +1,152 @@
+>>> *** Source:
+    namespace Fib;
+        // Compute the sequence from 0 through n.
+        func Seq(n) := Range(n)->ScanX(cur: (0ia, 1ia), (cur[1], cur[0] + cur[1]), cur[1]);
+        // Compute the nth item using iteration in linear time.
+        func One(n) := Range(n)->Fold(cur: (0ia, 1ia), (cur[1], cur[0] + cur[1]), cur[1]);
+        // Given non-negative integer n, produce the sequence of true/false bits from low to high.
+        func Private.Bits(n) :=
+            Range(64)
+                ->ScanX(cur: n max 0, cur shru 1)
+                ->TakeWhile(it > 0)
+                ->ForEach(it band 1 != 0);
+        // Compute the nth item using matrix multiplication in logarithmic time.
+        func Fast(n) :=
+            Private.Bits(n)->Fold(as bit,
+                cur: (Tensor.From([1ia, 0, 0, 1], 2, 2), Tensor.From([0ia, 1, 1, 1], 2, 2), false),
+                With(M: cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)),
+                cur[0][1, 1]
+            );
+        Seq(0);
+        One(0);
+        Fast(0);
+        Seq(1);
+        One(1);
+        Fast(1);
+        Seq(5);
+        One(5);
+        Fast(5);
+    namespace;
+    N := 20;
+    Fib.Seq(N);
+    Fib.One(N);
+    Fib.Fast(N);
+    Fib.One(1000);
+    Fib.Fast(1000);
+
+>>> *** Instructions:
+   0) [0] Namespace Fib
+   1) [0] DefineFunc Seq(n) <- Range(n)->ScanX(cur : (0, 1), (cur[1], cur[0] + cur[1]), cur[1])
+   2) [0] DefineFunc One(n) <- Range(n)->Fold(cur : (0, 1), (cur[1], cur[0] + cur[1]), cur[1])
+   3) [0] DefineFunc Private.Bits(n) <- Range(64)->ScanX(cur : n max 0, cur shru 1)->TakeWhile(it $> 0)->ForEach(it band 1 !@= 0)
+   4) [0] DefineFunc Fast(n) <- Private.Bits(n)->Fold(as bit, cur : (Tensor.From([1, 0, 0, 1], 2, 2), Tensor.From([0, 1, 1, 1], 2, 2), false), With(M : cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)), cur[0][1, 1])
+   5) [0] Expr Seq(0)
+   6) [0] Expr One(0)
+   7) [0] Expr Fast(0)
+   8) [0] Expr Seq(1)
+   9) [0] Expr One(1)
+  10) [0] Expr Fast(1)
+  11) [0] Expr Seq(5)
+  12) [0] Expr One(5)
+  13) [0] Expr Fast(5)
+  14) [0] Namespace _
+  15) [0] Define N <- 20
+  16) [0] Expr Fib.Seq(N)
+  17) [0] Expr Fib.One(N)
+  18) [0] Expr Fib.Fast(N)
+  19) [0] Expr Fib.One(1000)
+  20) [0] Expr Fib.Fast(1000)
+  21) [0] End
+
+>    0) [0] Namespace Fib
+>    1) [0] DefineFunc Seq(n) <- Range(n)->ScanX(cur : (0, 1), (cur[1], cur[0] + cur[1]), cur[1])
+UDF 'Fib.Seq' has arity 1
+>    2) [0] DefineFunc One(n) <- Range(n)->Fold(cur : (0, 1), (cur[1], cur[0] + cur[1]), cur[1])
+UDF 'Fib.One' has arity 1
+>    3) [0] DefineFunc Private.Bits(n) <- Range(64)->ScanX(cur : n max 0, cur shru 1)->TakeWhile(it $> 0)->ForEach(it band 1 !@= 0)
+UDF 'Fib.Private.Bits' has arity 1
+>    4) [0] DefineFunc Fast(n) <- Private.Bits(n)->Fold(as bit, cur : (Tensor.From([1, 0, 0, 1], 2, 2), Tensor.From([0, 1, 1, 1], 2, 2), false), With(M : cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)), cur[0][1, 1])
+UDF 'Fib.Fast' has arity 1
+>    5) [0] Expr Seq(0)
+Seq<ia>
+   0) 1
+>    6) [0] Expr One(0)
+1
+*** Ctx ping count: 1
+    [0](1): Fold(*1: Range(0), %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+>    7) [0] Expr Fast(0)
+1
+*** Ctx ping count: 1
+    [0](1): Fold(*5: ForEach(*4: Take(*3: ScanX(*1: Range(64), %2: 0, Shru(%2, 1)), [while] *3 @> 0), BitAnd(*4, 1) !@= 0), %6: ([! 1, 0, 0, 1 !]:i[2,2], [! 0, 1, 1, 1 !]:i[2,2], false), With(!7: If(%6.2, Tensor.Dot(%6.1, %6.1), %6.1), (If(*5, Tensor.Dot(%6.0, !7), %6.0), !7, true)), %6.0[1, 1])
+>    8) [0] Expr Seq(1)
+Seq<ia>
+   0) 1
+   1) 1
+>    9) [0] Expr One(1)
+1
+*** Ctx ping count: 2
+    [0](2): Fold(*1: Range(1), %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+>   10) [0] Expr Fast(1)
+1
+*** Ctx ping count: 2
+    [0](2): Fold(*5: ForEach(*4: Take(*3: ScanX(*1: Range(64), %2: 1, Shru(%2, 1)), [while] *3 @> 0), BitAnd(*4, 1) !@= 0), %6: ([! 1, 0, 0, 1 !]:i[2,2], [! 0, 1, 1, 1 !]:i[2,2], false), With(!7: If(%6.2, Tensor.Dot(%6.1, %6.1), %6.1), (If(*5, Tensor.Dot(%6.0, !7), %6.0), !7, true)), %6.0[1, 1])
+>   11) [0] Expr Seq(5)
+Seq<ia>
+   0) 1
+   1) 1
+   2) 2
+   3) 3
+   4) 5
+   5) 8
+>   12) [0] Expr One(5)
+8
+*** Ctx ping count: 6
+    [0](6): Fold(*1: Range(5), %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+>   13) [0] Expr Fast(5)
+8
+*** Ctx ping count: 4
+    [0](4): Fold(*5: ForEach(*4: Take(*3: ScanX(*1: Range(64), %2: 5, Shru(%2, 1)), [while] *3 @> 0), BitAnd(*4, 1) !@= 0), %6: ([! 1, 0, 0, 1 !]:i[2,2], [! 0, 1, 1, 1 !]:i[2,2], false), With(!7: If(%6.2, Tensor.Dot(%6.1, %6.1), %6.1), (If(*5, Tensor.Dot(%6.0, !7), %6.0), !7, true)), %6.0[1, 1])
+>   14) [0] Namespace _
+>   15) [0] Define N <- 20
+Global 'N' has DType: i8, SysType: i8
+>   16) [0] Expr Fib.Seq(N)
+Seq<ia>
+   0) 1
+   1) 1
+   2) 2
+   3) 3
+   4) 5
+   5) 8
+   6) 13
+   7) 21
+   8) 34
+   9) 55
+  10) 89
+  11) 144
+  12) 233
+  13) 377
+  14) 610
+  15) 987
+  16) 1597
+  17) 2584
+  18) 4181
+  19) 6765
+  20) 10946
+>   17) [0] Expr Fib.One(N)
+10946
+*** Ctx ping count: 21
+    [0](21): Fold(*1: Range(N), %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+>   18) [0] Expr Fib.Fast(N)
+10946
+*** Ctx ping count: 6
+    [0](6): Fold(*5: ForEach(*4: Take(*3: ScanX(*1: Range(64), %2: Max(N, 0), Shru(%2, 1)), [while] *3 @> 0), BitAnd(*4, 1) !@= 0), %6: ([! 1, 0, 0, 1 !]:i[2,2], [! 0, 1, 1, 1 !]:i[2,2], false), With(!7: If(%6.2, Tensor.Dot(%6.1, %6.1), %6.1), (If(*5, Tensor.Dot(%6.0, !7), %6.0), !7, true)), %6.0[1, 1])
+>   19) [0] Expr Fib.One(1000)
+70330367711422815821835254877183549770181269836358732742604905087154537118196933579742249494562611733487750449241765991088186363265450223647106012053374121273867339111198139373125598767690091902245245323403501
+*** Ctx ping count: 1001
+    [0](1001): Fold(*1: Range(1000), %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+>   20) [0] Expr Fib.Fast(1000)
+70330367711422815821835254877183549770181269836358732742604905087154537118196933579742249494562611733487750449241765991088186363265450223647106012053374121273867339111198139373125598767690091902245245323403501
+*** Ctx ping count: 11
+    [0](11): Fold(*5: ForEach(*4: Take(*3: ScanX(*1: Range(64), %2: 1000, Shru(%2, 1)), [while] *3 @> 0), BitAnd(*4, 1) !@= 0), %6: ([! 1, 0, 0, 1 !]:i[2,2], [! 0, 1, 1, 1 !]:i[2,2], false), With(!7: If(%6.2, Tensor.Dot(%6.1, %6.1), %6.1), (If(*5, Tensor.Dot(%6.0, !7), %6.0), !7, true)), %6.0[1, 1])
+>   21) [0] End
+

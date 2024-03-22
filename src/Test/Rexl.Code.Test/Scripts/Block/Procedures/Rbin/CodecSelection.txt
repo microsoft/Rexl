@@ -1,0 +1,59 @@
+﻿T := Range(22_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+
+P := "temp/codec-test.rbin";
+
+"";
+"*** Brotli ***";
+task W as WriteRbin(T, P, true, "brotli");
+W.Compression;
+task W as WriteRbin(T, P, true, "unknown");
+W.Compression;
+task W as WriteRbin(T, P);
+W.Compression;
+task W as WriteRbin(T, P, true);
+W.Compression;
+task W as WriteRbin(T, P, true, true);
+W.Compression;
+task W as WriteRbin(T, P, true, -1);
+W.Compression;
+task W as WriteRbin(T, P, true, 4);
+W.Compression;
+task W as WriteRbin(T, P, true, 2); // Gzip NYI, so fallback.
+W.Compression;
+task W as WriteRbin(T, P, true, 17);
+W.Compression;
+task W as WriteRbin(T, P, true, 10000);
+W.Compression;
+
+"";
+"*** Deflate ***";
+task W as WriteRbin(T, P, true, "deflate");
+W.Compression;
+task W as WriteRbin(T, P, true, 3);
+W.Compression;
+task W as WriteRbin(T, P, true, "DEFLATE");
+W.Compression;
+
+"";
+"*** Snappy ***";
+task W as WriteRbin(T, P, true, "snappy");
+W.Compression;
+task W as WriteRbin(T, P, true, 1);
+W.Compression;
+task W as WriteRbin(T, P, true, "SNaPPY");
+W.Compression;
+task W as WriteRbin(T, P, true, "SNaPPie");
+W.Compression;
+
+"";
+"*** None ***";
+task W as WriteRbin(T, P, true, "none");
+W.Compression;
+task W as WriteRbin(T, P, true, false);
+W.Compression;
+task W as WriteRbin(T, P, true, 0);
+W.Compression;
+task W as WriteRbin(T, P, true, "");
+W.Compression;
+task W as WriteRbin(T, P, true, "NO");
+W.Compression;

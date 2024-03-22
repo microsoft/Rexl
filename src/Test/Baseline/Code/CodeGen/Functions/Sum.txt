@@ -1,0 +1,39 @@
+**** New definitions: Vals, type: r8*
+
+> With(s: Vals->Sum(), k: Vals->SumK(), (s, k, k - s))
+With(s : Vals->Sum(), k : Vals->SumK(), (s, k, k - s)) : (r8, r8, r8)
+BndKind:Call, Type:(r8, r8, r8), Bnd:(Call(∂.With([with:1] Call(∂.Sum(Global(Vals)):r8), [with:2] Call(∂.SumK(Global(Vals)):r8), (Scope(1), Scope(2), Add(Scope(2), [-] Scope(1))):(r8, r8, r8)):(r8, r8, r8)))
+Func sig: (<ctx>:x, Vals:r8*) to (r8, r8, r8)
+Type: (r8,r8,r8), Value: (18014398509481984, 18014398509482084, 100)
+*** Ctx ping count: 206
+    [0](103): Sum(Vals)
+    [1](103): SumK(Vals)
+###
+> With(s: Vals->Sum(), f: Fold(v: Vals, seed: 0.0, seed + v), (s, f, f - s))
+With(s : Vals->Sum(), f : Fold(v : Vals, seed : 0, seed + v), (s, f, f - s)) : (r8, r8, r8)
+BndKind:Call, Type:(r8, r8, r8), Bnd:(Call(∂.With([with:1] Call(∂.Sum(Global(Vals)):r8), [with:4] Call(∂.Fold([map:2] Global(Vals), [iter:3] 0:r8, Add(Scope(3), Scope(2))):r8), (Scope(1), Scope(4), Add(Scope(4), [-] Scope(1))):(r8, r8, r8)):(r8, r8, r8)))
+Func sig: (<ctx>:x, Vals:r8*) to (r8, r8, r8)
+Type: (r8,r8,r8), Value: (18014398509481984, 18014398509481984, 0)
+*** Ctx ping count: 206
+    [0](103): Sum(Vals)
+    [1](103): Fold(*1: Vals, %2: 0, Add(%2, *1))
+###
+> With(s: Vals->Sum(), k: Vals->SumK(), f: Fold(v: Vals, { sum: 0.0, cor: 0.0 }, With(new: sum + v, { sum: new, cor: cor + (sum - new + v if Abs(sum) >= Abs(v) else v - new + sum) })), (s, k, f, f.sum - s, f.sum + f.cor - k))
+With(s : Vals->Sum(), k : Vals->SumK(), f : Fold(v : Vals, { sum : 0, cor : 0 }, With(new : sum + v, { sum : new, cor : cor + (sum - new + v if Abs(sum) $>= Abs(v) else v - new + sum) })), (s, k, f, f.sum - s, f.sum + f.cor - k)) : (r8, r8, {cor:r8, sum:r8}, r8, r8)
+BndKind:Call, Type:(r8, r8, {cor:r8, sum:r8}, r8, r8), Bnd:(Call(∂.With([with:1] Call(∂.Sum(Global(Vals)):r8), [with:2] Call(∂.SumK(Global(Vals)):r8), [with:6] Call(∂.Fold([map:3] Global(Vals), [iter:4] {cor:0:r8, sum:0:r8}, Call(∂.With([with:5] Add(GetField(Scope(4), sum), Scope(3)), {cor:Add(GetField(Scope(4), cor), If(Cmp(Call(∂.Abs(GetField(Scope(4), sum)):r8) $>= Call(∂.Abs(Scope(3)):r8)), Add(GetField(Scope(4), sum), [-] Scope(5), Scope(3)), Add(Scope(3), [-] Scope(5), GetField(Scope(4), sum)))), sum:Scope(5)})))), (Scope(1), Scope(2), Scope(6), Add(GetField(Scope(6), sum), [-] Scope(1)), Add(GetField(Scope(6), sum), GetField(Scope(6), cor), [-] Scope(2))):(r8, r8, {cor:r8, sum:r8}, r8, r8)):(r8, r8, {cor:r8, sum:r8}, r8, r8)))
+Func sig: (<ctx>:x, Vals:r8*) to (r8, r8, {cor:r8, sum:r8}, r8, r8)
+Type: (r8,r8,{r8,r8},r8,r8), Value: (18014398509481984, 18014398509482084, { cor: 101, sum: 18014398509481984 }, 0, 0)
+*** Ctx ping count: 309
+    [0](103): Sum(Vals)
+    [1](103): SumK(Vals)
+    [2](103): Fold(*1: Vals, %2: {cor:0, sum:0}, With(!3: Add(%2.sum, *1), {cor:Add(%2.cor, If(Abs(%2.sum) $>= Abs(*1), Add(%2.sum, [-] !3, *1), Add(*1, [-] !3, %2.sum))), sum:!3}))
+###
+> With(k: Vals->SumK(),f: Fold(v: Vals, { sum: 0.0, cor: 0.0 }, With(new: sum + v, { sum: new, cor: cor + (sum - new + v if Abs(sum) >= Abs(v) else v - new + sum) }), sum + cor), (k, f, f - k))
+With(k : Vals->SumK(), f : Fold(v : Vals, { sum : 0, cor : 0 }, With(new : sum + v, { sum : new, cor : cor + (sum - new + v if Abs(sum) $>= Abs(v) else v - new + sum) }), sum + cor), (k, f, f - k)) : (r8, r8, r8)
+BndKind:Call, Type:(r8, r8, r8), Bnd:(Call(∂.With([with:1] Call(∂.SumK(Global(Vals)):r8), [with:5] Call(∂.Fold([map:2] Global(Vals), [iter:3] {cor:0:r8, sum:0:r8}, Call(∂.With([with:4] Add(GetField(Scope(3), sum), Scope(2)), {cor:Add(GetField(Scope(3), cor), If(Cmp(Call(∂.Abs(GetField(Scope(3), sum)):r8) $>= Call(∂.Abs(Scope(2)):r8)), Add(GetField(Scope(3), sum), [-] Scope(4), Scope(2)), Add(Scope(2), [-] Scope(4), GetField(Scope(3), sum)))), sum:Scope(4)})), Add(GetField(Scope(3), sum), GetField(Scope(3), cor))):r8), (Scope(1), Scope(5), Add(Scope(5), [-] Scope(1))):(r8, r8, r8)):(r8, r8, r8)))
+Func sig: (<ctx>:x, Vals:r8*) to (r8, r8, r8)
+Type: (r8,r8,r8), Value: (18014398509482084, 18014398509482084, 0)
+*** Ctx ping count: 206
+    [0](103): SumK(Vals)
+    [1](103): Fold(*1: Vals, %2: {cor:0, sum:0}, With(!3: Add(%2.sum, *1), {cor:Add(%2.cor, If(Abs(%2.sum) $>= Abs(*1), Add(%2.sum, [-] !3, *1), Add(*1, [-] !3, %2.sum))), sum:!3}), Add(%2.sum, %2.cor))
+###

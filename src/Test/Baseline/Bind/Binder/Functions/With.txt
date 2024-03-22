@@ -1,0 +1,315 @@
+**** New globals: {A:i8, B:i8?, R:{A:r8, S:{X:i8}, X:i8, Y:i2}, T:{A:r8, S:{X:i8}, X:i8, Y:i2}?*}
+
+> With(3, 5) // Match
+With(3, 5) : i8
+Binder : With(!1: 3, 5)
+Reducer: 5
+###
+> With(v : 3, 5)
+With(v : 3, 5) : i8
+Binder : With(!1: 3, 5)
+Reducer: 5
+###
+> With(v : 3,  v + 5) // Match
+With(v : 3, v + 5) : i8
+Binder : With(!1: 3, Add(!1, 5))
+Reducer: 8
+###
+> With(    3, it + 5)
+With(3, it + 5) : i8
+Binder : With(!1: 3, Add(!1, 5))
+Reducer: 8
+###
+> With(v : 3, w :  v + 5,    v *    w) // Match
+With(v : 3, w : v + 5, v * w) : i8
+Binder : With(!1: 3, !2: Add(!1, 5), Mul(!1, !2))
+Reducer: 24
+###
+> With(    3,     it + 5, it$1 * it$0)
+With(3, it + 5, it$1 * it) : i8
+Binder : With(!1: 3, !2: Add(!1, 5), Mul(!1, !2))
+Reducer: 24
+###
+> With(v : A + B,  v *  v) // Match
+With(v : A + B, v * v) : i8?
+Binder : With(!2: Guard(?1: B, Add(A, ?1)), Guard(?3: !2, ?4: !2, Mul(?3, ?4)))
+Reducer: Guard(?1: B, !2: Add(A, ?1), Mul(!2, !2))
+###
+> With(    A + B, it * it)
+With(A + B, it * it) : i8?
+Binder : With(!2: Guard(?1: B, Add(A, ?1)), Guard(?3: !2, ?4: !2, Mul(?3, ?4)))
+Reducer: Guard(?1: B, !2: Add(A, ?1), Mul(!2, !2))
+###
+> With(    R,    X *    Y) // Match
+With(R, X * Y) : i8
+Binder : With(!1: R, Mul(!1.X, Num<i8>(!1.Y)))
+Reducer: Mul(R.X, Num<i8>(R.Y))
+###
+> With(r : R,  r.X *  r.Y)
+With(r : R, r.X * r.Y) : i8
+Binder : With(!1: R, Mul(!1.X, Num<i8>(!1.Y)))
+Reducer: Mul(R.X, Num<i8>(R.Y))
+###
+> With(    R, it.X * it.Y)
+With(R, it.X * it.Y) : i8
+Binder : With(!1: R, Mul(!1.X, Num<i8>(!1.Y)))
+Reducer: Mul(R.X, Num<i8>(R.Y))
+###
+> With(    R.S,    X *    X) // Match
+With(R.S, X * X) : i8
+Binder : With(!1: R.S, Mul(!1.X, !1.X))
+Reducer: Mul(R.S.X, R.S.X)
+###
+> With(s : R.S,  s.X *  s.X)
+With(s : R.S, s.X * s.X) : i8
+Binder : With(!1: R.S, Mul(!1.X, !1.X))
+Reducer: Mul(R.S.X, R.S.X)
+###
+> With(    R.S, it.X * it.X)
+With(R.S, it.X * it.X) : i8
+Binder : With(!1: R.S, Mul(!1.X, !1.X))
+Reducer: Mul(R.S.X, R.S.X)
+###
+> With(    Wrap(R),       S, it$1.X *      X) // Match
+With(Wrap(R), S, it$1.X * X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(    Wrap(R),       S, it$1.X * it$0.X)
+With(Wrap(R), S, it$1.X * it.X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(    Wrap(R),    it.S, it$1.X *      X)
+With(Wrap(R), it.S, it$1.X * X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(    Wrap(R),    it.S, it$1.X * it$0.X)
+With(Wrap(R), it.S, it$1.X * it.X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(r : Wrap(R),     r.S,    r.X *      X)
+With(r : Wrap(R), r.S, r.X * X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(r : Wrap(R),     r.S,    r.X * it$0.X)
+With(r : Wrap(R), r.S, r.X * it.X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(r : Wrap(R), s : r.S,    r.X *    s.X)
+With(r : Wrap(R), s : r.S, r.X * s.X) : i8
+Binder : With(!1: Test.Wrap(R), !2: !1.S, Mul(!1.X, !2.X))
+Reducer: With(!1: Test.Wrap(R), Mul(!1.X, !1.S.X))
+###
+> With(    R,       S, it$1.X *      X) // Match
+With(R, S, it$1.X * X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(    R,       S, it$1.X * it$0.X)
+With(R, S, it$1.X * it.X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(    R,    it.S, it$1.X *      X)
+With(R, it.S, it$1.X * X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(    R,    it.S, it$1.X * it$0.X)
+With(R, it.S, it$1.X * it.X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(r : R,     r.S,    r.X *      X)
+With(r : R, r.S, r.X * X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(r : R,     r.S,    r.X * it$0.X)
+With(r : R, r.S, r.X * it.X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(r : R, s : r.S,    r.X *    s.X)
+With(r : R, s : r.S, r.X * s.X) : i8
+Binder : With(!1: R, !2: !1.S, Mul(!1.X, !2.X))
+Reducer: Mul(R.X, R.S.X)
+###
+> With(Wrap(R), it)
+With(Wrap(R), it) : {A:r8, S:{X:i8}, X:i8, Y:i2}
+Binder : With(!1: Test.Wrap(R), !1)
+Reducer: Test.Wrap(R)
+###
+> With(Wrap(R), @A, it)
+With(Wrap(R), @A, it) : i8
+Binder : With(!1: Test.Wrap(R), !2: A, !2)
+Reducer: A
+###
+> With(Wrap(R), @A, it$1.A)
+With(Wrap(R), @A, it$1.A) : r8
+Binder : With(!1: Test.Wrap(R), !2: A, !1.A)
+Reducer: Test.Wrap(R).A
+###
+> With(Wrap(R), @A, A)
+With(Wrap(R), @A, A) : r8
+Binder : With(!1: Test.Wrap(R), !2: A, !1.A)
+Reducer: Test.Wrap(R).A
+###
+> With(Wrap(R), @A, A + it$1.A + it$0)
+With(Wrap(R), @A, A + it$1.A + it) : r8
+Binder : With(!1: Test.Wrap(R), !2: A, Add(!1.A, !1.A, Num<r8>(!2)))
+Reducer: With(!1: Test.Wrap(R), Add(!1.A, !1.A, Num<r8>(A)))
+###
+> With(Wrap(R), it$1)
+With(Wrap(R), it$1) : {A:r8, S:{X:i8}, X:i8, Y:i2}
+*** Error: (14,18) Node: it$1, Message: Invalid scope index; there are not enough values in scope
+Binder : With(!1: Test.Wrap(R), !1)
+Reducer: Test.Wrap(R)
+###
+> With(Wrap(R), @A, A + it$1.A + it$1)
+With(Wrap(R), @A, A + it$1.A + it$1) : r8
+*** Error: (31,35) Node: it$1, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'r8'
+Binder : With(!1: Test.Wrap(R), !2: A, Add(!1.A, !1.A, Error(ErrBadType_Src_Dst)))
+Reducer: With(!1: Test.Wrap(R), Add(!1.A, !1.A, Error(ErrBadType_Src_Dst)))
+###
+> With(Wrap(R), @A, A + it$1.A + it$2)
+With(Wrap(R), @A, A + it$1.A + it$2) : r8
+*** Error: (31,35) Node: it$2, Message: Invalid scope index; there are not enough values in scope
+*** Error: (31,35) Node: it$2, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'r8'
+Binder : With(!1: Test.Wrap(R), !2: A, Add(!1.A, !1.A, Error(ErrBadType_Src_Dst)))
+Reducer: With(!1: Test.Wrap(R), Add(!1.A, !1.A, Error(ErrBadType_Src_Dst)))
+###
+> With(Wrap(R), -it)
+With(Wrap(R), -it) : i8
+*** Error: (15,17) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'i8'
+Binder : With(!1: Test.Wrap(R), Add([-] Error(ErrBadType_Src_Dst)))
+Reducer: Add([-] Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), not it)
+With(Wrap(R), not it) : b
+*** Error: (18,20) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'b'
+Binder : With(!1: Test.Wrap(R), Xor(Error(ErrBadType_Src_Dst), true))
+Reducer: Xor(Error(ErrBadType_Src_Dst), true)
+###
+> With(Wrap(R), it%)
+With(Wrap(R), it%) : r8
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'r8'
+Binder : With(!1: Test.Wrap(R), Mul(Error(ErrBadType_Src_Dst), [/] 100))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] 100)
+###
+> With(Wrap(R), it+it)
+With(Wrap(R), it + it) : i8
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'i8'
+*** Error: (17,19) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'i8'
+Binder : With(!1: Test.Wrap(R), Add(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: Add(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it*it)
+With(Wrap(R), it * it) : i8
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'i8'
+*** Error: (17,19) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'i8'
+Binder : With(!1: Test.Wrap(R), Mul(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: Mul(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it/it)
+With(Wrap(R), it / it) : r8
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'r8'
+*** Error: (17,19) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'r8'
+Binder : With(!1: Test.Wrap(R), Mul(Error(ErrBadType_Src_Dst), [/] Error(ErrBadType_Src_Dst)))
+Reducer: Mul(Error(ErrBadType_Src_Dst), [/] Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it and it)
+With(Wrap(R), it and it) : b
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'b'
+*** Error: (21,23) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'b'
+Binder : With(!1: Test.Wrap(R), And(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: And(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it or it)
+With(Wrap(R), it or it) : b
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'b'
+*** Error: (20,22) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 'b'
+Binder : With(!1: Test.Wrap(R), Or(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: Or(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it & it)
+With(Wrap(R), it & it) : {A:r8, S:{X:i8}, X:i8, Y:i2}
+Binder : With(!1: Test.Wrap(R), RecordConcat(!1, !1))
+Reducer: Test.Wrap(R)
+###
+> With(Wrap(R), it in it)
+With(Wrap(R), it in it) : b
+*** Error: (20,22) Node: it, Message: Need a sequence on the right of in
+Binder : With(!1: Test.Wrap(R), In(!1, Error(ErrNeedSequenceForIn)))
+Reducer: In(Test.Wrap(R), Error(ErrNeedSequenceForIn))
+###
+> With(Wrap(R), it has it)
+With(Wrap(R), it has it) : b
+*** Error: (14,16) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 's'
+*** Error: (21,23) Node: it, Message: Invalid operand type: cannot convert type '{A:r8, S:{X:i8}, X:i8, Y:i2}' to 's'
+Binder : With(!1: Test.Wrap(R), Has(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: Has(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> With(Wrap(R), it ?? it)
+With(Wrap(R), it ?? it) : {A:r8, S:{X:i8}, X:i8, Y:i2}
+*** Warning: (14,16) Node: it, Message: Coalesce operator '??' is not necessary with left operand of non optional type: '{A:r8, S:{X:i8}, X:i8, Y:i2}'
+Binder : With(!1: Test.Wrap(R), !1)
+Reducer: Test.Wrap(R)
+###
+> With(1, it = "s")
+With(1, it @= "s") : b
+*** Error: (13,16) Node: "s", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+Binder : With(!1: 1, !1 @= Error(ErrBadType_Src_Dst))
+Reducer: 1 @= Error(ErrBadType_Src_Dst)
+###
+> With(a:Wrap(R), b:Wrap(R), c: b.Y + 17, a.A * a.X + b.A * b.X + c * c)
+With(a : Wrap(R), b : Wrap(R), c : b.Y + 17, a.A * a.X + b.A * b.X + c * c) : r8
+Binder : With(!1: Test.Wrap(R), !2: Test.Wrap(R), !3: Add(Num<i8>(!2.Y), 17), Add(Mul(!1.A, Num<r8>(!1.X)), Mul(!2.A, Num<r8>(!2.X)), Num<r8>(Mul(!3, !3))))
+Reducer: With(!1: Test.Wrap(R), !2: Add(Num<i8>(!1.Y), 17), Add(Mul(!1.A, Num<r8>(!1.X)), Mul(!1.A, Num<r8>(!1.X)), Num<r8>(Mul(!2, !2))))
+###
+> With(s: Range(3), a: A * A, x: s->Count(), y: x + x - 6, z: y * a * a * y, z * z)
+With(s : Range(3), a : A * A, x : s->Count(), y : x + x - 6, z : y * a * a * y, z * z) : i8
+Binder : With(!1: Range(3), !2: Mul(A, A), !3: Count(!1), !4: Add(!3, !3, [-] 6), !5: Mul(!4, !2, !2, !4), Mul(!5, !5))
+Reducer: 0
+###
+> {a:"a"} ?? ({b:false} ?? null->{c:"c"})
+{ a : "a" } ?? { b : false } ?? null->{ c : "c" } : {a:s, b:b?, c:s}?
+*** Warning: (12,13) Node: { b : false }, Message: Coalesce operator '??' is not necessary with left operand of non optional type: '{b:b}'
+*** Warning: (0,1) Node: { a : "a" }, Message: Coalesce operator '??' is not necessary with left operand of non optional type: '{a:s}'
+Binder : Coalesce(Ref<{a:s, b:b?, c:s}?>({a:"a"[, b:null:b?, c:str(<null>)]}), Guard(?4: Coalesce(Ref<{b:b?, c:s}?>({b:Opt<b?>(false)[, c:str(<null>)]}), Guard(?2: Guard(?1: null, {c:"c"}), With(!3: ?2, {b:null, c:!3.c}))), With(!5: ?4, {a:str(<null>), b:!5.b, c:!5.c})))
+Reducer: Coalesce(Ref<{a:s, b:b?, c:s}?>({a:"a"[, b:null:b?, c:str(<null>)]}), Ref<{a:s, b:b?, c:s}?>({a:str(<null>), b:Opt<b?>(false), c:str(<null>)}))
+###
+> (([[2]] - 1 > 3) and false) and ("a" > ["b"])
+[[2]] - 1 $> 3 and false and "a" $> ["b"] : b**
+Binder : ForEach(*8: ForEach(*5: ForEach(*3: ForEach(*1: [[2]], ForEach(*2: *1, Add(*2, [-] 1))), ForEach(*4: *3, *4 @> 3)), ForEach(*6: *5, And(*6, false))), *9: ForEach(*7: ["b"], "a" $> *7), ForEach(*10: *8, And(*10, *9)))
+Reducer: ForEach(*1: [[2]], ForEach(*2: *1, false))
+###
+> (([[{b:2}]] - 1) and false) and ("a" > [{c:1}]) // Error.
+[[{ b : 2 }]] - 1 and false and "a" $> [{ c : 1 }] : b**
+*** Error: (2,3) Node: [[{ b : 2 }]], Message: Invalid operand type: cannot convert type '{b:i8}' to 'i8'
+*** Error: (1,2) Node: [[{ b : 2 }]] - 1, Message: Invalid operand type: cannot convert type 'i8' to 'b'
+*** Error: (39,40) Node: [{ c : 1 }], Message: Invalid operand type: cannot convert type '{c:i8}' to 's'
+Binder : ForEach(*6: ForEach(*3: ForEach(*1: [[{b:2}]], ForEach(*2: *1, Add(Error(ErrBadType_Src_Dst), [-] 1))), ForEach(*4: *3, And(Error(ErrBadType_Src_Dst), false))), *7: ForEach(*5: [{c:1}], "a" $> Error(ErrBadType_Src_Dst)), ForEach(*8: *6, And(*8, *7)))
+Reducer: ForEach(*1: [[{b:2}]], ForEach(*2: *1, false))
+###
+
+**** New globals: {S1:i8*, S2:i8**}
+
+> (S2 > 3 and false) and (S1 > 0)
+S2 $> 3 and false and S1 $> 0 : b**
+Binder : ForEach(*6: ForEach(*3: ForEach(*1: S2, ForEach(*2: *1, *2 @> 3)), ForEach(*4: *3, And(*4, false))), *7: ForEach(*5: S1, *5 @> 0), ForEach(*8: *6, And(*8, *7)))
+Reducer: ForEach(*1: S2, *2: S1, ForEach(*3: *1, false))
+###
+
+**** New globals: {A:{M:b, N:i8}*}
+
+> ForEach(A, IfElse(M, M, M-[N]))
+ForEach(A, IfElse(M, M, M - [N])) : v*
+*** Error: (17,18) Node: IfElse(M, M, M - [N]), Message: Invocation of unknown or unsupported function
+Binder : ForEach(*1: A, __err__.Unknown(*1.M, *1.M, ForEach(*2: [*1.N], Add(Num<i8>(*1.M), [-] *2))))
+###

@@ -1,0 +1,330 @@
+**** New definitions: X, type: s
+**** Changed namespace to: N
+**** New definitions: N.X, type: s
+**** Changed namespace to: N.P
+**** New definitions: N.P.X, type: s
+
+> Map(Range(2), { A: it, B: X, C: P.X, D: N.X, E: @X })
+Map(Range(2), { A : it, B : X, C : P.X, D : N.X, E : @X }) : {A:i8, B:s, C:s, D:s, E:s}*
+BndKind:Call, Type:{A:i8, B:s, C:s, D:s, E:s}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(2:i8):i8*), {A:Scope(1), B:Global(N.P.X), C:Global(N.P.X), D:Global(N.X), E:Global(X)})))
+// (∂.N.P.X:s, ∂.N.X:s, ∂.X:s) : {A:i8, B:s, C:s, D:s, E:s}*
+ForEach_1(Arr<obj>, i8):{i8,str,str,str,str}
+      5) newobj {i8,str,str,str,str}()
+      1) dup
+      2) ldc.i4.s [31]
+      5) stfld {i8,str,str,str,str}::_B0:u1
+      1) stloc.0 [{i8,str,str,str,str}]
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,str,str,str,str}::_F0:i8
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F1:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F2:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F1:str
+      5) stfld {i8,str,str,str,str}::_F3:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F2:str
+      5) stfld {i8,str,str,str,str}::_F4:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 114
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.0 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.1 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.2 [str]
+      5) newobj (str,str,str)()
+      1) stloc.3 [(str,str,str)]
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.0 [str]
+      5) stfld (str,str,str)::_F0:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.1 [str]
+      5) stfld (str,str,str)::_F1:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.2 [str]
+      5) stfld (str,str,str)::_F2:str
+      1) ldc.i4.2
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,{i8,str,str,str,str}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.3 [(str,str,str)]
+      5) stelem [(str,str,str)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      1) ret
+  Total Size: 122
+
+Func sig: (N.P.X:s, N.X:s, X:s) to {A:i8, B:s, C:s, D:s, E:s}*
+Sequence: Seq<{i8,str,str,str,str}>
+ 0) { A: 0, B: In N.P, C: In N.P, D: In N, E: In Root }
+ 1) { A: 1, B: In N.P, C: In N.P, D: In N, E: In Root }
+###
+
+**** Changed namespace to: N
+
+> Map(Range(2), { A: it, B: X, C: P.X, D: N.X, E: @X })
+Map(Range(2), { A : it, B : X, C : P.X, D : N.X, E : @X }) : {A:i8, B:s, C:s, D:s, E:s}*
+BndKind:Call, Type:{A:i8, B:s, C:s, D:s, E:s}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(2:i8):i8*), {A:Scope(1), B:Global(N.X), C:Global(N.P.X), D:Global(N.X), E:Global(X)})))
+// (∂.N.X:s, ∂.N.P.X:s, ∂.X:s) : {A:i8, B:s, C:s, D:s, E:s}*
+ForEach_1(Arr<obj>, i8):{i8,str,str,str,str}
+      5) newobj {i8,str,str,str,str}()
+      1) dup
+      2) ldc.i4.s [31]
+      5) stfld {i8,str,str,str,str}::_B0:u1
+      1) stloc.0 [{i8,str,str,str,str}]
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,str,str,str,str}::_F0:i8
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F1:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F1:str
+      5) stfld {i8,str,str,str,str}::_F2:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F3:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F2:str
+      5) stfld {i8,str,str,str,str}::_F4:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 114
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.0 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.1 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.2 [str]
+      5) newobj (str,str,str)()
+      1) stloc.3 [(str,str,str)]
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.0 [str]
+      5) stfld (str,str,str)::_F0:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.1 [str]
+      5) stfld (str,str,str)::_F1:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.2 [str]
+      5) stfld (str,str,str)::_F2:str
+      1) ldc.i4.2
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,{i8,str,str,str,str}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.3 [(str,str,str)]
+      5) stelem [(str,str,str)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      1) ret
+  Total Size: 122
+
+Func sig: (N.X:s, N.P.X:s, X:s) to {A:i8, B:s, C:s, D:s, E:s}*
+Sequence: Seq<{i8,str,str,str,str}>
+ 0) { A: 0, B: In N, C: In N.P, D: In N, E: In Root }
+ 1) { A: 1, B: In N, C: In N.P, D: In N, E: In Root }
+###
+
+**** Changed namespace to: <root>
+
+> Map(Range(2), { A: it, B: X, C: N.P.X, D: N.X, E: @X })
+Map(Range(2), { A : it, B : X, C : N.P.X, D : N.X, E : @X }) : {A:i8, B:s, C:s, D:s, E:s}*
+BndKind:Call, Type:{A:i8, B:s, C:s, D:s, E:s}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(2:i8):i8*), {A:Scope(1), B:Global(X), C:Global(N.P.X), D:Global(N.X), E:Global(X)})))
+// (∂.X:s, ∂.N.P.X:s, ∂.N.X:s) : {A:i8, B:s, C:s, D:s, E:s}*
+ForEach_1(Arr<obj>, i8):{i8,str,str,str,str}
+      5) newobj {i8,str,str,str,str}()
+      1) dup
+      2) ldc.i4.s [31]
+      5) stfld {i8,str,str,str,str}::_B0:u1
+      1) stloc.0 [{i8,str,str,str,str}]
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.1 [i8]
+      5) stfld {i8,str,str,str,str}::_F0:i8
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F1:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F1:str
+      5) stfld {i8,str,str,str,str}::_F2:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F2:str
+      5) stfld {i8,str,str,str,str}::_F3:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(str,str,str)]
+      5) ldfld (str,str,str)::_F0:str
+      5) stfld {i8,str,str,str,str}::_F4:str
+      1) ldloc.0 [{i8,str,str,str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 114
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.0 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.1 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.2 [str]
+      5) newobj (str,str,str)()
+      1) stloc.3 [(str,str,str)]
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.0 [str]
+      5) stfld (str,str,str)::_F0:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.1 [str]
+      5) stfld (str,str,str)::_F1:str
+      1) ldloc.3 [(str,str,str)]
+      1) ldloc.2 [str]
+      5) stfld (str,str,str)::_F2:str
+      1) ldc.i4.2
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,{i8,str,str,str,str}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.3 [(str,str,str)]
+      5) stelem [(str,str,str)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{i8,str,str,str,str}>):Seq<{i8,str,str,str,str}>
+      1) ret
+  Total Size: 122
+
+Func sig: (X:s, N.P.X:s, N.X:s) to {A:i8, B:s, C:s, D:s, E:s}*
+Sequence: Seq<{i8,str,str,str,str}>
+ 0) { A: 0, B: In Root, C: In N.P, D: In N, E: In Root }
+ 1) { A: 1, B: In Root, C: In N.P, D: In N, E: In Root }
+###

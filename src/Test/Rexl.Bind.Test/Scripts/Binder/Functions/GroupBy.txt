@@ -1,0 +1,200 @@
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}*, s:s}
+
+GroupBy(T, A, Nested)
+GroupBy(T, B, Nested)
+GroupBy(T, C, Nested)
+GroupBy(T, D, Nested)
+GroupBy(T, E, Nested)
+GroupBy(T, F, Nested)
+GroupBy(T, G, Nested)
+GroupBy(T, H, Nested)
+GroupBy(T, I, Nested)
+
+GroupBy(T, [=] A, Nested)
+GroupBy(T, [=] B, Nested)
+GroupBy(T, [=] C, Nested)
+GroupBy(T, [=] D, Nested)
+GroupBy(T, [=] E, Nested)
+GroupBy(T, [=] F, Nested)
+GroupBy(T, [=] G, Nested)
+GroupBy(T, [=] H, Nested)
+GroupBy(T, [=] I, Nested)
+
+GroupBy(T, [~] A, Nested)
+GroupBy(T, [~] B, Nested)
+GroupBy(T, [~] C, Nested)
+GroupBy(T, [~] D, Nested)
+GroupBy(T, [~] E, Nested)
+GroupBy(T, [~] F, Nested)
+GroupBy(T, [~] G, Nested)
+GroupBy(T, [~] H, Nested)
+GroupBy(T, [~] I, Nested)
+
+GroupBy(T, [=] _: A)
+GroupBy(T, [=] _: B)
+GroupBy(T, [=] _: C)
+GroupBy(T, [=] _: D)
+GroupBy(T, [=] _: E)
+GroupBy(T, [=] _: F)
+GroupBy(T, [=] _: G)
+GroupBy(T, [=] _: H)
+GroupBy(T, [=] _: I)
+
+GroupBy(T, [~] _: A)
+GroupBy(T, [~] _: B)
+GroupBy(T, [~] _: C)
+GroupBy(T, [~] _: D)
+GroupBy(T, [~] _: E)
+GroupBy(T, [~] _: F)
+GroupBy(T, [~] _: G)
+GroupBy(T, [~] _: H)
+GroupBy(T, [~] _: I)
+
+GroupBy(T, [=] E, Nested)
+GroupBy(T, [~] E, Nested)
+GroupBy(T, [~=] E, Nested)
+
+GroupBy(T, -A, Nested)
+GroupBy(T, K: -A, Nested)
+GroupBy(T, A * A, Nested)
+GroupBy(T, K: A * A, Nested)
+
+GroupBy(T, K1: A, K2: C * C, Nested)
+GroupBy(x : T, K1: A, K2: C * C, Nested: x)
+GroupBy(x: T.A, x * x, Nested: x)
+
+GroupBy(T, A, Nested: {AA: A, BB: not B})
+
+GroupBy(T, A * A, H) // REVIEW: This might be surprising.
+GroupBy(x:T, A * A, x.H) // Work-around.
+
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}?*, s:s}
+
+GroupBy(T, A, Nested)
+GroupBy(T, B, Nested)
+GroupBy(T, C, Nested)
+GroupBy(T, D, Nested)
+GroupBy(T, E, Nested)
+GroupBy(T, F, Nested)
+GroupBy(T, G, Nested)
+GroupBy(T, H, Nested)
+GroupBy(T, I, Nested)
+
+GroupBy(T, -A, Nested)
+GroupBy(T, K: -A, Nested)
+GroupBy(T, A * A, Nested)
+GroupBy(T, K: A * A, Nested)
+
+GroupBy(T, A, Nested: {AA: A, BB: not B})
+
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}*, s:s}
+
+GroupBy(T, 3, Nested)
+GroupBy(T, K: 3, Nested)
+GroupBy(T, s, Nested)
+GroupBy(T, K: s, Nested)
+
+GroupBy(T, A, s)
+GroupBy(T, A, L: s)
+
+GroupBy(T, A, "")
+GroupBy(T, X, Nested)
+GroupBy(T, A, A)
+GroupBy(T, A, A:B)
+GroupBy(T, A:B, A)
+GroupBy(T, A, A, X)
+GroupBy(T, A, A:B, X)
+GroupBy(T, A:B, A, X)
+
+GroupBy(T, A, B, Nested)
+GroupBy(T, A, B, C, Nested)
+GroupBy(T, A, B, C, D, Nested)
+GroupBy(T, A, B, C, D, E, Nested)
+GroupBy(T, A, B, C, D, E, F, Nested)
+GroupBy(T, A, B, C, D, E, F, G, Nested)
+GroupBy(T, A, B, C, D, E, F, G, H, Nested)
+GroupBy(T, A, B, C, D, E, F, G, H, I, Nested)
+
+SetFields(GroupBy(T, A, B, C, D, E, F, I, Nested), Ints : Map(Nested, 1))
+SetFields(GroupBy(T, A, B, C, D, E, F, I, Nested), Count : Sum(Nested, 1))
+
+SetFields(GroupBy(T, A, B, C, D, E, F, G, H, I, Nested), Ints : Map(Nested, 1))
+SetFields(GroupBy(T, A, B, C, D, E, F, G, H, I, Nested), Count : Sum(Nested, 1))
+
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}**, s:s, n:n}
+
+GroupBy(T, A, Nested)
+GroupBy(s, A, Nested)
+GroupBy(n, A, Nested)
+
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}*, s:s}
+
+// Group records without introducing top-level record:
+T->GroupBy(_: A)
+T->GroupBy(+A)
+T->GroupBy(A)
+
+T->GroupBy(_: A, [agg] {N: Count(group)})
+T->GroupBy(_: A, [agg] {N: Count(it)})
+T->GroupBy(A, C)
+T->GroupBy(A, [auto] C)
+T->GroupBy(A, [map] C)
+T->GroupBy(A, [agg] C)
+T->GroupBy(_: A, C)
+T->GroupBy(_: A, [auto] C)
+T->GroupBy(_: A, [map] C)
+T->GroupBy(_: A, [map] +C)
+T->GroupBy(A as _, [map] C as _)
+
+// Directives.
+GroupBy(T, [key] A, [auto] Nested)
+GroupBy(T, [auto] Nested, [key] A)
+
+GroupBy(T, [key] A, [agg] Count: Count(group), [agg] Sum: Sum(group, C))
+GroupBy(T, [key] A, [agg] Count: Count(it), [agg] Sum: Sum(it, C))
+
+GroupBy(T, [key] A * A, [key] B and B) // OK.
+GroupBy(T, [key] A * A, [key] B and B, [agg] Count(it)) // OK.
+GroupBy(T, [key] A * A, [key] B and B, [agg] Count(it), [agg] Sum(it, C)) // Error: need names.
+
+GroupBy(T, [agg] Count(it)) // Error: need a key.
+
+// Composed with ChainMap.
+T->GroupBy(A, Nested)->ChainMap(Nested)
+T->GroupBy(A, Nested: it).Nested->ChainMap()
+T | GroupBy(r: _, A, Nested: r) | _.Nested | ChainMap(_)
+
+// ErrorNode holds scopes - originally forgot to add the map scope. This covers that case.
+GroupBy(T, A, [map] N: {X: C > F}, [agg] Count(it))
+
+// Bad directive.
+T->GroupBy(A, [>] X)
+
+// Duplicate name.
+T->GroupBy(A, A: C, X)
+T->GroupBy(A, C, [agg] C: Count(group))
+T->GroupBy(A, [map]N:C, [map]N:E)
+T->GroupBy(A, [map]N:C, [agg]N:First(group.B))
+T->GroupBy(A, [agg]N:First(group.B), [agg]N:First(group.D))
+T->GroupBy(A, [map]N:C, [agg]N:First(group.B), [agg]N:First(group.D))
+T->GroupBy(A, [map]N:C, [map]N:E, [agg]N:First(group.B))
+
+T->GroupBy(A, [map]C+1, C+2) // Multiple no-name.
+
+// Use the "item" implicit name for [map] scope. Also use the [item] and [group] directives.
+T->GroupBy(A, [item] X: item->&{ V: F + C}, [group] Y: group->&{ V: F + C})
+
+// Case error.
+T->GroupBy([key] a, [key] b)
+
+// Coverage.
+T->GroupBy(as _, A, X)
+T->GroupBy(as x, A, x.C)
+T->GroupBy(A, [auto] it.C)
+T->GroupBy(A, [agg] C, [map] C)
+T->GroupBy(A, [auto] X, Y)
+
+// Uri.
+::: {T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i, M:U<Image>}*, s:s}
+
+GroupBy(T, M, Nested)

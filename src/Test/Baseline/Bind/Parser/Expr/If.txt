@@ -1,0 +1,208 @@
+> a if b else c
+Node: [a if b else c]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [if], full:(0,13) [a if b else c]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:c, rng:(12,13) [c], full:(12,13) [c], extra=[c]]
+###
+> a if b else
+> c
+Node: [a if b else c]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [if], full:(0,13) [a if b else\nc]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:c, rng:(12,13) [c], full:(12,13) [c], extra=[c]]
+###
+> a if b
+Node: [a if b else (<missing>)]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [if], full:(0,6) [a if b]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(6,6) [], full:(6,6) [], extra=[<missing>]]
+Error: (6,6) Tok: '<eof>', Message: Expected: 'else', Found: '<eof>'
+Error: (6,6) Tok: '<eof>', Message: Expected an operand
+###
+> a or b if c or d else e or f
+Node: [a or b if c or d else e or f]
+Dump:
+  00 Node[id:9, kind:If, depth:3, tok:KwdIf, rng:(7,9) [if], full:(0,28) [a or b if c or d else e or f]], count=3
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(2,4) [or], full:(0,6) [a or b], extra=[Or]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:5, kind:BinaryOp, depth:2, tok:KtxOr, rng:(12,14) [or], full:(10,16) [c or d], extra=[Or]], count=2
+  02     Node[id:3, kind:FirstName, depth:1, tok:c, rng:(10,11) [c], full:(10,11) [c], extra=[c]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:d, rng:(15,16) [d], full:(15,16) [d], extra=[d]]
+  01   Node[id:8, kind:BinaryOp, depth:2, tok:KtxOr, rng:(24,26) [or], full:(22,28) [e or f], extra=[Or]], count=2
+  02     Node[id:6, kind:FirstName, depth:1, tok:e, rng:(22,23) [e], full:(22,23) [e], extra=[e]]
+  02     Node[id:7, kind:FirstName, depth:1, tok:f, rng:(27,28) [f], full:(27,28) [f], extra=[f]]
+###
+> (a or b if c or d else e) or f
+Node: [(a or b if c or d else e) or f]
+Dump:
+  00 Node[id:11, kind:BinaryOp, depth:5, tok:KtxOr, rng:(26,28) [or], full:(0,30) [(a or b if c or d else e) or f], extra=[Or]], count=2
+  01   Node[id:9, kind:Paren, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,25) [(a or b if c or d else e)]], count=1
+  02     Node[id:7, kind:If, depth:3, tok:KwdIf, rng:(8,10) [if], full:(1,24) [a or b if c or d else e]], count=3
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(3,5) [or], full:(1,7) [a or b], extra=[Or]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:a, rng:(1,2) [a], full:(1,2) [a], extra=[a]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:b, rng:(6,7) [b], full:(6,7) [b], extra=[b]]
+  03       Node[id:5, kind:BinaryOp, depth:2, tok:KtxOr, rng:(13,15) [or], full:(11,17) [c or d], extra=[Or]], count=2
+  04         Node[id:3, kind:FirstName, depth:1, tok:c, rng:(11,12) [c], full:(11,12) [c], extra=[c]]
+  04         Node[id:4, kind:FirstName, depth:1, tok:d, rng:(16,17) [d], full:(16,17) [d], extra=[d]]
+  03       Node[id:6, kind:FirstName, depth:1, tok:e, rng:(23,24) [e], full:(23,24) [e], extra=[e]]
+  01   Node[id:10, kind:FirstName, depth:1, tok:f, rng:(29,30) [f], full:(29,30) [f], extra=[f]]
+###
+> a or (b if c or d else e or f)
+Node: [a or (b if c or d else e or f)]
+Dump:
+  00 Node[id:11, kind:BinaryOp, depth:5, tok:KtxOr, rng:(2,4) [or], full:(0,30) [a or (b if c or d else e or f)], extra=[Or]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:10, kind:Paren, depth:4, tok:ParenOpen, rng:(5,6) [(], full:(5,30) [(b if c or d else e or f)]], count=1
+  02     Node[id:8, kind:If, depth:3, tok:KwdIf, rng:(8,10) [if], full:(6,29) [b if c or d else e or f]], count=3
+  03       Node[id:1, kind:FirstName, depth:1, tok:b, rng:(6,7) [b], full:(6,7) [b], extra=[b]]
+  03       Node[id:4, kind:BinaryOp, depth:2, tok:KtxOr, rng:(13,15) [or], full:(11,17) [c or d], extra=[Or]], count=2
+  04         Node[id:2, kind:FirstName, depth:1, tok:c, rng:(11,12) [c], full:(11,12) [c], extra=[c]]
+  04         Node[id:3, kind:FirstName, depth:1, tok:d, rng:(16,17) [d], full:(16,17) [d], extra=[d]]
+  03       Node[id:7, kind:BinaryOp, depth:2, tok:KtxOr, rng:(25,27) [or], full:(23,29) [e or f], extra=[Or]], count=2
+  04         Node[id:5, kind:FirstName, depth:1, tok:e, rng:(23,24) [e], full:(23,24) [e], extra=[e]]
+  04         Node[id:6, kind:FirstName, depth:1, tok:f, rng:(28,29) [f], full:(28,29) [f], extra=[f]]
+###
+> a or (b if c or d else e) or f
+Node: [a or (b if c or d else e) or f]
+Dump:
+  00 Node[id:11, kind:BinaryOp, depth:6, tok:KtxOr, rng:(26,28) [or], full:(0,30) [a or (b if c or d else e) or f], extra=[Or]], count=2
+  01   Node[id:9, kind:BinaryOp, depth:5, tok:KtxOr, rng:(2,4) [or], full:(0,25) [a or (b if c or d else e)], extra=[Or]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  02     Node[id:8, kind:Paren, depth:4, tok:ParenOpen, rng:(5,6) [(], full:(5,25) [(b if c or d else e)]], count=1
+  03       Node[id:6, kind:If, depth:3, tok:KwdIf, rng:(8,10) [if], full:(6,24) [b if c or d else e]], count=3
+  04         Node[id:1, kind:FirstName, depth:1, tok:b, rng:(6,7) [b], full:(6,7) [b], extra=[b]]
+  04         Node[id:4, kind:BinaryOp, depth:2, tok:KtxOr, rng:(13,15) [or], full:(11,17) [c or d], extra=[Or]], count=2
+  05           Node[id:2, kind:FirstName, depth:1, tok:c, rng:(11,12) [c], full:(11,12) [c], extra=[c]]
+  05           Node[id:3, kind:FirstName, depth:1, tok:d, rng:(16,17) [d], full:(16,17) [d], extra=[d]]
+  04         Node[id:5, kind:FirstName, depth:1, tok:e, rng:(23,24) [e], full:(23,24) [e], extra=[e]]
+  01   Node[id:10, kind:FirstName, depth:1, tok:f, rng:(29,30) [f], full:(29,30) [f], extra=[f]]
+###
+> a if b else c if d else e
+Node: [a if b else c if d else e]
+Dump:
+  00 Node[id:6, kind:If, depth:3, tok:KwdIf, rng:(2,4) [if], full:(0,25) [a if b else c if d else e]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:5, kind:If, depth:2, tok:KwdIf, rng:(14,16) [if], full:(12,25) [c if d else e]], count=3
+  02     Node[id:2, kind:FirstName, depth:1, tok:c, rng:(12,13) [c], full:(12,13) [c], extra=[c]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:d, rng:(17,18) [d], full:(17,18) [d], extra=[d]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:e, rng:(24,25) [e], full:(24,25) [e], extra=[e]]
+###
+> a if b else (c if d else e)
+Node: [a if b else c if d else e]
+Dump:
+  00 Node[id:8, kind:If, depth:4, tok:KwdIf, rng:(2,4) [if], full:(0,27) [a if b else (c if d else e)]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:7, kind:Paren, depth:3, tok:ParenOpen, rng:(12,13) [(], full:(12,27) [(c if d else e)]], count=1
+  02     Node[id:5, kind:If, depth:2, tok:KwdIf, rng:(15,17) [if], full:(13,26) [c if d else e]], count=3
+  03       Node[id:2, kind:FirstName, depth:1, tok:c, rng:(13,14) [c], full:(13,14) [c], extra=[c]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:d, rng:(18,19) [d], full:(18,19) [d], extra=[d]]
+  03       Node[id:4, kind:FirstName, depth:1, tok:e, rng:(25,26) [e], full:(25,26) [e], extra=[e]]
+###
+> (a if b else c) if d else e
+Node: [(a if b else c) if d else e]
+Dump:
+  00 Node[id:8, kind:If, depth:4, tok:KwdIf, rng:(16,18) [if], full:(0,27) [(a if b else c) if d else e]], count=3
+  01   Node[id:5, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,15) [(a if b else c)]], count=1
+  02     Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(3,5) [if], full:(1,14) [a if b else c]], count=3
+  03       Node[id:0, kind:FirstName, depth:1, tok:a, rng:(1,2) [a], full:(1,2) [a], extra=[a]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:b, rng:(6,7) [b], full:(6,7) [b], extra=[b]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:c, rng:(13,14) [c], full:(13,14) [c], extra=[c]]
+  01   Node[id:6, kind:FirstName, depth:1, tok:d, rng:(19,20) [d], full:(19,20) [d], extra=[d]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:e, rng:(26,27) [e], full:(26,27) [e], extra=[e]]
+###
+> if
+Node: [(<missing>) if (<missing>) else (<missing>)]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(0,2) [if], full:(0,2) [if]], count=3
+  01   Node[id:0, kind:MissingValue, depth:1, tok:KwdIf, rng:(0,2) [if], full:(0,2) [if], extra=[<missing>]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) [], extra=[<missing>]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) [], extra=[<missing>]]
+Error: (0,2) Tok: 'if', Message: Expected an operand
+Error: (2,2) Tok: '<eof>', Message: Expected an operand
+Error: (2,2) Tok: '<eof>', Message: Expected: 'else', Found: '<eof>'
+Error: (2,2) Tok: '<eof>', Message: Expected an operand
+###
+> then 123
+Node: [(<missing>)]
+Dump:
+  00 Node[id:0, kind:MissingValue, depth:1, tok:KwdThen, rng:(0,4) [then], full:(0,4) [then], extra=[<missing>]]
+Error: (0,4) Tok: 'then', Message: Expected an operand
+Error: (0,4) Tok: 'then', Message: Unexpected token
+###
+> else "hi"
+Node: [(<missing>)]
+Dump:
+  00 Node[id:0, kind:MissingValue, depth:1, tok:KwdElse, rng:(0,4) [else], full:(0,4) [else], extra=[<missing>]]
+Error: (0,4) Tok: 'else', Message: Expected an operand
+Error: (0,4) Tok: 'else', Message: Unexpected token
+###
+> if a
+Node: [(<missing>) if a else (<missing>)]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(0,2) [if], full:(0,4) [if a]], count=3
+  01   Node[id:0, kind:MissingValue, depth:1, tok:KwdIf, rng:(0,2) [if], full:(0,2) [if], extra=[<missing>]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:a, rng:(3,4) [a], full:(3,4) [a], extra=[a]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(4,4) [], full:(4,4) [], extra=[<missing>]]
+Error: (0,2) Tok: 'if', Message: Expected an operand
+Error: (4,4) Tok: '<eof>', Message: Expected: 'else', Found: '<eof>'
+Error: (4,4) Tok: '<eof>', Message: Expected an operand
+###
+> a and if
+Node: [a and (<missing>) if (<missing>) else (<missing>)]
+Dump:
+  00 Node[id:5, kind:If, depth:3, tok:KwdIf, rng:(6,8) [if], full:(0,8) [a and if]], count=3
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [and], full:(0,8) [a and if], extra=[And]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  02     Node[id:1, kind:MissingValue, depth:1, tok:KwdIf, rng:(6,8) [if], full:(6,8) [if], extra=[<missing>]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+  01   Node[id:4, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (6,8) Tok: 'if', Message: Expected an operand
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+Error: (8,8) Tok: '<eof>', Message: Expected: 'else', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+###
+> a and then x
+Node: [a and (<missing>)]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [and], full:(0,10) [a and then], extra=[And]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:KwdThen, rng:(6,10) [then], full:(6,10) [then], extra=[<missing>]]
+Error: (6,10) Tok: 'then', Message: Expected an operand
+Error: (6,10) Tok: 'then', Message: Unexpected token
+###
+> a if else
+Node: [a if (<missing>) else (<missing>)]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [if], full:(0,9) [a if else]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:KwdElse, rng:(5,9) [else], full:(5,9) [else], extra=[<missing>]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(9,9) [], full:(9,9) [], extra=[<missing>]]
+Error: (5,9) Tok: 'else', Message: Expected an operand
+Error: (9,9) Tok: '<eof>', Message: Expected an operand
+###
+> a then if
+Node: [a]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+Error: (2,6) Tok: 'then', Message: Unexpected token
+###
+> a IF b ELSE c
+Node: [a if b else c]
+Corrected: [a if b else c]
+Dump:
+  00 Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [IF], full:(0,13) [a IF b ELSE c]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:c, rng:(12,13) [c], full:(12,13) [c], extra=[c]]
+Error: (2,4) Tok: 'IF', Message: Expected 'if' but got 'IF'
+Error: (7,11) Tok: 'ELSE', Message: Expected 'else' but got 'ELSE'
+###

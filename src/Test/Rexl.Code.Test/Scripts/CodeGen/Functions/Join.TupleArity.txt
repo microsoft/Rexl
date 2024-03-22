@@ -1,0 +1,18 @@
+﻿``` A := Range(20)->{ ID: "A" & ToText(it), V: it       }->Filter(V mod 3 != 2)->{ ID, V: V if V mod  7 != 3 else null };
+``` B := Range(40)->{ ID: "B" & ToText(it), V: it div 2 }->Filter(V mod 4 != 1)->{ ID, V: V if V mod  5 != 3 else null };
+
+// Tuple arities.
+KeyJoin(x:A, y:B, ((V,),), ((V,),), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1), ((V,),V+1), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5), ((V,),V+1,V+1.5), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia), ((V,),V+1,V+1.5,V+2ia), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1), ((V,),V+1,V+1.5,V+2ia,V/1), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V)), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V)), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V)), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V)), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })
+KeyJoin(x:A, y:B, ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V,V), ((V,),V+1,V+1.5,V+2ia,V/1,V!=0,V>5,Time(V),ToDate(V),V,V,V,V,V), { IDX:x.ID, IDY:y.ID, VX:x.V, VY:y.V })

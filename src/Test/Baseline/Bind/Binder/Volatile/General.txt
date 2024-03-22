@@ -1,0 +1,100 @@
+**** New globals: {T:{A:i8, B:s, D:d}*, ti8:i8[*]}
+**** New udf: V, arity: 1
+
+> Range(10)->ForEach(Ping()) // Don't hoist or reduce to Repeat.
+Range(10)->ForEach(Ping()) : i8*
+Binder : [Int|Call|CallVolatile|ScopeOwner] ForEach(*1: Range(10), Test.Ping())
+Reducer: [Int|Call|CallVolatile|ScopeOwner] ForEach(*1: Repeat(false, 10), Test.Ping())
+###
+> With(x: Ping(), Range(10)->ForEach(x)) // Can reduce to Repeat.
+With(x : Ping(), Range(10)->ForEach(x)) : i8*
+Binder : [Int|ArgScopeRef|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), ForEach(*2: Range(10), !1))
+Reducer: [Int|Call|CallVolatile] Repeat(Test.Ping(), 10)
+###
+> Range(1)->ForEach(Ping()) // Can reduce to [Ping()]
+Range(1)->ForEach(Ping()) : i8*
+Binder : [Int|Call|CallVolatile|ScopeOwner] ForEach(*1: Range(1), Test.Ping())
+Reducer: [Sequence|CallVolatile] [Test.Ping()]
+###
+> Range(10)->ForEach((it, Ping()))
+Range(10)->ForEach((it, Ping())) : (i8, i8)*
+Binder : [Int|ArgScopeRef|Tuple|Call|CallVolatile|ScopeOwner] ForEach(*1: Range(10), (*1, Test.Ping()))
+###
+> With(x: Ping(), Range(10)->ForEach((it, x)))
+With(x : Ping(), Range(10)->ForEach((it, x))) : (i8, i8)*
+Binder : [Int|ArgScopeRef|Tuple|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), ForEach(*2: Range(10), (*2, !1)))
+###
+> ForEach(a:Range(10), b:Repeat(Ping(), 10), Ping() - b)
+ForEach(a : Range(10), b : Repeat(Ping(), 10), Ping() - b) : i8*
+Binder : [Int|ArgScopeRef|VariadicOp|Call|CallVolatile|ScopeOwner] ForEach(*1: Range(10), *2: Repeat(Test.Ping(), 10), Add(Test.Ping(), [-] *2))
+Reducer: [Int|ArgScopeRef|VariadicOp|Call|CallVolatile|ScopeOwner] ForEach(*1: Repeat(Test.Ping(), 10), Add(Test.Ping(), [-] *1))
+###
+> Ping() + Range(10) // Don't repeat Ping()
+Ping() + Range(10) : i8*
+Binder : [Int|ArgScopeRef|VariadicOp|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), ForEach(*2: Range(10), Add(!1, *2)))
+###
+> ti8[Ping()::-1]
+ti8[Ping()::-1] : i8[*]
+Binder : [Int|Global|TensorSlice|CallVolatile] ti8[Test.Ping()::-1]
+###
+> Sort(T, A - Ping()) // Error: volatile key.
+Sort(T, A - Ping()) : {A:i8, B:s, D:d}*
+*** Error: (10,11) Node: A - Ping(), Message: Argument in position 2 can't be volatile
+Binder : [Global|ArgScopeRef|GetField|VariadicOp|Call|CallVolatile|ScopeOwner] Sort*(*1: T, Add(*1.A, [-] Test.Ping()))
+###
+> With(x: Ping(), Sort(T, A - x))
+With(x : Ping(), Sort(T, A - x)) : {A:i8, B:s, D:d}*
+Binder : [Global|ArgScopeRef|GetField|VariadicOp|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), Sort(*2: T, Add(*2.A, [-] !1)))
+###
+> Sort(T+>{ X: Ping() }, X)
+Sort(T+>{ X : Ping() }, X) : {A:i8, B:s, D:d, X:i8}*
+Binder : [Global|ArgScopeRef|GetField|Call|CallVolatile|SetFields|ScopeOwner] Sort(*3: ForEach(*1: T, SetFields(!2: *1, X : Test.Ping())), *3.X)
+###
+> KeyJoin(a:T, b:T, Ping(), A, (a, b)) // Error: volatile key.
+KeyJoin(a : T, b : T, Ping(), A, (a, b)) : ({A:i8, B:s, D:d}, {A:i8, B:s, D:d})*
+*** Error: (22,23) Node: Ping(), Message: Argument in position 3 can't be volatile
+Binder : [Global|ArgScopeRef|GetField|Tuple|Call|CallVolatile|ScopeOwner] KeyJoin*(*1: T, *2: T, Test.Ping(), *2.A, (*1, *2))
+###
+> KeyJoin(a:T, b:T, A, Ping(), (a, b)) // Error: volatile key.
+KeyJoin(a : T, b : T, A, Ping(), (a, b)) : ({A:i8, B:s, D:d}, {A:i8, B:s, D:d})*
+*** Error: (25,26) Node: Ping(), Message: Argument in position 4 can't be volatile
+Binder : [Global|ArgScopeRef|GetField|Tuple|Call|CallVolatile|ScopeOwner] KeyJoin*(*1: T, *2: T, *1.A, Test.Ping(), (*1, *2))
+###
+> With(p: Ping(), KeyJoin(a:T, b:T, p, A, (a, b)))
+With(p : Ping(), KeyJoin(a : T, b : T, p, A, (a, b))) : ({A:i8, B:s, D:d}, {A:i8, B:s, D:d})*
+Binder : [Global|ArgScopeRef|GetField|Tuple|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), KeyJoin(*2: T, *3: T, !1, *3.A, (*2, *3)))
+###
+> With(p: Ping(), KeyJoin(a:T, b:T, A, p, (a, b)))
+With(p : Ping(), KeyJoin(a : T, b : T, A, p, (a, b))) : ({A:i8, B:s, D:d}, {A:i8, B:s, D:d})*
+Binder : [Global|ArgScopeRef|GetField|Tuple|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), KeyJoin(*2: T, *3: T, *2.A, !1, (*2, *3)))
+###
+> KeyJoin(a:T+>{ X: Ping() }, b:T, X, A, (a, b))
+KeyJoin(a : T+>{ X : Ping() }, b : T, X, A, (a, b)) : ({A:i8, B:s, D:d, X:i8}, {A:i8, B:s, D:d})*
+Binder : [Global|ArgScopeRef|GetField|Tuple|Call|CallVolatile|SetFields|ScopeOwner] KeyJoin(*3: ForEach(*1: T, SetFields(!2: *1, X : Test.Ping())), *4: T, *3.X, *4.A, (*3, *4))
+###
+> GroupBy(T, A * Ping()) // Error: volatile key.
+GroupBy(T, A * Ping()) : {A:i8, B:s, D:d}**
+*** Error: (13,14) Node: A * Ping(), Message: Key in 'GroupBy' can't be volatile
+Binder : [Global|ArgScopeRef|GetField|VariadicOp|CallVolatile|GroupBy|ScopeOwner] GroupBy(*1: T, [key] Mul(*1.A, Test.Ping()))
+###
+> With(p: Ping(), GroupBy(T, A * p))
+With(p : Ping(), GroupBy(T, A * p)) : {A:i8, B:s, D:d}**
+Binder : [Global|ArgScopeRef|GetField|VariadicOp|Call|CallVolatile|GroupBy|ScopeOwner] With(!1: Test.Ping(), GroupBy(*2: T, [key] Mul(*2.A, !1)))
+###
+> V(3) // Volatile in UDF is allowed here.
+V(3) : d
+Binder : [Int|ArgScopeRef|BinaryOp|Call|CallVolatile|ScopeOwner] With(!1: 3, ChronoAdd(Date.Now.Utc(), Time(!1)))
+Reducer: [Int|BinaryOp|Call|CallVolatile] ChronoAdd(Date.Now.Utc(), Time(3))
+###
+
+**** New globals: {T:{A:i4, B:r8, C:s, X:d}*, U:{A:i4, B:r4, C:s}*}
+
+> CrossJoin(t:T, u:U, t.A = u.A + Ping(), { t, u }) // Volatile in CrossJoin condition inhibits reduction to KeyJoin.
+CrossJoin(t : T, u : U, t.A @= u.A + Ping(), { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : [Global|ArgScopeRef|GetField|CastNum|VariadicOp|Compare|Record|Call|CallVolatile|ScopeOwner] CrossJoin(*1: T, *2: U, Num<i8>(*1.A) @= Add(Num<i8>(*2.A), Test.Ping()), {t:*1, u:*2})
+###
+> With(p: Ping(), CrossJoin(t:T, u:U, t.A = u.A + p, { t, u }))
+With(p : Ping(), CrossJoin(t : T, u : U, t.A @= u.A + p, { t, u })) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : [Global|ArgScopeRef|GetField|CastNum|VariadicOp|Compare|Record|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), CrossJoin(*2: T, *3: U, Num<i8>(*2.A) @= Add(Num<i8>(*3.A), !1), {t:*2, u:*3}))
+Reducer: [Global|ArgScopeRef|GetField|CastNum|VariadicOp|Record|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), KeyJoin(*2: T, *3: U, [=] Num<i8>(*2.A), Add(Num<i8>(*3.A), !1), {t:*2, u:*3}))
+###

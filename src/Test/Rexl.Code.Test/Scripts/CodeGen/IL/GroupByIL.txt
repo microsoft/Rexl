@@ -1,0 +1,68 @@
+﻿`` T8 := [{A:0i4, B:1r8, C:"X"}, {A:1i4, B:0/0, C:"X"}, {A:2i4, B:0/0, C:"X"}, {A:3i4, B:-0d, C:"Y"}, {A:4i4, B:+0d, C:"Y"}];
+`` T4 := T8+>{B: CastR4(B)};
+`` Im0 := Link.LocalImage("foo.bmp");
+`` Im1 := Link.LocalImage("bar.bmp");
+`` TU := Range(10)->{A:it, B: it mod 2, C: Im0 if it mod 2 = 0 else Im1, D: it mod 2};
+
+// NaN values should be consistently grouped.
+GroupBy(T8, [key] B, X)
+GroupBy(T8, [key] C, X)
+GroupBy(T8, [key] B, [key] C, X)
+GroupBy(T8, [key] BC: (B, C), X)
+GroupBy(T8 ++ [{A:5i4, B:null, C:"Y"}], [key] B, [key] C, X)
+GroupBy(T4, [key] B, X)
+GroupBy(T4, [key] C, X)
+GroupBy(T4, [key] B, [key] C, X)
+GroupBy(T4, [key] BC: (B, C), X)
+GroupBy(T4 ++ [{A:5i4, B:null, C:"Y"}], [key] B, [key] C, X)
+
+GroupBy(TU, C, X)
+GroupBy(TU, [key] B, [key] C, X)
+GroupBy(TU, [key] C, [key] D, X)
+GroupBy(TU, [key] C, [key] EId: A mod 2, X)
+GroupBy(TU, [key] AId: A mod 2, [key] C, X)
+
+`` SS := ["A", "b", "B", "a", "A", "b", null, "A", "b", null, "a", "B", null];
+`` D := SS->ForEach({Id:#it, M: #it mod 3, N:it});
+
+GroupBy(D, N, X)
+GroupBy(D, [~] N, X)
+GroupBy(D, [~] N, M, X)
+GroupBy(D, [~] _: N, M, X)
+GroupBy(D, [~] _: N, [key] _: M)
+GroupBy(D, [key] _: M, [~] _: N)
+
+// These should unify upper and lower case.
+GroupBy(D, [~] _: N, [~]   _: N & N)
+GroupBy(D, [~] _: N, [key] _: N.Lower)
+GroupBy(D, [key] _: N.Upper, [~] _: N)
+
+// These should separate by case.
+GroupBy(D, [~]   _: N, [key] _: N & N)
+GroupBy(D, [key] _: N, [~]   _: N & N)
+GroupBy(D, [key] _: N, [key] _: N & N)
+
+// Coverage of AreKeysSameCi.
+GroupBy(D, [~] A: N, [~]   B: N & N)
+GroupBy(D, [~] A: N, [key] B: N.Lower)
+GroupBy(D, [key] A: N.Upper, [~] B: N)
+
+`` D := SS->ForEach({Id:#it, R: {M: #it mod 3, N:it}});
+
+GroupBy(D, R, X)
+GroupBy(D, [~] R, X)
+GroupBy(D, R, S: # div 100, X)
+GroupBy(D, [~] R, S: # div 100, X)
+GroupBy(D, R, S: # div 7, X)
+GroupBy(D, [~] R, S: # div y, X)
+
+`` D := SS->ForEach({Id:#it, R: {M: #it mod 3, N:it}, S: # div 100, S2: # div 7});
+
+GroupBy(D, R, X)
+GroupBy(D, [~] R, X)
+GroupBy(D, R, S, X)
+GroupBy(D, [~] R, S, X)
+GroupBy(D, [~] R, S, [item] T: #, X)
+GroupBy(D, R, S2, X)
+GroupBy(D, [~] R, S2, X)
+GroupBy(D, [~] R, S2, [item] T: #, X)

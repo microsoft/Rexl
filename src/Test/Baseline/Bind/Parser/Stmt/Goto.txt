@@ -1,0 +1,451 @@
+>   if (A) goto L0;
+>   B := 5;
+>   goto L1;
+> L0:
+>   X;
+> L1:
+Node: [if (A) goto L0; B := 5; goto L1; L0: X; L1:]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:4, tok:Semi, rng:(16,17) [;], full:(2,51) [if (A) goto L0;\n  B := 5;\n  goto L1;\nL0:\n  X;\nL1:]], count=6
+  01   Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(2,4) [if], full:(2,16) [if (A) goto L0]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(5,6) [(], full:(5,8) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(6,7) [A], full:(6,7) [A], extra=[A]]
+  02     Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(9,13) [goto], full:(9,16) [goto L0], extra=[L0]]
+  01   Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(20,26) [B := 5], extra=[B]], count=1
+  02     Node[id:4, kind:NumLit, depth:1, tok:5, rng:(25,26) [5], full:(25,26) [5], extra=[5]]
+  01   Node[id:6, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(30,34) [goto], full:(30,37) [goto L1], extra=[L1]]
+  01   Node[id:7, kind:LabelStmt, depth:1, tok:Colon, rng:(41,42) [:], full:(39,42) [L0:], extra=[L0]]
+  01   Node[id:9, kind:ExprStmt, depth:2, tok:X, rng:(45,46) [X], full:(45,46) [X]], count=1
+  02     Node[id:8, kind:FirstName, depth:1, tok:X, rng:(45,46) [X], full:(45,46) [X], extra=[X]]
+  01   Node[id:10, kind:LabelStmt, depth:1, tok:Colon, rng:(50,51) [:], full:(48,51) [L1:], extra=[L1]]
+
+   0) [0] JumpIf 3 (0=>0) A
+   1) [0] Define B <- 5
+   2) [0] Jump 4 (0=>0)
+   3) [0] Expr X
+   4) [0] End
+###
+> N := 1;
+> S := 0;
+> LLoop:
+>     S := S + N;
+>     N := N + 1;
+> if (N < 10) goto LLoop;
+Node: [N := 1; S := 0; LLoop: S := S + N; N := N + 1; if (N $< 10) goto LLoop]
+Dump:
+  00 Node[id:19, kind:StmtList, depth:5, tok:Semi, rng:(6,7) [;], full:(0,78) [N := 1;\nS := 0;\nLLoop:\n    S := S + N;\n    N := N + 1;\nif (N < 10) goto LLoop;]], count=6
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,6) [N := 1], extra=[N]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:1, rng:(5,6) [1], full:(5,6) [1], extra=[1]]
+  01   Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(10,12) [:=], full:(8,14) [S := 0], extra=[S]], count=1
+  02     Node[id:2, kind:NumLit, depth:1, tok:0, rng:(13,14) [0], full:(13,14) [0], extra=[0]]
+  01   Node[id:4, kind:LabelStmt, depth:1, tok:Colon, rng:(21,22) [:], full:(16,22) [LLoop:], extra=[LLoop]]
+  01   Node[id:8, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(29,31) [:=], full:(27,37) [S := S + N], extra=[S]], count=1
+  02     Node[id:7, kind:BinaryOp, depth:2, tok:Add, rng:(34,35) [+], full:(32,37) [S + N], extra=[Add]], count=2
+  03       Node[id:5, kind:FirstName, depth:1, tok:S, rng:(32,33) [S], full:(32,33) [S], extra=[S]]
+  03       Node[id:6, kind:FirstName, depth:1, tok:N, rng:(36,37) [N], full:(36,37) [N], extra=[N]]
+  01   Node[id:12, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(45,47) [:=], full:(43,53) [N := N + 1], extra=[N]], count=1
+  02     Node[id:11, kind:BinaryOp, depth:2, tok:Add, rng:(50,51) [+], full:(48,53) [N + 1], extra=[Add]], count=2
+  03       Node[id:9, kind:FirstName, depth:1, tok:N, rng:(48,49) [N], full:(48,49) [N], extra=[N]]
+  03       Node[id:10, kind:NumLit, depth:1, tok:1, rng:(52,53) [1], full:(52,53) [1], extra=[1]]
+  01   Node[id:18, kind:IfStmt, depth:4, tok:KwdIf, rng:(55,57) [if], full:(55,77) [if (N < 10) goto LLoop]], count=2
+  02     Node[id:16, kind:Paren, depth:3, tok:ParenOpen, rng:(58,59) [(], full:(58,66) [(N < 10)]], count=1
+  03       Node[id:15, kind:Compare, depth:2, tok:Lss, rng:(61,62) [<], full:(59,65) [N < 10]], count=2
+  04         Op:StrictLess
+  04         Node[id:13, kind:FirstName, depth:1, tok:N, rng:(59,60) [N], full:(59,60) [N], extra=[N]]
+  04         Node[id:14, kind:NumLit, depth:1, tok:10, rng:(63,65) [10], full:(63,65) [10], extra=[10]]
+  02     Node[id:17, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(67,71) [goto], full:(67,77) [goto LLoop], extra=[LLoop]]
+
+   0) [0] Define N <- 1
+   1) [0] Define S <- 0
+   2) [0] Define S <- S + N
+   3) [0] Define N <- N + 1
+   4) [0] JumpIf 2 (0=>0) N $< 10
+   5) [0] End
+###
+> namespace X {
+>     A := 3;
+>     if (A > 2)
+>         goto LDone;
+>     A := 17;
+> }
+> LDone:
+Node: [namespace X { A := 3; if (A $> 2) goto LDone; A := 17 } LDone:]
+Dump:
+  00 Node[id:14, kind:StmtList, depth:8, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,82) [namespace X {\n    A := 3;\n    if (A > 2)\n        goto LDone;\n    A := 17;\n}\nLDone:]], count=2
+  01   Node[id:12, kind:NamespaceStmt, depth:7, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,75) [namespace X {\n    A := 3;\n    if (A > 2)\n        goto LDone;\n    A := 17;\n}], extra=[X]], count=1
+  02     Node[id:11, kind:BlockStmt, depth:6, tok:CurlyOpen, rng:(12,13) [{], full:(12,75) [{\n    A := 3;\n    if (A > 2)\n        goto LDone;\n    A := 17;\n}]], count=1
+  03       Node[id:10, kind:StmtList, depth:5, tok:Semi, rng:(24,25) [;], full:(18,73) [A := 3;\n    if (A > 2)\n        goto LDone;\n    A := 17;]], count=3
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(20,22) [:=], full:(18,24) [A := 3], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(23,24) [3], full:(23,24) [3], extra=[3]]
+  04         Node[id:7, kind:IfStmt, depth:4, tok:KwdIf, rng:(30,32) [if], full:(30,59) [if (A > 2)\n        goto LDone]], count=2
+  05           Node[id:5, kind:Paren, depth:3, tok:ParenOpen, rng:(33,34) [(], full:(33,40) [(A > 2)]], count=1
+  06             Node[id:4, kind:Compare, depth:2, tok:Grt, rng:(36,37) [>], full:(34,39) [A > 2]], count=2
+  07               Op:StrictGreater
+  07               Node[id:2, kind:FirstName, depth:1, tok:A, rng:(34,35) [A], full:(34,35) [A], extra=[A]]
+  07               Node[id:3, kind:NumLit, depth:1, tok:2, rng:(38,39) [2], full:(38,39) [2], extra=[2]]
+  05           Node[id:6, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(49,53) [goto], full:(49,59) [goto LDone], extra=[LDone]]
+  04         Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(67,69) [:=], full:(65,72) [A := 17], extra=[A]], count=1
+  05           Node[id:8, kind:NumLit, depth:1, tok:17, rng:(70,72) [17], full:(70,72) [17], extra=[17]]
+  01   Node[id:13, kind:LabelStmt, depth:1, tok:Colon, rng:(81,82) [:], full:(76,82) [LDone:], extra=[LDone]]
+
+   0) [0] Enter (0=>1) X
+   1) [1] Define A <- 3
+   2) [1] JumpIf 5 (1=>0) A $> 2
+   3) [1] Define A <- 17
+   4) [1] Leave (1=>0)
+   5) [0] End
+###
+> // Label illegal in nested statement scenarios.
+> if (A) L0: X := 3;
+Node: [if (A) X := 3]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:KwdIf, rng:(49,51) [if], full:(49,67) [if (A) L0: X := 3;]], count=1
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(49,51) [if], full:(49,66) [if (A) L0: X := 3]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(52,53) [(], full:(52,55) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(53,54) [A], full:(53,54) [A], extra=[A]]
+  02     Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(62,64) [:=], full:(60,66) [X := 3], extra=[X]], count=1
+  03       Node[id:2, kind:NumLit, depth:1, tok:3, rng:(65,66) [3], full:(65,66) [3], extra=[3]]
+Error: (56,58) Tok: 'L0', Message: A nested statement cannot have a label
+Comment: Range=(0,47), Tid=CommentLine, Text=[// Label illegal in nested statement scenarios.]
+
+   0) [0] JumpIfNot 2 (0=>0) A
+   1) [0] Define X <- 3
+   2) [0] End
+###
+> if (A) L0:
+Node: [if (A) <missing>]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,10) [if (A) L0:]], count=1
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,10) [if (A) L0:]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:ExprStmt, depth:2, tok:Eof, rng:(10,10) [], full:(10,10) []], count=1
+  03       Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(10,10) [], full:(10,10) [], extra=[<missing>]]
+Error: (7,9) Tok: 'L0', Message: A nested statement cannot have a label
+Error: (10,10) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] JumpIfNot 2 (0=>0) A
+   1) [0] Expr (<missing>)
+   2) [0] End
+###
+> if (A) L0: L1: X := 3;
+Node: [if (A) X := 3]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,22) [if (A) L0: L1: X := 3;]], count=1
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,21) [if (A) L0: L1: X := 3]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(17,19) [:=], full:(15,21) [X := 3], extra=[X]], count=1
+  03       Node[id:2, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+Error: (7,9) Tok: 'L0', Message: A nested statement cannot have a label
+Error: (11,13) Tok: 'L1', Message: A nested statement cannot have a label
+
+   0) [0] JumpIfNot 2 (0=>0) A
+   1) [0] Define X <- 3
+   2) [0] End
+###
+> if (A) { } else L0: X := 3;
+Node: [if (A) {  } else X := 3]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,27) [if (A) { } else L0: X := 3;]], count=1
+  01   Node[id:6, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,26) [if (A) { } else L0: X := 3]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(7,8) [{], full:(7,10) [{ }]], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:CurlyClose, rng:(9,10) [}], full:(9,10) [}]], count=0
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(20,26) [X := 3], extra=[X]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(25,26) [3], full:(25,26) [3], extra=[3]]
+Error: (16,18) Tok: 'L0', Message: A nested statement cannot have a label
+
+   0) [0] JumpIfNot 4 (0=>0) A
+   1) [0] Enter (0=>1)
+   2) [1] Leave (1=>0)
+   3) [0] Jump 5 (0=>0)
+   4) [0] Define X <- 3
+   5) [0] End
+###
+> if (A) { } else L0:
+Node: [if (A) {  } else <missing>]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,19) [if (A) { } else L0:]], count=1
+  01   Node[id:6, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,19) [if (A) { } else L0:]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(7,8) [{], full:(7,10) [{ }]], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:CurlyClose, rng:(9,10) [}], full:(9,10) [}]], count=0
+  02     Node[id:5, kind:ExprStmt, depth:2, tok:Eof, rng:(19,19) [], full:(19,19) []], count=1
+  03       Node[id:4, kind:MissingValue, depth:1, tok:Eof, rng:(19,19) [], full:(19,19) [], extra=[<missing>]]
+Error: (16,18) Tok: 'L0', Message: A nested statement cannot have a label
+Error: (19,19) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] JumpIfNot 4 (0=>0) A
+   1) [0] Enter (0=>1)
+   2) [1] Leave (1=>0)
+   3) [0] Jump 5 (0=>0)
+   4) [0] Expr (<missing>)
+   5) [0] End
+###
+> if (A) { } else L0: L1: X := 3;
+Node: [if (A) {  } else X := 3]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,31) [if (A) { } else L0: L1: X := 3;]], count=1
+  01   Node[id:6, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,30) [if (A) { } else L0: L1: X := 3]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(7,8) [{], full:(7,10) [{ }]], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:CurlyClose, rng:(9,10) [}], full:(9,10) [}]], count=0
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(26,28) [:=], full:(24,30) [X := 3], extra=[X]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(29,30) [3], full:(29,30) [3], extra=[3]]
+Error: (16,18) Tok: 'L0', Message: A nested statement cannot have a label
+Error: (20,22) Tok: 'L1', Message: A nested statement cannot have a label
+
+   0) [0] JumpIfNot 4 (0=>0) A
+   1) [0] Enter (0=>1)
+   2) [1] Leave (1=>0)
+   3) [0] Jump 5 (0=>0)
+   4) [0] Define X <- 3
+   5) [0] End
+###
+> L0: goto L0; // Reports infinite loop.
+Node: [L0: goto L0]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:2, tok:L0, rng:(0,2) [L0], full:(0,12) [L0: goto L0;]], count=2
+  01   Node[id:0, kind:LabelStmt, depth:1, tok:Colon, rng:(2,3) [:], full:(0,3) [L0:], extra=[L0]]
+  01   Node[id:1, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(4,8) [goto], full:(4,11) [goto L0], extra=[L0]]
+Comment: Range=(13,38), Tid=CommentLine, Text=[// Reports infinite loop.]
+
+*** Flow Diagnostics:
+Error: (9,11) Tok: 'L0', Message: Infinite loop
+
+   0) [0] Jump 0 (0=>0)
+   1) [0] End
+###
+> // REVIEW: Ideally, should report infinite loop.
+> L0: X;
+> goto L0;
+Node: [L0: X; goto L0]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:L0, rng:(49,51) [L0], full:(49,64) [L0: X;\ngoto L0;]], count=3
+  01   Node[id:0, kind:LabelStmt, depth:1, tok:Colon, rng:(51,52) [:], full:(49,52) [L0:], extra=[L0]]
+  01   Node[id:2, kind:ExprStmt, depth:2, tok:X, rng:(53,54) [X], full:(53,54) [X]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:X, rng:(53,54) [X], full:(53,54) [X], extra=[X]]
+  01   Node[id:3, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(56,60) [goto], full:(56,63) [goto L0], extra=[L0]]
+Comment: Range=(0,48), Tid=CommentLine, Text=[// REVIEW: Ideally, should report infinite loop.]
+
+   0) [0] Expr X
+   1) [0] Jump 0 (0=>0)
+   2) [0] End
+###
+> // REVIEW: Should this report infinite loop?
+> L0: if (X) goto L0;
+Node: [L0: if (X) goto L0]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:L0, rng:(45,47) [L0], full:(45,64) [L0: if (X) goto L0;]], count=2
+  01   Node[id:0, kind:LabelStmt, depth:1, tok:Colon, rng:(47,48) [:], full:(45,48) [L0:], extra=[L0]]
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(49,51) [if], full:(49,63) [if (X) goto L0]], count=2
+  02     Node[id:2, kind:Paren, depth:2, tok:ParenOpen, rng:(52,53) [(], full:(52,55) [(X)]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:X, rng:(53,54) [X], full:(53,54) [X], extra=[X]]
+  02     Node[id:3, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(56,60) [goto], full:(56,63) [goto L0], extra=[L0]]
+Comment: Range=(0,44), Tid=CommentLine, Text=[// REVIEW: Should this report infinite loop?]
+
+*** Flow Diagnostics:
+Error: (61,63) Tok: 'L0', Message: Infinite loop
+
+   0) [0] JumpIf 0 (0=>0) X
+   1) [0] End
+###
+> // REVIEW: Should this report infinite loop?
+> L0: if (X) Y; else goto L0;
+Node: [L0: if (X) Y; else goto L0]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:L0, rng:(45,47) [L0], full:(45,72) [L0: if (X) Y; else goto L0;]], count=2
+  01   Node[id:0, kind:LabelStmt, depth:1, tok:Colon, rng:(47,48) [:], full:(45,48) [L0:], extra=[L0]]
+  01   Node[id:6, kind:IfStmt, depth:3, tok:KwdIf, rng:(49,51) [if], full:(49,71) [if (X) Y; else goto L0]], count=3
+  02     Node[id:2, kind:Paren, depth:2, tok:ParenOpen, rng:(52,53) [(], full:(52,55) [(X)]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:X, rng:(53,54) [X], full:(53,54) [X], extra=[X]]
+  02     Node[id:4, kind:ExprStmt, depth:2, tok:Y, rng:(56,57) [Y], full:(56,57) [Y]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:Y, rng:(56,57) [Y], full:(56,57) [Y], extra=[Y]]
+  02     Node[id:5, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(64,68) [goto], full:(64,71) [goto L0], extra=[L0]]
+Comment: Range=(0,44), Tid=CommentLine, Text=[// REVIEW: Should this report infinite loop?]
+
+*** Flow Diagnostics:
+Error: (69,71) Tok: 'L0', Message: Infinite loop
+
+   0) [0] JumpIfNot 0 (0=>0) X
+   1) [0] Expr Y
+   2) [0] End
+###
+> L0: X;
+> L0: Y;
+Node: [L0: X; L0: Y]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:3, tok:L0, rng:(0,2) [L0], full:(0,13) [L0: X;\nL0: Y;]], count=4
+  01   Node[id:0, kind:LabelStmt, depth:1, tok:Colon, rng:(2,3) [:], full:(0,3) [L0:], extra=[L0]]
+  01   Node[id:2, kind:ExprStmt, depth:2, tok:X, rng:(4,5) [X], full:(4,5) [X]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  01   Node[id:3, kind:LabelStmt, depth:1, tok:Colon, rng:(9,10) [:], full:(7,10) [L0:], extra=[L0]]
+  01   Node[id:5, kind:ExprStmt, depth:2, tok:Y, rng:(11,12) [Y], full:(11,12) [Y]], count=1
+  02     Node[id:4, kind:FirstName, depth:1, tok:Y, rng:(11,12) [Y], full:(11,12) [Y], extra=[Y]]
+
+*** Flow Diagnostics:
+Error: (7,9) Tok: 'L0', Message: Duplicate label
+
+   0) [0] Expr X
+   1) [0] Expr Y
+   2) [0] End
+###
+> if (A)
+>     goto L0;
+> X;
+Node: [if (A) goto L0; X]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:4, tok:Semi, rng:(18,19) [;], full:(0,22) [if (A)\n    goto L0;\nX;]], count=2
+  01   Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,18) [if (A)\n    goto L0]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(11,15) [goto], full:(11,18) [goto L0], extra=[L0]]
+  01   Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(20,21) [X], full:(20,21) [X]], count=1
+  02     Node[id:4, kind:FirstName, depth:1, tok:X, rng:(20,21) [X], full:(20,21) [X], extra=[X]]
+
+*** Flow Diagnostics:
+Error: (16,18) Tok: 'L0', Message: Label not found
+
+   0) [0] JumpIf 2 (0=>0) A
+   1) [0] Expr X
+   2) [0] End
+###
+> if (A) goto L0;
+> else {
+>     X;
+> L0:
+>     Y;
+> }
+Node: [if (A) goto L0; else { X; L0: Y }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,42) [if (A) goto L0;\nelse {\n    X;\nL0:\n    Y;\n}]], count=1
+  01   Node[id:10, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,42) [if (A) goto L0;\nelse {\n    X;\nL0:\n    Y;\n}]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(7,11) [goto], full:(7,14) [goto L0], extra=[L0]]
+  02     Node[id:9, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(21,22) [{], full:(21,42) [{\n    X;\nL0:\n    Y;\n}]], count=1
+  03       Node[id:8, kind:StmtList, depth:3, tok:Semi, rng:(28,29) [;], full:(27,40) [X;\nL0:\n    Y;]], count=3
+  04         Node[id:4, kind:ExprStmt, depth:2, tok:X, rng:(27,28) [X], full:(27,28) [X]], count=1
+  05           Node[id:3, kind:FirstName, depth:1, tok:X, rng:(27,28) [X], full:(27,28) [X], extra=[X]]
+  04         Node[id:5, kind:LabelStmt, depth:1, tok:Colon, rng:(32,33) [:], full:(30,33) [L0:], extra=[L0]]
+  04         Node[id:7, kind:ExprStmt, depth:2, tok:Y, rng:(38,39) [Y], full:(38,39) [Y]], count=1
+  05           Node[id:6, kind:FirstName, depth:1, tok:Y, rng:(38,39) [Y], full:(38,39) [Y], extra=[Y]]
+
+*** Flow Diagnostics:
+Error: (12,14) Tok: 'L0', Message: Can't jump into a block. See next error.
+Error: (30,32) Tok: 'L0', Message: Can't be targeted by jump outside the block
+
+   0) [0] JumpIf 5 (0=>0) A
+   1) [0] Enter (0=>1)
+   2) [1] Expr X
+   3) [1] Expr Y
+   4) [1] Leave (1=>0)
+   5) [0] End
+###
+> if (A) goto L0;
+> namespace N {
+>     X;
+> L0:
+>     Y;
+> }
+Node: [if (A) goto L0; namespace N { X; L0: Y }]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:6, tok:Semi, rng:(14,15) [;], full:(0,49) [if (A) goto L0;\nnamespace N {\n    X;\nL0:\n    Y;\n}]], count=2
+  01   Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,14) [if (A) goto L0]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(7,11) [goto], full:(7,14) [goto L0], extra=[L0]]
+  01   Node[id:11, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(16,25) [namespace], full:(16,49) [namespace N {\n    X;\nL0:\n    Y;\n}], extra=[N]], count=1
+  02     Node[id:10, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(28,29) [{], full:(28,49) [{\n    X;\nL0:\n    Y;\n}]], count=1
+  03       Node[id:9, kind:StmtList, depth:3, tok:Semi, rng:(35,36) [;], full:(34,47) [X;\nL0:\n    Y;]], count=3
+  04         Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(34,35) [X], full:(34,35) [X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:X, rng:(34,35) [X], full:(34,35) [X], extra=[X]]
+  04         Node[id:6, kind:LabelStmt, depth:1, tok:Colon, rng:(39,40) [:], full:(37,40) [L0:], extra=[L0]]
+  04         Node[id:8, kind:ExprStmt, depth:2, tok:Y, rng:(45,46) [Y], full:(45,46) [Y]], count=1
+  05           Node[id:7, kind:FirstName, depth:1, tok:Y, rng:(45,46) [Y], full:(45,46) [Y], extra=[Y]]
+
+*** Flow Diagnostics:
+Error: (12,14) Tok: 'L0', Message: Can't jump into a block. See next error.
+Error: (37,39) Tok: 'L0', Message: Can't be targeted by jump outside the block
+
+   0) [0] JumpIf 5 (0=>0) A
+   1) [0] Enter (0=>1) N
+   2) [1] Expr X
+   3) [1] Expr Y
+   4) [1] Leave (1=>0)
+   5) [0] End
+###
+> namespace N {
+>     if (A) goto L0;
+>     X;
+> L0:
+> }
+Node: [namespace N { if (A) goto L0; X; L0: }]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:7, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,46) [namespace N {\n    if (A) goto L0;\n    X;\nL0:\n}]], count=1
+  01   Node[id:9, kind:NamespaceStmt, depth:6, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,46) [namespace N {\n    if (A) goto L0;\n    X;\nL0:\n}], extra=[N]], count=1
+  02     Node[id:8, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(12,13) [{], full:(12,46) [{\n    if (A) goto L0;\n    X;\nL0:\n}]], count=1
+  03       Node[id:7, kind:StmtList, depth:4, tok:Semi, rng:(32,33) [;], full:(18,44) [if (A) goto L0;\n    X;\nL0:]], count=3
+  04         Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(18,20) [if], full:(18,32) [if (A) goto L0]], count=2
+  05           Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(21,22) [(], full:(21,24) [(A)]], count=1
+  06             Node[id:0, kind:FirstName, depth:1, tok:A, rng:(22,23) [A], full:(22,23) [A], extra=[A]]
+  05           Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(25,29) [goto], full:(25,32) [goto L0], extra=[L0]]
+  04         Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(38,39) [X], full:(38,39) [X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:X, rng:(38,39) [X], full:(38,39) [X], extra=[X]]
+  04         Node[id:6, kind:LabelStmt, depth:1, tok:Colon, rng:(43,44) [:], full:(41,44) [L0:], extra=[L0]]
+
+   0) [0] Enter (0=>1) N
+   1) [1] JumpIf 3 (1=>1) A
+   2) [1] Expr X
+   3) [1] Leave (1=>0)
+   4) [0] End
+###
+> if (A) goto L0;
+> E1;
+> namespace N {
+>     if (B) goto L0;
+>     E2;
+> L0:
+>     E3;
+> }
+> L0:
+> E4;
+Node: [if (A) goto L0; E1; namespace N { if (B) goto L0; E2; L0: E3 } L0: E4]
+Dump:
+  00 Node[id:21, kind:StmtList, depth:7, tok:Semi, rng:(14,15) [;], full:(0,83) [if (A) goto L0;\nE1;\nnamespace N {\n    if (B) goto L0;\n    E2;\nL0:\n    E3;\n}\nL0:\nE4;]], count=5
+  01   Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,14) [if (A) goto L0]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:2, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(7,11) [goto], full:(7,14) [goto L0], extra=[L0]]
+  01   Node[id:5, kind:ExprStmt, depth:2, tok:E1, rng:(16,18) [E1], full:(16,18) [E1]], count=1
+  02     Node[id:4, kind:FirstName, depth:1, tok:E1, rng:(16,18) [E1], full:(16,18) [E1], extra=[E1]]
+  01   Node[id:17, kind:NamespaceStmt, depth:6, tok:KwdNamespace, rng:(20,29) [namespace], full:(20,75) [namespace N {\n    if (B) goto L0;\n    E2;\nL0:\n    E3;\n}], extra=[N]], count=1
+  02     Node[id:16, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(32,33) [{], full:(32,75) [{\n    if (B) goto L0;\n    E2;\nL0:\n    E3;\n}]], count=1
+  03       Node[id:15, kind:StmtList, depth:4, tok:Semi, rng:(52,53) [;], full:(38,73) [if (B) goto L0;\n    E2;\nL0:\n    E3;]], count=4
+  04         Node[id:9, kind:IfStmt, depth:3, tok:KwdIf, rng:(38,40) [if], full:(38,52) [if (B) goto L0]], count=2
+  05           Node[id:7, kind:Paren, depth:2, tok:ParenOpen, rng:(41,42) [(], full:(41,44) [(B)]], count=1
+  06             Node[id:6, kind:FirstName, depth:1, tok:B, rng:(42,43) [B], full:(42,43) [B], extra=[B]]
+  05           Node[id:8, kind:GotoStmt, depth:1, tok:KwdGoto, rng:(45,49) [goto], full:(45,52) [goto L0], extra=[L0]]
+  04         Node[id:11, kind:ExprStmt, depth:2, tok:E2, rng:(58,60) [E2], full:(58,60) [E2]], count=1
+  05           Node[id:10, kind:FirstName, depth:1, tok:E2, rng:(58,60) [E2], full:(58,60) [E2], extra=[E2]]
+  04         Node[id:12, kind:LabelStmt, depth:1, tok:Colon, rng:(64,65) [:], full:(62,65) [L0:], extra=[L0]]
+  04         Node[id:14, kind:ExprStmt, depth:2, tok:E3, rng:(70,72) [E3], full:(70,72) [E3]], count=1
+  05           Node[id:13, kind:FirstName, depth:1, tok:E3, rng:(70,72) [E3], full:(70,72) [E3], extra=[E3]]
+  01   Node[id:18, kind:LabelStmt, depth:1, tok:Colon, rng:(78,79) [:], full:(76,79) [L0:], extra=[L0]]
+  01   Node[id:20, kind:ExprStmt, depth:2, tok:E4, rng:(80,82) [E4], full:(80,82) [E4]], count=1
+  02     Node[id:19, kind:FirstName, depth:1, tok:E4, rng:(80,82) [E4], full:(80,82) [E4], extra=[E4]]
+
+   0) [0] JumpIf 7 (0=>0) A
+   1) [0] Expr E1
+   2) [0] Enter (0=>1) N
+   3) [1] JumpIf 5 (1=>1) B
+   4) [1] Expr E2
+   5) [1] Expr E3
+   6) [1] Leave (1=>0)
+   7) [0] Expr E4
+   8) [0] End
+###

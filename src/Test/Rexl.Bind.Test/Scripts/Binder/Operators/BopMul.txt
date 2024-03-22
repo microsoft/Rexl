@@ -1,0 +1,488 @@
+:: {g:g, o:o, s:s, b:b, qb:b?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+3 * 4
+2 * -1
+2 * 0
+-0 * 2
+-2 * -0
+0x3FFF_FFFF * 2
+0x3FFF_FFFF * 3
+0x3FFF_FFFFL * 3
+0x7FFF_FFFFU * 2
+0x7FFF_FFFFU * 2U
+0x7FFF_FFFFU * 3
+0x3FFF_FFFF_FFFF_FFFF * 2
+0x3FFF_FFFF_FFFF_FFFF * 3 // Overflow.
+0x7FFF_FFFF_FFFF_FFFFU * 2
+0x7FFF_FFFF_FFFF_FFFFU * 2U
+0x3FFF_FFFF_FFFF_FFFFU * 3U
+
+3 * null
+null * 3
+0 * null
+null * 0
+
+i4 * 3
+3 * i4
+
+i4 * null
+null * i4
+
+i4 * 2 * null
+
+null * (i4 * 2)
+
+i1 * i2 * i4
+
+1 * (i1 * i2)
+3 * (i1 * i2)
+
+(i1 * 3) * (i2 * 2)
+
+(i1 * 3) * (i2 * i4)
+(i2 * i4) * (i1 * 3)
+
+i1 * 3 * 2
+i4 * 3 * 2
+i1 * -1 * -1
+i4 * -1 * -1
+-i1 * -1 * -1
+-i4 * -1 * -1
+--i1
+--i4
+---i1
+---i4
+
+(i1 * 2) * (i2 * 0x3FFF_FFFF)
+(i1 * 2) * (i2 * 0x4000_0000)
+(i1 * 2) * (i2 * 0x4000_0001)
+
+(u1 * 2u4) * (u2 * 0x7FFF_FFFFu4) // i8
+(u1 * 2u4) * (u2 * 0x8000_0000u4) // i8
+(u1 * 2u4) * (u2 * 0x8000_0001u4) // i8
+(u1 * 2u) * (u2 * 0x7FFF_FFFFu) // u8
+(u1 * 2u) * (u2 * 0x8000_0000u) // u8
+(u1 * 2u) * (u2 * 0x8000_0001u) // u8
+(i1 * 2) * (i2 * 0x3FFF_FFFF_FFFF_FFFF)
+(i1 * 2) * (i2 * 0x4000_0000_0000_0000) // Overflow.
+(i1 * 2) * (i2 * 0x4000_0000_0000_0001) // Overflow.
+(u1 * 2u) * (u2 * 0x7FFF_FFFF_FFFF_FFFFu) // u8
+(u1 * 2u) * (u2 * 0x8000_0000_0000_0000u) // u8 Overflow.
+(u1 * 2u) * (u2 * 0x8000_0000_0000_0001u) // u8 Overflow.
+
+- 123U1 // This ends up an i2.
+-1 * 123U1 // These end up being i8.
+123U1 * -1
+
+3 * true
+true * 3
+true * false
+"hello" * true
+---true
+--"hello"
+
+i4 * qi2 * i1 * 0
+0 * i4 * qi2 * i1
+
+2.0 * 3.0
+3f * null
+null * 2f
+2 * r4
+r4 * 3
+1 * r4
+r4 * 1
+null * r4
+r4 * null
+0 * r4
+r4 * 0
+
+r4 * r4 * 1
+r4 * (r4 * 1)
+
+-r4
+--r4
+r4 * -1 * -1 * -1
+r4 * -1 * -2 * -1 * -3
+r4 * -1 * -2 * -3 * -1
+
+-(r4 * (0f / 0f))
+-(r4 * r4 * -r4)
+-r4 * r4 * -r4
+
+-1d * -1d * (r8 * r8 * -1) * -1d * -1d
+-1d * -1d * (r8 * r8 * 3) * -1d
+-1d * -1d * (r8 * r8 * 3) * 7d * 2d * r8
+-1d * -1d * ((0 / 0) * r8 * r8) * -1d
+r8 * (r8 * r8 * -1d)
+r8 * r8 * -1d * -1d
+
+-1d / -1d * -1d
+-1d / -1d * -1d / -1d
+1d / 2d * r8
+1d / 2d / r8
+
+i4 * i4 * -1 * -1
+-1 * (i4 - 3)
+
+i4 * (-i4 - 3) * i4 * 17
+r8 * -1 * (1 / r8)
+r8 * -1 * (3 * 4 * r8)
+-1 * (-r8 + r8)
+-1 * (r8 * (r8 * 5 * r8))
+
+// Reduction coverage.
+(-r8 + 3) * (-r8 + 5)
+(-i8 + 3) * (i8 - 5)
+(3 + i8 * i8 * 2 * 5 - 3) * (7 + i8 * 8 * 4 * i8 - 7)
+(0U - u8 + 17U) * (u8 + 3U) // Don't gather negation for unsigned.
+
+2d * 0.5d * (3d + r8 + r8) + r8
+
+3 * g
+3 * o
+3 * s
+3 * b
+3 * n
+3 * r8
+3 * r4
+3 * i
+3 * i8
+3 * i4
+3 * i2
+3 * i1
+3 * u8
+3 * u4
+3 * u2
+3 * u1
+
+-3i1 * g
+-3i1 * o
+-3i1 * s
+-3i1 * b
+-3i1 * n
+-3i1 * r8
+-3i1 * r4
+-3i1 * i
+-3i1 * i8
+-3i1 * i4
+-3i1 * i2
+-3i1 * i1
+-3i1 * u8
+-3i1 * u4
+-3i1 * u2
+-3i1 * u1
+
+3u * g
+3u * o
+3u * s
+3u * b
+3u * n
+3u * r8
+3u * r4
+3u * i
+3u * i8
+3u * i4
+3u * i2
+3u * i1
+3u * u8
+3u * u4
+3u * u2
+3u * u1
+
+3u1 * g
+3u1 * o
+3u1 * s
+3u1 * b
+3u1 * n
+3u1 * r8
+3u1 * r4
+3u1 * i
+3u1 * i8
+3u1 * i4
+3u1 * i2
+3u1 * i1
+3u1 * u8
+3u1 * u4
+3u1 * u2
+3u1 * u1
+
+3f * g
+3f * o
+3f * s
+3f * b
+3f * n
+3f * r8
+3f * r4
+3f * i
+3f * i8
+3f * i4
+3f * i2
+3f * i1
+3f * u8
+3f * u4
+3f * u2
+3f * u1
+
+3d * g
+3d * o
+3d * s
+3d * b
+3d * n
+3d * r8
+3d * r4
+3d * i
+3d * i8
+3d * i4
+3d * i2
+3d * i1
+3d * u8
+3d * u4
+3d * u2
+3d * u1
+
+null * g
+null * o
+null * s
+null * b
+null * n
+null * r8
+null * r4
+null * i
+null * i8
+null * i4
+null * i2
+null * i1
+null * u8
+null * u4
+null * u2
+null * u1
+
+i1 * g
+i1 * o
+i1 * s
+i1 * b
+i1 * n
+i1 * r8
+i1 * r4
+i1 * i
+i1 * i8
+i1 * i4
+i1 * i2
+i1 * i1
+i1 * u8
+i1 * u4
+i1 * u2
+i1 * u1
+
+3i1 * qb
+3i1 * qn
+3i1 * qr8
+3i1 * qr4
+3i1 * qi
+3i1 * qi8
+3i1 * qi4
+3i1 * qi2
+3i1 * qi1
+3i1 * qu8
+3i1 * qu4
+3i1 * qu2
+3i1 * qu1
+
+-3 * qb
+-3 * qn
+-3 * qr8
+-3 * qr4
+-3 * qi
+-3 * qi8
+-3 * qi4
+-3 * qi2
+-3 * qi1
+-3 * qu8
+-3 * qu4
+-3 * qu2
+-3 * qu1
+
+3u * qb
+3u * qn
+3u * qr8
+3u * qr4
+3u * qi
+3u * qi8
+3u * qi4
+3u * qi2
+3u * qi1
+3u * qu8
+3u * qu4
+3u * qu2
+3u * qu1
+
+3u2 * qb
+3u2 * qn
+3u2 * qr8
+3u2 * qr4
+3u2 * qi
+3u2 * qi8
+3u2 * qi4
+3u2 * qi2
+3u2 * qi1
+3u2 * qu8
+3u2 * qu4
+3u2 * qu2
+3u2 * qu1
+
+3f * qb
+3f * qn
+3f * qr8
+3f * qr4
+3f * qi
+3f * qi8
+3f * qi4
+3f * qi2
+3f * qi1
+3f * qu8
+3f * qu4
+3f * qu2
+3f * qu1
+
+3d * qb
+3d * qn
+3d * qr8
+3d * qr4
+3d * qi
+3d * qi8
+3d * qi4
+3d * qi2
+3d * qi1
+3d * qu8
+3d * qu4
+3d * qu2
+3d * qu1
+
+null * qb
+null * qn
+null * qr8
+null * qr4
+null * qi
+null * qi8
+null * qi4
+null * qi2
+null * qi1
+null * qu8
+null * qu4
+null * qu2
+null * qu1
+
+i1 * qb
+i1 * qn
+i1 * qr8
+i1 * qr4
+i1 * qi
+i1 * qi8
+i1 * qi4
+i1 * qi2
+i1 * qi1
+i1 * qu8
+i1 * qu4
+i1 * qu2
+i1 * qu1
+
+// Reduction test cases found through fuzz testing.
+1 / (0 / r8)
+4 * -(5 * (7- i8))
+-1 * (2 - r8)
+
+// *** Lifting
+:: {g:g*, o:o*, s:s*, b:b*, qb:b?*, n:n*, qn:n?*, r8:r8*, qr8:r8?*, r4:r4*, qr4:r4?*, i:i*, qi:i?*, i8:i8*, qi8:i8?*, i4:i4*, qi4:i4?*, i2:i2*, qi2:i2?*, i1:i1*, qi1:i1?*, u8:u8*, qu8:u8?*, u4:u4*, qu4:u4?*, u2:u2*, qu2:u2?*, u1:u1*, qu1:u1?*}
+
+3 * g
+3 * o
+3 * s
+3 * b
+3 * n
+3 * r8
+3 * r4
+3 * i
+3 * i8
+3 * i4
+3 * i2
+3 * i1
+3 * u8
+3 * u4
+3 * u2
+3 * u1
+
+3f * g
+3f * o
+3f * s
+3f * b
+3f * n
+3f * r8
+3f * r4
+3f * i
+3f * i8
+3f * i4
+3f * i2
+3f * i1
+3f * u8
+3f * u4
+3f * u2
+3f * u1
+
+i1 * g
+i1 * o
+i1 * s
+i1 * b
+i1 * n
+i1 * r8
+i1 * r4
+i1 * i
+i1 * i8
+i1 * i4
+i1 * i2
+i1 * i1
+i1 * u8
+i1 * u4
+i1 * u2
+i1 * u1
+
+3 * qb
+3 * qn
+3 * qr8
+3 * qr4
+3 * qi
+3 * qi8
+3 * qi4
+3 * qi2
+3 * qi1
+3 * qu8
+3 * qu4
+3 * qu2
+3 * qu1
+
+3f * qb
+3f * qn
+3f * qr8
+3f * qr4
+3f * qi
+3f * qi8
+3f * qi4
+3f * qi2
+3f * qi1
+3f * qu8
+3f * qu4
+3f * qu2
+3f * qu1
+
+i1 * qb
+i1 * qn
+i1 * qr8
+i1 * qr4
+i1 * qi
+i1 * qi8
+i1 * qi4
+i1 * qi2
+i1 * qi1
+i1 * qu8
+i1 * qu4
+i1 * qu2
+i1 * qu1

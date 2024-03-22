@@ -1,0 +1,436 @@
+**** New globals: {b:b, n:i8, s:i8*}
+
+> Take(s, n)
+Take(s, n) : i8*
+Binder : (0, *) Take(s, n)
+###
+> Drop(s, n)
+Drop(s, n) : i8*
+Binder : (0, *) Drop(s, n)
+###
+> Take(s, 5)
+Take(s, 5) : i8*
+Binder : (0, 5) Take(s, 5)
+###
+> Drop(s, 5)
+Drop(s, 5) : i8*
+Binder : (0, *) Drop(s, 5)
+###
+> Take(Range(20), n)
+Take(Range(20), n) : i8*
+Binder : (0, 20) Take(Range(20), n)
+###
+> Drop(Range(20), n)
+Drop(Range(20), n) : i8*
+Binder : (0, 20) Drop(Range(20), n)
+###
+> Take(Range(20), 5)
+Take(Range(20), 5) : i8*
+Binder : (5, 5) Take(Range(20), 5)
+###
+> Drop(Range(20), 5)
+Drop(Range(20), 5) : i8*
+Binder : (15, 15) Drop(Range(20), 5)
+###
+> Take(Range(20), 30)
+Take(Range(20), 30) : i8*
+Binder : (20, 20) Take(Range(20), 30)
+Reducer: (20, 20) Range(20)
+###
+> Drop(Range(20), 30)
+Drop(Range(20), 30) : i8*
+Binder : (0, 0) Drop(Range(20), 30)
+Reducer: (0, 0) null
+###
+> Take(s, n, it > 3)
+Take(s, n, it $> 3) : i8*
+Binder : (0, *) Take(*1: s, n, *1 @> 3)
+###
+> Drop(s, n, it > 3)
+Drop(s, n, it $> 3) : i8*
+Binder : (0, *) Drop(*1: s, n, *1 @> 3)
+###
+> Take(s, 5, it > 3)
+Take(s, 5, it $> 3) : i8*
+Binder : (0, 5) Take(*1: s, 5, *1 @> 3)
+###
+> Drop(s, 5, it > 3)
+Drop(s, 5, it $> 3) : i8*
+Binder : (0, *) Drop(*1: s, 5, *1 @> 3)
+###
+> Take(Range(20), n, it > 3)
+Take(Range(20), n, it $> 3) : i8*
+Binder : (0, 20) Take(*1: Range(20), n, *1 @> 3)
+###
+> Drop(Range(20), n, it > 3)
+Drop(Range(20), n, it $> 3) : i8*
+Binder : (0, 20) Drop(*1: Range(20), n, *1 @> 3)
+###
+> Take(Range(20), 5, it > 3)
+Take(Range(20), 5, it $> 3) : i8*
+Binder : (0, 5) Take(*1: Range(20), 5, *1 @> 3)
+###
+> Drop(Range(20), 5, it > 3)
+Drop(Range(20), 5, it $> 3) : i8*
+Binder : (15, 20) Drop(*1: Range(20), 5, *1 @> 3)
+###
+> Take(Range(20), 30, it > 3)
+Take(Range(20), 30, it $> 3) : i8*
+Binder : (0, 20) Take(*1: Range(20), 30, *1 @> 3)
+Reducer: (0, 20) Take(*1: Range(20), [if] *1 @> 3)
+###
+> Drop(Range(20), 30, it > 3)
+Drop(Range(20), 30, it $> 3) : i8*
+Binder : (0, 20) Drop(*1: Range(20), 30, *1 @> 3)
+Reducer: (0, 20) Drop(*1: Range(20), [if] *1 @> 3)
+###
+> Take(s, n, true)
+Take(s, n, true) : i8*
+Binder : (0, *) Take(*1: s, n, true)
+Reducer: (0, *) Take(s, n)
+###
+> Drop(s, n, true)
+Drop(s, n, true) : i8*
+Binder : (0, *) Drop(*1: s, n, true)
+Reducer: (0, *) Drop(s, n)
+###
+> Take(s, 5, true)
+Take(s, 5, true) : i8*
+Binder : (0, 5) Take(*1: s, 5, true)
+Reducer: (0, 5) Take(s, 5)
+###
+> Drop(s, 5, true)
+Drop(s, 5, true) : i8*
+Binder : (0, *) Drop(*1: s, 5, true)
+Reducer: (0, *) Drop(s, 5)
+###
+> Take(Range(20), n, true)
+Take(Range(20), n, true) : i8*
+Binder : (0, 20) Take(*1: Range(20), n, true)
+Reducer: (0, 20) Take(Range(20), n)
+###
+> Drop(Range(20), n, true)
+Drop(Range(20), n, true) : i8*
+Binder : (0, 20) Drop(*1: Range(20), n, true)
+Reducer: (0, 20) Drop(Range(20), n)
+###
+> Take(Range(20), 5, true)
+Take(Range(20), 5, true) : i8*
+Binder : (5, 5) Take(*1: Range(20), 5, true)
+Reducer: (5, 5) Take(Range(20), 5)
+###
+> Drop(Range(20), 5, true)
+Drop(Range(20), 5, true) : i8*
+Binder : (15, 15) Drop(*1: Range(20), 5, true)
+Reducer: (15, 15) Drop(Range(20), 5)
+###
+> Take(Range(20), 30, true)
+Take(Range(20), 30, true) : i8*
+Binder : (20, 20) Take(*1: Range(20), 30, true)
+Reducer: (20, 20) Range(20)
+###
+> Drop(Range(20), 30, true)
+Drop(Range(20), 30, true) : i8*
+Binder : (0, 0) Drop(*1: Range(20), 30, true)
+Reducer: (0, 0) null
+###
+> Take(s, [if] true)
+Take(s, [if] true) : i8*
+Binder : (0, *) Take(*1: s, [if] true)
+Reducer: (0, *) s
+###
+> Drop(s, [if] true)
+Drop(s, [if] true) : i8*
+Binder : (0, 0) Drop(*1: s, [if] true)
+Reducer: (0, 0) null
+###
+> Take(s, [if] false)
+Take(s, [if] false) : i8*
+Binder : (0, 0) Take(*1: s, [if] false)
+Reducer: (0, 0) null
+###
+> Drop(s, [if] false)
+Drop(s, [if] false) : i8*
+Binder : (0, *) Drop(*1: s, [if] false)
+Reducer: (0, *) s
+###
+> Take(s, [while] true)
+Take(s, [while] true) : i8*
+Binder : (0, *) Take(*1: s, [while] true)
+Reducer: (0, *) s
+###
+> Drop(s, [while] true)
+Drop(s, [while] true) : i8*
+Binder : (0, 0) Drop(*1: s, [while] true)
+Reducer: (0, 0) null
+###
+> Take(s, [while] false)
+Take(s, [while] false) : i8*
+Binder : (0, 0) Take(*1: s, [while] false)
+Reducer: (0, 0) null
+###
+> Drop(s, [while] false)
+Drop(s, [while] false) : i8*
+Binder : (0, *) Drop(*1: s, [while] false)
+Reducer: (0, *) s
+###
+> Take(s, n, false)
+Take(s, n, false) : i8*
+Binder : (0, 0) Take(*1: s, n, false)
+Reducer: (0, 0) null
+###
+> Drop(s, n, false)
+Drop(s, n, false) : i8*
+Binder : (0, *) Drop(*1: s, n, false)
+Reducer: (0, *) s
+###
+> Take(s, 5, false)
+Take(s, 5, false) : i8*
+Binder : (0, 0) Take(*1: s, 5, false)
+Reducer: (0, 0) null
+###
+> Drop(s, 5, false)
+Drop(s, 5, false) : i8*
+Binder : (0, *) Drop(*1: s, 5, false)
+Reducer: (0, *) s
+###
+> Take(Range(20), n, false)
+Take(Range(20), n, false) : i8*
+Binder : (0, 0) Take(*1: Range(20), n, false)
+Reducer: (0, 0) null
+###
+> Drop(Range(20), n, false)
+Drop(Range(20), n, false) : i8*
+Binder : (20, 20) Drop(*1: Range(20), n, false)
+Reducer: (20, 20) Range(20)
+###
+> Take(Range(20), 5, false)
+Take(Range(20), 5, false) : i8*
+Binder : (0, 0) Take(*1: Range(20), 5, false)
+Reducer: (0, 0) null
+###
+> Drop(Range(20), 5, false)
+Drop(Range(20), 5, false) : i8*
+Binder : (20, 20) Drop(*1: Range(20), 5, false)
+Reducer: (20, 20) Range(20)
+###
+> Take(Range(20), 30, false)
+Take(Range(20), 30, false) : i8*
+Binder : (0, 0) Take(*1: Range(20), 30, false)
+Reducer: (0, 0) null
+###
+> Drop(Range(20), 30, false)
+Drop(Range(20), 30, false) : i8*
+Binder : (20, 20) Drop(*1: Range(20), 30, false)
+Reducer: (20, 20) Range(20)
+###
+> Take(Range(0), n)
+Take(Range(0), n) : i8*
+Binder : (0, 0) Take(Range(0), n)
+Reducer: (0, 0) null
+###
+> Drop(Range(0), n)
+Drop(Range(0), n) : i8*
+Binder : (0, 0) Drop(Range(0), n)
+Reducer: (0, 0) null
+###
+> Take(Range(0), n, b)
+Take(Range(0), n, b) : i8*
+Binder : (0, 0) Take(*1: Range(0), n, b)
+Reducer: (0, 0) null
+###
+> Drop(Range(0), n, b)
+Drop(Range(0), n, b) : i8*
+Binder : (0, 0) Drop(*1: Range(0), n, b)
+Reducer: (0, 0) null
+###
+> Take(s, 0 * 3)
+Take(s, 0 * 3) : i8*
+Binder : (0, *) Take(s, Mul(0, 3))
+Reducer: (0, 0) null
+###
+> Drop(s, 0 * 3)
+Drop(s, 0 * 3) : i8*
+Binder : (0, *) Drop(s, Mul(0, 3))
+Reducer: (0, *) s
+###
+> Take(s, 0 * 3, b)
+Take(s, 0 * 3, b) : i8*
+Binder : (0, *) Take(*1: s, Mul(0, 3), b)
+Reducer: (0, 0) null
+###
+> Drop(s, 0 * 3, b)
+Drop(s, 0 * 3, b) : i8*
+Binder : (0, *) Drop(*1: s, Mul(0, 3), b)
+Reducer: (0, *) s
+###
+> Take([1,2,3,4,5], 1+1)
+Take([1, 2, 3, 4, 5], 1 + 1) : i8*
+Binder : (0, 5) Take([1, 2, 3, 4, 5], Add(1, 1))
+Reducer: (2, 2) [1, 2]
+###
+> Drop([1,2,3,4,5], 1+1)
+Drop([1, 2, 3, 4, 5], 1 + 1) : i8*
+Binder : (0, 5) Drop([1, 2, 3, 4, 5], Add(1, 1))
+Reducer: (3, 3) [3, 4, 5]
+###
+> Take(Range(20), -1)
+Take(Range(20), -1) : i8*
+Binder : (0, 0) Take(Range(20), -1)
+Reducer: (0, 0) null
+###
+> Take(Range(20), -1, b)
+Take(Range(20), -1, b) : i8*
+Binder : (0, 0) Take(*1: Range(20), -1, b)
+Reducer: (0, 0) null
+###
+> Drop(Range(20), -1)
+Drop(Range(20), -1) : i8*
+Binder : (20, 20) Drop(Range(20), -1)
+Reducer: (20, 20) Range(20)
+###
+> Drop(Range(20), -1, b)
+Drop(Range(20), -1, b) : i8*
+Binder : (20, 20) Drop(*1: Range(20), -1, b)
+Reducer: (20, 20) Range(20)
+###
+> Take(s, -1)
+Take(s, -1) : i8*
+Binder : (0, 0) Take(s, -1)
+Reducer: (0, 0) null
+###
+> Take(s, -1, b)
+Take(s, -1, b) : i8*
+Binder : (0, 0) Take(*1: s, -1, b)
+Reducer: (0, 0) null
+###
+> Drop(s, -1)
+Drop(s, -1) : i8*
+Binder : (0, *) Drop(s, -1)
+Reducer: (0, *) s
+###
+> Drop(s, -1, b)
+Drop(s, -1, b) : i8*
+Binder : (0, *) Drop(*1: s, -1, b)
+Reducer: (0, *) s
+###
+> TakeIf(s, b)
+TakeIf(s, b) : i8*
+Binder : (0, *) TakeIf*(*1: s, b)
+Reducer: (0, *) Take(*1: s, [if] b)
+###
+> DropIf(s, b)
+DropIf(s, b) : i8*
+Binder : (0, *) DropIf*(*1: s, b)
+Reducer: (0, *) Drop(*1: s, [if] b)
+###
+> TakeIf(s, true)
+TakeIf(s, true) : i8*
+Binder : (0, *) TakeIf*(*1: s, true)
+Reducer: (0, *) s
+###
+> DropIf(s, true)
+DropIf(s, true) : i8*
+Binder : (0, 0) DropIf*(*1: s, true)
+Reducer: (0, 0) null
+###
+> TakeIf(s, false)
+TakeIf(s, false) : i8*
+Binder : (0, 0) TakeIf*(*1: s, false)
+Reducer: (0, 0) null
+###
+> DropIf(s, false)
+DropIf(s, false) : i8*
+Binder : (0, *) DropIf*(*1: s, false)
+Reducer: (0, *) s
+###
+> TakeIf(Range(10), b)
+TakeIf(Range(10), b) : i8*
+Binder : (0, 10) TakeIf*(*1: Range(10), b)
+Reducer: (0, 10) Take(*1: Range(10), [if] b)
+###
+> DropIf(Range(10), b)
+DropIf(Range(10), b) : i8*
+Binder : (0, 10) DropIf*(*1: Range(10), b)
+Reducer: (0, 10) Drop(*1: Range(10), [if] b)
+###
+> TakeIf(Range(10), true)
+TakeIf(Range(10), true) : i8*
+Binder : (10, 10) TakeIf*(*1: Range(10), true)
+Reducer: (10, 10) Range(10)
+###
+> DropIf(Range(10), true)
+DropIf(Range(10), true) : i8*
+Binder : (0, 0) DropIf*(*1: Range(10), true)
+Reducer: (0, 0) null
+###
+> TakeIf(Range(10), false)
+TakeIf(Range(10), false) : i8*
+Binder : (0, 0) TakeIf*(*1: Range(10), false)
+Reducer: (0, 0) null
+###
+> DropIf(Range(10), false)
+DropIf(Range(10), false) : i8*
+Binder : (10, 10) DropIf*(*1: Range(10), false)
+Reducer: (10, 10) Range(10)
+###
+> TakeWhile(s, b)
+TakeWhile(s, b) : i8*
+Binder : (0, *) TakeWhile*(*1: s, b)
+Reducer: (0, *) Take(*1: s, [while] b)
+###
+> DropWhile(s, b)
+DropWhile(s, b) : i8*
+Binder : (0, *) DropWhile*(*1: s, b)
+Reducer: (0, *) Drop(*1: s, [while] b)
+###
+> TakeWhile(s, true)
+TakeWhile(s, true) : i8*
+Binder : (0, *) TakeWhile*(*1: s, true)
+Reducer: (0, *) s
+###
+> DropWhile(s, true)
+DropWhile(s, true) : i8*
+Binder : (0, 0) DropWhile*(*1: s, true)
+Reducer: (0, 0) null
+###
+> TakeWhile(s, false)
+TakeWhile(s, false) : i8*
+Binder : (0, 0) TakeWhile*(*1: s, false)
+Reducer: (0, 0) null
+###
+> DropWhile(s, false)
+DropWhile(s, false) : i8*
+Binder : (0, *) DropWhile*(*1: s, false)
+Reducer: (0, *) s
+###
+> TakeWhile(Range(10), b)
+TakeWhile(Range(10), b) : i8*
+Binder : (0, 10) TakeWhile*(*1: Range(10), b)
+Reducer: (0, 10) Take(*1: Range(10), [while] b)
+###
+> DropWhile(Range(10), b)
+DropWhile(Range(10), b) : i8*
+Binder : (0, 10) DropWhile*(*1: Range(10), b)
+Reducer: (0, 10) Drop(*1: Range(10), [while] b)
+###
+> TakeWhile(Range(10), true)
+TakeWhile(Range(10), true) : i8*
+Binder : (10, 10) TakeWhile*(*1: Range(10), true)
+Reducer: (10, 10) Range(10)
+###
+> DropWhile(Range(10), true)
+DropWhile(Range(10), true) : i8*
+Binder : (0, 0) DropWhile*(*1: Range(10), true)
+Reducer: (0, 0) null
+###
+> TakeWhile(Range(10), false)
+TakeWhile(Range(10), false) : i8*
+Binder : (0, 0) TakeWhile*(*1: Range(10), false)
+Reducer: (0, 0) null
+###
+> DropWhile(Range(10), false)
+DropWhile(Range(10), false) : i8*
+Binder : (10, 10) DropWhile*(*1: Range(10), false)
+Reducer: (10, 10) Range(10)
+###

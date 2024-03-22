@@ -1,0 +1,183 @@
+> RngSeq(c0: 3, s: ["A", "B", "C"], c1: 3, (#c0, c0, s, #c1, c1)) // Not indexed.
+RngSeq(c0 : 3, s : ["A", "B", "C"], c1 : 3, (#c0, c0, s, #c1, c1)) : (i8, i8, s, i8, i8)*
+BndKind:Call, Type:(i8, i8, s, i8, i8)*, Bnd:(Call(∂.Test.RngSeq([rng:1] 3:i8, [map:2] [str(A), str(B), str(C)]:s*, [rng:3] 3:i8, (Scope(1), Scope(1), Scope(2), Scope(3), Scope(3)):(i8, i8, s, i8, i8)):(i8, i8, s, i8, i8)*))
+// (<ctx>) : (i8, i8, s, i8, i8)*
+RngSeq_3(Arr<obj>, i8, str, i8):(i8,i8,str,i8,i8)
+      5) newobj (i8,i8,str,i8,i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,str,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,str,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.2 [str]
+      5) stfld (i8,i8,str,i8,i8)::_F2:str
+      1) dup
+      1) ldarg.3 [i8]
+      5) stfld (i8,i8,str,i8,i8)::_F3:i8
+      1) dup
+      1) ldarg.3 [i8]
+      5) stfld (i8,i8,str,i8,i8)::_F4:i8
+      1) ret
+  Total Size: 41
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.3
+      5) newarr [str]
+      1) dup
+      1) ldc.i4.0
+      5) ldstr [A]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.1
+      5) ldstr [B]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.2
+      5) ldstr [C]
+      5) stelem [str]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,str,i8,(i8,i8,str,i8,i8)>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TestRngSeqFuncGen::Exec(i8, Seq<str>, i8, Func<i8,str,i8,(i8,i8,str,i8,i8)>, ExecCtx, i4):Seq<(i8,i8,str,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,i8,str,i8,i8)>):Seq<(i8,i8,str,i8,i8)>
+      1) ret
+  Total Size: 75
+
+Func sig: (<ctx>:x) to (i8, i8, s, i8, i8)*
+Sequence: Seq<(i8,i8,str,i8,i8)>
+ 0) (0, 0, A, 0, 0)
+ 1) (0, 0, A, 1, 1)
+ 2) (0, 0, A, 2, 2)
+ 3) (0, 0, B, 0, 0)
+ 4) (0, 0, B, 1, 1)
+ 5) (0, 0, B, 2, 2)
+ 6) (0, 0, C, 0, 0)
+ 7) (0, 0, C, 1, 1)
+ 8) (0, 0, C, 2, 2)
+ 9) (1, 1, A, 0, 0)
+10) (1, 1, A, 1, 1)
+11) (1, 1, A, 2, 2)
+12) (1, 1, B, 0, 0)
+13) (1, 1, B, 1, 1)
+14) (1, 1, B, 2, 2)
+15) (1, 1, C, 0, 0)
+16) (1, 1, C, 1, 1)
+17) (1, 1, C, 2, 2)
+18) (2, 2, A, 0, 0)
+19) (2, 2, A, 1, 1)
+20) (2, 2, A, 2, 2)
+21) (2, 2, B, 0, 0)
+22) (2, 2, B, 1, 1)
+23) (2, 2, B, 2, 2)
+24) (2, 2, C, 0, 0)
+25) (2, 2, C, 1, 1)
+26) (2, 2, C, 2, 2)
+*** Ctx ping count: 27
+    [0](27): Test.RngSeq(^1: 3, *2: ["A", "B", "C"], ^3: 3, (^1, ^1, *2, ^3, ^3))
+###
+> RngSeq(c0: 3, s: ["A", "B", "C"], c1: 3, (#c0, c0, #s, s, #c1, c1))
+RngSeq(c0 : 3, s : ["A", "B", "C"], c1 : 3, (#c0, c0, #s, s, #c1, c1)) : (i8, i8, i8, s, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8, s, i8, i8)*, Bnd:(Call(∂.Test.RngSeq([rng:1] 3:i8, [map:3] [str(A), str(B), str(C)]:s*, [rng:4] 3:i8, (Scope(1), Scope(1), Scope(2), Scope(3), Scope(4), Scope(4)):(i8, i8, i8, s, i8, i8)):(i8, i8, i8, s, i8, i8)*))
+// (<ctx>) : (i8, i8, i8, s, i8, i8)*
+RngSeq_3(Arr<obj>, i8, i8, str, i8):(i8,i8,i8,str,i8,i8)
+      5) newobj (i8,i8,i8,str,i8,i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.2 [i8]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F2:i8
+      1) dup
+      1) ldarg.3 [str]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F3:str
+      1) dup
+      2) ldarg.s [i8 (4)]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F4:i8
+      1) dup
+      2) ldarg.s [i8 (4)]
+      5) stfld (i8,i8,i8,str,i8,i8)::_F5:i8
+      1) ret
+  Total Size: 50
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.3
+      5) newarr [str]
+      1) dup
+      1) ldc.i4.0
+      5) ldstr [A]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.1
+      5) ldstr [B]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.2
+      5) ldstr [C]
+      5) stelem [str]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,i8,str,i8,(i8,i8,i8,str,i8,i8)>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TestRngSeqFuncGen::ExecInd(i8, Seq<str>, i8, Func<i8,i8,str,i8,(i8,i8,i8,str,i8,i8)>, ExecCtx, i4):Seq<(i8,i8,i8,str,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,i8,i8,str,i8,i8)>):Seq<(i8,i8,i8,str,i8,i8)>
+      1) ret
+  Total Size: 75
+
+Func sig: (<ctx>:x) to (i8, i8, i8, s, i8, i8)*
+Sequence: Seq<(i8,i8,i8,str,i8,i8)>
+ 0) (0, 0, 0, A, 0, 0)
+ 1) (0, 0, 0, A, 1, 1)
+ 2) (0, 0, 0, A, 2, 2)
+ 3) (0, 0, 1, B, 0, 0)
+ 4) (0, 0, 1, B, 1, 1)
+ 5) (0, 0, 1, B, 2, 2)
+ 6) (0, 0, 2, C, 0, 0)
+ 7) (0, 0, 2, C, 1, 1)
+ 8) (0, 0, 2, C, 2, 2)
+ 9) (1, 1, 0, A, 0, 0)
+10) (1, 1, 0, A, 1, 1)
+11) (1, 1, 0, A, 2, 2)
+12) (1, 1, 1, B, 0, 0)
+13) (1, 1, 1, B, 1, 1)
+14) (1, 1, 1, B, 2, 2)
+15) (1, 1, 2, C, 0, 0)
+16) (1, 1, 2, C, 1, 1)
+17) (1, 1, 2, C, 2, 2)
+18) (2, 2, 0, A, 0, 0)
+19) (2, 2, 0, A, 1, 1)
+20) (2, 2, 0, A, 2, 2)
+21) (2, 2, 1, B, 0, 0)
+22) (2, 2, 1, B, 1, 1)
+23) (2, 2, 1, B, 2, 2)
+24) (2, 2, 2, C, 0, 0)
+25) (2, 2, 2, C, 1, 1)
+26) (2, 2, 2, C, 2, 2)
+*** Ctx ping count: 27
+    [0](27): Test.RngSeq(^1: 3, *3: ["A", "B", "C"], ^4: 3, (^1, ^1, #2, *3, ^4, ^4))
+###

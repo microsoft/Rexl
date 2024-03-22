@@ -1,0 +1,878 @@
+> import "foo"
+Node: [import "foo"]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdImport, rng:(0,6) [import], full:(0,12) [import "foo"]], count=1
+  01   Node[id:1, kind:ImportStmt, depth:2, tok:KwdImport, rng:(0,6) [import], full:(0,12) [import "foo"]], count=1
+  02     Node[id:0, kind:TextLit, depth:1, tok:foo, rng:(7,12) ["foo"], full:(7,12) ["foo"]]
+
+   0) [0] Import: "foo"
+   1) [0] End
+###
+> import
+Node: [import (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdImport, rng:(0,6) [import], full:(0,6) [import]], count=1
+  01   Node[id:1, kind:ImportStmt, depth:2, tok:KwdImport, rng:(0,6) [import], full:(0,6) [import]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(6,6) [], full:(6,6) [], extra=[<missing>]]
+Error: (6,6) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] Import: (<missing>)
+   1) [0] End
+###
+> import x
+Node: [import x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdImport, rng:(0,6) [import], full:(0,8) [import x]], count=1
+  01   Node[id:1, kind:ImportStmt, depth:2, tok:KwdImport, rng:(0,6) [import], full:(0,8) [import x]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(7,8) [x], full:(7,8) [x], extra=[x]]
+
+   0) [0] Import: x
+   1) [0] End
+###
+> import a in namespace;
+> import b in namespace @;
+> import c in namespace x;
+> import d in namespace @y.z;
+Node: [import a in namespace; import b in namespace @; import c in namespace x; import d in namespace @y.z]
+Dump:
+  00 Node[id:8, kind:StmtList, depth:3, tok:Semi, rng:(21,22) [;], full:(0,100) [import a in namespace;\nimport b in namespace @;\nimport c in namespace x;\nimport d in namespace @y.z;]], count=4
+  01   Node[id:1, kind:ImportStmt, depth:2, tok:KwdImport, rng:(0,6) [import], full:(0,8) [import a], extra=[in namespace ]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:a, rng:(7,8) [a], full:(7,8) [a], extra=[a]]
+  01   Node[id:3, kind:ImportStmt, depth:2, tok:KwdImport, rng:(23,29) [import], full:(23,31) [import b], extra=[in namespace @]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:b, rng:(30,31) [b], full:(30,31) [b], extra=[b]]
+  01   Node[id:5, kind:ImportStmt, depth:2, tok:KwdImport, rng:(48,54) [import], full:(48,56) [import c], extra=[in namespace x]], count=1
+  02     Node[id:4, kind:FirstName, depth:1, tok:c, rng:(55,56) [c], full:(55,56) [c], extra=[c]]
+  01   Node[id:7, kind:ImportStmt, depth:2, tok:KwdImport, rng:(73,79) [import], full:(73,81) [import d], extra=[in namespace @y.z]], count=1
+  02     Node[id:6, kind:FirstName, depth:1, tok:d, rng:(80,81) [d], full:(80,81) [d], extra=[d]]
+
+   0) [0] Import in _: a
+   1) [0] Import in @: b
+   2) [0] Import in x: c
+   3) [0] Import in @y.z: d
+   4) [0] End
+###
+> A := x + y
+Node: [A := x + y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,10) [A := x + y]], count=1
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(2,4) [:=], full:(0,10) [A := x + y], extra=[A]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(7,8) [+], full:(5,10) [x + y], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(5,6) [x], full:(5,6) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(9,10) [y], full:(9,10) [y], extra=[y]]
+
+   0) [0] Define A <- x + y
+   1) [0] End
+###
+> := x + y
+Node: ['' := x + y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:ColEqu, rng:(0,2) [:=], full:(0,8) [:= x + y]], count=1
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(0,2) [:=], full:(0,8) [:= x + y], extra=[_X]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(5,6) [+], full:(3,8) [x + y], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(3,4) [x], full:(3,4) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(7,8) [y], full:(7,8) [y], extra=[y]]
+Error: (0,2) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] Define _X <- x + y
+   1) [0] End
+###
+> this := x + y
+Node: [this := x + y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:KwdThis, rng:(0,4) [this], full:(0,13) [this := x + y]], count=1
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(5,7) [:=], full:(0,13) [this := x + y], extra=[this]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(10,11) [+], full:(8,13) [x + y], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(8,9) [x], full:(8,9) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(12,13) [y], full:(12,13) [y], extra=[y]]
+
+   0) [0] Define this <- x + y
+   1) [0] End
+###
+> this
+Node: [this]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]], count=1
+  02     Node[id:0, kind:ThisName, depth:1, tok:KwdThis, rng:(0,4) [this], full:(0,4) [this]]
+
+   0) [0] Expr this
+   1) [0] End
+###
+> import "foo";
+> A := x * y;
+> A = 3
+Node: [import "foo"; A := x * y; A @= 3]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:4, tok:Semi, rng:(12,13) [;], full:(0,31) [import "foo";\nA := x * y;\nA = 3]], count=3
+  01   Node[id:1, kind:ImportStmt, depth:2, tok:KwdImport, rng:(0,6) [import], full:(0,12) [import "foo"]], count=1
+  02     Node[id:0, kind:TextLit, depth:1, tok:foo, rng:(7,12) ["foo"], full:(7,12) ["foo"]]
+  01   Node[id:5, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(16,18) [:=], full:(14,24) [A := x * y], extra=[A]], count=1
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:Mul, rng:(21,22) [*], full:(19,24) [x * y], extra=[Mul]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:x, rng:(19,20) [x], full:(19,20) [x], extra=[x]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:y, rng:(23,24) [y], full:(23,24) [y], extra=[y]]
+  01   Node[id:9, kind:ExprStmt, depth:3, tok:Equ, rng:(28,29) [=], full:(26,31) [A = 3]], count=1
+  02     Node[id:8, kind:Compare, depth:2, tok:Equ, rng:(28,29) [=], full:(26,31) [A = 3]], count=2
+  03       Op:Equal
+  03       Node[id:6, kind:FirstName, depth:1, tok:A, rng:(26,27) [A], full:(26,27) [A], extra=[A]]
+  03       Node[id:7, kind:NumLit, depth:1, tok:3, rng:(30,31) [3], full:(30,31) [3], extra=[3]]
+
+   0) [0] Import: "foo"
+   1) [0] Define A <- x * y
+   2) [0] Expr A @= 3
+   3) [0] End
+###
+> and := x;
+Node: [and := x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:and, rng:(0,3) [and], full:(0,9) [and := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(4,6) [:=], full:(0,8) [and := x], extra=[and]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(7,8) [x], full:(7,8) [x], extra=[x]]
+
+   0) [0] Define and <- x
+   1) [0] End
+###
+> and := or or or
+Node: [and := or or or]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:and, rng:(0,3) [and], full:(0,15) [and := or or or]], count=1
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(4,6) [:=], full:(0,15) [and := or or or], extra=[and]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(10,12) [or], full:(7,15) [or or or], extra=[Or]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:or, rng:(7,9) [or], full:(7,9) [or], extra=[or]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:or, rng:(13,15) [or], full:(13,15) [or], extra=[or]]
+
+   0) [0] Define and <- or or or
+   1) [0] End
+###
+> and := and or and;
+> and = and
+Node: [and := and or and; and @= and]
+Dump:
+  00 Node[id:8, kind:StmtList, depth:4, tok:Semi, rng:(17,18) [;], full:(0,28) [and := and or and;\nand = and]], count=2
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(4,6) [:=], full:(0,17) [and := and or and], extra=[and]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(11,13) [or], full:(7,17) [and or and], extra=[Or]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:and, rng:(7,10) [and], full:(7,10) [and], extra=[and]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:and, rng:(14,17) [and], full:(14,17) [and], extra=[and]]
+  01   Node[id:7, kind:ExprStmt, depth:3, tok:Equ, rng:(23,24) [=], full:(19,28) [and = and]], count=1
+  02     Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(23,24) [=], full:(19,28) [and = and]], count=2
+  03       Op:Equal
+  03       Node[id:4, kind:FirstName, depth:1, tok:and, rng:(19,22) [and], full:(19,22) [and], extra=[and]]
+  03       Node[id:5, kind:FirstName, depth:1, tok:and, rng:(25,28) [and], full:(25,28) [and], extra=[and]]
+
+   0) [0] Define and <- and or and
+   1) [0] Expr and @= and
+   2) [0] End
+###
+> A(); B()
+Node: [A(); B()]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:4, tok:Semi, rng:(3,4) [;], full:(0,8) [A(); B()]], count=2
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+  01   Node[id:5, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(5,8) [B()]], count=1
+  02     Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(6,7) [(], full:(5,8) [B()], extra=[B]], count=1
+  03       Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(7,8) [)], full:(7,8) [)]], count=0
+
+   0) [0] Expr A()
+   1) [0] Expr B()
+   2) [0] End
+###
+> A();
+Node: [A()]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,4) [A();]], count=1
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+
+   0) [0] Expr A()
+   1) [0] End
+###
+> ;;;
+Node: []
+Dump:
+  00 Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(3,3) [], full:(0,3) [;;;]], count=0
+
+   0) [0] End
+###
+> ;;C();;; D();;
+Node: [C(); D()]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:4, tok:Semi, rng:(7,8) [;], full:(0,14) [;;C();;; D();;]], count=2
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [C()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [C()], extra=[C]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=0
+  01   Node[id:5, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(10,11) [(], full:(9,12) [D()]], count=1
+  02     Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(10,11) [(], full:(9,12) [D()], extra=[D]], count=1
+  03       Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(11,12) [)], full:(11,12) [)]], count=0
+
+   0) [0] Expr C()
+   1) [0] Expr D()
+   2) [0] End
+###
+> F(A && B, C();;; D();;);
+> Whatever()
+Node: [F(A and B, C()); D(); <missing>; Whatever()]
+Corrected: [F(A and B, C();;; D();;);
+Whatever()]
+Dump:
+  00 Node[id:16, kind:StmtList, depth:6, tok:Semi, rng:(15,16) [;], full:(0,35) [F(A && B, C();;; D();;);\nWhatever()]], count=4
+  01   Node[id:7, kind:ExprStmt, depth:5, tok:ParenOpen, rng:(1,2) [(], full:(0,13) [F(A && B, C()]], count=1
+  02     Node[id:6, kind:Call, depth:4, tok:ParenOpen, rng:(1,2) [(], full:(0,13) [F(A && B, C()], extra=[F]], count=1
+  03       Node[id:5, kind:ExprList, depth:3, tok:Comma, rng:(8,9) [,], full:(2,13) [A && B, C()]], count=2
+  04         Node[id:2, kind:BinaryOp, depth:2, tok:AmpAmp, rng:(4,6) [&&], full:(2,8) [A && B], extra=[And]], count=2
+  05           Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+  05           Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  04         Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(11,12) [(], full:(10,13) [C()], extra=[C]], count=1
+  05           Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(12,13) [)], full:(12,13) [)]], count=0
+  01   Node[id:10, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(18,19) [(], full:(17,20) [D()]], count=1
+  02     Node[id:9, kind:Call, depth:2, tok:ParenOpen, rng:(18,19) [(], full:(17,20) [D()], extra=[D]], count=1
+  03       Node[id:8, kind:ExprList, depth:1, tok:ParenClose, rng:(19,20) [)], full:(19,20) [)]], count=0
+  01   Node[id:12, kind:ExprStmt, depth:2, tok:ParenClose, rng:(22,23) [)], full:(22,23) [)]], count=1
+  02     Node[id:11, kind:MissingValue, depth:1, tok:ParenClose, rng:(22,23) [)], full:(22,23) [)], extra=[<missing>]]
+  01   Node[id:15, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(33,34) [(], full:(25,35) [Whatever()]], count=1
+  02     Node[id:14, kind:Call, depth:2, tok:ParenOpen, rng:(33,34) [(], full:(25,35) [Whatever()], extra=[Whatever]], count=1
+  03       Node[id:13, kind:ExprList, depth:1, tok:ParenClose, rng:(34,35) [)], full:(34,35) [)]], count=0
+Warning: (4,6) Tok: '&&', Message: The binary operator '&&' is deprecated, use 'and' instead
+Error: (13,14) Tok: ';', Message: Expected: ')', Found: ';'
+Error: (22,23) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr F(A and B, C())
+   1) [0] Expr D()
+   2) [0] Expr (<missing>)
+   3) [0] Expr Whatever()
+   4) [0] End
+###
+> A();
+> B() // Missing ;
+> C()
+Node: [A(); B(); C()]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:4, tok:Semi, rng:(3,4) [;], full:(0,25) [A();\nB() // Missing ;\nC()]], count=3
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+  01   Node[id:5, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(5,8) [B()]], count=1
+  02     Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(6,7) [(], full:(5,8) [B()], extra=[B]], count=1
+  03       Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(7,8) [)], full:(7,8) [)]], count=0
+  01   Node[id:8, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(23,24) [(], full:(22,25) [C()]], count=1
+  02     Node[id:7, kind:Call, depth:2, tok:ParenOpen, rng:(23,24) [(], full:(22,25) [C()], extra=[C]], count=1
+  03       Node[id:6, kind:ExprList, depth:1, tok:ParenClose, rng:(24,25) [)], full:(24,25) [)]], count=0
+Error: (22,23) Tok: 'C', Message: Expected: ';', Found: 'C'
+Comment: Range=(9,21), Tid=CommentLine, Text=[// Missing ;]
+
+   0) [0] Expr A()
+   1) [0] Expr B()
+   2) [0] Expr C()
+   3) [0] End
+###
+> A() )
+Node: [A(); <missing>]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,5) [A() )]], count=2
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+  01   Node[id:4, kind:ExprStmt, depth:2, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=1
+  02     Node[id:3, kind:MissingValue, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)], extra=[<missing>]]
+Error: (4,5) Tok: ')', Message: Expected: ';', Found: ')'
+Error: (4,5) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr A()
+   1) [0] Expr (<missing>)
+   2) [0] End
+###
+> (A(); B(c,d); )
+Node: [A(); B(c, d); <missing>]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:5, tok:Semi, rng:(4,5) [;], full:(0,15) [(A(); B(c,d); )]], count=3
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A()]], count=1
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A()]], count=1
+  03       Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(2,3) [(], full:(1,4) [A()], extra=[A]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(3,4) [)], full:(3,4) [)]], count=0
+  01   Node[id:9, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(7,8) [(], full:(6,12) [B(c,d)]], count=1
+  02     Node[id:8, kind:Call, depth:3, tok:ParenOpen, rng:(7,8) [(], full:(6,12) [B(c,d)], extra=[B]], count=1
+  03       Node[id:7, kind:ExprList, depth:2, tok:Comma, rng:(9,10) [,], full:(8,11) [c,d]], count=2
+  04         Node[id:5, kind:FirstName, depth:1, tok:c, rng:(8,9) [c], full:(8,9) [c], extra=[c]]
+  04         Node[id:6, kind:FirstName, depth:1, tok:d, rng:(10,11) [d], full:(10,11) [d], extra=[d]]
+  01   Node[id:11, kind:ExprStmt, depth:2, tok:ParenClose, rng:(14,15) [)], full:(14,15) [)]], count=1
+  02     Node[id:10, kind:MissingValue, depth:1, tok:ParenClose, rng:(14,15) [)], full:(14,15) [)], extra=[<missing>]]
+Error: (4,5) Tok: ';', Message: Expected: ')', Found: ';'
+Error: (14,15) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr A()
+   1) [0] Expr B(c, d)
+   2) [0] Expr (<missing>)
+   3) [0] End
+###
+> F(A() B())
+Node: [F(((A()) <error> (B())))]
+Dump:
+  00 Node[id:8, kind:StmtList, depth:7, tok:F, rng:(0,1) [F], full:(0,10) [F(A() B())]], count=1
+  01   Node[id:7, kind:ExprStmt, depth:6, tok:ParenOpen, rng:(1,2) [(], full:(0,10) [F(A() B())]], count=1
+  02     Node[id:6, kind:Call, depth:5, tok:ParenOpen, rng:(1,2) [(], full:(0,10) [F(A() B())], extra=[F]], count=1
+  03       Node[id:5, kind:ExprList, depth:4, tok:A, rng:(2,3) [A], full:(2,9) [A() B()]], count=1
+  04         Node[id:4, kind:BinaryOp, depth:3, tok:B, rng:(6,7) [B], full:(2,9) [A() B()], extra=[Error]], count=2
+  05           Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [A()], extra=[A]], count=1
+  06             Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=0
+  05           Node[id:3, kind:Call, depth:2, tok:ParenOpen, rng:(7,8) [(], full:(6,9) [B()], extra=[B]], count=1
+  06             Node[id:2, kind:ExprList, depth:1, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)]], count=0
+Error: (6,7) Tok: 'B', Message: Expected an operator
+
+   0) [0] Expr F(((A()) <error> (B())))
+   1) [0] End
+###
+> A() B()
+Node: [A(); B()]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,7) [A() B()]], count=2
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+  01   Node[id:5, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(5,6) [(], full:(4,7) [B()]], count=1
+  02     Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(5,6) [(], full:(4,7) [B()], extra=[B]], count=1
+  03       Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(6,7) [)], full:(6,7) [)]], count=0
+Error: (4,5) Tok: 'B', Message: Expected: ';', Found: 'B'
+
+   0) [0] Expr A()
+   1) [0] Expr B()
+   2) [0] End
+###
+> A B()
+Node: [A; B()]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,5) [A B()]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:A, rng:(0,1) [A], full:(0,1) [A]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [B()]], count=1
+  02     Node[id:3, kind:Call, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [B()], extra=[B]], count=1
+  03       Node[id:2, kind:ExprList, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=0
+Error: (2,3) Tok: 'B', Message: Expected: ';', Found: 'B'
+
+   0) [0] Expr A
+   1) [0] Expr B()
+   2) [0] End
+###
+> A() B
+Node: [A(); B]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,5) [A() B]], count=2
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+  01   Node[id:4, kind:ExprStmt, depth:2, tok:B, rng:(4,5) [B], full:(4,5) [B]], count=1
+  02     Node[id:3, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+Error: (4,5) Tok: 'B', Message: Expected: ';', Found: 'B'
+
+   0) [0] Expr A()
+   1) [0] Expr B
+   2) [0] End
+###
+> a + 3; B()
+Node: [a + 3; B()]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:Semi, rng:(5,6) [;], full:(0,10) [a + 3; B()]], count=2
+  01   Node[id:3, kind:ExprStmt, depth:3, tok:Add, rng:(2,3) [+], full:(0,5) [a + 3]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [a + 3], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(4,5) [3], full:(4,5) [3], extra=[3]]
+  01   Node[id:6, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(8,9) [(], full:(7,10) [B()]], count=1
+  02     Node[id:5, kind:Call, depth:2, tok:ParenOpen, rng:(8,9) [(], full:(7,10) [B()], extra=[B]], count=1
+  03       Node[id:4, kind:ExprList, depth:1, tok:ParenClose, rng:(9,10) [)], full:(9,10) [)]], count=0
+
+   0) [0] Expr a + 3
+   1) [0] Expr B()
+   2) [0] End
+###
+> ((A(););)
+Node: [A(); <missing>; <missing>]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:5, tok:Semi, rng:(5,6) [;], full:(0,9) [((A(););)]], count=3
+  01   Node[id:6, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [((A()]], count=1
+  02     Node[id:5, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [((A()]], count=1
+  03       Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [A()], extra=[A]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=0
+  01   Node[id:8, kind:ExprStmt, depth:2, tok:ParenClose, rng:(6,7) [)], full:(6,7) [)]], count=1
+  02     Node[id:7, kind:MissingValue, depth:1, tok:ParenClose, rng:(6,7) [)], full:(6,7) [)], extra=[<missing>]]
+  01   Node[id:10, kind:ExprStmt, depth:2, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)]], count=1
+  02     Node[id:9, kind:MissingValue, depth:1, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)], extra=[<missing>]]
+Error: (5,6) Tok: ';', Message: Expected: ')', Found: ';'
+Error: (5,6) Tok: ';', Message: Expected: ')', Found: ';'
+Error: (6,7) Tok: ')', Message: Expected an operand
+Error: (8,9) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr A()
+   1) [0] Expr (<missing>)
+   2) [0] Expr (<missing>)
+   3) [0] End
+###
+> (A())
+Node: [A()]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A())]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A())]], count=1
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A())]], count=1
+  03       Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(2,3) [(], full:(1,4) [A()], extra=[A]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(3,4) [)], full:(3,4) [)]], count=0
+
+   0) [0] Expr A()
+   1) [0] End
+###
+> (((A((((x)))))))
+Node: [A(x)]
+Dump:
+  00 Node[id:16, kind:StmtList, depth:7, tok:ParenOpen, rng:(0,1) [(], full:(0,16) [(((A((((x)))))))]], count=1
+  01   Node[id:15, kind:ExprStmt, depth:6, tok:ParenOpen, rng:(0,1) [(], full:(0,16) [(((A((((x)))))))]], count=1
+  02     Node[id:14, kind:Paren, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,16) [(((A((((x)))))))]], count=1
+  03       Node[id:8, kind:Call, depth:4, tok:ParenOpen, rng:(4,5) [(], full:(3,13) [A((((x))))], extra=[A]], count=1
+  04         Node[id:7, kind:ExprList, depth:3, tok:ParenOpen, rng:(5,6) [(], full:(5,12) [(((x)))]], count=1
+  05           Node[id:6, kind:Paren, depth:2, tok:ParenOpen, rng:(5,6) [(], full:(5,12) [(((x)))]], count=1
+  06             Node[id:0, kind:FirstName, depth:1, tok:x, rng:(8,9) [x], full:(8,9) [x], extra=[x]]
+
+   0) [0] Expr A(x)
+   1) [0] End
+###
+> ()
+Node: [()]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,2) [()]], count=1
+  01   Node[id:2, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,2) [()]], count=1
+  02     Node[id:1, kind:Tuple, depth:2, tok:ParenOpen, rng:(0,1) [(], full:(0,2) [()]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(1,2) [)], full:(1,2) [)]], count=0
+
+   0) [0] Expr ()
+   1) [0] End
+###
+> (,)
+Node: [((<missing>),)]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(,)]], count=1
+  01   Node[id:3, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(,)]], count=1
+  02     Node[id:2, kind:Tuple, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(,)]], count=1
+  03       Node[id:1, kind:ExprList, depth:2, tok:Comma, rng:(1,2) [,], full:(1,2) [,]], count=1
+  04         Node[id:0, kind:MissingValue, depth:1, tok:Comma, rng:(1,2) [,], full:(1,2) [,], extra=[<missing>]]
+Error: (1,2) Tok: ',', Message: Expected an operand
+
+   0) [0] Expr ((<missing>),)
+   1) [0] End
+###
+> (A)
+Node: [A]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(A)]], count=1
+  01   Node[id:3, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(A)]], count=1
+  02     Node[id:2, kind:Paren, depth:2, tok:ParenOpen, rng:(0,1) [(], full:(0,3) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+
+   0) [0] Expr A
+   1) [0] End
+###
+> (A,)
+Node: [(A,)]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A,)]], count=1
+  01   Node[id:3, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A,)]], count=1
+  02     Node[id:2, kind:Tuple, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A,)]], count=1
+  03       Node[id:1, kind:ExprList, depth:2, tok:Comma, rng:(2,3) [,], full:(1,3) [A,]], count=1
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+
+   0) [0] Expr (A,)
+   1) [0] End
+###
+> (A,B)
+Node: [(A, B)]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A,B)]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A,B)]], count=1
+  02     Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A,B)]], count=1
+  03       Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(2,3) [,], full:(1,4) [A,B]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(3,4) [B], full:(3,4) [B], extra=[B]]
+
+   0) [0] Expr (A, B)
+   1) [0] End
+###
+> (A,B,)
+Node: [(A, B)]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [(A,B,)]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [(A,B,)]], count=1
+  02     Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [(A,B,)]], count=1
+  03       Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(2,3) [,], full:(1,4) [A,B]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(3,4) [B], full:(3,4) [B], extra=[B]]
+
+   0) [0] Expr (A, B)
+   1) [0] End
+###
+> (())
+Node: [()]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(())]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(())]], count=1
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(())]], count=1
+  03       Node[id:1, kind:Tuple, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(1,3) [()]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+
+   0) [0] Expr ()
+   1) [0] End
+###
+> (A()
+Node: [A()]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A()]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A()]], count=1
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,4) [(A()]], count=1
+  03       Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(2,3) [(], full:(1,4) [A()], extra=[A]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(3,4) [)], full:(3,4) [)]], count=0
+Error: (4,4) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+
+   0) [0] Expr A()
+   1) [0] End
+###
+> ((A())
+Node: [A()]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:5, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [((A())]], count=1
+  01   Node[id:6, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [((A())]], count=1
+  02     Node[id:5, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,6) [((A())]], count=1
+  03       Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(2,5) [A()], extra=[A]], count=1
+  04         Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(4,5) [)], full:(4,5) [)]], count=0
+Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+
+   0) [0] Expr A()
+   1) [0] End
+###
+> )
+Node: [<missing>]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:ParenClose, rng:(0,1) [)], full:(0,1) [)]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:ParenClose, rng:(0,1) [)], full:(0,1) [)]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:ParenClose, rng:(0,1) [)], full:(0,1) [)], extra=[<missing>]]
+Error: (0,1) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr (<missing>)
+   1) [0] End
+###
+> ;;;)
+Node: [<missing>]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:ParenClose, rng:(3,4) [)], full:(0,4) [;;;)]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:ParenClose, rng:(3,4) [)], full:(3,4) [)]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:ParenClose, rng:(3,4) [)], full:(3,4) [)], extra=[<missing>]]
+Error: (3,4) Tok: ')', Message: Expected an operand
+
+   0) [0] Expr (<missing>)
+   1) [0] End
+###
+> }
+Node: [<missing>]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:CurlyClose, rng:(0,1) [}], full:(0,1) [}]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:CurlyClose, rng:(0,1) [}], full:(0,1) [}]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:CurlyClose, rng:(0,1) [}], full:(0,1) [}], extra=[<missing>]]
+Error: (0,1) Tok: '}', Message: Expected an operand
+
+   0) [0] Expr (<missing>)
+   1) [0] End
+###
+> A!B := x;
+> A!C!D := A.B;
+> A!C!E := A.C.D;
+Node: [A.B := x; A.C.D := A.B; A.C.E := A.C.D]
+Corrected: [A.B := x;
+A.C.D := A.B;
+A.C.E := A.C.D;]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:5, tok:Semi, rng:(8,9) [;], full:(0,39) [A!B := x;\nA!C!D := A.B;\nA!C!E := A.C.D;]], count=3
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(4,6) [:=], full:(0,8) [A!B := x], extra=[A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(7,8) [x], full:(7,8) [x], extra=[x]]
+  01   Node[id:4, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(16,18) [:=], full:(10,22) [A!C!D := A.B], extra=[A.C.D]], count=1
+  02     Node[id:3, kind:DottedName, depth:2, tok:Dot, rng:(20,21) [.], full:(19,22) [A.B], extra=[B]], count=1
+  03       Node[id:2, kind:FirstName, depth:1, tok:A, rng:(19,20) [A], full:(19,20) [A], extra=[A]]
+  01   Node[id:8, kind:DefinitionStmt, depth:4, tok:ColEqu, rng:(30,32) [:=], full:(24,38) [A!C!E := A.C.D], extra=[A.C.E]], count=1
+  02     Node[id:7, kind:DottedName, depth:3, tok:Dot, rng:(36,37) [.], full:(33,38) [A.C.D], extra=[D]], count=1
+  03       Node[id:6, kind:DottedName, depth:2, tok:Dot, rng:(34,35) [.], full:(33,36) [A.C], extra=[C]], count=1
+  04         Node[id:5, kind:FirstName, depth:1, tok:A, rng:(33,34) [A], full:(33,34) [A], extra=[A]]
+Warning: (1,2) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Warning: (11,12) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Warning: (13,14) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Warning: (25,26) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Warning: (27,28) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+
+   0) [0] Define A.B <- x
+   1) [0] Define A.C.D <- A.B
+   2) [0] Define A.C.E <- A.C.D
+   3) [0] End
+###
+> A!C.E := x;
+Node: [A.C.E := x]
+Corrected: [A.C.E := x;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:A, rng:(0,1) [A], full:(0,11) [A!C.E := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(6,8) [:=], full:(0,10) [A!C.E := x], extra=[A.C.E]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(9,10) [x], full:(9,10) [x], extra=[x]]
+Warning: (1,2) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+
+   0) [0] Define A.C.E <- x
+   1) [0] End
+###
+> @A := x;
+Node: [@A := x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,8) [@A := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(3,5) [:=], full:(0,7) [@A := x], extra=[@A]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(6,7) [x], full:(6,7) [x], extra=[x]]
+
+   0) [0] Define @A <- x
+   1) [0] End
+###
+> @A.B := x;
+Node: [@A.B := x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,10) [@A.B := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(5,7) [:=], full:(0,9) [@A.B := x], extra=[@A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(8,9) [x], full:(8,9) [x], extra=[x]]
+
+   0) [0] Define @A.B <- x
+   1) [0] End
+###
+> A.@B := x;
+Node: [A.@B := x]
+Corrected: [A.B := x;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:A, rng:(0,1) [A], full:(0,10) [A.@B := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(5,7) [:=], full:(0,9) [A.@B := x], extra=[A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(8,9) [x], full:(8,9) [x], extra=[x]]
+Error: (2,3) Tok: '@', Message: Globally scoped identifier not allowed
+
+   0) [0] Define A.B <- x
+   1) [0] End
+###
+> @A.@B := x;
+Node: [@A.@B := x]
+Corrected: [@A.B := x;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,11) [@A.@B := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(6,8) [:=], full:(0,10) [@A.@B := x], extra=[@A.B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(9,10) [x], full:(9,10) [x], extra=[x]]
+Error: (3,4) Tok: '@', Message: Globally scoped identifier not allowed
+
+   0) [0] Define @A.B <- x
+   1) [0] End
+###
+> @A.@ := x;
+Node: [@A.@'' := x]
+Corrected: [@A. := x;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,10) [@A.@ := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(5,7) [:=], full:(0,9) [@A.@ := x], extra=[@A._X]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(8,9) [x], full:(8,9) [x], extra=[x]]
+Error: (3,4) Tok: '@', Message: Globally scoped identifier not allowed
+Error: (5,7) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] Define @A._X <- x
+   1) [0] End
+###
+> @A. := x;
+Node: [@A.'' := x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,9) [@A. := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(4,6) [:=], full:(0,8) [@A. := x], extra=[@A._X]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(7,8) [x], full:(7,8) [x], extra=[x]]
+Error: (4,6) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] Define @A._X <- x
+   1) [0] End
+###
+> @ := x;
+Node: [@'' := x]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,7) [@ := x;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,6) [@ := x], extra=[@_X]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(5,6) [x], full:(5,6) [x], extra=[x]]
+Error: (2,4) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] Define @_X <- x
+   1) [0] End
+###
+> namespace
+Node: [namespace]
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,9) [namespace]], count=1
+  01   Node[id:0, kind:NamespaceStmt, depth:1, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,9) [namespace]], count=0
+
+   0) [0] Namespace _
+   1) [0] End
+###
+> namespace null
+Node: [namespace; null]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:3, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,14) [namespace null]], count=2
+  01   Node[id:0, kind:NamespaceStmt, depth:1, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,9) [namespace]], count=0
+  01   Node[id:2, kind:ExprStmt, depth:2, tok:KwdNull, rng:(10,14) [null], full:(10,14) [null]], count=1
+  02     Node[id:1, kind:NullLit, depth:1, tok:KwdNull, rng:(10,14) [null], full:(10,14) [null]]
+Error: (10,14) Tok: 'null', Message: Expected: ';', Found: 'null'
+
+   0) [0] Namespace _
+   1) [0] Expr null
+   2) [0] End
+###
+> namespace A.B!C
+Node: [namespace A.B.C]
+Corrected: [namespace A.B.C]
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,15) [namespace A.B!C]], count=1
+  01   Node[id:0, kind:NamespaceStmt, depth:1, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,15) [namespace A.B!C], extra=[A.B.C]], count=0
+Warning: (13,14) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+
+   0) [0] Namespace A.B.C
+   1) [0] End
+###
+> namespace A..X
+Node: [namespace A.''.X]
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,14) [namespace A..X]], count=1
+  01   Node[id:0, kind:NamespaceStmt, depth:1, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,14) [namespace A..X], extra=[A._X.X]], count=0
+Error: (12,13) Tok: '.', Message: Expected: '<identifier>', Found: '.'
+
+   0) [0] Namespace A._X.X
+   1) [0] End
+###
+> namespace X { A := 3; B := 7; }
+Node: [namespace X { A := 3; B := 7 }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,31) [namespace X { A := 3; B := 7; }]], count=1
+  01   Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,31) [namespace X { A := 3; B := 7; }], extra=[X]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,31) [{ A := 3; B := 7; }]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(20,21) [;], full:(14,29) [A := 3; B := 7;]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(16,18) [:=], full:(14,20) [A := 3], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(19,20) [3], full:(19,20) [3], extra=[3]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(22,28) [B := 7], extra=[B]], count=1
+  05           Node[id:2, kind:NumLit, depth:1, tok:7, rng:(27,28) [7], full:(27,28) [7], extra=[7]]
+
+   0) [0] Enter (0=>1) X
+   1) [1] Define A <- 3
+   2) [1] Define B <- 7
+   3) [1] Leave (1=>0)
+   4) [0] End
+###
+> namespace @X { A := 3; B := 7; }
+Node: [namespace @X { A := 3; B := 7 }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,32) [namespace @X { A := 3; B := 7; }]], count=1
+  01   Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,32) [namespace @X { A := 3; B := 7; }], extra=[@X]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,32) [{ A := 3; B := 7; }]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(21,22) [;], full:(15,30) [A := 3; B := 7;]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(17,19) [:=], full:(15,21) [A := 3], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(23,29) [B := 7], extra=[B]], count=1
+  05           Node[id:2, kind:NumLit, depth:1, tok:7, rng:(28,29) [7], full:(28,29) [7], extra=[7]]
+
+   0) [0] Enter (0=>1) @X
+   1) [1] Define A <- 3
+   2) [1] Define B <- 7
+   3) [1] Leave (1=>0)
+   4) [0] End
+###
+> namespace { A := 3; B := 7; }
+> A;
+> B + C;
+Node: [namespace { A := 3; B := 7 } A; B + C]
+Dump:
+  00 Node[id:13, kind:StmtList, depth:6, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,39) [namespace { A := 3; B := 7; }\nA;\nB + C;]], count=3
+  01   Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,29) [namespace { A := 3; B := 7; }]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(10,11) [{], full:(10,29) [{ A := 3; B := 7; }]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(18,19) [;], full:(12,27) [A := 3; B := 7;]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(14,16) [:=], full:(12,18) [A := 3], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(20,26) [B := 7], extra=[B]], count=1
+  05           Node[id:2, kind:NumLit, depth:1, tok:7, rng:(25,26) [7], full:(25,26) [7], extra=[7]]
+  01   Node[id:8, kind:ExprStmt, depth:2, tok:A, rng:(30,31) [A], full:(30,31) [A]], count=1
+  02     Node[id:7, kind:FirstName, depth:1, tok:A, rng:(30,31) [A], full:(30,31) [A], extra=[A]]
+  01   Node[id:12, kind:ExprStmt, depth:3, tok:Add, rng:(35,36) [+], full:(33,38) [B + C]], count=1
+  02     Node[id:11, kind:BinaryOp, depth:2, tok:Add, rng:(35,36) [+], full:(33,38) [B + C], extra=[Add]], count=2
+  03       Node[id:9, kind:FirstName, depth:1, tok:B, rng:(33,34) [B], full:(33,34) [B], extra=[B]]
+  03       Node[id:10, kind:FirstName, depth:1, tok:C, rng:(37,38) [C], full:(37,38) [C], extra=[C]]
+
+   0) [0] Enter (0=>1) _
+   1) [1] Define A <- 3
+   2) [1] Define B <- 7
+   3) [1] Leave (1=>0)
+   4) [0] Expr A
+   5) [0] Expr B + C
+   6) [0] End
+###
+> namespace @ { A := 3; B := 7; }
+Node: [namespace @ { A := 3; B := 7 }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,31) [namespace @ { A := 3; B := 7; }]], count=1
+  01   Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(0,9) [namespace], full:(0,31) [namespace @ { A := 3; B := 7; }], extra=[@]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,31) [{ A := 3; B := 7; }]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(20,21) [;], full:(14,29) [A := 3; B := 7;]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(16,18) [:=], full:(14,20) [A := 3], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(19,20) [3], full:(19,20) [3], extra=[3]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(22,28) [B := 7], extra=[B]], count=1
+  05           Node[id:2, kind:NumLit, depth:1, tok:7, rng:(27,28) [7], full:(27,28) [7], extra=[7]]
+
+   0) [0] Enter (0=>1) @
+   1) [1] Define A <- 3
+   2) [1] Define B <- 7
+   3) [1] Leave (1=>0)
+   4) [0] End
+###
+> with N, N.P, X
+Node: [with N, N.P, X]
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdWith, rng:(0,4) [with], full:(0,14) [with N, N.P, X]], count=1
+  01   Node[id:0, kind:WithStmt, depth:1, tok:KwdWith, rng:(0,4) [with], full:(0,14) [with N, N.P, X], extra=[N, N.P, X]], count=0
+
+   0) [0] With N, N.P, X
+   1) [0] End
+###
+> with N, @N.P, X
+Node: [with N, @N.P, X]
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdWith, rng:(0,4) [with], full:(0,15) [with N, @N.P, X]], count=1
+  01   Node[id:0, kind:WithStmt, depth:1, tok:KwdWith, rng:(0,4) [with], full:(0,15) [with N, @N.P, X], extra=[N, @N.P, X]], count=0
+
+   0) [0] With N, @N.P, X
+   1) [0] End
+###
+> with N, @N.P, X, @
+Node: [with N, @N.P, X, @'']
+Dump:
+  00 Node[id:1, kind:StmtList, depth:2, tok:KwdWith, rng:(0,4) [with], full:(0,18) [with N, @N.P, X, @]], count=1
+  01   Node[id:0, kind:WithStmt, depth:1, tok:KwdWith, rng:(0,4) [with], full:(0,18) [with N, @N.P, X, @], extra=[N, @N.P, X, @_X]], count=0
+Error: (18,18) Tok: '<eof>', Message: Expected: '<identifier>', Found: '<eof>'
+
+   0) [0] With N, @N.P, X, @_X
+   1) [0] End
+###
+> with N, @N.P, X { A := 17; B := "hi" }
+> A;
+> B;
+Node: [with N, @N.P, X { A := 17; B := "hi" } A; B]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:KwdWith, rng:(0,4) [with], full:(0,44) [with N, @N.P, X { A := 17; B := "hi" }\nA;\nB;]], count=3
+  01   Node[id:6, kind:WithStmt, depth:5, tok:KwdWith, rng:(0,4) [with], full:(0,38) [with N, @N.P, X { A := 17; B := "hi" }], extra=[N, @N.P, X]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(16,17) [{], full:(16,38) [{ A := 17; B := "hi" }]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(25,26) [;], full:(18,36) [A := 17; B := "hi"]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(20,22) [:=], full:(18,25) [A := 17], extra=[A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:17, rng:(23,25) [17], full:(23,25) [17], extra=[17]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(29,31) [:=], full:(27,36) [B := "hi"], extra=[B]], count=1
+  05           Node[id:2, kind:TextLit, depth:1, tok:hi, rng:(32,36) ["hi"], full:(32,36) ["hi"]]
+  01   Node[id:8, kind:ExprStmt, depth:2, tok:A, rng:(39,40) [A], full:(39,40) [A]], count=1
+  02     Node[id:7, kind:FirstName, depth:1, tok:A, rng:(39,40) [A], full:(39,40) [A], extra=[A]]
+  01   Node[id:10, kind:ExprStmt, depth:2, tok:B, rng:(42,43) [B], full:(42,43) [B]], count=1
+  02     Node[id:9, kind:FirstName, depth:1, tok:B, rng:(42,43) [B], full:(42,43) [B], extra=[B]]
+
+   0) [0] Enter (0=>1)
+   1) [1] With N, @N.P, X
+   2) [1] Define A <- 17
+   3) [1] Define B <- "hi"
+   4) [1] Leave (1=>0)
+   5) [0] Expr A
+   6) [0] Expr B
+   7) [0] End
+###

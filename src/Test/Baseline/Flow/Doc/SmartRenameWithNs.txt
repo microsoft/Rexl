@@ -1,0 +1,551 @@
+*** Expected error in X.Y.D for "X.Y.D"
+Add: 00000001 [A], Fma: [1+1]
+Add: 00000002 [B], Fma: [1+1]
+Add: 00000003 [C], Fma: [1+1]
+Add: 00000004 [X.Y.B], Fma: [A + 1 + @B]
+Add: 00000005 [X.Y.C], Fma: [Y.B + @X.Y.B + B + @B]
+Add: 00000006 [F], Fma: [X.Y.B + B]
+Add: 00000007 [X.Y.D], Fma: [X.Y.D + Y.D + D + @X.Y.D]
+Add: 00000008 [X.Y.X.Y.B], Fma: [A + 1 + A]
+Add: 00000009 [X.Y.G], Fma: [B]
+Add: 0000000a [G], Fma: [X.Y.C + C]
+Status: 10 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tT  B C dD  ], Base: i8
+    00000003 [C]: [A  tT  B C dD  ], Base: i8
+    00000004 [X.Y.B]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Y.C]: [A  tTuUB C dD  ], Base: i8
+    00000006 [F]: [A  tTuUB C dD  ], Base: i8
+    00000007 [X.Y.D]: [A  tTuUB C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [A  tTuUB C dD  ], Base: i8
+    00000009 [X.Y.G]: [A  tTuUB C dD  ], Base: i8
+    0000000a [G]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 00000001 [X.Y.Z.A] <= [A]
+Fma: 00000004 [X.Y.B], Main: [A + 1 + @B] => [Z.A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [A + 1 + A] => [Z.A + 1 + Z.A]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.X.Y.Z
+  Node changes:
+    00000001 [X.Y.Z.A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [X.Y.Z.A]
+Fma: 00000004 [X.Y.B], Main: [Z.A + 1 + @B] => [A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [Z.A + 1 + Z.A] => [A + 1 + A]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+Ren: 00000001 [X.Y.Z.A.A] <= [A]
+Fma: 00000004 [X.Y.B], Main: [A + 1 + @B] => [Z.A.A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [A + 1 + A] => [Z.A.A + 1 + Z.A.A]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.X.Y.Z, ∂.X.Y.Z.A
+  Node changes:
+    00000001 [X.Y.Z.A.A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [X.Y.Z.A.A]
+Fma: 00000004 [X.Y.B], Main: [Z.A.A + 1 + @B] => [A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [Z.A.A + 1 + Z.A.A] => [A + 1 + A]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+Ren: 00000001 [Z.Y.X.A] <= [A]
+Fma: 00000004 [X.Y.B], Main: [A + 1 + @B] => [Z.Y.X.A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [A + 1 + A] => [Z.Y.X.A + 1 + Z.Y.X.A]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.Z, ∂.Z.Y, ∂.Z.Y.X
+  Node changes:
+    00000001 [Z.Y.X.A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [Z.Y.X.A]
+Fma: 00000004 [X.Y.B], Main: [Z.Y.X.A + 1 + @B] => [A + 1 + @B]
+Fma: 00000008 [X.Y.X.Y.B], Main: [Z.Y.X.A + 1 + Z.Y.X.A] => [A + 1 + A]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+Ren: 00000004 [Y.B] <= [X.Y.B]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [@Y.B + @Y.B + @Y.B + @B]
+Fma: 00000006 [F], Main: [X.Y.B + B] => [Y.B + B]
+Fma: 00000009 [X.Y.G], Main: [B] => [@Y.B]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.Y
+  Node changes:
+    00000004 [Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [Y.B]
+Fma: 00000005 [X.Y.C], Main: [@Y.B + @Y.B + @Y.B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000006 [F], Main: [Y.B + B] => [X.Y.B + B]
+Fma: 00000009 [X.Y.G], Main: [@Y.B] => [B]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+Ren: 00000004 [X.B] <= [X.Y.B]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [B + @X.B + B + @B]
+Fma: 00000006 [F], Main: [X.Y.B + B] => [X.B + B]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [X.B]
+Fma: 00000005 [X.Y.C], Main: [B + @X.B + B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000006 [F], Main: [X.B + B] => [X.Y.B + B]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+Ren: 00000004 [M.N.O] <= [X.Y.B]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [M.N.O + @M.N.O + M.N.O + @B]
+Fma: 00000006 [F], Main: [X.Y.B + B] => [M.N.O + B]
+Fma: 00000009 [X.Y.G], Main: [B] => [M.N.O]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.M, ∂.M.N, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000004 [M.N.O]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [M.N.O]
+Fma: 00000005 [X.Y.C], Main: [M.N.O + @M.N.O + M.N.O + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000006 [F], Main: [M.N.O + B] => [X.Y.B + B]
+Fma: 00000009 [X.Y.G], Main: [M.N.O] => [B]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+Ren: 00000005 [X.C] <= [X.Y.C]
+Fma: 00000005 [X.C], Main: [Y.B + @X.Y.B + B + @B] => [Y.B + @X.Y.B + Y.B + @B]
+Fma: 0000000a [G], Main: [X.Y.C + C] => [X.C + C]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.C]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000005 [X.Y.C] <= [X.C]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + Y.B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 0000000a [G], Main: [X.C + C] => [X.Y.C + C]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [G]: [       B       ], Base: i8
+###
+Ren: 00000005 [C2] <= [X.Y.C]
+Fma: 00000005 [C2], Main: [Y.B + @X.Y.B + B + @B] => [X.Y.B + @X.Y.B + X.Y.B + @B]
+Fma: 0000000a [G], Main: [X.Y.C + C] => [C2 + C]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [C2]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000005 [X.Y.C] <= [C2]
+Fma: 00000005 [X.Y.C], Main: [X.Y.B + @X.Y.B + X.Y.B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 0000000a [G], Main: [C2 + C] => [X.Y.C + C]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [G]: [       B       ], Base: i8
+###
+Ren: 00000004 [X.Y.Z.B] <= [X.Y.B]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [Z.B + @X.Y.Z.B + Z.B + @B]
+Fma: 00000006 [F], Main: [X.Y.B + B] => [X.Y.Z.B + B]
+Fma: 00000009 [X.Y.G], Main: [B] => [Z.B]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.X.Y.Z
+  Node changes:
+    00000004 [X.Y.Z.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000004 [X.Y.B] <= [X.Y.Z.B]
+Fma: 00000005 [X.Y.C], Main: [Z.B + @X.Y.Z.B + Z.B + @B] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000006 [F], Main: [X.Y.Z.B + B] => [X.Y.B + B]
+Fma: 00000009 [X.Y.G], Main: [Z.B] => [B]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000004 [X.Y.B]: [ N     B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [       B       ], Base: i8
+###
+Ren: 00000006 [X.Y.F] <= [F]
+Fma: 00000006 [X.Y.F], Main: [X.Y.B + B] => [B + @B]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [X.Y.F]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000006 [F] <= [X.Y.F]
+Fma: 00000006 [F], Main: [B + @B] => [X.Y.B + B]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [ N     B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+Ren: 0000000a [X.Y.X.Y.G] <= [G]
+Fma: 0000000a [X.Y.X.Y.G], Main: [X.Y.C + C] => [C + @C]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [X.Y.X.Y.G]: [ N     B       ], Base: i8
+###
+*** Undo(1)
+Ren: 0000000a [G] <= [X.Y.X.Y.G]
+Fma: 0000000a [G], Main: [C + @C] => [X.Y.C + C]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    0000000a [G]: [ N     B       ], Base: i8
+###
+Ren: 00000009 [X.Y.X.Y.G] <= [X.Y.G]
+Fma: 00000009 [X.Y.X.Y.G], Main: [B] => [@X.Y.B]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.X.Y.G]: [ N     B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000009 [X.Y.G] <= [X.Y.X.Y.G]
+Fma: 00000009 [X.Y.G], Main: [@X.Y.B] => [B]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+    00000009 [X.Y.G]: [ N     B       ], Base: i8
+###
+Ren: 00000002 [D] <= [B]
+Fma: 00000004 [X.Y.B], Main: [A + 1 + @B] => [A + 1 + @D]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @B] => [Y.B + @X.Y.B + B + @D]
+Fma: 00000006 [F], Main: [X.Y.B + B] => [X.Y.B + D]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [D]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000002 [B] <= [D]
+Fma: 00000004 [X.Y.B], Main: [A + 1 + @D] => [A + 1 + @B]
+Fma: 00000005 [X.Y.C], Main: [Y.B + @X.Y.B + B + @D] => [Y.B + @X.Y.B + B + @B]
+Fma: 00000006 [F], Main: [X.Y.B + D] => [X.Y.B + B]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000002 [B]: [ N     B       ], Base: i8
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000006 [F]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [       B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Expected error on X.Y.D
+Ren: 00000007 [D] <= [X.Y.D]
+Fma: 00000007 [D], Main: [X.Y.D + Y.D + D + @X.Y.D] => [X.Y.D + D + D + @D]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000007 [X.Y.D] <= [D]
+Fma: 00000007 [X.Y.D], Main: [X.Y.D + D + D + @D] => [X.Y.D + Y.D + D + @X.Y.D]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Expected error on X.Y.D
+Ren: 00000007 [X.D] <= [X.Y.D]
+Fma: 00000007 [X.D], Main: [X.Y.D + Y.D + D + @X.Y.D] => [X.Y.D + D + D + @X.D]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000007 [X.Y.D] <= [X.D]
+Fma: 00000007 [X.Y.D], Main: [X.Y.D + D + D + @X.D] => [X.Y.D + Y.D + D + @X.Y.D]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Expected error on X.Y.D
+Ren: 00000007 [Y.D] <= [X.Y.D]
+Fma: 00000007 [Y.D], Main: [X.Y.D + Y.D + D + @X.Y.D] => [X.Y.D + D + D + @Y.D]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y, ∂.Y
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [Y.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000007 [X.Y.D] <= [Y.D]
+Fma: 00000007 [X.Y.D], Main: [X.Y.D + D + D + @Y.D] => [X.Y.D + Y.D + D + @X.Y.D]
+Status: 10 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Expected error on X.Y.D
+Ren: 00000007 [X.E] <= [X.Y.D]
+Fma: 00000007 [X.E], Main: [X.Y.D + Y.D + D + @X.Y.D] => [X.Y.D + E + E + @X.E]
+Status: 10 nodes, 2 undos, 0 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.E]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** Undo(1)
+Ren: 00000007 [X.Y.D] <= [X.E]
+Fma: 00000007 [X.Y.D], Main: [X.Y.D + E + E + @X.E] => [X.Y.D + Y.D + D + @X.Y.D]
+Status: 10 nodes, 1 undos, 1 redos
+  Node changes:
+    00000004 [X.Y.B]: [       B       ], Base: i8
+    00000005 [X.Y.C]: [       B       ], Base: i8
+    00000007 [X.Y.D]: [ N     B C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y.X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [       B       ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [A]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [X.Y.B]
+Del: 00000005 [X.Y.C]
+Del: 00000006 [F]
+Del: 00000007 [X.Y.D]
+Del: 00000008 [X.Y.X.Y.B]
+Del: 00000009 [X.Y.G]
+Del: 0000000a [G]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [A], Fma: [1+1]
+Add: 00000002 [B], Fma: [1+1]
+Add: 00000003 [C], Fma: [1+1]
+Add: 00000004 [X.Y.B], Fma: [A + 1 + @B]
+Add: 00000005 [X.Y.C], Fma: [Y.B + @X.Y.B + B + @B]
+Add: 00000006 [F], Fma: [X.Y.B + B]
+Add: 00000007 [X.E], Fma: [X.Y.D + E + E + @X.E]
+Add: 00000008 [X.Y.X.Y.B], Fma: [A + 1 + A]
+Add: 00000009 [X.Y.G], Fma: [B]
+Add: 0000000a [G], Fma: [X.Y.C + C]
+Status: 10 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.X, ∂.X.Y.X.Y
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tT  B C dD  ], Base: i8
+    00000003 [C]: [A  tT  B C dD  ], Base: i8
+    00000004 [X.Y.B]: [A  tTuUB C dD  ], Base: i8
+    00000005 [X.Y.C]: [A  tTuUB C dD  ], Base: i8
+    00000006 [F]: [A  tTuUB C dD  ], Base: i8
+    00000007 [X.E]: [A  tTuUB C dDEX], Base: i8
+      *) Error: (3,4) Node: X.Y.D, Message: Namespace 'X.Y' doesn't contain 'D'
+    00000008 [X.Y.X.Y.B]: [A  tTuUB C dD  ], Base: i8
+    00000009 [X.Y.G]: [A  tTuUB C dD  ], Base: i8
+    0000000a [G]: [A  tTuUB C dD  ], Base: i8
+###
+*** UndoAll
+Del: 00000001 [A]
+Del: 00000002 [B]
+Del: 00000003 [C]
+Del: 00000004 [X.Y.B]
+Del: 00000005 [X.Y.C]
+Del: 00000006 [F]
+Del: 00000007 [X.E]
+Del: 00000008 [X.Y.X.Y.B]
+Del: 00000009 [X.Y.G]
+Del: 0000000a [G]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###
+Add: 0000000b [X.Y.Z.A], Fma: [1]
+Add: 0000000c [X.Y.Z.B], Fma: [1]
+Add: 0000000d [X.Y.Z.C], Fma: [Y.Z.A + Y.Z.B]
+Status: 3 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.Z
+  Node changes:
+    0000000b [X.Y.Z.A]: [A  tT  B C dD  ], Base: i8
+    0000000c [X.Y.Z.B]: [A  tT  B C dD  ], Base: i8
+    0000000d [X.Y.Z.C]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 0000000d [X.Y.Z.X.C] <= [X.Y.Z.C]
+Fma: 0000000d [X.Y.Z.X.C], Main: [Y.Z.A + Y.Z.B] => [A + B]
+Status: 3 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.Z, ∂.X.Y.Z.X
+  Node changes:
+    0000000d [X.Y.Z.X.C]: [ N     B       ], Base: i8
+###
+*** Undo(1)
+Ren: 0000000d [X.Y.Z.C] <= [X.Y.Z.X.C]
+Fma: 0000000d [X.Y.Z.C], Main: [A + B] => [Y.Z.A + Y.Z.B]
+Status: 3 nodes, 1 undos, 1 redos
+  Namespaces changed: ∂, ∂.X, ∂.X.Y, ∂.X.Y.Z
+  Node changes:
+    0000000d [X.Y.Z.C]: [ N     B       ], Base: i8
+###
+*** UndoAll
+Del: 0000000b [X.Y.Z.A]
+Del: 0000000c [X.Y.Z.B]
+Del: 0000000d [X.Y.Z.C]
+Status: 0 nodes, 0 undos, 2 redos
+  Namespaces changed: ∂
+###

@@ -1,0 +1,37 @@
+﻿``` S := ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen" ];
+``` TA := WrapSeq(Zip(s:S, i:Range(10), { A: s, X: i + 1d }));
+``` TB := WrapSeq(Zip(s:S, i:Range(10), { A: null if Mod(i, 3) = 1 else s, B: null if Mod(i, 3) = 2 else s, X: i + 1d }));
+
+// Simple, no mapping or merging.
+(TA if 1 = 0 else null)->MultiDS_A()
+TA->MultiDS_A()->Map(B->Text.Concat(", "))
+TB->MultiDS_B()->Map(B->Text.Concat(", "))
+
+// No mapping but merging.
+TA->MultiDSMA()->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+
+// Mapping but non-merging.
+S->MultiDSMB(A: it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDsMB({ A: "a-" & it, B: "b-" & it })->Map(B->Text.Concat(", "))
+
+// Mapping and merging.
+TA->MultiDSMB("b-" & A, A       )
+TA->MultiDSMB("b-" & A, A       )->Map(it->&{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDsMB({ A, B: "b-" & A })->Map(it->&{ B: "[" & B->Text.Concat(", ") & "]" })
+
+// Mapping and merging with rename.
+TB->MultiDSMB(A: A, B: B)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+
+// Record at the top level.
+S->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDrMB({ B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+
+// Record at the top level with merging.
+TB->MultiDRMB(B, A, "/suf", 5)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDrMB({ A, B }, "/suf", 5)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+
+// Record output, "multiple outputs".
+TB->MultiDRMBW(B, A, "/suf", 5)->&{ Mos: Mos->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+
+// Field form.
+MultiDfMB(  Mis: TB, S1: "/pre", S2: 5  )->Map(B->Text.Concat(", "))

@@ -1,0 +1,82 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> s if b else "Hello"
+s if b else "Hello" : s
+Binder : If(b, s, "Hello")
+###
+> r4 + 3 if b else i4 + 3
+r4 + 3 if b else i4 + 3 : r8
+Binder : If(b, Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+###
+> r4 + 3 if true else i4 + 3
+r4 + 3 if true else i4 + 3 : r8
+Binder : If(true, Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+Reducer: Add(Num<r8>(r4), 3)
+###
+> r4 + 3 if false else i4 + 3
+r4 + 3 if false else i4 + 3 : r8
+Binder : If(false, Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+Reducer: Num<r8>(Add(Num<i8>(i4), 3))
+###
+> r4 + 3 if 3 = 1 + 2 else i4 + 3
+r4 + 3 if 3 @= 1 + 2 else i4 + 3 : r8
+Binder : If(3 @= Add(1, 2), Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+Reducer: Add(Num<r8>(r4), 3)
+###
+> r4 + 3 if 3 = 1 + 1 else i4 + 3
+r4 + 3 if 3 @= 1 + 1 else i4 + 3 : r8
+Binder : If(3 @= Add(1, 1), Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+Reducer: Num<r8>(Add(Num<i8>(i4), 3))
+###
+> 3 + 2 if b else 3 - 2
+3 + 2 if b else 3 - 2 : i8
+Binder : If(b, Add(3, 2), Add(3, [-] 2))
+Reducer: If(b, 5, 1)
+###
+> 0x7FFF_FFFF_FFFF_FFFF + 17 if false else 1
+9223372036854775807 + 17 if false else 1 : i8
+Binder : If(false, Add(9223372036854775807, 17), 1)
+*** Warning: Node: Add(9223372036854775807, 17), Message: Constant integer overflow
+Reducer: 1
+###
+> 0x7FFF_FFFF_FFFF_FFFF + 17 if true else 1
+9223372036854775807 + 17 if true else 1 : i8
+Binder : If(true, Add(9223372036854775807, 17), 1)
+*** Warning: Node: Add(9223372036854775807, 17), Message: Constant integer overflow
+Reducer: -9223372036854775792
+###
+> i8 if b else i8
+i8 if b else i8 : i8
+Binder : If(b, i8, i8)
+Reducer: i8
+###
+> i8 if b else i8 + 0
+i8 if b else i8 + 0 : i8
+Binder : If(b, i8, Add(i8, 0))
+Reducer: i8
+###
+> i8 if b else i8 * 1
+i8 if b else i8 * 1 : i8
+Binder : If(b, i8, Mul(i8, 1))
+Reducer: i8
+###
+> i8 if b else 5 * 20 + i8 - 100
+i8 if b else 5 * 20 + i8 - 100 : i8
+Binder : If(b, i8, Add(Mul(5, 20), i8, [-] 100))
+Reducer: i8
+###
+> r4 + 3 if r4 else i4 + 3
+r4 + 3 if r4 else i4 + 3 : r8
+*** Error: (10,12) Node: r4, Message: The condition for 'if' must be type 'b' instead of type 'r4'
+Binder : If(Error(ErrIfNeedsBoolCondition_Type_Type), Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+###
+> r4 + 3 if s else i4 + 3
+r4 + 3 if s else i4 + 3 : r8
+*** Error: (10,11) Node: s, Message: The condition for 'if' must be type 'b' instead of type 's'
+Binder : If(Error(ErrIfNeedsBoolCondition_Type_Type), Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+###
+> r4 + 3 if qb else i4 + 3
+r4 + 3 if qb else i4 + 3 : r8
+*** Error: (10,12) Node: qb, Message: The condition for 'if' must be type 'b' instead of type 'b?'
+Binder : If(Error(ErrIfNeedsBoolCondition_Type_Type), Add(Num<r8>(r4), 3), Num<r8>(Add(Num<i8>(i4), 3)))
+###

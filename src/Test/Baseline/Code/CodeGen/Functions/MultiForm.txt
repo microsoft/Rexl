@@ -1,0 +1,2822 @@
+**** New definitions: S, type: s*
+**** New definitions: TA, type: {A:s, X:r8}*
+**** New definitions: TB, type: {A:s, B:s, X:r8}*
+**** New definitions: TC, type: {A:s, C:{D:s, E:s}*}*
+
+> S
+S : s*
+BndKind:Global, Type:s*, Bnd:(Global(S))
+Func sig: (S:s*) to s*
+Sequence: Seq<str>
+ 0) x
+ 1) xy
+ 2) <null>
+ 3) xyz
+ 4) hi
+ 5) adios
+ 6) hola
+ 7) guten morgen
+###
+> TA
+TA : {A:s, X:r8}*
+BndKind:Global, Type:{A:s, X:r8}*, Bnd:(Global(TA))
+Func sig: (TA:{A:s, X:r8}*) to {A:s, X:r8}*
+Sequence: Seq<{str,r8}>
+ 0) { A: x, X: 1 }
+ 1) { A: xy, X: 2 }
+ 2) { A: <null>, X: 3 }
+ 3) { A: xyz, X: 4 }
+ 4) { A: hi, X: 5 }
+ 5) { A: adios, X: 6 }
+ 6) { A: hola, X: 7 }
+ 7) { A: guten morgen, X: 8 }
+###
+> TB
+TB : {A:s, B:s, X:r8}*
+BndKind:Global, Type:{A:s, B:s, X:r8}*, Bnd:(Global(TB))
+Func sig: (TB:{A:s, B:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: x, X: 1 }
+ 1) { A: <null>, B: xy, X: 2 }
+ 2) { A: <null>, B: <null>, X: 3 }
+ 3) { A: xyz, B: xyz, X: 4 }
+ 4) { A: <null>, B: hi, X: 5 }
+ 5) { A: adios, B: <null>, X: 6 }
+ 6) { A: hola, B: hola, X: 7 }
+ 7) { A: <null>, B: guten morgen, X: 8 }
+###
+> TA->Chain([null])->MultiDSMA() // Error.
+TA->Chain([null])->MultiDSMA() : {A:s, B:s*}*
+BndKind:Call, Type:{A:s, B:s*}*, Bnd:(Call(∂.Test.MultiDSMA.MergeSeq([with:1] Error(ErrBadType_Src_Dst), Scope(1), Scope(1))))
+*** Error: (2,4) Node: TA->Chain([null]), Message: Invalid operand type: cannot convert type '{A:s, X:r8}?*' to '{A:s}*'
+###
+> TA->MultiDS_A()
+TA->MultiDS_A() : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDS_A.Simple(Call(∂.ForEach([map:1] Global(TA), {A:GetField(Scope(1), A)})))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+ 1) { B: Sequence: Seq<str>
+         0) A: [xy]
+    }
+ 5) { B: Sequence: Seq<str>
+         0) A: [adios]
+    }
+ 3) { B: Sequence: Seq<str>
+         0) A: [xyz]
+    }
+ 7) { B: Sequence: Seq<str>
+         0) A: [guten morgen]
+    }
+ 0) { B: Sequence: Seq<str>
+         0) A: [x]
+    }
+ 4) { B: Sequence: Seq<str>
+         0) A: [hi]
+    }
+ 2) { B: Sequence: Seq<str>
+         0) A: <null>
+    }
+ 6) { B: Sequence: Seq<str>
+         0) A: [hola]
+    }
+*** Ctx ping count: 0
+###
+> TA->MultiDS_A()->Map(B->Text.Concat(", "))
+TA->MultiDS_A()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_A.Simple(Call(∂.ForEach([map:1] Global(TA), {A:GetField(Scope(1), A)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: [xyz]
+ 4) A: [hi]
+ 5) A: [adios]
+ 6) A: [hola]
+ 7) A: [guten morgen]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> TB->MultiDS_A()->Map(B->Text.Concat(", "))
+TB->MultiDS_A()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_A.Simple(Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x]
+ 1) A: <null>
+ 2) A: <null>
+ 3) A: [xyz]
+ 4) A: <null>
+ 5) A: [adios]
+ 6) A: [hola]
+ 7) A: <null>
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> TB->MultiDS_B()->Map(B->Text.Concat(", "))
+TB->MultiDS_B()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_B.Simple(Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x], B: [x]
+ 1) A: <null>, B: [xy]
+ 2) A: <null>, B: <null>
+ 3) A: [xyz], B: [xyz]
+ 4) A: <null>, B: [hi]
+ 5) A: [adios], B: <null>
+ 6) A: [hola], B: [hola]
+ 7) A: <null>, B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMA(    it)->Map(B->Text.Concat(", "))
+S->MultiDSMA(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: [xyz]
+ 4) A: [hi]
+ 5) A: [adios]
+ 6) A: [hola]
+ 7) A: [guten morgen]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMA(A:  it)->Map(B->Text.Concat(", "))
+S->MultiDSMA(A : it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: [xyz]
+ 4) A: [hi]
+ 5) A: [adios]
+ 6) A: [hola]
+ 7) A: [guten morgen]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMAM(   it)->Map(B->Text.Concat(", "))
+S->MultiDSMAM(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMAM.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [xy]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: <null>
+ 4) A: <null>
+ 5) A: [xyz]
+ 6) A: [xyz]
+ 7) A: [xyz]
+ 8) A: [xyz]
+ 9) A: [adios]
+10) A: [adios]
+11) A: [adios]
+12) A: [adios]
+13) A: [adios]
+14) A: [adios]
+15) A: [hola]
+16) A: [hola]
+17) A: [hola]
+18) A: [hola]
+19) A: [hola]
+20) A: [hola]
+21) A: [hola]
+22) A: [guten morgen]
+23) A: [guten morgen]
+24) A: [guten morgen]
+25) A: [guten morgen]
+26) A: [guten morgen]
+27) A: [guten morgen]
+28) A: [guten morgen]
+29) A: [guten morgen]
+*** Ctx ping count: 60
+    [0](60): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMAm(   it)->Map(B->Text.Concat(", "))
+S->MultiDSMAm(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMAm.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [xy]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: <null>
+ 4) A: <null>
+ 5) A: [xyz]
+ 6) A: [xyz]
+ 7) A: [xyz]
+ 8) A: [xyz]
+ 9) A: [adios]
+10) A: [adios]
+11) A: [adios]
+12) A: [adios]
+13) A: [adios]
+14) A: [adios]
+15) A: [hola]
+16) A: [hola]
+17) A: [hola]
+18) A: [hola]
+19) A: [hola]
+20) A: [hola]
+21) A: [hola]
+22) A: [guten morgen]
+23) A: [guten morgen]
+24) A: [guten morgen]
+25) A: [guten morgen]
+26) A: [guten morgen]
+27) A: [guten morgen]
+28) A: [guten morgen]
+29) A: [guten morgen]
+*** Ctx ping count: 60
+    [0](60): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMA(    it & "-extra")->Map(B->Text.Concat(", "))
+S->MultiDSMA(it & "-extra")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-extra))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-extra]
+ 1) A: [xy-extra]
+ 2) A: [-extra]
+ 3) A: [xyz-extra]
+ 4) A: [hi-extra]
+ 5) A: [adios-extra]
+ 6) A: [hola-extra]
+ 7) A: [guten morgen-extra]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMA(A:  it & "-extra")->Map(B->Text.Concat(", "))
+S->MultiDSMA(A : it & "-extra")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-extra))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-extra]
+ 1) A: [xy-extra]
+ 2) A: [-extra]
+ 3) A: [xyz-extra]
+ 4) A: [hi-extra]
+ 5) A: [adios-extra]
+ 6) A: [hola-extra]
+ 7) A: [guten morgen-extra]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> (S ++ ["final"])->MultiDSMAM(   it)->Map(B->Text.Concat(", "))
+(S ++ ["final"])->MultiDSMAM(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMAM.Simple(Call(∂.ForEach([map:1] SeqConcat(Global(S), [str(final)]:s*), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [xy]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: <null>
+ 4) A: <null>
+ 5) A: [xyz]
+ 6) A: [xyz]
+ 7) A: [xyz]
+ 8) A: [xyz]
+ 9) A: [adios]
+10) A: [adios]
+11) A: [adios]
+12) A: [adios]
+13) A: [adios]
+14) A: [adios]
+15) A: [hola]
+16) A: [hola]
+17) A: [hola]
+18) A: [hola]
+19) A: [hola]
+20) A: [hola]
+21) A: [hola]
+22) A: [guten morgen]
+23) A: [guten morgen]
+24) A: [guten morgen]
+25) A: [guten morgen]
+26) A: [guten morgen]
+27) A: [guten morgen]
+28) A: [guten morgen]
+29) A: [guten morgen]
+*** Ctx ping count: 60
+    [0](60): Text.Concat(*1x.B, ", ")
+###
+> (S ++ ["final"])->MultiDSMAm(   it)->Map(B->Text.Concat(", "))
+(S ++ ["final"])->MultiDSMAm(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMAm.Simple(Call(∂.ForEach([map:1] SeqConcat(Global(S), [str(final)]:s*), {A:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [xy]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: <null>
+ 4) A: <null>
+ 5) A: [xyz]
+ 6) A: [xyz]
+ 7) A: [xyz]
+ 8) A: [xyz]
+ 9) A: [adios]
+10) A: [adios]
+11) A: [adios]
+12) A: [adios]
+13) A: [adios]
+14) A: [adios]
+15) A: [hola]
+16) A: [hola]
+17) A: [hola]
+18) A: [hola]
+19) A: [hola]
+20) A: [hola]
+21) A: [hola]
+22) A: [guten morgen]
+23) A: [guten morgen]
+24) A: [guten morgen]
+25) A: [guten morgen]
+26) A: [guten morgen]
+27) A: [guten morgen]
+28) A: [guten morgen]
+29) A: [guten morgen]
+*** Ctx ping count: 60
+    [0](60): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(   it)->Map(B->Text.Concat(", "))
+S->MultiDSMB(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:str(A's default), B:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [A's default], B: [x]
+ 1) A: [A's default], B: [xy]
+ 2) A: [A's default], B: <null>
+ 3) A: [A's default], B: [xyz]
+ 4) A: [A's default], B: [hi]
+ 5) A: [A's default], B: [adios]
+ 6) A: [A's default], B: [hola]
+ 7) A: [A's default], B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(B: it)->Map(B->Text.Concat(", "))
+S->MultiDSMB(B : it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:str(A's default), B:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [A's default], B: [x]
+ 1) A: [A's default], B: [xy]
+ 2) A: [A's default], B: <null>
+ 3) A: [A's default], B: [xyz]
+ 4) A: [A's default], B: [hi]
+ 5) A: [A's default], B: [adios]
+ 6) A: [A's default], B: [hola]
+ 7) A: [A's default], B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(A: it)->Map(B->Text.Concat(", "))
+S->MultiDSMB(A : it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1), B:str(B def)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x], B: [B def]
+ 1) A: [xy], B: [B def]
+ 2) A: <null>, B: [B def]
+ 3) A: [xyz], B: [B def]
+ 4) A: [hi], B: [B def]
+ 5) A: [adios], B: [B def]
+ 6) A: [hola], B: [B def]
+ 7) A: [guten morgen], B: [B def]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(   it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(   it & "-1st", A: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(it & "-1st", A : it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(   it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDSMB(it & "-1st", B : it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB*([map:1] Global(S), StrConcat(Scope(1), str(-1st)), B : StrConcat(Scope(1), str(-2nd)))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+*** Error: (1,3) Node: S->MultiDSMB(it & "-1st", B : it & "-2nd"), Message: No overload can be found matching these names and directives.
+*** Error: (29,30) Tok: 'B', Message: Parameter name 'B' already specified 1 position(s) prior
+###
+> S->MultiDSMB(B: it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(B : it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(B: it & "-1st", A: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(B : it & "-1st", A : it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(A: it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDSMB(A : it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB*([map:1] Global(S), A : StrConcat(Scope(1), str(-1st)), StrConcat(Scope(1), str(-2nd)))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+*** Error: (1,3) Node: S->MultiDSMB(A : it & "-1st", it & "-2nd"), Message: No overload can be found matching these names and directives.
+*** Error: (35,36) Node: it & "-2nd", Message: The argument in position 3 of 'MultiDSMB' should include a field name
+###
+> S->MultiDSMB(A: it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(A : it & "-1st", B : it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-1st)), B:StrConcat(Scope(1), str(-2nd))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-1st], B: [x-2nd]
+ 1) A: [xy-1st], B: [xy-2nd]
+ 2) A: [-1st], B: [-2nd]
+ 3) A: [xyz-1st], B: [xyz-2nd]
+ 4) A: [hi-1st], B: [hi-2nd]
+ 5) A: [adios-1st], B: [adios-2nd]
+ 6) A: [hola-1st], B: [hola-2nd]
+ 7) A: [guten morgen-1st], B: [guten morgen-2nd]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDsMB(it) // Error.
+S->MultiDsMB(it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDsMB.Simple(Call(∂.ForEach([map:1] Global(S), Error(ErrBadType_Src_Dst))))))
+*** Error: (13,15) Node: it, Message: Invalid operand type: cannot convert type 's' to '{A:s, B:s}'
+###
+> S->MultiDsMB({ A: "a-" & it, B: "b-" & it })->Map(B->Text.Concat(", "))
+S->MultiDsMB({ A : "a-" & it, B : "b-" & it })->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDsMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [a-x], B: [b-x]
+ 1) A: [a-xy], B: [b-xy]
+ 2) A: [a-], B: [b-]
+ 3) A: [a-xyz], B: [b-xyz]
+ 4) A: [a-hi], B: [b-hi]
+ 5) A: [a-adios], B: [b-adios]
+ 6) A: [a-hola], B: [b-hola]
+ 7) A: [a-guten morgen], B: [b-guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TA->MultiDSMA()
+TA->MultiDSMA() : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMA.MergeSeq([with:1] Global(TA), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Sequence: Seq<{str,Seq<str>,r8}>
+ 1) { A: xy, 
+      B: Sequence: Seq<str>
+         0) A: [xy]
+      X: 2 }
+ 5) { A: adios, 
+      B: Sequence: Seq<str>
+         0) A: [adios]
+      X: 6 }
+ 3) { A: xyz, 
+      B: Sequence: Seq<str>
+         0) A: [xyz]
+      X: 4 }
+ 7) { A: guten morgen, 
+      B: Sequence: Seq<str>
+         0) A: [guten morgen]
+      X: 8 }
+ 0) { A: x, 
+      B: Sequence: Seq<str>
+         0) A: [x]
+      X: 1 }
+ 4) { A: hi, 
+      B: Sequence: Seq<str>
+         0) A: [hi]
+      X: 5 }
+ 2) { A: <null>, 
+      B: Sequence: Seq<str>
+         0) A: <null>
+      X: 3 }
+ 6) { A: hola, 
+      B: Sequence: Seq<str>
+         0) A: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TA->MultiDSMA(A)
+TA->MultiDSMA(A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Sequence: Seq<{str,Seq<str>,r8}>
+ 1) { A: xy, 
+      B: Sequence: Seq<str>
+         0) A: [xy]
+      X: 2 }
+ 5) { A: adios, 
+      B: Sequence: Seq<str>
+         0) A: [adios]
+      X: 6 }
+ 3) { A: xyz, 
+      B: Sequence: Seq<str>
+         0) A: [xyz]
+      X: 4 }
+ 7) { A: guten morgen, 
+      B: Sequence: Seq<str>
+         0) A: [guten morgen]
+      X: 8 }
+ 0) { A: x, 
+      B: Sequence: Seq<str>
+         0) A: [x]
+      X: 1 }
+ 4) { A: hi, 
+      B: Sequence: Seq<str>
+         0) A: [hi]
+      X: 5 }
+ 2) { A: <null>, 
+      B: Sequence: Seq<str>
+         0) A: <null>
+      X: 3 }
+ 6) { A: hola, 
+      B: Sequence: Seq<str>
+         0) A: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TA->MultiDSMA()->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMA()->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMA.MergeSeq([with:1] Global(TA), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(]))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x]], X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: xyz, B: [A: [xyz]], X: 4 }
+ 4) { A: hi, B: [A: [hi]], X: 5 }
+ 5) { A: adios, B: [A: [adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 16
+    [0](16): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMA(A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMA(A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x]], X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: xyz, B: [A: [xyz]], X: 4 }
+ 4) { A: hi, B: [A: [hi]], X: 5 }
+ 5) { A: adios, B: [A: [adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 16
+    [0](16): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMAM()->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMAM()->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMAM.MergeSeq([with:1] Global(TA), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : If(Call(∂.IsEmpty(GetField(Scope(4), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: <null>, X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: xy, B: [A: [xy]], X: 2 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: <null>, B: [A: <null>], X: 3 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: xyz, B: [A: [xyz]], X: 4 }
+10) { A: hi, B: <null>, X: 5 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: adios, B: [A: [adios]], X: 6 }
+16) { A: adios, B: [A: [adios]], X: 6 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: hola, B: [A: [hola]], X: 7 }
+23) { A: hola, B: [A: [hola]], X: 7 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+30) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+31) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 60
+    [0](60): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMAM(A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMAM(A)->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMAM.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B : If(Call(∂.IsEmpty(GetField(Scope(5), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(])))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: <null>, X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: xy, B: [A: [xy]], X: 2 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: <null>, B: [A: <null>], X: 3 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: xyz, B: [A: [xyz]], X: 4 }
+10) { A: hi, B: <null>, X: 5 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: adios, B: [A: [adios]], X: 6 }
+16) { A: adios, B: [A: [adios]], X: 6 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: hola, B: [A: [hola]], X: 7 }
+23) { A: hola, B: [A: [hola]], X: 7 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+30) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+31) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 60
+    [0](60): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMAm()->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMAm()->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMAm.MergeSeq([with:1] Global(TA), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : If(Call(∂.IsEmpty(GetField(Scope(4), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: xy, B: [A: [xy]], X: 2 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: xyz, B: [A: [xyz]], X: 4 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: adios, B: [A: [adios]], X: 6 }
+10) { A: adios, B: [A: [adios]], X: 6 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: hola, B: [A: [hola]], X: 7 }
+16) { A: hola, B: [A: [hola]], X: 7 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+23) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 60
+    [0](60): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMAm(A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMAm(A)->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMAm.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B : If(Call(∂.IsEmpty(GetField(Scope(5), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(])))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: xy, B: [A: [xy]], X: 2 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: xyz, B: [A: [xyz]], X: 4 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: adios, B: [A: [adios]], X: 6 }
+10) { A: adios, B: [A: [adios]], X: 6 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: hola, B: [A: [hola]], X: 7 }
+16) { A: hola, B: [A: [hola]], X: 7 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+23) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 60
+    [0](60): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMB(   A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMB(A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:str(A's default), B:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [A's default], B: [x]], X: 1 }
+ 1) { A: xy, B: [A: [A's default], B: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: [A's default], B: <null>], X: 3 }
+ 3) { A: xyz, B: [A: [A's default], B: [xyz]], X: 4 }
+ 4) { A: hi, B: [A: [A's default], B: [hi]], X: 5 }
+ 5) { A: adios, B: [A: [A's default], B: [adios]], X: 6 }
+ 6) { A: hola, B: [A: [A's default], B: [hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [A's default], B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMB(A: A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMB(A : A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:str(B def)})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x], B: [B def]], X: 1 }
+ 1) { A: xy, B: [A: [xy], B: [B def]], X: 2 }
+ 2) { A: <null>, B: [A: <null>, B: [B def]], X: 3 }
+ 3) { A: xyz, B: [A: [xyz], B: [B def]], X: 4 }
+ 4) { A: hi, B: [A: [hi], B: [B def]], X: 5 }
+ 5) { A: adios, B: [A: [adios], B: [B def]], X: 6 }
+ 6) { A: hola, B: [A: [hola], B: [B def]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen], B: [B def]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDSMB(B: A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMB(B : A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:str(A's default), B:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [A's default], B: [x]], X: 1 }
+ 1) { A: xy, B: [A: [A's default], B: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: [A's default], B: <null>], X: 3 }
+ 3) { A: xyz, B: [A: [A's default], B: [xyz]], X: 4 }
+ 4) { A: hi, B: [A: [A's default], B: [hi]], X: 5 }
+ 5) { A: adios, B: [A: [A's default], B: [adios]], X: 6 }
+ 6) { A: hola, B: [A: [A's default], B: [hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [A's default], B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> (TA ++ [{A: "final", X: Count(S)+0d}])->MultiDSMAM(A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+(TA ++ [{ A : "final", X : Count(S) + 0 }])->MultiDSMAM(A)->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMAM.MergeSeq([with:1] SeqConcat(Global(TA), [{A:str(final), X:Add(Num<r8>(Call(∂.Count(Global(S)):i8)), 0:r8)}]:{A:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : If(Call(∂.IsEmpty(GetField(Scope(4), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, S:s*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: <null>, X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: xy, B: [A: [xy]], X: 2 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: <null>, B: [A: <null>], X: 3 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: xyz, B: [A: [xyz]], X: 4 }
+10) { A: hi, B: <null>, X: 5 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: adios, B: [A: [adios]], X: 6 }
+16) { A: adios, B: [A: [adios]], X: 6 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: hola, B: [A: [hola]], X: 7 }
+23) { A: hola, B: [A: [hola]], X: 7 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+30) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+31) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+32) { A: final, B: <null>, X: 8 }
+*** Ctx ping count: 60
+    [1](60): Text.Concat(!1x.B, ", ")
+###
+> (TA ++ [{A: "final", X: Count(S)+0d}])->MultiDSMAm(A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+(TA ++ [{ A : "final", X : Count(S) + 0 }])->MultiDSMAm(A)->Map(it+>{ B : "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMAm.MergeSeq([with:1] SeqConcat(Global(TA), [{A:str(final), X:Add(Num<r8>(Call(∂.Count(Global(S)):i8)), 0:r8)}]:{A:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : If(Call(∂.IsEmpty(GetField(Scope(4), B)):b), str(<null>), StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, S:s*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: xy, B: [A: [xy]], X: 2 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: <null>, B: [A: <null>], X: 3 }
+ 4) { A: <null>, B: [A: <null>], X: 3 }
+ 5) { A: xyz, B: [A: [xyz]], X: 4 }
+ 6) { A: xyz, B: [A: [xyz]], X: 4 }
+ 7) { A: xyz, B: [A: [xyz]], X: 4 }
+ 8) { A: xyz, B: [A: [xyz]], X: 4 }
+ 9) { A: adios, B: [A: [adios]], X: 6 }
+10) { A: adios, B: [A: [adios]], X: 6 }
+11) { A: adios, B: [A: [adios]], X: 6 }
+12) { A: adios, B: [A: [adios]], X: 6 }
+13) { A: adios, B: [A: [adios]], X: 6 }
+14) { A: adios, B: [A: [adios]], X: 6 }
+15) { A: hola, B: [A: [hola]], X: 7 }
+16) { A: hola, B: [A: [hola]], X: 7 }
+17) { A: hola, B: [A: [hola]], X: 7 }
+18) { A: hola, B: [A: [hola]], X: 7 }
+19) { A: hola, B: [A: [hola]], X: 7 }
+20) { A: hola, B: [A: [hola]], X: 7 }
+21) { A: hola, B: [A: [hola]], X: 7 }
+22) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+23) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+24) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+25) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+26) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+27) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+28) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+29) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 60
+    [1](60): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDsMB({ A, B: "b-" & A })->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDsMB({ A, B : "b-" & A })->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDsMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:StrConcat(str(b-), GetField(Scope(3), A))})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x], B: [b-x]], X: 1 }
+ 1) { A: xy, B: [A: [xy], B: [b-xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>, B: [b-]], X: 3 }
+ 3) { A: xyz, B: [A: [xyz], B: [b-xyz]], X: 4 }
+ 4) { A: hi, B: [A: [hi], B: [b-hi]], X: 5 }
+ 5) { A: adios, B: [A: [adios], B: [b-adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola], B: [b-hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen], B: [b-guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TB->MultiDSMA(A)
+TB->MultiDSMA(A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [adios]
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyz]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [x]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TB->MultiDSMA(A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMA(A)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios]], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>], X: 8 }
+*** Ctx ping count: 16
+    [0](16): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMA(B)
+TB->MultiDSMA(B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B)})), Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: [xy]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyz]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: [guten morgen]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [x]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: [hi]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TB->MultiDSMA(B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMA(B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: [hi]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: <null>], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 16
+    [0](16): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMB()
+TB->MultiDSMB() : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMB.MergeSeq([with:1] Global(TB), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), Scope(1))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+         1) B: [xy]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [adios]
+         1) B: <null>
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyz]
+         1) B: [xyz]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+         1) B: [guten morgen]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [x]
+         1) B: [x]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+         1) B: [hi]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: <null>
+         1) B: <null>
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [hola]
+         1) B: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TB->MultiDSMB(          )->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB()->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMB.MergeSeq([with:1] Global(TB), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), Scope(1))), SetFields([with:4] Scope(3), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B2), str(, )):s), str(]))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>, B: [xy]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>, B: [hi]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios], B: <null>], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>, B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMB(   A,    B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB(A, B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B), B:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: [xy], B: <null>], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: [hi], B: <null>], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: <null>, B: [adios]], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: [guten morgen], B: <null>], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMB(A: A, B: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB(A : A, B : B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>, B: [xy]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>, B: [hi]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios], B: <null>], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>, B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMB(A: A,    B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) // Error.
+TB->MultiDSMB(A : A, B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB*([map:1] Global(TB), A : GetField(Scope(1), A), GetField(Scope(1), B))), SetFields([with:3] Scope(2), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(3), B2), str(, )):s), str(]))))))
+*** Error: (2,4) Node: TB->MultiDSMB(A : A, B), Message: No overload can be found matching these names and directives.
+*** Error: (23,24) Node: B, Message: The argument in position 3 of 'MultiDSMB' should include a field name
+###
+> TB->MultiDSMB(B: A, A: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB(B : A, A : B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B), B:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: [xy], B: <null>], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: [hi], B: <null>], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: <null>, B: [adios]], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: [guten morgen], B: <null>], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDSMB(B: A,    A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB(B : A, A)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), A)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>, B: <null>], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>, B: <null>], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios], B: [adios]], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>, B: <null>], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->Multi_SMB() // Error.
+TB->Multi_SMB() : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] {A:str(A's default), B:str(<null>)}, Call(∂.Test.Multi_SMB.MergeSeq([with:3] Scope(1), Call(∂.ForEach([map:4] Scope(3), Scope(2))), Scope(3))))))
+*** Error: (2,4) Node: TB->Multi_SMB(), Message: Too few arguments for Test.Multi_SMB, expected 1 additional
+###
+> TB->Multi_SMB(A: A, B: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->Multi_SMB(A : A, B : B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.Multi_SMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>, B: [xy]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>, B: [hi]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios], B: <null>], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>, B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDS_Bab()->Map(B->Text.Concat(", "))
+TB->MultiDS_Bab()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_Bab.Simple(Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x], B: [x]
+ 1) A: <null>, B: [xy]
+ 2) A: <null>, B: <null>
+ 3) A: [xyz], B: [xyz]
+ 4) A: <null>, B: [hi]
+ 5) A: [adios], B: <null>
+ 6) A: [hola], B: [hola]
+ 7) A: <null>, B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMBab(   it) //->Map(B->Text.Concat(", ")) // Error.
+S->MultiDSMBab(it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBab.Simple(Call(∂.ForEach([map:1] Global(S), {A:str(<null>), B:Scope(1)})))))
+*** Error: (1,3) Node: S->MultiDSMBab(it), Message: Too few arguments for Test.MultiDSMBab, expected 1 additional
+###
+> S->MultiDSMBab(   it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMBab(it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMBab.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMBb(   it)->Map(B->Text.Concat(", "))
+S->MultiDSMBb(it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMBb.Simple(Call(∂.ForEach([map:1] Global(S), {A:str(A's default), B:Scope(1)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [A's default], B: [x]
+ 1) A: [A's default], B: [xy]
+ 2) A: [A's default], B: <null>
+ 3) A: [A's default], B: [xyz]
+ 4) A: [A's default], B: [hi]
+ 5) A: [A's default], B: [adios]
+ 6) A: [A's default], B: [hola]
+ 7) A: [A's default], B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMBb(A: it) //->Map(B->Text.Concat(", ")) // Error.
+S->MultiDSMBb(A : it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBb*([map:1] Global(S), A : Scope(1))))
+*** Error: (1,3) Node: S->MultiDSMBb(A : it), Message: No overload can be found matching these names and directives.
+*** Error: (15,16) Node: A : it, Message: Missing argument: 'B'
+###
+> S->MultiDSMC(A: it)->Map(B->Text.Concat(", "))
+S->MultiDSMC(A : it)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMC.Simple(Call(∂.ForEach([map:1] Global(S), {A:Scope(1), C:null:{D:s, E:s}*})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x], C: [0]
+ 1) A: [xy], C: [0]
+ 2) A: <null>, C: [0]
+ 3) A: [xyz], C: [0]
+ 4) A: [hi], C: [0]
+ 5) A: [adios], C: [0]
+ 6) A: [hola], C: [0]
+ 7) A: [guten morgen], C: [0]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TC->MultiDSMCc(A: A, C: C)->Map(B->Text.Concat(", "))
+TC->MultiDSMCc(A : A, C : C)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Guard([guard:1] Global(TC), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMCc.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), C:GetField(Scope(3), C)})), Scope(2))), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s)):s*)):s*))
+Func sig: (<ctx>:x, TC:{A:s, C:{D:s, E:s}*}*) to s*
+Sequence: Seq<str>
+ 0) A: [x], C: [0]
+ 1) A: [xy], C: [2]
+ 2) A: <null>, C: [4]
+ 3) A: [xyz], C: [6]
+ 4) A: [hi], C: [8]
+ 5) A: [adios], C: [10]
+ 6) A: [hola], C: [12]
+ 7) A: [guten morgen], C: [14]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDSMB(   it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", ")) // For comparison.
+S->MultiDSMB(it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd], B: [x-1st]
+ 1) A: [xy-2nd], B: [xy-1st]
+ 2) A: [-2nd], B: [-1st]
+ 3) A: [xyz-2nd], B: [xyz-1st]
+ 4) A: [hi-2nd], B: [hi-1st]
+ 5) A: [adios-2nd], B: [adios-1st]
+ 6) A: [hola-2nd], B: [hola-1st]
+ 7) A: [guten morgen-2nd], B: [guten morgen-1st]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/def), S2:3:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2/def], B: [x-1/def]
+ 1) A: [xy-/def], B: [xy-/def]
+ 2) A: [-2n/def], B: [-1s/def]
+ 3) A: [xyz/def], B: [xyz/def]
+ 4) A: [hi-/def], B: [hi-/def]
+ 5) A: [adi/def], B: [adi/def]
+ 6) A: [hol/def], B: [hol/def]
+ 7) A: [gut/def], B: [gut/def]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf")->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:3:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2/suf], B: [x-1/suf]
+ 1) A: [xy-/suf], B: [xy-/suf]
+ 2) A: [-2n/suf], B: [-1s/suf]
+ 3) A: [xyz/suf], B: [xyz/suf]
+ 4) A: [hi-/suf], B: [hi-/suf]
+ 5) A: [adi/suf], B: [adi/suf]
+ 6) A: [hol/suf], B: [hol/suf]
+ 7) A: [gut/suf], B: [gut/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:3:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2/suf], B: [x-1/suf]
+ 1) A: [xy-/suf], B: [xy-/suf]
+ 2) A: [-2n/suf], B: [-1s/suf]
+ 3) A: [xyz/suf], B: [xyz/suf]
+ 4) A: [hi-/suf], B: [hi-/suf]
+ 5) A: [adi/suf], B: [adi/suf]
+ 6) A: [hol/suf], B: [hol/suf]
+ 7) A: [gut/suf], B: [gut/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7     )->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/def), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/def], B: [x-1st/def]
+ 1) A: [xy-2nd/def], B: [xy-1st/def]
+ 2) A: [-2nd/def], B: [-1st/def]
+ 3) A: [xyz-2nd/def], B: [xyz-1st/def]
+ 4) A: [hi-2nd/def], B: [hi-1st/def]
+ 5) A: [adios-2/def], B: [adios-1/def]
+ 6) A: [hola-2n/def], B: [hola-1s/def]
+ 7) A: [guten m/def], B: [guten m/def]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf",     7)->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", "/suf", 7)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf", S2: 7)->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", "/suf", S2 : 7)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf",     7)->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", 7)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", S2 : 7)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7,     "/suf")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB*([map:1] Global(S), StrConcat(Scope(1), str(-1st)), StrConcat(Scope(1), str(-2nd)), S2 : 7:i8, Error(ErrBadType_Src_Dst))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+*** Error: (1,3) Node: S->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, "/suf"), Message: No overload can be found matching these names and directives.
+*** Error: (56,62) Node: "/suf", Message: The argument in position 5 of 'MultiDRMB' should include a field name
+*** Error: (56,62) Node: "/suf", Message: Invalid operand type: cannot convert type 's' to 'i8'
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDrMB({ B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDrMB({ B : "b-" & it, A : "a-" & it }, S2 : 7, S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDrMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [a-x/suf], B: [b-x/suf]
+ 1) A: [a-xy/suf], B: [b-xy/suf]
+ 2) A: [a-/suf], B: [b-/suf]
+ 3) A: [a-xyz/suf], B: [b-xyz/suf]
+ 4) A: [a-hi/suf], B: [b-hi/suf]
+ 5) A: [a-adios/suf], B: [b-adios/suf]
+ 6) A: [a-hola/suf], B: [b-hola/suf]
+ 7) A: [a-guten/suf], B: [b-guten/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> MultiDfMB(S->Map({ B: "b-" & it, A: "a-" & it }), S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+MultiDfMB(S->Map({ B : "b-" & it, A : "a-" & it }), S2 : 7, S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDfMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [a-x/suf], B: [b-x/suf]
+ 1) A: [a-xy/suf], B: [b-xy/suf]
+ 2) A: [a-/suf], B: [b-/suf]
+ 3) A: [a-xyz/suf], B: [b-xyz/suf]
+ 4) A: [a-hi/suf], B: [b-hi/suf]
+ 5) A: [a-adios/suf], B: [b-adios/suf]
+ 6) A: [a-hola/suf], B: [b-hola/suf]
+ 7) A: [a-guten/suf], B: [b-guten/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> MultiDRMB({ Mis: TB, S1: "/pre", S2: 5 })->Map(B->Text.Concat(", "))
+MultiDRMB({ Mis : TB, S1 : "/pre", S2 : 5 })->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})), S1:str(/pre), S2:5:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x/pre], B: [x/pre]
+ 1) A: <null>/pre, B: [xy/pre]
+ 2) A: <null>/pre, B: <null>/pre
+ 3) A: [xyz/pre], B: [xyz/pre]
+ 4) A: <null>/pre, B: [hi/pre]
+ 5) A: [adios/pre], B: <null>/pre
+ 6) A: [hola/pre], B: [hola/pre]
+ 7) A: <null>/pre, B: [guten/pre]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> MultiDfMB(  Mis: TB, S1: "/pre", S2: 5  )->Map(B->Text.Concat(", "))
+MultiDfMB(Mis : TB, S1 : "/pre", S2 : 5)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDfMB.Simple({Mis:Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})), S1:str(/pre), S2:5:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x/pre], B: [x/pre]
+ 1) A: <null>/pre, B: [xy/pre]
+ 2) A: <null>/pre, B: <null>/pre
+ 3) A: [xyz/pre], B: [xyz/pre]
+ 4) A: <null>/pre, B: [hi/pre]
+ 5) A: [adios/pre], B: <null>/pre
+ 6) A: [hola/pre], B: [hola/pre]
+ 7) A: <null>/pre, B: [guten/pre]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TA->MultiDRMB(A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDRMB(A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:str(A's default), B:GetField(Scope(3), A)})), S1:str(/def), S2:3:i8}, Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [A's/def], B: [x/def]], X: 1 }
+ 1) { A: xy, B: [A: [A's/def], B: [xy/def]], X: 2 }
+ 2) { A: <null>, B: [A: [A's/def], B: <null>/def], X: 3 }
+ 3) { A: xyz, B: [A: [A's/def], B: [xyz/def]], X: 4 }
+ 4) { A: hi, B: [A: [A's/def], B: [hi/def]], X: 5 }
+ 5) { A: adios, B: [A: [A's/def], B: [adi/def]], X: 6 }
+ 6) { A: hola, B: [A: [A's/def], B: [hol/def]], X: 7 }
+ 7) { A: guten morgen, B: [A: [A's/def], B: [gut/def]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TB->MultiDRMB(B, A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDRMB(B, A)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/def), S2:3:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/def], B: [x/def]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/def, B: [xy/def]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/def, B: <null>/def], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/def], B: [xyz/def]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>/def, B: [hi/def]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adi/def], B: <null>/def], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hol/def], B: [hol/def]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/def, B: [gut/def]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDRMB(B, A, "/suf")->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDRMB(B, A, "/suf")->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:3:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>/suf, B: [hi/suf]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adi/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hol/suf], B: [hol/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [gut/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDRMB(B, A, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDRMB(B, A, "/suf", 5)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>/suf, B: [hi/suf]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDrMB({ B, A }, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDrMB({ B, A }, "/suf", 5)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDrMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>/suf, B: [hi/suf]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDrMB({ A, B }, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDrMB({ A, B }, "/suf", 5)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDrMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: hi, B2: [A: <null>/suf, B: [hi/suf]], X: 5 }
+ 5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDS_BW()+>{ Mos: Mos->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" }) }
+TB->MultiDS_BW()+>{ Mos : Mos->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) } : {Mos:{B:s}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{B:s}*, S1:s, S2:i8}, Bnd:(SetFields([with:2] Call(∂.Test.MultiDS_BW.Simple(Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})))), Mos : Call(∂.ForEach([map:3] GetField(Scope(2), Mos), SetFields([with:4] Scope(3), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{B:s}*, S1:s, S2:i8}
+Type: {Seq<{str}>,str,i8}, Value: { Mos: Sequence: Seq<{str}>
+     0) { B: [A: [x], B: [x]] }
+     1) { B: [A: <null>, B: [xy]] }
+     2) { B: [A: <null>, B: <null>] }
+     3) { B: [A: [xyz], B: [xyz]] }
+     4) { B: [A: <null>, B: [hi]] }
+     5) { B: [A: [adios], B: <null>] }
+     6) { B: [A: [hola], B: [hola]] }
+     7) { B: [A: <null>, B: [guten morgen]] }
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TB->MultiDSMBW()+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDSMBW()+>{ Mos : Mos->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) } : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}, Bnd:(SetFields([with:3] Call(∂.Test.MultiDSMBW.MergeSeq([with:1] Global(TB), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), Scope(1))), Mos : Call(∂.ForEach([map:4] GetField(Scope(3), Mos), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,str,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,str,r8}>
+     0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+     1) { A: <null>, B: xy, B2: [A: <null>, B: [xy]], X: 2 }
+     2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+     3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+     4) { A: <null>, B: hi, B2: [A: <null>, B: [hi]], X: 5 }
+     5) { A: adios, B: <null>, B2: [A: [adios], B: <null>], X: 6 }
+     6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+     7) { A: <null>, B: guten morgen, B2: [A: <null>, B: [guten morgen]], X: 8 }
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> S ->MultiDSMBW(B: it & "-1st", A: it & "-2nd")+>{ Mos: Mos->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" }) }
+S->MultiDSMBW(B : it & "-1st", A : it & "-2nd")+>{ Mos : Mos->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) } : {Mos:{B:s}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{B:s}*, S1:s, S2:i8}, Bnd:(SetFields([with:2] Call(∂.Test.MultiDSMBW.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))), Mos : Call(∂.ForEach([map:3] GetField(Scope(2), Mos), SetFields([with:4] Scope(3), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, S:s*) to {Mos:{B:s}*, S1:s, S2:i8}
+Type: {Seq<{str}>,str,i8}, Value: { Mos: Sequence: Seq<{str}>
+     0) { B: [A: [x-2nd], B: [x-1st]] }
+     1) { B: [A: [xy-2nd], B: [xy-1st]] }
+     2) { B: [A: [-2nd], B: [-1st]] }
+     3) { B: [A: [xyz-2nd], B: [xyz-1st]] }
+     4) { B: [A: [hi-2nd], B: [hi-1st]] }
+     5) { B: [A: [adios-2nd], B: [adios-1st]] }
+     6) { B: [A: [hola-2nd], B: [hola-1st]] }
+     7) { B: [A: [guten morgen-2nd], B: [guten morgen-1st]] }
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TB->MultiDSMBW(A, B)+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDSMBW(A, B)+>{ Mos : Mos->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) } : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}, Bnd:(SetFields([with:3] Call(∂.Test.MultiDSMBW.MergeSeq([with:1] Global(TB), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), B), B:GetField(Scope(2), A)})), Scope(1))), Mos : Call(∂.ForEach([map:4] GetField(Scope(3), Mos), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,str,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,str,r8}>
+     0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+     1) { A: <null>, B: xy, B2: [A: [xy], B: <null>], X: 2 }
+     2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+     3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+     4) { A: <null>, B: hi, B2: [A: [hi], B: <null>], X: 5 }
+     5) { A: adios, B: <null>, B2: [A: <null>, B: [adios]], X: 6 }
+     6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+     7) { A: <null>, B: guten morgen, B2: [A: [guten morgen], B: <null>], X: 8 }
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> S ->MultiDRMBW(A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)+>{ Mos: Mos->Map(B->Text.Concat(", ")) }
+S->MultiDRMBW(A : it & "-1st", B : it & "-2nd", S1 : "/suf", S2 : 7)+>{ Mos : Mos->Map(B->Text.Concat(", ")) } : {Mos:s*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:s*, S1:s, S2:i8}, Bnd:(SetFields([with:2] Call(∂.Test.MultiDRMBW.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-1st)), B:StrConcat(Scope(1), str(-2nd))})), S1:str(/suf), S2:7:i8})), Mos : Call(∂.ForEach([map:3] GetField(Scope(2), Mos), Call(∂.Text.Concat(GetField(Scope(3), B), str(, )):s)):s*)))
+Func sig: (<ctx>:x, S:s*) to {Mos:s*, S1:s, S2:i8}
+Type: {Seq<str>,str,i8}, Value: { Mos: Sequence: Seq<str>
+     0) A: [x-1st/suf], B: [x-2nd/suf]
+     1) A: [xy-1st/suf], B: [xy-2nd/suf]
+     2) A: [-1st/suf], B: [-2nd/suf]
+     3) A: [xyz-1st/suf], B: [xyz-2nd/suf]
+     4) A: [hi-1st/suf], B: [hi-2nd/suf]
+     5) A: [adios-1/suf], B: [adios-2/suf]
+     6) A: [hola-1s/suf], B: [hola-2n/suf]
+     7) A: [guten m/suf], B: [guten m/suf]
+  S1: /suf, S2: 7 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TB->MultiDRMBW(B, A           )+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDRMBW(B, A)+>{ Mos : Mos->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) } : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}, Bnd:(SetFields([with:3] Call(∂.Test.MultiDRMBW.MergeRec([with:1] Global(TB), {Mis:Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), S1:str(/def), S2:3:i8}, Scope(1))), Mos : Call(∂.ForEach([map:4] GetField(Scope(3), Mos), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,str,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,str,r8}>
+     0) { A: x, B: x, B2: [A: [x/def], B: [x/def]], X: 1 }
+     1) { A: <null>, B: xy, B2: [A: <null>/def, B: [xy/def]], X: 2 }
+     2) { A: <null>, B: <null>, B2: [A: <null>/def, B: <null>/def], X: 3 }
+     3) { A: xyz, B: xyz, B2: [A: [xyz/def], B: [xyz/def]], X: 4 }
+     4) { A: <null>, B: hi, B2: [A: <null>/def, B: [hi/def]], X: 5 }
+     5) { A: adios, B: <null>, B2: [A: [adi/def], B: <null>/def], X: 6 }
+     6) { A: hola, B: hola, B2: [A: [hol/def], B: [hol/def]], X: 7 }
+     7) { A: <null>, B: guten morgen, B2: [A: <null>/def, B: [gut/def]], X: 8 }
+  S1: /def, S2: 3 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDRMBW(B, A, "/suf", 5)+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDRMBW(B, A, "/suf", 5)+>{ Mos : Mos->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) } : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}, Bnd:(SetFields([with:3] Call(∂.Test.MultiDRMBW.MergeRec([with:1] Global(TB), {Mis:Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), S1:str(/suf), S2:5:i8}, Scope(1))), Mos : Call(∂.ForEach([map:4] GetField(Scope(3), Mos), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(])))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,str,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,str,r8}>
+     0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+     1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+     2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+     3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+     4) { A: <null>, B: hi, B2: [A: <null>/suf, B: [hi/suf]], X: 5 }
+     5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+     6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+     7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+  S1: /suf, S2: 5 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+
+**** New definitions: F, type: b
+
+> (TA if F else null)->MultiDSMA()
+(TA if F else null)->MultiDSMA() : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMA.MergeSeq([with:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMA(A: it & "-extra")
+(S if F else null)->MultiDSMA(A : it & "-extra") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-extra))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMB(A: it & "-1st", B: it & "-2nd")
+(S if F else null)->MultiDSMB(A : it & "-1st", B : it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-1st)), B:StrConcat(Scope(1), str(-2nd))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDsMB({ A: "a-" & it, B: "b-" & it })
+(S if F else null)->MultiDsMB({ A : "a-" & it, B : "b-" & it }) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDsMB.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TA if F else null)->MultiDSMA(A)
+(TA if F else null)->MultiDSMA(A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TA if F else null)->MultiDSMB(A: A)
+(TA if F else null)->MultiDSMB(A : A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:str(B def)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TA if F else null)->MultiDSMB(B: A)
+(TA if F else null)->MultiDSMB(B : A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:str(A's default), B:GetField(Scope(3), A)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TA if F else null)->MultiDsMB({ A, B: "b-" & A })
+(TA if F else null)->MultiDsMB({ A, B : "b-" & A }) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.Test.MultiDsMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:StrConcat(str(b-), GetField(Scope(3), A))})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMA(A)
+(TB if F else null)->MultiDSMA(A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMA(B)
+(TB if F else null)->MultiDSMA(B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDSMA.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMB(A: A, B: B)
+(TB if F else null)->MultiDSMB(A : A, B : B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->Multi_SMB(A: A, B: B)
+(TB if F else null)->Multi_SMB(A : A, B : B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.Multi_SMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMBab()
+(TB if F else null)->MultiDSMBab() : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMBab.MergeSeq([with:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), Scope(1))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMBab(   it & "-1st",    it & "-2nd")
+(S if F else null)->MultiDSMBab(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBab.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMBb(   it)
+(S if F else null)->MultiDSMBb(it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBb.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:str(A's default), B:Scope(1)})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMC(A: it)
+(S if F else null)->MultiDSMC(A : it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMC.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:Scope(1), C:null:{D:s, E:s}*})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TC if F else null)->MultiDSMCc(A: A, C: C)
+(TC if F else null)->MultiDSMCc(A : A, C : C) : {A:s, B:s*, C:{D:s, E:s}*}*
+BndKind:Call, Type:{A:s, B:s*, C:{D:s, E:s}*}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TC), null:{A:s, C:{D:s, E:s}*}*), Call(∂.Test.MultiDSMCc.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), C:GetField(Scope(3), C)})), Scope(2))))))
+Func sig: (<ctx>:x, F:b, TC:{A:s, C:{D:s, E:s}*}*) to {A:s, B:s*, C:{D:s, E:s}*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMB(   it & "-1st",    it & "-2nd") // For comparison.
+(S if F else null)->MultiDSMB(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd")
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/def), S2:3:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf")
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:3:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf")
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:3:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7     )
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/def), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf",     7)
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", "/suf", 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf", S2: 7)
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", "/suf", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf",     7)
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")
+(S if F else null)->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDrMB({ B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")
+(S if F else null)->MultiDrMB({ B : "b-" & it, A : "a-" & it }, S2 : 7, S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDrMB.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TA if F else null)->MultiDRMB(A)
+(TA if F else null)->MultiDRMB(A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TA), null:{A:s, X:r8}*), Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:str(A's default), B:GetField(Scope(3), A)})), S1:str(/def), S2:3:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDRMB(B, A)
+(TB if F else null)->MultiDRMB(B, A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/def), S2:3:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDRMB(B, A, "/suf")
+(TB if F else null)->MultiDRMB(B, A, "/suf") : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:3:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDRMB(B, A, "/suf", 5)
+(TB if F else null)->MultiDRMB(B, A, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDrMB({ B, A }, "/suf", 5)
+(TB if F else null)->MultiDrMB({ B, A }, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDrMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDrMB({ A, B }, "/suf", 5)
+(TB if F else null)->MultiDrMB({ A, B }, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.Test.MultiDrMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMBW()
+(TB if F else null)->MultiDSMBW() : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.MergeSeq([with:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), Scope(1))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: <null>, S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDSMBW(B: it & "-1st", A: it & "-2nd")
+(S if F else null)->MultiDSMBW(B : it & "-1st", A : it & "-2nd") : {Mos:{B:s*}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{B:s*}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.Simple(Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})))))
+Func sig: (<ctx>:x, F:b, S:s*) to {Mos:{B:s*}*, S1:s, S2:i8}
+Type: {Seq<{Seq<str>}>,str,i8}, Value: { Mos: <null>, S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDSMBW(A, B)
+(TB if F else null)->MultiDSMBW(A, B) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.MergeSeq([with:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), B), B:GetField(Scope(2), A)})), Scope(1))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: <null>, S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 0
+###
+> (S  if F else null)->MultiDRMBW(A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)
+(S if F else null)->MultiDRMBW(A : it & "-1st", B : it & "-2nd", S1 : "/suf", S2 : 7) : {Mos:{B:s*}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{B:s*}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.Simple({Mis:Call(∂.ForEach([map:1] If(Global(F), Global(S), null:s*), {A:StrConcat(Scope(1), str(-1st)), B:StrConcat(Scope(1), str(-2nd))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, F:b, S:s*) to {Mos:{B:s*}*, S1:s, S2:i8}
+Type: {Seq<{Seq<str>}>,str,i8}, Value: { Mos: <null>, S1: /suf, S2: 7 }
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDRMBW(B, A           )
+(TB if F else null)->MultiDRMBW(B, A) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.MergeRec([with:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), {Mis:Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), S1:str(/def), S2:3:i8}, Scope(1))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: <null>, S1: /def, S2: 3 }
+*** Ctx ping count: 0
+###
+> (TB if F else null)->MultiDRMBW(B, A, "/suf", 5)
+(TB if F else null)->MultiDRMBW(B, A, "/suf", 5) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.MergeRec([with:1] If(Global(F), Global(TB), null:{A:s, B:s, X:r8}*), {Mis:Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), S1:str(/suf), S2:5:i8}, Scope(1))))
+Func sig: (<ctx>:x, F:b, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: <null>, S1: /suf, S2: 5 }
+*** Ctx ping count: 0
+###
+> (TA->TakeIf(F))->MultiDSMA()
+TA->TakeIf(F)->MultiDSMA() : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMA.MergeSeq([with:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A)})), Scope(2))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Sequence: Seq<{str,Seq<str>,r8}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMA(A: it & "-extra")
+S->TakeIf(F)->MultiDSMA(A : it & "-extra") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMA.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-extra))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMB(A: it & "-1st", B: it & "-2nd")
+S->TakeIf(F)->MultiDSMB(A : it & "-1st", B : it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-1st)), B:StrConcat(Scope(2), str(-2nd))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDsMB({ A: "a-" & it, B: "b-" & it })
+S->TakeIf(F)->MultiDsMB({ A : "a-" & it, B : "b-" & it }) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDsMB.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(str(a-), Scope(2)), B:StrConcat(str(b-), Scope(2))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (TA->TakeIf(F))->MultiDSMA(A)
+TA->TakeIf(F)->MultiDSMA(A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.Test.MultiDSMA.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A)})), Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (TA->TakeIf(F))->MultiDSMB(A: A)
+TA->TakeIf(F)->MultiDSMB(A : A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.Test.MultiDSMB.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:str(B def)})), Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (TA->TakeIf(F))->MultiDSMB(B: A)
+TA->TakeIf(F)->MultiDSMB(B : A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.Test.MultiDSMB.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:str(A's default), B:GetField(Scope(4), A)})), Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (TA->TakeIf(F))->MultiDsMB({ A, B: "b-" & A })
+TA->TakeIf(F)->MultiDsMB({ A, B : "b-" & A }) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.Test.MultiDsMB.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:StrConcat(str(b-), GetField(Scope(4), A))})), Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMA(A)
+TB->TakeIf(F)->MultiDSMA(A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDSMA.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A)})), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMA(B)
+TB->TakeIf(F)->MultiDSMA(B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDSMA.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), B)})), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMB(A: A, B: B)
+TB->TakeIf(F)->MultiDSMB(A : A, B : B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDSMB.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->Multi_SMB(A: A, B: B)
+TB->TakeIf(F)->Multi_SMB(A : A, B : B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.Multi_SMB.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMBab()
+TB->TakeIf(F)->MultiDSMBab() : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Test.MultiDSMBab.MergeSeq([with:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMBab(   it & "-1st",    it & "-2nd")
+S->TakeIf(F)->MultiDSMBab(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBab.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMBb(   it)
+S->TakeIf(F)->MultiDSMBb(it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMBb.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:str(A's default), B:Scope(2)})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMC(A: it)
+S->TakeIf(F)->MultiDSMC(A : it) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMC.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:Scope(2), C:null:{D:s, E:s}*})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (TC->TakeIf(F))->MultiDSMCc(A: A, C: C)
+TC->TakeIf(F)->MultiDSMCc(A : A, C : C) : {A:s, B:s*, C:{D:s, E:s}*}*
+BndKind:Call, Type:{A:s, B:s*, C:{D:s, E:s}*}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TC), [if] Global(F))), Call(∂.Test.MultiDSMCc.MergeSeq([with:3] Scope(2), Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), C:GetField(Scope(4), C)})), Scope(3))))))
+Func sig: (<ctx>:x, TC:{A:s, C:{D:s, E:s}*}*, F:b) to {A:s, B:s*, C:{D:s, E:s}*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TC, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMB(   it & "-1st",    it & "-2nd") // For comparison.
+S->TakeIf(F)->MultiDSMB(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd")
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/def), S2:3:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf")
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:3:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf")
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:3:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7     )
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/def), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf",     7)
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", "/suf", 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd",     "/suf", S2: 7)
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", "/suf", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf",     7)
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", S1 : "/suf", S2 : 7) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")
+S->TakeIf(F)->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (S ->TakeIf(F))->MultiDrMB({ B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")
+S->TakeIf(F)->MultiDrMB({ B : "b-" & it, A : "a-" & it }, S2 : 7, S1 : "/suf") : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDrMB.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(str(a-), Scope(2)), B:StrConcat(str(b-), Scope(2))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (TA->TakeIf(F))->MultiDRMB(A)
+TA->TakeIf(F)->MultiDRMB(A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TA), [if] Global(F))), Call(∂.Test.MultiDRMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:str(A's default), B:GetField(Scope(4), A)})), S1:str(/def), S2:3:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*, F:b) to {A:s, B:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TA, [if] F)
+###
+> (TB->TakeIf(F))->MultiDRMB(B, A)
+TB->TakeIf(F)->MultiDRMB(B, A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDRMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), S1:str(/def), S2:3:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDRMB(B, A, "/suf")
+TB->TakeIf(F)->MultiDRMB(B, A, "/suf") : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDRMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), S1:str(/suf), S2:3:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDRMB(B, A, "/suf", 5)
+TB->TakeIf(F)->MultiDRMB(B, A, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDRMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), S1:str(/suf), S2:5:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDrMB({ B, A }, "/suf", 5)
+TB->TakeIf(F)->MultiDrMB({ B, A }, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDrMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), S1:str(/suf), S2:5:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDrMB({ A, B }, "/suf", 5)
+TB->TakeIf(F)->MultiDrMB({ A, B }, "/suf", 5) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.Test.MultiDrMB.MergeRec([with:3] Scope(2), {Mis:Call(∂.ForEach([map:4] Scope(3), {A:GetField(Scope(4), A), B:GetField(Scope(4), B)})), S1:str(/suf), S2:5:i8}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {A:s, B:s, B2:s*, X:r8}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMBW()
+TB->TakeIf(F)->MultiDSMBW() : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.MergeSeq([with:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,Seq<str>,r8}>
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (S ->TakeIf(F))->MultiDSMBW(B: it & "-1st", A: it & "-2nd")
+S->TakeIf(F)->MultiDSMBW(B : it & "-1st", A : it & "-2nd") : {Mos:{B:s*}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{B:s*}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.Simple(Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-2nd)), B:StrConcat(Scope(2), str(-1st))})))))
+Func sig: (<ctx>:x, S:s*, F:b) to {Mos:{B:s*}*, S1:s, S2:i8}
+Type: {Seq<{Seq<str>}>,str,i8}, Value: { Mos: Sequence: Seq<{Seq<str>}>
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (TB->TakeIf(F))->MultiDSMBW(A, B)
+TB->TakeIf(F)->MultiDSMBW(A, B) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDSMBW.MergeSeq([with:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), B), B:GetField(Scope(3), A)})), Scope(2))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,Seq<str>,r8}>
+  S1: , S2: 9223372036854775807 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (S ->TakeIf(F))->MultiDRMBW(A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)
+S->TakeIf(F)->MultiDRMBW(A : it & "-1st", B : it & "-2nd", S1 : "/suf", S2 : 7) : {Mos:{B:s*}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{B:s*}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.Simple({Mis:Call(∂.ForEach([map:2] Call(∂.Take([map:1] Global(S), [if] Global(F)):s*), {A:StrConcat(Scope(2), str(-1st)), B:StrConcat(Scope(2), str(-2nd))})), S1:str(/suf), S2:7:i8})))
+Func sig: (<ctx>:x, S:s*, F:b) to {Mos:{B:s*}*, S1:s, S2:i8}
+Type: {Seq<{Seq<str>}>,str,i8}, Value: { Mos: Sequence: Seq<{Seq<str>}>
+  S1: /suf, S2: 7 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: S, [if] F)
+###
+> (TB->TakeIf(F))->MultiDRMBW(B, A           )
+TB->TakeIf(F)->MultiDRMBW(B, A) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.MergeRec([with:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/def), S2:3:i8}, Scope(2))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,Seq<str>,r8}>
+  S1: /def, S2: 3 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> (TB->TakeIf(F))->MultiDRMBW(B, A, "/suf", 5)
+TB->TakeIf(F)->MultiDRMBW(B, A, "/suf", 5) : {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+BndKind:Call, Type:{Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}, Bnd:(Call(∂.Test.MultiDRMBW.MergeRec([with:2] Call(∂.Take([map:1] Global(TB), [if] Global(F))), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*, F:b) to {Mos:{A:s, B:s, B2:s*, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,Seq<str>,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,Seq<str>,r8}>
+  S1: /suf, S2: 5 }
+*** Ctx ping count: 8
+    [0](8): Take(*1: TB, [if] F)
+###
+> MultiS_DSMB_ABD({A:S, B:Range(10)->ToText()})
+MultiS_DSMB_ABD({ A : S, B : Range(10)->ToText() }) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiS_DSMB_ABD.Simple([{A:Global(S), B:Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), Call(∂.ToText(Scope(1)):s)):s*)}]:{A:s*, B:s*}*)))
+Func sig: (<ctx>:x, S:s*) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+ 0) { B: Sequence: Seq<str>
+         0) A: [x, xy, , xyz, hi, adios, hola, guten morgen]
+         1) B: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    }
+*** Ctx ping count: 0
+###
+> MultiS_DSMB_ABD(TB, B)
+MultiS_DSMB_ABD(TB, B) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiS_DSMB_ABD.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:null:s*, B:[GetField(Scope(3), B)]:s*})), Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [xy]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [xyz]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [guten morgen]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [x]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [hi]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DSMB_ABD(TB, B: [B], A: A)
+MultiS_DSMB_ABD(TB, B : [B], A : A) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiS_DSMB_ABD.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:[GetField(Scope(3), A)]:s*, B:[GetField(Scope(3), B)]:s*})), Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [xy]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [adios]
+         1) B: []
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyz]
+         1) B: [xyz]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [guten morgen]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [x]
+         1) B: [x]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: [hi]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [hola]
+         1) B: [hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DRMB_ABD12(TB, A, B, "hello", [17])
+MultiS_DRMB_ABD12(TB, A, B, "hello", [17]) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiS_DRMB_ABD12.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:[GetField(Scope(3), B)]:s*, B:[GetField(Scope(3), A)]:s*})), S1:[str(hello)]:s*, S2:[17:i8]:i8*}, Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: [xyhello]
+         1) B: [hello]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [adioshello]
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyzhello]
+         1) B: [xyzhello]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: [guten morgenhello]
+         1) B: [hello]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [xhello]
+         1) B: [xhello]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: [hihello]
+         1) B: [hello]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [hello]
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [holahello]
+         1) B: [holahello]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DRMB_ABD12(TB, B: [B], A: A, S1:["hello"], S2:17)
+MultiS_DRMB_ABD12(TB, B : [B], A : A, S1 : ["hello"], S2 : 17) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.Test.MultiS_DRMB_ABD12.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:[GetField(Scope(3), A)]:s*, B:[GetField(Scope(3), B)]:s*})), S1:[str(hello)]:s*, S2:[17:i8]:i8*}, Scope(2))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [xyhello]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [adioshello]
+         1) B: [hello]
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [xyzhello]
+         1) B: [xyzhello]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [guten morgenhello]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [xhello]
+         1) B: [xhello]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [hihello]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [hello]
+         1) B: [hello]
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [holahello]
+         1) B: [holahello]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DfMB_ABDM12({A:["sA"], B:["sB"]}, "hello", 17)
+MultiS_DfMB_ABDM12({ A : ["sA"], B : ["sB"] }, "hello", 17) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiS_DfMB_ABDM12.Simple({Mis:[{A:[str(sA)]:s*, B:[str(sB)]:s*}]:{A:s*, B:s*}*, S1:[str(hello)]:s*, S2:[17:i8]:i8*})))
+Func sig: (<ctx>:x) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+ 0) { B: Sequence: Seq<str>
+         0) A: [sAhello]
+         1) B: [sBhello]
+    }
+*** Ctx ping count: 0
+###
+> MultiS_DsMB_ABDM(TB, {A:["sA"], B:["sB"]})
+MultiS_DsMB_ABDM(TB, { A : ["sA"], B : ["sB"] }) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] [{A:[str(sA)]:s*, B:[str(sB)]:s*}]:{A:s*, B:s*}*, Call(∂.Test.MultiS_DsMB_ABDM.MergeSeq([with:3] Scope(1), Call(∂.ForEach([map:4] Scope(3), Scope(2))), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [sA]
+         1) B: [sB]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DrMB_ABDM12(TB, {A:["sA"], B:["sB"]}, S2:17, S1:"sA")
+MultiS_DrMB_ABDM12(TB, { A : ["sA"], B : ["sB"] }, S2 : 17, S1 : "sA") : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] [{A:[str(sA)]:s*, B:[str(sB)]:s*}]:{A:s*, B:s*}*, Call(∂.Test.MultiS_DrMB_ABDM12.MergeRec([with:3] Scope(1), {Mis:Call(∂.ForEach([map:4] Scope(3), Scope(2))), S1:[str(sA)]:s*, S2:[17:i8]:i8*}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: [sAsA]
+         1) B: [sBsA]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DSMA_AD(TA, null)
+MultiS_DSMA_AD(TA, null) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), [with:2] {A:null:s*}, Call(∂.Test.MultiS_DSMA_AD.MergeSeq([with:3] Scope(1), Call(∂.ForEach([map:4] Scope(3), Scope(2))), Scope(3))))))
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Sequence: Seq<{str,Seq<str>,r8}>
+ 1) { A: xy, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 2 }
+ 5) { A: adios, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 6 }
+ 3) { A: xyz, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 4 }
+ 7) { A: guten morgen, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 8 }
+ 0) { A: x, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 1 }
+ 4) { A: hi, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 5 }
+ 2) { A: <null>, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 3 }
+ 6) { A: hola, 
+      B: Sequence: Seq<str>
+         0) A: []
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DRMB_ABD12(TB, null, null, null, null)
+MultiS_DRMB_ABD12(TB, null, null, null, null) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] {A:null:s*, B:null:s*}, Call(∂.Test.MultiS_DRMB_ABD12.MergeRec([with:3] Scope(1), {Mis:Call(∂.ForEach([map:4] Scope(3), Scope(2))), S1:null:s*, S2:null:i8*}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DfMB_ABDM12({A:null, B:null}, null, 17)
+MultiS_DfMB_ABDM12({ A : null, B : null }, null, 17) : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiS_DfMB_ABDM12.Simple({Mis:[{A:null:s*, B:null:s*}]:{A:s*, B:s*}*, S1:null:s*, S2:[17:i8]:i8*})))
+Func sig: (<ctx>:x) to {B:s*}*
+Sequence: Seq<{Seq<str>}>
+ 0) { B: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+    }
+*** Ctx ping count: 0
+###
+> MultiS_DsMB_ABDM(TB, {A:null, B:null})
+MultiS_DsMB_ABDM(TB, { A : null, B : null }) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] [{A:null:s*, B:null:s*}]:{A:s*, B:s*}*, Call(∂.Test.MultiS_DsMB_ABDM.MergeSeq([with:3] Scope(1), Call(∂.ForEach([map:4] Scope(3), Scope(2))), Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 7 }
+*** Ctx ping count: 0
+###
+> MultiS_DrMB_ABDM12(TB, {A:null, B:null}, S2:17, S1:null)
+MultiS_DrMB_ABDM12(TB, { A : null, B : null }, S2 : 17, S1 : null) : {A:s, B:s, B2:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), [with:2] [{A:null:s*, B:null:s*}]:{A:s*, B:s*}*, Call(∂.Test.MultiS_DrMB_ABDM12.MergeRec([with:3] Scope(1), {Mis:Call(∂.ForEach([map:4] Scope(3), Scope(2))), S1:null:s*, S2:[17:i8]:i8*}, Scope(3))))))
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s*, X:r8}*
+Sequence: Seq<{str,str,Seq<str>,r8}>
+ 1) { A: <null>, B: xy, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 2 }
+ 5) { A: adios, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 6 }
+ 3) { A: xyz, B: xyz, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 4 }
+ 7) { A: <null>, B: guten morgen, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 8 }
+ 0) { A: x, B: x, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 1 }
+ 4) { A: <null>, B: hi, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 5 }
+ 2) { A: <null>, B: <null>, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 3 }
+ 6) { A: hola, B: hola, 
+      B2: Sequence: Seq<str>
+         0) A: []
+         1) B: []
+      X: 7 }
+*** Ctx ping count: 0
+###

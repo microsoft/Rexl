@@ -1,0 +1,23 @@
+﻿// Define some udfs for testing importing into a particular namespace.
+// See Udfs.txt for the main test code.
+
+func F(x) := (G(x), @H(x));
+func @G(x) := ("G", x);
+func H(x) := ("H", x);
+
+func Div(a) := ("Div", a);
+
+func Text.Len(a, b) := ("Text.Len", a, b);
+
+Div(5);
+Div(5, 2);
+
+"stuff"->Len();
+"stuff"->Len("other");
+
+with Text {
+    Div(5);
+    Div(5, 2);
+    Len("stuff");
+    Len("stuff", "other");
+}

@@ -1,0 +1,19 @@
+﻿T := Range(10)->{ A: it, B: it / 2, C: it > 5, D: Date(2022 + it, 1, 1) };
+
+"*** Thread-based ***";
+Bad := "some\u0000name.parquet";
+task Wrt as WriteParquet(T, Bad);
+(Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames);
+Wrt.Link.Path = Bad;
+
+finish Wrt;
+(Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames);
+Wrt.Link.Path = Bad;
+
+Wrt.FullLink; // Error - FullLink not usable when Wrt wasn't primed successfully.
+Wrt.GroupCount; // Error - GroupCount not usable when Wrt wasn't successful.
+Wrt.Size; // Error - GroupCount not usable when Wrt wasn't successful.
+Wrt.Blarg; // Error - unknown result.
+
+Wrt$Glop; // Error - bad meta prop.
+Writer$State; // Error - unknown meta container.

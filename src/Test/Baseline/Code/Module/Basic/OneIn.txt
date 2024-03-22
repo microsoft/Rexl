@@ -1,0 +1,210 @@
+>>> *** Source:
+    P := plan {
+        param Set := Range(10);
+        param Def := 7;
+        var One in Set def Def;
+    };
+    P;
+    P with { Set: Range(5) };
+    P with { Set: Range(0) };
+    P with { Def: -3 };
+    P with { Def: 17 };
+    P with { Def: 99 };
+    P := plan {
+        param Set := Range(10);
+        param Def := 7;
+        var One in Set def Def opt;
+    };
+    P;
+    // No default.
+    P := plan { var One in Range(3, 10); };
+    P;
+    P := plan { var V in 7; }; // Error.
+    // Opt.
+    // REVIEW: Should the default be null rather than the first item?
+    P := plan { var One in Range(3, 10) opt; };
+    P;
+    P with { One: null };
+    P with { One: P.One + null };
+    P := plan { var One in Range(3, 10) req; };
+    P;
+    P with { One: null }; // Error.
+    P with { One: P.One + null }; // Error.
+    // Specialization of an "in" variable.
+    P := plan {
+        param S := Range(4);
+        var X in S;
+    };
+    P;
+    P with { S: [ 3, 5, 8 ], };
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param Set := Range(10); param Def := 7; var One in Set def Def }
+   1) [0] Expr P
+   2) [0] Expr P=>{ Set : Range(5) }
+   3) [0] Expr P=>{ Set : Range(0) }
+   4) [0] Expr P=>{ Def : -3 }
+   5) [0] Expr P=>{ Def : 17 }
+   6) [0] Expr P=>{ Def : 99 }
+   7) [0] Define P <- module { param Set := Range(10); param Def := 7; var One in Set def Def opt }
+   8) [0] Expr P
+   9) [0] Define P <- module { var One in Range(3, 10) }
+  10) [0] Expr P
+  11) [0] Define P <- module { var V in 7 }
+  12) [0] Define P <- module { var One in Range(3, 10) opt }
+  13) [0] Expr P
+  14) [0] Expr P=>{ One : null }
+  15) [0] Expr P=>{ One : P.One + null }
+  16) [0] Define P <- module { var One in Range(3, 10) req }
+  17) [0] Expr P
+  18) [0] Expr P=>{ One : null }
+  19) [0] Expr P=>{ One : P.One + null }
+  20) [0] Define P <- module { param S := Range(4); var X in S }
+  21) [0] Expr P
+  22) [0] Expr P=>{ S : [3, 5, 8] }
+  23) [0] End
+
+>    0) [0] Define P <- module { param Set := Range(10); param Def := 7; var One in Set def Def }
+Global 'P' has DType: M{param Def:i8, var One:i8, param Set:i8*}, SysType: RuntimeModule<{i8,i8,Seq<i8>},(Seq<i8>,i8,Seq<i8>,i8)>
+>    1) [0] Expr P
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: 7
+  var One: 7
+>    2) [0] Expr P=>{ Set : Range(5) }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+  param Def: 7
+  var One: 7
+>    3) [0] Expr P=>{ Set : Range(0) }
+module symbols:
+  param Set: Seq<i8>
+  param Def: 7
+  var One: 7
+>    4) [0] Expr P=>{ Def : -3 }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: -3
+  var One: -3
+>    5) [0] Expr P=>{ Def : 17 }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: 17
+  var One: 17
+>    6) [0] Expr P=>{ Def : 99 }
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: 99
+  var One: 99
+>    7) [0] Define P <- module { param Set := Range(10); param Def := 7; var One in Set def Def opt }
+Global 'P' has (modified) DType: M{param Def:i8, var One:i8?, param Set:i8*}, SysType: RuntimeModule<{i8,i8,Seq<i8>},(Seq<i8>,i8,Seq<i8>,Opt<i8>)>
+>    8) [0] Expr P
+module symbols:
+  param Set: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+       5) 5
+       6) 6
+       7) 7
+       8) 8
+       9) 9
+  param Def: 7
+  var One: 7
+>    9) [0] Define P <- module { var One in Range(3, 10) }
+Global 'P' has (modified) DType: M{var One:i8}, SysType: RuntimeModule<{i8},(Seq<i8>,i8)>
+>   10) [0] Expr P
+module symbols:
+  var One: 3
+>   11) [0] Define P <- module { var V in 7 }
+*** Bind diagnostics:
+  [OneIn.txt] Error: (386,387) Node: 7, Message: The 'in' expression for a module free variable must have a sequence type, not: 'i8'
+  [OneIn.txt] Error: (386,387) Node: 7, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+>   12) [0] Define P <- module { var One in Range(3, 10) opt }
+Global 'P' has (modified) DType: M{var One:i8?}, SysType: RuntimeModule<{i8},(Seq<i8>,Opt<i8>)>
+>   13) [0] Expr P
+module symbols:
+  var One: 3
+>   14) [0] Expr P=>{ One : null }
+module symbols:
+  var One: <null>
+>   15) [0] Expr P=>{ One : P.One + null }
+module symbols:
+  var One: <null>
+>   16) [0] Define P <- module { var One in Range(3, 10) req }
+Global 'P' has (modified) DType: M{var One:i8}, SysType: RuntimeModule<{i8},(Seq<i8>,i8)>
+>   17) [0] Expr P
+module symbols:
+  var One: 3
+>   18) [0] Expr P=>{ One : null }
+*** Bind diagnostics:
+  [OneIn.txt] Error: (631,632) Node: { One : null }, Message: Invalid operand type: cannot convert type '{One:o}' to '{One:i8}'
+>   19) [0] Expr P=>{ One : P.One + null }
+*** Bind diagnostics:
+  [OneIn.txt] Error: (663,664) Node: { One : P.One + null }, Message: Invalid operand type: cannot convert type '{One:i8?}' to '{One:i8}'
+>   20) [0] Define P <- module { param S := Range(4); var X in S }
+Global 'P' has (modified) DType: M{param S:i8*, var X:i8}, SysType: RuntimeModule<{Seq<i8>,i8},(Seq<i8>,Seq<i8>,i8)>
+>   21) [0] Expr P
+module symbols:
+  param S: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+  var X: 0
+>   22) [0] Expr P=>{ S : [3, 5, 8] }
+module symbols:
+  param S: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+  var X: 3
+>   23) [0] End
+

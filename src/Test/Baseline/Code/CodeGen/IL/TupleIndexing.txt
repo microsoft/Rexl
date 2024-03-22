@@ -1,0 +1,1076 @@
+**** New definitions: I, type: i8*
+**** New definitions: rec1, type: {A:i8, B:s}
+**** New definitions: rec2, type: {A:i8, B:s}
+**** New definitions: rec3, type: {A:i8, B:s}
+**** New definitions: rec4, type: {A:i8, B:s}
+**** New definitions: rec5, type: {A:i8, B:s}
+**** New definitions: homr, type: ({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})
+**** New definitions: homi, type: (i8, i8, i8, i8, i8)
+**** New definitions: het, type: (i8, s, i8, {A:i8, B:s}, (i8, i8))
+
+> homr
+homr : ({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})
+BndKind:Global, Type:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}), Bnd:(Global(homr))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : ({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ret
+  Total Size: 11
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to ({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})
+Type: ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}), Value: ({ A: 10, B: foo10 }, { A: 20, B: foo20 }, { A: 30, B: foo30 }, { A: 40, B: foo40 }, { A: 50, B: foo50 })
+###
+> homi
+homi : (i8, i8, i8, i8, i8)
+BndKind:Global, Type:(i8, i8, i8, i8, i8), Bnd:(Global(homi))
+// (∂.homi:(i8, i8, i8, i8, i8)) : (i8, i8, i8, i8, i8)
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      1) ret
+  Total Size: 11
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to (i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8), Value: (7, 10, 20, 30, 40)
+###
+> Map(i:I, (i, homr[i]))
+Map(i : I, (i, homr[i])) : (i8, {A:i8, B:s})*
+BndKind:Call, Type:(i8, {A:i8, B:s})*, Bnd:(Call(∂.ForEach([map:1] Global(I), (Scope(1), IdxTup(Global(homr), Scope(1))):(i8, {A:i8, B:s})):(i8, {A:i8, B:s})*))
+// (∂.I:i8*, ∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : (i8, {A:i8, B:s})*
+ForEach_1(Arr<obj>, i8):(i8,{i8,str})
+      5) newobj (i8,{i8,str})()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,{i8,str})::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))]
+      5) ldfld (({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))::_F0:({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) ldarg.1 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8,str}]
+      5) call static GetSlotDynamic5::GetSlotDynamic(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}), i8, {i8,str}):{i8,str}
+      5) stfld (i8,{i8,str})::_F1:{i8,str}
+      1) ret
+  Total Size: 50
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.1 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) newobj (({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))()
+      1) stloc.2 [(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))]
+      1) ldloc.2 [(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))]
+      1) ldloc.1 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) stfld (({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))::_F0:({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,{i8,str})>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))]
+      5) stelem [(({i8,str},{i8,str},{i8,str},{i8,str},{i8,str}))]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,(i8,{i8,str})>):Seq<(i8,{i8,str})>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,{i8,str})>):Seq<(i8,{i8,str})>
+      1) ret
+  Total Size: 93
+
+Func sig: (I:i8*, homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to (i8, {A:i8, B:s})*
+Sequence: Seq<(i8,{i8,str})>
+ 0) (-6, { A: 0, B: <null> })
+ 1) (-5, { A: 0, B: <null> })
+ 2) (-4, { A: 0, B: <null> })
+ 3) (-3, { A: 0, B: <null> })
+ 4) (-2, { A: 0, B: <null> })
+ 5) (-1, { A: 0, B: <null> })
+ 6) (0, { A: 10, B: foo10 })
+ 7) (1, { A: 20, B: foo20 })
+ 8) (2, { A: 30, B: foo30 })
+ 9) (3, { A: 40, B: foo40 })
+10) (4, { A: 50, B: foo50 })
+11) (5, { A: 0, B: <null> })
+###
+> Map(i:I, (i, homi[i]))
+Map(i : I, (i, homi[i])) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Global(I), (Scope(1), IdxTup(Global(homi), Scope(1))):(i8, i8)):(i8, i8)*))
+// (∂.I:i8*, ∂.homi:(i8, i8, i8, i8, i8)) : (i8, i8)*
+ForEach_1(Arr<obj>, i8):(i8,i8)
+      5) newobj (i8,i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8,i8,i8))]
+      5) ldfld ((i8,i8,i8,i8,i8))::_F0:(i8,i8,i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic5::GetSlotDynamic((i8,i8,i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8)::_F1:i8
+      1) ret
+  Total Size: 39
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.1 [(i8,i8,i8,i8,i8)]
+      5) newobj ((i8,i8,i8,i8,i8))()
+      1) stloc.2 [((i8,i8,i8,i8,i8))]
+      1) ldloc.2 [((i8,i8,i8,i8,i8))]
+      1) ldloc.1 [(i8,i8,i8,i8,i8)]
+      5) stfld ((i8,i8,i8,i8,i8))::_F0:(i8,i8,i8,i8,i8)
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [((i8,i8,i8,i8,i8))]
+      5) stelem [((i8,i8,i8,i8,i8))]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,(i8,i8)>):Seq<(i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,i8)>):Seq<(i8,i8)>
+      1) ret
+  Total Size: 79
+
+Func sig: (I:i8*, homi:(i8, i8, i8, i8, i8)) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (-6, 0)
+ 1) (-5, 0)
+ 2) (-4, 0)
+ 3) (-3, 0)
+ 4) (-2, 0)
+ 5) (-1, 0)
+ 6) (0, 7)
+ 7) (1, 10)
+ 8) (2, 20)
+ 9) (3, 30)
+10) (4, 40)
+11) (5, 0)
+###
+> homr[^6]
+homr[^6] : {A:i8, B:s}
+BndKind:Default, Type:{A:i8, B:s}, Bnd:(dflt<{A:i8, B:s}>)
+*** Warning: (6,7) Node: ^6, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+// () : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8,str}]
+      1) ret
+  Total Size: 8
+
+Func sig: () to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 0, B: <null> }
+###
+> homr[5]
+homr[5] : {A:i8, B:s}
+BndKind:Default, Type:{A:i8, B:s}, Bnd:(dflt<{A:i8, B:s}>)
+*** Warning: (5,6) Node: 5, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+// () : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8,str}]
+      1) ret
+  Total Size: 8
+
+Func sig: () to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 0, B: <null> }
+###
+> homr[^3 + 3]
+homr[^3 + 3] : {A:i8, B:s}
+BndKind:Default, Type:{A:i8, B:s}, Bnd:(dflt<{A:i8, B:s}>)
+*** Warning: (4,5) Node: homr[^3 + 3], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+// () : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8,str}]
+      1) ret
+  Total Size: 8
+
+Func sig: () to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 0, B: <null> }
+###
+> homi[2 + 3]
+homi[2 + 3] : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+*** Warning: (4,5) Node: homi[2 + 3], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> homi[^Wrap(6)]
+homi[^Wrap(6)] : i8
+BndKind:IdxHomTup, Type:i8, Bnd:(IdxTup(Global(homi), Index(Call(∂.Test.Wrap(6:i8):i8), Back)))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldc.i4.6
+      1) conv.i8
+      5) call static WrapFuncGen::Exec(i8):i8
+      1) neg
+      1) ldc.i4.5
+      1) conv.i8
+      1) add
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic5::GetSlotDynamic((i8,i8,i8,i8,i8), i8, i8):i8
+      5) box [i8]
+      1) ret
+  Total Size: 34
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 0
+###
+> homi[^Wrap(5)]
+homi[^Wrap(5)] : i8
+BndKind:IdxHomTup, Type:i8, Bnd:(IdxTup(Global(homi), Index(Call(∂.Test.Wrap(5:i8):i8), Back)))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldc.i4.5
+      1) conv.i8
+      5) call static WrapFuncGen::Exec(i8):i8
+      1) neg
+      1) ldc.i4.5
+      1) conv.i8
+      1) add
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic5::GetSlotDynamic((i8,i8,i8,i8,i8), i8, i8):i8
+      5) box [i8]
+      1) ret
+  Total Size: 34
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 7
+###
+> homr[0]
+homr[0] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 0))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F0:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> homr[^5]
+homr[^5] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 0))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F0:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> homr[-2 + 2]
+homr[-2 + 2] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 0))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F0:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> homr[^2 + 3]
+homr[^2 + 3] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 0))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F0:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> homr[1]
+homr[1] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 1))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F1:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 20, B: foo20 }
+###
+> homr[^4]
+homr[^4] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 1))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F1:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 20, B: foo20 }
+###
+> homr[-2 + 3]
+homr[-2 + 3] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 1))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F1:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 20, B: foo20 }
+###
+> homr[^2 + 2]
+homr[^2 + 2] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 1))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F1:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 20, B: foo20 }
+###
+> homr[2]
+homr[2] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 2))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F2:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 30, B: foo30 }
+###
+> homr[^3]
+homr[^3] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 2))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F2:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 30, B: foo30 }
+###
+> homr[-2 + 4]
+homr[-2 + 4] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 2))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F2:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 30, B: foo30 }
+###
+> homr[^2 + 1]
+homr[^2 + 1] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(homr), 2))
+// (∂.homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})
+      1) stloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      1) ldloc.0 [({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})]
+      5) ldfld ({i8,str},{i8,str},{i8,str},{i8,str},{i8,str})::_F2:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (homr:({A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s}, {A:i8, B:s})) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 30, B: foo30 }
+###
+> homi[3]
+homi[3] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 3))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F3:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 30
+###
+> homi[^2]
+homi[^2] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 3))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F3:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 30
+###
+> homi[1 + 2]
+homi[1 + 2] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 3))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F3:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 30
+###
+> homi[^4 - 2]
+homi[^4 - 2] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 3))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F3:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 30
+###
+> homi[4]
+homi[4] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 4))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F4:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 40
+###
+> homi[^1]
+homi[^1] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 4))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F4:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 40
+###
+> homi[2 + 2]
+homi[2 + 2] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 4))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F4:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 40
+###
+> homi[^4 - 3]
+homi[^4 - 3] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(homi), 4))
+// (∂.homi:(i8, i8, i8, i8, i8)) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8,i8,i8)]
+      1) ldloc.0 [(i8,i8,i8,i8,i8)]
+      5) ldfld (i8,i8,i8,i8,i8)::_F4:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (homi:(i8, i8, i8, i8, i8)) to i8
+Type: i8, Value: 40
+###
+> het
+het : (i8, s, i8, {A:i8, B:s}, (i8, i8))
+BndKind:Global, Type:(i8, s, i8, {A:i8, B:s}, (i8, i8)), Bnd:(Global(het))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : (i8, s, i8, {A:i8, B:s}, (i8, i8))
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ret
+  Total Size: 11
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to (i8, s, i8, {A:i8, B:s}, (i8, i8))
+Type: (i8,str,i8,{i8,str},(i8,i8)), Value: (100, bar, 200, { A: 10, B: foo10 }, (2, 3))
+###
+> het[0]
+het[0] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(het), 0))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F0:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to i8
+Type: i8, Value: 100
+###
+> het[^5]
+het[^5] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(het), 0))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F0:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to i8
+Type: i8, Value: 100
+###
+> het[1]
+het[1] : s
+BndKind:GetSlot, Type:s, Bnd:(GetSlot(Global(het), 1))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : s
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F1:str
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to s
+Type: str, Value: bar
+###
+> het[^4]
+het[^4] : s
+BndKind:GetSlot, Type:s, Bnd:(GetSlot(Global(het), 1))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : s
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F1:str
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to s
+Type: str, Value: bar
+###
+> het[2]
+het[2] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(het), 2))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F2:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to i8
+Type: i8, Value: 200
+###
+> het[^3]
+het[^3] : i8
+BndKind:GetSlot, Type:i8, Bnd:(GetSlot(Global(het), 2))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F2:i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to i8
+Type: i8, Value: 200
+###
+> het[3]
+het[3] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(het), 3))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F3:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> het[^2]
+het[^2] : {A:i8, B:s}
+BndKind:GetSlot, Type:{A:i8, B:s}, Bnd:(GetSlot(Global(het), 3))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : {A:i8, B:s}
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F3:{i8,str}
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to {A:i8, B:s}
+Type: {i8,str}, Value: { A: 10, B: foo10 }
+###
+> het[4]
+het[4] : (i8, i8)
+BndKind:GetSlot, Type:(i8, i8), Bnd:(GetSlot(Global(het), 4))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : (i8, i8)
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F4:(i8,i8)
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to (i8, i8)
+Type: (i8,i8), Value: (2, 3)
+###
+> het[^1]
+het[^1] : (i8, i8)
+BndKind:GetSlot, Type:(i8, i8), Bnd:(GetSlot(Global(het), 4))
+// (∂.het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) : (i8, i8)
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,str,i8,{i8,str},(i8,i8))
+      1) stloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      1) ldloc.0 [(i8,str,i8,{i8,str},(i8,i8))]
+      5) ldfld (i8,str,i8,{i8,str},(i8,i8))::_F4:(i8,i8)
+      1) ret
+  Total Size: 16
+
+Func sig: (het:(i8, s, i8, {A:i8, B:s}, (i8, i8))) to (i8, i8)
+Type: (i8,i8), Value: (2, 3)
+###
+
+**** New definitions: HT, type: (i8, i8, i8)
+
+> Range(-2, 6)->(HT[it], HT[&it], HT[%it], HT[^it], HT[^&it], HT[^%it])
+Range(-2, 6)->(HT[it], HT[&it], HT[%it], HT[^it], HT[^&it], HT[^%it]) : (i8, i8, i8, i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8, i8, i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(-2:i8, 6:i8):i8*), (IdxTup(Global(HT), Scope(1)), IdxTup(Global(HT), Index(Scope(1), Clip)), IdxTup(Global(HT), Index(Scope(1), Wrap)), IdxTup(Global(HT), Index(Scope(1), Back)), IdxTup(Global(HT), Index(Scope(1), BackClip)), IdxTup(Global(HT), Index(Scope(1), BackWrap))):(i8, i8, i8, i8, i8, i8)):(i8, i8, i8, i8, i8, i8)*))
+// (∂.HT:(i8, i8, i8)) : (i8, i8, i8, i8, i8, i8)*
+ForEach_1(Arr<obj>, i8):(i8,i8,i8,i8,i8,i8)
+      5) newobj (i8,i8,i8,i8,i8,i8)()
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) cgt
+      1) neg
+      1) and
+      1) dup
+      1) ldc.i4.3
+      1) conv.i8
+      5) blt [0]
+      1) pop
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) sub
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) add
+      1) rem
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) clt
+      1) neg
+      1) ldc.i4.3
+      1) conv.i8
+      1) and
+      1) add
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F2:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) neg
+      1) ldc.i4.3
+      1) conv.i8
+      1) add
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F3:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) neg
+      1) ldc.i4.3
+      1) conv.i8
+      1) add
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) cgt
+      1) neg
+      1) and
+      1) dup
+      1) ldc.i4.3
+      1) conv.i8
+      5) blt [1]
+      1) pop
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) sub
+  Label [1]:
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F4:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [((i8,i8,i8))]
+      5) ldfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      1) ldarg.1 [i8]
+      1) neg
+      1) ldc.i4.3
+      1) conv.i8
+      1) add
+      1) ldc.i4.3
+      1) conv.i8
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) add
+      1) rem
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) clt
+      1) neg
+      1) ldc.i4.3
+      1) conv.i8
+      1) and
+      1) add
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static GetSlotDynamic3::GetSlotDynamic((i8,i8,i8), i8, i8):i8
+      5) stfld (i8,i8,i8,i8,i8,i8)::_F5:i8
+      1) ret
+  Total Size: 254
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8)
+      1) stloc.0 [(i8,i8,i8)]
+      5) newobj ((i8,i8,i8))()
+      1) stloc.1 [((i8,i8,i8))]
+      1) ldloc.1 [((i8,i8,i8))]
+      1) ldloc.0 [(i8,i8,i8)]
+      5) stfld ((i8,i8,i8))::_F0:(i8,i8,i8)
+      2) ldc.i4.s [-2]
+      1) conv.i8
+      1) ldc.i4.6
+      1) conv.i8
+      5) call static RangeGen::Exec(i8, i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,i8,i8,i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [((i8,i8,i8))]
+      5) stelem [((i8,i8,i8))]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,(i8,i8,i8,i8,i8,i8)>):Seq<(i8,i8,i8,i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,i8,i8,i8,i8,i8)>):Seq<(i8,i8,i8,i8,i8,i8)>
+      1) ret
+  Total Size: 79
+
+Func sig: (HT:(i8, i8, i8)) to (i8, i8, i8, i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8,i8,i8,i8)>
+ 0) (0, 1, 2, 0, 3, 3)
+ 1) (0, 1, 3, 0, 3, 2)
+ 2) (1, 1, 1, 0, 3, 1)
+ 3) (2, 2, 2, 3, 3, 3)
+ 4) (3, 3, 3, 2, 2, 2)
+ 5) (0, 3, 1, 1, 1, 1)
+ 6) (0, 3, 2, 0, 1, 3)
+ 7) (0, 3, 3, 0, 1, 2)
+###

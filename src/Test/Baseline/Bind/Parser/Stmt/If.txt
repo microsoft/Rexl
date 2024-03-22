@@ -1,0 +1,537 @@
+> if (X > 3) {
+>     A := 3;
+>     finish T as Proc(A * 2);
+> }
+> B := 17;
+Node: [if (X $> 3) { A := 3; finish T as Proc(A * 2) } B := 17]
+Dump:
+  00 Node[id:17, kind:StmtList, depth:9, tok:KwdIf, rng:(0,2) [if], full:(0,64) [if (X > 3) {\n    A := 3;\n    finish T as Proc(A * 2);\n}\nB := 17;]], count=2
+  01   Node[id:14, kind:IfStmt, depth:8, tok:KwdIf, rng:(0,2) [if], full:(0,55) [if (X > 3) {\n    A := 3;\n    finish T as Proc(A * 2);\n}]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:13, kind:BlockStmt, depth:7, tok:CurlyOpen, rng:(11,12) [{], full:(11,55) [{\n    A := 3;\n    finish T as Proc(A * 2);\n}]], count=1
+  03       Node[id:12, kind:StmtList, depth:6, tok:Semi, rng:(23,24) [;], full:(17,53) [A := 3;\n    finish T as Proc(A * 2);]], count=2
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(19,21) [:=], full:(17,23) [A := 3], extra=[A]], count=1
+  05           Node[id:4, kind:NumLit, depth:1, tok:3, rng:(22,23) [3], full:(22,23) [3], extra=[3]]
+  04         Node[id:11, kind:TaskProcStmt, depth:5, tok:KtxFinish, rng:(29,35) [finish], full:(29,52) [finish T as Proc(A * 2)], extra=[T]], count=1
+  05           Node[id:10, kind:Call, depth:4, tok:ParenOpen, rng:(45,46) [(], full:(41,52) [Proc(A * 2)], extra=[Proc]], count=1
+  06             Node[id:9, kind:ExprList, depth:3, tok:A, rng:(46,47) [A], full:(46,51) [A * 2]], count=1
+  07               Node[id:8, kind:BinaryOp, depth:2, tok:Mul, rng:(48,49) [*], full:(46,51) [A * 2], extra=[Mul]], count=2
+  08                 Node[id:6, kind:FirstName, depth:1, tok:A, rng:(46,47) [A], full:(46,47) [A], extra=[A]]
+  08                 Node[id:7, kind:NumLit, depth:1, tok:2, rng:(50,51) [2], full:(50,51) [2], extra=[2]]
+  01   Node[id:16, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(58,60) [:=], full:(56,63) [B := 17], extra=[B]], count=1
+  02     Node[id:15, kind:NumLit, depth:1, tok:17, rng:(61,63) [17], full:(61,63) [17], extra=[17]]
+
+   0) [0] JumpIfNot 5 (0=>0) X $> 3
+   1) [0] Enter (0=>1)
+   2) [1] Define A <- 3
+   3) [1] TaskProc finish T as Proc(A * 2)
+   4) [1] Leave (1=>0)
+   5) [0] Define B <- 17
+   6) [0] End
+###
+> if (X > 3) { A := 3; }
+> else { A := 5; }
+> B := 17;
+Node: [if (X $> 3) { A := 3 } else { A := 5 } B := 17]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,48) [if (X > 3) { A := 3; }\nelse { A := 5; }\nB := 17;]], count=2
+  01   Node[id:12, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,39) [if (X > 3) { A := 3; }\nelse { A := 5; }]], count=3
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(11,12) [{], full:(11,22) [{ A := 3; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:A, rng:(13,14) [A], full:(13,20) [A := 3;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(15,17) [:=], full:(13,19) [A := 3], extra=[A]], count=1
+  05           Node[id:4, kind:NumLit, depth:1, tok:3, rng:(18,19) [3], full:(18,19) [3], extra=[3]]
+  02     Node[id:11, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(28,29) [{], full:(28,39) [{ A := 5; }]], count=1
+  03       Node[id:10, kind:StmtList, depth:3, tok:A, rng:(30,31) [A], full:(30,37) [A := 5;]], count=1
+  04         Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(32,34) [:=], full:(30,36) [A := 5], extra=[A]], count=1
+  05           Node[id:8, kind:NumLit, depth:1, tok:5, rng:(35,36) [5], full:(35,36) [5], extra=[5]]
+  01   Node[id:14, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(42,44) [:=], full:(40,47) [B := 17], extra=[B]], count=1
+  02     Node[id:13, kind:NumLit, depth:1, tok:17, rng:(45,47) [17], full:(45,47) [17], extra=[17]]
+
+   0) [0] JumpIfNot 5 (0=>0) X $> 3
+   1) [0] Enter (0=>1)
+   2) [1] Define A <- 3
+   3) [1] Leave (1=>0)
+   4) [0] Jump 8 (0=>0)
+   5) [0] Enter (0=>1)
+   6) [1] Define A <- 5
+   7) [1] Leave (1=>0)
+   8) [0] Define B <- 17
+   9) [0] End
+###
+> if (X > 3) { A := 3; };
+> else { A := 5; };
+> B := 17;
+Node: [if (X $> 3) { A := 3 } else { A := 5 } B := 17]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:6, tok:Semi, rng:(40,41) [;], full:(0,50) [if (X > 3) { A := 3; };\nelse { A := 5; };\nB := 17;]], count=2
+  01   Node[id:12, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,40) [if (X > 3) { A := 3; };\nelse { A := 5; }]], count=3
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(11,12) [{], full:(11,22) [{ A := 3; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:A, rng:(13,14) [A], full:(13,20) [A := 3;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(15,17) [:=], full:(13,19) [A := 3], extra=[A]], count=1
+  05           Node[id:4, kind:NumLit, depth:1, tok:3, rng:(18,19) [3], full:(18,19) [3], extra=[3]]
+  02     Node[id:11, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(29,30) [{], full:(29,40) [{ A := 5; }]], count=1
+  03       Node[id:10, kind:StmtList, depth:3, tok:A, rng:(31,32) [A], full:(31,38) [A := 5;]], count=1
+  04         Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(33,35) [:=], full:(31,37) [A := 5], extra=[A]], count=1
+  05           Node[id:8, kind:NumLit, depth:1, tok:5, rng:(36,37) [5], full:(36,37) [5], extra=[5]]
+  01   Node[id:14, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(44,46) [:=], full:(42,49) [B := 17], extra=[B]], count=1
+  02     Node[id:13, kind:NumLit, depth:1, tok:17, rng:(47,49) [17], full:(47,49) [17], extra=[17]]
+
+   0) [0] JumpIfNot 5 (0=>0) X $> 3
+   1) [0] Enter (0=>1)
+   2) [1] Define A <- 3
+   3) [1] Leave (1=>0)
+   4) [0] Jump 8 (0=>0)
+   5) [0] Enter (0=>1)
+   6) [1] Define A <- 5
+   7) [1] Leave (1=>0)
+   8) [0] Define B <- 17
+   9) [0] End
+###
+> if (X > 3)
+>     A := 3;
+> B := 17;
+Node: [if (X $> 3) A := 3; B := 17]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:5, tok:Semi, rng:(21,22) [;], full:(0,31) [if (X > 3)\n    A := 3;\nB := 17;]], count=2
+  01   Node[id:6, kind:IfStmt, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,21) [if (X > 3)\n    A := 3]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(17,19) [:=], full:(15,21) [A := 3], extra=[A]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  01   Node[id:8, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(23,30) [B := 17], extra=[B]], count=1
+  02     Node[id:7, kind:NumLit, depth:1, tok:17, rng:(28,30) [17], full:(28,30) [17], extra=[17]]
+
+   0) [0] JumpIfNot 2 (0=>0) X $> 3
+   1) [0] Define A <- 3
+   2) [0] Define B <- 17
+   3) [0] End
+###
+> if (X > 3)
+>     A := 3;
+> else
+>     A := 5;
+> B := 17;
+Node: [if (X $> 3) A := 3; else A := 5; B := 17]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:5, tok:Semi, rng:(38,39) [;], full:(0,48) [if (X > 3)\n    A := 3;\nelse\n    A := 5;\nB := 17;]], count=2
+  01   Node[id:8, kind:IfStmt, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,38) [if (X > 3)\n    A := 3;\nelse\n    A := 5]], count=3
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(17,19) [:=], full:(15,21) [A := 3], extra=[A]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  02     Node[id:7, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(34,36) [:=], full:(32,38) [A := 5], extra=[A]], count=1
+  03       Node[id:6, kind:NumLit, depth:1, tok:5, rng:(37,38) [5], full:(37,38) [5], extra=[5]]
+  01   Node[id:10, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(42,44) [:=], full:(40,47) [B := 17], extra=[B]], count=1
+  02     Node[id:9, kind:NumLit, depth:1, tok:17, rng:(45,47) [17], full:(45,47) [17], extra=[17]]
+
+   0) [0] JumpIfNot 3 (0=>0) X $> 3
+   1) [0] Define A <- 3
+   2) [0] Jump 4 (0=>0)
+   3) [0] Define A <- 5
+   4) [0] Define B <- 17
+   5) [0] End
+###
+> if (X > 3)
+>     A := 3
+> else
+>     A := 5
+> B := 17;
+Node: [if (X $> 3) A := 3; else A := 5; B := 17]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,46) [if (X > 3)\n    A := 3\nelse\n    A := 5\nB := 17;]], count=2
+  01   Node[id:8, kind:IfStmt, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,37) [if (X > 3)\n    A := 3\nelse\n    A := 5]], count=3
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,10) [(X > 3)]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(17,19) [:=], full:(15,21) [A := 3], extra=[A]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  02     Node[id:7, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(33,35) [:=], full:(31,37) [A := 5], extra=[A]], count=1
+  03       Node[id:6, kind:NumLit, depth:1, tok:5, rng:(36,37) [5], full:(36,37) [5], extra=[5]]
+  01   Node[id:10, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(40,42) [:=], full:(38,45) [B := 17], extra=[B]], count=1
+  02     Node[id:9, kind:NumLit, depth:1, tok:17, rng:(43,45) [17], full:(43,45) [17], extra=[17]]
+Error: (22,26) Tok: 'else', Message: Expected: ';', Found: 'else'
+Error: (38,39) Tok: 'B', Message: Expected: ';', Found: 'B'
+
+   0) [0] JumpIfNot 3 (0=>0) X $> 3
+   1) [0] Define A <- 3
+   2) [0] Jump 4 (0=>0)
+   3) [0] Define A <- 5
+   4) [0] Define B <- 17
+   5) [0] End
+###
+> if X > 3 { A := 3; }
+> B := 17;
+Node: [if (X $> 3) { A := 3 } B := 17]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,29) [if X > 3 { A := 3; }\nB := 17;]], count=2
+  01   Node[id:7, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,20) [if X > 3 { A := 3; }]], count=2
+  02     Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(5,6) [>], full:(3,8) [X > 3]], count=2
+  03       Op:StrictGreater
+  03       Node[id:0, kind:FirstName, depth:1, tok:X, rng:(3,4) [X], full:(3,4) [X], extra=[X]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  02     Node[id:6, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(9,10) [{], full:(9,20) [{ A := 3; }]], count=1
+  03       Node[id:5, kind:StmtList, depth:3, tok:A, rng:(11,12) [A], full:(11,18) [A := 3;]], count=1
+  04         Node[id:4, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(13,15) [:=], full:(11,17) [A := 3], extra=[A]], count=1
+  05           Node[id:3, kind:NumLit, depth:1, tok:3, rng:(16,17) [3], full:(16,17) [3], extra=[3]]
+  01   Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(23,25) [:=], full:(21,28) [B := 17], extra=[B]], count=1
+  02     Node[id:8, kind:NumLit, depth:1, tok:17, rng:(26,28) [17], full:(26,28) [17], extra=[17]]
+Error: (3,4) Tok: 'X', Message: Expected: '(', Found: 'X'
+
+   0) [0] JumpIfNot 4 (0=>0) X $> 3
+   1) [0] Enter (0=>1)
+   2) [1] Define A <- 3
+   3) [1] Leave (1=>0)
+   4) [0] Define B <- 17
+   5) [0] End
+###
+> if (X > 3 { A := 3; }
+> B := 17;
+Node: [if (X $> 3) { A := 3 } B := 17]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,30) [if (X > 3 { A := 3; }\nB := 17;]], count=2
+  01   Node[id:8, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,21) [if (X > 3 { A := 3; }]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,9) [(X > 3]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(10,11) [{], full:(10,21) [{ A := 3; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:A, rng:(12,13) [A], full:(12,19) [A := 3;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(14,16) [:=], full:(12,18) [A := 3], extra=[A]], count=1
+  05           Node[id:4, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  01   Node[id:10, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(22,29) [B := 17], extra=[B]], count=1
+  02     Node[id:9, kind:NumLit, depth:1, tok:17, rng:(27,29) [17], full:(27,29) [17], extra=[17]]
+Error: (10,11) Tok: '{', Message: Expected: ')', Found: '{'
+
+   0) [0] JumpIfNot 4 (0=>0) X $> 3
+   1) [0] Enter (0=>1)
+   2) [1] Define A <- 3
+   3) [1] Leave (1=>0)
+   4) [0] Define B <- 17
+   5) [0] End
+###
+> if (X > 3 A := 3;
+> B := 17;
+Node: [if (X $> 3) A := 3; B := 17]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:5, tok:Semi, rng:(16,17) [;], full:(0,26) [if (X > 3 A := 3;\nB := 17;]], count=2
+  01   Node[id:6, kind:IfStmt, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,16) [if (X > 3 A := 3]], count=2
+  02     Node[id:3, kind:Paren, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,9) [(X > 3]], count=1
+  03       Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [X > 3]], count=2
+  04         Op:StrictGreater
+  04         Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  02     Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(12,14) [:=], full:(10,16) [A := 3], extra=[A]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(15,16) [3], full:(15,16) [3], extra=[3]]
+  01   Node[id:8, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(20,22) [:=], full:(18,25) [B := 17], extra=[B]], count=1
+  02     Node[id:7, kind:NumLit, depth:1, tok:17, rng:(23,25) [17], full:(23,25) [17], extra=[17]]
+Error: (10,11) Tok: 'A', Message: Expected: ')', Found: 'A'
+
+   0) [0] JumpIfNot 2 (0=>0) X $> 3
+   1) [0] Define A <- 3
+   2) [0] Define B <- 17
+   3) [0] End
+###
+> if (X, Y) { A := 3; }
+> B := 17;
+Node: [if (X) <missing>; <missing>; Y; <missing>; { A }; '' := 3; <missing>; B := 17]
+Dump:
+  00 Node[id:21, kind:StmtList, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,30) [if (X, Y) { A := 3; }\nB := 17;]], count=8
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,6) [if (X,]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,5) [(X]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  02     Node[id:3, kind:ExprStmt, depth:2, tok:Comma, rng:(5,6) [,], full:(5,6) [,]], count=1
+  03       Node[id:2, kind:MissingValue, depth:1, tok:Comma, rng:(5,6) [,], full:(5,6) [,], extra=[<missing>]]
+  01   Node[id:6, kind:ExprStmt, depth:2, tok:Comma, rng:(5,6) [,], full:(5,6) [,]], count=1
+  02     Node[id:5, kind:MissingValue, depth:1, tok:Comma, rng:(5,6) [,], full:(5,6) [,], extra=[<missing>]]
+  01   Node[id:8, kind:ExprStmt, depth:2, tok:Y, rng:(7,8) [Y], full:(7,8) [Y]], count=1
+  02     Node[id:7, kind:FirstName, depth:1, tok:Y, rng:(7,8) [Y], full:(7,8) [Y], extra=[Y]]
+  01   Node[id:10, kind:ExprStmt, depth:2, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)]], count=1
+  02     Node[id:9, kind:MissingValue, depth:1, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)], extra=[<missing>]]
+  01   Node[id:14, kind:ExprStmt, depth:4, tok:CurlyOpen, rng:(10,11) [{], full:(10,13) [{ A]], count=1
+  02     Node[id:13, kind:Record, depth:3, tok:CurlyOpen, rng:(10,11) [{], full:(10,13) [{ A]], count=1
+  03       Node[id:12, kind:ExprList, depth:2, tok:A, rng:(12,13) [A], full:(12,13) [A]], count=1
+  04         Node[id:11, kind:FirstName, depth:1, tok:A, rng:(12,13) [A], full:(12,13) [A], extra=[A]]
+  01   Node[id:16, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(14,16) [:=], full:(14,18) [:= 3], extra=[_X]], count=1
+  02     Node[id:15, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  01   Node[id:18, kind:ExprStmt, depth:2, tok:CurlyClose, rng:(20,21) [}], full:(20,21) [}]], count=1
+  02     Node[id:17, kind:MissingValue, depth:1, tok:CurlyClose, rng:(20,21) [}], full:(20,21) [}], extra=[<missing>]]
+  01   Node[id:20, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(22,29) [B := 17], extra=[B]], count=1
+  02     Node[id:19, kind:NumLit, depth:1, tok:17, rng:(27,29) [17], full:(27,29) [17], extra=[17]]
+Error: (5,6) Tok: ',', Message: Expected: ')', Found: ','
+Error: (5,6) Tok: ',', Message: Expected an operand
+Error: (5,6) Tok: ',', Message: Expected: ';', Found: ','
+Error: (5,6) Tok: ',', Message: Expected an operand
+Error: (7,8) Tok: 'Y', Message: Expected: ';', Found: 'Y'
+Error: (8,9) Tok: ')', Message: Expected: ';', Found: ')'
+Error: (8,9) Tok: ')', Message: Expected an operand
+Error: (10,11) Tok: '{', Message: Expected: ';', Found: '{'
+Error: (14,16) Tok: ':=', Message: Expected: '}', Found: ':='
+Error: (14,16) Tok: ':=', Message: Expected: ';', Found: ':='
+Error: (14,16) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+Error: (20,21) Tok: '}', Message: Expected an operand
+Error: (22,23) Tok: 'B', Message: Expected: ';', Found: 'B'
+
+   0) [0] JumpIfNot 2 (0=>0) X
+   1) [0] Expr (<missing>)
+   2) [0] Expr (<missing>)
+   3) [0] Expr Y
+   4) [0] Expr (<missing>)
+   5) [0] Expr { A }
+   6) [0] Define _X <- 3
+   7) [0] Expr (<missing>)
+   8) [0] Define B <- 17
+   9) [0] End
+###
+> if (A)
+>     if (B) X; else Y
+Node: [if (A) if (B) X; else Y]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,27) [if (A)\n    if (B) X; else Y]], count=1
+  01   Node[id:9, kind:IfStmt, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,27) [if (A)\n    if (B) X; else Y]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:8, kind:IfStmt, depth:3, tok:KwdIf, rng:(11,13) [if], full:(11,27) [if (B) X; else Y]], count=3
+  03       Node[id:3, kind:Paren, depth:2, tok:ParenOpen, rng:(14,15) [(], full:(14,17) [(B)]], count=1
+  04         Node[id:2, kind:FirstName, depth:1, tok:B, rng:(15,16) [B], full:(15,16) [B], extra=[B]]
+  03       Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(18,19) [X], full:(18,19) [X]], count=1
+  04         Node[id:4, kind:FirstName, depth:1, tok:X, rng:(18,19) [X], full:(18,19) [X], extra=[X]]
+  03       Node[id:7, kind:ExprStmt, depth:2, tok:Y, rng:(26,27) [Y], full:(26,27) [Y]], count=1
+  04         Node[id:6, kind:FirstName, depth:1, tok:Y, rng:(26,27) [Y], full:(26,27) [Y], extra=[Y]]
+
+   0) [0] JumpIfNot 5 (0=>0) A
+   1) [0] JumpIfNot 4 (0=>0) B
+   2) [0] Expr X
+   3) [0] Jump 5 (0=>0)
+   4) [0] Expr Y
+   5) [0] End
+###
+> if (A)
+>     if (B) { X; } // Needs semi.
+> C := 17;
+Node: [if (A) if (B) { X }; C := 17]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:7, tok:KwdIf, rng:(0,2) [if], full:(0,48) [if (A)\n    if (B) { X; } // Needs semi.\nC := 17;]], count=2
+  01   Node[id:9, kind:IfStmt, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,24) [if (A)\n    if (B) { X; }]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:8, kind:IfStmt, depth:5, tok:KwdIf, rng:(11,13) [if], full:(11,24) [if (B) { X; }]], count=2
+  03       Node[id:3, kind:Paren, depth:2, tok:ParenOpen, rng:(14,15) [(], full:(14,17) [(B)]], count=1
+  04         Node[id:2, kind:FirstName, depth:1, tok:B, rng:(15,16) [B], full:(15,16) [B], extra=[B]]
+  03       Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(18,19) [{], full:(18,24) [{ X; }]], count=1
+  04         Node[id:6, kind:StmtList, depth:3, tok:X, rng:(20,21) [X], full:(20,22) [X;]], count=1
+  05           Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(20,21) [X], full:(20,21) [X]], count=1
+  06             Node[id:4, kind:FirstName, depth:1, tok:X, rng:(20,21) [X], full:(20,21) [X], extra=[X]]
+  01   Node[id:11, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(42,44) [:=], full:(40,47) [C := 17], extra=[C]], count=1
+  02     Node[id:10, kind:NumLit, depth:1, tok:17, rng:(45,47) [17], full:(45,47) [17], extra=[17]]
+Error: (40,41) Tok: 'C', Message: Expected: ';', Found: 'C'
+Comment: Range=(25,39), Tid=CommentLine, Text=[// Needs semi.]
+
+   0) [0] JumpIfNot 5 (0=>0) A
+   1) [0] JumpIfNot 5 (0=>0) B
+   2) [0] Enter (0=>1)
+   3) [1] Expr X
+   4) [1] Leave (1=>0)
+   5) [0] Define C <- 17
+   6) [0] End
+###
+> if (A)
+>     if (B) { X; };
+> C := 17;
+Node: [if (A) if (B) { X }; C := 17]
+Dump:
+  00 Node[id:12, kind:StmtList, depth:7, tok:Semi, rng:(24,25) [;], full:(0,34) [if (A)\n    if (B) { X; };\nC := 17;]], count=2
+  01   Node[id:9, kind:IfStmt, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,24) [if (A)\n    if (B) { X; }]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:8, kind:IfStmt, depth:5, tok:KwdIf, rng:(11,13) [if], full:(11,24) [if (B) { X; }]], count=2
+  03       Node[id:3, kind:Paren, depth:2, tok:ParenOpen, rng:(14,15) [(], full:(14,17) [(B)]], count=1
+  04         Node[id:2, kind:FirstName, depth:1, tok:B, rng:(15,16) [B], full:(15,16) [B], extra=[B]]
+  03       Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(18,19) [{], full:(18,24) [{ X; }]], count=1
+  04         Node[id:6, kind:StmtList, depth:3, tok:X, rng:(20,21) [X], full:(20,22) [X;]], count=1
+  05           Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(20,21) [X], full:(20,21) [X]], count=1
+  06             Node[id:4, kind:FirstName, depth:1, tok:X, rng:(20,21) [X], full:(20,21) [X], extra=[X]]
+  01   Node[id:11, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(28,30) [:=], full:(26,33) [C := 17], extra=[C]], count=1
+  02     Node[id:10, kind:NumLit, depth:1, tok:17, rng:(31,33) [17], full:(31,33) [17], extra=[17]]
+
+   0) [0] JumpIfNot 5 (0=>0) A
+   1) [0] JumpIfNot 5 (0=>0) B
+   2) [0] Enter (0=>1)
+   3) [1] Expr X
+   4) [1] Leave (1=>0)
+   5) [0] Define C <- 17
+   6) [0] End
+###
+> if (A)
+>     namespace N { X }
+> C := 17;
+Node: [if (A) namespace N { X }; C := 17]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:7, tok:KwdIf, rng:(0,2) [if], full:(0,37) [if (A)\n    namespace N { X }\nC := 17;]], count=2
+  01   Node[id:7, kind:IfStmt, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,28) [if (A)\n    namespace N { X }]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(11,20) [namespace], full:(11,28) [namespace N { X }], extra=[N]], count=1
+  03       Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(23,24) [{], full:(23,28) [{ X }]], count=1
+  04         Node[id:4, kind:StmtList, depth:3, tok:X, rng:(25,26) [X], full:(25,26) [X]], count=1
+  05           Node[id:3, kind:ExprStmt, depth:2, tok:X, rng:(25,26) [X], full:(25,26) [X]], count=1
+  06             Node[id:2, kind:FirstName, depth:1, tok:X, rng:(25,26) [X], full:(25,26) [X], extra=[X]]
+  01   Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(31,33) [:=], full:(29,36) [C := 17], extra=[C]], count=1
+  02     Node[id:8, kind:NumLit, depth:1, tok:17, rng:(34,36) [17], full:(34,36) [17], extra=[17]]
+Error: (29,30) Tok: 'C', Message: Expected: ';', Found: 'C'
+
+   0) [0] JumpIfNot 4 (0=>0) A
+   1) [0] Enter (0=>1) N
+   2) [1] Expr X
+   3) [1] Leave (1=>0)
+   4) [0] Define C <- 17
+   5) [0] End
+###
+> if (A)
+>     namespace N { X }
+> else
+>     C := 17;
+Node: [if (A) namespace N { X }; else C := 17]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:7, tok:KwdIf, rng:(0,2) [if], full:(0,46) [if (A)\n    namespace N { X }\nelse\n    C := 17;]], count=1
+  01   Node[id:9, kind:IfStmt, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,45) [if (A)\n    namespace N { X }\nelse\n    C := 17]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:6, kind:NamespaceStmt, depth:5, tok:KwdNamespace, rng:(11,20) [namespace], full:(11,28) [namespace N { X }], extra=[N]], count=1
+  03       Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(23,24) [{], full:(23,28) [{ X }]], count=1
+  04         Node[id:4, kind:StmtList, depth:3, tok:X, rng:(25,26) [X], full:(25,26) [X]], count=1
+  05           Node[id:3, kind:ExprStmt, depth:2, tok:X, rng:(25,26) [X], full:(25,26) [X]], count=1
+  06             Node[id:2, kind:FirstName, depth:1, tok:X, rng:(25,26) [X], full:(25,26) [X], extra=[X]]
+  02     Node[id:8, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(40,42) [:=], full:(38,45) [C := 17], extra=[C]], count=1
+  03       Node[id:7, kind:NumLit, depth:1, tok:17, rng:(43,45) [17], full:(43,45) [17], extra=[17]]
+Error: (29,33) Tok: 'else', Message: Expected: ';', Found: 'else'
+
+   0) [0] JumpIfNot 5 (0=>0) A
+   1) [0] Enter (0=>1) N
+   2) [1] Expr X
+   3) [1] Leave (1=>0)
+   4) [0] Jump 6 (0=>0)
+   5) [0] Define C <- 17
+   6) [0] End
+###
+> if
+Node: [if ((<missing>)) <missing>]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,2) [if]], count=1
+  01   Node[id:3, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,2) [if]], count=2
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) [], extra=[<missing>]]
+  02     Node[id:2, kind:ExprStmt, depth:2, tok:Eof, rng:(2,2) [], full:(2,2) []], count=1
+  03       Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) [], extra=[<missing>]]
+Error: (2,2) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (2,2) Tok: '<eof>', Message: Expected an operand
+Error: (2,2) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] JumpIfNot 2 (0=>0) (<missing>)
+   1) [0] Expr (<missing>)
+   2) [0] End
+###
+> if (A)
+Node: [if (A) <missing>]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,6) [if (A)]], count=1
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,6) [if (A)]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:ExprStmt, depth:2, tok:Eof, rng:(6,6) [], full:(6,6) []], count=1
+  03       Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(6,6) [], full:(6,6) [], extra=[<missing>]]
+Error: (6,6) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] JumpIfNot 2 (0=>0) A
+   1) [0] Expr (<missing>)
+   2) [0] End
+###
+> if (A) B; else
+Node: [if (A) B; else <missing>]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:4, tok:KwdIf, rng:(0,2) [if], full:(0,14) [if (A) B; else]], count=1
+  01   Node[id:6, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,14) [if (A) B; else]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:ExprStmt, depth:2, tok:B, rng:(7,8) [B], full:(7,8) [B]], count=1
+  03       Node[id:2, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  02     Node[id:5, kind:ExprStmt, depth:2, tok:Eof, rng:(14,14) [], full:(14,14) []], count=1
+  03       Node[id:4, kind:MissingValue, depth:1, tok:Eof, rng:(14,14) [], full:(14,14) [], extra=[<missing>]]
+Error: (14,14) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] JumpIfNot 3 (0=>0) A
+   1) [0] Expr B
+   2) [0] Jump 4 (0=>0)
+   3) [0] Expr (<missing>)
+   4) [0] End
+###
+> if (A) { } else { B := 5 }
+Node: [if (A) {  } else { B := 5 }]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,26) [if (A) { } else { B := 5 }]], count=1
+  01   Node[id:8, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,26) [if (A) { } else { B := 5 }]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(7,8) [{], full:(7,10) [{ }]], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:CurlyClose, rng:(9,10) [}], full:(9,10) [}]], count=0
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(16,17) [{], full:(16,26) [{ B := 5 }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:B, rng:(18,19) [B], full:(18,24) [B := 5]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(20,22) [:=], full:(18,24) [B := 5], extra=[B]], count=1
+  05           Node[id:4, kind:NumLit, depth:1, tok:5, rng:(23,24) [5], full:(23,24) [5], extra=[5]]
+
+   0) [0] JumpIfNot 4 (0=>0) A
+   1) [0] Enter (0=>1)
+   2) [1] Leave (1=>0)
+   3) [0] Jump 7 (0=>0)
+   4) [0] Enter (0=>1)
+   5) [1] Define B <- 5
+   6) [1] Leave (1=>0)
+   7) [0] End
+###
+> if (A)
+>     ; // REVIEW: Should we allow empty statement?
+> else { X; }
+Node: [if (A) <missing>; else { X }]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:6, tok:KwdIf, rng:(0,2) [if], full:(0,68) [if (A)\n    ; // REVIEW: Should we allow empty statement?\nelse { X; }]], count=1
+  01   Node[id:8, kind:IfStmt, depth:5, tok:KwdIf, rng:(0,2) [if], full:(0,68) [if (A)\n    ; // REVIEW: Should we allow empty statement?\nelse { X; }]], count=3
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:ExprStmt, depth:2, tok:Semi, rng:(11,12) [;], full:(11,12) [;]], count=1
+  03       Node[id:2, kind:MissingValue, depth:1, tok:Semi, rng:(11,12) [;], full:(11,12) [;], extra=[<missing>]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(62,63) [{], full:(62,68) [{ X; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:X, rng:(64,65) [X], full:(64,66) [X;]], count=1
+  04         Node[id:5, kind:ExprStmt, depth:2, tok:X, rng:(64,65) [X], full:(64,65) [X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:X, rng:(64,65) [X], full:(64,65) [X], extra=[X]]
+Error: (11,12) Tok: ';', Message: Expected an operand
+Comment: Range=(13,56), Tid=CommentLine, Text=[// REVIEW: Should we allow empty statement?]
+
+   0) [0] JumpIfNot 3 (0=>0) A
+   1) [0] Expr (<missing>)
+   2) [0] Jump 6 (0=>0)
+   3) [0] Enter (0=>1)
+   4) [1] Expr X
+   5) [1] Leave (1=>0)
+   6) [0] End
+###

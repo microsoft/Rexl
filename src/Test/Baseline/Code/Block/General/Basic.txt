@@ -1,0 +1,123 @@
+>>> *** Source:
+    T := Range(1, 10);
+    T;
+    "*** Factorial ***";
+    T->Fold(as n, p: 1, p * n);
+    "*** Binding Error ***";
+    T->Filter(it = "hello");
+    "*** Filter ***";
+    T->Filter(it > 3);
+    "*** this must be explicitly set ***";
+    this := 17;
+    this + 1;
+    this + 1;
+    this := -12;
+    this + 1;
+    this + 1;
+    "*** this and tasks ***";
+    this := 23;
+    finish Pipe(Range(3)); // Doesn't affect "this".
+    this;
+    play Pipe(Range(3)); // Doesn't affect "this".
+    this;
+    this := Pipe(Range(3)); // Affects "this".
+    this;
+
+>>> *** Instructions:
+   0) [0] Define T <- Range(1, 10)
+   1) [0] Expr T
+   2) [0] Expr "*** Factorial ***"
+   3) [0] Expr T->Fold(as n, p : 1, p * n)
+   4) [0] Expr "*** Binding Error ***"
+   5) [0] Expr T->Filter(it @= "hello")
+   6) [0] Expr "*** Filter ***"
+   7) [0] Expr T->Filter(it $> 3)
+   8) [0] Expr "*** this must be explicitly set ***"
+   9) [0] Define this <- 17
+  10) [0] Expr this + 1
+  11) [0] Expr this + 1
+  12) [0] Define this <- -12
+  13) [0] Expr this + 1
+  14) [0] Expr this + 1
+  15) [0] Expr "*** this and tasks ***"
+  16) [0] Define this <- 23
+  17) [0] TaskProc finish Pipe(Range(3))
+  18) [0] Expr this
+  19) [0] TaskProc play Pipe(Range(3))
+  20) [0] Expr this
+  21) [0] Define this <- Pipe(Range(3))
+  22) [0] Expr this
+  23) [0] End
+
+>    0) [0] Define T <- Range(1, 10)
+Global 'T' has DType: i8*, SysType: Seq<i8>
+>    1) [0] Expr T
+Seq<i8>
+   0) 1
+   1) 2
+   2) 3
+   3) 4
+   4) 5
+   5) 6
+   6) 7
+   7) 8
+   8) 9
+>    2) [0] Expr "*** Factorial ***"
+*** Factorial ***
+>    3) [0] Expr T->Fold(as n, p : 1, p * n)
+362880
+*** Ctx ping count: 10
+    [0](10): Fold(*1: T, %2: 1, Mul(%2, *1))
+>    4) [0] Expr "*** Binding Error ***"
+*** Binding Error ***
+>    5) [0] Expr T->Filter(it @= "hello")
+*** Bind diagnostics:
+  [Basic.txt] Error: (113,120) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+>    6) [0] Expr "*** Filter ***"
+*** Filter ***
+>    7) [0] Expr T->Filter(it $> 3)
+Seq<i8>
+   0) 4
+   1) 5
+   2) 6
+   3) 7
+   4) 8
+   5) 9
+*** Ctx ping count: 3
+    [0](3): Take(*1: T, [if] *1 @> 3)
+>    8) [0] Expr "*** this must be explicitly set ***"
+*** this must be explicitly set ***
+>    9) [0] Define this <- 17
+this has DType: i8, SysType: i8
+>   10) [0] Expr this + 1
+18
+>   11) [0] Expr this + 1
+18
+>   12) [0] Define this <- -12
+>   13) [0] Expr this + 1
+-11
+>   14) [0] Expr this + 1
+-11
+>   15) [0] Expr "*** this and tasks ***"
+*** this and tasks ***
+>   16) [0] Define this <- 23
+>   17) [0] TaskProc finish Pipe(Range(3))
+<Anonymous task> now playing
+<Anonymous task> finished
+>   18) [0] Expr this
+23
+>   19) [0] TaskProc play Pipe(Range(3))
+<Anonymous task> now playing
+>   20) [0] Expr this
+23
+>   21) [0] Define this <- Pipe(Range(3))
+this has (modified) DType: i8*, SysType: Seq<i8>
+<Anonymous task> now playing
+<Anonymous task> finished
+>   22) [0] Expr this
+Seq<i8>
+   0) 0
+   1) 1
+   2) 2
+>   23) [0] End
+

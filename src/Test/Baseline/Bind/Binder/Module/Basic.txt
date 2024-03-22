@@ -1,0 +1,378 @@
+> module {
+    param A := 3;
+    const B := A * A;
+}
+module { param A := 3; const B := A * A } : M{param A:i8, const B:i8}
+Binder : module[items!1]{ param A := 3; const B := Mul(!1.0, !1.0) }
+###
+> module {
+    param A := 3;
+    param B := A * A;
+    const K := A + B;
+    var X from 3 to B def K;
+    let Y := X * X;
+    msr M := Y + X;
+    con C := Y <= 100;
+}
+module { param A := 3; param B := A * A; const K := A + B; var X from 3 to B def K; let Y := X * X; msr M := Y + X; con C := Y $<= 100 } : M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}
+Binder : module[items!1]{ param A := 3; param B := Mul(!1.0, !1.0); const K := Add(!1.0, !1.1); var X from 3 to !1.1 def !1.2; let Y := Mul(!1.5, !1.5); msr M := Add(!1.6, !1.5); con C := !1.6 @<= 100 }
+###
+> module { param A := 3; const A := 17; }
+module { param A := 3; const A := 17 } : M{param A:i8}
+*** Error: (29,30) Node: const A := 17, Tok: 'A', Message: Duplicate module symbol name: 'A'
+Binder : module[items!1]{ param A := 3 }
+###
+> module { con X := 3.5; }
+module { con X := 3.5 } : M{let X:r8}
+*** Error: (15,17) Node: con X := 3.5, Message: A module constraint must be of boolean type, not: 'r8'
+Binder : module[items!1]{ let X := 3.5 }
+###
+> module {
+    param D := Range(10);
+    var X in D req;
+}
+module { param D := Range(10); var X in D req } : M{param D:i8*, var X:i8}
+Binder : module[items!1]{ param D := Range(10); var X in !1.0 def TakeOne(!1.1, [else] 0) }
+###
+> module {
+    param D := Range(10);
+    var X in D opt;
+}
+module { param D := Range(10); var X in D opt } : M{param D:i8*, var X:i8?}
+Binder : module[items!1]{ param D := Range(10); var X in !1.0 def TakeOne(!1.1, [else] null) opt }
+###
+> module {
+    param D := 10;
+    var X in D opt;
+}
+module { param D := 10; var X in D opt } : M{param D:i8, var X:i8?}
+*** Error: (41,42) Node: D, Message: The 'in' expression for a module free variable must have a sequence type, not: 'i8'
+*** Error: (41,42) Node: D, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : module[items!1]{ param D := 10; var X in Error(ErrBadType_Src_Dst) def TakeOne(!1.1, [else] null) opt }
+###
+> module { var X in [0, 1, null] opt; }
+module { var X in [0, 1, null] opt } : M{var X:i8?}
+Binder : module[items!1]{ var X in [Opt<i8?>(0), Opt<i8?>(1), null] def TakeOne(!1.0, [else] null) opt }
+###
+> module { const X := 3; var X from 0; }
+module { const X := 3; var X from 0 } : M{const X:i8}
+*** Error: (27,28) Node: var X from 0, Tok: 'X', Message: Duplicate module symbol name: 'X'
+Binder : module[items!1]{ const X := 3 }
+###
+> module { const X := 3; var X from 0 to "hi"; }
+module { const X := 3; var X from 0 to "hi" } : M{const X:i8}
+*** Error: (39,43) Node: "hi", Message: The given types are incompatible: 'i8' and 's'
+*** Error: (39,43) Node: "hi", Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (27,28) Node: var X from 0 to "hi", Tok: 'X', Message: Duplicate module symbol name: 'X'
+Binder : module[items!1]{ const X := 3 }
+###
+> module { var X from 0 opt; }
+module { var X from 0 opt } : M{var X:i8?}
+Binder : module[items!1]{ var X from Opt<i8?>(0) def !1.0 opt }
+###
+> module { var X to 10 opt; }
+module { var X to 10 opt } : M{var X:i8?}
+Binder : module[items!1]{ var X to Opt<i8?>(10) def !1.0 opt }
+###
+> module { var X def 0 opt; }
+module { var X def 0 opt } : M{var X:i8?}
+Binder : module[items!1]{ var X def Opt<i8?>(0) opt }
+###
+> module { var X from 0 to 10.5; }
+module { var X from 0 to 10.5 } : M{var X:r8}
+Binder : module[items!1]{ var X from 0 to 10.5 def !1.0 }
+###
+> module { var X from 0 def 10.5; }
+module { var X from 0 def 10.5 } : M{var X:r8}
+Binder : module[items!1]{ var X from 0 def 10.5 }
+###
+> module { var X from Range(10); }
+module { var X from Range(10) } : M{var X:i8*}
+Binder : module[items!1]{ var X from Range(10) def !1.0 opt }
+###
+> module { var X from Range(10) req; }
+module { var X from Range(10) req } : M{var X:i8*}
+*** Warning: (30,33) Node: var X from Range(10) req, Tok: 'req', Message: Ignoring unexpected 'req'
+Binder : module[items!1]{ var X from Range(10) def !1.0 opt }
+###
+> module { var X from Range(10) def Range(1, 10, 2); }
+module { var X from Range(10) def Range(1, 10, 2) } : M{var X:i8*}
+Binder : module[items!1]{ var X from Range(10) def Range(1, 10, 2) opt }
+###
+> module { var X from Range(10) def 7; }
+module { var X from Range(10) def 7 } : M{var X:i8*}
+*** Error: (34,35) Node: 7, Message: The given types are incompatible: 'i8*' and 'i8'
+*** Error: (34,35) Node: 7, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : module[items!1]{ var X from Range(10) def Error(ErrBadType_Src_Dst) opt }
+###
+> module { var X to Range(10); }
+module { var X to Range(10) } : M{var X:i8*}
+*** Error: (15,17) Node: Range(10), Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+Binder : module[items!1]{ var X from Range(10) def !1.0 opt }
+###
+> module { var X to Range(10) opt; }
+module { var X to Range(10) opt } : M{var X:i8*}
+*** Error: (15,17) Node: Range(10), Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+Binder : module[items!1]{ var X from Range(10) def !1.0 opt }
+###
+> module { var X to Range(10) def Range(1, 10, 2); }
+module { var X to Range(10) def Range(1, 10, 2) } : M{var X:i8*}
+*** Error: (15,17) Node: Range(10), Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+Binder : module[items!1]{ var X from Range(10) def Range(1, 10, 2) opt }
+###
+> module { var X to Range(10) def 7; }
+module { var X to Range(10) def 7 } : M{var X:i8*}
+*** Error: (15,17) Node: Range(10), Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+*** Error: (32,33) Node: 7, Message: The given types are incompatible: 'i8*' and 'i8'
+*** Error: (32,33) Node: 7, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : module[items!1]{ var X from Range(10) def Error(ErrBadType_Src_Dst) opt }
+###
+> module { var X from Range(10) to 17; }
+module { var X from Range(10) to 17 } : M{var X:i8*}
+*** Error: (30,32) Node: 17, Tok: 'to', Message: A module free variable can't have 'to' when its domain is a sequence
+Binder : module[items!1]{ var X from Range(10) def !1.0 opt }
+###
+> module { var X to 10 from 0; }
+module { var X from 0 to 10 } : M{var X:i8}
+Binder : module[items!1]{ var X from 0 to 10 def !1.0 }
+###
+> module { var X to 10 from Date(1,2,3); }
+module { var X from Date(1, 2, 3) to 10 } : M{var X:d}
+*** Error: (18,20) Node: 10, Message: The given types are incompatible: 'd' and 'i8'
+*** Error: (18,20) Node: 10, Message: Invalid operand type: cannot convert type 'i8' to 'd'
+Binder : module[items!1]{ var X from Date(1, 2, 3) to Error(ErrBadType_Src_Dst) def !1.0 }
+###
+> With(M : module { var X from Range(10); let N := X->Count() }, M.X)
+With(M : module { var X from Range(10); let N := X->Count() }, M.X) : i8*
+Binder : With(!2: module[items!1]{ var X from Range(10) def !1.0 opt; let N := Count(!1.1) }, ModToRec(!2).X)
+Reducer: ModToRec(module[items!1]{ var X from Range(10) def !1.0 opt; let N := Count(!1.1) }).X
+###
+> With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N))
+With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N)) : (i8*, i8)
+Binder : With(!2: module[items!1]{ var X from Range(10) def !1.0 opt; let N := Count(!1.1) }, (ModToRec(!2).X, ModToRec(!2).N))
+###
+> With(
+    M1 : module { var X in Range(10); let Y := X * X },
+    M2 : module { var X := 17; let Y := X + 1 },
+    (M1, M2, [M1, M2]))
+With(M1 : module { var X in Range(10); let Y := X * X }, M2 : module { var X def 17; let Y := X + 1 }, (M1, M2, [M1, M2])) : (M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)
+Binder : With(!2: module[items!1]{ var X in Range(10) def TakeOne(!1.0, [else] 0); let Y := Mul(!1.1, !1.1) }, !4: module[items!3]{ var X def 17; let Y := Add(!3.0, 1) }, (!2, !4, [!2, !4]))
+###
+> With(
+    M : module { var X in Range(10) },
+    R : { X: 17 },
+    (M, R, [M, R]))
+With(M : module { var X in Range(10) }, R : { X : 17 }, (M, R, [M, R])) : (M{var X:i8}, {X:i8}, {X:i8}*)
+Binder : With(!2: module[items!1]{ var X in Range(10) def TakeOne(!1.0, [else] 0) }, !3: {X:17}, (!2, !3, [ModToRec(!2), !3]))
+###
+> With(
+    M : module { var X in Range(10); var Z from 0.0 to 100 },
+    R : { X: 17, Y: "Blah" },
+    (M, R, [M, R]))
+With(M : module { var X in Range(10); var Z from 0 to 100 }, R : { X : 17, Y : "Blah" }, (M, R, [M, R])) : (M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)
+Binder : With(!2: module[items!1]{ var X in Range(10) def TakeOne(!1.0, [else] 0); var Z from 0 to 100 def !1.2 }, !3: {X:17, Y:"Blah"}, (!2, !3, [With(!4: ModToRec(!2), {X:!4.X, Y:str(<null>), Z:Opt<r8?>(!4.Z)}), With(!5: !3, {X:!5.X, Y:!5.Y, Z:null})]))
+Reducer: With(!2: module[items!1]{ var X in Range(10) def TakeOne(!1.0, [else] 0); var Z from 0 to 100 def !1.2 }, !3: {X:17, Y:"Blah"}, !4: ModToRec(!2), (!2, !3, [{X:!4.X, Y:str(<null>), Z:Opt<r8?>(!4.Z)}, {X:!3.X, Y:!3.Y, Z:null}]))
+###
+> module {
+    param A := 3;
+    const B := it.A;
+    const C := Range(A)->Sum(it * it$1.B);
+    const D := Range(A)->Sum(it * it$2);
+}
+module { param A := 3; const B := it.A; const C := Range(A)->Sum(it * it$1.B); const D := Range(A)->Sum(it * it$2) } : M{param A:i8, const B:i8, const C:i8, const D:i8}
+*** Error: (42,44) Node: it, Message: A module can't be referenced via 'it'
+*** Error: (82,86) Node: it$1, Message: A module can't be referenced via 'it'
+*** Error: (125,129) Node: it$2, Message: Invalid scope index; there are not enough values in scope
+Binder : module[items!1]{ param A := 3; const B := ModToRec(Error(ErrBadModuleIt)).A; const C := Sum(*2: Range(!1.0), Mul(*2, ModToRec(Error(ErrBadModuleIt)).B)); const D := Sum(*3: Range(!1.0), Mul(*3, Unit<i8>(Error(ErrBadItSlot)))) }
+Reducer: module[items!1]{ param A := 3; const B := ModToRec(Error(ErrBadModuleIt)).A; const C := Sum(*2: Range(!1.0), Mul(*2, ModToRec(Error(ErrBadModuleIt)).B)); const D := Sum(*3: Range(!1.0), 0) }
+###
+> module { var X from 0; const Z := X * 2; }
+module { var X from 0; const Z := X * 2 } : M{var X:i8, const Z:i8}
+*** Error: (34,35) Node: X, Message: A module constant can't reference a variable
+Binder : module[items!1]{ var X from 0 def !1.0; const Z := Mul(!1.1, 2) }
+###
+> module { var X from 0; let Y := X * 3; param Z := Y * 2; }
+module { var X from 0; let Y := X * 3; param Z := Y * 2 } : M{var X:i8, let Y:i8, param Z:i8}
+*** Error: (50,51) Node: Y, Message: The default expression for a module parameter can't reference a variable
+Binder : module[items!1]{ var X from 0 def !1.0; let Y := Mul(!1.1, 3); param Z := Mul(!1.2, 2) }
+###
+> module { var X from 0; let Y := X * 3; var Z from 0 to Y * 2; }
+module { var X from 0; let Y := X * 3; var Z from 0 to Y * 2 } : M{var X:i8, let Y:i8, var Z:i8}
+*** Error: (55,56) Node: Y, Message: A domain expression for a module free variable can't reference a variable
+Binder : module[items!1]{ var X from 0 def !1.0; let Y := Mul(!1.1, 3); var Z from 0 to Mul(!1.2, 2) def !1.3 }
+###
+> module { param A := 3; const B := A * a; }
+Corrected by binder: [module { param A := 3; const B := A * A; }]
+module { param A := 3; const B := A * a } : M{param A:i8, const B:i8}
+*** Error: (38,39) Node: a, Message: Name does not exist in the current context, did you intend 'A'?
+Binder : module[items!1]{ param A := 3; const B := Mul(!1.0, !1.0) }
+###
+> module { param 'A A' := 3; const B := 'A A' * 'A a'; }
+Corrected by binder: [module { param 'A A' := 3; const B := 'A A' * 'A A'; }]
+module { param 'A A' := 3; const B := 'A A' * 'A a' } : M{param 'A A':i8, const B:i8}
+*** Error: (46,51) Node: 'A a', Message: Name does not exist in the current context, did you intend ''A A''?
+Binder : module[items!1]{ param 'A A' := 3; const B := Mul(!1.0, !1.0) }
+###
+
+**** New globals: {M:M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}, QM:M{param A:i8, msr S:i8}?, QR:{A:i8}?, R:{A:i8}, b:b}
+
+> M with {A:17}
+M=>{ A : 17 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, {A:17})
+###
+> M with {A:it.A+1}
+M=>{ A : it.A + 1 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, {A:Add(ModToRec(!1).A, 1)})
+###
+> M with {A:A+1}
+M=>{ A : A + 1 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, {A:Add(ModToRec(!1).A, 1)})
+###
+> M with {A:a+1} // Error.
+Corrected by binder: [M with {A:A+1} // Error.]
+M=>{ A : a + 1 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+*** Error: (10,11) Node: a, Tok: 'a', Message: Unknown field, did you intend 'A' in type: '{A:i8, B:i8, S:i8, T:s, X:i8}'
+Binder : ModuleProjection(!1: M, {A:Add(ModToRec(!1).A, 1)})
+###
+> M with {B:17}
+M=>{ B : 17 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+*** Error: (7,8) Node: { B : 17 }, Message: Record field name is not a settable symbol in the source module: 'B'
+Binder : M
+###
+> M with {A:17, X:-3}
+M=>{ A : 17, X : -3 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, {A:17, X:-3})
+###
+> M with {A:17, X:-2.5}
+M=>{ A : 17, X : -2.5 } : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+*** Error: (7,8) Node: { A : 17, X : -2.5 }, Message: Invalid operand type: cannot convert type '{A:i8, X:r8}' to '{A:i8, X:i8}'
+Binder : ModuleProjection(!1: M, Error(ErrBadType_Src_Dst))
+###
+> M=>(R)
+M=>(R) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, R)
+###
+> M=>(R & {X:B*2})
+M=>(R & { X : B * 2 }) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+Binder : ModuleProjection(!1: M, RecordConcat(R, {X:Mul(ModToRec(!1).B, 2)}))
+###
+> M=>(R & {x:B*2}) // Error.
+M=>(R & { x : B * 2 }) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+*** Error: (3,4) Node: R & { x : B * 2 }, Message: Record field name is not a symbol in the source module: 'x'
+Binder : ModuleProjection(!1: M, With(!2: RecordConcat(R, {x:Mul(ModToRec(!1).B, 2)}), {A:!2.A}))
+Reducer: ModuleProjection(!1: M, {A:RecordConcat(R, {x:Mul(ModToRec(!1).B, 2)}).A})
+###
+> M=>("hi")
+M=>("hi") : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}
+*** Error: (3,4) Node: "hi", Message: Operand must be a record
+Binder : M
+###
+> R with { B:"hi" }
+R=>{ B : "hi" } : {B:s}
+*** Error: (0,1) Node: R, Message: Operand must be a module
+Binder : With(!1: R, {B:"hi"})
+Reducer: {B:"hi"}
+###
+> R => { A:17 }
+R=>{ A : 17 } : {A:i8}
+*** Error: (0,1) Node: R, Message: Operand must be a module
+Binder : With(!1: R, {A:17})
+Reducer: {A:17}
+###
+> Module.Maximize(M, S)
+Module.Maximize(M, S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> M->Minimize(S)
+M->Minimize(S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Minimize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", false)
+###
+> QM->Minimize(S)
+QM->Minimize(S) : M{param A:i8, msr S:i8}?
+Binder : Guard(?1: QM, Module.Minimize*(!2: ?1, ModToRec(!2).S))
+Reducer: Guard(?1: QM, Module.Opt(?1, "S", false))
+###
+> Module.Optimize(M, S, b)
+Module.Optimize(M, S, b) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, b)
+Reducer: Module.Opt(M, "S", b)
+###
+> QM->Optimize(S, b)
+QM->Optimize(S, b) : M{param A:i8, msr S:i8}?
+Binder : Guard(?1: QM, Module.Optimize*(!2: ?1, ModToRec(!2).S, b))
+Reducer: Guard(?1: QM, Module.Opt(?1, "S", b))
+###
+> Module.Maximize(M, s) // Error.
+Corrected by binder: [Module.Maximize(M, S) // Error.]
+Module.Maximize(M, s) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (19,20) Node: s, Tok: 's', Message: Unknown field, did you intend 'S' in type: '{A:i8, B:i8, S:i8, T:s, X:i8}'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> Module.Maximize(M, A) // Error.
+Module.Maximize(M, A) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: Unknown measure: 'A'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).A)
+###
+> M->Maximize(X) // Error.
+M->Maximize(X) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: Unknown measure: 'X'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).X)
+###
+> Module.Maximize(R, A) // Error.
+Module.Maximize(R, A) : M{}?
+*** Error: (16,17) Node: R, Message: Operand must be a module
+*** Error: (16,17) Node: R, Message: Invalid operand type for scope slot: given type '{A:i8}', need type 'M{}'
+Binder : Module.Maximize*(!1: R, !1.A)
+###
+> Module.Maximize(QR, A) // Error.
+Module.Maximize(QR, A) : M{}?
+*** Error: (16,18) Node: QR, Message: Operand must be a module
+*** Error: (16,18) Node: QR, Message: Invalid operand type for scope slot: given type '{A:i8}', need type 'M{}'
+Binder : Guard(?1: QR, Module.Maximize*(!2: ?1, !2.A))
+###
+> M->Maximize(S, "GLPK")
+M->Maximize(S, "GLPK") : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S, "GLPK")
+Reducer: Module.Opt(M, "S", true, "GLPK")
+###
+> Module.Maximize(M, 0) // Error.
+Module.Maximize(M, 0) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, 0)
+###
+> Module.Maximize(M, 2 * S) // Error.
+Module.Maximize(M, 2 * S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, Mul(2, ModToRec(!1).S))
+Reducer: Module.Maximize*(!1: M, Mul(ModToRec(!1).S, 2))
+###
+> Module.Minimize(M, -S) // Error.
+Module.Minimize(M, -S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Minimize*(!1: M, Add([-] ModToRec(!1).S))
+###
+> Module.Minimize(M, T) // Error.
+Module.Minimize(M, T) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (19,20) Node: T, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Module.Minimize*(!1: M, Error(ErrBadType_Src_Dst))
+###
+> M->Optimize(S, A > 10) // Error.
+M->Optimize(S, A $> 10) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (15,16) Node: A, Message: Name does not exist in the current context
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, Unit<i8>(Error(ErrNameDoesNotExist)) @> 10)
+Reducer: Module.Opt(M, "S", false)
+###
+> M->Optimize(S, b, "highs")
+M->Optimize(S, b, "highs") : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, b, "highs")
+Reducer: Module.Opt(M, "S", b, "highs")
+###
+> Range(10)->ForEach(as n, Module.Maximize(M with { A : R.A * R.A * n }, S))
+Range(10)->ForEach(as n, Module.Maximize(M=>{ A : R.A * R.A * n }, S)) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?*
+Binder : ForEach(*1: Range(10), Module.Maximize*(!3: ModuleProjection(!2: M, {A:Mul(R.A, R.A, *1)}), ModToRec(!3).S))
+Reducer: ForEach(*1: Range(10), Module.Opt(ModuleProjection(!2: M, {A:Mul(R.A, R.A, *1)}), "S", true))
+Hoister: With(!1: Mul(R.A, R.A), ForEach(*2: Range(10), Module.Opt(ModuleProjection(!3: M, {A:Mul(!1, *2)}), "S", true)))
+###

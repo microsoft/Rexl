@@ -1,0 +1,110 @@
+Add: 00000001 [A], Fma: [3]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+###
+Add: 00000002 [B], Fma: [[1, 3i8, 8, -2, 0]], Extra: { [this->Filter(it > A)], [this->Sort()] }
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [B]: [A FtT UBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Fma: 00000001 [A], Main: [3] => [1000i1]
+Status: 2 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [A]: [   tT  B C dD  ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Del: 00000001 [A]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [B]: [      UBb c DE ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+      0) Error: (18,19) Node: A, Message: Name does not exist in the current context
+###
+*** Undo(1)
+Add: 00000001 [A], Fma: [1000i1]
+Status: 2 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [      UBb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Ren: 00000001 [X] <= [A]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > A)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > X)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [X]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** Undo(1)
+Ren: 00000001 [A] <= [X]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > X)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > A)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** Redo(1)
+Ren: 00000001 [X] <= [A]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > A)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > X)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [X]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Ren: 00000001 [N.X] <= [X]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > X)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > N.X)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000001 [N.X]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** Undo(1)
+Ren: 00000001 [X] <= [N.X]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > N.X)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > X)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 4 undos, 1 redos
+  Namespaces changed: ∂
+  Node changes:
+    00000001 [X]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** Redo(1)
+Ren: 00000001 [N.X] <= [X]
+Fma: 00000002 [B]
+  Old 0: [0:this->Filter(it > X)]
+  Old 1: [0:this->Sort()]
+  New 0: [0:this->Filter(it > N.X)]
+  New 1: [0:this->Sort()]
+Status: 2 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000001 [N.X]: [ N     B       ], Base: i1
+      *) Warning: (0,6) Node: 1000, Message: Int literal out of range for specified type
+    00000002 [B]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###

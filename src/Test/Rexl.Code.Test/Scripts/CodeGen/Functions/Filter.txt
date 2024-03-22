@@ -1,0 +1,192 @@
+﻿`` SS := ["a", "B", null, "C", null, "b", "A", "B", "C" ];
+`` T := SS->{ A:it, B:# };
+`` T2 := SS->ForEach({ A:it, B:# });
+
+// Filter
+Range(10) | Filter(_, 3 < it < 7)
+Range(10)->{A: it, B: it * it} | Filter(_, B > 5 * A)
+
+// Distinct
+Range(3) ++ Range(1, 5) ++ Range(7, -3, -1) | Distinct(_)
+[null, null, null]->Distinct()
+[]->Distinct()
+
+SS->Distinct()
+Distinct([~] SS)
+T->Distinct(A)
+T->Distinct([~] A)
+T2->Distinct(A)
+T2->Distinct([~] A)
+
+// Distinct on tuples.
+Range(10)->(it mod 3, it mod 2)->Distinct()
+Range(10)->(it mod 3, it mod 2)->ForEach(it if #it mod 4 != 0 else null)->Distinct()
+
+// Distinct on records.
+Range(10)->{ A: it mod 3, B: it mod 2 }->Distinct()
+Range(10)->{ A: it mod 3, B: it mod 2 }->ForEach(it if #it mod 4 != 0 else null)->Distinct()
+
+// Distinct with key.
+Range(10)->Distinct(it div 3)
+Range(10)->{ A: it, B: it div 3 }->Distinct([key] B)
+Range(10)->TakeIf(it > 100)->Distinct()
+Range(10)->TakeIf(it > 100)->Distinct(it div 3)
+Wrap(Range(10)->Null())->Distinct()
+Wrap(Range(10)->Null())->Distinct(it div 3)
+
+// First
+First(Range(10, 12))
+First(Range(10), it > 5)
+First(Wrap(Range(0)))
+First(Range(10), it > 10)
+First(Wrap(["A", "B", "C"]))
+First(["A", "B", "C"], Text.Lower(it) = "b")
+First(["A", "B", "C"], Text.Lower(it) = "x")
+Filter(["A", "B", "C"], Text.Lower(it) = "x") | First(_)
+TakeOne(Range(10, 12))
+TakeOne(Range(10), it > 5)
+TakeOne(Range(10), it > 2 and #it > 3)
+TakeOne(Range(10), it > 2 and #it > 3, null)
+TakeOne(Range(10), #it > it, -1)
+TakeOne(Range(10), #it > it, null)
+TakeOne(Range(0))
+TakeOne(Range(0), [else] -1)
+TakeOne(Range(10), it > 10)
+TakeOne(["A", "B", "C"], Text.Lower(it) = "b")
+TakeOne(["A", "B", "C"], Text.Lower(it) = "x")
+Filter(["A", "B", "C"], Text.Lower(it) = "x") | TakeOne(_)
+
+`` Reqs := Range(10, 20);
+`` Opts := [ null ] ++ Reqs;
+`` NoneReq := Reqs->TakeIf(false);
+`` NoneOpt := Opts->TakeIf(false);
+`` ZeroReq := Reqs->TakeIf(it > 1000);
+`` ZeroOpt := Opts->TakeIf(it > 1000);
+
+TakeOne(Reqs)
+TakeOne(Reqs, [else] -1)
+TakeOne(Reqs, [else] null)
+TakeOne(Opts)
+TakeOne(Opts, [else] -1)
+TakeOne(Opts, [else] null)
+TakeOne(NoneReq)
+TakeOne(NoneReq, [else] -1)
+TakeOne(NoneReq, [else] null)
+TakeOne(NoneOpt)
+TakeOne(NoneOpt, [else] -1)
+TakeOne(NoneOpt, [else] null)
+TakeOne(ZeroReq)
+TakeOne(ZeroReq, [else] -1)
+TakeOne(ZeroReq, [else] null)
+TakeOne(ZeroOpt)
+TakeOne(ZeroOpt, [else] -1)
+TakeOne(ZeroOpt, [else] null)
+
+TakeOne(Reqs, it > 15)
+TakeOne(Reqs, true)
+TakeOne(Reqs, false)
+TakeOne(Reqs, it > 15, -1)
+TakeOne(Reqs, true, -1)
+TakeOne(Reqs, false, -1)
+TakeOne(Reqs, it > 15, null)
+TakeOne(Reqs, false, null)
+TakeOne(Reqs, true, null)
+TakeOne(Reqs, it > 50)
+TakeOne(Reqs, it > 50, -1)
+TakeOne(Reqs, it > 50, null)
+TakeOne(Opts, it > 15)
+TakeOne(Opts, it > 15, -1)
+TakeOne(Opts, false, -1)
+TakeOne(Opts, it > 15, null)
+TakeOne(Opts, false, null)
+TakeOne(Opts, it > 50)
+TakeOne(Opts, it > 50, -1)
+TakeOne(Opts, true, -1)
+TakeOne(Opts, it > 50, null)
+TakeOne(Opts, true, null)
+TakeOne(NoneReq, it > 15)
+TakeOne(NoneReq, it > 15, -1)
+TakeOne(NoneReq, it > 15, null)
+TakeOne(NoneOpt, it > 15)
+TakeOne(NoneOpt, it > 15, -1)
+TakeOne(NoneOpt, it > 15, null)
+TakeOne(ZeroReq, it > 15)
+TakeOne(ZeroReq, it > 15, -1)
+TakeOne(ZeroReq, it > 15, null)
+TakeOne(ZeroOpt, it > 15)
+TakeOne(ZeroOpt, it > 15, -1)
+TakeOne(ZeroOpt, it > 15, null)
+
+// Count
+Range(10, 12)->Count()
+Range(10, 12)->Wrap()->Count()
+Range(10, 12)->Distinct()->Count()
+Range(10, 12)->Distinct()->Wrap()->Count()
+Range(10)->Count(it > 5)
+Range(10)->Wrap()->Count(it > 5)
+Range(0)->Count()
+Range(0)->Wrap()->Count()
+Range(0)->Distinct()->Count()
+Range(0)->Wrap()->Distinct()->Count()
+Range(10)->Count(it > 10)
+Range(10)->Wrap()->Count(it > 10)
+["A", "B", "C"]->Count()
+["A", "B", "C"]->Wrap()->Count()
+["A", "B", "C"]->Count(Text.Lower(it) = "b")
+["A", "B", "C"]->Wrap()->Count(Text.Lower(it) = "b")
+["A", "B", "C"]->Count(Text.Lower(it) = "x")
+["A", "B", "C"]->Wrap()->Count(Text.Lower(it) = "x")
+
+// TakeAt
+`` Recs := Range(2)->{ A: it, B: "Text" & ToText(it), C: it if it mod 2 = 0 else null };
+`` RecsOpt := [ null ] ++ Recs;
+`` Inds := [-5, -4, -3, -2, -1, 0, 1, 2, 3];
+`` Empty := [] if true else Range(10, 12);
+
+Range(10, 12)->TakeAt(Inds)
+Range(10, 12)->WrapSeq()->TakeAt(Inds)
+Range(10, 12)->CantCount()->TakeAt(Inds)
+Range(10, 12)->LazyCount()->TakeAt(Inds)
+Range(10, 12)->WrapArr()->TakeAt(Inds)
+Range(10, 12)->WrapColl()->TakeAt(Inds)
+Range(10, 12)->WrapList()->TakeAt(Inds)
+Range(10, 12)->WrapCurs()->TakeAt(Inds)
+
+Range(10, 12)->TakeAt(Inds, -1)
+Range(10, 12)->WrapSeq()->TakeAt(Inds, -1)
+Range(10, 12)->CantCount()->TakeAt(Inds, -1)
+Range(10, 12)->LazyCount()->TakeAt(Inds, -1)
+Range(10, 12)->WrapArr()->TakeAt(Inds, -1)
+Range(10, 12)->WrapColl()->TakeAt(Inds, -1)
+Range(10, 12)->WrapList()->TakeAt(Inds, -1)
+Range(10, 12)->WrapCurs()->TakeAt(Inds, -1)
+
+Range(10, 12)->TakeAt(Inds, null)
+Range(10, 12)->WrapSeq()->TakeAt(Inds, null)
+Range(10, 12)->CantCount()->TakeAt(Inds, null)
+Range(10, 12)->LazyCount()->TakeAt(Inds, null)
+Range(10, 12)->WrapArr()->TakeAt(Inds, null)
+Range(10, 12)->WrapColl()->TakeAt(Inds, null)
+Range(10, 12)->WrapList()->TakeAt(Inds, null)
+Range(10, 12)->WrapCurs()->TakeAt(Inds, null)
+
+[4, 5, 6]->TakeAt(Inds)
+[4, 5, 6]->TakeAt(Inds, null)
+[]->WrapSeq()->TakeAt(Inds)
+[]->WrapSeq()->TakeAt(Inds, null)
+TakeAt(Empty, Inds)
+TakeAt(Empty, Inds, -1)
+TakeAt(Empty, Inds, null)
+
+Recs->TakeAt(Inds)
+RecsOpt->TakeAt(Inds)
+RecsOpt->TakeAt(Inds, null)
+["A", "B", "C"]->Wrap()->TakeAt(Inds)
+["A", "B", "C"]->Wrap()->TakeAt(Inds, null)
+["A", "B", "C"]->Wrap()->TakeAt(Inds, "N/A")
+
+``` vs := [];
+``` b := true;
+vs->TakeAt(Inds)
+vs->TakeOne()
+vs->TakeOne(b)

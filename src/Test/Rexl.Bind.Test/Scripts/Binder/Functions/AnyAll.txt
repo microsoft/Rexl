@@ -1,0 +1,69 @@
+﻿::: {g:g*, o:o*, s:s*, b:b, qb:b?, sb:b*, sbq:b?*, N:i2?*, T:{X:i4, Y:i2, Z:r4?, A:b?}*, ns:i8}
+
+Any(ns)
+Any(ns, b)
+
+Any(g, b)
+Any(o, b)
+Any(g, qb)
+Any(o, qb)
+Any(sb)
+Any(sbq)
+Any(T, X > Y)
+Any(T, X > Z)
+Any(T, b)
+Any(T, qb)
+Any(T, A)
+Any(n : N, n > 2i2)
+
+Any(T, true) // REVIEW: Worth reducing to `!IsEmpty(T)`?
+Any(T, false)
+Any(T, null) // REVIEW: Worth reducing to `If(IsEmpty(T), false, null)`?
+Any(T, Opt(true))
+Any(T, Opt(false))
+Any(T, Null(false))
+Any([], true)
+Any([], false)
+Any([], null)
+Any([1], true)
+Any([1], false)
+Any([1], null)
+Any([1], Opt(true))
+Any([1], Opt(false))
+Any([1], Null(false))
+
+All(g, b)
+All(o, b)
+All(g, qb)
+All(o, qb)
+All(sb)
+All(sbq)
+All(T, X > Y)
+All(T, X > Z)
+All(T, b)
+All(T, qb)
+All(T, A)
+All(n : N, n > 2i2)
+
+All(T, true)
+All(T, false)
+All(T, null)
+All(T, Opt(true))
+All(T, Opt(false))
+All(T, Null(false))
+All([], true)
+All([], false)
+All([], null)
+All([1], true)
+All([1], false)
+All([1], null)
+All([1], Opt(true))
+All([1], Opt(false))
+All([1], Null(false))
+
+Any(T, [if] X > Y)
+All(T, [if] X > Y)
+Any(T, [else] X > Y) // Error.
+All(T, [else] X > Y) // Error.
+Any([if] T, X > Y) // Error.
+All([if] T, X > Y) // Error.

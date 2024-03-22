@@ -1,0 +1,48 @@
+*** Formula: [true, false, null]
+*** Item DType: b?
+true
+false
+null
+
+*** Formula: [1, 2, 3, null]
+*** Item DType: i8?
+1
+2
+3
+null
+
+*** Formula: ["Test string", "", null]
+*** Item DType: s
+"Test string"
+""
+null
+
+*** Formula: Chain(Map(Range(5), {A: it, B: "A" & ToText(it)}), [null])
+*** Item DType: {A:i8, B:s}?
+{"A":0,"B":"A0"}
+{"A":1,"B":"A1"}
+{"A":2,"B":"A2"}
+{"A":3,"B":"A3"}
+{"A":4,"B":"A4"}
+null
+
+*** Formula: [CastDate("1/1/2021"), null]
+*** Item DType: d?
+"2021-01-01T00:00:00"
+null
+
+*** Formula: [ CastGen(1729), 2.718, "foo", CastDate("07/20/1969"), { A: "bar" }, ("fizz", "buzz"), [CastGen("baz"), 3.14]]
+*** Item DType: g
+null
+null
+null
+null
+null
+null
+null
+
+*** Formula: [ { A: 3, B: CastGen(true) }, { A: 4, B: "hi" } ]
+*** Item DType: {A:i8, B:g}
+{"A":3,"B":null}
+{"A":4,"B":null}
+

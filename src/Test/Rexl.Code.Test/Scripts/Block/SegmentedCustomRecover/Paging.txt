@@ -1,0 +1,138 @@
+﻿X := 3;
+__page__;
+X;
+###
+X := 3;
+__abort__;
+X;
+###
+X := 3;
+Y := 7;
+this := X * Y;
+__page__;
+(X, Y, this);
+###
+execute "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);";
+(2, X, Y, this);
+###
+execute "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);" in namespace N;
+with N;
+(2, X, Y, this);
+__page__;
+(3, X, Y, this);
+###
+X := "@X";
+M.X := "@M.X";
+M.Z := "@M.Z";
+(@X, X);
+namespace N {
+    X := "@N.X";
+    Y := "@N.Y";
+
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N {
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N, M {
+    (@X, X, Y, Z);
+    __page__;
+    (@X, X, Y, Z);
+}
+(@X, X);
+###
+X := "@X";
+M.X := "@M.X";
+M.Z := "@M.Z";
+(@X, X);
+namespace N.P {
+    X := "@N.P.X";
+    Y := "@N.P.Y";
+
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N.P {
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N.P, M {
+    (@X, X, Y, Z);
+    __page__;
+    (@X, X, Y, Z);
+}
+(@X, X);
+###
+X := "@X";
+M.X := "@M.X";
+M.Z := "@M.Z";
+execute @"
+(@X, X);
+namespace N.P {
+    X := ""@N.P.X"";
+    Y := ""@N.P.Y"";
+
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+";
+
+with N.P {
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N.P, M {
+    (@X, X, Y, Z);
+    __page__;
+    (@X, X, Y, Z);
+}
+(@X, X);
+###
+X := "@X";
+M.X := "@M.X";
+M.Z := "@M.Z";
+execute @"
+(@X, X);
+namespace N.P.Q {
+    X := ""@N.P.Q.X"";
+    Y := ""@N.P.Q.Y"";
+
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+";
+
+with N.P.Q {
+    (@X, X, Y);
+    __page__;
+    (@X, X, Y);
+}
+(@X, X);
+
+with N.P.Q, M {
+    (@X, X, Y, Z);
+    __page__;
+    (@X, X, Y, Z);
+}
+(@X, X);

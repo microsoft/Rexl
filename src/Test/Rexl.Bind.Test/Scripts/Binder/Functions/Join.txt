@@ -1,0 +1,122 @@
+﻿:: { T:{A:i4, B:r8, C:s, X:d}*, U:{A:i4, B:r4, C:s}*, V:{A:i4, B:U<Image>}*, W:{A:i4, B:U<Image>}*, X:{A:i4?}*, Y:{A:i4}*, ss:s* }
+
+// Don't reduce.
+CrossJoin(t:T, u:U, t.A  <= u.A, { t, u })
+CrossJoin(t:T, u:U, t.B  <= u.B, { t, u })
+CrossJoin(t:T, u:U, t.C  <= u.C, { t, u })
+CrossJoin(t:T, u:U, t.A $<= u.A, { t, u })
+CrossJoin(t:T, u:U, t.B $<= u.B, { t, u })
+CrossJoin(t:T, u:U, t.C $<= u.C, { t, u })
+
+// Coverage of reduction to KeyJoin.
+CrossJoin(t:T, u:U, t.A  = u.A, { t, u })
+CrossJoin(t:T, u:U, u.A  = t.A, { t, u })
+CrossJoin(t:T, u:U, t.A  = t.B, { t, u }) // No. REVIEW: Warning?
+CrossJoin(t:T, u:U, t.B  = u.B, { t, u })
+CrossJoin(t:T, u:U, t.B $= u.B, { t, u })
+CrossJoin(t:T, u:U, #t   = #u , { t, u })
+CrossJoin(t:T, u:U, #u   = #t , { t, u })
+CrossJoin(t:T, u:U, #t   = #t , { t, u })  // No. REVIEW: Warning?
+CrossJoin(t:T, u:U, #t  $= #u , { t, u })
+CrossJoin(t:T, u:U, Count(ss) = 3, { t, u })
+CrossJoin(t:T, u:U, t.A * u.A = u.B, { t, u }) // No.
+CrossJoin(t:T, u:U, t.A * #u  = u.B, { t, u }) // No.
+CrossJoin(t:T, u:U, u.B = t.A * u.A, { t, u }) // No.
+CrossJoin(t:T, u:U, u.B = t.A * #u , { t, u }) // No.
+CrossJoin(x:X, y:Y, x.A  = y.A, { x, y })
+CrossJoin(x:X, y:Y, x.A $= y.A, { x, y })
+CrossJoin(x:X, y:X, x.A $= y.A, { x, y })
+CrossJoin(y:Y, x:X, x.A  = y.A, { x, y })
+CrossJoin(y:Y, x:X, x.A $= y.A, { x, y })
+CrossJoin(y:X, x:X, x.A $= y.A, { x, y })
+
+CrossJoin(t:T, u:U, [if] t.A = u.A, { t, u })
+CrossJoin(t:T, u:U, [while] t.A = u.A, { t, u }) // Error.
+CrossJoin(t:T, u:U, t.A = u.A, [if] { t, u }) // Error.
+
+CrossJoin(t:T, u:U, t.A   = u.B, { t, u })
+CrossJoin(t:T, u:U, t.A  $= u.B, { t, u })
+CrossJoin(t:T, u:U, t.C   = u.C, { t, u })
+CrossJoin(t:T, u:U, t.C  $= u.C, { t, u })
+CrossJoin(t:T, u:U, t.C ~ = u.C, { t, u })
+CrossJoin(t:T, u:U, t.C ~$= u.C, { t, u })
+
+CrossJoin(t:T, u:U, t.X.Year = u.A, { t, u })
+
+CrossJoin(s:ss, t:T, s  = C, t->&{ M:s })
+CrossJoin(s:ss, t:T, s ~ = C, t->&{ M:s })
+CrossJoin(s:ss, t:T, s  $= C, t->&{ M:s })
+CrossJoin(s:ss, t:T, s ~$= C, t->&{ M:s })
+
+CrossJoin(t:T, u:U, t.A = u.A and t.C = u.C, { t, u })
+
+CrossJoin(t:T, u:U, t.A = t.B, { t, u }) // REVIEW: Should this warn?
+
+CrossJoin(t:T, u:U,    t.A =  u.A, {      t,    u }, {    t })
+CrossJoin(  T,   U, it$1.A = it.A, { t:it$1, u:it }, { t:it })
+CrossJoin(t:T, u:U,    t.A =  u.A, {      t,    u }, {    t }, {    u })
+CrossJoin(  T,   U, it$1.A = it.A, { t:it$1, u:it }, { t:it }, { u:it })
+
+// Errors.
+CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t, u }) // REVIEW: Need better error.
+CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t }, { t, u }) // REVIEW: Need better error.
+
+// Hoisting.
+CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: Count(T), N: 3 * Count(U) })
+CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: -1, N: -1 }, { t, M: 2 * Count(T), N: 2 * Count(U) })
+CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: -1, N: -1 }, { t, M: -2, N: -2 }, { u, M: 3 * Count(T), N: Count(U) })
+CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: Count(T), N: 3 * Count(U) }, { t, M: 2 * Count(T), N: 2 * Count(U) }, { u, M: 3 * Count(T), N: Count(U) }) // REVIEW: Should do better.
+
+KeyJoin(t:T, u:U, A, A, { t, u })
+KeyJoin(t:T, u:U, B, B, { t, u })
+KeyJoin(t:T, u:U, A, B, { t, u })
+KeyJoin(t:T, u:U, C, C, { t, u })
+KeyJoin(t:T, u:U, X.Year, A, { t, u })
+
+KeyJoin(t:T, u:U, { A, C }, { A, C }, { t, u })
+
+KeyJoin(t:T, u:U,    A,    A, {      t,    u }, {    t })
+KeyJoin(  T,   U, it.A, it.A, { t:it$1, u:it }, { t:it })
+KeyJoin(t:T, u:U,    A,    A, {      t,    u }, {    t }, {    u })
+KeyJoin(t:T, u:U, it.A, it.A, { t:it$1, u:it }, { t:it }, { u:it })
+
+// Errors.
+KeyJoin(t:T, u:U, A, A, { t, u }, { t, u }) // REVIEW: Need better error.
+KeyJoin(t:T, u:U, A, A, { t, u }, { t }, { t, u }) // REVIEW: Need better error.
+
+// Hoisting.
+KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: Count(T), N: 3 * Count(U) })
+KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: -1, N: -1 }, { t, M: 2 * Count(T), N: 2 * Count(U) })
+KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: -1, N: -1 }, { t, M: -2, N: -2 }, { u, M: 3 * Count(T), N: Count(U) })
+KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: Count(T), N: 3 * Count(U) }, { t, M: 2 * Count(T), N: 2 * Count(U) }, { u, M: 3 * Count(T), N: Count(U) }) // REVIEW: Should do better.
+
+// More error cases:
+KeyJoin(t:T, u:U, A, C, { t, u })
+KeyJoin(t:T, u:U, [A], [A], { t, u })
+KeyJoin(t:T, u:U, [C], C, { t, u })
+KeyJoin(t:T, u:U, [A,C], C, { t, u })
+KeyJoin(t:T, u:U, [CastGen(A),C], C, { t, u })
+
+// Directives:
+KeyJoin(t:T, u:U, [key] A, [key] A, { t, u })
+KeyJoin(t:T, [map] u:U, A, A, { t, u }) // Error.
+KeyJoin(t:T, u:U, A, [item] A, { t, u }) // Error.
+KeyJoin(t:T, [key] u:U, A, A, { t, u }) // Error.
+KeyJoin(t:T, u:U, A, A, [key] { t, u }) // Error.
+KeyJoin(t:T, u:U, [=] C, C, { t, u })
+KeyJoin(t:T, u:U, [=] C, [key] C, { t, u })
+KeyJoin(t:T, u:U, [~] C, [key] C, { t, u })
+KeyJoin(t:T, u:U, [~] C, [=] C, { t, u })
+KeyJoin(t:T, u:U, C, [~] C, { t, u })
+KeyJoin(t:T, u:U, C, [~=] C, { t, u })
+KeyJoin(t:T, u:U, [=] C, [~] C, { t, u })
+KeyJoin(t:T, u:U, [=] C, [~=] C, { t, u })
+KeyJoin(t:T, u:U, [~] A, A, { t, u }) // Warning.
+KeyJoin(t:T, u:U, A, [~=] A, { t, u }) // Warning.
+KeyJoin(t:T, u:U, [~] A, C, { t, u }) // Error, but no warning about [~].
+KeyJoin(t:T, u:U, [~] { A, B:[A] }, { A, B:[A] }, { t, u }) // Error, but no warning about [~].
+KeyJoin(t:T, u:U, [~] { A, B:[A] }, (A, [A]), { t, u }) // Error, but no warning about [~].
+KeyJoin(t:T, u:U, [~] A->Range(), A->Range(), { t, u }) // Error, but no warning about [~].
+
+// Uris.
+KeyJoin(v:V, W, B, B, v)

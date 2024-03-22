@@ -1,0 +1,84 @@
+**** New definitions: PInf, type: r4
+**** New definitions: NInf, type: r4
+**** New definitions: NaN, type: r4
+
+> Range(3)->CastR4()->Tensor.From()->SoftMax()
+Range(3)->CastR4()->Tensor.From()->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax(Call(∂.Tensor.From(Call(∂.ForEach([map:1] Call(∂.Range(3:i8):i8*), Num<r4>(Scope(1))):r4*)):r4[*])):r4[*]))
+Func sig: (<ctx>:x) to r4[*]
+Ten<r4>(3)<1> [0.09003057, 0.24472848, 0.66524094]
+*** Ctx ping count: 0
+###
+> Tensor.SoftMax(Null(Tensor.Fill(0f, 5)))
+Tensor.SoftMax(Null(Tensor.Fill(0, 5))) : r4[*]?
+BndKind:Null, Type:r4[*]?, Bnd:(null:r4[*]?)
+Func sig: () to r4[*]?
+Type: <null>, Value: <null>
+###
+> Tensor.From([PInf, 1f, 100f, PInf, -10f, PInf, NInf, PInf])->SoftMax()
+Tensor.From([PInf, 1, 100, PInf, -10, PInf, NInf, PInf])->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax([! Global(PInf), 1:r4, 100:r4, Global(PInf), -10:r4, Global(PInf), Global(NInf), Global(PInf) !]:r4[8]):r4[*]))
+Func sig: (PInf:r4, NInf:r4) to r4[*]
+Ten<r4>(8)<1> [0.25, 0, 0, 0.25, 0, 0.25, 0, 0.25]
+###
+> Tensor.From([PInf, PInf, PInf, PInf])->SoftMax()
+Tensor.From([PInf, PInf, PInf, PInf])->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax([! Global(PInf), Global(PInf), Global(PInf), Global(PInf) !]:r4[4]):r4[*]))
+Func sig: (PInf:r4) to r4[*]
+Ten<r4>(4)<0> [0.25, 0.25, 0.25, 0.25]
+###
+> Tensor.From([1f, 5f, NaN, -1f])->SoftMax()
+Tensor.From([1, 5, NaN, -1])->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax([! 1:r4, 5:r4, Global(NaN), -1:r4 !]:r4[4]):r4[*]))
+Func sig: (NaN:r4) to r4[*]
+Ten<r4>(4)<0> [NaN, NaN, NaN, NaN]
+###
+> Tensor.From([1f, 5f, NInf, -1f])->SoftMax()
+Tensor.From([1, 5, NInf, -1])->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax([! 1:r4, 5:r4, Global(NInf), -1:r4 !]:r4[4]):r4[*]))
+Func sig: (NInf:r4) to r4[*]
+Ten<r4>(4)<1> [0.017942535, 0.9796292, 0, 0.002428258]
+###
+> Tensor.Fill(1f, 0)->SoftMax()
+Tensor.Fill(1, 0)->SoftMax() : r4[*]
+BndKind:Call, Type:r4[*], Bnd:(Call(∂.Tensor.SoftMax(Call(∂.Tensor.Fill(1:r4, 0:i8):r4[*])):r4[*]))
+Func sig: (<ctx>:x) to r4[*]
+Ten<r4>(0)<0> []
+*** Ctx ping count: 0
+###
+> With(v:-3f , (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v : -3, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax())) : (r4[*], r4[*])
+BndKind:Tuple, Type:(r4[*], r4[*]), Bnd:((Call(∂.Tensor.SoftMax(Call(∂.Tensor.Fill(-3:r4, 4:i8):r4[*])):r4[*]), Call(∂.Tensor.SoftMax([! -3:r4, -3:r4, -3:r4, -3:r4 !]:r4[4]):r4[*])):(r4[*], r4[*]))
+Func sig: (<ctx>:x) to (r4[*], r4[*])
+Type: (Ten<r4>,Ten<r4>), Value: (
+    Ten<r4>(4)<0> [0.25, 0.25, 0.25, 0.25],
+    Ten<r4>(4)<1> [0.25, 0.25, 0.25, 0.25])
+*** Ctx ping count: 0
+###
+> With(v:PInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v : PInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax())) : (r4[*], r4[*])
+BndKind:Tuple, Type:(r4[*], r4[*]), Bnd:((Call(∂.Tensor.SoftMax(Call(∂.Tensor.Fill(Global(PInf), 4:i8):r4[*])):r4[*]), Call(∂.Tensor.SoftMax([! Global(PInf), Global(PInf), Global(PInf), Global(PInf) !]:r4[4]):r4[*])):(r4[*], r4[*]))
+Func sig: (<ctx>:x, PInf:r4) to (r4[*], r4[*])
+Type: (Ten<r4>,Ten<r4>), Value: (
+    Ten<r4>(4)<0> [0.25, 0.25, 0.25, 0.25],
+    Ten<r4>(4)<0> [0.25, 0.25, 0.25, 0.25])
+*** Ctx ping count: 0
+###
+> With(v:NInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v : NInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax())) : (r4[*], r4[*])
+BndKind:Tuple, Type:(r4[*], r4[*]), Bnd:((Call(∂.Tensor.SoftMax(Call(∂.Tensor.Fill(Global(NInf), 4:i8):r4[*])):r4[*]), Call(∂.Tensor.SoftMax([! Global(NInf), Global(NInf), Global(NInf), Global(NInf) !]:r4[4]):r4[*])):(r4[*], r4[*]))
+Func sig: (<ctx>:x, NInf:r4) to (r4[*], r4[*])
+Type: (Ten<r4>,Ten<r4>), Value: (
+    Ten<r4>(4)<0> [NaN, NaN, NaN, NaN],
+    Ten<r4>(4)<0> [NaN, NaN, NaN, NaN])
+*** Ctx ping count: 0
+###
+> With(v:NaN , (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v : NaN, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax())) : (r4[*], r4[*])
+BndKind:Tuple, Type:(r4[*], r4[*]), Bnd:((Call(∂.Tensor.SoftMax(Call(∂.Tensor.Fill(Global(NaN), 4:i8):r4[*])):r4[*]), Call(∂.Tensor.SoftMax([! Global(NaN), Global(NaN), Global(NaN), Global(NaN) !]:r4[4]):r4[*])):(r4[*], r4[*]))
+Func sig: (<ctx>:x, NaN:r4) to (r4[*], r4[*])
+Type: (Ten<r4>,Ten<r4>), Value: (
+    Ten<r4>(4)<0> [NaN, NaN, NaN, NaN],
+    Ten<r4>(4)<0> [NaN, NaN, NaN, NaN])
+*** Ctx ping count: 0
+###

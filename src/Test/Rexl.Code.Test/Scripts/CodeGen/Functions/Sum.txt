@@ -1,0 +1,12 @@
+﻿`` Vals := [ 1i8 shl 54, ] ++ Repeat(1.0, 101);
+
+// Demonstrates the difference between normal Sum and Kahan.
+// Note that the difference is 100, not 101, because the last one is "lost".
+With(s: Vals->Sum(), k: Vals->SumK(), (s, k, k - s))
+
+// Normal Sum matches what Fold would do.
+With(s: Vals->Sum(), f: Fold(v: Vals, seed: 0.0, seed + v), (s, f, f - s))
+
+// Fold that mimics Kahan.
+With(s: Vals->Sum(), k: Vals->SumK(), f: Fold(v: Vals, { sum: 0.0, cor: 0.0 }, With(new: sum + v, { sum: new, cor: cor + (sum - new + v if Abs(sum) >= Abs(v) else v - new + sum) })), (s, k, f, f.sum - s, f.sum + f.cor - k))
+With(k: Vals->SumK(),f: Fold(v: Vals, { sum: 0.0, cor: 0.0 }, With(new: sum + v, { sum: new, cor: cor + (sum - new + v if Abs(sum) >= Abs(v) else v - new + sum) }), sum + cor), (k, f, f - k))

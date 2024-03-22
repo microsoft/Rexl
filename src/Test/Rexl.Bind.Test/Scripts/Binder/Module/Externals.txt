@@ -1,0 +1,69 @@
+﻿:: { R:{A:r8, B:s}, T:{A:r8, B:s}* }
+
+// Reference global.
+module { var X from T; let Num := X->Count() }
+###
+// Reference outer scope.
+Range(10)->ForEach(as n,
+    module {
+        var X from Range(n);
+        let Num := X->Count()
+    })
+###
+// Reference outer scope via it.
+Range(10)->ForEach(
+    module {
+        var X from Range(it$1);
+        let Num := X->Count()
+    })
+###
+// Reference outer scope field.
+Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from Range(A);
+        let Num := X->Count()
+    })
+###
+// Reference outer scope field via it.
+Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from Range(it$1.A);
+        let Num := X->Count()
+    })
+###
+// Reference both outer scope and global.
+Range(10)->ForEach(as n,
+    module {
+        var X from T->Take(n);
+        let Num := X->Count()
+    })
+###
+// Reference both outer scope field and global.
+Range(10)->{ A: it, B: ToText(it) }->ForEach(
+    module {
+        var X from T->Take(A);
+        let Num := X->Count()
+    })
+###
+// Two modules of the same type.
+With(
+    M1 : module { var X in T; let Y := X.A },
+    M2 : module { var X := R; let Y := X.A + 1 },
+    (M1, M2, [M1, M2]))
+###
+// Conversion from module to canonical record.
+With(
+    M : module { var X in T },
+    RR : { X: R },
+    (M, RR, [M, RR]))
+###
+// Conversion from module to non-canonical record.
+With(
+    M : module { var X in T; var Z from 0 to 100 },
+    RR : { X: R, Y: 3.5 },
+    (M, RR, [M, RR]))
+###
+// With some hoisting within the module.
+module {
+    var X in T+>{ C: R.A^2 * A };
+}

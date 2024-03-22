@@ -1,0 +1,48 @@
+>>> *** Source:
+    N := 1_000_000;
+    task P1 as Pipe(Range(N));
+    prime P1;
+    task P2 as Pipe(P1.SData);
+    prime P2;
+    P1.SData->Count() < N;
+    play P1;
+    prime P1;
+    pause P1;
+
+>>> *** Instructions:
+   0) [0] Define N <- 1000000
+   1) [0] TaskProc task P1 as Pipe(Range(N))
+   2) [0] TaskCmd prime P1
+   3) [0] TaskProc task P2 as Pipe(P1.SData)
+   4) [0] TaskCmd prime P2
+   5) [0] Expr P1.SData->Count() $< N
+   6) [0] TaskCmd play P1
+   7) [0] TaskCmd prime P1
+   8) [0] TaskCmd pause P1
+   9) [0] End
+
+>    0) [0] Define N <- 1000000
+Global 'N' has DType: i8, SysType: i8
+>    1) [0] TaskProc task P1 as Pipe(Range(N))
+Task 'P1' added
+>    2) [0] TaskCmd prime P1
+Task 'P1' now playing
+Task 'P1' now paused
+>    3) [0] TaskProc task P2 as Pipe(P1.SData)
+Task 'P2' added
+>    4) [0] TaskCmd prime P2
+Task 'P1' forced playing
+Task 'P2' now playing
+Task 'P2' now paused
+Task 'P1' now paused
+>    5) [0] Expr P1.SData->Count() $< N
+true
+*** Ctx ping count: 0
+>    6) [0] TaskCmd play P1
+Task 'P1' now playing
+>    7) [0] TaskCmd prime P1
+>    8) [0] TaskCmd pause P1
+Task 'P1' now paused
+>    9) [0] End
+###
+

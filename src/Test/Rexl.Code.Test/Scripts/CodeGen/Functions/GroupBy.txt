@@ -1,0 +1,145 @@
+﻿``` T := [ {A: 0, B: 0i1},
+```        {A: 0, B: 10i1},
+```        {A: 0x80000, B: 2i1},
+```        {A: 0x80000, B: 10i1}
+``` ];
+``` S := T ++ T;
+T
+S
+GroupBy(T, A, X)
+GroupBy(T, #it mod 2, X)
+GroupBy(S, B, Y)
+GroupBy(S, #it mod 2, Y)
+GroupBy(S, B, #it mod 2, Y)
+GroupBy(S, EvenInd: #it mod 2 = 0, Y)
+Map(r: GroupBy(T, A, X), Map(r.X, B > 5i1))
+GroupBy(T, --A, [map] B > 5i1)
+GroupBy(T, --A, [map] B > #)
+GroupBy(T, --A, [map] 5 > #)
+GroupBy(T, --A, [key] Ind: #, [map] XMap: B > 5i1)
+GroupBy(T, [key] A, [map] B, [map] XInd: #, X)
+GuardMap(GroupBy(T, A, X).X, B > 5i1)
+
+// This provides some coverage for parsing the various forms of ExprStmtNode.
+``` this := [
+```   { Week:1,  Away:"ARI", Home:"STL", AScore:17, HScore:13 },
+```   { Week:1,  Away:"SF",  Home:"SEA", AScore: 6, HScore:31 },
+```   { Week:2,  Away:"NO",  Home:"SF",  AScore:25, HScore:22 },
+```   { Week:3,  Away:"WAS", Home:"STL", AScore:16, HScore:30 },
+```   { Week:3,  Away:"OAK", Home:"ARI", AScore:23, HScore:24 },
+```   { Week:3,  Away:"SD",  Home:"SEA", AScore:20, HScore:27 },
+```   { Week:4,  Away:"SEA", Home:"STL", AScore: 3, HScore:20 },
+```   { Week:5,  Away:"NO",  Home:"ARI", AScore:20, HScore:30 },
+```   { Week:5,  Away:"PHI", Home:"SF",  AScore:27, HScore:24 },
+```   { Week:6,  Away:"SD",  Home:"STL", AScore:17, HScore:20 },
+```   { Week:6,  Away:"OAK", Home:"SF",  AScore: 9, HScore:17 },
+```   { Week:7,  Away:"ARI", Home:"SEA", AScore:10, HScore:22 },
+```   { Week:8,  Away:"DEN", Home:"SF",  AScore:16, HScore:24 },
+```   { Week:8,  Away:"CAR", Home:"STL", AScore:10, HScore:20 },
+```   { Week:8,  Away:"TB",  Home:"ARI", AScore:38, HScore:35 },
+```   { Week:9,  Away:"NYG", Home:"SEA", AScore:41, HScore: 7 },
+```   { Week:10, Away:"STL", Home:"SF",  AScore:20, HScore:23 },
+```   { Week:10, Away:"SEA", Home:"ARI", AScore:36, HScore:18 },
+```   { Week:11, Away:"TB",  Home:"SF",  AScore:21, HScore: 0 },
+```   { Week:11, Away:"ATL", Home:"STL", AScore:34, HScore:17 },
+```   { Week:12, Away:"KC",  Home:"SEA", AScore:42, HScore:24 },
+```   { Week:12, Away:"SF",  Home:"ARI", AScore:27, HScore: 6 },
+```   { Week:13, Away:"STL", Home:"ARI", AScore:19, HScore: 6 },
+```   { Week:13, Away:"CAR", Home:"SEA", AScore:14, HScore:31 },
+```   { Week:14, Away:"SEA", Home:"SF",  AScore:21, HScore:40 },
+```   { Week:14, Away:"DEN", Home:"ARI", AScore:13, HScore:43 },
+```   { Week:15, Away:"KC",  Home:"STL", AScore:27, HScore:13 },
+```   { Week:15, Away:"ATL", Home:"SEA", AScore:34, HScore:18 },
+```   { Week:16, Away:"DAL", Home:"ARI", AScore:26, HScore:27 },
+```   { Week:16, Away:"SF",  Home:"STL", AScore:17, HScore:25 },
+```   { Week:17, Away:"ARI", Home:"SF",  AScore: 7, HScore:38 },
+```   { Week:17, Away:"STL", Home:"SEA", AScore: 6, HScore:16 }];
+``` this->&{ Away: Away if Text.Len(Away) = 3 else Away & "_", Home: Home if Text.Len(Home) = 3 else Home & "_" };
+``` Games := this;
+Games
+Games | GroupBy(_, Home, XGames)
+GroupBy(Games, [key] Team: Home & "", [auto] XGames)
+Games | GroupBy(_, Home)
+Games | GroupBy(_, Home & "") // Note the silliness!
+Games | GroupBy(_, Home | _) // Note the silliness!
+Games | GroupBy(_, Home & "", [agg] it) // Note the silliness!
+Games | GroupBy(_, Home, [agg] Num: Count(it))
+Games | GroupBy(_, Home, [agg] HWins:Count(it, HScore > AScore))
+Games | GroupBy(_, Home & "", [agg] Count(it, HScore > AScore)) // Note the silliness!
+Games | GroupBy(_, Home & "", [map] HScore + 0) // Note the extra silliness!
+Games | GroupBy(_, Home, [agg] HPts: Sum(it, HScore), [agg] APts: Sum(it, AScore))
+Games | GroupBy(_, Home, [agg] Num: Count(it), [agg] Wins: Count(it, HScore > AScore))
+Games.HScore | Sort([>] _) | GroupBy(_, it, [agg] Count(it))
+Games.HScore | Sort([<] _) | GroupBy(_, it, [agg] Count(it))
+Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [>] Score)
+Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [<] Num, [>] Score)
+Games.HScore | GroupBy(_, Score: it, [agg] Num: Count(it)) | Sort(_, [>] Num, [<] Score)
+Games | GroupBy(_, [key] Home, [map] XOpps: Away, [map] XWks: Week, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XOpps: Away, [map] XWks: Week, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] EvenInd: #it mod 2 = 0, [map] XIndOpps: (#, Away), [auto] XAuto, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [key] #it div 10, [map] XOpps: Away, [map] XInd: #, [agg] Num: Count(it))
+Games | GroupBy(_, [key] Home, [map] XOpps: Away, [auto] XGames, [agg] Num: Count(it))
+
+// GenKeyComparer code coverage.
+Games->Count()
+Games->GroupBy(HScore, AScore, XGames)->Count()
+Games->GroupBy(A: Bin(HScore, 20), B: Bin(AScore, 20), XGames)
+Games->SetFields(A: Bin(HScore if HScore >= 20 else null, 20), B: Bin(AScore if AScore >= 20 else null, 20))->GroupBy(A, B, XGames)
+Games->SetFields(A: HScore if HScore >= 20 else null, B: AScore if AScore >= 20 else null)->GroupBy(A: Bin(A, 20), B: Bin(B, 20), XGames)
+Games->Chain([null])->GroupBy(Home, XGames)
+Games->GroupBy(Key: "H_" & Home, [auto] XGames, [map] X: it.Away)
+Games->GroupBy("H_" & Home, [auto] XGames, [map] X: it.Away)
+
+// The agg scope requires hoisting of globals.
+``` X := 17;
+GroupBy(Range(10), it->Div(5), [agg] X)
+GroupBy(Range(10), it->Div(5), [agg] Sum(it) + X)
+GroupBy(Range(10), it->Div(5), [agg] it + X)
+GroupBy(Range(10), it->Div(5), [map] it + X)
+GroupBy(Range(5, 15), it->Div(# + 5), [agg] X)
+
+// Null input sequence.
+GroupBy(Range(10)        , it div 5)
+GroupBy(Range(10)->Null(), it div 5)
+GroupBy(Range(10)->Null(), #it div 5)
+
+// Non-record input, record output, with auto term.
+Range(10)->GroupBy(A: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, Z)
+Range(10)->ForEach(null if it mod 5 = 3 else it)->GroupBy(A: it mod 3, Z)
+Range(5, 15)->GroupBy(A: #it mod 3, Z)
+Range(5, 15)->GroupBy(A: #it mod 3, B: it mod 3, Z)
+Range(10)->ForEach(null if #it mod 5 = 3 else it)->GroupBy(A: #it mod 3, Z)
+
+// Tuples.
+Range(10)->GroupBy(A: (it mod 3,), Z)
+Range(5, 15)->GroupBy(A: (#it mod 3,), Z)
+Range(10)->GroupBy(A: (it mod 3,), B: (it mod 3,), Z)
+Range(5, 15)->GroupBy(A: (#it mod 3,), B: (it mod 3,), Z)
+Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3), B: (#it mod 3,), Z)
+Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3) if it mod 5 != 0 else null, B: (#it mod 3,), Z)
+Range(5, 15)->GroupBy(A: (#it mod 3, it mod 3), B: (#it mod 3,) if it mod 5 != 0 else null, Z)
+
+// Records.
+Range(10)->GroupBy(A: {X:it mod 3}, Z)
+Range(5, 15)->GroupBy(A: {X:#it mod 3}, Z)
+Range(10)->GroupBy(A: {X:it mod 3}, B: {Y:it mod 3}, Z)
+Range(5, 15)->GroupBy(A: {X:it mod 3}, B: {Y:it mod 3}, Z)
+Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3}, B: {Z:#it mod 3}, Z)
+Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3} if it mod 5 != 0 else null, B: {Z:#it mod 3}, Z)
+Range(5, 15)->GroupBy(A: {X:#it mod 3, Y:it mod 3}, B: {Z:#it mod 3} if it mod 5 != 0 else null, Z)
+
+// Arities for code coverage of hash code generation.
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, H: it mod 3, Z)
+Range(10)->GroupBy(A: it mod 3, B: it mod 3, C: it mod 3, D: it mod 3, E: it mod 3, F: it mod 3, G: it mod 3, H: it mod 3, I: it mod 3, Z)
+
+// [auto] with non-record.
+GroupBy(n: Range(10)   , Key:  n mod 3, [group] V1: Sum(group), [group] V2: MinMaxC(group), [item] XNegs: -n, [auto] XVals)
+GroupBy(n: Range(5, 15), Key: #n mod 3, [group] V1: Sum(group), [group] V2: MinMaxC(group), [item] XNegs: -#, [auto] XVals)

@@ -1,0 +1,90 @@
+>>> *** Source:
+    P := plan {
+        // ******* Parameters *******
+        // The product profit per unit (P rows).
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0 },
+        ];
+        // The resource quantities that we have (R rows).
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        // The amount of each resource required for each product unit (R x P rows).
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        // ******* Computed Constants *******
+        const NumProds := Count(Products);
+        // Indexed products.
+        const IndexedProducts := ForEach(p: Products, Index: Range(NumProds), p+>{ Index });
+        // Resource amount information, eg, amt we have, and amt need for each kind of product.
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        // ******* Free Variables *******
+        // How much of each product to make (P slots in a tensor).
+        var Make from Tensor.Fill(0.0, NumProds) def Tensor.From(IndexedProducts.Want);
+        // ******* Computed Variables *******
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        let ProdAmts := IndexedProducts+>{ Make: Make[Index] };
+        // ******* Measures *******
+        // Total profit.
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        // ******* Constraints *******
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P;
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const NumProds := Count(Products); const IndexedProducts := ForEach(p : Products, Index : Range(NumProds), p+>{ Index }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, NumProds) def Tensor.From(IndexedProducts.Want); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; let ProdAmts := IndexedProducts+>{ Make : Make[Index] }; msr Profit := Sum(IndexedProducts, Profit * Make[Index]); con ResCons := ResAmts.Need $<= ResAmts.Have }
+   1) [0] Expr P
+   2) [0] End
+
+>    0) [0] Define P <- module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const NumProds := Count(Products); const IndexedProducts := ForEach(p : Products, Index : Range(NumProds), p+>{ Index }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, NumProds) def Tensor.From(IndexedProducts.Want); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; let ProdAmts := IndexedProducts+>{ Make : Make[Index] }; msr Profit := Sum(IndexedProducts, Profit * Make[Index]); con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:r8}*, var Make:r8[*], const NumProds:i8, let ProdAmts:{Index:i8, Make:r8, PID:s, Profit:r8, Want:r8}*, param Products:{PID:s, Profit:r8, Want:r8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*}, SysType: RuntimeModule<{Seq<{i8,str,r8,r8}>,Ten<r8>,i8,Seq<{i8,r8,str,r8,r8}>,Seq<{str,r8,r8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>},(Seq<{str,r8,r8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,i8,Seq<{i8,str,r8,r8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<r8>,Ten<r8>,Seq<{i8,r8,str}>,Seq<{i8,r8,str,r8,r8}>,r8,Seq<bool>)>
+>    1) [0] Expr P
+module symbols:
+  param Products: Seq<{str,r8,r8}>
+       0) { PID: P0, Profit: 12, Want: 7 }
+       1) { PID: P1, Profit: 15, Want: 10 }
+  param Resources: Seq<{i8,str}>
+       0) { Have: 20, RID: R0 }
+       1) { Have: 35, RID: R1 }
+  param R_Per_P: Seq<{r8,str,str}>
+       0) { Need: 1, PID: P0, RID: R0 }
+       1) { Need: 2, PID: P0, RID: R1 }
+       2) { Need: 3, PID: P1, RID: R0 }
+       3) { Need: 2, PID: P1, RID: R1 }
+  const NumProds: 2
+  const IndexedProducts: Seq<{i8,str,r8,r8}>
+       0) { Index: 0, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, PID: P1, Profit: 15, Want: 10 }
+  const ResAmtInfo: Seq<{i8,Seq<{i8,r8,str}>,str}>
+       0) { Have: 20, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 1, RID: R0 }
+                 1) { Index: 1, Need: 3, RID: R0 }
+            RID: R0 }
+       1) { Have: 35, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 2, RID: R1 }
+                 1) { Index: 1, Need: 2, RID: R1 }
+            RID: R1 }
+  var Make: Ten<r8>(2) [7, 10]
+  let ResAmts: Seq<{i8,r8,str}>
+       0) { Have: 20, Need: 37, RID: R0 }
+       1) { Have: 35, Need: 34, RID: R1 }
+  let ProdAmts: Seq<{i8,r8,str,r8,r8}>
+       0) { Index: 0, Make: 7, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, Make: 10, PID: P1, Profit: 15, Want: 10 }
+  msr Profit: 234
+  con ResCons: Seq<bool>
+       0) false
+       1) true
+>    2) [0] End
+

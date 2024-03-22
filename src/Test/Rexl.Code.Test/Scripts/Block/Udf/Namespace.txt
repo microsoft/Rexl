@@ -1,0 +1,74 @@
+﻿namespace @N;
+
+func @F() := "F";
+func F() := "N.F";
+func @P.F() := "P.F";
+func P.F() := "N.P.F";
+"";
+
+namespace @N.P;
+"namespace @N.P";
+F();
+@F();
+N.F();
+@N.F();
+P.F();
+@P.F();
+"";
+
+namespace @N;
+"namespace @N";
+F();
+@F();
+N.F();
+@N.F();
+P.F();
+@P.F();
+"";
+
+namespace @P;
+"namespace @P";
+F();
+@F();
+N.F();
+@N.F();
+P.F();
+@P.F();
+"";
+
+namespace @;
+"namespace @";
+F();
+@F();
+N.F();
+@N.F();
+P.F();
+@P.F();
+"";
+
+func IndexOf(s, t) := (s, t);
+
+"ABC"->IndexOf("B");
+"ABC"->@IndexOf("B");
+
+namespace N {
+    "in namespace N";
+    F();
+    @F();
+    N.F();
+    @N.F();
+    P.F();
+    @P.F();
+    "";
+
+    namespace P {
+        "in namespace N.P";
+        F();
+        @F();
+        N.F();
+        @N.F();
+        P.F();
+        @P.F();
+        "";
+    };
+}

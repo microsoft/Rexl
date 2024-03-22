@@ -1,0 +1,244 @@
+>>> *** Source:
+    T := Range(22_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    P := "temp/codec-test.rbin";
+    "";
+    "*** Brotli ***";
+    task W as WriteRbin(T, P, true, "brotli");
+    W.Compression;
+    task W as WriteRbin(T, P, true, "unknown");
+    W.Compression;
+    task W as WriteRbin(T, P);
+    W.Compression;
+    task W as WriteRbin(T, P, true);
+    W.Compression;
+    task W as WriteRbin(T, P, true, true);
+    W.Compression;
+    task W as WriteRbin(T, P, true, -1);
+    W.Compression;
+    task W as WriteRbin(T, P, true, 4);
+    W.Compression;
+    task W as WriteRbin(T, P, true, 2); // Gzip NYI, so fallback.
+    W.Compression;
+    task W as WriteRbin(T, P, true, 17);
+    W.Compression;
+    task W as WriteRbin(T, P, true, 10000);
+    W.Compression;
+    "";
+    "*** Deflate ***";
+    task W as WriteRbin(T, P, true, "deflate");
+    W.Compression;
+    task W as WriteRbin(T, P, true, 3);
+    W.Compression;
+    task W as WriteRbin(T, P, true, "DEFLATE");
+    W.Compression;
+    "";
+    "*** Snappy ***";
+    task W as WriteRbin(T, P, true, "snappy");
+    W.Compression;
+    task W as WriteRbin(T, P, true, 1);
+    W.Compression;
+    task W as WriteRbin(T, P, true, "SNaPPY");
+    W.Compression;
+    task W as WriteRbin(T, P, true, "SNaPPie");
+    W.Compression;
+    "";
+    "*** None ***";
+    task W as WriteRbin(T, P, true, "none");
+    W.Compression;
+    task W as WriteRbin(T, P, true, false);
+    W.Compression;
+    task W as WriteRbin(T, P, true, 0);
+    W.Compression;
+    task W as WriteRbin(T, P, true, "");
+    W.Compression;
+    task W as WriteRbin(T, P, true, "NO");
+    W.Compression;
+
+>>> *** Instructions:
+   0) [0] Define T <- Range(22000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   1) [0] Define P <- "temp/codec-test.rbin"
+   2) [0] Expr ""
+   3) [0] Expr "*** Brotli ***"
+   4) [0] TaskProc task W as WriteRbin(T, P, true, "brotli")
+   5) [0] Expr W.Compression
+   6) [0] TaskProc task W as WriteRbin(T, P, true, "unknown")
+   7) [0] Expr W.Compression
+   8) [0] TaskProc task W as WriteRbin(T, P)
+   9) [0] Expr W.Compression
+  10) [0] TaskProc task W as WriteRbin(T, P, true)
+  11) [0] Expr W.Compression
+  12) [0] TaskProc task W as WriteRbin(T, P, true, true)
+  13) [0] Expr W.Compression
+  14) [0] TaskProc task W as WriteRbin(T, P, true, -1)
+  15) [0] Expr W.Compression
+  16) [0] TaskProc task W as WriteRbin(T, P, true, 4)
+  17) [0] Expr W.Compression
+  18) [0] TaskProc task W as WriteRbin(T, P, true, 2)
+  19) [0] Expr W.Compression
+  20) [0] TaskProc task W as WriteRbin(T, P, true, 17)
+  21) [0] Expr W.Compression
+  22) [0] TaskProc task W as WriteRbin(T, P, true, 10000)
+  23) [0] Expr W.Compression
+  24) [0] Expr ""
+  25) [0] Expr "*** Deflate ***"
+  26) [0] TaskProc task W as WriteRbin(T, P, true, "deflate")
+  27) [0] Expr W.Compression
+  28) [0] TaskProc task W as WriteRbin(T, P, true, 3)
+  29) [0] Expr W.Compression
+  30) [0] TaskProc task W as WriteRbin(T, P, true, "DEFLATE")
+  31) [0] Expr W.Compression
+  32) [0] Expr ""
+  33) [0] Expr "*** Snappy ***"
+  34) [0] TaskProc task W as WriteRbin(T, P, true, "snappy")
+  35) [0] Expr W.Compression
+  36) [0] TaskProc task W as WriteRbin(T, P, true, 1)
+  37) [0] Expr W.Compression
+  38) [0] TaskProc task W as WriteRbin(T, P, true, "SNaPPY")
+  39) [0] Expr W.Compression
+  40) [0] TaskProc task W as WriteRbin(T, P, true, "SNaPPie")
+  41) [0] Expr W.Compression
+  42) [0] Expr ""
+  43) [0] Expr "*** None ***"
+  44) [0] TaskProc task W as WriteRbin(T, P, true, "none")
+  45) [0] Expr W.Compression
+  46) [0] TaskProc task W as WriteRbin(T, P, true, false)
+  47) [0] Expr W.Compression
+  48) [0] TaskProc task W as WriteRbin(T, P, true, 0)
+  49) [0] Expr W.Compression
+  50) [0] TaskProc task W as WriteRbin(T, P, true, "")
+  51) [0] Expr W.Compression
+  52) [0] TaskProc task W as WriteRbin(T, P, true, "NO")
+  53) [0] Expr W.Compression
+  54) [0] End
+
+>    0) [0] Define T <- Range(22000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    1) [0] Define P <- "temp/codec-test.rbin"
+Global 'P' has DType: s, SysType: str
+>    2) [0] Expr ""
+
+>    3) [0] Expr "*** Brotli ***"
+*** Brotli ***
+>    4) [0] TaskProc task W as WriteRbin(T, P, true, "brotli")
+Task 'W' added
+>    5) [0] Expr W.Compression
+Brotli
+>    6) [0] TaskProc task W as WriteRbin(T, P, true, "unknown")
+Overwriting task: W
+Task 'W' added
+>    7) [0] Expr W.Compression
+Brotli
+>    8) [0] TaskProc task W as WriteRbin(T, P)
+Overwriting task: W
+Task 'W' added
+>    9) [0] Expr W.Compression
+Brotli
+>   10) [0] TaskProc task W as WriteRbin(T, P, true)
+Overwriting task: W
+Task 'W' added
+>   11) [0] Expr W.Compression
+Brotli
+>   12) [0] TaskProc task W as WriteRbin(T, P, true, true)
+Overwriting task: W
+Task 'W' added
+>   13) [0] Expr W.Compression
+Brotli
+>   14) [0] TaskProc task W as WriteRbin(T, P, true, -1)
+Overwriting task: W
+Task 'W' added
+>   15) [0] Expr W.Compression
+Brotli
+>   16) [0] TaskProc task W as WriteRbin(T, P, true, 4)
+Overwriting task: W
+Task 'W' added
+>   17) [0] Expr W.Compression
+Brotli
+>   18) [0] TaskProc task W as WriteRbin(T, P, true, 2)
+Overwriting task: W
+Task 'W' added
+>   19) [0] Expr W.Compression
+Brotli
+>   20) [0] TaskProc task W as WriteRbin(T, P, true, 17)
+Overwriting task: W
+Task 'W' added
+>   21) [0] Expr W.Compression
+Brotli
+>   22) [0] TaskProc task W as WriteRbin(T, P, true, 10000)
+Overwriting task: W
+Task 'W' added
+>   23) [0] Expr W.Compression
+Brotli
+>   24) [0] Expr ""
+
+>   25) [0] Expr "*** Deflate ***"
+*** Deflate ***
+>   26) [0] TaskProc task W as WriteRbin(T, P, true, "deflate")
+Overwriting task: W
+Task 'W' added
+>   27) [0] Expr W.Compression
+Deflate
+>   28) [0] TaskProc task W as WriteRbin(T, P, true, 3)
+Overwriting task: W
+Task 'W' added
+>   29) [0] Expr W.Compression
+Deflate
+>   30) [0] TaskProc task W as WriteRbin(T, P, true, "DEFLATE")
+Overwriting task: W
+Task 'W' added
+>   31) [0] Expr W.Compression
+Deflate
+>   32) [0] Expr ""
+
+>   33) [0] Expr "*** Snappy ***"
+*** Snappy ***
+>   34) [0] TaskProc task W as WriteRbin(T, P, true, "snappy")
+Overwriting task: W
+Task 'W' added
+>   35) [0] Expr W.Compression
+Snappy
+>   36) [0] TaskProc task W as WriteRbin(T, P, true, 1)
+Overwriting task: W
+Task 'W' added
+>   37) [0] Expr W.Compression
+Snappy
+>   38) [0] TaskProc task W as WriteRbin(T, P, true, "SNaPPY")
+Overwriting task: W
+Task 'W' added
+>   39) [0] Expr W.Compression
+Snappy
+>   40) [0] TaskProc task W as WriteRbin(T, P, true, "SNaPPie")
+Overwriting task: W
+Task 'W' added
+>   41) [0] Expr W.Compression
+Snappy
+>   42) [0] Expr ""
+
+>   43) [0] Expr "*** None ***"
+*** None ***
+>   44) [0] TaskProc task W as WriteRbin(T, P, true, "none")
+Overwriting task: W
+Task 'W' added
+>   45) [0] Expr W.Compression
+None
+>   46) [0] TaskProc task W as WriteRbin(T, P, true, false)
+Overwriting task: W
+Task 'W' added
+>   47) [0] Expr W.Compression
+None
+>   48) [0] TaskProc task W as WriteRbin(T, P, true, 0)
+Overwriting task: W
+Task 'W' added
+>   49) [0] Expr W.Compression
+None
+>   50) [0] TaskProc task W as WriteRbin(T, P, true, "")
+Overwriting task: W
+Task 'W' added
+>   51) [0] Expr W.Compression
+None
+>   52) [0] TaskProc task W as WriteRbin(T, P, true, "NO")
+Overwriting task: W
+Task 'W' added
+>   53) [0] Expr W.Compression
+None
+>   54) [0] End
+

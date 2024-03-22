@@ -1,0 +1,5248 @@
+**** New definitions: Ds, type: d*
+**** New definitions: Ts, type: t*
+
+> Ds
+Ds : d*
+BndKind:Global, Type:d*, Bnd:(Global(Ds))
+// (∂.Ds:d*) : d*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ret
+  Total Size: 11
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 25, 0, 0, 0, 0)
+ 1) DT(2020, 7, 1, 0, 0, 0, 0)
+ 2) DT(2020, 1, 1, 12, 37, 18, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 12, 31, 23, 59, 59, 999, 9999)
+###
+> Ds + Time(1) // REVIEW: Should hoisting be applied here?
+Ds + Time(1) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Time(1:i8):t), Call(∂.ForEach([map:2] Global(Ds), ChronoAdd(Scope(2), Scope(1))):d*)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static Date::Add(Date, Time):Date
+      1) ret
+  Total Size: 19
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldc.i4.1
+      1) conv.i8
+      5) call static TimeGen::Exec(i8):Time
+      1) stloc.1 [Time]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldloc.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 76
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 26, 0, 0, 0, 0)
+ 1) DT(2020, 7, 2, 0, 0, 0, 0)
+ 2) DT(2020, 1, 2, 12, 37, 18, 0)
+ 3) DT(1, 1, 2, 0, 0, 0, 0)
+ 4) DT(1, 1, 1, 0, 0, 0, 0)
+###
+> Time(1) + Ds
+Time(1) + Ds : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Time(1:i8):t), Call(∂.ForEach([map:2] Global(Ds), ChronoAdd(Scope(2), Scope(1))):d*)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static Date::Add(Date, Time):Date
+      1) ret
+  Total Size: 19
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldc.i4.1
+      1) conv.i8
+      5) call static TimeGen::Exec(i8):Time
+      1) stloc.1 [Time]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldloc.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 76
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 26, 0, 0, 0, 0)
+ 1) DT(2020, 7, 2, 0, 0, 0, 0)
+ 2) DT(2020, 1, 2, 12, 37, 18, 0)
+ 3) DT(1, 1, 2, 0, 0, 0, 0)
+ 4) DT(1, 1, 1, 0, 0, 0, 0)
+###
+> Ds - Time(1)
+Ds - Time(1) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Time(1:i8):t), Call(∂.ForEach([map:2] Global(Ds), ChronoSub(Scope(2), Scope(1))):d*)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static Date::Sub(Date, Time):Date
+      1) ret
+  Total Size: 19
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldc.i4.1
+      1) conv.i8
+      5) call static TimeGen::Exec(i8):Time
+      1) stloc.1 [Time]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldloc.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 76
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 24, 0, 0, 0, 0)
+ 1) DT(2020, 6, 30, 0, 0, 0, 0)
+ 2) DT(2019, 12, 31, 12, 37, 18, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 12, 30, 23, 59, 59, 999, 9999)
+###
+> Ds - Ds
+Ds - Ds : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), ChronoSub(Scope(1), Scope(1))):t*))
+// (∂.Ds:d*) : t*
+ForEach_1(Arr<obj>, Date):Time
+      1) ldarg.1 [Date]
+      1) ldarg.1 [Date]
+      5) call static Date::Sub(Date, Date):Time
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Time>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to t*
+Sequence: Seq<Time>
+ 0) 00:00:00
+ 1) 00:00:00
+ 2) 00:00:00
+ 3) 00:00:00
+ 4) 00:00:00
+###
+> Ts
+Ts : t*
+BndKind:Global, Type:t*, Bnd:(Global(Ts))
+// (∂.Ts:t*) : t*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ret
+  Total Size: 11
+
+Func sig: (Ts:t*) to t*
+Sequence: Seq<Time>
+ 0) 00:00:00
+ 1) 1.00:00:00
+ 2) -1.00:00:00
+ 3) 7.00:00:00
+ 4) 07:31:40
+ 5) 01:00:00
+ 6) 00:01:00
+ 7) 00:00:01
+ 8) 00:00:00.0010000
+ 9) 00:00:00.0000001
+10) -2.00:00:00
+11) -2.07:31:40
+12) -1.01:00:00
+13) -1.00:01:00
+14) -1.00:00:01
+15) -1.00:00:00.0010000
+16) -1.00:00:00.0000001
+17) 2.23:59:59.9999999
+18) -2.23:59:59.9999999
+###
+> Ts + Ts
+Ts + Ts : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), ChronoAdd(Scope(1), Scope(1))):t*))
+// (∂.Ts:t*) : t*
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.1 [Time]
+      5) call static CodeGenUtil::Add(Time, Time):Time
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,Time>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to t*
+Sequence: Seq<Time>
+ 0) 00:00:00
+ 1) 2.00:00:00
+ 2) -2.00:00:00
+ 3) 14.00:00:00
+ 4) 15:03:20
+ 5) 02:00:00
+ 6) 00:02:00
+ 7) 00:00:02
+ 8) 00:00:00.0020000
+ 9) 00:00:00.0000002
+10) -4.00:00:00
+11) -4.15:03:20
+12) -2.02:00:00
+13) -2.00:02:00
+14) -2.00:00:02
+15) -2.00:00:00.0020000
+16) -2.00:00:00.0000002
+17) 5.23:59:59.9999998
+18) -5.23:59:59.9999998
+###
+> Ts - Ts
+Ts - Ts : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), ChronoSub(Scope(1), Scope(1))):t*))
+// (∂.Ts:t*) : t*
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.1 [Time]
+      5) call static CodeGenUtil::Sub(Time, Time):Time
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,Time>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to t*
+Sequence: Seq<Time>
+ 0) 00:00:00
+ 1) 00:00:00
+ 2) 00:00:00
+ 3) 00:00:00
+ 4) 00:00:00
+ 5) 00:00:00
+ 6) 00:00:00
+ 7) 00:00:00
+ 8) 00:00:00
+ 9) 00:00:00
+10) 00:00:00
+11) 00:00:00
+12) 00:00:00
+13) 00:00:00
+14) 00:00:00
+15) 00:00:00
+16) 00:00:00
+17) 00:00:00
+18) 00:00:00
+###
+> Map(x: Ts, Ds + x)
+Map(x : Ts, Ds + x) : d**
+BndKind:Call, Type:d**, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.ForEach([map:2] Global(Ds), ChronoAdd(Scope(2), Scope(1))):d*)):d**))
+// (∂.Ts:t*, ∂.Ds:d*) : d**
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static Date::Add(Date, Time):Date
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<Date>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Date>)]
+      5) ldfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.1 [Seq<Date>]
+      5) newobj (Seq<Date>)()
+      1) stloc.2 [(Seq<Date>)]
+      1) ldloc.2 [(Seq<Date>)]
+      1) ldloc.1 [Seq<Date>]
+      5) stfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<Date>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Date>)]
+      5) stelem [(Seq<Date>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<Date>>):Seq<Seq<Date>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Date>>):Seq<Seq<Date>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Ts:t*, Ds:d*) to d**
+Sequence: Seq<Seq<Date>>
+ 0) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 0, 0, 0)
+     1) DT(2020, 7, 1, 0, 0, 0, 0)
+     2) DT(2020, 1, 1, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 59, 59, 999, 9999)
+ 1) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 0, 0, 0)
+     1) DT(2020, 7, 2, 0, 0, 0, 0)
+     2) DT(2020, 1, 2, 12, 37, 18, 0)
+     3) DT(1, 1, 2, 0, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 2) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 0, 0, 0, 0)
+     1) DT(2020, 6, 30, 0, 0, 0, 0)
+     2) DT(2019, 12, 31, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 59, 59, 999, 9999)
+ 3) Sequence: Seq<Date>
+     0) DT(2021, 1, 1, 0, 0, 0, 0)
+     1) DT(2020, 7, 8, 0, 0, 0, 0)
+     2) DT(2020, 1, 8, 12, 37, 18, 0)
+     3) DT(1, 1, 8, 0, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 7, 31, 40, 0)
+     1) DT(2020, 7, 1, 7, 31, 40, 0)
+     2) DT(2020, 1, 1, 20, 8, 58, 0)
+     3) DT(1, 1, 1, 7, 31, 40, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 5) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 1, 0, 0, 0)
+     1) DT(2020, 7, 1, 1, 0, 0, 0)
+     2) DT(2020, 1, 1, 13, 37, 18, 0)
+     3) DT(1, 1, 1, 1, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 6) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 1, 0, 0)
+     1) DT(2020, 7, 1, 0, 1, 0, 0)
+     2) DT(2020, 1, 1, 12, 38, 18, 0)
+     3) DT(1, 1, 1, 0, 1, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 7) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 0, 1, 0)
+     1) DT(2020, 7, 1, 0, 0, 1, 0)
+     2) DT(2020, 1, 1, 12, 37, 19, 0)
+     3) DT(1, 1, 1, 0, 0, 1, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 8) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 0, 0, 1)
+     1) DT(2020, 7, 1, 0, 0, 0, 1)
+     2) DT(2020, 1, 1, 12, 37, 18, 1)
+     3) DT(1, 1, 1, 0, 0, 0, 1)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 9) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 0, 0, 0, 1)
+     1) DT(2020, 7, 1, 0, 0, 0, 0, 1)
+     2) DT(2020, 1, 1, 12, 37, 18, 0, 1)
+     3) DT(1, 1, 1, 0, 0, 0, 0, 1)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+10) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 0, 0, 0, 0)
+     1) DT(2020, 6, 29, 0, 0, 0, 0)
+     2) DT(2019, 12, 30, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 29, 23, 59, 59, 999, 9999)
+11) Sequence: Seq<Date>
+     0) DT(2020, 12, 22, 16, 28, 20, 0)
+     1) DT(2020, 6, 28, 16, 28, 20, 0)
+     2) DT(2019, 12, 30, 5, 5, 38, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 29, 16, 28, 19, 999, 9999)
+12) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 23, 0, 0, 0)
+     1) DT(2020, 6, 29, 23, 0, 0, 0)
+     2) DT(2019, 12, 31, 11, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 22, 59, 59, 999, 9999)
+13) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 23, 59, 0, 0)
+     1) DT(2020, 6, 29, 23, 59, 0, 0)
+     2) DT(2019, 12, 31, 12, 36, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 58, 59, 999, 9999)
+14) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 23, 59, 59, 0)
+     1) DT(2020, 6, 29, 23, 59, 59, 0)
+     2) DT(2019, 12, 31, 12, 37, 17, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 59, 58, 999, 9999)
+15) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 23, 59, 59, 999)
+     1) DT(2020, 6, 29, 23, 59, 59, 999)
+     2) DT(2019, 12, 31, 12, 37, 17, 999)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 59, 59, 998, 9999)
+16) Sequence: Seq<Date>
+     0) DT(2020, 12, 23, 23, 59, 59, 999, 9999)
+     1) DT(2020, 6, 29, 23, 59, 59, 999, 9999)
+     2) DT(2019, 12, 31, 12, 37, 17, 999, 9999)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 59, 59, 999, 9998)
+17) Sequence: Seq<Date>
+     0) DT(2020, 12, 27, 23, 59, 59, 999, 9999)
+     1) DT(2020, 7, 3, 23, 59, 59, 999, 9999)
+     2) DT(2020, 1, 4, 12, 37, 17, 999, 9999)
+     3) DT(1, 1, 3, 23, 59, 59, 999, 9999)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+18) Sequence: Seq<Date>
+     0) DT(2020, 12, 22, 0, 0, 0, 0, 1)
+     1) DT(2020, 6, 28, 0, 0, 0, 0, 1)
+     2) DT(2019, 12, 29, 12, 37, 18, 0, 1)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 29, 0, 0, 0, 0)
+###
+> Map(x: Ts, Ds - x)
+Map(x : Ts, Ds - x) : d**
+BndKind:Call, Type:d**, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.ForEach([map:2] Global(Ds), ChronoSub(Scope(2), Scope(1))):d*)):d**))
+// (∂.Ts:t*, ∂.Ds:d*) : d**
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static Date::Sub(Date, Time):Date
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<Date>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Date>)]
+      5) ldfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Date>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.1 [Seq<Date>]
+      5) newobj (Seq<Date>)()
+      1) stloc.2 [(Seq<Date>)]
+      1) ldloc.2 [(Seq<Date>)]
+      1) ldloc.1 [Seq<Date>]
+      5) stfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<Date>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Date>)]
+      5) stelem [(Seq<Date>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<Date>>):Seq<Seq<Date>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Date>>):Seq<Seq<Date>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Ts:t*, Ds:d*) to d**
+Sequence: Seq<Seq<Date>>
+ 0) Sequence: Seq<Date>
+     0) DT(2020, 12, 25, 0, 0, 0, 0)
+     1) DT(2020, 7, 1, 0, 0, 0, 0)
+     2) DT(2020, 1, 1, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 59, 59, 999, 9999)
+ 1) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 0, 0, 0, 0)
+     1) DT(2020, 6, 30, 0, 0, 0, 0)
+     2) DT(2019, 12, 31, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 30, 23, 59, 59, 999, 9999)
+ 2) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 0, 0, 0)
+     1) DT(2020, 7, 2, 0, 0, 0, 0)
+     2) DT(2020, 1, 2, 12, 37, 18, 0)
+     3) DT(1, 1, 2, 0, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+ 3) Sequence: Seq<Date>
+     0) DT(2020, 12, 18, 0, 0, 0, 0)
+     1) DT(2020, 6, 24, 0, 0, 0, 0)
+     2) DT(2019, 12, 25, 12, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 24, 23, 59, 59, 999, 9999)
+ 4) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 16, 28, 20, 0)
+     1) DT(2020, 6, 30, 16, 28, 20, 0)
+     2) DT(2020, 1, 1, 5, 5, 38, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 16, 28, 19, 999, 9999)
+ 5) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 23, 0, 0, 0)
+     1) DT(2020, 6, 30, 23, 0, 0, 0)
+     2) DT(2020, 1, 1, 11, 37, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 22, 59, 59, 999, 9999)
+ 6) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 23, 59, 0, 0)
+     1) DT(2020, 6, 30, 23, 59, 0, 0)
+     2) DT(2020, 1, 1, 12, 36, 18, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 58, 59, 999, 9999)
+ 7) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 23, 59, 59, 0)
+     1) DT(2020, 6, 30, 23, 59, 59, 0)
+     2) DT(2020, 1, 1, 12, 37, 17, 0)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 59, 58, 999, 9999)
+ 8) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 23, 59, 59, 999)
+     1) DT(2020, 6, 30, 23, 59, 59, 999)
+     2) DT(2020, 1, 1, 12, 37, 17, 999)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 59, 59, 998, 9999)
+ 9) Sequence: Seq<Date>
+     0) DT(2020, 12, 24, 23, 59, 59, 999, 9999)
+     1) DT(2020, 6, 30, 23, 59, 59, 999, 9999)
+     2) DT(2020, 1, 1, 12, 37, 17, 999, 9999)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 31, 23, 59, 59, 999, 9998)
+10) Sequence: Seq<Date>
+     0) DT(2020, 12, 27, 0, 0, 0, 0)
+     1) DT(2020, 7, 3, 0, 0, 0, 0)
+     2) DT(2020, 1, 3, 12, 37, 18, 0)
+     3) DT(1, 1, 3, 0, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+11) Sequence: Seq<Date>
+     0) DT(2020, 12, 27, 7, 31, 40, 0)
+     1) DT(2020, 7, 3, 7, 31, 40, 0)
+     2) DT(2020, 1, 3, 20, 8, 58, 0)
+     3) DT(1, 1, 3, 7, 31, 40, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+12) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 1, 0, 0, 0)
+     1) DT(2020, 7, 2, 1, 0, 0, 0)
+     2) DT(2020, 1, 2, 13, 37, 18, 0)
+     3) DT(1, 1, 2, 1, 0, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+13) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 1, 0, 0)
+     1) DT(2020, 7, 2, 0, 1, 0, 0)
+     2) DT(2020, 1, 2, 12, 38, 18, 0)
+     3) DT(1, 1, 2, 0, 1, 0, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+14) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 0, 1, 0)
+     1) DT(2020, 7, 2, 0, 0, 1, 0)
+     2) DT(2020, 1, 2, 12, 37, 19, 0)
+     3) DT(1, 1, 2, 0, 0, 1, 0)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+15) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 0, 0, 1)
+     1) DT(2020, 7, 2, 0, 0, 0, 1)
+     2) DT(2020, 1, 2, 12, 37, 18, 1)
+     3) DT(1, 1, 2, 0, 0, 0, 1)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+16) Sequence: Seq<Date>
+     0) DT(2020, 12, 26, 0, 0, 0, 0, 1)
+     1) DT(2020, 7, 2, 0, 0, 0, 0, 1)
+     2) DT(2020, 1, 2, 12, 37, 18, 0, 1)
+     3) DT(1, 1, 2, 0, 0, 0, 0, 1)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+17) Sequence: Seq<Date>
+     0) DT(2020, 12, 22, 0, 0, 0, 0, 1)
+     1) DT(2020, 6, 28, 0, 0, 0, 0, 1)
+     2) DT(2019, 12, 29, 12, 37, 18, 0, 1)
+     3) DT(1, 1, 1, 0, 0, 0, 0)
+     4) DT(9999, 12, 29, 0, 0, 0, 0)
+18) Sequence: Seq<Date>
+     0) DT(2020, 12, 27, 23, 59, 59, 999, 9999)
+     1) DT(2020, 7, 3, 23, 59, 59, 999, 9999)
+     2) DT(2020, 1, 4, 12, 37, 17, 999, 9999)
+     3) DT(1, 1, 3, 23, 59, 59, 999, 9999)
+     4) DT(1, 1, 1, 0, 0, 0, 0)
+###
+> Map(x: Ds, Ds - x)
+Map(x : Ds, Ds - x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.ForEach([map:2] Global(Ds), ChronoSub(Scope(2), Scope(1))):t*)):t**))
+// (∂.Ds:d*) : t**
+ForEach_1(Arr<obj>, Date):Time
+      1) ldarg.1 [Date]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Date)]
+      5) ldfld (Date)::_F0:Date
+      5) call static Date::Sub(Date, Date):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Date):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Date>)]
+      5) ldfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Date)()
+      1) dup
+      1) ldarg.1 [Date]
+      5) stfld (Date)::_F0:Date
+      5) stelem [(Date)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      5) newobj (Seq<Date>)()
+      1) stloc.1 [(Seq<Date>)]
+      1) ldloc.1 [(Seq<Date>)]
+      1) ldloc.0 [Seq<Date>]
+      5) stfld (Seq<Date>)::_F0:Seq<Date>
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Date,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Seq<Date>)]
+      5) stelem [(Seq<Date>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 84
+
+Func sig: (Ds:d*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 00:00:00
+     1) -177.00:00:00
+     2) -358.11:22:42
+     3) -737783.00:00:00
+     4) 2914275.23:59:59.9999999
+ 1) Sequence: Seq<Time>
+     0) 177.00:00:00
+     1) 00:00:00
+     2) -181.11:22:42
+     3) -737606.00:00:00
+     4) 2914452.23:59:59.9999999
+ 2) Sequence: Seq<Time>
+     0) 358.11:22:42
+     1) 181.11:22:42
+     2) 00:00:00
+     3) -737424.12:37:18
+     4) 2914634.11:22:41.9999999
+ 3) Sequence: Seq<Time>
+     0) 737783.00:00:00
+     1) 737606.00:00:00
+     2) 737424.12:37:18
+     3) 00:00:00
+     4) 3652058.23:59:59.9999999
+ 4) Sequence: Seq<Time>
+     0) -2914275.23:59:59.9999999
+     1) -2914452.23:59:59.9999999
+     2) -2914634.11:22:41.9999999
+     3) -3652058.23:59:59.9999999
+     4) 00:00:00
+###
+> Map(x: Ts, Ts + x)
+Map(x : Ts, Ts + x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.ForEach([map:2] Global(Ts), ChronoAdd(Scope(2), Scope(1))):t*)):t**))
+// (∂.Ts:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::Add(Time, Time):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.1 [(Seq<Time>)]
+      1) ldloc.1 [(Seq<Time>)]
+      1) ldloc.0 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 84
+
+Func sig: (Ts:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 1.00:00:00
+     2) -1.00:00:00
+     3) 7.00:00:00
+     4) 07:31:40
+     5) 01:00:00
+     6) 00:01:00
+     7) 00:00:01
+     8) 00:00:00.0010000
+     9) 00:00:00.0000001
+    10) -2.00:00:00
+    11) -2.07:31:40
+    12) -1.01:00:00
+    13) -1.00:01:00
+    14) -1.00:00:01
+    15) -1.00:00:00.0010000
+    16) -1.00:00:00.0000001
+    17) 2.23:59:59.9999999
+    18) -2.23:59:59.9999999
+ 1) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) 2.00:00:00
+     2) 00:00:00
+     3) 8.00:00:00
+     4) 1.07:31:40
+     5) 1.01:00:00
+     6) 1.00:01:00
+     7) 1.00:00:01
+     8) 1.00:00:00.0010000
+     9) 1.00:00:00.0000001
+    10) -1.00:00:00
+    11) -1.07:31:40
+    12) -01:00:00
+    13) -00:01:00
+    14) -00:00:01
+    15) -00:00:00.0010000
+    16) -00:00:00.0000001
+    17) 3.23:59:59.9999999
+    18) -1.23:59:59.9999999
+ 2) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 00:00:00
+     2) -2.00:00:00
+     3) 6.00:00:00
+     4) -16:28:20
+     5) -23:00:00
+     6) -23:59:00
+     7) -23:59:59
+     8) -23:59:59.9990000
+     9) -23:59:59.9999999
+    10) -3.00:00:00
+    11) -3.07:31:40
+    12) -2.01:00:00
+    13) -2.00:01:00
+    14) -2.00:00:01
+    15) -2.00:00:00.0010000
+    16) -2.00:00:00.0000001
+    17) 1.23:59:59.9999999
+    18) -3.23:59:59.9999999
+ 3) Sequence: Seq<Time>
+     0) 7.00:00:00
+     1) 8.00:00:00
+     2) 6.00:00:00
+     3) 14.00:00:00
+     4) 7.07:31:40
+     5) 7.01:00:00
+     6) 7.00:01:00
+     7) 7.00:00:01
+     8) 7.00:00:00.0010000
+     9) 7.00:00:00.0000001
+    10) 5.00:00:00
+    11) 4.16:28:20
+    12) 5.23:00:00
+    13) 5.23:59:00
+    14) 5.23:59:59
+    15) 5.23:59:59.9990000
+    16) 5.23:59:59.9999999
+    17) 9.23:59:59.9999999
+    18) 4.00:00:00.0000001
+ 4) Sequence: Seq<Time>
+     0) 07:31:40
+     1) 1.07:31:40
+     2) -16:28:20
+     3) 7.07:31:40
+     4) 15:03:20
+     5) 08:31:40
+     6) 07:32:40
+     7) 07:31:41
+     8) 07:31:40.0010000
+     9) 07:31:40.0000001
+    10) -1.16:28:20
+    11) -2.00:00:00
+    12) -17:28:20
+    13) -16:29:20
+    14) -16:28:21
+    15) -16:28:20.0010000
+    16) -16:28:20.0000001
+    17) 3.07:31:39.9999999
+    18) -2.16:28:19.9999999
+ 5) Sequence: Seq<Time>
+     0) 01:00:00
+     1) 1.01:00:00
+     2) -23:00:00
+     3) 7.01:00:00
+     4) 08:31:40
+     5) 02:00:00
+     6) 01:01:00
+     7) 01:00:01
+     8) 01:00:00.0010000
+     9) 01:00:00.0000001
+    10) -1.23:00:00
+    11) -2.06:31:40
+    12) -1.00:00:00
+    13) -23:01:00
+    14) -23:00:01
+    15) -23:00:00.0010000
+    16) -23:00:00.0000001
+    17) 3.00:59:59.9999999
+    18) -2.22:59:59.9999999
+ 6) Sequence: Seq<Time>
+     0) 00:01:00
+     1) 1.00:01:00
+     2) -23:59:00
+     3) 7.00:01:00
+     4) 07:32:40
+     5) 01:01:00
+     6) 00:02:00
+     7) 00:01:01
+     8) 00:01:00.0010000
+     9) 00:01:00.0000001
+    10) -1.23:59:00
+    11) -2.07:30:40
+    12) -1.00:59:00
+    13) -1.00:00:00
+    14) -23:59:01
+    15) -23:59:00.0010000
+    16) -23:59:00.0000001
+    17) 3.00:00:59.9999999
+    18) -2.23:58:59.9999999
+ 7) Sequence: Seq<Time>
+     0) 00:00:01
+     1) 1.00:00:01
+     2) -23:59:59
+     3) 7.00:00:01
+     4) 07:31:41
+     5) 01:00:01
+     6) 00:01:01
+     7) 00:00:02
+     8) 00:00:01.0010000
+     9) 00:00:01.0000001
+    10) -1.23:59:59
+    11) -2.07:31:39
+    12) -1.00:59:59
+    13) -1.00:00:59
+    14) -1.00:00:00
+    15) -23:59:59.0010000
+    16) -23:59:59.0000001
+    17) 3.00:00:00.9999999
+    18) -2.23:59:58.9999999
+ 8) Sequence: Seq<Time>
+     0) 00:00:00.0010000
+     1) 1.00:00:00.0010000
+     2) -23:59:59.9990000
+     3) 7.00:00:00.0010000
+     4) 07:31:40.0010000
+     5) 01:00:00.0010000
+     6) 00:01:00.0010000
+     7) 00:00:01.0010000
+     8) 00:00:00.0020000
+     9) 00:00:00.0010001
+    10) -1.23:59:59.9990000
+    11) -2.07:31:39.9990000
+    12) -1.00:59:59.9990000
+    13) -1.00:00:59.9990000
+    14) -1.00:00:00.9990000
+    15) -1.00:00:00
+    16) -23:59:59.9990001
+    17) 3.00:00:00.0009999
+    18) -2.23:59:59.9989999
+ 9) Sequence: Seq<Time>
+     0) 00:00:00.0000001
+     1) 1.00:00:00.0000001
+     2) -23:59:59.9999999
+     3) 7.00:00:00.0000001
+     4) 07:31:40.0000001
+     5) 01:00:00.0000001
+     6) 00:01:00.0000001
+     7) 00:00:01.0000001
+     8) 00:00:00.0010001
+     9) 00:00:00.0000002
+    10) -1.23:59:59.9999999
+    11) -2.07:31:39.9999999
+    12) -1.00:59:59.9999999
+    13) -1.00:00:59.9999999
+    14) -1.00:00:00.9999999
+    15) -1.00:00:00.0009999
+    16) -1.00:00:00
+    17) 3.00:00:00
+    18) -2.23:59:59.9999998
+10) Sequence: Seq<Time>
+     0) -2.00:00:00
+     1) -1.00:00:00
+     2) -3.00:00:00
+     3) 5.00:00:00
+     4) -1.16:28:20
+     5) -1.23:00:00
+     6) -1.23:59:00
+     7) -1.23:59:59
+     8) -1.23:59:59.9990000
+     9) -1.23:59:59.9999999
+    10) -4.00:00:00
+    11) -4.07:31:40
+    12) -3.01:00:00
+    13) -3.00:01:00
+    14) -3.00:00:01
+    15) -3.00:00:00.0010000
+    16) -3.00:00:00.0000001
+    17) 23:59:59.9999999
+    18) -4.23:59:59.9999999
+11) Sequence: Seq<Time>
+     0) -2.07:31:40
+     1) -1.07:31:40
+     2) -3.07:31:40
+     3) 4.16:28:20
+     4) -2.00:00:00
+     5) -2.06:31:40
+     6) -2.07:30:40
+     7) -2.07:31:39
+     8) -2.07:31:39.9990000
+     9) -2.07:31:39.9999999
+    10) -4.07:31:40
+    11) -4.15:03:20
+    12) -3.08:31:40
+    13) -3.07:32:40
+    14) -3.07:31:41
+    15) -3.07:31:40.0010000
+    16) -3.07:31:40.0000001
+    17) 16:28:19.9999999
+    18) -5.07:31:39.9999999
+12) Sequence: Seq<Time>
+     0) -1.01:00:00
+     1) -01:00:00
+     2) -2.01:00:00
+     3) 5.23:00:00
+     4) -17:28:20
+     5) -1.00:00:00
+     6) -1.00:59:00
+     7) -1.00:59:59
+     8) -1.00:59:59.9990000
+     9) -1.00:59:59.9999999
+    10) -3.01:00:00
+    11) -3.08:31:40
+    12) -2.02:00:00
+    13) -2.01:01:00
+    14) -2.01:00:01
+    15) -2.01:00:00.0010000
+    16) -2.01:00:00.0000001
+    17) 1.22:59:59.9999999
+    18) -4.00:59:59.9999999
+13) Sequence: Seq<Time>
+     0) -1.00:01:00
+     1) -00:01:00
+     2) -2.00:01:00
+     3) 5.23:59:00
+     4) -16:29:20
+     5) -23:01:00
+     6) -1.00:00:00
+     7) -1.00:00:59
+     8) -1.00:00:59.9990000
+     9) -1.00:00:59.9999999
+    10) -3.00:01:00
+    11) -3.07:32:40
+    12) -2.01:01:00
+    13) -2.00:02:00
+    14) -2.00:01:01
+    15) -2.00:01:00.0010000
+    16) -2.00:01:00.0000001
+    17) 1.23:58:59.9999999
+    18) -4.00:00:59.9999999
+14) Sequence: Seq<Time>
+     0) -1.00:00:01
+     1) -00:00:01
+     2) -2.00:00:01
+     3) 5.23:59:59
+     4) -16:28:21
+     5) -23:00:01
+     6) -23:59:01
+     7) -1.00:00:00
+     8) -1.00:00:00.9990000
+     9) -1.00:00:00.9999999
+    10) -3.00:00:01
+    11) -3.07:31:41
+    12) -2.01:00:01
+    13) -2.00:01:01
+    14) -2.00:00:02
+    15) -2.00:00:01.0010000
+    16) -2.00:00:01.0000001
+    17) 1.23:59:58.9999999
+    18) -4.00:00:00.9999999
+15) Sequence: Seq<Time>
+     0) -1.00:00:00.0010000
+     1) -00:00:00.0010000
+     2) -2.00:00:00.0010000
+     3) 5.23:59:59.9990000
+     4) -16:28:20.0010000
+     5) -23:00:00.0010000
+     6) -23:59:00.0010000
+     7) -23:59:59.0010000
+     8) -1.00:00:00
+     9) -1.00:00:00.0009999
+    10) -3.00:00:00.0010000
+    11) -3.07:31:40.0010000
+    12) -2.01:00:00.0010000
+    13) -2.00:01:00.0010000
+    14) -2.00:00:01.0010000
+    15) -2.00:00:00.0020000
+    16) -2.00:00:00.0010001
+    17) 1.23:59:59.9989999
+    18) -4.00:00:00.0009999
+16) Sequence: Seq<Time>
+     0) -1.00:00:00.0000001
+     1) -00:00:00.0000001
+     2) -2.00:00:00.0000001
+     3) 5.23:59:59.9999999
+     4) -16:28:20.0000001
+     5) -23:00:00.0000001
+     6) -23:59:00.0000001
+     7) -23:59:59.0000001
+     8) -23:59:59.9990001
+     9) -1.00:00:00
+    10) -3.00:00:00.0000001
+    11) -3.07:31:40.0000001
+    12) -2.01:00:00.0000001
+    13) -2.00:01:00.0000001
+    14) -2.00:00:01.0000001
+    15) -2.00:00:00.0010001
+    16) -2.00:00:00.0000002
+    17) 1.23:59:59.9999998
+    18) -4.00:00:00
+17) Sequence: Seq<Time>
+     0) 2.23:59:59.9999999
+     1) 3.23:59:59.9999999
+     2) 1.23:59:59.9999999
+     3) 9.23:59:59.9999999
+     4) 3.07:31:39.9999999
+     5) 3.00:59:59.9999999
+     6) 3.00:00:59.9999999
+     7) 3.00:00:00.9999999
+     8) 3.00:00:00.0009999
+     9) 3.00:00:00
+    10) 23:59:59.9999999
+    11) 16:28:19.9999999
+    12) 1.22:59:59.9999999
+    13) 1.23:58:59.9999999
+    14) 1.23:59:58.9999999
+    15) 1.23:59:59.9989999
+    16) 1.23:59:59.9999998
+    17) 5.23:59:59.9999998
+    18) 00:00:00
+18) Sequence: Seq<Time>
+     0) -2.23:59:59.9999999
+     1) -1.23:59:59.9999999
+     2) -3.23:59:59.9999999
+     3) 4.00:00:00.0000001
+     4) -2.16:28:19.9999999
+     5) -2.22:59:59.9999999
+     6) -2.23:58:59.9999999
+     7) -2.23:59:58.9999999
+     8) -2.23:59:59.9989999
+     9) -2.23:59:59.9999998
+    10) -4.23:59:59.9999999
+    11) -5.07:31:39.9999999
+    12) -4.00:59:59.9999999
+    13) -4.00:00:59.9999999
+    14) -4.00:00:00.9999999
+    15) -4.00:00:00.0009999
+    16) -4.00:00:00
+    17) 00:00:00
+    18) -5.23:59:59.9999998
+###
+> Map(x: Ts, Ts - x)
+Map(x : Ts, Ts - x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.ForEach([map:2] Global(Ts), ChronoSub(Scope(2), Scope(1))):t*)):t**))
+// (∂.Ts:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::Sub(Time, Time):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.1 [(Seq<Time>)]
+      1) ldloc.1 [(Seq<Time>)]
+      1) ldloc.0 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 84
+
+Func sig: (Ts:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 1.00:00:00
+     2) -1.00:00:00
+     3) 7.00:00:00
+     4) 07:31:40
+     5) 01:00:00
+     6) 00:01:00
+     7) 00:00:01
+     8) 00:00:00.0010000
+     9) 00:00:00.0000001
+    10) -2.00:00:00
+    11) -2.07:31:40
+    12) -1.01:00:00
+    13) -1.00:01:00
+    14) -1.00:00:01
+    15) -1.00:00:00.0010000
+    16) -1.00:00:00.0000001
+    17) 2.23:59:59.9999999
+    18) -2.23:59:59.9999999
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 00:00:00
+     2) -2.00:00:00
+     3) 6.00:00:00
+     4) -16:28:20
+     5) -23:00:00
+     6) -23:59:00
+     7) -23:59:59
+     8) -23:59:59.9990000
+     9) -23:59:59.9999999
+    10) -3.00:00:00
+    11) -3.07:31:40
+    12) -2.01:00:00
+    13) -2.00:01:00
+    14) -2.00:00:01
+    15) -2.00:00:00.0010000
+    16) -2.00:00:00.0000001
+    17) 1.23:59:59.9999999
+    18) -3.23:59:59.9999999
+ 2) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) 2.00:00:00
+     2) 00:00:00
+     3) 8.00:00:00
+     4) 1.07:31:40
+     5) 1.01:00:00
+     6) 1.00:01:00
+     7) 1.00:00:01
+     8) 1.00:00:00.0010000
+     9) 1.00:00:00.0000001
+    10) -1.00:00:00
+    11) -1.07:31:40
+    12) -01:00:00
+    13) -00:01:00
+    14) -00:00:01
+    15) -00:00:00.0010000
+    16) -00:00:00.0000001
+    17) 3.23:59:59.9999999
+    18) -1.23:59:59.9999999
+ 3) Sequence: Seq<Time>
+     0) -7.00:00:00
+     1) -6.00:00:00
+     2) -8.00:00:00
+     3) 00:00:00
+     4) -6.16:28:20
+     5) -6.23:00:00
+     6) -6.23:59:00
+     7) -6.23:59:59
+     8) -6.23:59:59.9990000
+     9) -6.23:59:59.9999999
+    10) -9.00:00:00
+    11) -9.07:31:40
+    12) -8.01:00:00
+    13) -8.00:01:00
+    14) -8.00:00:01
+    15) -8.00:00:00.0010000
+    16) -8.00:00:00.0000001
+    17) -4.00:00:00.0000001
+    18) -9.23:59:59.9999999
+ 4) Sequence: Seq<Time>
+     0) -07:31:40
+     1) 16:28:20
+     2) -1.07:31:40
+     3) 6.16:28:20
+     4) 00:00:00
+     5) -06:31:40
+     6) -07:30:40
+     7) -07:31:39
+     8) -07:31:39.9990000
+     9) -07:31:39.9999999
+    10) -2.07:31:40
+    11) -2.15:03:20
+    12) -1.08:31:40
+    13) -1.07:32:40
+    14) -1.07:31:41
+    15) -1.07:31:40.0010000
+    16) -1.07:31:40.0000001
+    17) 2.16:28:19.9999999
+    18) -3.07:31:39.9999999
+ 5) Sequence: Seq<Time>
+     0) -01:00:00
+     1) 23:00:00
+     2) -1.01:00:00
+     3) 6.23:00:00
+     4) 06:31:40
+     5) 00:00:00
+     6) -00:59:00
+     7) -00:59:59
+     8) -00:59:59.9990000
+     9) -00:59:59.9999999
+    10) -2.01:00:00
+    11) -2.08:31:40
+    12) -1.02:00:00
+    13) -1.01:01:00
+    14) -1.01:00:01
+    15) -1.01:00:00.0010000
+    16) -1.01:00:00.0000001
+    17) 2.22:59:59.9999999
+    18) -3.00:59:59.9999999
+ 6) Sequence: Seq<Time>
+     0) -00:01:00
+     1) 23:59:00
+     2) -1.00:01:00
+     3) 6.23:59:00
+     4) 07:30:40
+     5) 00:59:00
+     6) 00:00:00
+     7) -00:00:59
+     8) -00:00:59.9990000
+     9) -00:00:59.9999999
+    10) -2.00:01:00
+    11) -2.07:32:40
+    12) -1.01:01:00
+    13) -1.00:02:00
+    14) -1.00:01:01
+    15) -1.00:01:00.0010000
+    16) -1.00:01:00.0000001
+    17) 2.23:58:59.9999999
+    18) -3.00:00:59.9999999
+ 7) Sequence: Seq<Time>
+     0) -00:00:01
+     1) 23:59:59
+     2) -1.00:00:01
+     3) 6.23:59:59
+     4) 07:31:39
+     5) 00:59:59
+     6) 00:00:59
+     7) 00:00:00
+     8) -00:00:00.9990000
+     9) -00:00:00.9999999
+    10) -2.00:00:01
+    11) -2.07:31:41
+    12) -1.01:00:01
+    13) -1.00:01:01
+    14) -1.00:00:02
+    15) -1.00:00:01.0010000
+    16) -1.00:00:01.0000001
+    17) 2.23:59:58.9999999
+    18) -3.00:00:00.9999999
+ 8) Sequence: Seq<Time>
+     0) -00:00:00.0010000
+     1) 23:59:59.9990000
+     2) -1.00:00:00.0010000
+     3) 6.23:59:59.9990000
+     4) 07:31:39.9990000
+     5) 00:59:59.9990000
+     6) 00:00:59.9990000
+     7) 00:00:00.9990000
+     8) 00:00:00
+     9) -00:00:00.0009999
+    10) -2.00:00:00.0010000
+    11) -2.07:31:40.0010000
+    12) -1.01:00:00.0010000
+    13) -1.00:01:00.0010000
+    14) -1.00:00:01.0010000
+    15) -1.00:00:00.0020000
+    16) -1.00:00:00.0010001
+    17) 2.23:59:59.9989999
+    18) -3.00:00:00.0009999
+ 9) Sequence: Seq<Time>
+     0) -00:00:00.0000001
+     1) 23:59:59.9999999
+     2) -1.00:00:00.0000001
+     3) 6.23:59:59.9999999
+     4) 07:31:39.9999999
+     5) 00:59:59.9999999
+     6) 00:00:59.9999999
+     7) 00:00:00.9999999
+     8) 00:00:00.0009999
+     9) 00:00:00
+    10) -2.00:00:00.0000001
+    11) -2.07:31:40.0000001
+    12) -1.01:00:00.0000001
+    13) -1.00:01:00.0000001
+    14) -1.00:00:01.0000001
+    15) -1.00:00:00.0010001
+    16) -1.00:00:00.0000002
+    17) 2.23:59:59.9999998
+    18) -3.00:00:00
+10) Sequence: Seq<Time>
+     0) 2.00:00:00
+     1) 3.00:00:00
+     2) 1.00:00:00
+     3) 9.00:00:00
+     4) 2.07:31:40
+     5) 2.01:00:00
+     6) 2.00:01:00
+     7) 2.00:00:01
+     8) 2.00:00:00.0010000
+     9) 2.00:00:00.0000001
+    10) 00:00:00
+    11) -07:31:40
+    12) 23:00:00
+    13) 23:59:00
+    14) 23:59:59
+    15) 23:59:59.9990000
+    16) 23:59:59.9999999
+    17) 4.23:59:59.9999999
+    18) -23:59:59.9999999
+11) Sequence: Seq<Time>
+     0) 2.07:31:40
+     1) 3.07:31:40
+     2) 1.07:31:40
+     3) 9.07:31:40
+     4) 2.15:03:20
+     5) 2.08:31:40
+     6) 2.07:32:40
+     7) 2.07:31:41
+     8) 2.07:31:40.0010000
+     9) 2.07:31:40.0000001
+    10) 07:31:40
+    11) 00:00:00
+    12) 1.06:31:40
+    13) 1.07:30:40
+    14) 1.07:31:39
+    15) 1.07:31:39.9990000
+    16) 1.07:31:39.9999999
+    17) 5.07:31:39.9999999
+    18) -16:28:19.9999999
+12) Sequence: Seq<Time>
+     0) 1.01:00:00
+     1) 2.01:00:00
+     2) 01:00:00
+     3) 8.01:00:00
+     4) 1.08:31:40
+     5) 1.02:00:00
+     6) 1.01:01:00
+     7) 1.01:00:01
+     8) 1.01:00:00.0010000
+     9) 1.01:00:00.0000001
+    10) -23:00:00
+    11) -1.06:31:40
+    12) 00:00:00
+    13) 00:59:00
+    14) 00:59:59
+    15) 00:59:59.9990000
+    16) 00:59:59.9999999
+    17) 4.00:59:59.9999999
+    18) -1.22:59:59.9999999
+13) Sequence: Seq<Time>
+     0) 1.00:01:00
+     1) 2.00:01:00
+     2) 00:01:00
+     3) 8.00:01:00
+     4) 1.07:32:40
+     5) 1.01:01:00
+     6) 1.00:02:00
+     7) 1.00:01:01
+     8) 1.00:01:00.0010000
+     9) 1.00:01:00.0000001
+    10) -23:59:00
+    11) -1.07:30:40
+    12) -00:59:00
+    13) 00:00:00
+    14) 00:00:59
+    15) 00:00:59.9990000
+    16) 00:00:59.9999999
+    17) 4.00:00:59.9999999
+    18) -1.23:58:59.9999999
+14) Sequence: Seq<Time>
+     0) 1.00:00:01
+     1) 2.00:00:01
+     2) 00:00:01
+     3) 8.00:00:01
+     4) 1.07:31:41
+     5) 1.01:00:01
+     6) 1.00:01:01
+     7) 1.00:00:02
+     8) 1.00:00:01.0010000
+     9) 1.00:00:01.0000001
+    10) -23:59:59
+    11) -1.07:31:39
+    12) -00:59:59
+    13) -00:00:59
+    14) 00:00:00
+    15) 00:00:00.9990000
+    16) 00:00:00.9999999
+    17) 4.00:00:00.9999999
+    18) -1.23:59:58.9999999
+15) Sequence: Seq<Time>
+     0) 1.00:00:00.0010000
+     1) 2.00:00:00.0010000
+     2) 00:00:00.0010000
+     3) 8.00:00:00.0010000
+     4) 1.07:31:40.0010000
+     5) 1.01:00:00.0010000
+     6) 1.00:01:00.0010000
+     7) 1.00:00:01.0010000
+     8) 1.00:00:00.0020000
+     9) 1.00:00:00.0010001
+    10) -23:59:59.9990000
+    11) -1.07:31:39.9990000
+    12) -00:59:59.9990000
+    13) -00:00:59.9990000
+    14) -00:00:00.9990000
+    15) 00:00:00
+    16) 00:00:00.0009999
+    17) 4.00:00:00.0009999
+    18) -1.23:59:59.9989999
+16) Sequence: Seq<Time>
+     0) 1.00:00:00.0000001
+     1) 2.00:00:00.0000001
+     2) 00:00:00.0000001
+     3) 8.00:00:00.0000001
+     4) 1.07:31:40.0000001
+     5) 1.01:00:00.0000001
+     6) 1.00:01:00.0000001
+     7) 1.00:00:01.0000001
+     8) 1.00:00:00.0010001
+     9) 1.00:00:00.0000002
+    10) -23:59:59.9999999
+    11) -1.07:31:39.9999999
+    12) -00:59:59.9999999
+    13) -00:00:59.9999999
+    14) -00:00:00.9999999
+    15) -00:00:00.0009999
+    16) 00:00:00
+    17) 4.00:00:00
+    18) -1.23:59:59.9999998
+17) Sequence: Seq<Time>
+     0) -2.23:59:59.9999999
+     1) -1.23:59:59.9999999
+     2) -3.23:59:59.9999999
+     3) 4.00:00:00.0000001
+     4) -2.16:28:19.9999999
+     5) -2.22:59:59.9999999
+     6) -2.23:58:59.9999999
+     7) -2.23:59:58.9999999
+     8) -2.23:59:59.9989999
+     9) -2.23:59:59.9999998
+    10) -4.23:59:59.9999999
+    11) -5.07:31:39.9999999
+    12) -4.00:59:59.9999999
+    13) -4.00:00:59.9999999
+    14) -4.00:00:00.9999999
+    15) -4.00:00:00.0009999
+    16) -4.00:00:00
+    17) 00:00:00
+    18) -5.23:59:59.9999998
+18) Sequence: Seq<Time>
+     0) 2.23:59:59.9999999
+     1) 3.23:59:59.9999999
+     2) 1.23:59:59.9999999
+     3) 9.23:59:59.9999999
+     4) 3.07:31:39.9999999
+     5) 3.00:59:59.9999999
+     6) 3.00:00:59.9999999
+     7) 3.00:00:00.9999999
+     8) 3.00:00:00.0009999
+     9) 3.00:00:00
+    10) 23:59:59.9999999
+    11) 16:28:19.9999999
+    12) 1.22:59:59.9999999
+    13) 1.23:58:59.9999999
+    14) 1.23:59:58.9999999
+    15) 1.23:59:59.9989999
+    16) 1.23:59:59.9999998
+    17) 5.23:59:59.9999998
+    18) 00:00:00
+###
+
+**** New definitions: Ticks, type: i8*
+**** New definitions: Diffs, type: i8*
+
+> Map(x: Diffs, Ticks->CastTime() + CastTime(x))
+Map(x : Diffs, Ticks->CastTime() + CastTime(x)) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Diffs), Call(∂.With([with:2] Call(∂.CastTime(Scope(1)):t), Call(∂.ForEach([map:3] Global(Ticks), ChronoAdd(Call(∂.CastTime(Scope(3)):t), Scope(2))):t*)):t*)):t**))
+// (∂.Diffs:i8*, ∂.Ticks:i8*) : t**
+ForEach_1(Arr<obj>, i8):Time
+      1) ldarg.1 [i8]
+      5) newobj Time(i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::Add(Time, Time):Time
+      1) ret
+  Total Size: 24
+
+ForEach_1(Arr<obj>, i8):Seq<Time>
+      1) ldarg.1 [i8]
+      5) newobj Time(i8)
+      1) stloc.0 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<i8>)]
+      5) ldfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldloc.0 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 83
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      5) newobj (Seq<i8>)()
+      1) stloc.2 [(Seq<i8>)]
+      1) ldloc.2 [(Seq<i8>)]
+      1) ldloc.1 [Seq<i8>]
+      5) stfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<i8>)]
+      5) stelem [(Seq<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Diffs:i8*, Ticks:i8*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 10675199.02:48:05.4775807
+     1) -10675199.02:48:05.4775808
+ 1) Sequence: Seq<Time>
+     0) -10675199.02:48:05.4775808
+     1) -10675199.02:48:05.4775807
+ 2) Sequence: Seq<Time>
+     0) 10675199.02:48:05.4775806
+     1) 10675199.02:48:05.4775807
+###
+> Map(x: Diffs, Ticks->CastTime() - CastTime(x))
+Map(x : Diffs, Ticks->CastTime() - CastTime(x)) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Diffs), Call(∂.With([with:2] Call(∂.CastTime(Scope(1)):t), Call(∂.ForEach([map:3] Global(Ticks), ChronoSub(Call(∂.CastTime(Scope(3)):t), Scope(2))):t*)):t*)):t**))
+// (∂.Diffs:i8*, ∂.Ticks:i8*) : t**
+ForEach_1(Arr<obj>, i8):Time
+      1) ldarg.1 [i8]
+      5) newobj Time(i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::Sub(Time, Time):Time
+      1) ret
+  Total Size: 24
+
+ForEach_1(Arr<obj>, i8):Seq<Time>
+      1) ldarg.1 [i8]
+      5) newobj Time(i8)
+      1) stloc.0 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<i8>)]
+      5) ldfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldloc.0 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 83
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      5) newobj (Seq<i8>)()
+      1) stloc.2 [(Seq<i8>)]
+      1) ldloc.2 [(Seq<i8>)]
+      1) ldloc.1 [Seq<i8>]
+      5) stfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<i8>)]
+      5) stelem [(Seq<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Diffs:i8*, Ticks:i8*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 10675199.02:48:05.4775807
+     1) -10675199.02:48:05.4775808
+ 1) Sequence: Seq<Time>
+     0) 10675199.02:48:05.4775806
+     1) 10675199.02:48:05.4775807
+ 2) Sequence: Seq<Time>
+     0) -10675199.02:48:05.4775808
+     1) -10675199.02:48:05.4775807
+###
+> Map(Ds, Year)
+Map(Ds, Year) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Year(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Year():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 2020
+ 1) 2020
+ 2) 2020
+ 3) 1
+ 4) 9999
+###
+> Ds.Year
+Ds.Year : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Year(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Year():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 2020
+ 1) 2020
+ 2) 2020
+ 3) 1
+ 4) 9999
+###
+> Ds.Month
+Ds.Month : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Month(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Month():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 12
+ 1) 7
+ 2) 1
+ 3) 1
+ 4) 12
+###
+> Ds.Day
+Ds.Day : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Day(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Day():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 25
+ 1) 1
+ 2) 1
+ 3) 1
+ 4) 31
+###
+> Ds.Hour
+Ds.Hour : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Hour(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Hour():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 12
+ 3) 0
+ 4) 23
+###
+> Ds.Minute
+Ds.Minute : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Minute(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Minute():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 37
+ 3) 0
+ 4) 59
+###
+> Ds.Second
+Ds.Second : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Second(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Second():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 18
+ 3) 0
+ 4) 59
+###
+> Ds.Millisecond
+Ds.Millisecond : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Millisecond(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Millisecond():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 999
+###
+> Ds.Tick
+Ds.Tick : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Tick(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Ticks():i8
+      5) ldc.i4 [10000]
+      1) conv.i8
+      1) rem
+      1) conv.i4
+      1) ret
+  Total Size: 18
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 9999
+###
+> Ds.DayOfYear
+Ds.DayOfYear : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.DayOfYear(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_DayOfYear():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 360
+ 1) 183
+ 2) 1
+ 3) 1
+ 4) 365
+###
+> Ds.DayOfWeek
+Ds.DayOfWeek : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.DayOfWeek(Scope(1)):i4)):i4*))
+// (∂.Ds:d*) : i4*
+ForEach_1(Arr<obj>, Date):i4
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_DayOfWeek():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,i4>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to i4*
+Sequence: Seq<i4>
+ 0) 5
+ 1) 3
+ 2) 3
+ 3) 1
+ 4) 5
+###
+> Ds.Time
+Ds.Time : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Time(Scope(1)):t)):t*))
+// (∂.Ds:d*) : t*
+ForEach_1(Arr<obj>, Date):Time
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_TimeOfDay():Time
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Time>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to t*
+Sequence: Seq<Time>
+ 0) 00:00:00
+ 1) 00:00:00
+ 2) 12:37:18
+ 3) 00:00:00
+ 4) 23:59:59.9999999
+###
+> Ds.Date
+Ds.Date : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.Date(Scope(1)):d)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Date():Date
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Date>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 25, 0, 0, 0, 0)
+ 1) DT(2020, 7, 1, 0, 0, 0, 0)
+ 2) DT(2020, 1, 1, 0, 0, 0, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 12, 31, 0, 0, 0, 0)
+###
+> Ds.StartOfYear
+Ds.StartOfYear : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.StartOfYear(Scope(1)):d)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Ticks():i8
+      1) dup
+      9) ldc.i8 [864000000000]
+      1) rem
+      1) sub
+      2) ldloca.s [Date (0)]
+      5) call Date::get_DayOfYear():i4
+      1) ldc.i4.1
+      1) sub
+      1) conv.i8
+      9) ldc.i8 [864000000000]
+      1) mul
+      1) sub
+      5) call static Date::FromTicks(i8):Date
+      1) ret
+  Total Size: 48
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Date>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 1, 1, 0, 0, 0, 0)
+ 1) DT(2020, 1, 1, 0, 0, 0, 0)
+ 2) DT(2020, 1, 1, 0, 0, 0, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 1, 1, 0, 0, 0, 0)
+###
+> Ds.StartOfMonth
+Ds.StartOfMonth : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.StartOfMonth(Scope(1)):d)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Ticks():i8
+      1) dup
+      9) ldc.i8 [864000000000]
+      1) rem
+      1) sub
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Day():i4
+      1) ldc.i4.1
+      1) sub
+      1) conv.i8
+      9) ldc.i8 [864000000000]
+      1) mul
+      1) sub
+      5) call static Date::FromTicks(i8):Date
+      1) ret
+  Total Size: 48
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Date>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 1, 0, 0, 0, 0)
+ 1) DT(2020, 7, 1, 0, 0, 0, 0)
+ 2) DT(2020, 1, 1, 0, 0, 0, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 12, 1, 0, 0, 0, 0)
+###
+> Ds.StartOfWeek
+Ds.StartOfWeek : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.ForEach([map:1] Global(Ds), Call(∂.Date.StartOfWeek(Scope(1)):d)):d*))
+// (∂.Ds:d*) : d*
+ForEach_1(Arr<obj>, Date):Date
+      1) ldarg.1 [Date]
+      1) stloc.0 [Date]
+      2) ldloca.s [Date (0)]
+      5) call Date::get_Ticks():i8
+      1) dup
+      9) ldc.i8 [864000000000]
+      1) rem
+      1) sub
+      2) ldloca.s [Date (0)]
+      5) call Date::get_DayOfWeek():i4
+      1) conv.i8
+      9) ldc.i8 [864000000000]
+      1) mul
+      1) sub
+      1) dup
+      1) dup
+      2) ldc.i4.s [63]
+      1) shr
+      1) and
+      1) sub
+      5) call static Date::FromTicks(i8):Date
+      1) ret
+  Total Size: 53
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Date>
+      1) stloc.0 [Seq<Date>]
+      1) ldloc.0 [Seq<Date>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Date,Date>]
+      5) call static ForEachGen::Exec(Seq<Date>, Func<Date,Date>):Seq<Date>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Date>):Seq<Date>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ds:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(2020, 12, 20, 0, 0, 0, 0)
+ 1) DT(2020, 6, 28, 0, 0, 0, 0)
+ 2) DT(2019, 12, 29, 0, 0, 0, 0)
+ 3) DT(1, 1, 1, 0, 0, 0, 0)
+ 4) DT(9999, 12, 26, 0, 0, 0, 0)
+###
+> Map(Ts, Day)
+Map(Ts, Day) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Day(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Days():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 1
+ 2) -1
+ 3) 7
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) -2
+11) -2
+12) -1
+13) -1
+14) -1
+15) -1
+16) -1
+17) 2
+18) -2
+###
+> Ts.Day
+Ts.Day : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Day(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Days():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 1
+ 2) -1
+ 3) 7
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) -2
+11) -2
+12) -1
+13) -1
+14) -1
+15) -1
+16) -1
+17) 2
+18) -2
+###
+> Ts.Hour
+Ts.Hour : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Hour(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Hours():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 7
+ 5) 1
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) -7
+12) -1
+13) 0
+14) 0
+15) 0
+16) 0
+17) 23
+18) -23
+###
+> Ts.Minute
+Ts.Minute : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Minute(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Minutes():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 31
+ 5) 0
+ 6) 1
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) -31
+12) 0
+13) -1
+14) 0
+15) 0
+16) 0
+17) 59
+18) -59
+###
+> Ts.Second
+Ts.Second : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Second(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Seconds():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 40
+ 5) 0
+ 6) 0
+ 7) 1
+ 8) 0
+ 9) 0
+10) 0
+11) -40
+12) 0
+13) 0
+14) -1
+15) 0
+16) 0
+17) 59
+18) -59
+###
+> Ts.Millisecond
+Ts.Millisecond : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Millisecond(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Milliseconds():i4
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 1
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) -1
+16) 0
+17) 999
+18) -999
+###
+> Ts.Tick
+Ts.Tick : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.Tick(Scope(1)):i4)):i4*))
+// (∂.Ts:t*) : i4*
+ForEach_1(Arr<obj>, Time):i4
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Ticks():i8
+      5) ldc.i4 [10000]
+      1) conv.i8
+      1) rem
+      1) conv.i4
+      1) ret
+  Total Size: 18
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i4>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i4*
+Sequence: Seq<i4>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 1
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) -1
+17) 9999
+18) -9999
+###
+> Ts.TotalDays
+Ts.TotalDays : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalDays(Scope(1)):r8)):r8*))
+// (∂.Ts:t*) : r8*
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_TotalDays():r8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,r8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 1
+ 2) -1
+ 3) 7
+ 4) 0.3136574074074074
+ 5) 0.041666666666666664
+ 6) 0.0006944444444444445
+ 7) 1.1574074074074073E-05
+ 8) 1.1574074074074074E-08
+ 9) 1.1574074074074074E-12
+10) -2
+11) -2.3136574074074074
+12) -1.0416666666666667
+13) -1.0006944444444446
+14) -1.000011574074074
+15) -1.0000000115740741
+16) -1.0000000000011573
+17) 2.9999999999988427
+18) -2.9999999999988427
+###
+> Ts.TotalHours
+Ts.TotalHours : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalHours(Scope(1)):r8)):r8*))
+// (∂.Ts:t*) : r8*
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_TotalHours():r8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,r8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 24
+ 2) -24
+ 3) 168
+ 4) 7.527777777777778
+ 5) 1
+ 6) 0.016666666666666666
+ 7) 0.0002777777777777778
+ 8) 2.7777777777777776E-07
+ 9) 2.7777777777777777E-11
+10) -48
+11) -55.52777777777778
+12) -25
+13) -24.016666666666666
+14) -24.00027777777778
+15) -24.00000027777778
+16) -24.00000000002778
+17) 71.99999999997222
+18) -71.99999999997222
+###
+> Ts.TotalMinutes
+Ts.TotalMinutes : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalMinutes(Scope(1)):r8)):r8*))
+// (∂.Ts:t*) : r8*
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_TotalMinutes():r8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,r8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 1440
+ 2) -1440
+ 3) 10080
+ 4) 451.6666666666667
+ 5) 60
+ 6) 1
+ 7) 0.016666666666666666
+ 8) 1.6666666666666667E-05
+ 9) 1.6666666666666667E-09
+10) -2880
+11) -3331.6666666666665
+12) -1500
+13) -1441
+14) -1440.0166666666667
+15) -1440.0000166666666
+16) -1440.0000000016666
+17) 4319.999999998333
+18) -4319.999999998333
+###
+> Ts.TotalSeconds
+Ts.TotalSeconds : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalSeconds(Scope(1)):r8)):r8*))
+// (∂.Ts:t*) : r8*
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_TotalSeconds():r8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,r8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 86400
+ 2) -86400
+ 3) 604800
+ 4) 27100
+ 5) 3600
+ 6) 60
+ 7) 1
+ 8) 0.001
+ 9) 1E-07
+10) -172800
+11) -199900
+12) -90000
+13) -86460
+14) -86401
+15) -86400.001
+16) -86400.0000001
+17) 259199.9999999
+18) -259199.9999999
+###
+> Ts.TotalMilliseconds
+Ts.TotalMilliseconds : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalMilliseconds(Scope(1)):r8)):r8*))
+// (∂.Ts:t*) : r8*
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_TotalMilliseconds():r8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,r8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 86400000
+ 2) -86400000
+ 3) 604800000
+ 4) 27100000
+ 5) 3600000
+ 6) 60000
+ 7) 1000
+ 8) 1
+ 9) 0.0001
+10) -172800000
+11) -199900000
+12) -90000000
+13) -86460000
+14) -86401000
+15) -86400001
+16) -86400000.0001
+17) 259199999.9999
+18) -259199999.9999
+###
+> Ts.TotalTicks
+Ts.TotalTicks : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(Ts), Call(∂.Time.TotalTicks(Scope(1)):i8)):i8*))
+// (∂.Ts:t*) : i8*
+ForEach_1(Arr<obj>, Time):i8
+      1) ldarg.1 [Time]
+      1) stloc.0 [Time]
+      2) ldloca.s [Time (0)]
+      5) call Time::get_Ticks():i8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,i8>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ts:t*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 864000000000
+ 2) -864000000000
+ 3) 6048000000000
+ 4) 271000000000
+ 5) 36000000000
+ 6) 600000000
+ 7) 10000000
+ 8) 10000
+ 9) 1
+10) -1728000000000
+11) -1999000000000
+12) -900000000000
+13) -864600000000
+14) -864010000000
+15) -864000010000
+16) -864000000001
+17) 2591999999999
+18) -2591999999999
+###
+
+**** New definitions: TestR8Reqs, type: r8*
+**** New definitions: TestR8Opts, type: r8?*
+**** New definitions: TestI8Reqs, type: i8*
+**** New definitions: TestI8Opts, type: i8?*
+**** New definitions: Times, type: t*
+**** New definitions: Intervals, type: t*
+
+> -Times
+-Times : t*
+BndKind:Call, Type:t*, Bnd:(Call(∂.ForEach([map:1] Global(Times), ChronoMul(Scope(1), -1:i8)):t*))
+// (∂.Times:t*) : t*
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldc.i4.m1
+      1) conv.i8
+      5) call static CodeGenUtil::Mul(Time, i8):Time
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Time,Time>]
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 28
+
+Func sig: (Times:t*) to t*
+Sequence: Seq<Time>
+ 0) -1.00:00:00
+ 1) 1.00:00:00
+ 2) -50000.00:00:00
+ 3) -10000000.00:00:00
+ 4) -10675199.02:40:55.9808512
+ 5) -10675199.02:48:05.4775807
+###
+> Map(x: TestR8Reqs, Times * x)
+Map(x : TestR8Reqs, Times * x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(TestR8Reqs), Call(∂.ForEach([map:2] Global(Times), ChronoMul(Scope(2), Scope(1))):t*)):t**))
+// (∂.TestR8Reqs:r8*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(r8)]
+      5) ldfld (r8)::_F0:r8
+      5) call static CodeGenUtil::Mul(Time, r8):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, r8):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (r8)()
+      1) dup
+      1) ldarg.1 [r8]
+      5) stfld (r8)::_F0:r8
+      5) stelem [(r8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<r8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestR8Reqs:r8*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Time>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) 00:00:00
+ 3) Sequence: Seq<Time>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 4) Sequence: Seq<Time>
+     0) 3.12:00:00
+     1) -3.12:00:00
+     2) 175000.00:00:00
+     3) -7700796.11:12:21.9103232
+     4) -5337599.13:49:05.9773440
+     5) -5337599.13:24:02.7387904
+ 5) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 7) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 8) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 9) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+10) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+###
+> Map(x: TestR8Opts, Times * x)
+Map(x : TestR8Opts, Times * x) : t?**
+BndKind:Call, Type:t?**, Bnd:(Call(∂.ForEach([map:1] Global(TestR8Opts), Call(∂.ForEach([map:2] Global(Times), Call(∂.Guard([guard:3] Scope(1), ChronoMul(Scope(2), Scope(3))):t?)):t?*)):t?**))
+// (∂.TestR8Opts:r8?*, ∂.Times:t*) : t?**
+ForEach_1(Arr<obj>, Time):Opt<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Opt<r8>)]
+      5) ldfld (Opt<r8>)::_F0:Opt<r8>
+      1) stloc.1 [Opt<r8>]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Time]
+      1) ldloc.0 [r8]
+      5) call static CodeGenUtil::Mul(Time, r8):Time
+      5) newobj Opt<Time>(Time)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Time>
+  Label [1]:
+      1) ret
+  Total Size: 56
+
+ForEach_1(Arr<obj>, Opt<r8>):Seq<Opt<Time>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Opt<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Opt<r8>)()
+      1) dup
+      1) ldarg.1 [Opt<r8>]
+      5) stfld (Opt<r8>)::_F0:Opt<r8>
+      5) stelem [(Opt<r8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<Time>>):Seq<Opt<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Time>>):Seq<Opt<Time>>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<r8>>
+      1) stloc.0 [Seq<Opt<r8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Opt<r8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<r8>,Seq<Opt<Time>>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<r8>>, Func<Opt<r8>,Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestR8Opts:r8?*, Times:t*) to t?**
+Sequence: Seq<Seq<Opt<Time>>>
+ 0) Sequence: Seq<Opt<Time>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) <null>
+     4) <null>
+     5) <null>
+ 1) Sequence: Seq<Opt<Time>>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Opt<Time>>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 3) Sequence: Seq<Opt<Time>>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) 00:00:00
+ 4) Sequence: Seq<Opt<Time>>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 5) Sequence: Seq<Opt<Time>>
+     0) 3.12:00:00
+     1) -3.12:00:00
+     2) 175000.00:00:00
+     3) -7700796.11:12:21.9103232
+     4) -5337599.13:49:05.9773440
+     5) -5337599.13:24:02.7387904
+ 6) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 7) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 8) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 9) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+10) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+11) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+###
+> Map(x: TestI8Reqs, Times * x)
+Map(x : TestI8Reqs, Times * x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Reqs), Call(∂.ForEach([map:2] Global(Times), ChronoMul(Scope(2), Scope(1))):t*)):t**))
+// (∂.TestI8Reqs:i8*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      5) call static CodeGenUtil::Mul(Time, i8):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, i8):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Reqs:i8*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) 10675199.02:48:05.4775807
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775807
+ 2) Sequence: Seq<Time>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) -00:00:00.0000002
+ 3) Sequence: Seq<Time>
+     0) 3.00:00:00
+     1) -3.00:00:00
+     2) 150000.00:00:00
+     3) 8649601.18:23:49.0448384
+     4) 10675199.02:26:36.9873920
+     5) 10675199.02:48:05.4775805
+ 4) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 5) Sequence: Seq<Time>
+     0) 100.00:00:00
+     1) -100.00:00:00
+     2) 5000000.00:00:00
+     3) -3468716.23:20:34.8925952
+     4) -11:55:49.6729600
+     5) -00:00:00.0000100
+ 6) Sequence: Seq<Time>
+     0) -100.00:00:00
+     1) 100.00:00:00
+     2) -5000000.00:00:00
+     3) 3468716.23:20:34.8925952
+     4) 11:55:49.6729600
+     5) 00:00:00.0000100
+ 7) Sequence: Seq<Time>
+     0) 1000000.00:00:00
+     1) -1000000.00:00:00
+     2) -2632662.18:19:36.9884672
+     3) 7227403.02:41:16.1856000
+     4) -4971.00:38:49.6000000
+     5) -00:00:00.1000000
+###
+> Map(x: TestI8Opts, Times * x)
+Map(x : TestI8Opts, Times * x) : t?**
+BndKind:Call, Type:t?**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Opts), Call(∂.ForEach([map:2] Global(Times), Call(∂.Guard([guard:3] Scope(1), ChronoMul(Scope(2), Scope(3))):t?)):t?*)):t?**))
+// (∂.TestI8Opts:i8?*, ∂.Times:t*) : t?**
+ForEach_1(Arr<obj>, Time):Opt<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Opt<i8>)]
+      5) ldfld (Opt<i8>)::_F0:Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Time]
+      1) ldloc.0 [i8]
+      5) call static CodeGenUtil::Mul(Time, i8):Time
+      5) newobj Opt<Time>(Time)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Time>
+  Label [1]:
+      1) ret
+  Total Size: 56
+
+ForEach_1(Arr<obj>, Opt<i8>):Seq<Opt<Time>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Opt<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Opt<i8>)()
+      1) dup
+      1) ldarg.1 [Opt<i8>]
+      5) stfld (Opt<i8>)::_F0:Opt<i8>
+      5) stelem [(Opt<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<Time>>):Seq<Opt<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Time>>):Seq<Opt<Time>>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Seq<Opt<Time>>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Opts:i8?*, Times:t*) to t?**
+Sequence: Seq<Seq<Opt<Time>>>
+ 0) Sequence: Seq<Opt<Time>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) <null>
+     4) <null>
+     5) <null>
+ 1) Sequence: Seq<Opt<Time>>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) 10675199.02:48:05.4775807
+ 2) Sequence: Seq<Opt<Time>>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775807
+ 3) Sequence: Seq<Opt<Time>>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) -00:00:00.0000002
+ 4) Sequence: Seq<Opt<Time>>
+     0) 3.00:00:00
+     1) -3.00:00:00
+     2) 150000.00:00:00
+     3) 8649601.18:23:49.0448384
+     4) 10675199.02:26:36.9873920
+     5) 10675199.02:48:05.4775805
+ 5) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Opt<Time>>
+     0) 100.00:00:00
+     1) -100.00:00:00
+     2) 5000000.00:00:00
+     3) -3468716.23:20:34.8925952
+     4) -11:55:49.6729600
+     5) -00:00:00.0000100
+ 7) Sequence: Seq<Opt<Time>>
+     0) -100.00:00:00
+     1) 100.00:00:00
+     2) -5000000.00:00:00
+     3) 3468716.23:20:34.8925952
+     4) 11:55:49.6729600
+     5) 00:00:00.0000100
+ 8) Sequence: Seq<Opt<Time>>
+     0) 1000000.00:00:00
+     1) -1000000.00:00:00
+     2) -2632662.18:19:36.9884672
+     3) 7227403.02:41:16.1856000
+     4) -4971.00:38:49.6000000
+     5) -00:00:00.1000000
+###
+> Map(x: TestR8Reqs, Times / x)
+Map(x : TestR8Reqs, Times / x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(TestR8Reqs), Call(∂.ForEach([map:2] Global(Times), ChronoDiv(Scope(2), Scope(1))):t*)):t**))
+// (∂.TestR8Reqs:r8*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(r8)]
+      5) ldfld (r8)::_F0:r8
+      5) call static CodeGenUtil::Div(Time, r8):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, r8):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (r8)()
+      1) dup
+      1) ldarg.1 [r8]
+      5) stfld (r8)::_F0:r8
+      5) stelem [(r8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<r8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestR8Reqs:r8*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Time>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 3) Sequence: Seq<Time>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) 00:00:00
+ 4) Sequence: Seq<Time>
+     0) 06:51:25.7142857
+     1) -06:51:25.7142857
+     2) 14285.17:08:34.2857142
+     3) 2857142.20:34:17.1428352
+     4) 3050056.21:20:15.9945216
+     5) 3050056.21:22:18.7078656
+ 5) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 7) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 8) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 9) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+10) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+###
+> Map(x: TestR8Opts, Times / x)
+Map(x : TestR8Opts, Times / x) : t?**
+BndKind:Call, Type:t?**, Bnd:(Call(∂.ForEach([map:1] Global(TestR8Opts), Call(∂.ForEach([map:2] Global(Times), Call(∂.Guard([guard:3] Scope(1), ChronoDiv(Scope(2), Scope(3))):t?)):t?*)):t?**))
+// (∂.TestR8Opts:r8?*, ∂.Times:t*) : t?**
+ForEach_1(Arr<obj>, Time):Opt<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Opt<r8>)]
+      5) ldfld (Opt<r8>)::_F0:Opt<r8>
+      1) stloc.1 [Opt<r8>]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Time]
+      1) ldloc.0 [r8]
+      5) call static CodeGenUtil::Div(Time, r8):Time
+      5) newobj Opt<Time>(Time)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Time>
+  Label [1]:
+      1) ret
+  Total Size: 56
+
+ForEach_1(Arr<obj>, Opt<r8>):Seq<Opt<Time>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Opt<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Opt<r8>)()
+      1) dup
+      1) ldarg.1 [Opt<r8>]
+      5) stfld (Opt<r8>)::_F0:Opt<r8>
+      5) stelem [(Opt<r8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<Time>>):Seq<Opt<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Time>>):Seq<Opt<Time>>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<r8>>
+      1) stloc.0 [Seq<Opt<r8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Opt<r8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<r8>,Seq<Opt<Time>>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<r8>>, Func<Opt<r8>,Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestR8Opts:r8?*, Times:t*) to t?**
+Sequence: Seq<Seq<Opt<Time>>>
+ 0) Sequence: Seq<Opt<Time>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) <null>
+     4) <null>
+     5) <null>
+ 1) Sequence: Seq<Opt<Time>>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Opt<Time>>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 3) Sequence: Seq<Opt<Time>>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 4) Sequence: Seq<Opt<Time>>
+     0) 2.00:00:00
+     1) -2.00:00:00
+     2) 100000.00:00:00
+     3) -1350398.05:36:10.9551616
+     4) -00:14:18.9934592
+     5) 00:00:00
+ 5) Sequence: Seq<Opt<Time>>
+     0) 06:51:25.7142857
+     1) -06:51:25.7142857
+     2) 14285.17:08:34.2857142
+     3) 2857142.20:34:17.1428352
+     4) 3050056.21:20:15.9945216
+     5) 3050056.21:22:18.7078656
+ 6) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 7) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 8) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 9) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+10) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+11) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+###
+> Map(x: TestI8Reqs, Times / x)
+Map(x : TestI8Reqs, Times / x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Reqs), Call(∂.ForEach([map:2] Global(Times), ChronoDiv(Scope(2), Num<r8>(Scope(1)))):t*)):t**))
+// (∂.TestI8Reqs:i8*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) conv.r8
+      5) call static CodeGenUtil::Div(Time, r8):Time
+      1) ret
+  Total Size: 20
+
+ForEach_1(Arr<obj>, i8):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Reqs:i8*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Time>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 3) Sequence: Seq<Time>
+     0) 08:00:00
+     1) -08:00:00
+     2) 16666.16:00:00
+     3) 3333333.08:00:00
+     4) 3558399.16:53:38.6603008
+     5) 3558399.16:56:01.8258432
+ 4) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 5) Sequence: Seq<Time>
+     0) 00:14:24
+     1) -00:14:24
+     2) 500.00:00:00
+     3) 100000.00:00:00
+     4) 106751.23:47:12.5598080
+     5) 106751.23:47:16.8547760
+ 6) Sequence: Seq<Time>
+     0) -00:14:24
+     1) 00:14:24
+     2) -500.00:00:00
+     3) -100000.00:00:00
+     4) -106751.23:47:12.5598080
+     5) -106751.23:47:16.8547760
+ 7) Sequence: Seq<Time>
+     0) 00:00:00.0864000
+     1) -00:00:00.0864000
+     2) 01:12:00
+     3) 10.00:00:00
+     4) 10.16:12:17.2032559
+     5) 10.16:12:17.2036854
+###
+> Map(x: TestI8Opts, Times / x)
+Map(x : TestI8Opts, Times / x) : t?**
+BndKind:Call, Type:t?**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Opts), Call(∂.ForEach([map:2] Global(Times), Call(∂.Guard([guard:3] Scope(1), ChronoDiv(Scope(2), Num<r8>(Scope(3)))):t?)):t?*)):t?**))
+// (∂.TestI8Opts:i8?*, ∂.Times:t*) : t?**
+ForEach_1(Arr<obj>, Time):Opt<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Opt<i8>)]
+      5) ldfld (Opt<i8>)::_F0:Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Time]
+      1) ldloc.0 [i8]
+      1) conv.r8
+      5) call static CodeGenUtil::Div(Time, r8):Time
+      5) newobj Opt<Time>(Time)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Time>
+  Label [1]:
+      1) ret
+  Total Size: 57
+
+ForEach_1(Arr<obj>, Opt<i8>):Seq<Opt<Time>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Opt<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Opt<i8>)()
+      1) dup
+      1) ldarg.1 [Opt<i8>]
+      5) stfld (Opt<i8>)::_F0:Opt<i8>
+      5) stelem [(Opt<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<Time>>):Seq<Opt<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Time>>):Seq<Opt<Time>>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Seq<Opt<Time>>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Opts:i8?*, Times:t*) to t?**
+Sequence: Seq<Seq<Opt<Time>>>
+ 0) Sequence: Seq<Opt<Time>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) <null>
+     4) <null>
+     5) <null>
+ 1) Sequence: Seq<Opt<Time>>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 2) Sequence: Seq<Opt<Time>>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775808
+ 3) Sequence: Seq<Opt<Time>>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387904
+ 4) Sequence: Seq<Opt<Time>>
+     0) 08:00:00
+     1) -08:00:00
+     2) 16666.16:00:00
+     3) 3333333.08:00:00
+     4) 3558399.16:53:38.6603008
+     5) 3558399.16:56:01.8258432
+ 5) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Opt<Time>>
+     0) 00:14:24
+     1) -00:14:24
+     2) 500.00:00:00
+     3) 100000.00:00:00
+     4) 106751.23:47:12.5598080
+     5) 106751.23:47:16.8547760
+ 7) Sequence: Seq<Opt<Time>>
+     0) -00:14:24
+     1) 00:14:24
+     2) -500.00:00:00
+     3) -100000.00:00:00
+     4) -106751.23:47:12.5598080
+     5) -106751.23:47:16.8547760
+ 8) Sequence: Seq<Opt<Time>>
+     0) 00:00:00.0864000
+     1) -00:00:00.0864000
+     2) 01:12:00
+     3) 10.00:00:00
+     4) 10.16:12:17.2032559
+     5) 10.16:12:17.2036854
+###
+> Map(x: TestI8Reqs, Times div x)
+Map(x : TestI8Reqs, Times div x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Reqs), Call(∂.ForEach([map:2] Global(Times), ChronoDiv(Scope(2), Scope(1))):t*)):t**))
+// (∂.TestI8Reqs:i8*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      5) call static CodeGenUtil::IntDiv(Time, i8):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, i8):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Reqs:i8*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) 10675199.02:48:05.4775807
+ 1) Sequence: Seq<Time>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775807
+ 2) Sequence: Seq<Time>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387903
+ 3) Sequence: Seq<Time>
+     0) 08:00:00
+     1) -08:00:00
+     2) 16666.16:00:00
+     3) 3333333.08:00:00
+     4) 3558399.16:53:38.6602837
+     5) 3558399.16:56:01.8258602
+ 4) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 5) Sequence: Seq<Time>
+     0) 00:14:24
+     1) -00:14:24
+     2) 500.00:00:00
+     3) 100000.00:00:00
+     4) 106751.23:47:12.5598085
+     5) 106751.23:47:16.8547758
+ 6) Sequence: Seq<Time>
+     0) -00:14:24
+     1) 00:14:24
+     2) -500.00:00:00
+     3) -100000.00:00:00
+     4) -106751.23:47:12.5598085
+     5) -106751.23:47:16.8547758
+ 7) Sequence: Seq<Time>
+     0) 00:00:00.0864000
+     1) -00:00:00.0864000
+     2) 01:12:00
+     3) 10.00:00:00
+     4) 10.16:12:17.2032559
+     5) 10.16:12:17.2036854
+###
+> Map(x: TestI8Opts, Times div x)
+Map(x : TestI8Opts, Times div x) : t?**
+BndKind:Call, Type:t?**, Bnd:(Call(∂.ForEach([map:1] Global(TestI8Opts), Call(∂.ForEach([map:2] Global(Times), Call(∂.Guard([guard:3] Scope(1), ChronoDiv(Scope(2), Scope(3))):t?)):t?*)):t?**))
+// (∂.TestI8Opts:i8?*, ∂.Times:t*) : t?**
+ForEach_1(Arr<obj>, Time):Opt<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Opt<i8>)]
+      5) ldfld (Opt<i8>)::_F0:Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Time]
+      1) ldloc.0 [i8]
+      5) call static CodeGenUtil::IntDiv(Time, i8):Time
+      5) newobj Opt<Time>(Time)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<Time>
+  Label [1]:
+      1) ret
+  Total Size: 56
+
+ForEach_1(Arr<obj>, Opt<i8>):Seq<Opt<Time>>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Opt<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Opt<i8>)()
+      1) dup
+      1) ldarg.1 [Opt<i8>]
+      5) stfld (Opt<i8>)::_F0:Opt<i8>
+      5) stelem [(Opt<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Opt<Time>>):Seq<Opt<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<Time>>):Seq<Opt<Time>>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Seq<Opt<Time>>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Opt<Time>>>):Seq<Seq<Opt<Time>>>
+      1) ret
+  Total Size: 93
+
+Func sig: (TestI8Opts:i8?*, Times:t*) to t?**
+Sequence: Seq<Seq<Opt<Time>>>
+ 0) Sequence: Seq<Opt<Time>>
+     0) <null>
+     1) <null>
+     2) <null>
+     3) <null>
+     4) <null>
+     5) <null>
+ 1) Sequence: Seq<Opt<Time>>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 10000000.00:00:00
+     4) 10675199.02:40:55.9808512
+     5) 10675199.02:48:05.4775807
+ 2) Sequence: Seq<Opt<Time>>
+     0) -1.00:00:00
+     1) 1.00:00:00
+     2) -50000.00:00:00
+     3) -10000000.00:00:00
+     4) -10675199.02:40:55.9808512
+     5) -10675199.02:48:05.4775807
+ 3) Sequence: Seq<Opt<Time>>
+     0) 12:00:00
+     1) -12:00:00
+     2) 25000.00:00:00
+     3) 5000000.00:00:00
+     4) 5337599.13:20:27.9904256
+     5) 5337599.13:24:02.7387903
+ 4) Sequence: Seq<Opt<Time>>
+     0) 08:00:00
+     1) -08:00:00
+     2) 16666.16:00:00
+     3) 3333333.08:00:00
+     4) 3558399.16:53:38.6602837
+     5) 3558399.16:56:01.8258602
+ 5) Sequence: Seq<Opt<Time>>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Opt<Time>>
+     0) 00:14:24
+     1) -00:14:24
+     2) 500.00:00:00
+     3) 100000.00:00:00
+     4) 106751.23:47:12.5598085
+     5) 106751.23:47:16.8547758
+ 7) Sequence: Seq<Opt<Time>>
+     0) -00:14:24
+     1) 00:14:24
+     2) -500.00:00:00
+     3) -100000.00:00:00
+     4) -106751.23:47:12.5598085
+     5) -106751.23:47:16.8547758
+ 8) Sequence: Seq<Opt<Time>>
+     0) 00:00:00.0864000
+     1) -00:00:00.0864000
+     2) 01:12:00
+     3) 10.00:00:00
+     4) 10.16:12:17.2032559
+     5) 10.16:12:17.2036854
+###
+> Map(x: Intervals, Times / x)
+Map(x : Intervals, Times / x) : r8**
+BndKind:Call, Type:r8**, Bnd:(Call(∂.ForEach([map:1] Global(Intervals), Call(∂.ForEach([map:2] Global(Times), ChronoDiv(Scope(2), Scope(1))):r8*)):r8**))
+// (∂.Intervals:t*, ∂.Times:t*) : r8**
+ForEach_1(Arr<obj>, Time):r8
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::Div(Time, Time):r8
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<r8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,r8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<r8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<r8>>):Seq<Seq<r8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<r8>>):Seq<Seq<r8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Intervals:t*, Times:t*) to r8**
+Sequence: Seq<Seq<r8>>
+ 0) Sequence: Seq<r8>
+     0) 1
+     1) -1
+     2) 50000
+     3) 10000000
+     4) 10675199.111759037
+     5) 10675199.116730064
+ 1) Sequence: Seq<r8>
+     0) 0.14285714285714285
+     1) -0.14285714285714285
+     2) 7142.857142857143
+     3) 1428571.4285714286
+     4) 1525028.4445370054
+     5) 1525028.4452471521
+ 2) Sequence: Seq<r8>
+     0) -0.14285714285714285
+     1) 0.14285714285714285
+     2) -7142.857142857143
+     3) -1428571.4285714286
+     4) -1525028.4445370054
+     5) -1525028.4452471521
+ 3) Sequence: Seq<r8>
+     0) 0.01
+     1) -0.01
+     2) 500
+     3) 100000
+     4) 106751.99111759038
+     5) 106751.99116730064
+ 4) Sequence: Seq<r8>
+     0) 2.5E-06
+     1) -2.5E-06
+     2) 0.125
+     3) 25
+     4) 26.687997779397595
+     5) 26.68799779182516
+ 5) Sequence: Seq<r8>
+     0) ∞
+     1) -∞
+     2) ∞
+     3) ∞
+     4) ∞
+     5) ∞
+ 6) Sequence: Seq<r8>
+     0) -864000000000
+     1) 864000000000
+     2) -43200000000000000
+     3) -8.64E+18
+     4) -9.223372032559809E+18
+     5) -9.223372036854776E+18
+###
+> Map(x: Intervals, Times div x)
+Map(x : Intervals, Times div x) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(Intervals), Call(∂.ForEach([map:2] Global(Times), ChronoDiv(Scope(2), Scope(1))):i8*)):i8**))
+// (∂.Intervals:t*, ∂.Times:t*) : i8**
+ForEach_1(Arr<obj>, Time):i8
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::IntDiv(Time, Time):i8
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<i8>>):Seq<Seq<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<i8>>):Seq<Seq<i8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Intervals:t*, Times:t*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) -1
+     2) 50000
+     3) 10000000
+     4) 10675199
+     5) 10675199
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) 7142
+     3) 1428571
+     4) 1525028
+     5) 1525028
+ 2) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) -7142
+     3) -1428571
+     4) -1525028
+     5) -1525028
+ 3) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) 500
+     3) 100000
+     4) 106751
+     5) 106751
+ 4) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) 0
+     3) 25
+     4) 26
+     5) 26
+ 5) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+ 6) Sequence: Seq<i8>
+     0) -864000000000
+     1) 864000000000
+     2) -43200000000000000
+     3) -8640000000000000000
+     4) -9223372032559808512
+     5) -9223372036854775807
+###
+> Map(x: Intervals, Times mod x)
+Map(x : Intervals, Times mod x) : t**
+BndKind:Call, Type:t**, Bnd:(Call(∂.ForEach([map:1] Global(Intervals), Call(∂.ForEach([map:2] Global(Times), ChronoMod(Scope(2), Scope(1))):t*)):t**))
+// (∂.Intervals:t*, ∂.Times:t*) : t**
+ForEach_1(Arr<obj>, Time):Time
+      1) ldarg.1 [Time]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Time)]
+      5) ldfld (Time)::_F0:Time
+      5) call static CodeGenUtil::IntMod(Time, Time):Time
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, Time):Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<Time>)]
+      5) ldfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Time>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Time)()
+      1) dup
+      1) ldarg.1 [Time]
+      5) stfld (Time)::_F0:Time
+      5) stelem [(Time)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Time>):Seq<Time>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Time>):Seq<Time>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.0 [Seq<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Time>
+      1) stloc.1 [Seq<Time>]
+      5) newobj (Seq<Time>)()
+      1) stloc.2 [(Seq<Time>)]
+      1) ldloc.2 [(Seq<Time>)]
+      1) ldloc.1 [Seq<Time>]
+      5) stfld (Seq<Time>)::_F0:Seq<Time>
+      1) ldloc.0 [Seq<Time>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Time,Seq<Time>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<Time>)]
+      5) stelem [(Seq<Time>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Time>, Func<Time,Seq<Time>>):Seq<Seq<Time>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<Time>>):Seq<Seq<Time>>
+      1) ret
+  Total Size: 93
+
+Func sig: (Intervals:t*, Times:t*) to t**
+Sequence: Seq<Seq<Time>>
+ 0) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 02:40:55.9808512
+     5) 02:48:05.4775807
+ 1) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 6.00:00:00
+     3) 3.00:00:00
+     4) 3.02:40:55.9808512
+     5) 3.02:48:05.4775807
+ 2) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 6.00:00:00
+     3) 3.00:00:00
+     4) 3.02:40:55.9808512
+     5) 3.02:48:05.4775807
+ 3) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 99.02:40:55.9808512
+     5) 99.02:48:05.4775807
+ 4) Sequence: Seq<Time>
+     0) 1.00:00:00
+     1) -1.00:00:00
+     2) 50000.00:00:00
+     3) 00:00:00
+     4) 275199.02:40:55.9808512
+     5) 275199.02:48:05.4775807
+ 5) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+ 6) Sequence: Seq<Time>
+     0) 00:00:00
+     1) 00:00:00
+     2) 00:00:00
+     3) 00:00:00
+     4) 00:00:00
+     5) 00:00:00
+###

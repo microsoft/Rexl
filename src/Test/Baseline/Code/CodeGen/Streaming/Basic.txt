@@ -1,0 +1,811 @@
+**** New globals: {N:i8, Q:i8?*, X:i8*, Y:i8**}
+
+> "*** Good function uses"
+"*** Good function uses" : s
+BndKind:Str, Type:s, Bnd:(str(*** Good function uses))
+Func sig: () to s
+Type: str, Value: *** Good function uses
+###
+> Pipe(Range(10))
+Pipe(Range(10)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(10:i8):i8*)):g))
+Func sig: () to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(X)
+Pipe(X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Global(X)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Q)
+Pipe(Q) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Global(Q)):g))
+Func sig: (Q:i8?*) to g
+Type: Runner<Opt<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Nullable`1[System.Int64]]
+###
+> Pipe(Y)
+Pipe(Y) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Global(Y)):g))
+Func sig: (Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+###
+> Pipe(X->ForEach(it * 2))
+Pipe(X->ForEach(it * 2)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), Mul(Scope(1), 2:i8)):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(X->ForEachIf(it mod 3 = 1, it * 2))
+Pipe(X->ForEachIf(it mod 3 @= 1, it * 2)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), [if] Cmp(IntMod(Scope(1), 3:i8) @= 1:i8), Mul(Scope(1), 2:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->CrossJoin(as a, Y as b, a = b->Count(), (a, b)))
+Pipe(X->CrossJoin(as a, b : Y, a @= b->Count(), (a, b))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.KeyJoin([map:1] Global(X), [map:2] Global(Y), [=] Scope(1), Call(∂.Count(Scope(2)):i8), (Scope(1), Scope(2)):(i8, i8*)):(i8, i8*)*)):g))
+Func sig: (<ctx>:x, X:i8*, Y:i8**) to g
+Type: Runner<(i8,Seq<i8>)>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[TupleImpl`2[System.Int64,System.Collections.Generic.IEnumerable`1[System.Int64]]]
+*** Ctx ping count: 0
+###
+> Pipe(X->KeyJoin(as a, Y as b, a, b->TakeOne(), (a, b)))
+Pipe(X->KeyJoin(as a, b : Y, a, b->TakeOne(), (a, b))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.KeyJoin([map:1] Global(X), [map:2] Global(Y), Scope(1), Call(∂.TakeOne(Scope(2)):i8), (Scope(1), Scope(2)):(i8, i8*)):(i8, i8*)*)):g))
+Func sig: (<ctx>:x, X:i8*, Y:i8**) to g
+Type: Runner<(i8,Seq<i8>)>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[TupleImpl`2[System.Int64,System.Collections.Generic.IEnumerable`1[System.Int64]]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Distinct())
+Pipe(X->Distinct()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Distinct(Global(X)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->Sort())
+Pipe(X->Sort()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Sort(Global(X)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Sort(it->Sum(), it->TakeOne()))
+Pipe(Y->Sort(it->Sum(), it->TakeOne())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Sort([map:1] Global(Y), Call(∂.Sum(Scope(1)):i8), Call(∂.TakeOne(Scope(1)):i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(Chain(X, X->Take([if] it mod 2 = 0), X))
+Pipe(Chain(X, X->Take([if] it mod 2 @= 0), X)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(SeqConcat(Global(X), Call(∂.Take([map:1] Global(X), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8)):i8*), Global(X))):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X ++ X->Take([if] it mod 2 = 0) ++ X)
+Pipe(X ++ X->Take([if] it mod 2 @= 0) ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(SeqConcat(Global(X), Call(∂.Take([map:1] Global(X), [if] Cmp(IntMod(Scope(1), 2:i8) @= 0:i8)):i8*), Global(X))):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->ChainMap())
+Pipe(Y->ChainMap()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ChainMap(Global(Y)):i8*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->ChainMap(Range(it)))
+Pipe(X->ChainMap(Range(it))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ChainMap([map:1] Global(X), Call(∂.Range(Scope(1)):i8*)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->DropOne())
+Pipe(X->DropOne()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop(Global(X), 1:i8):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->DropOne(it < 7))
+Pipe(X->DropOne(it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), 1:i8, Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->Take(5))
+Pipe(X->Take(5)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take(Global(X), 5:i8):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Y->Take(5))
+Pipe(Y->Take(5)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take(Global(Y), 5:i8):i8**)):g))
+Func sig: (Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+###
+> Pipe(X->Drop(5))
+Pipe(X->Drop(5)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop(Global(X), 5:i8):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Drop(5))
+Pipe(Y->Drop(5)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop(Global(Y), 5:i8):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Take(5, [if] it < 7))
+Pipe(X->Take(5, [if] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), 5:i8, [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Take(5, [if] it->Count() < 7))
+Pipe(Y->Take(5, [if] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), 5:i8, [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Drop(5, [if] it < 7))
+Pipe(X->Drop(5, [if] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), 5:i8, [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Drop(5, [if] it->Count() < 7))
+Pipe(Y->Drop(5, [if] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), 5:i8, [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Take(5, [while] it < 7))
+Pipe(X->Take(5, [while] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), 5:i8, [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Y->Take(5, [while] it->Count() < 7))
+Pipe(Y->Take(5, [while] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), 5:i8, [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Drop(5, [while] it < 7))
+Pipe(X->Drop(5, [while] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), 5:i8, [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Drop(5, [while] it->Count() < 7))
+Pipe(Y->Drop(5, [while] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), 5:i8, [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Take([if] it < 7))
+Pipe(X->Take([if] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Take([if] it->Count() < 7))
+Pipe(Y->Take([if] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Drop([if] it < 7))
+Pipe(X->Drop([if] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Drop([if] it->Count() < 7))
+Pipe(Y->Drop([if] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Take([while] it < 7))
+Pipe(X->Take([while] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Y->Take([while] it->Count() < 7))
+Pipe(Y->Take([while] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->Drop([while] it < 7))
+Pipe(X->Drop([while] it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->Drop([while] it->Count() < 7))
+Pipe(Y->Drop([while] it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->TakeIf(it < 7))
+Pipe(X->TakeIf(it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->TakeIf(it->Count() < 7))
+Pipe(Y->TakeIf(it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->DropIf(it < 7))
+Pipe(X->DropIf(it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), [if] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->DropIf(it->Count() < 7))
+Pipe(Y->DropIf(it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), [if] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->TakeWhile(it < 7))
+Pipe(X->TakeWhile(it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(X), [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Y->TakeWhile(it->Count() < 7))
+Pipe(Y->TakeWhile(it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Take([map:1] Global(Y), [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->DropWhile(it < 7))
+Pipe(X->DropWhile(it $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(X), [while] Cmp(Scope(1) @< 7:i8)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(Y->DropWhile(it->Count() < 7))
+Pipe(Y->DropWhile(it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Drop([map:1] Global(Y), [while] Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8**)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(Repeat(X, N))
+Pipe(Repeat(X, N)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Repeat(Global(X), Global(N)):i8**)):g))
+Func sig: (X:i8*, N:i8) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+###
+> Pipe(Y->ForEach(it->ForEach(it > 3)->Any()))
+Pipe(Y->ForEach(it->ForEach(it $> 3)->Any())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.Any(Call(∂.ForEach([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b*)):b)):b*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<bool>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Boolean]
+*** Ctx ping count: 0
+###
+> Pipe(Y->ForEach(it->Any(it > 3)))
+Pipe(Y->ForEach(it->Any(it $> 3))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.Any([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b)):b*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<bool>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Boolean]
+*** Ctx ping count: 0
+###
+> Pipe(Y->ForEach(it->ForEach(it > 3)->All()))
+Pipe(Y->ForEach(it->ForEach(it $> 3)->All())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b*)):b)):b*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<bool>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Boolean]
+*** Ctx ping count: 0
+###
+> Pipe(Y->ForEach(it->All(it > 3)))
+Pipe(Y->ForEach(it->All(it $> 3))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.All([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b)):b*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<bool>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Boolean]
+*** Ctx ping count: 0
+###
+> Pipe(Fold(x:Range(10), s:X, s ++ [x]))
+Pipe(Fold(x : Range(10), s : X, s ++ [x])) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Fold([map:1] Call(∂.Range(10:i8):i8*), [iter:2] Global(X), SeqConcat(Scope(2), [Scope(1)]:i8*)):i8*)):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 11
+    [0](11): Fold(*1: Range(10), %2: X, SeqConcat(%2, [*1]))
+###
+> Pipe(ScanZ(x:X, s:0, s + x))
+Pipe(ScanZ(x : X, s : 0, s + x)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ScanZ([map:1] Global(X), [iter:2] 0:i8, Add(Scope(2), Scope(1))):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(ScanX(x:X, s:0, s + x))
+Pipe(ScanX(x : X, s : 0, s + x)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ScanX([map:1] Global(X), [iter:2] 0:i8, Add(Scope(2), Scope(1))):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Generate(n:N, X->Take(n)))
+Pipe(Generate(n : N, X->Take(n))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Generate([rng:1] Global(N), Call(∂.Take(Global(X), Scope(1)):i8*)):i8**)):g))
+Func sig: (N:i8, X:i8*) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+###
+> Pipe(Generate(n:N, cur:X, cur ++ [n]))
+Pipe(Generate(n : N, cur : X, cur ++ [n])) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Generate([rng:1] Global(N), [iter:2] Global(X), SeqConcat(Scope(2), [Scope(1)]:i8*)):i8**)):g))
+Func sig: (N:i8, X:i8*) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+###
+> Pipe(With(a:X, a))
+Pipe(With(a : X, a)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Global(X)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(With(a:X ++ X, b:a ++ a, c:b ++ b, c ++ c))
+Pipe(With(a : X ++ X, b : a ++ a, c : b ++ b, c ++ c)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.With([with:1] SeqConcat(Global(X), Global(X)), [with:2] SeqConcat(Scope(1), Scope(1)), [with:3] SeqConcat(Scope(2), Scope(2)), SeqConcat(Scope(3), Scope(3))):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(WithMap(a:X, a * 2))
+Pipe(WithMap(a : X, a * 2)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), Mul(Scope(1), 2:i8)):i8*)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(GuardMap(a:Q, a * 2))
+Pipe(GuardMap(a : Q, a * 2)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Q), Call(∂.Guard([guard:2] Scope(1), Mul(Scope(2), 2:i8)):i8?)):i8?*)):g))
+Func sig: (Q:i8?*) to g
+Type: Runner<Opt<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Nullable`1[System.Int64]]
+###
+> Pipe(If(N > 3, X, Q))
+Pipe(If(N $> 3, X, Q)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Cmp(Global(N) @> 3:i8), Call(∂.ForEach([map:1] Global(X), Opt<i8?>(Scope(1))):i8?*), Global(Q))):g))
+Func sig: (N:i8, X:i8*, Q:i8?*) to g
+Type: Runner<Opt<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Nullable`1[System.Int64]]
+###
+> Pipe(X->{A: it}->SetFields(B: A * A))
+Pipe(X->{ A : it }->SetFields(B : A * A)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), SetFields([with:2] {A:Scope(1)}, B : Mul(GetField(Scope(2), A), GetField(Scope(2), A)))))):g))
+Func sig: (X:i8*) to g
+Type: Runner<{i8,i8}>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[RecordImpl`2[System.Int64,System.Int64]]
+###
+> Pipe(X->{A: it}->AddFields(B: A * A))
+Pipe(X->{ A : it }->AddFields(B : A * A)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), SetFields([with:2] {A:Scope(1)}, B : Mul(GetField(Scope(2), A), GetField(Scope(2), A)))))):g))
+Func sig: (X:i8*) to g
+Type: Runner<{i8,i8}>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[RecordImpl`2[System.Int64,System.Int64]]
+###
+> Pipe({A: X}->SetFields(B: A * A).B)
+Pipe({ A : X }->SetFields(B : A * A).B) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GetField(SetFields([with:1] {A:Global(X)}, B : Call(∂.ForEach([map:2] GetField(Scope(1), A), Mul(Scope(2), Scope(2))):i8*)), B)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(X->GroupBy(it))
+Pipe(X->GroupBy(it)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GroupBy([scope:1] Global(X), [key] Scope(1))):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<Seq<i8>>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Collections.Generic.IEnumerable`1[System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(X->GroupBy([key] A: it, [item] B: it*2, [group] C: group->Take(5)))
+Pipe(X->GroupBy([key] A : it, [map] B : it * 2, [agg] C : group->Take(5))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GroupBy([scope:1] Global(X), [key] A:Scope(1), [map] B:Mul(Scope(2), 2:i8), [agg] C:Call(∂.Take(Scope(3), 5:i8):i8*))):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<{i8,Seq<i8>,Seq<i8>}>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[RecordImpl`3[System.Int64,System.Collections.Generic.IEnumerable`1[System.Int64],System.Collections.Generic.IEnumerable`1[System.Int64]]]
+*** Ctx ping count: 0
+###
+> Pipe(X->GroupBy([key] A: it, [item] B: it*2, [group] C: group->Count()))
+Pipe(X->GroupBy([key] A : it, [map] B : it * 2, [agg] C : group->Count())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GroupBy([scope:1] Global(X), [key] A:Scope(1), [map] B:Mul(Scope(2), 2:i8), [agg] C:Call(∂.Count(Scope(3)):i8))):g))
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<{i8,Seq<i8>,i8}>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[RecordImpl`3[System.Int64,System.Collections.Generic.IEnumerable`1[System.Int64],System.Int64]]
+*** Ctx ping count: 0
+###
+> Pipe(Y->ForEach(it->Sum()))
+Pipe(Y->ForEach(it->Sum())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.Sum(Scope(1)):i8)):i8*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###
+> Pipe(X->GetType().Len->Range())
+Pipe(X->GetType().Len->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(3:i8):i8*)):g))
+Func sig: () to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(X->GetBindInfo().Len->Range())
+Pipe(X->GetBindInfo().Len->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(35:i8):i8*)):g))
+Func sig: () to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(X->{ A: it, B: it^2, C: it < 7 })
+Pipe(X->{ A : it, B : it^2, C : it $< 7 }) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), {A:Scope(1), B:Power(Scope(1), 2:i8), C:Cmp(Scope(1) @< 7:i8)}))):g))
+Func sig: (X:i8*) to g
+Type: Runner<{i8,i8,bool}>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[RecordImpl`3[System.Int64,System.Int64,System.Boolean]]
+###
+> Pipe({ A: X }+>{ B: A->Take(3) }.B)
+Pipe({ A : X }+>{ B : A->Take(3) }.B) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GetField(SetFields([with:1] {A:Global(X)}, B : Call(∂.Take(GetField(Scope(1), A), 3:i8):i8*)), B)):g))
+Func sig: (X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+###
+> Pipe(Y->ToText()->ForEach(it->Concat(",")))
+Pipe(Y->ToText()->ForEach(it->Concat(","))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.Text.Concat(Call(∂.ForEach([map:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s*), str(,)):s)):s*)):g))
+Func sig: (<ctx>:x, Y:i8**) to g
+Type: Runner<str>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.String]
+*** Ctx ping count: 0
+###
+> "*** Bad function uses"
+"*** Bad function uses" : s
+BndKind:Str, Type:s, Bnd:(str(*** Bad function uses))
+Func sig: () to s
+Type: str, Value: *** Bad function uses
+###
+> Pipe(X->First() ?? 3 | Range(_))
+Pipe(X->First() ?? 3 | Range(_)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Coalesce(Call(∂.TakeOne(Global(X), [else] null:i8?):i8?), 3:i8)):i8*)):g))
+*** Error: (6,8) Node: X->First(), Message: Improper use of a streaming task result
+Func sig: (X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Y->First())
+Pipe(Y->First()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.TakeOne(Global(Y)):i8*)):g))
+*** Error: (6,8) Node: Y->First(), Message: Improper use of a streaming task result
+Func sig: (Y:i8**) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->TakeAt(3)->Range())
+Pipe(X->TakeAt(3)->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.TakeAt(Global(X), 3:i8):i8)):i8*)):g))
+*** Error: (6,8) Node: X->TakeAt(3), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Y->TakeAt(3))
+Pipe(Y->TakeAt(3)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.TakeAt(Global(Y), 3:i8):i8*)):g))
+*** Error: (6,8) Node: Y->TakeAt(3), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, Y:i8**) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->TakeOne()->Range())
+Pipe(X->TakeOne()->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.TakeOne(Global(X)):i8)):i8*)):g))
+*** Error: (6,8) Node: X->TakeOne(), Message: Improper use of a streaming task result
+Func sig: (X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Y->TakeOne())
+Pipe(Y->TakeOne()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.TakeOne(Global(Y)):i8*)):g))
+*** Error: (6,8) Node: Y->TakeOne(), Message: Improper use of a streaming task result
+Func sig: (Y:i8**) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->TakeOne(it < 7)->Range())
+Pipe(X->TakeOne(it $< 7)->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.TakeOne([map:1] Global(X), Cmp(Scope(1) @< 7:i8)):i8)):i8*)):g))
+*** Error: (6,8) Node: X->TakeOne(it $< 7), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Y->TakeOne(it->Count() < 7))
+Pipe(Y->TakeOne(it->Count() $< 7)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.TakeOne([map:1] Global(Y), Cmp(Call(∂.Count(Scope(1)):i8) @< 7:i8)):i8*)):g))
+*** Error: (6,8) Node: Y->TakeOne(it->Count() $< 7), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, Y:i8**) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Repeat(X, X->Count()))
+Pipe(Repeat(X, X->Count())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Repeat(Global(X), Call(∂.Count(Global(X)):i8)):i8**)):g))
+*** Error: (16,18) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->Count()->Range())
+Pipe(X->Count()->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.Count(Global(X)):i8)):i8*)):g))
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X if X->ForEach(it > 3)->Any() else X ++ X)
+Pipe(X if X->ForEach(it $> 3)->Any() else X ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.Any(Call(∂.ForEach([map:1] Global(X), Cmp(Scope(1) @> 3:i8)):b*)):b), Global(X), SeqConcat(Global(X), Global(X)))):g))
+*** Error: (28,30) Node: X->ForEach(it $> 3)->Any(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X if X->Any(it > 3) else X ++ X)
+Pipe(X if X->Any(it $> 3) else X ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.Any([map:1] Global(X), Cmp(Scope(1) @> 3:i8)):b), Global(X), SeqConcat(Global(X), Global(X)))):g))
+*** Error: (11,13) Node: X->Any(it $> 3), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X if X->ForEach(it > 3)->All() else X ++ X)
+Pipe(X if X->ForEach(it $> 3)->All() else X ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.All(Call(∂.ForEach([map:1] Global(X), Cmp(Scope(1) @> 3:i8)):b*)):b), Global(X), SeqConcat(Global(X), Global(X)))):g))
+*** Error: (28,30) Node: X->ForEach(it $> 3)->All(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X if X->All(it > 3) else X ++ X)
+Pipe(X if X->All(it $> 3) else X ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.All([map:1] Global(X), Cmp(Scope(1) @> 3:i8)):b), Global(X), SeqConcat(Global(X), Global(X)))):g))
+*** Error: (11,13) Node: X->All(it $> 3), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->MakePairs())
+Pipe(X->MakePairs()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.MakePairs(Global(X)):i8**)):g))
+*** Error: (6,8) Node: X->MakePairs(), Message: Improper use of a streaming task result
+Func sig: (X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Fold(x:X, s:0, s + x)->Range())
+Pipe(Fold(x : X, s : 0, s + x)->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.Fold([map:1] Global(X), [iter:2] 0:i8, Add(Scope(2), Scope(1))):i8)):i8*)):g))
+*** Error: (9,10) Node: Fold(x : X, s : 0, s + x), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Guard(X, Y))
+Pipe(Guard(X, Y)) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Guard([guard:1] Global(X), Global(Y)):i8**)):g))
+*** Error: (11,12) Node: X, Message: Improper use of a streaming task result
+Func sig: (X:i8*, Y:i8**) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Q if IsNull(X) else X)
+Pipe(Q if IsNull(X) else X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.IsEmpty(Global(X)):b), Global(Q), Call(∂.ForEach([map:1] Global(X), Opt<i8?>(Scope(1))):i8?*))):g))
+*** Error: (16,17) Node: IsNull(X), Message: Improper use of a streaming task result
+Func sig: (X:i8*, Q:i8?*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(Q if IsEmpty(X) else X)
+Pipe(Q if IsEmpty(X) else X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(If(Call(∂.IsEmpty(Global(X)):b), Global(Q), Call(∂.ForEach([map:1] Global(X), Opt<i8?>(Scope(1))):i8?*))):g))
+*** Error: (17,18) Node: IsEmpty(X), Message: Improper use of a streaming task result
+Func sig: (X:i8*, Q:i8?*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->ToText()->Concat(",").Len->Range())
+Pipe(X->ToText()->Concat(",").Len->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.Text.Len(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Global(X), Call(∂.ToText(Scope(1)):s)):s*), str(,)):s)):i8)):i8*)):g))
+*** Error: (16,18) Node: X->ToText()->Concat(","), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe({A: X}->SetFields(B: A * A->Count()).B)
+Pipe({ A : X }->SetFields(B : A * A->Count()).B) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(GetField(SetFields([with:1] {A:Global(X)}, B : Call(∂.With([with:2] Call(∂.Count(GetField(Scope(1), A)):i8), Call(∂.ForEach([map:3] GetField(Scope(1), A), Mul(Scope(3), Scope(2))):i8*)):i8*)), B)):g))
+*** Error: (31,33) Node: A->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->Sum()->Range())
+Pipe(X->Sum()->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.Sum(Global(X)):i8)):i8*)):g))
+*** Error: (6,8) Node: X->Sum(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->Tensor.From().Shape[0]->Range())
+Pipe(X->Tensor.From().Shape[0]->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(GetSlot(Call(∂.Tensor.Shape(Call(∂.Tensor.From(Global(X)):i8[*])):(i8)), 0)):i8*)):g))
+*** Error: (6,8) Node: X->Tensor.From(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe({ A: X }+>{ B: A->Count() }.B->Range())
+Pipe({ A : X }+>{ B : A->Count() }.B->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(GetField(SetFields([with:1] {A:Global(X)}, B : Call(∂.Count(GetField(Scope(1), A)):i8)), B)):i8*)):g))
+*** Error: (21,23) Node: A->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X ++ X->Count()->Range())
+Pipe(X ++ X->Count()->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(SeqConcat(Global(X), Call(∂.Range(Call(∂.Count(Global(X)):i8)):i8*))):g))
+*** Error: (11,13) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->Count()->Range() ++ X)
+Pipe(X->Count()->Range() ++ X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(SeqConcat(Call(∂.Range(Call(∂.Count(Global(X)):i8)):i8*), Global(X))):g))
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X, X->Count()->Range())
+Pipe(X, X->Count()->Range()) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Global(X), Call(∂.Range(Call(∂.Count(Global(X)):i8)):i8*)):g))
+*** Error: (9,11) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->Count()->Range(), X)
+Pipe(X->Count()->Range(), X) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.Range(Call(∂.Count(Global(X)):i8)):i8*), Global(X)):g))
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> "*** These could be safe but are errors"
+"*** These could be safe but are errors" : s
+BndKind:Str, Type:s, Bnd:(str(*** These could be safe but are errors))
+Func sig: () to s
+Type: str, Value: *** These could be safe but are errors
+###
+> Pipe(Y->{ A: it }+>{ B: A->Count() })
+Pipe(Y->{ A : it }+>{ B : A->Count() }) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(Y), Call(∂.ForEach([map:2] Scope(1), SetFields([with:3] {A:Scope(2)}, B : Call(∂.Count(Error(ErrBadType_Src_Dst)):i8))))))):g))
+*** Error: (24,25) Node: A, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+###
+> Pipe(X->ForEach(X->Count())) // Hoisting makes this "bad"!
+Pipe(X->ForEach(X->Count())) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.With([with:1] Call(∂.Count(Global(X)):i8), Call(∂.ForEach([map:2] Global(X), Scope(1)):i8*)):i8*)):g))
+*** Error: (17,19) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(With(temp: X->Count(), X->ForEach(temp))) // Result of hoisting the previous one.
+Pipe(With(temp : X->Count(), X->ForEach(temp))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.With([with:1] Call(∂.Count(Global(X)):i8), Call(∂.ForEach([map:2] Global(X), Scope(1)):i8*)):i8*)):g))
+*** Error: (17,19) Node: X->Count(), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+*** Exec Exception! ***
+System.InvalidOperationException
+Illegal call to sequence method
+
+###
+> Pipe(X->ForEach(as a, X->Count(it < a)))
+Pipe(X->ForEach(as a, X->Count(it $< a))) : g
+BndKind:CallProcedure, Type:g, Bnd:(CallProc(∂.Test.Pipe(Call(∂.ForEach([map:1] Global(X), Call(∂.Count([map:2] Global(X), Cmp(Scope(2) @< Scope(1))):i8)):i8*)):g))
+*** Error: (23,25) Node: X->Count(it $< a), Message: Improper use of a streaming task result
+Func sig: (<ctx>:x, X:i8*) to g
+Type: Runner<i8>, Value: Microsoft.Rexl.Code.PipeProcGen+Runner`1[System.Int64]
+*** Ctx ping count: 0
+###

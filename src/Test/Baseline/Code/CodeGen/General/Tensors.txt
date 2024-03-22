@@ -1,0 +1,155 @@
+**** New definitions: T, type: i8[]
+
+> T
+T : i8[]
+BndKind:Global, Type:i8[], Bnd:(Global(T))
+Func sig: (T:i8[]) to i8[]
+Ten<i8>()<> [7]
+###
+> (T[], T->Reshape(1,1,1)[0,0,0], T->Reshape(1,1,1)[0,1,0])
+(T[], T->Reshape(1, 1, 1)[0, 0, 0], T->Reshape(1, 1, 1)[0, 1, 0]) : (i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8), Bnd:((IdxTen(Global(T)):i8, IdxTen(Call(∂.Tensor.Reshape(Global(T), 1:i8, 1:i8, 1:i8):i8[*,*,*]), 0:i8, 0:i8, 0:i8):i8, IdxTen(Call(∂.Tensor.Reshape(Global(T), 1:i8, 1:i8, 1:i8):i8[*,*,*]), 0:i8, 1:i8, 0:i8):i8):(i8, i8, i8))
+Func sig: (<ctx>:x, T:i8[]) to (i8, i8, i8)
+Type: (i8,i8,i8), Value: (7, 7, 0)
+*** Ctx ping count: 0
+###
+
+**** New definitions: T, type: i8[*]
+
+> T
+T : i8[*]
+BndKind:Global, Type:i8[*], Bnd:(Global(T))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(12)<1> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+###
+> (T[0], T[5], T[11], T[10], T[12], T[^3])
+(T[0], T[5], T[11], T[10], T[12], T[^3]) : (i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8):i8, IdxTen(Global(T), 5:i8):i8, IdxTen(Global(T), 11:i8):i8, IdxTen(Global(T), 10:i8):i8, IdxTen(Global(T), 12:i8):i8, IdxTen(Global(T), Index(3:i8, Back)):i8):(i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*]) to (i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8), Value: (1, 6, 12, 11, 0, 10)
+###
+> (T[100], T[%100], T[&100], T[^100], T[^%100], T[^&100])
+(T[100], T[%100], T[&100], T[^100], T[^%100], T[^&100]) : (i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 100:i8):i8, IdxTen(Global(T), Index(100:i8, Wrap)):i8, IdxTen(Global(T), Index(100:i8, Clip)):i8, IdxTen(Global(T), Index(100:i8, Back)):i8, IdxTen(Global(T), Index(100:i8, BackWrap)):i8, IdxTen(Global(T), Index(100:i8, BackClip)):i8):(i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*]) to (i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8), Value: (0, 5, 12, 0, 9, 1)
+###
+
+**** New definitions: T, type: i8[*,*]
+
+> T
+T : i8[*,*]
+BndKind:Global, Type:i8[*,*], Bnd:(Global(T))
+Func sig: (T:i8[*,*]) to i8[*,*]
+Ten<i8>(3,4)<4,1>
+  [[1, 2, 3, 4]
+   [5, 6, 7, 8]
+   [9, 10, 11, 12]]
+###
+> (T[0,0], T[1,1], T[2,3], T[2,2], T[^1,2], T[1,4], T[3,3], T[1,^4])
+(T[0, 0], T[1, 1], T[2, 3], T[2, 2], T[^1, 2], T[1, 4], T[3, 3], T[1, ^4]) : (i8, i8, i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8):i8, IdxTen(Global(T), 1:i8, 1:i8):i8, IdxTen(Global(T), 2:i8, 3:i8):i8, IdxTen(Global(T), 2:i8, 2:i8):i8, IdxTen(Global(T), Index(1:i8, Back), 2:i8):i8, IdxTen(Global(T), 1:i8, 4:i8):i8, IdxTen(Global(T), 3:i8, 3:i8):i8, IdxTen(Global(T), 1:i8, Index(4:i8, Back)):i8):(i8, i8, i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*,*]) to (i8, i8, i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8,i8,i8), Value: (1, 6, 12, 11, 11, 0, 0, 5)
+###
+> (T[0,^100], T[^100,0])
+(T[0, ^100], T[^100, 0]) : (i8, i8)
+BndKind:Tuple, Type:(i8, i8), Bnd:((IdxTen(Global(T), 0:i8, Index(100:i8, Back)):i8, IdxTen(Global(T), Index(100:i8, Back), 0:i8):i8):(i8, i8))
+Func sig: (T:i8[*,*]) to (i8, i8)
+Type: (i8,i8), Value: (0, 0)
+###
+
+**** New definitions: T, type: i8[*,*,*]
+
+> T
+T : i8[*,*,*]
+BndKind:Global, Type:i8[*,*,*], Bnd:(Global(T))
+Func sig: (T:i8[*,*,*]) to i8[*,*,*]
+Ten<i8>(2,3,2)<6,2,1>
+  [[[1, 2]
+    [3, 4]
+    [5, 6]]
+
+   [[7, 8]
+    [9, 10]
+    [11, 12]]]
+###
+> (T[0,0,0], T[0,2,1], T[1,2,1], T[1,2,0], T[2,0,0], T[0,^3,0], T[^1,0,0], T[0,0,^1], T[0,3,0])
+(T[0, 0, 0], T[0, 2, 1], T[1, 2, 1], T[1, 2, 0], T[2, 0, 0], T[0, ^3, 0], T[^1, 0, 0], T[0, 0, ^1], T[0, 3, 0]) : (i8, i8, i8, i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 2:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 2:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 2:i8, 0:i8):i8, IdxTen(Global(T), 2:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, Index(3:i8, Back), 0:i8):i8, IdxTen(Global(T), Index(1:i8, Back), 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, Index(1:i8, Back)):i8, IdxTen(Global(T), 0:i8, 3:i8, 0:i8):i8):(i8, i8, i8, i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*,*,*]) to (i8, i8, i8, i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8,i8,i8,i8), Value: (1, 6, 12, 11, 0, 1, 7, 2, 0)
+###
+> (T[0,0,^100], T[0,^100,0], T[^100,0,0])
+(T[0, 0, ^100], T[0, ^100, 0], T[^100, 0, 0]) : (i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, Index(100:i8, Back)):i8, IdxTen(Global(T), 0:i8, Index(100:i8, Back), 0:i8):i8, IdxTen(Global(T), Index(100:i8, Back), 0:i8, 0:i8):i8):(i8, i8, i8))
+Func sig: (T:i8[*,*,*]) to (i8, i8, i8)
+Type: (i8,i8,i8), Value: (0, 0, 0)
+###
+
+**** New definitions: T, type: i8[*,*,*,*]
+
+> T
+T : i8[*,*,*,*]
+BndKind:Global, Type:i8[*,*,*,*], Bnd:(Global(T))
+Func sig: (T:i8[*,*,*,*]) to i8[*,*,*,*]
+Ten<i8>(2,3,1,2)<6,2,0,1>
+  [[[[1, 2]]
+
+    [[3, 4]]
+
+    [[5, 6]]]
+
+
+   [[[7, 8]]
+
+    [[9, 10]]
+
+    [[11, 12]]]]
+###
+> (T[0,0,0,0], T[0,2,0,1], T[1,2,0,1], T[1,2,0,0], T[2,0,0,0], T[0,3,0,0], T[0,0,1,0], T[0,0,0,2], T[0,^3,0,0], T[^1,0,0,0], T[0,0,^1,0], T[0,0,0,^1])
+(T[0, 0, 0, 0], T[0, 2, 0, 1], T[1, 2, 0, 1], T[1, 2, 0, 0], T[2, 0, 0, 0], T[0, 3, 0, 0], T[0, 0, 1, 0], T[0, 0, 0, 2], T[0, ^3, 0, 0], T[^1, 0, 0, 0], T[0, 0, ^1, 0], T[0, 0, 0, ^1]) : (i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 2:i8, 0:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 2:i8, 0:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 2:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 2:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 3:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 1:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 2:i8):i8, IdxTen(Global(T), 0:i8, Index(3:i8, Back), 0:i8, 0:i8):i8, IdxTen(Global(T), Index(1:i8, Back), 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, Index(1:i8, Back), 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, Index(1:i8, Back)):i8):(i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*,*,*,*]) to (i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8,i8,i8,i8,i8,i8,i8), Value: (1, 6, 12, 11, 0, 0, 0, 0, 1, 7, 1, 2)
+###
+> (T[0,0,0,^100], T[0,0,^100,0], T[0,^100,0,0], T[^100,0,0,0])
+(T[0, 0, 0, ^100], T[0, 0, ^100, 0], T[0, ^100, 0, 0], T[^100, 0, 0, 0]) : (i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, 0:i8, Index(100:i8, Back)):i8, IdxTen(Global(T), 0:i8, 0:i8, Index(100:i8, Back), 0:i8):i8, IdxTen(Global(T), 0:i8, Index(100:i8, Back), 0:i8, 0:i8):i8, IdxTen(Global(T), Index(100:i8, Back), 0:i8, 0:i8, 0:i8):i8):(i8, i8, i8, i8))
+Func sig: (T:i8[*,*,*,*]) to (i8, i8, i8, i8)
+Type: (i8,i8,i8,i8), Value: (0, 0, 0, 0)
+###
+
+**** New definitions: T, type: i8[*,*,*,*,*]
+
+> T
+T : i8[*,*,*,*,*]
+BndKind:Global, Type:i8[*,*,*,*,*], Bnd:(Global(T))
+Func sig: (T:i8[*,*,*,*,*]) to i8[*,*,*,*,*]
+Ten<i8>(2,1,3,1,2)<6,0,2,0,1>
+  [[[[[1, 2]]
+
+     [[3, 4]]
+
+     [[5, 6]]]]
+
+
+
+   [[[[7, 8]]
+
+     [[9, 10]]
+
+     [[11, 12]]]]]
+###
+> (T[0,0,0,0,0], T[0,0,2,0,1], T[1,0,2,0,1], T[1,0,2,0,0], T[2,0,0,0,0], T[0,1,0,0,0], T[0,0,2,0,0], T[0,0,0,0,1], T[^1,0,0,0,0], T[0,^1,0,0,0], T[0,0,^1,0,0], T[0,0,0,^1,0], T[0,0,0,0,^1])
+(T[0, 0, 0, 0, 0], T[0, 0, 2, 0, 1], T[1, 0, 2, 0, 1], T[1, 0, 2, 0, 0], T[2, 0, 0, 0, 0], T[0, 1, 0, 0, 0], T[0, 0, 2, 0, 0], T[0, 0, 0, 0, 1], T[^1, 0, 0, 0, 0], T[0, ^1, 0, 0, 0], T[0, 0, ^1, 0, 0], T[0, 0, 0, ^1, 0], T[0, 0, 0, 0, ^1]) : (i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 2:i8, 0:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 0:i8, 2:i8, 0:i8, 1:i8):i8, IdxTen(Global(T), 1:i8, 0:i8, 2:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 2:i8, 0:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 1:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 2:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 0:i8, 1:i8):i8, IdxTen(Global(T), Index(1:i8, Back), 0:i8, 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, Index(1:i8, Back), 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, Index(1:i8, Back), 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, Index(1:i8, Back), 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 0:i8, Index(1:i8, Back)):i8):(i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8))
+Func sig: (T:i8[*,*,*,*,*]) to (i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8,i8,i8,i8,i8,i8,i8,i8,i8), Value: (1, 6, 12, 11, 0, 0, 5, 2, 7, 1, 5, 1, 2)
+###
+> (T[0,0,0,0,^100], T[0,0,0,^100,0], T[0,0,^100,0,0], T[0,^100,0,0,0], T[^100,0,0,0,0])
+(T[0, 0, 0, 0, ^100], T[0, 0, 0, ^100, 0], T[0, 0, ^100, 0, 0], T[0, ^100, 0, 0, 0], T[^100, 0, 0, 0, 0]) : (i8, i8, i8, i8, i8)
+BndKind:Tuple, Type:(i8, i8, i8, i8, i8), Bnd:((IdxTen(Global(T), 0:i8, 0:i8, 0:i8, 0:i8, Index(100:i8, Back)):i8, IdxTen(Global(T), 0:i8, 0:i8, 0:i8, Index(100:i8, Back), 0:i8):i8, IdxTen(Global(T), 0:i8, 0:i8, Index(100:i8, Back), 0:i8, 0:i8):i8, IdxTen(Global(T), 0:i8, Index(100:i8, Back), 0:i8, 0:i8, 0:i8):i8, IdxTen(Global(T), Index(100:i8, Back), 0:i8, 0:i8, 0:i8, 0:i8):i8):(i8, i8, i8, i8, i8))
+Func sig: (T:i8[*,*,*,*,*]) to (i8, i8, i8, i8, i8)
+Type: (i8,i8,i8,i8,i8), Value: (0, 0, 0, 0, 0)
+###

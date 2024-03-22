@@ -1,0 +1,413 @@
+>>> *** Source:
+    X := "@X";
+    N.X := "@N.X";
+    N.N.X := "@N.N.X";
+    import "UseXPage.rexl";
+    namespace N { import "UseXPage.rexl"; }
+    import "UseXPage.rexl" in namespace N;
+
+>>> *** Instructions:
+   0) [0] Define X <- "@X"
+   1) [0] Define N.X <- "@N.X"
+   2) [0] Define N.N.X <- "@N.N.X"
+   3) [0] Import: "UseXPage.rexl"
+   4) [0] Enter (0=>1) N
+   5) [1] Import: "UseXPage.rexl"
+   6) [1] Leave (1=>0)
+   7) [0] Import in N: "UseXPage.rexl"
+   8) [0] End
+
+>    0) [0] Define X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define N.X <- "@N.X"
+Global 'N.X' has DType: s, SysType: str
+>    2) [0] Define N.N.X <- "@N.N.X"
+Global 'N.N.X' has DType: s, SysType: str
+>    3) [0] Import: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@X
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+@X
+>    4) [0] Expr X
+@X
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+@X
+>    7) [0] Expr X
+@N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+@X
+>   10) [0] Expr X
+@N.X
+>   11) [0] End
+>    4) [0] Enter (0=>1) N
+>    5) [1] Import: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+@X
+>    1) [0] Expr X
+@N.X
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+@X
+>    4) [0] Expr X
+@N.X
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+@X
+>    7) [0] Expr X
+@N.N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+@X
+>   10) [0] Expr X
+@N.N.X
+>   11) [0] End
+>    6) [1] Leave (1=>0)
+>    7) [0] Import in N: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+@N.X
+>    1) [0] Expr X
+@N.X
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+@N.X
+>    4) [0] Expr X
+@N.X
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+@N.X
+>    7) [0] Expr X
+@N.N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+@N.X
+>   10) [0] Expr X
+@N.N.X
+>   11) [0] End
+>    8) [0] End
+###
+>>> *** Source:
+    N.X := "@N.X";
+    N.N.X := "@N.N.X";
+    import "UseXPage.rexl";
+    namespace N { import "UseXPage.rexl"; }
+    import "UseXPage.rexl" in namespace N;
+
+>>> *** Instructions:
+   0) [0] Define N.X <- "@N.X"
+   1) [0] Define N.N.X <- "@N.N.X"
+   2) [0] Import: "UseXPage.rexl"
+   3) [0] Enter (0=>1) N
+   4) [1] Import: "UseXPage.rexl"
+   5) [1] Leave (1=>0)
+   6) [0] Import in N: "UseXPage.rexl"
+   7) [0] End
+
+>    0) [0] Define N.X <- "@N.X"
+Global 'N.X' has DType: s, SysType: str
+>    1) [0] Define N.N.X <- "@N.N.X"
+Global 'N.N.X' has DType: s, SysType: str
+>    2) [0] Import: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (13,14) Node: @X, Message: Name does not exist in the current context
+>    1) [0] Expr X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (81,82) Node: X, Message: Name does not exist in the current context
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (105,106) Node: @X, Message: Name does not exist in the current context
+>    4) [0] Expr X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (108,109) Node: X, Message: Name does not exist in the current context
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (125,126) Node: @X, Message: Name does not exist in the current context
+>    7) [0] Expr X
+@N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (142,143) Node: @X, Message: Name does not exist in the current context
+>   10) [0] Expr X
+@N.X
+>   11) [0] End
+>    3) [0] Enter (0=>1) N
+>    4) [1] Import: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (13,14) Node: @X, Message: Name does not exist in the current context
+>    1) [0] Expr X
+@N.X
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (105,106) Node: @X, Message: Name does not exist in the current context
+>    4) [0] Expr X
+@N.X
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (125,126) Node: @X, Message: Name does not exist in the current context
+>    7) [0] Expr X
+@N.N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+*** Bind diagnostics:
+  [UseXPage.rexl] Error: (142,143) Node: @X, Message: Name does not exist in the current context
+>   10) [0] Expr X
+@N.N.X
+>   11) [0] End
+>    5) [1] Leave (1=>0)
+>    6) [0] Import in N: "UseXPage.rexl"
+>>> *** Source:
+    @X; // From the outside world. If it isn't found, produces an error.
+    X; // Ditto.
+    __page__;
+    @X;
+    X;
+    namespace N;
+    @X;
+    X;
+    __page__;
+    @X;
+    X;
+
+>>> *** Instructions:
+   0) [0] Expr @X
+   1) [0] Expr X
+   2) [0] Expr __page__
+   3) [0] Expr @X
+   4) [0] Expr X
+   5) [0] Namespace N
+   6) [0] Expr @X
+   7) [0] Expr X
+   8) [0] Expr __page__
+   9) [0] Expr @X
+  10) [0] Expr X
+  11) [0] End
+
+>    0) [0] Expr @X
+@N.X
+>    1) [0] Expr X
+@N.X
+>    2) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    2) [0] __page__
+>    3) [0] Expr @X
+@N.X
+>    4) [0] Expr X
+@N.X
+>    5) [0] Namespace N
+>    6) [0] Expr @X
+@N.X
+>    7) [0] Expr X
+@N.N.X
+>    8) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [0] __page__
+>    9) [0] Expr @X
+@N.X
+>   10) [0] Expr X
+@N.N.X
+>   11) [0] End
+>    7) [0] End
+###
+

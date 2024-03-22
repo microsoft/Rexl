@@ -1,0 +1,51 @@
+﻿:: {b:b, I:i8, S:i8*, R:{X:i4, Y:i2, W:{X:i4}*}* }
+
+Count(null)
+Count([])
+Count(Range(0))
+Count(Range(10))
+Count(Null(Range(10)))
+Count(Null([ "hi" ]))
+
+Count(null, true)
+Count(null, false)
+Count([], true)
+Count([], false)
+Count(Range(0), true)
+Count(Range(0), false)
+Count(Null(Range(10)), b)
+Count(Null(Range(10)), true)
+Count(Null(Range(10)), false)
+Count(Null([ "hi" ]), b)
+Count(Null([ "hi" ]), true)
+Count(Null([ "hi" ]), false)
+Count(Range(10), true)
+Count(Range(10), false)
+
+Count(null, it > 3)
+Count([], it > 3)
+Count(Range(0), it > 3)
+Count(Range(0), [if] it > 3)
+Count(Range(0), [while] it > 3)
+Count(Range(10), it > 3)
+Count(Range(10), [if] it > 3)
+Count(Range(10), [while] it > 3)
+Count(Range(10), [while] it < 3)
+Count(Range(10), [while] it < 20)
+
+Count(S)
+Count(S, it > 3)
+Count(S, true)
+Count(S, false)
+Count(S, [if] it > 3)
+Count(S, [while] it > 3)
+Count(R)
+Count(R, true)
+Count(R, false)
+Count(R, [if] it.X > 3)
+Count(R, [while] it.X > 3)
+
+Count(I) // Error.
+Count(I, [if] it > 3) // Error.
+Count(S, [key] it > 3) // Error.
+Count([if] S, it > 3) // Error.

@@ -1,0 +1,202 @@
+> task := 3
+Node: [task := 3]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:task, rng:(0,4) [task], full:(0,9) [task := 3]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(5,7) [:=], full:(0,9) [task := 3], extra=[task]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+
+   0) [0] Define task <- 3
+   1) [0] End
+###
+> task := finish + 3
+Node: [task := finish + 3]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,18) [task := finish + 3]], count=1
+  01   Node[id:3, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(5,7) [:=], full:(0,18) [task := finish + 3], extra=[task]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(15,16) [+], full:(8,18) [finish + 3], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:finish, rng:(8,14) [finish], full:(8,14) [finish], extra=[finish]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+
+   0) [0] Define task <- finish + 3
+   1) [0] End
+###
+> task T as
+Node: [task T as (<error>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:task, rng:(0,4) [task], full:(0,9) [task T as]], count=1
+  01   Node[id:1, kind:TaskProcStmt, depth:2, tok:KtxTask, rng:(0,4) [task], full:(0,9) [task T as], extra=[T]], count=1
+  02     Node[id:0, kind:Error, depth:1, tok:KwdAs, rng:(7,9) [as], full:(7,9) [as], extra=[Error: Expected a procedure invocation]]
+Error: (9,9) Tok: '<eof>', Message: Expected a procedure invocation
+
+   0) [0] TaskProc task T as (<error>)
+   1) [0] End
+###
+> task T.U.V as A.B.C
+Node: [task T.U.V as (<error>); A.B.C]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:5, tok:task, rng:(0,4) [task], full:(0,19) [task T.U.V as A.B.C]], count=2
+  01   Node[id:1, kind:TaskProcStmt, depth:2, tok:KtxTask, rng:(0,4) [task], full:(0,13) [task T.U.V as], extra=[T.U.V]], count=1
+  02     Node[id:0, kind:Error, depth:1, tok:KwdAs, rng:(11,13) [as], full:(11,13) [as], extra=[Error: Expected a procedure invocation]]
+  01   Node[id:5, kind:ExprStmt, depth:4, tok:Dot, rng:(17,18) [.], full:(14,19) [A.B.C]], count=1
+  02     Node[id:4, kind:DottedName, depth:3, tok:Dot, rng:(17,18) [.], full:(14,19) [A.B.C], extra=[C]], count=1
+  03       Node[id:3, kind:DottedName, depth:2, tok:Dot, rng:(15,16) [.], full:(14,17) [A.B], extra=[B]], count=1
+  04         Node[id:2, kind:FirstName, depth:1, tok:A, rng:(14,15) [A], full:(14,15) [A], extra=[A]]
+Error: (14,15) Tok: 'A', Message: Expected a procedure invocation
+Error: (14,15) Tok: 'A', Message: Expected: ';', Found: 'A'
+
+   0) [0] TaskProc task T.U.V as (<error>)
+   1) [0] Expr A.B.C
+   2) [0] End
+###
+> task T.U.V as A.B.C(
+Node: [task T.U.V as A.B.C()]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,20) [task T.U.V as A.B.C(]], count=1
+  01   Node[id:2, kind:TaskProcStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,20) [task T.U.V as A.B.C(], extra=[T.U.V]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(19,20) [(], full:(14,20) [A.B.C(], extra=[A.B.C]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:Eof, rng:(20,20) [], full:(20,20) []], count=0
+Error: (20,20) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+
+   0) [0] TaskProc task T.U.V as A.B.C()
+   1) [0] End
+###
+> task T.U.V as A.B.C(3, 5
+Node: [task T.U.V as A.B.C(3, 5)]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:task, rng:(0,4) [task], full:(0,24) [task T.U.V as A.B.C(3, 5]], count=1
+  01   Node[id:4, kind:TaskProcStmt, depth:4, tok:KtxTask, rng:(0,4) [task], full:(0,24) [task T.U.V as A.B.C(3, 5], extra=[T.U.V]], count=1
+  02     Node[id:3, kind:Call, depth:3, tok:ParenOpen, rng:(19,20) [(], full:(14,24) [A.B.C(3, 5], extra=[A.B.C]], count=1
+  03       Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(21,22) [,], full:(20,24) [3, 5]], count=2
+  04         Node[id:0, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:5, rng:(23,24) [5], full:(23,24) [5], extra=[5]]
+Error: (24,24) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+
+   0) [0] TaskProc task T.U.V as A.B.C(3, 5)
+   1) [0] End
+###
+> task T.U.V as A.B.C(3, 5)
+Node: [task T.U.V as A.B.C(3, 5)]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:5, tok:task, rng:(0,4) [task], full:(0,25) [task T.U.V as A.B.C(3, 5)]], count=1
+  01   Node[id:4, kind:TaskProcStmt, depth:4, tok:KtxTask, rng:(0,4) [task], full:(0,25) [task T.U.V as A.B.C(3, 5)], extra=[T.U.V]], count=1
+  02     Node[id:3, kind:Call, depth:3, tok:ParenOpen, rng:(19,20) [(], full:(14,25) [A.B.C(3, 5)], extra=[A.B.C]], count=1
+  03       Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(21,22) [,], full:(20,24) [3, 5]], count=2
+  04         Node[id:0, kind:NumLit, depth:1, tok:3, rng:(20,21) [3], full:(20,21) [3], extra=[3]]
+  04         Node[id:1, kind:NumLit, depth:1, tok:5, rng:(23,24) [5], full:(23,24) [5], extra=[5]]
+
+   0) [0] TaskProc task T.U.V as A.B.C(3, 5)
+   1) [0] End
+###
+> finish P();
+> play   P.Q();
+> task   P();
+> pause  P();
+> prime  P();
+> poll   P();
+> poke   P();
+> abort  P();
+Node: [finish P(); play P.Q(); task P(); pause P(); prime P(); poll P(); poke P(); abort P()]
+Dump:
+  00 Node[id:24, kind:StmtList, depth:4, tok:Semi, rng:(10,11) [;], full:(0,97) [finish P();\nplay   P.Q();\ntask   P();\npause  P();\nprime  P();\npoll   P();\npoke   P();\nabort  P();]], count=8
+  01   Node[id:2, kind:TaskProcStmt, depth:3, tok:KtxFinish, rng:(0,6) [finish], full:(0,10) [finish P()]], count=1
+  02     Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(8,9) [(], full:(7,10) [P()], extra=[P]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(9,10) [)], full:(9,10) [)]], count=0
+  01   Node[id:5, kind:TaskProcStmt, depth:3, tok:KtxPlay, rng:(12,16) [play], full:(12,24) [play   P.Q()]], count=1
+  02     Node[id:4, kind:Call, depth:2, tok:ParenOpen, rng:(22,23) [(], full:(19,24) [P.Q()], extra=[P.Q]], count=1
+  03       Node[id:3, kind:ExprList, depth:1, tok:ParenClose, rng:(23,24) [)], full:(23,24) [)]], count=0
+  01   Node[id:8, kind:TaskProcStmt, depth:3, tok:KtxTask, rng:(26,30) [task], full:(26,36) [task   P()]], count=1
+  02     Node[id:7, kind:Call, depth:2, tok:ParenOpen, rng:(34,35) [(], full:(33,36) [P()], extra=[P]], count=1
+  03       Node[id:6, kind:ExprList, depth:1, tok:ParenClose, rng:(35,36) [)], full:(35,36) [)]], count=0
+  01   Node[id:11, kind:TaskProcStmt, depth:3, tok:KtxPause, rng:(38,43) [pause], full:(38,48) [pause  P()]], count=1
+  02     Node[id:10, kind:Call, depth:2, tok:ParenOpen, rng:(46,47) [(], full:(45,48) [P()], extra=[P]], count=1
+  03       Node[id:9, kind:ExprList, depth:1, tok:ParenClose, rng:(47,48) [)], full:(47,48) [)]], count=0
+  01   Node[id:14, kind:TaskProcStmt, depth:3, tok:KtxPrime, rng:(50,55) [prime], full:(50,60) [prime  P()]], count=1
+  02     Node[id:13, kind:Call, depth:2, tok:ParenOpen, rng:(58,59) [(], full:(57,60) [P()], extra=[P]], count=1
+  03       Node[id:12, kind:ExprList, depth:1, tok:ParenClose, rng:(59,60) [)], full:(59,60) [)]], count=0
+  01   Node[id:17, kind:TaskProcStmt, depth:3, tok:KtxPoll, rng:(62,66) [poll], full:(62,72) [poll   P()]], count=1
+  02     Node[id:16, kind:Call, depth:2, tok:ParenOpen, rng:(70,71) [(], full:(69,72) [P()], extra=[P]], count=1
+  03       Node[id:15, kind:ExprList, depth:1, tok:ParenClose, rng:(71,72) [)], full:(71,72) [)]], count=0
+  01   Node[id:20, kind:TaskProcStmt, depth:3, tok:KtxPoke, rng:(74,78) [poke], full:(74,84) [poke   P()]], count=1
+  02     Node[id:19, kind:Call, depth:2, tok:ParenOpen, rng:(82,83) [(], full:(81,84) [P()], extra=[P]], count=1
+  03       Node[id:18, kind:ExprList, depth:1, tok:ParenClose, rng:(83,84) [)], full:(83,84) [)]], count=0
+  01   Node[id:23, kind:TaskProcStmt, depth:3, tok:KtxAbort, rng:(86,91) [abort], full:(86,96) [abort  P()]], count=1
+  02     Node[id:22, kind:Call, depth:2, tok:ParenOpen, rng:(94,95) [(], full:(93,96) [P()], extra=[P]], count=1
+  03       Node[id:21, kind:ExprList, depth:1, tok:ParenClose, rng:(95,96) [)], full:(95,96) [)]], count=0
+
+   0) [0] TaskProc finish P()
+   1) [0] TaskProc play P.Q()
+   2) [0] TaskProc task P()
+   3) [0] TaskProc pause P()
+   4) [0] TaskProc prime P()
+   5) [0] TaskProc poll P()
+   6) [0] TaskProc poke P()
+   7) [0] TaskProc abort P()
+   8) [0] End
+###
+> A := finish X(); // Error.
+Node: [A := finish; X()]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:A, rng:(0,1) [A], full:(0,16) [A := finish X();]], count=2
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,11) [A := finish], extra=[A]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:finish, rng:(5,11) [finish], full:(5,11) [finish], extra=[finish]]
+  01   Node[id:4, kind:ExprStmt, depth:3, tok:ParenOpen, rng:(13,14) [(], full:(12,15) [X()]], count=1
+  02     Node[id:3, kind:Call, depth:2, tok:ParenOpen, rng:(13,14) [(], full:(12,15) [X()], extra=[X]], count=1
+  03       Node[id:2, kind:ExprList, depth:1, tok:ParenClose, rng:(14,15) [)], full:(14,15) [)]], count=0
+Error: (12,13) Tok: 'X', Message: Expected: ';', Found: 'X'
+Comment: Range=(17,26), Tid=CommentLine, Text=[// Error.]
+
+   0) [0] Define A <- finish
+   1) [0] Expr X()
+   2) [0] End
+###
+> A$B
+Node: [A$B]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:3, tok:A, rng:(0,1) [A], full:(0,3) [A$B]], count=1
+  01   Node[id:2, kind:ExprStmt, depth:2, tok:Dol, rng:(1,2) [$], full:(0,3) [A$B]], count=1
+  02     Node[id:1, kind:MetaProp, depth:1, tok:Dol, rng:(1,2) [$], full:(0,3) [A$B], extra=[A$B]]
+
+   0) [0] Expr A$B
+   1) [0] End
+###
+> A.B$C
+Node: [A.B$C]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:A, rng:(0,1) [A], full:(0,5) [A.B$C]], count=1
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:Dol, rng:(3,4) [$], full:(0,5) [A.B$C]], count=1
+  02     Node[id:2, kind:MetaProp, depth:1, tok:Dol, rng:(3,4) [$], full:(0,5) [A.B$C], extra=[A.B$C]]
+
+   0) [0] Expr A.B$C
+   1) [0] End
+###
+> A().B$C
+Node: [A().B.C]
+Corrected: [A().B.C]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:A, rng:(0,1) [A], full:(0,7) [A().B$C]], count=1
+  01   Node[id:4, kind:ExprStmt, depth:5, tok:Dol, rng:(5,6) [$], full:(0,7) [A().B$C]], count=1
+  02     Node[id:3, kind:DottedName, depth:4, tok:Dol, rng:(5,6) [$], full:(0,7) [A().B$C], extra=[C]], count=1
+  03       Node[id:2, kind:DottedName, depth:3, tok:Dot, rng:(3,4) [.], full:(0,5) [A().B], extra=[B]], count=1
+  04         Node[id:1, kind:Call, depth:2, tok:ParenOpen, rng:(1,2) [(], full:(0,3) [A()], extra=[A]], count=1
+  05           Node[id:0, kind:ExprList, depth:1, tok:ParenClose, rng:(2,3) [)], full:(2,3) [)]], count=0
+Error: (5,6) Tok: '$', Message: Unexpected `$`. Did you intend `.`?
+
+   0) [0] Expr A().B.C
+   1) [0] End
+###
+> Task T as Pipe(Range(10))
+Node: [task T as Pipe(Range(10))]
+Corrected: [task T as Pipe(Range(10))]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:7, tok:Task, rng:(0,4) [Task], full:(0,25) [Task T as Pipe(Range(10))]], count=1
+  01   Node[id:5, kind:TaskProcStmt, depth:6, tok:KtxTask, rng:(0,4) [Task], full:(0,25) [Task T as Pipe(Range(10))], extra=[T]], count=1
+  02     Node[id:4, kind:Call, depth:5, tok:ParenOpen, rng:(14,15) [(], full:(10,25) [Pipe(Range(10))], extra=[Pipe]], count=1
+  03       Node[id:3, kind:ExprList, depth:4, tok:Range, rng:(15,20) [Range], full:(15,24) [Range(10)]], count=1
+  04         Node[id:2, kind:Call, depth:3, tok:ParenOpen, rng:(20,21) [(], full:(15,24) [Range(10)], extra=[Range]], count=1
+  05           Node[id:1, kind:ExprList, depth:2, tok:10, rng:(21,23) [10], full:(21,23) [10]], count=1
+  06             Node[id:0, kind:NumLit, depth:1, tok:10, rng:(21,23) [10], full:(21,23) [10], extra=[10]]
+Error: (0,4) Tok: 'Task', Message: Expected 'task' but got 'Task'
+
+   0) [0] TaskProc task T as Pipe(Range(10))
+   1) [0] End
+###

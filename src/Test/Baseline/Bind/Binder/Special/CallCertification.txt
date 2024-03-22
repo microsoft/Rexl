@@ -1,0 +1,26 @@
+Value: Global(str) : s
+Value: Global(i8) : i8
+Value: Global(si8) : i8*
+Value: Global(table) : {A:i8}*
+Good: Call(∂.GetType*(Global(i8)):s) : s : False
+Good: Call(∂.IsEmpty(Global(str)):b) : b : True
+Good: Call(∂.Sort(Global(si8)):i8*) : i8* : True
+Good: Call(∂.Sort([<] Global(si8)):i8*) : i8* : True
+Good: Call(∂.Sort([~>] Global(si8)):i8*) : i8* : True
+Good: Call(∂.Sort([map:1] Global(si8), [<] Scope(1)):i8*) : i8* : True
+Good: Call(∂.Sort*(Global(table))) : {A:i8}* : False
+Good: Call(∂.Sort*([map:1] Global(table), Scope(1))) : {A:i8}* : False
+Good: Call(∂.Sort([map:1] Global(table), GetField(Scope(1), A))) : {A:i8}* : True
+Error: Null arg.
+Error: Wrong return type.
+Error: Wrong arg type.
+Error: Null scope.
+Error: Wrong scope kind.
+Error: Wrong index scope.
+Error: Wrong number of directives.
+Error: Directive on seq in Sort.
+Error: Key dir on sel in Sort.
+Error: Name on seq in Sort.
+Error: Name on sel in Sort.
+Error: Non-seq ret type.
+Error: Wrong ret type.

@@ -1,0 +1,110 @@
+**** New globals: {QT:i8[*]?, QU:r8[*]?, S:i8*, T:i8[*], U:r8[*], b:b}
+
+> T->Tensor.ForEach(it * 1)
+T->Tensor.ForEach(it * 1) : i8[*]
+Binder : Tensor.ForEach(@1: T, Mul(@1, 1))
+Reducer: T
+###
+> T->Tensor.ForEach(it^2)
+T->Tensor.ForEach(it^2) : i8[*]
+Binder : Tensor.ForEach(@1: T, Power(@1, 2))
+###
+> T->Tensor.ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(as a, b : T, a * b) : i8[*]
+Binder : Tensor.ForEach(@1: T, @2: T, Mul(@1, @2))
+Reducer: Tensor.ForEach(@1: T, Mul(@1, @1))
+###
+> T->Tensor.ForEach(as a, T as b, T as c, a * b * c)
+T->Tensor.ForEach(as a, b : T, c : T, a * b * c) : i8[*]
+Binder : Tensor.ForEach(@1: T, @2: T, @3: T, Mul(@1, @2, @3))
+Reducer: Tensor.ForEach(@1: T, Mul(@1, @1, @1))
+###
+> T->Tensor.ForEach(as a, T as b, T as c, T as d, a * b * c * d)
+T->Tensor.ForEach(as a, b : T, c : T, d : T, a * b * c * d) : i8[*]
+Binder : Tensor.ForEach(@1: T, @2: T, @3: T, @4: T, Mul(@1, @2, @3, @4))
+Reducer: Tensor.ForEach(@1: T, Mul(@1, @1, @1, @1))
+###
+> T->Tensor.ForEach(as a, U as b, T as c, U as d, a * b * c * d)
+T->Tensor.ForEach(as a, b : U, c : T, d : U, a * b * c * d) : r8[*]
+Binder : Tensor.ForEach(@1: T, @2: U, @3: T, @4: U, Mul(Num<r8>(@1), @2, Num<r8>(@3), @4))
+Reducer: Tensor.ForEach(@1: T, @2: U, Mul(Num<r8>(@1), @2, Num<r8>(@1), @2))
+###
+> QT->Tensor.ForEach(it * 1)
+QT->Tensor.ForEach(it * 1) : i8[*]?
+Binder : Guard(?1: QT, Tensor.ForEach(@2: ?1, Mul(@2, 1)))
+Reducer: QT
+###
+> QT->Tensor.ForEach(it^2)
+QT->Tensor.ForEach(it^2) : i8[*]?
+Binder : Guard(?1: QT, Tensor.ForEach(@2: ?1, Power(@2, 2)))
+###
+> QT->Tensor.ForEach(as a, QT as b, a * b)
+QT->Tensor.ForEach(as a, b : QT, a * b) : i8[*]?
+Binder : Guard(?1: QT, ?2: QT, Tensor.ForEach(@3: ?1, @4: ?2, Mul(@3, @4)))
+Reducer: Guard(?1: QT, Tensor.ForEach(@2: ?1, Mul(@2, @2)))
+###
+> QT->Tensor.ForEach(as a, QT as b, QT as c, a * b * c)
+QT->Tensor.ForEach(as a, b : QT, c : QT, a * b * c) : i8[*]?
+Binder : Guard(?1: QT, ?2: QT, ?3: QT, Tensor.ForEach(@4: ?1, @5: ?2, @6: ?3, Mul(@4, @5, @6)))
+Reducer: Guard(?1: QT, Tensor.ForEach(@2: ?1, Mul(@2, @2, @2)))
+###
+> QT->Tensor.ForEach(as a, QT as b, QT as c, QT as d, a * b * c * d)
+QT->Tensor.ForEach(as a, b : QT, c : QT, d : QT, a * b * c * d) : i8[*]?
+Binder : Guard(?1: QT, ?2: QT, ?3: QT, ?4: QT, Tensor.ForEach(@5: ?1, @6: ?2, @7: ?3, @8: ?4, Mul(@5, @6, @7, @8)))
+Reducer: Guard(?1: QT, Tensor.ForEach(@2: ?1, Mul(@2, @2, @2, @2)))
+###
+> QT->Tensor.ForEach(as a, QU as b, QT as c, QU as d, a * b * c * d)
+QT->Tensor.ForEach(as a, b : QU, c : QT, d : QU, a * b * c * d) : r8[*]?
+Binder : Guard(?1: QT, ?2: QU, ?3: QT, ?4: QU, Tensor.ForEach(@5: ?1, @6: ?2, @7: ?3, @8: ?4, Mul(Num<r8>(@5), @6, Num<r8>(@7), @8)))
+Reducer: Guard(?1: QT, ?2: QU, Tensor.ForEach(@3: ?1, @4: ?2, Mul(Num<r8>(@3), @4, Num<r8>(@3), @4)))
+###
+> T->Tensor.ForEach(as a, U as b, a * b)
+T->Tensor.ForEach(as a, b : U, a * b) : r8[*]
+Binder : Tensor.ForEach(@1: T, @2: U, Mul(Num<r8>(@1), @2))
+###
+> T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2)
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2) : i8[*]
+Binder : Tensor.ForEach(@3: Tensor.ForEach(@2: Tensor.ForEach(@1: T, Mul(@1, 2)), Add(@2, 5)), Power(@3, 2))
+Reducer: Tensor.ForEach(@1: T, Power(Add(Mul(@1, 2), 5), 2))
+###
+> T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, b : T, a * b) : i8[*]
+Binder : Tensor.ForEach(@3: Tensor.ForEach(@2: Tensor.ForEach(@1: T, Mul(@1, 2)), Add(@2, 5)), @4: T, Mul(@3, @4))
+Reducer: Tensor.ForEach(@1: T, Mul(Add(Mul(@1, 2), 5), @1))
+###
+> (Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+Binder : Tensor.ForEach(@1: If(b, Tensor.From(S, 5), Tensor.Fill(0, 7)), Mul(@1, 3))
+###
+> (Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+Binder : Tensor.ForEach(@1: If(true, Tensor.From(S, 5), Tensor.Fill(0, 7)), Mul(@1, 3))
+Reducer: Tensor.ForEach(@1: Tensor.From(S, 5), Mul(@1, 3))
+###
+> (Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+Binder : Tensor.ForEach(@1: If(false, Tensor.From(S, 5), Tensor.Fill(0, 7)), Mul(@1, 3))
+Reducer: Tensor.ForEach(@1: Tensor.Fill(0, 7), Mul(@1, 3))
+###
+> Tensor.ForEach()
+Tensor.ForEach() : v[]
+*** Error: (14,15) Node: Tensor.ForEach(), Message: Too few arguments for Tensor.ForEach, expected 2 additional
+Binder : Tensor.ForEach(@1: Unit<v[]>(<missing>), <missing>)
+Reducer: Tensor.ForEach(@1: dflt<v[]>, <missing>)
+###
+> Tensor.ForEach(5)
+Tensor.ForEach(5) : v[]
+*** Error: (14,15) Node: Tensor.ForEach(5), Message: Too few arguments for Tensor.ForEach, expected 1 additional
+*** Error: (15,16) Node: 5, Message: The argument in position 1 of 'ForEach' should be a tensor
+Binder : Tensor.ForEach(@1: Error(ErrNeedTensor_Slot_Func), <missing>)
+###
+> Tensor.ForEach(3, 5)
+Tensor.ForEach(3, 5) : i8[]
+*** Error: (15,16) Node: 3, Message: The argument in position 1 of 'ForEach' should be a tensor
+Binder : Tensor.ForEach(@1: Error(ErrNeedTensor_Slot_Func), 5)
+###
+> Tensor.ForEach(Range(10), it * 5)
+Tensor.ForEach(Range(10), it * 5) : i8*[]
+*** Error: (20,21) Node: Range(10), Message: The argument in position 1 of 'ForEach' should be a tensor
+Binder : Tensor.ForEach(@1: Error(ErrNeedTensor_Slot_Func), ForEach(*2: @1, Mul(*2, 5)))
+###

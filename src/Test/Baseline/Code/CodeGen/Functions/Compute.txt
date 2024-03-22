@@ -1,0 +1,16 @@
+> GuardMap(["hello", null], Text.Len(it)) // Result is i4?* since null maps to null.
+GuardMap(["hello", null], Text.Len(it)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(<null>)]:s*, Call(∂.Guard([guard:2] Scope(1), Call(∂.Text.Len(Scope(2)):i8)):i8?)):i8?*))
+Func sig: () to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 5
+ 1) <null>
+###
+> WithMap(["hello", null], Text.Len(it)) // Result is i4* since null is not mapped.
+WithMap(["hello", null], Text.Len(it)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [str(hello), str(<null>)]:s*, Call(∂.Text.Len(Scope(1)):i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 0
+###

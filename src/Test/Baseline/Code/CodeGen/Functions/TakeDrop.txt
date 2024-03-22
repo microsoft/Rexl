@@ -1,0 +1,1993 @@
+**** New definitions: N, type: i8*
+**** New definitions: S, type: i8*
+**** New definitions: Si, type: (i8, i8)*
+**** New definitions: HasNullSeq, type: i8**
+**** New definitions: Zero, type: i8
+**** New definitions: NegOne, type: i8
+**** New definitions: Big, type: i8
+
+> Take(Range(2), Wrap(-1))
+Take(Range(2), Wrap(-1)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8)):i8*))
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> Drop(Range(2), Wrap(-1))
+Drop(Range(2), Wrap(-1)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+*** Ctx ping count: 0
+###
+> Take(Range(2), [if] true)
+Take(Range(2), [if] true) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Range(2:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+###
+> Take(Range(2), [if] false)
+Take(Range(2), [if] false) : i8*
+BndKind:Null, Type:i8*, Bnd:(null:i8*)
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> Drop(Range(2), [if] true)
+Drop(Range(2), [if] true) : i8*
+BndKind:Null, Type:i8*, Bnd:(null:i8*)
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> Drop(Range(2), [if] false)
+Drop(Range(2), [if] false) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Range(2:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+###
+> Take(Range(10), 5)
+Take(Range(10), 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Call(∂.Range(10:i8):i8*), 5:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> Drop(Range(10), 5)
+Drop(Range(10), 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Call(∂.Range(10:i8):i8*), 5:i8):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 6
+ 2) 7
+ 3) 8
+ 4) 9
+*** Ctx ping count: 5
+    [0](5): Drop(Range(10), 5)
+###
+> Take(Range(10), 20)
+Take(Range(10), 20) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Range(10:i8):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+###
+> Drop(Range(10), 20)
+Drop(Range(10), 20) : i8*
+BndKind:Null, Type:i8*, Bnd:(null:i8*)
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> Take(Range(10), [if] it < 5)
+Take(Range(10), [if] it $< 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 5:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+*** Ctx ping count: 5
+    [0](5): Take(*1: Range(10), [if] *1 @< 5)
+###
+> Drop(Range(10), [if] it < 5)
+Drop(Range(10), [if] it $< 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 5:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 6
+ 2) 7
+ 3) 8
+ 4) 9
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Range(10), [if] *1 @< 5)
+###
+> Take(Range(10), [if] it < 20)
+Take(Range(10), [if] it $< 20) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 20:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 0
+###
+> Drop(Range(10), [if] it < 20)
+Drop(Range(10), [if] it $< 20) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 20:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 10
+    [0](10): Drop(*1: Range(10), [if] *1 @< 20)
+###
+> Take(Range(10), [while] it < 5)
+Take(Range(10), [while] it $< 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 5:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+###
+> Drop(Range(10), [while] it < 5)
+Drop(Range(10), [while] it $< 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 5:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 6
+ 2) 7
+ 3) 8
+ 4) 9
+*** Ctx ping count: 6
+    [0](6): Drop(*1: Range(10), [while] *1 @< 5)
+###
+> Take(Range(10), [while] it > 5)
+Take(Range(10), [while] it $> 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @> 5:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+###
+> Drop(Range(10), [while] it > 5)
+Drop(Range(10), [while] it $> 5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @> 5:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 1
+    [0](1): Drop(*1: Range(10), [while] *1 @> 5)
+###
+> Take(Range(10), [while] it < 20)
+Take(Range(10), [while] it $< 20) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 20:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+###
+> Drop(Range(10), [while] it < 20)
+Drop(Range(10), [while] it $< 20) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 20:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 11
+    [0](11): Drop(*1: Range(10), [while] *1 @< 20)
+###
+> Take(Range(2), Wrap(-1), it > 100)
+Take(Range(2), Wrap(-1), it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Range(2), Wrap(-1), it > 100)
+Drop(Range(2), Wrap(-1), it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+*** Ctx ping count: 0
+###
+> Take(Range(2), Wrap(-1), [if] it > 100)
+Take(Range(2), Wrap(-1), [if] it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), [if] Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Range(2), Wrap(-1), [if] it > 100)
+Drop(Range(2), Wrap(-1), [if] it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), [if] Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+*** Ctx ping count: 0
+###
+> Take(Range(10), 20, it < 6)
+Take(Range(10), 20, it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+*** Ctx ping count: 4
+    [0](4): Take(*1: Range(10), [if] *1 @< 6)
+###
+> Drop(Range(10), 20, it < 6)
+Drop(Range(10), 20, it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 6
+    [0](6): Drop(*1: Range(10), [if] *1 @< 6)
+###
+> Take(Range(10), 20, [if] it < 6)
+Take(Range(10), 20, [if] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+*** Ctx ping count: 4
+    [0](4): Take(*1: Range(10), [if] *1 @< 6)
+###
+> Drop(Range(10), 20, [if] it < 6)
+Drop(Range(10), 20, [if] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 6
+    [0](6): Drop(*1: Range(10), [if] *1 @< 6)
+###
+> Take(Range(10), 20, [while] it < 6)
+Take(Range(10), 20, [while] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+###
+> Drop(Range(10), 20, [while] it < 6)
+Drop(Range(10), 20, [while] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 7
+    [0](7): Drop(*1: Range(10), [while] *1 @< 6)
+###
+> Take(Range(10), 20, # < 6)
+Take(Range(10), 20, # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+*** Ctx ping count: 4
+    [0](4): Take(*2: Range(10), [if] #1 @< 6)
+###
+> Drop(Range(10), 20, # < 6)
+Drop(Range(10), 20, # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 6
+    [0](6): Drop(*2: Range(10), [if] #1 @< 6)
+###
+> Take(Range(10), 20, [if] # < 6)
+Take(Range(10), 20, [if] # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+*** Ctx ping count: 4
+    [0](4): Take(*2: Range(10), [if] #1 @< 6)
+###
+> Drop(Range(10), 20, [if] # < 6)
+Drop(Range(10), 20, [if] # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 6
+    [0](6): Drop(*2: Range(10), [if] #1 @< 6)
+###
+> Take(Range(10), 20, [while] # < 6)
+Take(Range(10), 20, [while] # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+###
+> Drop(Range(10), 20, [while] # < 6)
+Drop(Range(10), 20, [while] # $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Range(10:i8):i8*), [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+ 2) 8
+ 3) 9
+*** Ctx ping count: 7
+    [0](7): Drop(*2: Range(10), [while] #1 @< 6)
+###
+> Take(Range(10), 4, [while] it < 6)
+Take(Range(10), 4, [while] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), 4:i8, [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+###
+> Drop(Range(10), 4, [while] it < 6)
+Drop(Range(10), 4, [while] it $< 6) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), 4:i8, [while] Cmp(Scope(1) @< 6:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 4
+ 1) 5
+ 2) 6
+ 3) 7
+ 4) 8
+ 5) 9
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Range(10), 4, [while] *1 @< 6)
+###
+> Take(Range(2), Wrap(-1), [while] it > 100)
+Take(Range(2), Wrap(-1), [while] it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), [while] Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: () to i8*
+Type: <null>, Value: <null>
+###
+> Drop(Range(2), Wrap(-1), [while] it > 100)
+Drop(Range(2), Wrap(-1), [while] it $> 100) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(2:i8):i8*), Call(∂.Test.Wrap(-1:i8):i8), [while] Cmp(Scope(1) @> 100:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+*** Ctx ping count: 0
+###
+> Take(Range(10), 5, it < 2 or it > 8)
+Take(Range(10), 5, it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), 5:i8, Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 9
+*** Ctx ping count: 7
+    [0](7): Take(*1: Range(10), 5, Or(*1 @< 2, *1 @> 8))
+###
+> Drop(Range(10), 5, it < 2 or it > 8)
+Drop(Range(10), 5, it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), 5:i8, Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 7
+ 6) 8
+*** Ctx ping count: 3
+    [0](3): Drop(*1: Range(10), 5, Or(*1 @< 2, *1 @> 8))
+###
+> Take(Range(10), 5, [while] it < 2 or it > 8)
+Take(Range(10), 5, [while] it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), 5:i8, [while] Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+###
+> Drop(Range(10), 5, [while] it < 2 or it > 8)
+Drop(Range(10), 5, [while] it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), 5:i8, [while] Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 7
+ 6) 8
+ 7) 9
+*** Ctx ping count: 3
+    [0](3): Drop(*1: Range(10), 5, [while] Or(*1 @< 2, *1 @> 8))
+###
+> Take(Range(10), 4, [while] it < 6 or it > 8)
+Take(Range(10), 4, [while] it $< 6 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), 4:i8, [while] Or(Cmp(Scope(1) @< 6:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+###
+> Drop(Range(10), 4, [while] it < 6 or it > 8)
+Drop(Range(10), 4, [while] it $< 6 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Call(∂.Range(10:i8):i8*), 4:i8, [while] Or(Cmp(Scope(1) @< 6:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 4
+ 1) 5
+ 2) 6
+ 3) 7
+ 4) 8
+ 5) 9
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Range(10), 4, [while] Or(*1 @< 6, *1 @> 8))
+###
+> Take(Range(10) ++ Range(10), 10, it < 2 or it > 8)
+Take(Range(10) ++ Range(10), 10, it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), 10:i8, Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 9
+ 3) 0
+ 4) 1
+ 5) 9
+*** Ctx ping count: 14
+    [0](14): Take(*1: SeqConcat(Range(10), Range(10)), 10, Or(*1 @< 2, *1 @> 8))
+###
+> Drop(Range(10) ++ Range(10), 50, it < 2 or it > 8)
+Drop(Range(10) ++ Range(10), 50, it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), [if] Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 7
+ 6) 8
+ 7) 2
+ 8) 3
+ 9) 4
+10) 5
+11) 6
+12) 7
+13) 8
+*** Ctx ping count: 6
+    [0](6): Drop(*1: SeqConcat(Range(10), Range(10)), [if] Or(*1 @< 2, *1 @> 8))
+###
+> Take(Range(10) ++ Range(10), 50, [while] it > 2)
+Take(Range(10) ++ Range(10), 50, [while] it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), [while] Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+###
+> Drop(Range(10) ++ Range(10), 10,it < 2 or it > 8)
+Drop(Range(10) ++ Range(10), 10, it $< 2 or it $> 8) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), 10:i8, Or(Cmp(Scope(1) @< 2:i8), Cmp(Scope(1) @> 8:i8))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 7
+ 6) 8
+ 7) 2
+ 8) 3
+ 9) 4
+10) 5
+11) 6
+12) 7
+13) 8
+*** Ctx ping count: 6
+    [0](6): Drop(*1: SeqConcat(Range(10), Range(10)), 10, Or(*1 @< 2, *1 @> 8))
+###
+> Take(Range(10) ++ Range(10), 5, [while] it < 2)
+Take(Range(10) ++ Range(10), 5, [while] it $< 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), 5:i8, [while] Cmp(Scope(1) @< 2:i8)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+###
+> Drop(Range(10) ++ Range(10), 5, [while] it < 2)
+Drop(Range(10) ++ Range(10), 5, [while] it $< 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] SeqConcat(Call(∂.Range(10:i8):i8*), Call(∂.Range(10:i8):i8*)), 5:i8, [while] Cmp(Scope(1) @< 2:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 7
+ 6) 8
+ 7) 9
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 4
+13) 5
+14) 6
+15) 7
+16) 8
+17) 9
+*** Ctx ping count: 3
+    [0](3): Drop(*1: SeqConcat(Range(10), Range(10)), 5, [while] *1 @< 2)
+###
+> Take(Range(10), TakeOne([-1, 0], it < 0), it > 2)
+Take(Range(10), TakeOne([-1, 0], it $< 0), it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Range(10:i8):i8*), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(Scope(2) @> 2:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Range(10), TakeOne([-1, 0], it < 0), it > 2)
+Drop(Range(10), TakeOne([-1, 0], it $< 0), it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Range(10:i8):i8*), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(Scope(2) @> 2:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 0
+###
+> Take(Range(10), TakeOne([-1, 0], it < 0), [while] it > 2)
+Take(Range(10), TakeOne([-1, 0], it $< 0), [while] it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Range(10:i8):i8*), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(Scope(2) @> 2:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Range(10), TakeOne([-1, 0], it < 0), [while] it > 2)
+Drop(Range(10), TakeOne([-1, 0], it $< 0), [while] it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Range(10:i8):i8*), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(Scope(2) @> 2:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 0
+###
+> Take(Filter(Range(20), it < 10), 11, [while] it < 10)
+Take(Filter(Range(20), it $< 10), 11, [while] it $< 10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Call(∂.Take([map:1] Call(∂.Range(20:i8):i8*), [if] Cmp(Scope(1) @< 10:i8)):i8*), 11:i8, [while] Cmp(Scope(2) @< 10:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 10
+    [0](10): Take(*1: Range(20), [if] *1 @< 10)
+###
+> Drop(Filter(Range(20), it < 10), 11, [while] it < 10)
+Drop(Filter(Range(20), it $< 10), 11, [while] it $< 10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Call(∂.Take([map:1] Call(∂.Range(20:i8):i8*), [if] Cmp(Scope(1) @< 10:i8)):i8*), 11:i8, [while] Cmp(Scope(2) @< 10:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 20
+    [0](10): Take(*1: Range(20), [if] *1 @< 10)
+    [1](10): Drop(*2: Take(*1: Range(20), [if] *1 @< 10), 11, [while] *2 @< 10)
+###
+> Take(Si, TakeOne([-1,0],it < 0), it[1] > 2)
+Take(Si, TakeOne([-1, 0], it $< 0), it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Si, TakeOne([-1,0],it < 0), #+it[1] > 2)
+Drop(Si, TakeOne([-1, 0], it $< 0), # + it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:3] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(Add(Scope(2), GetSlot(Scope(3), 1)) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Take(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Take(Si, TakeOne([-1, 0], it $< 0), [while] it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Drop(Si, TakeOne([-1, 0], it $< 0), [while] it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Take(Si, TakeOne([-1,0],it < 0), #+it[1] > 2)
+Take(Si, TakeOne([-1, 0], it $< 0), # + it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:3] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(Add(Scope(2), GetSlot(Scope(3), 1)) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Si, TakeOne([-1,0],it < 0), it[1] > 2)
+Drop(Si, TakeOne([-1, 0], it $< 0), it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Take(Si, TakeOne([-1,0],it < 0), [while] #+it[1] > 2)
+Take(Si, TakeOne([-1, 0], it $< 0), [while] # + it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:3] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(Add(Scope(2), GetSlot(Scope(3), 1)) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Si, TakeOne([-1,0],it < 0), [while] #+it[1] > 2)
+Drop(Si, TakeOne([-1, 0], it $< 0), [while] # + it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:3] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(Add(Scope(2), GetSlot(Scope(3), 1)) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Take(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Take(Si, TakeOne([-1, 0], it $< 0), [while] it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Drop(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Drop(Si, TakeOne([-1, 0], it $< 0), [while] it[1] $> 2) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Call(∂.TakeOne([map:1] [-1:i8, 0:i8]:i8*, Cmp(Scope(1) @< 0:i8)):i8), [while] Cmp(GetSlot(Scope(2), 1) @> 2:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Take(Si, [if] it[1] < 5)
+Take(Si, [if] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), [if] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+*** Ctx ping count: 3
+    [0](3): Take(*1: Si, [if] *1.1 @< 5)
+###
+> Drop(Si, [if] it[1] < 5)
+Drop(Si, [if] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), [if] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 5)
+ 1) (5, 6)
+ 2) (6, 7)
+*** Ctx ping count: 4
+    [0](4): Drop(*1: Si, [if] *1.1 @< 5)
+###
+> Take(Si, [while] it[1] < 5)
+Take(Si, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+###
+> Drop(Si, [while] it[1] < 5)
+Drop(Si, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 5)
+ 1) (5, 6)
+ 2) (6, 7)
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Si, [while] *1.1 @< 5)
+###
+> Take(Si, 2, it[1] < 5)
+Take(Si, 2, it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), 2:i8, Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 0
+###
+> Drop(Si, 2, it[1] < 5)
+Drop(Si, 2, it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), 2:i8, Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*1: Si, 2, *1.1 @< 5)
+###
+> Take(Si, 4, it[1] < 5)
+Take(Si, 4, it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), 4:i8, Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+*** Ctx ping count: 0
+###
+> Drop(Si, 4, it[1] < 5)
+Drop(Si, 4, it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), 4:i8, Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 5)
+ 1) (5, 6)
+ 2) (6, 7)
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Si, 4, *1.1 @< 5)
+###
+> Take(Si, 2, [while] it[1] < 5)
+Take(Si, 2, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), 2:i8, [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+###
+> Drop(Si, 2, [while] it[1] < 5)
+Drop(Si, 2, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), 2:i8, [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*1: Si, 2, [while] *1.1 @< 5)
+###
+> Take(Si, 4, [while] it[1] < 5)
+Take(Si, 4, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:1] Global(Si), 4:i8, [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+###
+> Drop(Si, 4, [while] it[1] < 5)
+Drop(Si, 4, [while] it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:1] Global(Si), 4:i8, [while] Cmp(GetSlot(Scope(1), 1) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (4, 5)
+ 1) (5, 6)
+ 2) (6, 7)
+*** Ctx ping count: 5
+    [0](5): Drop(*1: Si, 4, [while] *1.1 @< 5)
+###
+> Take(Si, 1, # + it[1] < 5)
+Take(Si, 1, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 1:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+*** Ctx ping count: 0
+###
+> Drop(Si, 1, # + it[1] < 5)
+Drop(Si, 1, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 1:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 2)
+ 1) (2, 3)
+ 2) (3, 4)
+ 3) (4, 5)
+ 4) (5, 6)
+ 5) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, 1, Add(#1, *2.1) @< 5)
+###
+> Take(Si, 5, # + it[1] < 5)
+Take(Si, 5, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 5:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Take(*2: Si, 5, Add(#1, *2.1) @< 5)
+###
+> Drop(Si, 5, # + it[1] < 5)
+Drop(Si, 5, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 5:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, 5, Add(#1, *2.1) @< 5)
+###
+> Take(Si, 1, [while] # + it[1] < 5)
+Take(Si, 1, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 1:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+###
+> Drop(Si, 1, [while] # + it[1] < 5)
+Drop(Si, 1, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 1:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (1, 2)
+ 1) (2, 3)
+ 2) (3, 4)
+ 3) (4, 5)
+ 4) (5, 6)
+ 5) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, 1, [while] Add(#1, *2.1) @< 5)
+###
+> Take(Si, 5, [while] # + it[1] < 5)
+Take(Si, 5, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 5:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+###
+> Drop(Si, 5, [while] # + it[1] < 5)
+Drop(Si, 5, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 5:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*2: Si, 5, [while] Add(#1, *2.1) @< 5)
+###
+> Take(Si, [if] # + it[1] < 5)
+Take(Si, [if] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), [if] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Take(*2: Si, [if] Add(#1, *2.1) @< 5)
+###
+> Drop(Si, [if] # + it[1] < 5)
+Drop(Si, [if] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), [if] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, [if] Add(#1, *2.1) @< 5)
+###
+> Take(Si, [while] # + it[1] < 5)
+Take(Si, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+###
+> Drop(Si, [while] # + it[1] < 5)
+Drop(Si, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*2: Si, [while] Add(#1, *2.1) @< 5)
+###
+> Take(Si, 3, # + it[1] < 5)
+Take(Si, 3, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 3:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Take(*2: Si, 3, Add(#1, *2.1) @< 5)
+###
+> Drop(Si, 3, # + it[1] < 5)
+Drop(Si, 3, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 3:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, 3, Add(#1, *2.1) @< 5)
+###
+> Take(Si, 4, # + it[1] < 5)
+Take(Si, 4, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 4:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Take(*2: Si, 4, Add(#1, *2.1) @< 5)
+###
+> Drop(Si, 4, # + it[1] < 5)
+Drop(Si, 4, # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 4:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Drop(*2: Si, 4, Add(#1, *2.1) @< 5)
+###
+> Take(Si, 10, # + it[1] < 50)
+Take(Si, 10, # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 10:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> Drop(Si, 10, # + it[1] < 50)
+Drop(Si, 10, # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 10:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+*** Ctx ping count: 7
+    [0](7): Drop(*2: Si, 10, Add(#1, *2.1) @< 50)
+###
+> Take(Si, 2, [while] # + it[1] < 5)
+Take(Si, 2, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 2:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+###
+> Drop(Si, 2, [while] # + it[1] < 5)
+Drop(Si, 2, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 2:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*2: Si, 2, [while] Add(#1, *2.1) @< 5)
+###
+> Take(Si, 4, [while] # + it[1] < 5)
+Take(Si, 4, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 4:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+###
+> Drop(Si, 4, [while] # + it[1] < 5)
+Drop(Si, 4, [while] # + it[1] $< 5) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 4:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 5:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*2: Si, 4, [while] Add(#1, *2.1) @< 5)
+###
+> Take(Si, [while] # + it[1] < 50)
+Take(Si, [while] # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+###
+> Drop(Si, [while] # + it[1] < 50)
+Drop(Si, [while] # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+*** Ctx ping count: 8
+    [0](8): Drop(*2: Si, [while] Add(#1, *2.1) @< 50)
+###
+> Take(Si, 10, [while] # + it[1] < 50)
+Take(Si, 10, [while] # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 10:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+###
+> Drop(Si, 10, [while] # + it[1] < 50)
+Drop(Si, 10, [while] # + it[1] $< 50) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 10:i8, [while] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @< 50:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+*** Ctx ping count: 7
+    [0](7): Drop(*2: Si, 10, [while] Add(#1, *2.1) @< 50)
+###
+> ForEach(s:HasNullSeq, Take(s, 1))
+ForEach(s : HasNullSeq, Take(s, 1)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take(Scope(1), 1:i8):i8*)):i8**))
+Func sig: (HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+###
+> ForEach(s:HasNullSeq, Drop(s, 1))
+ForEach(s : HasNullSeq, Drop(s, 1)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop(Scope(1), 1:i8):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+     3) 4
+*** Ctx ping count: 1
+    [0](1): Drop(*1x, 1)
+###
+> ForEach(s:HasNullSeq, Take(s, [if] it < 3))
+ForEach(s : HasNullSeq, Take(s, [if] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:2] Scope(1), [if] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+*** Ctx ping count: 2
+    [0](2): Take(*2: *1x, [if] *2 @< 3)
+###
+> ForEach(s:HasNullSeq, Drop(s, [if] it < 3))
+ForEach(s : HasNullSeq, Drop(s, [if] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:2] Scope(1), [if] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 3
+     1) 4
+*** Ctx ping count: 3
+    [0](3): Drop(*2: *1x, [if] *2 @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, [while] it < 3))
+ForEach(s : HasNullSeq, Take(s, [while] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:2] Scope(1), [while] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+###
+> ForEach(s:HasNullSeq, Drop(s, [while] it < 3))
+ForEach(s : HasNullSeq, Drop(s, [while] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:2] Scope(1), [while] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 3
+     1) 4
+*** Ctx ping count: 4
+    [0](4): Drop(*2: *1x, [while] *2 @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, [if] # + it < 3))
+ForEach(s : HasNullSeq, Take(s, [if] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:3] Scope(1), [if] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 1
+*** Ctx ping count: 3
+    [0](3): Take(*3: *1x, [if] Add(#2, *3) @< 3)
+###
+> ForEach(s:HasNullSeq, Drop(s, [if] # + it < 3))
+ForEach(s : HasNullSeq, Drop(s, [if] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:3] Scope(1), [if] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 2
+     1) 3
+     2) 4
+*** Ctx ping count: 2
+    [0](2): Drop(*3: *1x, [if] Add(#2, *3) @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, [while] # + it < 3))
+ForEach(s : HasNullSeq, Take(s, [while] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:3] Scope(1), [while] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 1
+###
+> ForEach(s:HasNullSeq, Drop(s, [while] # + it < 3))
+ForEach(s : HasNullSeq, Drop(s, [while] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:3] Scope(1), [while] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 2
+     1) 3
+     2) 4
+*** Ctx ping count: 3
+    [0](3): Drop(*3: *1x, [while] Add(#2, *3) @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, 1, [if] it < 3))
+ForEach(s : HasNullSeq, Take(s, 1, [if] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:2] Scope(1), 1:i8, [if] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+*** Ctx ping count: 0
+###
+> ForEach(s:HasNullSeq, Drop(s, 1, [if] it < 3))
+ForEach(s : HasNullSeq, Drop(s, 1, [if] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:2] Scope(1), 1:i8, [if] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+     3) 4
+*** Ctx ping count: 2
+    [0](2): Drop(*2: *1x, 1, [if] *2 @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, 1, [while] it < 3))
+ForEach(s : HasNullSeq, Take(s, 1, [while] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:2] Scope(1), 1:i8, [while] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+###
+> ForEach(s:HasNullSeq, Drop(s, 1, [while] it < 3))
+ForEach(s : HasNullSeq, Drop(s, 1, [while] it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:2] Scope(1), 1:i8, [while] Cmp(Scope(2) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+     3) 4
+*** Ctx ping count: 2
+    [0](2): Drop(*2: *1x, 1, [while] *2 @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, 1, [if] # + it < 3))
+ForEach(s : HasNullSeq, Take(s, 1, [if] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:3] Scope(1), 1:i8, [if] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+*** Ctx ping count: 0
+###
+> ForEach(s:HasNullSeq, Drop(s, 1, [if] # + it < 3))
+ForEach(s : HasNullSeq, Drop(s, 1, [if] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:3] Scope(1), 1:i8, [if] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+     3) 4
+*** Ctx ping count: 2
+    [0](2): Drop(*3: *1x, 1, [if] Add(#2, *3) @< 3)
+###
+> ForEach(s:HasNullSeq, Take(s, 1, [while] # + it < 3))
+ForEach(s : HasNullSeq, Take(s, 1, [while] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Take([map:3] Scope(1), 1:i8, [while] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 0
+###
+> ForEach(s:HasNullSeq, Drop(s, 1, [while] # + it < 3))
+ForEach(s : HasNullSeq, Drop(s, 1, [while] # + it $< 3)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(HasNullSeq), Call(∂.Drop([map:3] Scope(1), 1:i8, [while] Cmp(Add(Scope(2), Scope(3)) @< 3:i8)):i8*)):i8**))
+Func sig: (<ctx>:x, HasNullSeq:i8**) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) <null>
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 3
+     3) 4
+*** Ctx ping count: 2
+    [0](2): Drop(*3: *1x, 1, [while] Add(#2, *3) @< 3)
+###
+> N->Take(2)
+N->Take(2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(N), 2:i8):i8*))
+Func sig: (N:i8*) to i8*
+Type: <null>, Value: <null>
+###
+> N->Drop(2)
+N->Drop(2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(N), 2:i8):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> N->Take(2, it > 2)
+N->Take(2, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(N), 2:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> N->Drop(2, it > 2)
+N->Drop(2, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(N), 2:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> N->Take(2, # + it > 3)
+N->Take(2, # + it $> 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:2] Global(N), 2:i8, Cmp(Add(Scope(1), Scope(2)) @> 3:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> N->Drop(2, # + it > 3)
+N->Drop(2, # + it $> 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:2] Global(N), 2:i8, Cmp(Add(Scope(1), Scope(2)) @> 3:i8)):i8*))
+Func sig: (<ctx>:x, N:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> S->Take(2)
+S->Take(2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(S), 2:i8):i8*))
+Func sig: (S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+###
+> S->Drop(2)
+S->Drop(2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(S), 2:i8):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 4
+ 2) 5
+ 3) 6
+ 4) 7
+*** Ctx ping count: 2
+    [0](2): Drop(S, 2)
+###
+> S->Take(5)
+S->Take(5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(S), 5:i8):i8*))
+Func sig: (S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+###
+> S->Drop(5)
+S->Drop(5) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(S), 5:i8):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 6
+ 1) 7
+*** Ctx ping count: 5
+    [0](5): Drop(S, 5)
+###
+> S->Take(Zero)
+S->Take(Zero) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(S), Global(Zero)):i8*))
+Func sig: (S:i8*, Zero:i8) to i8*
+Type: <null>, Value: <null>
+###
+> S->Drop(Zero)
+S->Drop(Zero) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(S), Global(Zero)):i8*))
+Func sig: (<ctx>:x, S:i8*, Zero:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+*** Ctx ping count: 0
+###
+> S->Take(NegOne)
+S->Take(NegOne) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(S), Global(NegOne)):i8*))
+Func sig: (S:i8*, NegOne:i8) to i8*
+Type: <null>, Value: <null>
+###
+> S->Drop(NegOne)
+S->Drop(NegOne) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(S), Global(NegOne)):i8*))
+Func sig: (<ctx>:x, S:i8*, NegOne:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+*** Ctx ping count: 0
+###
+> S->Take(Big)
+S->Take(Big) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(S), Global(Big)):i8*))
+Func sig: (S:i8*, Big:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+###
+> S->Drop(Big)
+S->Drop(Big) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(S), Global(Big)):i8*))
+Func sig: (<ctx>:x, S:i8*, Big:i8) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> S->TakeIf(it > 2)
+S->TakeIf(it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), [if] Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 4
+ 2) 5
+ 3) 6
+ 4) 7
+*** Ctx ping count: 2
+    [0](2): Take(*1: S, [if] *1 @> 2)
+###
+> S->DropIf(it > 2)
+S->DropIf(it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), [if] Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+*** Ctx ping count: 5
+    [0](5): Drop(*1: S, [if] *1 @> 2)
+###
+> Si->TakeIf(# + it[1] > 3)
+Si->TakeIf(# + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), [if] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Take(*2: Si, [if] Add(#1, *2.1) @> 3)
+###
+> Si->DropIf(# + it[1] > 3)
+Si->DropIf(# + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), [if] Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Drop(*2: Si, [if] Add(#1, *2.1) @> 3)
+###
+> S->Take(2, it > 2)
+S->Take(2, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), 2:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 4
+*** Ctx ping count: 2
+    [0](2): Take(*1: S, 2, *1 @> 2)
+###
+> S->Drop(2, it > 2)
+S->Drop(2, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), 2:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 5
+ 3) 6
+ 4) 7
+*** Ctx ping count: 3
+    [0](3): Drop(*1: S, 2, *1 @> 2)
+###
+> Si->Take(2, # + it[1] > 3)
+Si->Take(2, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 2:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+*** Ctx ping count: 2
+    [0](2): Take(*2: Si, 2, Add(#1, *2.1) @> 3)
+###
+> Si->Drop(2, # + it[1] > 3)
+Si->Drop(2, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 2:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 3
+    [0](3): Drop(*2: Si, 2, Add(#1, *2.1) @> 3)
+###
+> S->Take(5, it > 2)
+S->Take(5, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), 5:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 4
+ 2) 5
+ 3) 6
+ 4) 7
+*** Ctx ping count: 2
+    [0](2): Take(*1: S, 5, *1 @> 2)
+###
+> S->Drop(5, it > 2)
+S->Drop(5, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), 5:i8, Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+*** Ctx ping count: 6
+    [0](6): Drop(*1: S, 5, *1 @> 2)
+###
+> Si->Take(5, # + it[1] > 3)
+Si->Take(5, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), 5:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Take(*2: Si, 5, Add(#1, *2.1) @> 3)
+###
+> Si->Drop(5, # + it[1] > 3)
+Si->Drop(5, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), 5:i8, Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 6
+    [0](6): Drop(*2: Si, 5, Add(#1, *2.1) @> 3)
+###
+> S->Take(Zero, it > 2)
+S->Take(Zero, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), Global(Zero), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, Zero:i8) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> S->Drop(Zero, it > 2)
+S->Drop(Zero, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), Global(Zero), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, Zero:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+*** Ctx ping count: 0
+###
+> Si->Take(Zero, # + it[1] > 3)
+Si->Take(Zero, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Global(Zero), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, Zero:i8) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Si->Drop(Zero, # + it[1] > 3)
+Si->Drop(Zero, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Global(Zero), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, Zero:i8) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> S->Take(NegOne, it > 2)
+S->Take(NegOne, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), Global(NegOne), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, NegOne:i8) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> S->Drop(NegOne, it > 2)
+S->Drop(NegOne, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), Global(NegOne), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, NegOne:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+ 2) 3
+ 3) 4
+ 4) 5
+ 5) 6
+ 6) 7
+*** Ctx ping count: 0
+###
+> Si->Take(NegOne, # + it[1] > 3)
+Si->Take(NegOne, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Global(NegOne), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, NegOne:i8) to (i8, i8)*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Si->Drop(NegOne, # + it[1] > 3)
+Si->Drop(NegOne, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Global(NegOne), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, NegOne:i8) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+ 2) (2, 3)
+ 3) (3, 4)
+ 4) (4, 5)
+ 5) (5, 6)
+ 6) (6, 7)
+*** Ctx ping count: 0
+###
+> S->Take(Big, it > 2)
+S->Take(Big, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Global(S), Global(Big), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, Big:i8) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 4
+ 2) 5
+ 3) 6
+ 4) 7
+*** Ctx ping count: 2
+    [0](2): Take(*1: S, Big, *1 @> 2)
+###
+> S->Drop(Big, it > 2)
+S->Drop(Big, it $> 2) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop([map:1] Global(S), Global(Big), Cmp(Scope(1) @> 2:i8)):i8*))
+Func sig: (<ctx>:x, S:i8*, Big:i8) to i8*
+Sequence: Seq<i8>
+ 0) 1
+ 1) 2
+*** Ctx ping count: 5
+    [0](5): Drop(*1: S, Big, *1 @> 2)
+###
+> Si->Take(Big, # + it[1] > 3)
+Si->Take(Big, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Take([map:2] Global(Si), Global(Big), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, Big:i8) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (2, 3)
+ 1) (3, 4)
+ 2) (4, 5)
+ 3) (5, 6)
+ 4) (6, 7)
+*** Ctx ping count: 2
+    [0](2): Take(*2: Si, Big, Add(#1, *2.1) @> 3)
+###
+> Si->Drop(Big, # + it[1] > 3)
+Si->Drop(Big, # + it[1] $> 3) : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Drop([map:2] Global(Si), Global(Big), Cmp(Add(Scope(1), GetSlot(Scope(2), 1)) @> 3:i8)):(i8, i8)*))
+Func sig: (<ctx>:x, Si:(i8, i8)*, Big:i8) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 1)
+ 1) (1, 2)
+*** Ctx ping count: 5
+    [0](5): Drop(*2: Si, Big, Add(#1, *2.1) @> 3)
+###
+
+**** New definitions: A, type: i8*
+
+> A->Take(10)->Count()
+A->Take(10)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take(Global(A), 10:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 10
+*** Ctx ping count: 17
+    [0](17): Count(Take(A, 10))
+###
+
+**** New definitions: A, type: i8*
+
+> With(S:A->Take(10), (S->Count(), S->Count()))
+With(S : A->Take(10), (S->Count(), S->Count())) : (i8, i8)
+BndKind:Call, Type:(i8, i8), Bnd:(Call(∂.With([with:1] Call(∂.Take(Global(A), 10:i8):i8*), (Call(∂.Count(Scope(1)):i8), Call(∂.Count(Scope(1)):i8)):(i8, i8)):(i8, i8)))
+Func sig: (<ctx>:x, A:i8*) to (i8, i8)
+Type: (i8,i8), Value: (10, 10)
+*** Ctx ping count: 17
+    [0](17): Count(!1x)
+###
+> A->Take(10)->Count()
+A->Take(10)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take(Global(A), 10:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 10
+*** Ctx ping count: 0
+###
+> A->Take(50)->Count()
+A->Take(50)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take(Global(A), 50:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 16
+*** Ctx ping count: 0
+###
+> A->CantCount()->Take(10)->Count()
+A->CantCount()->Take(10)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take(Call(∂.Test.CantCount(Global(A)):i8*), 10:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 10
+*** Ctx ping count: 10
+    [0](10): Count(Take(Test.CantCount(A), 10))
+###
+> A->CantCount()->Take(50)->Count()
+A->CantCount()->Take(50)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take(Call(∂.Test.CantCount(Global(A)):i8*), 50:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 16
+*** Ctx ping count: 16
+    [0](16): Count(Take(Test.CantCount(A), 50))
+###
+> A->Take(10)
+A->Take(10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(A), 10:i8):i8*))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+###
+> A->Take(50)
+A->Take(50) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(A), 50:i8):i8*))
+Func sig: (A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 0
+13) 1
+14) 2
+15) 3
+###
+
+**** New definitions: A, type: i8*
+
+> A->Take(Big)
+A->Take(Big) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take(Global(A), Global(Big)):i8*))
+Func sig: (A:i8*, Big:i8) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 0
+ 5) 1
+ 6) 2
+ 7) 3
+ 8) 0
+ 9) 1
+10) 2
+11) 3
+12) 0
+13) 1
+14) 2
+15) 3
+###
+
+**** New definitions: A, type: i8*
+
+> A->Drop(10)->Count()
+A->Drop(10)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Drop(Global(A), 10:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 17
+    [1](17): Count(Drop(A, 10))
+###
+> A->Drop(10)->Count()
+A->Drop(10)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Drop(Global(A), 10:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 0
+###
+> A->Drop(50)->Count()
+A->Drop(50)->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Drop(Global(A), 50:i8):i8*)):i8))
+Func sig: (<ctx>:x, A:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> A->Drop(10)
+A->Drop(10) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(A), 10:i8):i8*))
+Func sig: (<ctx>:x, A:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 2
+ 1) 3
+ 2) 0
+ 3) 1
+ 4) 2
+ 5) 3
+*** Ctx ping count: 10
+    [0](10): Drop(A, 10)
+###
+> A->Drop(50)
+A->Drop(50) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Drop(Global(A), 50:i8):i8*))
+Func sig: (<ctx>:x, A:i8*) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###

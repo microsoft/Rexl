@@ -1,0 +1,25 @@
+> With(A: Ping(), B: Ping(), { A, B }) // Shouldn't consolidate.
+With(A : Ping(), B : Ping(), { A, B }) : {A:i8, B:i8}
+Binder : [ArgScopeRef|Record|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), !2: Test.Ping(), {A:!1, B:!2})
+Reducer: [Record|CallVolatile] {A:Test.Ping(), B:Test.Ping()}
+###
+> ForEach(With(A: Ping(), B: Ping(), Range(10)->{Id:it, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(With(A : Ping(), B : Ping(), Range(10)->{ Id : it, A, B, C : Ping() }), (A, B, C, Id)) : (i8, i8, i8, i8)*
+Binder : [Int|ArgScopeRef|GetField|Tuple|Record|Call|CallVolatile|ScopeOwner] ForEach(*5: With(!1: Test.Ping(), !2: Test.Ping(), ForEach(*3: Range(10), Guard(!4: *3, {A:!1, B:!2, C:Test.Ping(), Id:!4}))), (*5.A, *5.B, *5.C, *5.Id))
+Reducer: [Int|ArgScopeRef|Tuple|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), !2: Test.Ping(), ForEach(*3: Range(10), (!1, !2, Test.Ping(), *3)))
+###
+> ForEach(Guard(S: Range(10)->TakeIf(true)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S : Range(10)->TakeIf(true)->{ A : Ping() }, B : Ping(), S->{ Id : #, A, B, C : Ping() }), (A, B, C, Id)) : (i8, i8, i8, i8)*
+Binder : [Int|ArgScopeRef|IndScopeRef|GetField|Tuple|Record|Call|CallVolatile|ScopeOwner] ForEach(*9: Guard(?4: ForEach(*2: TakeIf*(*1: Range(10), true), Guard(!3: *2, {A:Test.Ping()})), !5: Test.Ping(), ForEach(*7: ?4, Guard(!8: *7, {A:!8.A, B:!5, C:Test.Ping(), Id:#6}))), (*9.A, *9.B, *9.C, *9.Id))
+Reducer: [Int|ArgScopeRef|IndScopeRef|Tuple|Call|CallVolatile|ScopeOwner] With(!1: Test.Ping(), ForEach(*3: Repeat(false, 10), (Test.Ping(), !1, Test.Ping(), #2)))
+###
+> ForEach(Guard(S: Range(10)->TakeIf(false)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S : Range(10)->TakeIf(false)->{ A : Ping() }, B : Ping(), S->{ Id : #, A, B, C : Ping() }), (A, B, C, Id)) : (i8, i8, i8, i8)*
+Binder : [Int|ArgScopeRef|IndScopeRef|GetField|Tuple|Record|Call|CallVolatile|ScopeOwner] ForEach(*9: Guard(?4: ForEach(*2: TakeIf*(*1: Range(10), false), Guard(!3: *2, {A:Test.Ping()})), !5: Test.Ping(), ForEach(*7: ?4, Guard(!8: *7, {A:!8.A, B:!5, C:Test.Ping(), Id:#6}))), (*9.A, *9.B, *9.C, *9.Id))
+Reducer: [Null] null
+###
+> ForEach(Guard(S: Range(10)->TakeIf(it > 100)->{ A: Ping() }, B: Ping(), S->{Id:#, A, B, C:Ping()}), (A,B,C,Id))
+ForEach(Guard(S : Range(10)->TakeIf(it $> 100)->{ A : Ping() }, B : Ping(), S->{ Id : #, A, B, C : Ping() }), (A, B, C, Id)) : (i8, i8, i8, i8)*
+Binder : [Int|ArgScopeRef|IndScopeRef|GetField|Compare|Tuple|Record|Call|CallVolatile|ScopeOwner] ForEach(*9: Guard(?4: ForEach(*2: TakeIf*(*1: Range(10), *1 @> 100), Guard(!3: *2, {A:Test.Ping()})), !5: Test.Ping(), ForEach(*7: ?4, Guard(!8: *7, {A:!8.A, B:!5, C:Test.Ping(), Id:#6}))), (*9.A, *9.B, *9.C, *9.Id))
+Reducer: [Int|ArgScopeRef|IndScopeRef|GetField|Compare|Tuple|Record|Call|CallVolatile|ScopeOwner] Guard(?3: ForEach(*2: Take(*1: Range(10), [if] *1 @> 100), {A:Test.Ping()}), !4: Test.Ping(), ForEach(*6: ?3, (*6.A, !4, Test.Ping(), #5)))
+###

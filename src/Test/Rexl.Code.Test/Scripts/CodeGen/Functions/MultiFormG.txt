@@ -1,0 +1,215 @@
+﻿``` S := ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen" ];
+``` TA := ForEach(s:S, { A: s, X: #s + 1d, G: (s, #s) });
+``` TB := ForEach(s:S, { A: null if Mod(#s, 3) = 1 else s, B: null if Mod(#s, 3) = 2 else s, X: #s + 1d, G: (#s, s) });
+``` TC := ForEach(s:S, { A: s, C: Range(#s*2)->{ D: s, E: s }, G:#s })
+
+S
+TA
+TB
+
+// Simple, no mapping or merging.
+TA->Chain([null])->MultiDGSMA() // Error.
+TA->MultiDGS_A()
+TA->MultiDGS_A()->Map(B->Text.Concat(", "))
+TB->MultiDGS_A()->Map(B->Text.Concat(", "))
+TB->MultiDGS_B()->Map(B->Text.Concat(", "))
+
+// Mapping but non-merging.
+S->MultiDGSMA(it    ,    it)->Map(B->Text.Concat(", "))
+S->MultiDGSMA(it    , A: it)->Map(B->Text.Concat(", "))
+S->MultiDGSMA(it.Len,    it & "-extra")->Map(B->Text.Concat(", "))
+S->MultiDGSMA(it.Len, A: it & "-extra")->Map(B->Text.Concat(", "))
+
+S->MultiDGSMB(it,    it)->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it, B: it)->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it, A: it)->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it,    it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it,    it & "-1st", A: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it,    it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDGSMB(it, B: it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it, B: it & "-1st", A: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGSMB(it, A: it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDGSMB(it, A: it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", "))
+
+S->MultiDGsMB(it) // Error.
+S->MultiDGsMB({ G: "g-" & it, A: "a-" & it, B: "b-" & it })->Map(B->Text.Concat(", "))
+
+// Mapping and merging.
+TA->MultiDGSMA()
+TA->MultiDGSMA(G, A)
+TA->MultiDGSMA()->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMA(G, A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMAM()->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMAM(G, A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMAm()->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMAm(G, A)->Map(it+>{ B: "<null>" if IsNull(B) else "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMB(G,    A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMB(G, A: A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDGSMB(G, B: A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+
+TA->MultiDGsMB({ A, B: "b-" & A })->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+
+// Mapping and merging with rename.
+TB->MultiDGSMA(G, A)
+TB->MultiDGSMA(G, A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMA(G, B)
+TB->MultiDGSMA(G, B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMB()
+TB->MultiDGSMB()->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMB(G,    A,    B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMB(G, A: A, B: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMB(G, A: A,    B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) // Error.
+TB->MultiDGSMB(G, B: A, A: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGSMB(G, B: A,    A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+
+TB->Multi_GSMB() // Error.
+TB->Multi_GSMB(G) // OK - use defaults for A and B.
+TB->Multi_GSMB(G, A: A, B: B)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+
+// Required fields.
+TB->MultiDGS_Bab()->Map(B->Text.Concat(", "))
+S->MultiDGSMBab(it,   it) //->Map(B->Text.Concat(", ")) // Error
+S->MultiDGSMBab(it,   it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGSMBb(it,    it)->Map(B->Text.Concat(", "))
+S->MultiDGSMBb(it, A: it) //->Map(B->Text.Concat(", ")) // Error.
+
+// Default arguments.
+S->MultiDGSMC(it, A: it)->Map(B->Text.Concat(", "))
+TC->MultiDGSMCc(G, A: A, C: C)->Map(B->Text.Concat(", "))
+
+// Record at the top level.
+S->MultiDGSMB(it,    it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", ")) // For comparison.
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd",     "/suf")->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S2: 7     )->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd",     "/suf",     7)->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd",     "/suf", S2: 7)->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S1: "/suf",     7)->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)->Map(B->Text.Concat(", "))
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S2: 7,     "/suf")->Map(B->Text.Concat(", ")) // Error.
+S->MultiDGRMB(it,    it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDGrMB({ B: "b-" & it, A: "a-" & it, G: "g-" & it }, S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+MultiDGfMB(S->Map({ B: "b-" & it, A: "a-" & it, G: "g-" & it }), S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+MultiDGRMB({ Mis: TB, S1: "/pre", S2: 5 })->Map(B->Text.Concat(", "))
+MultiDGfMB(  Mis: TB, S1: "/pre", S2: 5  )->Map(B->Text.Concat(", "))
+
+// Record at the top level with merging.
+TA->MultiDGRMB(G, A)->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TB->MultiDGRMB(G, B, A)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGRMB(G, B, A, "/suf")->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGRMB(G, B, A, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGrMB({ G, B, A }, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDGrMB({ G, A, B }, "/suf", 5)->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" })
+
+// Record output, "multiple outputs".
+TB->MultiDGS_BW()+>{ Mos: Mos->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" }) }
+TB->MultiDGSMBW()+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+S ->MultiDGSMBW(it, B: it & "-1st", A: it & "-2nd")+>{ Mos: Mos->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" }) }
+TB->MultiDGSMBW(G, A, B)+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+
+S ->MultiDGRMBW(it, A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)+>{ Mos: Mos->Map(B->Text.Concat(", ")) }
+TB->MultiDGRMBW(G, B, A           )+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDGRMBW(G, B, A, "/suf", 5)+>{ Mos: Mos->Map(it+>{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+
+// Null source.
+``` F := false;
+(TA if F else null)->MultiDGSMA()
+(S  if F else null)->MultiDGSMA(it, A: it & "-extra")
+(S  if F else null)->MultiDGSMB(it, A: it & "-1st", B: it & "-2nd")
+(S  if F else null)->MultiDGsMB({ G: it, A: "a-" & it, B: "b-" & it })
+(TA if F else null)->MultiDGSMA(G, A)
+(TA if F else null)->MultiDGSMB(G, A: A)
+(TA if F else null)->MultiDGSMB(G, B: A)
+(TA if F else null)->MultiDGsMB({ G, A, B: "b-" & A })
+(TB if F else null)->MultiDGSMA(G, A)
+(TB if F else null)->MultiDGSMA(G, B)
+(TB if F else null)->MultiDGSMB(G, A: A, B: B)
+(TB if F else null)->Multi_GSMB(G, A: A, B: B)
+(TB if F else null)->MultiDGSMBab()
+(S  if F else null)->MultiDGSMBab(it, it & "-1st",    it & "-2nd")
+(S  if F else null)->MultiDGSMBb(it, it)
+(S  if F else null)->MultiDGSMC(it, A: it)
+(TC if F else null)->MultiDGSMCc(G, A: A, C: C)
+(S  if F else null)->MultiDGSMB(it,   it & "-1st",    it & "-2nd") // For comparison.
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd")
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf")
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf")
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S2: 7     )
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf",     7)
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf", S2: 7)
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf",     7)
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)
+(S  if F else null)->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")
+(S  if F else null)->MultiDGrMB({ G: it, B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")
+(TA if F else null)->MultiDGRMB(G, A)
+(TB if F else null)->MultiDGRMB(G, B, A)
+(TB if F else null)->MultiDGRMB(G, B, A, "/suf")
+(TB if F else null)->MultiDGRMB(G, B, A, "/suf", 5)
+(TB if F else null)->MultiDGrMB({ G, B, A }, "/suf", 5)
+(TB if F else null)->MultiDGrMB({ G, A, B }, "/suf", 5)
+(TB if F else null)->MultiDGSMBW()
+(S  if F else null)->MultiDGSMBW(it, B: it & "-1st", A: it & "-2nd")
+(TB if F else null)->MultiDGSMBW(G, A, B)
+(S  if F else null)->MultiDGRMBW(it, A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)
+(TB if F else null)->MultiDGRMBW(G, B, A           )
+(TB if F else null)->MultiDGRMBW(G, B, A, "/suf", 5)
+
+// Empty source.
+(TA->TakeIf(F))->MultiDGSMA()
+(S ->TakeIf(F))->MultiDGSMA(it, A: it & "-extra")
+(S ->TakeIf(F))->MultiDGSMB(it, A: it & "-1st", B: it & "-2nd")
+(S ->TakeIf(F))->MultiDGsMB({ G: it, A: "a-" & it, B: "b-" & it })
+(TA->TakeIf(F))->MultiDGSMA(G, A)
+(TA->TakeIf(F))->MultiDGSMB(G, A: A)
+(TA->TakeIf(F))->MultiDGSMB(G, B: A)
+(TA->TakeIf(F))->MultiDGsMB({ G, A, B: "b-" & A })
+(TB->TakeIf(F))->MultiDGSMA(G, A)
+(TB->TakeIf(F))->MultiDGSMA(G, B)
+(TB->TakeIf(F))->MultiDGSMB(G, A: A, B: B)
+(TB->TakeIf(F))->Multi_GSMB(G, A: A, B: B)
+(TB->TakeIf(F))->MultiDGSMBab()
+(S ->TakeIf(F))->MultiDGSMBab(it, it & "-1st",    it & "-2nd")
+(S ->TakeIf(F))->MultiDGSMBb(it, it)
+(S ->TakeIf(F))->MultiDGSMC(it, A: it)
+(TC->TakeIf(F))->MultiDGSMCc(G, A: A, C: C)
+(S ->TakeIf(F))->MultiDGSMB(it,   it & "-1st",    it & "-2nd") // For comparison.
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd")
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf")
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf")
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S2: 7     )
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf",     7)
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd",     "/suf", S2: 7)
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf",     7)
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S1: "/suf", S2: 7)
+(S ->TakeIf(F))->MultiDGRMB(it,   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")
+(S ->TakeIf(F))->MultiDGrMB({ G: it, B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")
+(TA->TakeIf(F))->MultiDGRMB(G, A)
+(TB->TakeIf(F))->MultiDGRMB(G, B, A)
+(TB->TakeIf(F))->MultiDGRMB(G, B, A, "/suf")
+(TB->TakeIf(F))->MultiDGRMB(G, B, A, "/suf", 5)
+(TB->TakeIf(F))->MultiDGrMB({ G, B, A }, "/suf", 5)
+(TB->TakeIf(F))->MultiDGrMB({ G, A, B }, "/suf", 5)
+(TB->TakeIf(F))->MultiDGSMBW()
+(S ->TakeIf(F))->MultiDGSMBW(it, B: it & "-1st", A: it & "-2nd")
+(TB->TakeIf(F))->MultiDGSMBW(G, A, B)
+(S ->TakeIf(F))->MultiDGRMBW(it, A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7)
+(TB->TakeIf(F))->MultiDGRMBW(G, B, A           )
+(TB->TakeIf(F))->MultiDGRMBW(G, B, A, "/suf", 5)
+
+// Single to sequence transformations.
+MultiS_DGSMB_ABGD({A:S, B:Range(10)->ToText(), G:[(9,)]})
+MultiS_DGSMB_ABGD(TB, G, B)
+MultiS_DGSMB_ABGD(TB, B: [B], G: G, A: A)
+MultiS_DGRMB_ABGD12(TB, G, A, B, "hello", [17])
+MultiS_DGRMB_ABGD12(TB, B: [B], A: A, G: G, S1:["hello"], S2:17)
+MultiS_DGfMB_ABGDM12({A:["sA"], B:["sB"], G:[(9,)]}, "hello", 17)
+MultiS_DGsMB_ABGDM(TB, {A:["sA"], B:["sB"], G:[(9,)]})
+MultiS_DGrMB_ABGDM12(TB, {A:["sA"], B:["sB"], G:(9,)}, S2:17, S1:"sA")
+
+// Null handling.
+MultiS_DGSMA_AGD(TA, null)
+MultiS_DGRMB_ABGD12(TB, null, null, null, null)
+MultiS_DGfMB_ABGDM12({A:null, B:null}, null, 17)
+MultiS_DGsMB_ABGDM(TB, {A:null, B:null, G:null})
+MultiS_DGrMB_ABGDM12(TB, {A:null, B:null, G:null}, S2:17, S1:null)

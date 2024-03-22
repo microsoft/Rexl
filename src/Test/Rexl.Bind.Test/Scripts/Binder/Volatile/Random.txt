@@ -1,0 +1,53 @@
+﻿:: { i8: i8, i8s: i8*, r8s: r8*, r8: r8, r4: r4 }
+
+// Volatile (unseeded) uniform.
+Random.Uniform()
+Random.Uniform(i8)
+
+Random.Uniform(r8, r8)
+Random.Uniform(r8, r4)
+Random.Uniform(r4, r8)
+Random.Uniform(r4, r4)
+
+Random.Uniform(r8, r8, i8)
+Random.Uniform(r8, r4, i8)
+Random.Uniform(r4, r8, i8)
+Random.Uniform(r4, r4, i8)
+
+Random.Uniform(0, 1)
+Random.Uniform(1, 0) // Not reduced.
+Random.Uniform(1, 1) // Constant.
+Random.Uniform(0, 0) // Constant.
+Random.Uniform(1, 1/0) // Constant infinity.
+Random.Uniform(1/0, -3) // Constant infinity.
+Random.Uniform(1, -1/0) // Constant negative infinity.
+Random.Uniform(-1/0, 3) // Constant negative infinity.
+Random.Uniform(-1/0, 1/0) // Constant nan.
+Random.Uniform(0.1, 0.9) // Not reduced.
+
+Random.Uniform(0, 1, i8)
+Random.Uniform(1, 0, i8) // Not reduced.
+Random.Uniform(1, 1, i8) // Constant.
+Random.Uniform(0, 0, i8) // Constant.
+Random.Uniform(1, 1/0, i8) // Constant infinity.
+Random.Uniform(1/0, -3, i8) // Constant infinity.
+Random.Uniform(1, -1/0, i8) // Constant negative infinity.
+Random.Uniform(-1/0, 3, i8) // Constant negative infinity.
+Random.Uniform(-1/0, 1/0, i8) // Constant nan.
+Random.Uniform(0.1, 0.9, i8) // Not reduced.
+(Random.Uniform(), Random.Uniform())
+
+Random.Uniform(-1)
+Random.Uniform(0)
+Random.Uniform(r8, r8, -1)
+Random.Uniform(r8, r8, 0)
+
+// Errors.
+Random.Uniform(r8) // Error.
+Random.Uniform(i8s) // Error.
+Random.Uniform(r8, r8s) // Error.
+Random.Uniform(r8s, r8) // Error.
+Random.Uniform(r8, r8, i8s) // Error.
+Random.Uniform(r8, r8, r8) // Error.
+Random.Uniform(r8, r8s, i8) // Error.
+Random.Uniform(r8s, r8, i8) // Error.

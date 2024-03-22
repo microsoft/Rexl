@@ -1,0 +1,120 @@
+>>> *** Source:
+    execute "X := 3;";
+
+>>> *** Instructions:
+   0) [0] Execute: "X := 3;"
+   1) [0] End
+
+>    0) [0] Execute: "X := 3;"
+>>> *** Source:
+    X := 3;
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] End
+
+>    0) [0] Define X <- 3
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] End
+>    1) [0] End
+###
+>>> *** Source:
+    execute "X := ";
+
+>>> *** Instructions:
+   0) [0] Execute: "X := "
+   1) [0] End
+
+>    0) [0] Execute: "X := "
+*** Parse diagnostics:
+  Error: (5,5) Tok: '<eof>', Message: Expected an operand
+>    1) [0] End
+###
+>>> *** Source:
+    execute "X := 3 << 2";
+
+>>> *** Instructions:
+   0) [0] Execute: "X := 3 << 2"
+   1) [0] End
+
+>    0) [0] Execute: "X := 3 << 2"
+*** Parse diagnostics:
+  Warning: (7,9) Tok: '<<', Message: The binary operator '<<' is deprecated, use 'shl' instead
+>>> *** Source:
+    X := 3 << 2
+
+>>> *** Instructions:
+   0) [0] Define X <- 3 shl 2
+   1) [0] End
+
+>    0) [0] Define X <- 3 shl 2
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] End
+>    1) [0] End
+###
+>>> *** Source:
+    execute "X := 7; goto L0;";
+
+>>> *** Instructions:
+   0) [0] Execute: "X := 7; goto L0;"
+   1) [0] End
+
+>    0) [0] Execute: "X := 7; goto L0;"
+>>> *** Source:
+    X := 7; goto L0;
+
+>>> *** Instructions:
+   0) [0] Define X <- 7
+   1) [0] Jump 2 (0=>0)
+   2) [0] End
+
+*** Flow diagnostics:
+  Error: (13,15) Tok: 'L0', Message: Label not found
+>    1) [0] End
+###
+>>> *** Source:
+    execute "L0: X := 7; goto L0; L0:";
+
+>>> *** Instructions:
+   0) [0] Execute: "L0: X := 7; goto L0; L0:"
+   1) [0] End
+
+>    0) [0] Execute: "L0: X := 7; goto L0; L0:"
+>>> *** Source:
+    L0: X := 7; goto L0; L0:
+
+>>> *** Instructions:
+   0) [0] Define X <- 7
+   1) [0] Jump 0 (0=>0)
+   2) [0] End
+
+*** Flow diagnostics:
+  Error: (21,23) Tok: 'L0', Message: Duplicate label
+>    1) [0] End
+###
+>>> *** Source:
+    pause T;
+
+>>> *** Instructions:
+   0) [0] TaskCmd pause T
+   1) [0] End
+
+>    0) [0] TaskCmd pause T
+*** Statement diagnostics:
+  [ErrorCoverage.txt] Error: (6,7) Tok: 'T', Message: Unknown task
+>    1) [0] End
+###
+>>> *** Source:
+    WrapNYI(1);
+    2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+

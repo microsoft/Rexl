@@ -1,0 +1,157 @@
+<#@ template hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+<#
+var directory = Path.GetDirectoryName(this.Host.TemplateFile);
+directory = Path.Combine(directory, "XPointwise");
+
+Directory.CreateDirectory(Path.Combine(directory, "XPointwise"));
+foreach (var path in Directory.GetFiles(directory))
+{
+    if (path.EndsWith(".txt"))
+        File.Delete(path);
+}
+
+var kinds = new[] {
+    "r8",
+    "r4",
+    "ia",
+    "i8",
+    "i4",
+    "i2",
+    "i1",
+    "u8",
+    "u4",
+    "u2",
+    "u1"
+    // bit is handled separately.
+};
+
+// (S, [i, j, ...])
+// Test cases in the form Tensor.From(S->CastIx(), i, j, ...),
+// with the appropriate cast.
+var fromCases = new (string S, string[] dims)[] {
+    ("Range(12)", new[] { "12" }),
+    ("Range(12)", new[] { "3", "4" }),
+    ("Range(4)", new[] { "4" })
+};
+
+// (x, [i, j, ...])
+// Test cases in the form Tensor.Fill(x->CastIx(), i, j, ...),
+// with the appropriate cast.
+var fillCases = new (string x, string[] dims)[] {
+    ("0", new[] { "0" }),
+    ("(-1)", null),
+    ("0", null),
+    ("1", null),
+    ("5", null),
+    ("5", new[] { "3", "4" }),
+};
+
+foreach (var kind in kinds) {
+    WriteLine("// This file is auto-generated. Changes to this file will be lost!");
+    WriteLine("");
+
+    var testCases = new List<string>();
+    var cast = "";
+    var fillsCopy = new List<(string x, string[] dims)>(fillCases);
+    switch (kind)
+    {
+    case "r8":
+        cast = "->CastR8()";
+        fillsCopy.Add(("1/0", null));
+        fillsCopy.Add(("-1/0", null));
+        fillsCopy.Add(("-0.0", null));
+        fillsCopy.Add(("0/0", null));
+        break;
+    case "r4":
+        cast = "->CastR4()";
+        fillsCopy.Add(("(1/0)", null));
+        fillsCopy.Add(("(-1/0)", null));
+        fillsCopy.Add(("(-0.0)", null));
+        fillsCopy.Add(("(0/0)", null));
+        break;
+    case "ia":
+        cast = "->CastIA()";
+        break;
+    case "i8":
+        // No need to cast.
+        fillsCopy.Add(("0x8000000000000000i8", null));
+        fillsCopy.Add(("0x7FFFFFFFFFFFFFFFi8", null));
+        break;
+    case "i4":
+        cast = "->CastI4()";
+        fillsCopy.Add(("0x80000000i8", null));
+        fillsCopy.Add(("0x7FFFFFFFi4", null));
+        break;
+    case "i2":
+        cast = "->CastI2()";
+        fillsCopy.Add(("0x8000i2", null));
+        fillsCopy.Add(("0x7FFFi2", null));
+        break;
+    case "i1":
+        cast = "->CastI1()";
+        fillsCopy.Add(("0x80i1", null));
+        fillsCopy.Add(("0x7Fi1", null));
+        break;
+    case "u8":
+        cast = "->CastU8()";
+        fillsCopy.Add(("0x8000000000000000u8", null));
+        fillsCopy.Add(("0x7FFFFFFFFFFFFFFFu8", null));
+        break;
+    case "u4":
+        cast = "->CastU4()";
+        fillsCopy.Add(("0x80000000u4", null));
+        fillsCopy.Add(("0x7FFFFFFFu4", null));
+        break;
+    case "u2":
+        cast = "->CastU2()";
+        fillsCopy.Add(("0x8000u2", null));
+        fillsCopy.Add(("0x7FFFu2", null));
+        break;
+    case "u1":
+        cast = "->CastU1()";
+        fillsCopy.Add(("0x80u1", null));
+        fillsCopy.Add(("0x7Fu8", null));
+        break;
+    // REVIEW: Bit.
+    }
+
+    testCases.AddRange(fromCases.Select(t => $"Tensor.From({t.S}{cast}{string.Concat(t.dims?.Select(s => $", {s}") ?? Enumerable.Empty<string>())})"));
+    testCases.AddRange(fillsCopy.Select(t => $"Tensor.Fill({t.x}{cast}{string.Concat(t.dims?.Select(s => $", {s}") ?? Enumerable.Empty<string>())})"));
+
+    foreach (var T in testCases) {
+        foreach (var U in testCases) {
+#>
+`` T := <#= T #>;
+`` U := <#= U #>;
+<#
+            var ops = new [] {
+                "Add",
+                "Sub",
+                "Mul",
+                kind == "r4" || kind == "r8" ? "Divide" : "Div",
+                "Min",
+                "Max",
+            };
+#>
+({'  T': T }, {'  U': U }, <#=string.Join(", ", ops.Select(op => $"{{'{op}': T->{op}(U) }}"))#>)
+
+<#
+        }
+    }
+
+    var fileName = $"{kind}.txt";
+    File.WriteAllText(Path.Combine(directory, fileName), this.GenerationEnvironment.ToString());
+    this.GenerationEnvironment.Clear();
+}
+
+    // Clear the output buffer.
+    this.GenerationEnvironment.Clear();
+#>
+// The contents of this file are ignored.

@@ -1,0 +1,74 @@
+:: {g:g, o:o, s:s, b:b, qb:b?, n:n, qn:n?}
+
+"Hello" & " there"
+"Hello" & " there" & " world"
+"Hello" & null & " there"
+null & "Hello"
+"Hello" & s
+
+"Hello" & " there" & s
+"Hello" & s & " there" & " world" // Partially fold, since & is associative.
+
+// Many strings
+"a" & "b" & "c" & "d" & "e" & "f" & "g" & "h"
+"a" & "b" & "c" & "d" & s & "e" & "f" & "g" & "h"
+
+"Hello" & ""
+"" & "Hello"
+"Hello" & null
+null & "Hello"
+"" & ""
+"" & null
+null & ""
+null & null
+
+s & ""
+"" & s
+s & null
+null & s
+s & s & null
+
+s & s
+s & s & s
+
+s & s & s & s
+s & s & (s & s)
+s & (s & (s & s))
+
+n & "hello"
+n & n
+n & qn
+o & n
+o & "hello"
+"hello" & b
+"hello" & qb
+
+s & 3
+
+// *** Lifting
+:: {g:g*, o:o*, s:s*, b:b*, qb:b?*, n:n*, qn:n?*}
+
+s & ""
+"" & s
+s & null
+null & s
+s & s & null
+
+s & s
+s & s & s
+
+n & "hello"
+n & n
+n & qn
+o & n
+o & "hello"
+"hello" & b
+"hello" & qb
+
+s & 3
+
+"Hello" + " there"
+s + s
+s + null
+null + s
+s + 3

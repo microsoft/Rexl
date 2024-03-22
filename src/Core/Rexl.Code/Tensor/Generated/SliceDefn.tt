@@ -1,0 +1,83 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using Microsoft.Rexl.Private;
+
+namespace Microsoft.Rexl;
+
+partial class Tensor<T>
+{
+<#
+const int lim = 6;
+for (int rank = 1; rank < lim; rank++) { #>
+    /// <summary>
+    /// Slices this rank <#= rank #> tensor.
+    /// Returns null and sets the output Shape if a simple index is out of bounds.
+    /// </summary>
+    public Tensor<T> GetSlice(<#= string.Join(", ", Enumerable.Range(0, rank).Select(i => $"SliceItem item{i}")) #>, out Shape shape)
+    {
+        Validation.BugCheck(Rank == <#= rank #>);
+        return GetSliceCore(<#= string.Join(", ", Enumerable.Range(0, rank).Select(i => $"item{i}")) #>, out shape);
+    }
+
+    internal Tensor<T> GetSliceCore(<#= string.Join(", ", Enumerable.Range(0, rank).Select(i => $"SliceItem item{i}")) #>, out Shape shape)
+    {
+        Validation.Assert(Rank == <#= rank #>);
+
+        var rank = 0;
+        var useDef = false;
+        long off = _root;
+
+<# for (int i = 0; i < rank; i++) { #>
+        var rng<#=i#> = item<#=i#>.IsRange(<#= rank == 1 ? "_count" : $"_shape[{i}]" #>, out var range<#=i#>);
+        if (rng<#=i#>)
+            rank++;
+        else
+        {
+            item<#=i#>.IsSimple(<#= rank == 1 ? "_count" : $"_shape[{i}]" #>, out var ind<#=i#>).Verify();
+            if ((ulong)ind<#=i#> >= (ulong)<#= rank == 1 ? "_count" : $"_shape[{i}]" #>)
+                useDef = true;
+            else if (ind<#=i#> != 0)
+                off += ind<#=i#> * <#= rank == 1 ? "_delta" : $"_strides[{i}]" #>;
+        }
+
+<# } #>
+        if (rank == Rank &&
+            <#= string.Join(" &&\r\n                ", Enumerable.Range(0, rank).Select(i => $"range{i}.start == 0 && range{i}.count == {(rank == 1 ? "_count" : $"_shape[{i}]")}")) #>)
+        {
+            shape = _shape;
+            return this;
+        }
+
+        var bldrShape = rank > 0 ? Shape.CreateBuilder(rank) : null;
+        var bldrStride = !useDef && rank > 0 ? Shape.CreateBuilder(rank) : null;
+        var ibldr = 0;
+
+<# for (int i = 0; i < rank; i++) { #>
+        if (rng<#=i#>)
+        {
+            if (range<#=i#>.start != 0)
+                off += <#= rank == 1 ? "_delta" : $"_strides[{i}]" #> * range<#=i#>.start;
+            bldrShape[ibldr] = range<#=i#>.count;
+            if (bldrStride != null)
+                bldrStride[ibldr] = <#= rank == 1 ? "_delta" : $"_strides[{i}]" #> * range<#=i#>.step;
+            ibldr++;
+        }
+
+<# } #>
+        Validation.Assert(ibldr == rank);
+        shape = bldrShape == null ? Shape.Scalar : bldrShape.ToImmutable();
+        Validation.Assert(shape.Rank == rank);
+        return useDef ? null : new Tensor<T>(_buf, shape, bldrStride == null ? Shape.Scalar : bldrStride.ToImmutable(), off);
+    }
+
+<# } #>
+}

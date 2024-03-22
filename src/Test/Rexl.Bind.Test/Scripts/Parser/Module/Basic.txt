@@ -1,0 +1,86 @@
+module := 10
+###
+
+// Module expressions:
+module {
+};
+###
+module {
+    ;;;
+};
+###
+module {
+###
+module {
+namespace N
+###
+module {
+    param A := 3
+###
+module {
+    param A := 3;
+};
+###
+module {
+    param A := 3;
+    const B := A * 2;
+};
+###
+// Missing semicolon.
+module {
+    param A := 3
+    const B := A * 2
+};
+###
+// Missing semicolon.
+module {
+    param A := 3
+    X := 3
+###
+// Missing close curly.
+module {
+param A := 3
+namespace N
+###
+module {
+    parameter A default 3;
+    constant B := A * 2;
+    var V from 0r;
+    let W := V * 2;
+    msr M1 := W * W;
+    measure M2 := W * W;
+    con C1 := W <= 100;
+    constraint C2 := W <= 100;
+};
+###
+module {
+    var V1 from 0r from 1r;
+    var V2 from 0r to 1r;
+    var @V3 def 0r;
+    var V4 in S opt;
+    var @V7 := 3 required;
+    @P := 17;
+    Q := 17;
+}
+###
+module { var V in S from 0; }
+###
+module { var V in S to 0; }
+###
+module { var V in S def 0; }
+###
+module { var V from 0 in S; }
+###
+module { var V to 0 in S; }
+###
+module { var V def 0 in S; }
+###
+
+// with expressions:
+X := Y with
+###
+Y with
+###
+Y with { A:3
+###
+Y with { A:10 };
