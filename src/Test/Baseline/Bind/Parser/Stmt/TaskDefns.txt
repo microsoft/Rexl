@@ -1,0 +1,583 @@
+> task T
+Node: [task T as (<error>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:task, rng:(0,4) [task], full:(0,6) [task T]], count=1
+  01   Node[id:1, kind:TaskProcStmt, depth:2, tok:KtxTask, rng:(0,4) [task], full:(0,6) [task T], extra=[T]], count=1
+  02     Node[id:0, kind:Error, depth:1, tok:T, rng:(5,6) [T], full:(5,6) [T], extra=[Error: Expected a procedure invocation]]
+Error: (6,6) Tok: '<eof>', Message: Expected: 'as', Found: '<eof>'
+Error: (6,6) Tok: '<eof>', Message: Expected a procedure invocation
+
+   0) [0] TaskProc task T as (<error>)
+   1) [0] End
+###
+> task T as
+Node: [task T as (<error>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:task, rng:(0,4) [task], full:(0,9) [task T as]], count=1
+  01   Node[id:1, kind:TaskProcStmt, depth:2, tok:KtxTask, rng:(0,4) [task], full:(0,9) [task T as], extra=[T]], count=1
+  02     Node[id:0, kind:Error, depth:1, tok:KwdAs, rng:(7,9) [as], full:(7,9) [as], extra=[Error: Expected a procedure invocation]]
+Error: (9,9) Tok: '<eof>', Message: Expected a procedure invocation
+
+   0) [0] TaskProc task T as (<error>)
+   1) [0] End
+###
+> task T play
+Node: [task T play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,11) [task T play]], count=1
+  01   Node[id:2, kind:TaskBlockStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,11) [task T play], extra=[KtxTask]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:Eof, rng:(11,11) [], full:(11,11) []], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) []], count=0
+Error: (11,11) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T
+   1) [0] End
+###
+> task T as {
+Node: [task T play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,11) [task T as {]], count=1
+  01   Node[id:2, kind:TaskBlockStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,11) [task T as {], extra=[KtxTask]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(10,11) [{], full:(10,11) [{]], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) []], count=0
+Error: (11,11) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T
+   1) [0] End
+###
+> task T play {
+Node: [task T play {  }]
+Dump:
+  00 Node[id:3, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,13) [task T play {]], count=1
+  01   Node[id:2, kind:TaskBlockStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,13) [task T play {], extra=[KtxTask]], count=1
+  02     Node[id:1, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(12,13) [{], full:(12,13) [{]], count=1
+  03       Node[id:0, kind:StmtList, depth:1, tok:Eof, rng:(13,13) [], full:(13,13) []], count=0
+Error: (13,13) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T
+   1) [0] End
+###
+> task T as { publish X := 3; }
+Node: [task T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,29) [task T as { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,29) [task T as { publish X := 3; }], extra=[KtxTask]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(10,11) [{], full:(10,29) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(12,19) [publish], full:(12,27) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(12,26) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(25,26) [3], full:(25,26) [3], extra=[3]]
+
+   0) [0] TaskBlock task T
+   1) [0] End
+###
+> task T play { publish X := 3; }
+Node: [task T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,31) [task T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,31) [task T play { publish X := 3; }], extra=[KtxTask]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,31) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(14,21) [publish], full:(14,29) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(14,28) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(27,28) [3], full:(27,28) [3], extra=[3]]
+
+   0) [0] TaskBlock task T
+   1) [0] End
+###
+> task T with
+Node: [task T with (<missing>) play {  }]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,11) [task T with]], count=1
+  01   Node[id:3, kind:TaskBlockStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,11) [task T with], extra=[KtxTask]], count=2
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) [], extra=[<missing>]]
+  02     Node[id:2, kind:BlockStmt, depth:2, tok:Eof, rng:(11,11) [], full:(11,11) []], count=1
+  03       Node[id:1, kind:StmtList, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) []], count=0
+Error: (11,11) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected an operand
+Error: (11,11) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with (<missing>)
+   1) [0] End
+###
+> task T with {
+Node: [task T with {  } play {  }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:4, tok:task, rng:(0,4) [task], full:(0,13) [task T with {]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:3, tok:KtxTask, rng:(0,4) [task], full:(0,13) [task T with {], extra=[KtxTask]], count=2
+  02     Node[id:1, kind:Record, depth:2, tok:CurlyOpen, rng:(12,13) [{], full:(12,13) [{]], count=1
+  03       Node[id:0, kind:ExprList, depth:1, tok:Eof, rng:(13,13) [], full:(13,13) []], count=0
+  02     Node[id:3, kind:BlockStmt, depth:2, tok:Eof, rng:(13,13) [], full:(13,13) []], count=1
+  03       Node[id:2, kind:StmtList, depth:1, tok:Eof, rng:(13,13) [], full:(13,13) []], count=0
+Error: (13,13) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Error: (13,13) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (13,13) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (13,13) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with {  }
+   1) [0] End
+###
+> task T with { A: 3 }
+Node: [task T with { A : 3 } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,20) [task T with { A: 3 }]], count=1
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,20) [task T with { A: 3 }], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(20,20) [], full:(20,20) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(20,20) [], full:(20,20) []], count=0
+Error: (20,20) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (20,20) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (20,20) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } as
+Node: [task T with { A : 3 } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,23) [task T with { A: 3 } as]], count=1
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,23) [task T with { A: 3 } as], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(23,23) [], full:(23,23) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(23,23) [], full:(23,23) []], count=0
+Error: (23,23) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (23,23) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } play
+Node: [task T with { A : 3 } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,25) [task T with { A: 3 } play]], count=1
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,25) [task T with { A: 3 } play], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:Eof, rng:(25,25) [], full:(25,25) []], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(25,25) [], full:(25,25) []], count=0
+Error: (25,25) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (25,25) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } as {
+Node: [task T with { A : 3 } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,25) [task T with { A: 3 } as {]], count=1
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,25) [task T with { A: 3 } as {], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(24,25) [{], full:(24,25) [{]], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(25,25) [], full:(25,25) []], count=0
+Error: (25,25) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } play {
+Node: [task T with { A : 3 } play {  }]
+Dump:
+  00 Node[id:7, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,27) [task T with { A: 3 } play {]], count=1
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,27) [task T with { A: 3 } play {], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(26,27) [{], full:(26,27) [{]], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(27,27) [], full:(27,27) []], count=0
+Error: (27,27) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } prime {
+Node: [task T with { A : 3 } prime {  } play {  }]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,28) [task T with { A: 3 } prime {]], count=1
+  01   Node[id:8, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,28) [task T with { A: 3 } prime {], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:5, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(27,28) [{], full:(27,28) [{]], count=1
+  03       Node[id:4, kind:StmtList, depth:1, tok:Eof, rng:(28,28) [], full:(28,28) []], count=0
+  02     Node[id:7, kind:BlockStmt, depth:2, tok:Eof, rng:(28,28) [], full:(28,28) []], count=1
+  03       Node[id:6, kind:StmtList, depth:1, tok:Eof, rng:(28,28) [], full:(28,28) []], count=0
+Error: (28,28) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Error: (28,28) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (28,28) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (28,28) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } as { publish X := A; }
+Node: [task T with { A : 3 } play { publish X := A }]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,43) [task T with { A: 3 } as { publish X := A; }]], count=1
+  01   Node[id:8, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,43) [task T with { A: 3 } as { publish X := A; }], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(24,25) [{], full:(24,43) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(26,33) [publish], full:(26,41) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(36,38) [:=], full:(26,40) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(39,40) [A], full:(39,40) [A], extra=[A]]
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } play { publish X := A; }
+Node: [task T with { A : 3 } play { publish X := A }]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,45) [task T with { A: 3 } play { publish X := A; }]], count=1
+  01   Node[id:8, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,45) [task T with { A: 3 } play { publish X := A; }], extra=[KtxTask]], count=2
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(26,27) [{], full:(26,45) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(28,35) [publish], full:(28,43) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(38,40) [:=], full:(28,42) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(41,42) [A], full:(41,42) [A], extra=[A]]
+
+   0) [0] TaskBlock task T with { A : 3 }
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; }
+Node: [task T with { A : 3 } prime { publish X := A } play {  }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,46) [task T with { A: 3 } prime { publish X := A; }]], count=1
+  01   Node[id:10, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,46) [task T with { A: 3 } prime { publish X := A; }], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:9, kind:BlockStmt, depth:2, tok:Eof, rng:(46,46) [], full:(46,46) []], count=1
+  03       Node[id:8, kind:StmtList, depth:1, tok:Eof, rng:(46,46) [], full:(46,46) []], count=0
+Error: (46,46) Tok: '<eof>', Message: Expected: 'play', Found: '<eof>'
+Error: (46,46) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (46,46) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } as
+Node: [task T with { A : 3 } prime { publish X := A } play {  }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,49) [task T with { A: 3 } prime { publish X := A; } as]], count=1
+  01   Node[id:10, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,49) [task T with { A: 3 } prime { publish X := A; } as], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:9, kind:BlockStmt, depth:2, tok:Eof, rng:(49,49) [], full:(49,49) []], count=1
+  03       Node[id:8, kind:StmtList, depth:1, tok:Eof, rng:(49,49) [], full:(49,49) []], count=0
+Error: (49,49) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (49,49) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } play
+Node: [task T with { A : 3 } prime { publish X := A } play {  }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,51) [task T with { A: 3 } prime { publish X := A; } play]], count=1
+  01   Node[id:10, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,51) [task T with { A: 3 } prime { publish X := A; } play], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:9, kind:BlockStmt, depth:2, tok:Eof, rng:(51,51) [], full:(51,51) []], count=1
+  03       Node[id:8, kind:StmtList, depth:1, tok:Eof, rng:(51,51) [], full:(51,51) []], count=0
+Error: (51,51) Tok: '<eof>', Message: Expected: '{', Found: '<eof>'
+Error: (51,51) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } as {
+Node: [task T with { A : 3 } prime { publish X := A } play {  }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,51) [task T with { A: 3 } prime { publish X := A; } as {]], count=1
+  01   Node[id:10, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,51) [task T with { A: 3 } prime { publish X := A; } as {], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:9, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(50,51) [{], full:(50,51) [{]], count=1
+  03       Node[id:8, kind:StmtList, depth:1, tok:Eof, rng:(51,51) [], full:(51,51) []], count=0
+Error: (51,51) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } play {
+Node: [task T with { A : 3 } prime { publish X := A } play {  }]
+Dump:
+  00 Node[id:11, kind:StmtList, depth:6, tok:task, rng:(0,4) [task], full:(0,53) [task T with { A: 3 } prime { publish X := A; } play {]], count=1
+  01   Node[id:10, kind:TaskBlockStmt, depth:5, tok:KtxTask, rng:(0,4) [task], full:(0,53) [task T with { A: 3 } prime { publish X := A; } play {], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:9, kind:BlockStmt, depth:2, tok:CurlyOpen, rng:(52,53) [{], full:(52,53) [{]], count=1
+  03       Node[id:8, kind:StmtList, depth:1, tok:Eof, rng:(53,53) [], full:(53,53) []], count=0
+Error: (53,53) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } as { publish Y := X * A; }
+Node: [task T with { A : 3 } prime { publish X := A } play { publish Y := X * A }]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:7, tok:task, rng:(0,4) [task], full:(0,73) [task T with { A: 3 } prime { publish X := A; } as { publish Y := X * A; }]], count=1
+  01   Node[id:14, kind:TaskBlockStmt, depth:6, tok:KtxTask, rng:(0,4) [task], full:(0,73) [task T with { A: 3 } prime { publish X := A; } as { publish Y := X * A; }], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:13, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(50,51) [{], full:(50,73) [{ publish Y := X * A; }]], count=1
+  03       Node[id:12, kind:StmtList, depth:4, tok:publish, rng:(52,59) [publish], full:(52,71) [publish Y := X * A;]], count=1
+  04         Node[id:11, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(62,64) [:=], full:(52,70) [publish Y := X * A], extra=[Y]], count=1
+  05           Node[id:10, kind:BinaryOp, depth:2, tok:Mul, rng:(67,68) [*], full:(65,70) [X * A], extra=[Mul]], count=2
+  06             Node[id:8, kind:FirstName, depth:1, tok:X, rng:(65,66) [X], full:(65,66) [X], extra=[X]]
+  06             Node[id:9, kind:FirstName, depth:1, tok:A, rng:(69,70) [A], full:(69,70) [A], extra=[A]]
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> task T with { A: 3 } prime { publish X := A; } play { publish Y := X * A; }
+Node: [task T with { A : 3 } prime { publish X := A } play { publish Y := X * A }]
+Dump:
+  00 Node[id:15, kind:StmtList, depth:7, tok:task, rng:(0,4) [task], full:(0,75) [task T with { A: 3 } prime { publish X := A; } play { publish Y := X * A; }]], count=1
+  01   Node[id:14, kind:TaskBlockStmt, depth:6, tok:KtxTask, rng:(0,4) [task], full:(0,75) [task T with { A: 3 } prime { publish X := A; } play { publish Y := X * A; }], extra=[KtxTask]], count=3
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,20) [{ A: 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(14,15) [A], full:(14,18) [A: 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(15,16) [:], full:(14,18) [A: 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(17,18) [3], full:(17,18) [3], extra=[3]]
+  02     Node[id:7, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(27,28) [{], full:(27,46) [{ publish X := A; }]], count=1
+  03       Node[id:6, kind:StmtList, depth:3, tok:publish, rng:(29,36) [publish], full:(29,44) [publish X := A;]], count=1
+  04         Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(39,41) [:=], full:(29,43) [publish X := A], extra=[X]], count=1
+  05           Node[id:4, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  02     Node[id:13, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(52,53) [{], full:(52,75) [{ publish Y := X * A; }]], count=1
+  03       Node[id:12, kind:StmtList, depth:4, tok:publish, rng:(54,61) [publish], full:(54,73) [publish Y := X * A;]], count=1
+  04         Node[id:11, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(64,66) [:=], full:(54,72) [publish Y := X * A], extra=[Y]], count=1
+  05           Node[id:10, kind:BinaryOp, depth:2, tok:Mul, rng:(69,70) [*], full:(67,72) [X * A], extra=[Mul]], count=2
+  06             Node[id:8, kind:FirstName, depth:1, tok:X, rng:(67,68) [X], full:(67,68) [X], extra=[X]]
+  06             Node[id:9, kind:FirstName, depth:1, tok:A, rng:(71,72) [A], full:(71,72) [A], extra=[A]]
+
+   0) [0] TaskBlock task T with { A : 3 } prime {...}
+   1) [0] End
+###
+> R := { A : 3 };
+> task T with (R+>{ B: 7 }) play { publish X := A * B; }
+Node: [R := { A : 3 }; task T with (R+>{ B : 7 }) play { publish X := A * B }]
+Dump:
+  00 Node[id:19, kind:StmtList, depth:8, tok:Semi, rng:(14,15) [;], full:(0,70) [R := { A : 3 };\ntask T with (R+>{ B: 7 }) play { publish X := A * B; }]], count=2
+  01   Node[id:4, kind:DefinitionStmt, depth:5, tok:ColEqu, rng:(2,4) [:=], full:(0,14) [R := { A : 3 }], extra=[R]], count=1
+  02     Node[id:3, kind:Record, depth:4, tok:CurlyOpen, rng:(5,6) [{], full:(5,14) [{ A : 3 }]], count=1
+  03       Node[id:2, kind:ExprList, depth:3, tok:A, rng:(7,8) [A], full:(7,12) [A : 3]], count=1
+  04         Node[id:1, kind:VariableDecl, depth:2, tok:Colon, rng:(9,10) [:], full:(7,12) [A : 3], extra=[var:A]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(11,12) [3], full:(11,12) [3], extra=[3]]
+  01   Node[id:18, kind:TaskBlockStmt, depth:7, tok:KtxTask, rng:(16,20) [task], full:(16,70) [task T with (R+>{ B: 7 }) play { publish X := A * B; }], extra=[KtxTask]], count=2
+  02     Node[id:11, kind:Paren, depth:6, tok:ParenOpen, rng:(28,29) [(], full:(28,41) [(R+>{ B: 7 })]], count=1
+  03       Node[id:10, kind:RecordProjection, depth:5, tok:AddGrt, rng:(30,32) [+>], full:(29,40) [R+>{ B: 7 }], extra=[concat]], count=2
+  04         Node[id:5, kind:FirstName, depth:1, tok:R, rng:(29,30) [R], full:(29,30) [R], extra=[R]]
+  04         Node[id:9, kind:Record, depth:4, tok:CurlyOpen, rng:(32,33) [{], full:(32,40) [{ B: 7 }]], count=1
+  05           Node[id:8, kind:ExprList, depth:3, tok:B, rng:(34,35) [B], full:(34,38) [B: 7]], count=1
+  06             Node[id:7, kind:VariableDecl, depth:2, tok:Colon, rng:(35,36) [:], full:(34,38) [B: 7], extra=[var:B]], count=1
+  07               Node[id:6, kind:NumLit, depth:1, tok:7, rng:(37,38) [7], full:(37,38) [7], extra=[7]]
+  02     Node[id:17, kind:BlockStmt, depth:5, tok:CurlyOpen, rng:(47,48) [{], full:(47,70) [{ publish X := A * B; }]], count=1
+  03       Node[id:16, kind:StmtList, depth:4, tok:publish, rng:(49,56) [publish], full:(49,68) [publish X := A * B;]], count=1
+  04         Node[id:15, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(59,61) [:=], full:(49,67) [publish X := A * B], extra=[X]], count=1
+  05           Node[id:14, kind:BinaryOp, depth:2, tok:Mul, rng:(64,65) [*], full:(62,67) [A * B], extra=[Mul]], count=2
+  06             Node[id:12, kind:FirstName, depth:1, tok:A, rng:(62,63) [A], full:(62,63) [A], extra=[A]]
+  06             Node[id:13, kind:FirstName, depth:1, tok:B, rng:(66,67) [B], full:(66,67) [B], extra=[B]]
+
+   0) [0] Define R <- { A : 3 }
+   1) [0] TaskBlock task T with R+>{ B : 7 }
+   2) [0] End
+###
+> prime T play { publish X := 3; }
+Node: [prime T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:prime, rng:(0,5) [prime], full:(0,32) [prime T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxPrime, rng:(0,5) [prime], full:(0,32) [prime T play { publish X := 3; }], extra=[KtxPrime]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,32) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(15,22) [publish], full:(15,30) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(15,29) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(28,29) [3], full:(28,29) [3], extra=[3]]
+
+   0) [0] TaskBlock prime T
+   1) [0] End
+###
+> play T play { publish X := 3; }
+Node: [play T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:play, rng:(0,4) [play], full:(0,31) [play T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxPlay, rng:(0,4) [play], full:(0,31) [play T play { publish X := 3; }], extra=[KtxPlay]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(12,13) [{], full:(12,31) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(14,21) [publish], full:(14,29) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(24,26) [:=], full:(14,28) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(27,28) [3], full:(27,28) [3], extra=[3]]
+
+   0) [0] TaskBlock play T
+   1) [0] End
+###
+> pause T play { publish X := 3; }
+Node: [pause T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:pause, rng:(0,5) [pause], full:(0,32) [pause T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxPause, rng:(0,5) [pause], full:(0,32) [pause T play { publish X := 3; }], extra=[KtxPause]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,32) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(15,22) [publish], full:(15,30) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(15,29) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(28,29) [3], full:(28,29) [3], extra=[3]]
+
+   0) [0] TaskBlock pause T
+   1) [0] End
+###
+> finish T play { publish X := 3; }
+Node: [finish T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:finish, rng:(0,6) [finish], full:(0,33) [finish T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxFinish, rng:(0,6) [finish], full:(0,33) [finish T play { publish X := 3; }], extra=[KtxFinish]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(14,15) [{], full:(14,33) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(16,23) [publish], full:(16,31) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(26,28) [:=], full:(16,30) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(29,30) [3], full:(29,30) [3], extra=[3]]
+
+   0) [0] TaskBlock finish T
+   1) [0] End
+###
+> abort T play { publish X := 3; }
+Node: [abort T play { publish X := 3 }]
+Dump:
+  00 Node[id:5, kind:StmtList, depth:6, tok:abort, rng:(0,5) [abort], full:(0,32) [abort T play { publish X := 3; }]], count=1
+  01   Node[id:4, kind:TaskBlockStmt, depth:5, tok:KtxAbort, rng:(0,5) [abort], full:(0,32) [abort T play { publish X := 3; }], extra=[KtxAbort]], count=1
+  02     Node[id:3, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(13,14) [{], full:(13,32) [{ publish X := 3; }]], count=1
+  03       Node[id:2, kind:StmtList, depth:3, tok:publish, rng:(15,22) [publish], full:(15,30) [publish X := 3;]], count=1
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(25,27) [:=], full:(15,29) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(28,29) [3], full:(28,29) [3], extra=[3]]
+
+   0) [0] TaskBlock abort T
+   1) [0] End
+###
+> finish T play {
+>     publish X := 3;
+>     publish Y := "hi";
+> }
+> { T.X, T.Y };
+Node: [finish T play { publish X := 3; publish Y := "hi" } { T.X, T.Y }]
+Dump:
+  00 Node[id:14, kind:StmtList, depth:6, tok:finish, rng:(0,6) [finish], full:(0,74) [finish T play {\n    publish X := 3;\n    publish Y := "hi";\n}\n{ T.X, T.Y };]], count=2
+  01   Node[id:6, kind:TaskBlockStmt, depth:5, tok:KtxFinish, rng:(0,6) [finish], full:(0,60) [finish T play {\n    publish X := 3;\n    publish Y := "hi";\n}], extra=[KtxFinish]], count=1
+  02     Node[id:5, kind:BlockStmt, depth:4, tok:CurlyOpen, rng:(14,15) [{], full:(14,60) [{\n    publish X := 3;\n    publish Y := "hi";\n}]], count=1
+  03       Node[id:4, kind:StmtList, depth:3, tok:Semi, rng:(34,35) [;], full:(20,58) [publish X := 3;\n    publish Y := "hi";]], count=2
+  04         Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(30,32) [:=], full:(20,34) [publish X := 3], extra=[X]], count=1
+  05           Node[id:0, kind:NumLit, depth:1, tok:3, rng:(33,34) [3], full:(33,34) [3], extra=[3]]
+  04         Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(50,52) [:=], full:(40,57) [publish Y := "hi"], extra=[Y]], count=1
+  05           Node[id:2, kind:TextLit, depth:1, tok:hi, rng:(53,57) ["hi"], full:(53,57) ["hi"]]
+  01   Node[id:13, kind:ExprStmt, depth:5, tok:CurlyOpen, rng:(61,62) [{], full:(61,73) [{ T.X, T.Y }]], count=1
+  02     Node[id:12, kind:Record, depth:4, tok:CurlyOpen, rng:(61,62) [{], full:(61,73) [{ T.X, T.Y }]], count=1
+  03       Node[id:11, kind:ExprList, depth:3, tok:Comma, rng:(66,67) [,], full:(63,71) [T.X, T.Y]], count=2
+  04         Node[id:8, kind:DottedName, depth:2, tok:Dot, rng:(64,65) [.], full:(63,66) [T.X], extra=[X]], count=1
+  05           Node[id:7, kind:FirstName, depth:1, tok:T, rng:(63,64) [T], full:(63,64) [T], extra=[T]]
+  04         Node[id:10, kind:DottedName, depth:2, tok:Dot, rng:(69,70) [.], full:(68,71) [T.Y], extra=[Y]], count=1
+  05           Node[id:9, kind:FirstName, depth:1, tok:T, rng:(68,69) [T], full:(68,69) [T], extra=[T]]
+
+   0) [0] TaskBlock finish T
+   1) [0] Expr { T.X, T.Y }
+   2) [0] End
+###
+> X := 3;
+> task T play {
+>     play R1 as ReadRbin("blah.rbin");
+>     play R2 as ReadRbin("blop.rbin");
+>     prime R1;
+>     prime R2;
+>     stream S1 := R1.SData;
+>     stream S2 := R2.SData;
+>     finish R1;
+>     finish R2;
+>     publish D1 := R1.Data;
+>     publish D2 := R2.Data;
+> }
+> prime T;
+Node: [X := 3; task T play { play R1 as ReadRbin("blah.rbin"); play R2 as ReadRbin("blop.rbin"); prime R1; prime R2; stream S1 := R1.SData; stream S2 := R2.SData; finish R1; finish R2; publish D1 := R1.Data; publish D2 := R2.Data } prime T]
+Dump:
+  00 Node[id:30, kind:StmtList, depth:8, tok:Semi, rng:(6,7) [;], full:(0,274) [X := 3;\ntask T play {\n    play R1 as ReadRbin("blah.rbin");\n    play R2 as ReadRbin("blop.rbin");\n    prime R1;\n    prime R2;\n    stream S1 := R1.SData;\n    stream S2 := R2.SData;\n    finish R1;\n    finish R2;\n    publish D1 := R1.Data;\n    publish D2 := R2.Data;\n}\nprime T;]], count=3
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,6) [X := 3], extra=[X]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:3, rng:(5,6) [3], full:(5,6) [3], extra=[3]]
+  01   Node[id:28, kind:TaskBlockStmt, depth:7, tok:KtxTask, rng:(8,12) [task], full:(8,265) [task T play {\n    play R1 as ReadRbin("blah.rbin");\n    play R2 as ReadRbin("blop.rbin");\n    prime R1;\n    prime R2;\n    stream S1 := R1.SData;\n    stream S2 := R2.SData;\n    finish R1;\n    finish R2;\n    publish D1 := R1.Data;\n    publish D2 := R2.Data;\n}], extra=[KtxTask]], count=1
+  02     Node[id:27, kind:BlockStmt, depth:6, tok:CurlyOpen, rng:(20,21) [{], full:(20,265) [{\n    play R1 as ReadRbin("blah.rbin");\n    play R2 as ReadRbin("blop.rbin");\n    prime R1;\n    prime R2;\n    stream S1 := R1.SData;\n    stream S2 := R2.SData;\n    finish R1;\n    finish R2;\n    publish D1 := R1.Data;\n    publish D2 := R2.Data;\n}]], count=1
+  03       Node[id:26, kind:StmtList, depth:5, tok:Semi, rng:(58,59) [;], full:(26,263) [play R1 as ReadRbin("blah.rbin");\n    play R2 as ReadRbin("blop.rbin");\n    prime R1;\n    prime R2;\n    stream S1 := R1.SData;\n    stream S2 := R2.SData;\n    finish R1;\n    finish R2;\n    publish D1 := R1.Data;\n    publish D2 := R2.Data;]], count=10
+  04         Node[id:5, kind:TaskProcStmt, depth:4, tok:KtxPlay, rng:(26,30) [play], full:(26,58) [play R1 as ReadRbin("blah.rbin")], extra=[R1]], count=1
+  05           Node[id:4, kind:Call, depth:3, tok:ParenOpen, rng:(45,46) [(], full:(37,58) [ReadRbin("blah.rbin")], extra=[ReadRbin]], count=1
+  06             Node[id:3, kind:ExprList, depth:2, tok:blah.rbin, rng:(46,57) ["blah.rbin"], full:(46,57) ["blah.rbin"]], count=1
+  07               Node[id:2, kind:TextLit, depth:1, tok:blah.rbin, rng:(46,57) ["blah.rbin"], full:(46,57) ["blah.rbin"]]
+  04         Node[id:9, kind:TaskProcStmt, depth:4, tok:KtxPlay, rng:(64,68) [play], full:(64,96) [play R2 as ReadRbin("blop.rbin")], extra=[R2]], count=1
+  05           Node[id:8, kind:Call, depth:3, tok:ParenOpen, rng:(83,84) [(], full:(75,96) [ReadRbin("blop.rbin")], extra=[ReadRbin]], count=1
+  06             Node[id:7, kind:ExprList, depth:2, tok:blop.rbin, rng:(84,95) ["blop.rbin"], full:(84,95) ["blop.rbin"]], count=1
+  07               Node[id:6, kind:TextLit, depth:1, tok:blop.rbin, rng:(84,95) ["blop.rbin"], full:(84,95) ["blop.rbin"]]
+  04         Node[id:10, kind:TaskCmdStmt, depth:1, tok:KtxPrime, rng:(102,107) [prime], full:(102,110) [prime R1], extra=[KtxPrime]], count=0
+  04         Node[id:11, kind:TaskCmdStmt, depth:1, tok:KtxPrime, rng:(116,121) [prime], full:(116,124) [prime R2], extra=[KtxPrime]], count=0
+  04         Node[id:14, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(140,142) [:=], full:(130,151) [stream S1 := R1.SData], extra=[S1]], count=1
+  05           Node[id:13, kind:DottedName, depth:2, tok:Dot, rng:(145,146) [.], full:(143,151) [R1.SData], extra=[SData]], count=1
+  06             Node[id:12, kind:FirstName, depth:1, tok:R1, rng:(143,145) [R1], full:(143,145) [R1], extra=[R1]]
+  04         Node[id:17, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(167,169) [:=], full:(157,178) [stream S2 := R2.SData], extra=[S2]], count=1
+  05           Node[id:16, kind:DottedName, depth:2, tok:Dot, rng:(172,173) [.], full:(170,178) [R2.SData], extra=[SData]], count=1
+  06             Node[id:15, kind:FirstName, depth:1, tok:R2, rng:(170,172) [R2], full:(170,172) [R2], extra=[R2]]
+  04         Node[id:18, kind:TaskCmdStmt, depth:1, tok:KtxFinish, rng:(184,190) [finish], full:(184,193) [finish R1], extra=[KtxFinish]], count=0
+  04         Node[id:19, kind:TaskCmdStmt, depth:1, tok:KtxFinish, rng:(199,205) [finish], full:(199,208) [finish R2], extra=[KtxFinish]], count=0
+  04         Node[id:22, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(225,227) [:=], full:(214,235) [publish D1 := R1.Data], extra=[D1]], count=1
+  05           Node[id:21, kind:DottedName, depth:2, tok:Dot, rng:(230,231) [.], full:(228,235) [R1.Data], extra=[Data]], count=1
+  06             Node[id:20, kind:FirstName, depth:1, tok:R1, rng:(228,230) [R1], full:(228,230) [R1], extra=[R1]]
+  04         Node[id:25, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(252,254) [:=], full:(241,262) [publish D2 := R2.Data], extra=[D2]], count=1
+  05           Node[id:24, kind:DottedName, depth:2, tok:Dot, rng:(257,258) [.], full:(255,262) [R2.Data], extra=[Data]], count=1
+  06             Node[id:23, kind:FirstName, depth:1, tok:R2, rng:(255,257) [R2], full:(255,257) [R2], extra=[R2]]
+  01   Node[id:29, kind:TaskCmdStmt, depth:1, tok:KtxPrime, rng:(266,271) [prime], full:(266,273) [prime T], extra=[KtxPrime]], count=0
+
+   0) [0] Define X <- 3
+   1) [0] TaskBlock task T
+   2) [0] TaskCmd prime T
+   3) [0] End
+###

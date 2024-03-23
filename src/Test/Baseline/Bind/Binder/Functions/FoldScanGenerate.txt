@@ -1,0 +1,474 @@
+**** New globals: {C:i8, S:i8*, T:{N:i8, V:r8}*, s:s}
+
+> Fold(x:S, y:1i8, x * y)
+Fold(x : S, y : 1, x * y) : i8
+Binder : Fold(*1: S, %2: 1, Mul(*1, %2))
+###
+> ScanX(x:S, y:1i8, x * y)
+ScanX(x : S, y : 1, x * y) : i8*
+Binder : ScanX(*1: S, %2: 1, Mul(*1, %2))
+###
+> Generate(x: C + 1, y:1i8, (x max 1) * y)
+Generate(x : C + 1, y : 1, (x max 1) * y) : i8*
+Binder : Generate(^1: Add(C, 1), %2: 1, Mul(Max(^1, 1), %2))
+###
+> ScanZ(x:S, y:1i8, (x + 1) * y)
+ScanZ(x : S, y : 1, (x + 1) * y) : i8*
+Binder : ScanZ(*1: S, %2: 1, Mul(Add(*1, 1), %2))
+###
+> Generate(x:C, y:1i8, (x + 1) * y)
+Generate(x : C, y : 1, (x + 1) * y) : i8*
+Binder : Generate(^1: C, %2: 1, Mul(Add(^1, 1), %2))
+###
+> Fold(x:S, y:1ia, x * y)
+Fold(x : S, y : 1, x * y) : i
+Binder : Fold(*1: S, %2: 1, Mul(Num<i>(*1), %2))
+###
+> ScanX(x:S, y:1ia, x * y)
+ScanX(x : S, y : 1, x * y) : i*
+Binder : ScanX(*1: S, %2: 1, Mul(Num<i>(*1), %2))
+###
+> Gen(x: C + 1, y:1ia, (x max 1) * y)
+Corrected by binder: [Generate(x: C + 1, y:1ia, (x max 1) * y)]
+Gen(x : C + 1, y : 1, (x max 1) * y) : i*
+*** Warning: (3,4) Node: Gen(x : C + 1, y : 1, (x max 1) * y), Message: This function is deprecated and may be removed in the future, use 'Generate' instead
+Binder : Generate(^1: Add(C, 1), %2: 1, Mul(Num<i>(Max(^1, 1)), %2))
+###
+> Generate(x: C + 1, y:1ia, (x max 1) * y)
+Generate(x : C + 1, y : 1, (x max 1) * y) : i*
+Binder : Generate(^1: Add(C, 1), %2: 1, Mul(Num<i>(Max(^1, 1)), %2))
+###
+> ScanZ(x:S, y:1ia, (x + 1) * y)
+ScanZ(x : S, y : 1, (x + 1) * y) : i*
+Binder : ScanZ(*1: S, %2: 1, Mul(Num<i>(Add(*1, 1)), %2))
+###
+> Generate(x:C, y:1ia, (x + 1) * y)
+Generate(x : C, y : 1, (x + 1) * y) : i*
+Binder : Generate(^1: C, %2: 1, Mul(Num<i>(Add(^1, 1)), %2))
+###
+> Fold(x:S, y:1r8, x * y)
+Fold(x : S, y : 1, x * y) : r8
+Binder : Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2))
+###
+> ScanX(x:S, y:1r8, x * y)
+ScanX(x : S, y : 1, x * y) : r8*
+Binder : ScanX(*1: S, %2: 1, Mul(Num<r8>(*1), %2))
+###
+> Generate(x: C + 1, y:1r8, (x max 1) * y)
+Generate(x : C + 1, y : 1, (x max 1) * y) : r8*
+Binder : Generate(^1: Add(C, 1), %2: 1, Mul(Num<r8>(Max(^1, 1)), %2))
+###
+> ScanZ(x:S, y:1r8, (x + 1) * y)
+ScanZ(x : S, y : 1, (x + 1) * y) : r8*
+Binder : ScanZ(*1: S, %2: 1, Mul(Num<r8>(Add(*1, 1)), %2))
+###
+> Generate(x:C, y:1r8, (x + 1) * y)
+Generate(x : C, y : 1, (x + 1) * y) : r8*
+Binder : Generate(^1: C, %2: 1, Mul(Num<r8>(Add(^1, 1)), %2))
+###
+> Fold(x:S, y:1, 1.0 * x * y) // Requires rewind.
+Fold(x : S, y : 1, 1 * x * y) : r8
+Binder : Fold(*1: S, %2: 1, Mul(1, Num<r8>(*1), %2))
+Reducer: Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2))
+###
+> ScanX(x:S, y:1, 1.0 * x * y) // Requires rewind.
+ScanX(x : S, y : 1, 1 * x * y) : r8*
+Binder : ScanX(*1: S, %2: 1, Mul(1, Num<r8>(*1), %2))
+Reducer: ScanX(*1: S, %2: 1, Mul(Num<r8>(*1), %2))
+###
+> Generate(x: C + 1, y:1, 1.0 * (x max 1) * y) // Requires rewind.
+Generate(x : C + 1, y : 1, 1 * (x max 1) * y) : r8*
+Binder : Generate(^1: Add(C, 1), %2: 1, Mul(1, Num<r8>(Max(^1, 1)), %2))
+Reducer: Generate(^1: Add(C, 1), %2: 1, Mul(Num<r8>(Max(^1, 1)), %2))
+###
+> ScanZ(x:S, y:1, 1.0 * (x + 1) * y) // Requires rewind.
+ScanZ(x : S, y : 1, 1 * (x + 1) * y) : r8*
+Binder : ScanZ(*1: S, %2: 1, Mul(1, Num<r8>(Add(*1, 1)), %2))
+Reducer: ScanZ(*1: S, %2: 1, Mul(Num<r8>(Add(*1, 1)), %2))
+###
+> Generate(x:C, y:1, 1.0 * (x + 1) * y) // Requires rewind.
+Generate(x : C, y : 1, 1 * (x + 1) * y) : r8*
+Binder : Generate(^1: C, %2: 1, Mul(1, Num<r8>(Add(^1, 1)), %2))
+Reducer: Generate(^1: C, %2: 1, Mul(Num<r8>(Add(^1, 1)), %2))
+###
+> Fold(x:S, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+Fold(x : S, y : 9223372036854775807, x min y) : i8
+Binder : Fold(*1: S, %2: 9223372036854775807, Min(*1, %2))
+###
+> ScanX(x:S, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+ScanX(x : S, y : 9223372036854775807, x min y) : i8*
+Binder : ScanX(*1: S, %2: 9223372036854775807, Min(*1, %2))
+###
+> Generate(x:C, y:0x7FFF_FFFF_FFFF_FFFFi8, x min y)
+Generate(x : C, y : 9223372036854775807, x min y) : i8*
+Binder : Generate(^1: C, %2: 9223372036854775807, Min(^1, %2))
+###
+> Fold(S, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+Fold(S, y : (0, 1), (y[1], y[0] + 1 * y[1])) : (r8, r8)
+Binder : Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, Mul(1, %2.1))))
+Reducer: Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> ScanX(S, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+ScanX(S, y : (0, 1), (y[1], y[0] + 1 * y[1])) : (r8, r8)*
+Binder : ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, Mul(1, %2.1))))
+Reducer: ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Generate(C, y:(0, 1), (y[1], y[0] + 1.0 * y[1])) // Requires rewind twice.
+Generate(C, y : (0, 1), (y[1], y[0] + 1 * y[1])) : (r8, r8)*
+Binder : Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, Mul(1, %2.1))))
+Reducer: Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Fold(S, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+Fold(S, y : (0, 1), (y[1], y[0] + y[1])) : (r8, r8)
+Binder : Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> ScanX(S, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+ScanX(S, y : (0, 1), (y[1], y[0] + y[1])) : (r8, r8)*
+Binder : ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Generate(C, y:(0, 1.0), (y[1], y[0] + y[1])) // Requires rewind.
+Generate(C, y : (0, 1), (y[1], y[0] + y[1])) : (r8, r8)*
+Binder : Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Fold(S, y : (0, 1), (y[1], y[0] + y[1])) : (i, i)
+Binder : Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+ScanX(S, y : (0, 1), (y[1], y[0] + y[1])) : (i, i)*
+Binder : ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Generate(C, y : (0, 1), (y[1], y[0] + y[1])) : (i, i)*
+Binder : Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)))
+###
+> Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Fold(S, y : (0, 1), (y[1], y[0] + y[1]))[1] : i
+Binder : Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1))).1
+###
+> ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+ScanX(S, y : (0, 1), (y[1], y[0] + y[1]))[1] : i*
+Binder : ForEach(*3: ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1))), *3.1)
+Reducer: ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+###
+> Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Generate(C, y : (0, 1), (y[1], y[0] + y[1]))[1] : i*
+Binder : ForEach(*3: Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1))), *3.1)
+Reducer: Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+###
+> Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Fold(S, y : (0, 1), (y[1], y[0] + y[1]), y[1]) : i
+Binder : Fold(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+###
+> ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanX(S, y : (0, 1), (y[1], y[0] + y[1]), y[1]) : i*
+Binder : ScanX(*1: S, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+###
+> Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Generate(C, y : (0, 1), (y[1], y[0] + y[1]), y[1]) : i*
+Binder : Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), %2.1)
+###
+> Generate(c:C, y:(0ia, 1ia), (y[1], y[0] + y[1]), (c, y[1]))
+Generate(c : C, y : (0, 1), (y[1], y[0] + y[1]), (c, y[1])) : (i8, i)*
+Binder : Generate(^1: C, %2: (0, 1), (%2.1, Add(%2.0, %2.1)), (^1, %2.1))
+###
+> Fold(S, y:(0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind thrice.
+Fold(S, y : (0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) : (r8, r8, r8)
+Binder : Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), Mul(1, %2.2))))
+Reducer: Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), %2.2)))
+###
+> Fold(S, y:(0, 0, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind twice.
+Fold(S, y : (0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) : (r8, r8, r8)
+Binder : Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), Mul(1, %2.2))))
+Reducer: Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), %2.2)))
+###
+> Fold(S, y:(0, 0r, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) // Requires rewind.
+Fold(S, y : (0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) : (r8, r8, r8)
+Binder : Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), Mul(1, %2.2))))
+Reducer: Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), %2.2)))
+###
+> Fold(S, y:(0r, 0r, 1r), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2]))
+Fold(S, y : (0, 0, 1), (y[1], y[2], 3.5 * y[0] + 2 * y[1] + 1 * y[2])) : (r8, r8, r8)
+Binder : Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), Mul(1, %2.2))))
+Reducer: Fold(*1: S, %2: (0, 0, 1), (%2.1, %2.2, Add(Mul(3.5, %2.0), Mul(2, %2.1), %2.2)))
+###
+> Fold(S, y:(0, 0, 0, 1), (y[1], y[2], y[3], 4ia * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) // Requires rewind four times, but our limit is three.
+Fold(S, y : (0, 0, 0, 1), (y[1], y[2], y[3], 4 * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) : (i, i, i, i)
+*** Error: (10,11) Node: (0, 0, 0, 1), Message: Invalid operand type for scope slot: given type '(i8, i, i, i)', need type '(i, i, i, i)'
+Binder : Fold*(*1: S, %2: (0, 0, 0, 1), (%2.1, %2.2, %2.3, Add(Mul(4, Num<i>(%2.0)), Mul(3, %2.1), Mul(2, %2.2), Mul(1, %2.3))))
+Reducer: Fold*(*1: S, %2: (0, 0, 0, 1), (%2.1, %2.2, %2.3, Add(Mul(Num<i>(%2.0), 4), Mul(%2.1, 3), Mul(%2.2, 2), %2.3)))
+###
+> Fold(S, y:(0, 0, 0, 1ia), (y[1], y[2], y[3], 4ia * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) // Requires rewind thrice.
+Fold(S, y : (0, 0, 0, 1), (y[1], y[2], y[3], 4 * y[0] + 3 * y[1] + 2 * y[2] + 1 * y[3])) : (i, i, i, i)
+Binder : Fold(*1: S, %2: (0, 0, 0, 1), (%2.1, %2.2, %2.3, Add(Mul(4, %2.0), Mul(3, %2.1), Mul(2, %2.2), Mul(1, %2.3))))
+Reducer: Fold(*1: S, %2: (0, 0, 0, 1), (%2.1, %2.2, %2.3, Add(Mul(%2.0, 4), Mul(%2.1, 3), Mul(%2.2, 2), %2.3)))
+###
+> Fold(x:S, y:[], [x] ++ y) // Requires rewind.
+Fold(x : S, y : [], [x] ++ y) : i8*
+Binder : Fold(*1: S, %2: null, SeqConcat([*1], %2))
+###
+> Fold(x:S, y:[0i8]->Filter(false), [x] ++ y)
+Fold(x : S, y : [0]->Filter(false), [x] ++ y) : i8*
+Binder : Fold(*2: S, %3: TakeIf*(*1: [0], false), SeqConcat([*2], %3))
+Reducer: Fold(*1: S, %2: null, SeqConcat([*1], %2))
+###
+> ScanX(x:S, y:0, x + y)
+ScanX(x : S, y : 0, x + y) : i8*
+Binder : ScanX(*1: S, %2: 0, Add(*1, %2))
+###
+> Fold(x:S, y:(0, []), (x + y[0], y[1] ++ [y[0]]))
+Fold(x : S, y : (0, []), (x + y[0], y[1] ++ [y[0]])) : (i8, i8*)
+Binder : Fold(*1: S, %2: (0, null), (Add(*1, %2.0), SeqConcat(%2.1, [%2.0])))
+###
+> Fold(x:S, y:(0, []), (x + y[0], y[1] ++ [y[0]]), y[1] ++ [y[0]])
+Fold(x : S, y : (0, []), (x + y[0], y[1] ++ [y[0]]), y[1] ++ [y[0]]) : i8*
+Binder : Fold(*1: S, %2: (0, null), (Add(*1, %2.0), SeqConcat(%2.1, [%2.0])), SeqConcat(%2.1, [%2.0]))
+###
+> ScanZ(x:T, y:{ NS:0, VS:0r, VMax:-1/0 }, { NS: y.NS + x.N, VS: y.VS + x.V, VMax: y.VMax max x.V })
+ScanZ(x : T, y : { NS : 0, VS : 0, VMax : -1 / 0 }, { NS : y.NS + x.N, VS : y.VS + x.V, VMax : y.VMax max x.V }) : {NS:i8, VMax:r8, VS:r8}*
+Binder : ScanZ(*1: T, %2: {NS:0, VMax:Mul(-1, [/] 0), VS:0}, {NS:Add(%2.NS, *1.N), VMax:Max(%2.VMax, *1.V), VS:Add(%2.VS, *1.V)})
+Reducer: ScanZ(*1: T, %2: {NS:0, VMax:-∞, VS:0}, {NS:Add(%2.NS, *1.N), VMax:Max(%2.VMax, *1.V), VS:Add(%2.VS, *1.V)})
+###
+> ScanZ(x:T, y:{ NS:0, VS:0r, VMax:-1/0 }, { NS: y.NS + x.N, VS: y.VS + x.V, VMax: y.VMax max x.V }, x & y)
+ScanZ(x : T, y : { NS : 0, VS : 0, VMax : -1 / 0 }, { NS : y.NS + x.N, VS : y.VS + x.V, VMax : y.VMax max x.V }, x & y) : {N:i8, NS:i8, V:r8, VMax:r8, VS:r8}*
+Binder : ScanZ(*1: T, %2: {NS:0, VMax:Mul(-1, [/] 0), VS:0}, {NS:Add(%2.NS, *1.N), VMax:Max(%2.VMax, *1.V), VS:Add(%2.VS, *1.V)}, RecordConcat(*1, %2))
+Reducer: ScanZ(*1: T, %2: {NS:0, VMax:-∞, VS:0}, {NS:Add(%2.NS, *1.N), VMax:Max(%2.VMax, *1.V), VS:Add(%2.VS, *1.V)}, RecordConcat(*1, %2))
+###
+> Generate(c:0, c)
+Generate(c : 0, c) : i8*
+Binder : Generate(^1: 0, ^1)
+Reducer: null
+###
+> Fold(i:Range(0), s:-1, s + i)
+Fold(i : Range(0), s : -1, s + i) : i8
+Binder : Fold(*1: Range(0), %2: -1, Add(%2, *1))
+Reducer: -1
+###
+> ScanX(i:Range(0), s:-1, s + i)
+ScanX(i : Range(0), s : -1, s + i) : i8*
+Binder : ScanX(*1: Range(0), %2: -1, Add(%2, *1))
+Reducer: [-1]
+###
+> ScanZ(i:Range(0), s:-1, s + i)
+ScanZ(i : Range(0), s : -1, s + i) : i8*
+Binder : ScanZ(*1: Range(0), %2: -1, Add(%2, *1))
+Reducer: null
+###
+> Generate(c:0, s:-1, s + c)
+Generate(c : 0, s : -1, s + c) : i8*
+Binder : Generate(^1: 0, %2: -1, Add(%2, ^1))
+Reducer: null
+###
+> ScanZ(i:Range(0), s:-1, s + i, s + 1)
+ScanZ(i : Range(0), s : -1, s + i, s + 1) : i8*
+Binder : ScanZ(*1: Range(0), %2: -1, Add(%2, *1), Add(%2, 1))
+Reducer: null
+###
+> Generate(c:0, s:-1, s + c, s + 1)
+Generate(c : 0, s : -1, s + c, s + 1) : i8*
+Binder : Generate(^1: 0, %2: -1, Add(%2, ^1), Add(%2, 1))
+Reducer: null
+###
+> ScanX(i:Range(0), s:-1, s + i, s + 1)
+ScanX(i : Range(0), s : -1, s + i, s + 1) : i8*
+Binder : ScanX(*1: Range(0), %2: -1, Add(%2, *1), Add(%2, 1))
+###
+> Fold(i:Range(0), s:-1, s + i, s + 1)
+Fold(i : Range(0), s : -1, s + i, s + 1) : i8
+Binder : Fold(*1: Range(0), %2: -1, Add(%2, *1), Add(%2, 1))
+###
+> ForEach(s:ScanX(x:S, y:0, y + x), s + 1)
+ForEach(s : ScanX(x : S, y : 0, y + x), s + 1) : i8*
+Binder : ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), Add(*3, 1))
+Reducer: ScanX(*1: S, %2: 0, Add(%2, *1), Add(%2, 1))
+###
+> ForEach(s:ScanX(x:S, y:0, y + #), s + 1)
+ForEach(s : ScanX(x : S, y : 0, y + #), s + 1) : i8*
+Binder : ForEach(*4: ScanX(*2: S, %3: 0, Add(%3, #1)), Add(*4, 1))
+Reducer: ScanX(*2: S, %3: 0, Add(%3, #1), Add(%3, 1))
+###
+> ForEach(s:ScanZ(x:S, y:0, y + x), s + 1)
+ForEach(s : ScanZ(x : S, y : 0, y + x), s + 1) : i8*
+Binder : ForEach(*3: ScanZ(*1: S, %2: 0, Add(%2, *1)), Add(*3, 1))
+Reducer: ScanZ(*1: S, %2: 0, Add(%2, *1), Add(%2, 1))
+###
+> ForEach(s:Generate(c:C, y:0, y + c), s + 1)
+ForEach(s : Generate(c : C, y : 0, y + c), s + 1) : i8*
+Binder : ForEach(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), Add(*3, 1))
+Reducer: Generate(^1: C, %2: 0, Add(%2, ^1), Add(%2, 1))
+###
+> ForEach(s:ScanZ(x:S, y:0, y + x), s + #)
+ForEach(s : ScanZ(x : S, y : 0, y + x), s + #) : i8*
+Binder : ForEach(*4: ScanZ(*1: S, %2: 0, Add(%2, *1)), Add(*4, #3))
+Reducer: ScanZ(*2: S, %3: 0, Add(%3, *2), Add(%3, #1))
+###
+> ForEach(s:ScanZ(x:S, y:0, y + #), s + #)
+ForEach(s : ScanZ(x : S, y : 0, y + #), s + #) : i8*
+Binder : ForEach(*5: ScanZ(*2: S, %3: 0, Add(%3, #1)), Add(*5, #4))
+Reducer: ScanZ(*2: S, %3: 0, Add(%3, #1), Add(%3, #1))
+###
+> ForEach(s:Generate(c:C, y:0, y + c), s + #)
+ForEach(s : Generate(c : C, y : 0, y + c), s + #) : i8*
+Binder : ForEach(*4: Generate(^1: C, %2: 0, Add(%2, ^1)), Add(*4, #3))
+Reducer: Generate(^1: C, %2: 0, Add(%2, ^1), Add(%2, ^1))
+###
+> ForEach(s:Generate(c:C, y:0, y + #), s + #)
+ForEach(s : Generate(c : C, y : 0, y + #), s + #) : i8*
+Binder : ForEach(*4: Generate(^1: C, %2: 0, Add(%2, ^1)), Add(*4, #3))
+Reducer: Generate(^1: C, %2: 0, Add(%2, ^1), Add(%2, ^1))
+###
+> ForEach(s:ScanX(x:S, y:0, y + x), s + #) // Can't reduce, 4th arg not indexed.
+ForEach(s : ScanX(x : S, y : 0, y + x), s + #) : i8*
+Binder : ForEach(*4: ScanX(*1: S, %2: 0, Add(%2, *1)), Add(*4, #3))
+###
+> ForEach(s:ScanX(x:S, y:0, y + #), s + #) // Can't reduce, 4th arg not indexed.
+ForEach(s : ScanX(x : S, y : 0, y + #), s + #) : i8*
+Binder : ForEach(*5: ScanX(*2: S, %3: 0, Add(%3, #1)), Add(*5, #4))
+###
+> ForEach(s:ScanX(x:S, y:0, y + x, y - 1), s + 1) // Can't reduce... REVIEW: Or can we?
+ForEach(s : ScanX(x : S, y : 0, y + x, y - 1), s + 1) : i8*
+Binder : ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1), Add(%2, [-] 1)), Add(*3, 1))
+###
+> ForEach(s:Generate(x:C, y:0, y + x), [if] s mod 2 = 0, s + 1)
+ForEach(s : Generate(x : C, y : 0, y + x), [if] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), [if] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEach(s:ScanX(x:S, y:0, y + x), [if] s mod 2 = 0, s + 1)
+ForEach(s : ScanX(x : S, y : 0, y + x), [if] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), [if] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEach(s:ScanZ(x:S, y:0, y + #), [if] s mod 2 = 0, s + 1)
+ForEach(s : ScanZ(x : S, y : 0, y + #), [if] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), [if] IntMod(*4, 2) @= 0, Add(*4, 1))
+###
+> ForEach(s:Generate(x:C, y:0, y + x), [while] s mod 2 = 0, s + 1)
+ForEach(s : Generate(x : C, y : 0, y + x), [while] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), [while] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEach(s:ScanX(x:S, y:0, y + x), [while] s mod 2 = 0, s + 1)
+ForEach(s : ScanX(x : S, y : 0, y + x), [while] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), [while] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEach(s:ScanZ(x:S, y:0, y + #), [while] s mod 2 = 0, s + 1)
+ForEach(s : ScanZ(x : S, y : 0, y + #), [while] s mod 2 @= 0, s + 1) : i8*
+Binder : ForEach(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), [while] IntMod(*4, 2) @= 0, Add(*4, 1))
+###
+> ForEachIf(s:Generate(x:C, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachIf(s : Generate(x : C, y : 0, y + x), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachIf*(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), IntMod(*3, 2) @= 0, Add(*3, 1))
+Reducer: ForEach(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), [if] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEachIf(s:ScanX(x:S, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachIf(s : ScanX(x : S, y : 0, y + x), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachIf*(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), IntMod(*3, 2) @= 0, Add(*3, 1))
+Reducer: ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), [if] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEachIf(s:ScanZ(x:S, y:0, y + #), s mod 2 = 0, s + 1)
+ForEachIf(s : ScanZ(x : S, y : 0, y + #), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachIf*(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), IntMod(*4, 2) @= 0, Add(*4, 1))
+Reducer: ForEach(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), [if] IntMod(*4, 2) @= 0, Add(*4, 1))
+###
+> ForEachWhile(s:Generate(x:C, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachWhile(s : Generate(x : C, y : 0, y + x), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachWhile*(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), IntMod(*3, 2) @= 0, Add(*3, 1))
+Reducer: ForEach(*3: Generate(^1: C, %2: 0, Add(%2, ^1)), [while] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEachWhile(s:ScanX(x:S, y:0, y + x), s mod 2 = 0, s + 1)
+ForEachWhile(s : ScanX(x : S, y : 0, y + x), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachWhile*(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), IntMod(*3, 2) @= 0, Add(*3, 1))
+Reducer: ForEach(*3: ScanX(*1: S, %2: 0, Add(%2, *1)), [while] IntMod(*3, 2) @= 0, Add(*3, 1))
+###
+> ForEachWhile(s:ScanZ(x:S, y:0, y + #), s mod 2 = 0, s + 1)
+ForEachWhile(s : ScanZ(x : S, y : 0, y + #), s mod 2 @= 0, s + 1) : i8*
+Binder : ForEachWhile*(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), IntMod(*4, 2) @= 0, Add(*4, 1))
+Reducer: ForEach(*4: ScanZ(*2: S, %3: 0, Add(%3, #1)), [while] IntMod(*4, 2) @= 0, Add(*4, 1))
+###
+> Generate(C, it)
+Generate(C, it) : i8*
+Binder : Generate(^1: C, ^1)
+Reducer: Range(C)
+###
+> Generate(C, #)
+Generate(C, #) : i8*
+Binder : Generate(^1: C, ^1)
+Reducer: Range(C)
+###
+> Fold(x:S, y:1r, x * y * Z) // Error.
+Fold(x : S, y : 1, x * y * Z) : r8
+*** Error: (24,25) Node: Z, Message: Name does not exist in the current context
+Binder : Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, Unit<r8>(Error(ErrNameDoesNotExist))))
+Reducer: Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, 0))
+###
+> Fold(x:S, y:1, 1.0 * x * y * Z) // Requires rewind, with error.
+Fold(x : S, y : 1, 1 * x * y * Z) : r8
+*** Error: (29,30) Node: Z, Message: Name does not exist in the current context
+Binder : Fold(*1: S, %2: 1, Mul(1, Num<r8>(*1), %2, Unit<r8>(Error(ErrNameDoesNotExist))))
+Reducer: Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, 0))
+###
+> X * Fold(x:S, y:1r, x * y * Z) // Errors before and in the call.
+X * Fold(x : S, y : 1, x * y * Z) : r8
+*** Error: (0,1) Node: X, Message: Name does not exist in the current context
+*** Error: (28,29) Node: Z, Message: Name does not exist in the current context
+Binder : Mul(Unit<r8>(Error(ErrNameDoesNotExist)), Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, Unit<r8>(Error(ErrNameDoesNotExist)))))
+Reducer: Mul(0, Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, 0)))
+###
+> X * Fold(x:S, y:1, 1.0 * x * y * Z) // Requires rewind, with errors.
+X * Fold(x : S, y : 1, 1 * x * y * Z) : r8
+*** Error: (0,1) Node: X, Message: Name does not exist in the current context
+*** Error: (33,34) Node: Z, Message: Name does not exist in the current context
+Binder : Mul(Unit<r8>(Error(ErrNameDoesNotExist)), Fold(*1: S, %2: 1, Mul(1, Num<r8>(*1), %2, Unit<r8>(Error(ErrNameDoesNotExist)))))
+Reducer: Mul(0, Fold(*1: S, %2: 1, Mul(Num<r8>(*1), %2, 0)))
+###
+> Fold(x:S, y:Y, x * y * Z) // Error in the seed.
+Fold(x : S, y : Y, x * y * Z) : i8
+*** Error: (12,13) Node: Y, Message: Name does not exist in the current context
+*** Error: (23,24) Node: Z, Message: Name does not exist in the current context
+Binder : Fold*(*1: S, %2: Error(ErrNameDoesNotExist), Mul(*1, Unit<i8>(%2), Unit<i8>(Error(ErrNameDoesNotExist))))
+Reducer: Fold*(*1: S, %2: Error(ErrNameDoesNotExist), 0)
+###
+> Generate(s, s) // Error.
+Generate(s, s) : s*
+*** Error: (9,10) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Generate(^1: Error(ErrBadType_Src_Dst), s)
+###
+> Generate(s, s, s) // Error.
+Generate(s, s, s) : s*
+*** Error: (9,10) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Generate(^1: Error(ErrBadType_Src_Dst), %2: s, s)
+###
+> Fold([], b, { }) // Error suppresses rewind.
+Fold([], b, {  }) : {}
+*** Error: (9,10) Node: b, Message: Name does not exist in the current context
+Binder : Fold*(*1: null, %2: Error(ErrNameDoesNotExist), {})
+Hoister: With(!1: {}, Fold*(*2: null, %3: Error(ErrNameDoesNotExist), !1))
+###
+> Fold([], a:{}, { a }) // Error, unfixable with rewind.
+Fold([], a : {  }, { a }) : {a:{a:{a:{a:{}?}?}?}?}
+*** Error: (11,12) Node: {  }, Message: Invalid operand type for scope slot: given type '{a:{a:{a:{}?}?}?}', need type '{a:{a:{a:{a:{}?}?}?}?}'
+Binder : Fold*(*1: null, %2: {[, a:null:{a:{a:{}?}?}?]}, Ref<{a:{a:{a:{a:{}?}?}?}?}>({a:%2}))
+###
+> ScanX([], b, { }) // Error suppresses rewind.
+ScanX([], b, {  }) : {}*
+*** Error: (10,11) Node: b, Message: Name does not exist in the current context
+Binder : ScanX*(*1: null, %2: Error(ErrNameDoesNotExist), {})
+Hoister: With(!1: {}, ScanX*(*2: null, %3: Error(ErrNameDoesNotExist), !1))
+###
+> ScanZ([], a:{}, { a }) // Error, unfixable with rewind.
+ScanZ([], a : {  }, { a }) : {a:{a:{a:{a:{}?}?}?}?}*
+*** Error: (12,13) Node: {  }, Message: Invalid operand type for scope slot: given type '{a:{a:{a:{}?}?}?}', need type '{a:{a:{a:{a:{}?}?}?}?}'
+Binder : ScanZ*(*1: null, %2: {[, a:null:{a:{a:{}?}?}?]}, Ref<{a:{a:{a:{a:{}?}?}?}?}>({a:%2}))
+###
+> ForEach(s3: ScanZ(s1: 1, s2: a, b*b), s3 + 2) // Error.
+ForEach(s3 : ScanZ(s1 : 1, s2 : a, b * b), s3 + 2) : i8*
+*** Error: (22,23) Node: 1, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+*** Error: (29,30) Node: a, Message: Name does not exist in the current context
+*** Error: (32,33) Node: b, Message: Name does not exist in the current context
+*** Error: (34,35) Node: b, Message: Name does not exist in the current context
+Binder : ForEach(*3: ScanZ*(*1: Error(ErrBadType_Src_Dst), %2: Error(ErrNameDoesNotExist), Mul(Unit<i8>(Error(ErrNameDoesNotExist)), Unit<i8>(Error(ErrNameDoesNotExist)))), Add(*3, 2))
+Reducer: ForEach(*3: ScanZ*(*1: Error(ErrBadType_Src_Dst), %2: Error(ErrNameDoesNotExist), 0), Add(*3, 2))
+###
+> Generate(C, a: {}, { a }, it) // Error, unfixable with rewind.
+Generate(C, a : {  }, { a }, it) : {a:{a:{a:{}?}?}?}*
+*** Error: (15,16) Node: {  }, Message: Invalid operand type for scope slot: given type '{a:{a:{a:{}?}?}?}', need type '{a:{a:{a:{a:{}?}?}?}?}'
+Binder : Generate*(^1: C, %2: {[, a:null:{a:{a:{}?}?}?]}, Ref<{a:{a:{a:{a:{}?}?}?}?}>({a:%2}), %2)
+###

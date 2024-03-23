@@ -1,0 +1,690 @@
+> // Note that many of these cases are also in a binder test, where the type comments apply. Diff the tests to see.
+Range=(0,113), Tid=CommentLine, Text=[// Note that many of these cases are also in a binder test, where the type comments apply. Diff the tests to see.]
+Range=(113,113), Tid=Eof, Text=[]
+###
+> 1
+> 123456
+> 123456789012345678901234567890
+> 123456789012345678901234567890f
+> 123456789012345678901234567890F
+> 0123456
+Range=(0,1), Tid=IntLit, Text=[1], Size=Unspecified, Value=1, Flags=None
+Range=(2,8), Tid=IntLit, Text=[123456], Size=Unspecified, Value=123456, Flags=None
+Range=(9,39), Tid=IntLit, Text=[123456789012345678901234567890], Size=Unspecified, Value=123456789012345678901234567890, Flags=None
+Range=(40,71), Tid=FltLit, Text=[123456789012345678901234567890f], Size=FourBytes, Value=1.2345678901234568E+29
+Range=(72,103), Tid=FltLit, Text=[123456789012345678901234567890F], Size=FourBytes, Value=1.2345678901234568E+29
+Range=(104,111), Tid=IntLit, Text=[0123456], Size=Unspecified, Value=123456, Flags=None
+Range=(111,111), Tid=Eof, Text=[]
+###
+> 1.0
+> .5
+> 1e3
+> 1e+3
+> 1e-3
+> .1e4
+> .123456789012345678901234567890
+> 123456.789012345678901234567890
+> 123456.789012345678901234567890E-6
+> 1e308
+> 1e309
+> .01e310
+Range=(0,3), Tid=FltLit, Text=[1.0], Size=Unspecified, Value=1
+Range=(4,6), Tid=FltLit, Text=[.5], Size=Unspecified, Value=0.5
+Range=(7,10), Tid=FltLit, Text=[1e3], Size=Unspecified, Value=1000
+Range=(11,15), Tid=FltLit, Text=[1e+3], Size=Unspecified, Value=1000
+Range=(16,20), Tid=FltLit, Text=[1e-3], Size=Unspecified, Value=0.001
+Range=(21,25), Tid=FltLit, Text=[.1e4], Size=Unspecified, Value=1000
+Range=(26,57), Tid=FltLit, Text=[.123456789012345678901234567890], Size=Unspecified, Value=0.12345678901234568
+Range=(58,89), Tid=FltLit, Text=[123456.789012345678901234567890], Size=Unspecified, Value=123456.78901234567
+Range=(90,124), Tid=FltLit, Text=[123456.789012345678901234567890E-6], Size=Unspecified, Value=0.12345678901234568
+Range=(125,130), Tid=FltLit, Text=[1e308], Size=Unspecified, Value=1E+308
+Range=(131,136), Tid=FltLit, Text=[1e309], Size=Unspecified, Value=∞
+Range=(137,144), Tid=FltLit, Text=[.01e310], Size=Unspecified, Value=1E+308
+Range=(144,144), Tid=Eof, Text=[]
+###
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> .e3
+> 5.
+> 5.e3
+Range=(0,77), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(78,79), Tid=Dot, Text=[.], Punc=[.]
+Range=(79,81), Tid=Ident, Text=[e3], Name=[e3], Flags=None
+Range=(82,83), Tid=IntLit, Text=[5], Size=Unspecified, Value=5, Flags=None
+Range=(83,84), Tid=Dot, Text=[.], Punc=[.]
+Range=(85,86), Tid=IntLit, Text=[5], Size=Unspecified, Value=5, Flags=None
+Range=(86,87), Tid=Dot, Text=[.], Punc=[.]
+Range=(87,89), Tid=Ident, Text=[e3], Name=[e3], Flags=None
+Range=(89,89), Tid=Eof, Text=[]
+###
+> // These should be u8.
+> 0xFFFFFFFFFFFFFFFFu
+> 0xFFFFFFFFFFFFFFFFU
+> 18446744073709551615u
+> 18446744073709551615U
+> // These should be i.
+> 0xFFFFFFFFFFFFFFFF
+> 18446744073709551615
+> 0x8000000000000000
+> 9223372036854775808
+> // These should be i8.
+> 0x7FFFFFFFFFFFFFFF
+> 9223372036854775807
+> // These should be i.
+> 0x10000000000000000
+> 0x10000000000000000U
+> 18446744073709551616
+> 18446744073709551616u
+Range=(0,22), Tid=CommentLine, Text=[// These should be u8.]
+Range=(23,42), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu], Size=Unspecified, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(43,62), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFU], Size=Unspecified, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(63,84), Tid=IntLit, Text=[18446744073709551615u], Size=Unspecified, Value=18446744073709551615, Flags=Unsigned
+Range=(85,106), Tid=IntLit, Text=[18446744073709551615U], Size=Unspecified, Value=18446744073709551615, Flags=Unsigned
+Range=(108,129), Tid=CommentLine, Text=[// These should be i.]
+Range=(130,148), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFF], Size=Unspecified, Value=18446744073709551615, Flags=Hex
+Range=(149,169), Tid=IntLit, Text=[18446744073709551615], Size=Unspecified, Value=18446744073709551615, Flags=None
+Range=(171,189), Tid=IntLit, Text=[0x8000000000000000], Size=Unspecified, Value=9223372036854775808, Flags=Hex
+Range=(190,209), Tid=IntLit, Text=[9223372036854775808], Size=Unspecified, Value=9223372036854775808, Flags=None
+Range=(211,233), Tid=CommentLine, Text=[// These should be i8.]
+Range=(234,252), Tid=IntLit, Text=[0x7FFFFFFFFFFFFFFF], Size=Unspecified, Value=9223372036854775807, Flags=Hex
+Range=(253,272), Tid=IntLit, Text=[9223372036854775807], Size=Unspecified, Value=9223372036854775807, Flags=None
+Range=(274,295), Tid=CommentLine, Text=[// These should be i.]
+Range=(296,315), Tid=IntLit, Text=[0x10000000000000000], Size=Unspecified, Value=18446744073709551616, Flags=Hex
+Range=(316,336), Tid=IntLit, Text=[0x10000000000000000U], Size=Unspecified, Value=18446744073709551616, Flags=Hex, Unsigned
+Range=(337,357), Tid=IntLit, Text=[18446744073709551616], Size=Unspecified, Value=18446744073709551616, Flags=None
+Range=(358,379), Tid=IntLit, Text=[18446744073709551616u], Size=Unspecified, Value=18446744073709551616, Flags=Unsigned
+Range=(379,379), Tid=Eof, Text=[]
+###
+> 12345
+> 12345f
+> 12345U
+> 255
+> 255u
+> 123.5u
+> 1234.5
+> 123.45
+> 123e45
+Range=(0,5), Tid=IntLit, Text=[12345], Size=Unspecified, Value=12345, Flags=None
+Range=(6,12), Tid=FltLit, Text=[12345f], Size=FourBytes, Value=12345
+Range=(13,19), Tid=IntLit, Text=[12345U], Size=Unspecified, Value=12345, Flags=Unsigned
+Range=(20,23), Tid=IntLit, Text=[255], Size=Unspecified, Value=255, Flags=None
+Range=(24,28), Tid=IntLit, Text=[255u], Size=Unspecified, Value=255, Flags=Unsigned
+Range=(29,34), Tid=FltLit, Text=[123.5], Size=Unspecified, Value=123.5
+Range=(34,35), Tid=Ident, Text=[u], Name=[u], Flags=None
+Range=(37,43), Tid=FltLit, Text=[1234.5], Size=Unspecified, Value=1234.5
+Range=(44,50), Tid=FltLit, Text=[123.45], Size=Unspecified, Value=123.45
+Range=(51,57), Tid=FltLit, Text=[123e45], Size=Unspecified, Value=1.23E+47
+Range=(57,57), Tid=Eof, Text=[]
+###
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> 123e+
+> 123E-
+> 123e
+Range=(0,77), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(78,81), Tid=IntLit, Text=[123], Size=Unspecified, Value=123, Flags=None
+Range=(81,82), Tid=Ident, Text=[e], Name=[e], Flags=None
+Range=(82,83), Tid=Add, Text=[+], Punc=[+]
+Range=(84,87), Tid=IntLit, Text=[123], Size=Unspecified, Value=123, Flags=None
+Range=(87,88), Tid=Ident, Text=[E], Name=[E], Flags=None
+Range=(88,89), Tid=Sub, Text=[-], Punc=[-]
+Range=(90,93), Tid=IntLit, Text=[123], Size=Unspecified, Value=123, Flags=None
+Range=(93,94), Tid=Ident, Text=[e], Name=[e], Flags=None
+Range=(94,94), Tid=Eof, Text=[]
+###
+> 0x
+> 0X
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> 0xABCDEFGH
+Range=(0,2), Tid=IntLit, Text=[0x], Size=Unspecified, Value=0, Flags=Hex, Error
+Range=(3,5), Tid=IntLit, Text=[0X], Size=Unspecified, Value=0, Flags=Hex, Error
+Range=(6,83), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(84,92), Tid=IntLit, Text=[0xABCDEF], Size=Unspecified, Value=11259375, Flags=Hex
+Range=(92,94), Tid=Ident, Text=[GH], Name=[GH], Flags=None
+Range=(94,94), Tid=Eof, Text=[]
+###
+> 1u
+> 1U
+> 1u1
+> 1u2
+> 1u4
+> 1u8
+> 1u3
+> 1i
+> 1i1
+> 1i2
+> 1i4
+> 1i8
+> 1ia
+> 1i3
+> 1l
+> 1L
+> 1ul
+> 1uL
+> 1Ul
+> 1UL
+> 1lu
+> 1lU
+> 1Lu
+> 1LU
+Range=(0,2), Tid=IntLit, Text=[1u], Size=Unspecified, Value=1, Flags=Unsigned
+Range=(3,5), Tid=IntLit, Text=[1U], Size=Unspecified, Value=1, Flags=Unsigned
+Range=(6,9), Tid=IntLit, Text=[1u1], Size=OneByte, Value=1, Flags=Unsigned
+Range=(10,13), Tid=IntLit, Text=[1u2], Size=TwoBytes, Value=1, Flags=Unsigned
+Range=(14,17), Tid=IntLit, Text=[1u4], Size=FourBytes, Value=1, Flags=Unsigned
+Range=(18,21), Tid=IntLit, Text=[1u8], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(22,24), Tid=IntLit, Text=[1u], Size=Unspecified, Value=1, Flags=Unsigned
+Range=(24,25), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(27,29), Tid=IntLit, Text=[1i], Size=Unspecified, Value=1, Flags=None
+Range=(30,33), Tid=IntLit, Text=[1i1], Size=OneByte, Value=1, Flags=None
+Range=(34,37), Tid=IntLit, Text=[1i2], Size=TwoBytes, Value=1, Flags=None
+Range=(38,41), Tid=IntLit, Text=[1i4], Size=FourBytes, Value=1, Flags=None
+Range=(42,45), Tid=IntLit, Text=[1i8], Size=EightBytes, Value=1, Flags=None
+Range=(46,49), Tid=IntLit, Text=[1ia], Size=UnlimitedSize, Value=1, Flags=None
+Range=(50,52), Tid=IntLit, Text=[1i], Size=Unspecified, Value=1, Flags=None
+Range=(52,53), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(55,57), Tid=IntLit, Text=[1l], Size=EightBytes, Value=1, Flags=None
+Range=(58,60), Tid=IntLit, Text=[1L], Size=EightBytes, Value=1, Flags=None
+Range=(62,65), Tid=IntLit, Text=[1ul], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(66,69), Tid=IntLit, Text=[1uL], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(70,73), Tid=IntLit, Text=[1Ul], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(74,77), Tid=IntLit, Text=[1UL], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(79,82), Tid=IntLit, Text=[1lu], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(83,86), Tid=IntLit, Text=[1lU], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(87,90), Tid=IntLit, Text=[1Lu], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(91,94), Tid=IntLit, Text=[1LU], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(94,94), Tid=Eof, Text=[]
+###
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> 1l2
+> 1ul2
+> 1lu2
+Range=(0,77), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(78,80), Tid=IntLit, Text=[1l], Size=EightBytes, Value=1, Flags=None
+Range=(80,81), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(82,85), Tid=IntLit, Text=[1ul], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(85,86), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(87,90), Tid=IntLit, Text=[1lu], Size=EightBytes, Value=1, Flags=Unsigned
+Range=(90,91), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(91,91), Tid=Eof, Text=[]
+###
+> 1d
+> 1f
+> 1r4
+> 1r8
+> 1r
+> 1r1
+> 1r2
+> 1r3
+> 1a1
+> 1d2
+> 1f3
+> 1ra
+Range=(0,2), Tid=FltLit, Text=[1d], Size=EightBytes, Value=1
+Range=(3,5), Tid=FltLit, Text=[1f], Size=FourBytes, Value=1
+Range=(6,9), Tid=FltLit, Text=[1r4], Size=FourBytes, Value=1
+Range=(10,13), Tid=FltLit, Text=[1r8], Size=EightBytes, Value=1
+Range=(14,16), Tid=FltLit, Text=[1r], Size=Unspecified, Value=1
+Range=(17,20), Tid=FltLit, Text=[1r1], Size=OneByte, Value=1
+Range=(21,24), Tid=FltLit, Text=[1r2], Size=TwoBytes, Value=1
+Range=(25,27), Tid=FltLit, Text=[1r], Size=Unspecified, Value=1
+Range=(27,28), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(30,31), Tid=IntLit, Text=[1], Size=Unspecified, Value=1, Flags=None
+Range=(31,33), Tid=Ident, Text=[a1], Name=[a1], Flags=None
+Range=(34,36), Tid=FltLit, Text=[1d], Size=EightBytes, Value=1
+Range=(36,37), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(38,40), Tid=FltLit, Text=[1f], Size=FourBytes, Value=1
+Range=(40,41), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(43,45), Tid=FltLit, Text=[1r], Size=Unspecified, Value=1
+Range=(45,46), Tid=Ident, Text=[a], Name=[a], Flags=None
+Range=(46,46), Tid=Eof, Text=[]
+###
+> 256u
+> 256u1
+> 256u2
+> 256u4
+> 256u8
+> 256u3
+> 256i
+> 256i1
+> 256i2
+> 256i4
+> 256i8
+> 256ia
+> 256i3
+> 256d
+> 256f
+> 256r4
+> 256r8
+> 256r
+> 256r1
+> 256r2
+> 256r3
+> 256a1
+> 256d2
+> 256f3
+Range=(0,4), Tid=IntLit, Text=[256u], Size=Unspecified, Value=256, Flags=Unsigned
+Range=(5,10), Tid=IntLit, Text=[256u1], Size=OneByte, Value=256, Flags=Unsigned
+Range=(11,16), Tid=IntLit, Text=[256u2], Size=TwoBytes, Value=256, Flags=Unsigned
+Range=(17,22), Tid=IntLit, Text=[256u4], Size=FourBytes, Value=256, Flags=Unsigned
+Range=(23,28), Tid=IntLit, Text=[256u8], Size=EightBytes, Value=256, Flags=Unsigned
+Range=(29,33), Tid=IntLit, Text=[256u], Size=Unspecified, Value=256, Flags=Unsigned
+Range=(33,34), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(36,40), Tid=IntLit, Text=[256i], Size=Unspecified, Value=256, Flags=None
+Range=(41,46), Tid=IntLit, Text=[256i1], Size=OneByte, Value=256, Flags=None
+Range=(47,52), Tid=IntLit, Text=[256i2], Size=TwoBytes, Value=256, Flags=None
+Range=(53,58), Tid=IntLit, Text=[256i4], Size=FourBytes, Value=256, Flags=None
+Range=(59,64), Tid=IntLit, Text=[256i8], Size=EightBytes, Value=256, Flags=None
+Range=(65,70), Tid=IntLit, Text=[256ia], Size=UnlimitedSize, Value=256, Flags=None
+Range=(71,75), Tid=IntLit, Text=[256i], Size=Unspecified, Value=256, Flags=None
+Range=(75,76), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(78,82), Tid=FltLit, Text=[256d], Size=EightBytes, Value=256
+Range=(83,87), Tid=FltLit, Text=[256f], Size=FourBytes, Value=256
+Range=(88,93), Tid=FltLit, Text=[256r4], Size=FourBytes, Value=256
+Range=(94,99), Tid=FltLit, Text=[256r8], Size=EightBytes, Value=256
+Range=(100,104), Tid=FltLit, Text=[256r], Size=Unspecified, Value=256
+Range=(105,110), Tid=FltLit, Text=[256r1], Size=OneByte, Value=256
+Range=(111,116), Tid=FltLit, Text=[256r2], Size=TwoBytes, Value=256
+Range=(117,121), Tid=FltLit, Text=[256r], Size=Unspecified, Value=256
+Range=(121,122), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(124,127), Tid=IntLit, Text=[256], Size=Unspecified, Value=256, Flags=None
+Range=(127,129), Tid=Ident, Text=[a1], Name=[a1], Flags=None
+Range=(130,134), Tid=FltLit, Text=[256d], Size=EightBytes, Value=256
+Range=(134,135), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(136,140), Tid=FltLit, Text=[256f], Size=FourBytes, Value=256
+Range=(140,141), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(141,141), Tid=Eof, Text=[]
+###
+> 256U
+> 256U1
+> 256U2
+> 256U4
+> 256U8
+> 256U3
+> 256I
+> 256I1
+> 256I2
+> 256I4
+> 256I8
+> 256IA
+> 256I3
+> 256D
+> 256F
+> 256R4
+> 256R8
+> 256R
+> 256R1
+> 256R2
+> 256R3
+> 256A1
+> 256D2
+> 256F3
+Range=(0,4), Tid=IntLit, Text=[256U], Size=Unspecified, Value=256, Flags=Unsigned
+Range=(5,10), Tid=IntLit, Text=[256U1], Size=OneByte, Value=256, Flags=Unsigned
+Range=(11,16), Tid=IntLit, Text=[256U2], Size=TwoBytes, Value=256, Flags=Unsigned
+Range=(17,22), Tid=IntLit, Text=[256U4], Size=FourBytes, Value=256, Flags=Unsigned
+Range=(23,28), Tid=IntLit, Text=[256U8], Size=EightBytes, Value=256, Flags=Unsigned
+Range=(29,33), Tid=IntLit, Text=[256U], Size=Unspecified, Value=256, Flags=Unsigned
+Range=(33,34), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(36,40), Tid=IntLit, Text=[256I], Size=Unspecified, Value=256, Flags=None
+Range=(41,46), Tid=IntLit, Text=[256I1], Size=OneByte, Value=256, Flags=None
+Range=(47,52), Tid=IntLit, Text=[256I2], Size=TwoBytes, Value=256, Flags=None
+Range=(53,58), Tid=IntLit, Text=[256I4], Size=FourBytes, Value=256, Flags=None
+Range=(59,64), Tid=IntLit, Text=[256I8], Size=EightBytes, Value=256, Flags=None
+Range=(65,70), Tid=IntLit, Text=[256IA], Size=UnlimitedSize, Value=256, Flags=None
+Range=(71,75), Tid=IntLit, Text=[256I], Size=Unspecified, Value=256, Flags=None
+Range=(75,76), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(78,82), Tid=FltLit, Text=[256D], Size=EightBytes, Value=256
+Range=(83,87), Tid=FltLit, Text=[256F], Size=FourBytes, Value=256
+Range=(88,93), Tid=FltLit, Text=[256R4], Size=FourBytes, Value=256
+Range=(94,99), Tid=FltLit, Text=[256R8], Size=EightBytes, Value=256
+Range=(100,104), Tid=FltLit, Text=[256R], Size=Unspecified, Value=256
+Range=(105,110), Tid=FltLit, Text=[256R1], Size=OneByte, Value=256
+Range=(111,116), Tid=FltLit, Text=[256R2], Size=TwoBytes, Value=256
+Range=(117,121), Tid=FltLit, Text=[256R], Size=Unspecified, Value=256
+Range=(121,122), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(124,127), Tid=IntLit, Text=[256], Size=Unspecified, Value=256, Flags=None
+Range=(127,129), Tid=Ident, Text=[A1], Name=[A1], Flags=None
+Range=(130,134), Tid=FltLit, Text=[256D], Size=EightBytes, Value=256
+Range=(134,135), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(136,140), Tid=FltLit, Text=[256F], Size=FourBytes, Value=256
+Range=(140,141), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(141,141), Tid=Eof, Text=[]
+###
+> 12.3u
+> 12.3u1
+> 12.3u2
+> 12.3u4
+> 12.3u8
+> 12.3u3
+> 12.3i
+> 12.3i1
+> 12.3i2
+> 12.3i4
+> 12.3i8
+> 12.3ia
+> 12.3i3
+> 12.3d
+> 12.3f
+> 12.3r4
+> 12.3r8
+> 12.3r
+> 12.3r1
+> 12.3r2
+> 12.3r3
+> 1e400d
+> 1e400f
+> 2e100d
+> 2e100f
+> 2e100r4
+> 2e100r8
+> 2e100r
+> 1e-400d
+> 1e-400f
+> 2e-100d
+> 2e-100f
+> 2e-100r4
+> 2e-100r8
+> 2e-100r
+> 12.3a1
+> 12.3d2
+> 12.3f3
+Range=(0,4), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(4,5), Tid=Ident, Text=[u], Name=[u], Flags=None
+Range=(6,10), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(10,12), Tid=Ident, Text=[u1], Name=[u1], Flags=None
+Range=(13,17), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(17,19), Tid=Ident, Text=[u2], Name=[u2], Flags=None
+Range=(20,24), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(24,26), Tid=Ident, Text=[u4], Name=[u4], Flags=None
+Range=(27,31), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(31,33), Tid=Ident, Text=[u8], Name=[u8], Flags=None
+Range=(34,38), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(38,40), Tid=Ident, Text=[u3], Name=[u3], Flags=None
+Range=(42,46), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(46,47), Tid=Ident, Text=[i], Name=[i], Flags=None
+Range=(48,52), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(52,54), Tid=Ident, Text=[i1], Name=[i1], Flags=None
+Range=(55,59), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(59,61), Tid=Ident, Text=[i2], Name=[i2], Flags=None
+Range=(62,66), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(66,68), Tid=Ident, Text=[i4], Name=[i4], Flags=None
+Range=(69,73), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(73,75), Tid=Ident, Text=[i8], Name=[i8], Flags=None
+Range=(76,80), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(80,82), Tid=Ident, Text=[ia], Name=[ia], Flags=None
+Range=(83,87), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(87,89), Tid=Ident, Text=[i3], Name=[i3], Flags=None
+Range=(91,96), Tid=FltLit, Text=[12.3d], Size=EightBytes, Value=12.3
+Range=(97,102), Tid=FltLit, Text=[12.3f], Size=FourBytes, Value=12.3
+Range=(103,109), Tid=FltLit, Text=[12.3r4], Size=FourBytes, Value=12.3
+Range=(110,116), Tid=FltLit, Text=[12.3r8], Size=EightBytes, Value=12.3
+Range=(117,122), Tid=FltLit, Text=[12.3r], Size=Unspecified, Value=12.3
+Range=(123,129), Tid=FltLit, Text=[12.3r1], Size=OneByte, Value=12.3
+Range=(130,136), Tid=FltLit, Text=[12.3r2], Size=TwoBytes, Value=12.3
+Range=(137,142), Tid=FltLit, Text=[12.3r], Size=Unspecified, Value=12.3
+Range=(142,143), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(145,151), Tid=FltLit, Text=[1e400d], Size=EightBytes, Value=∞
+Range=(152,158), Tid=FltLit, Text=[1e400f], Size=FourBytes, Value=∞
+Range=(159,165), Tid=FltLit, Text=[2e100d], Size=EightBytes, Value=2E+100
+Range=(166,172), Tid=FltLit, Text=[2e100f], Size=FourBytes, Value=2E+100
+Range=(173,180), Tid=FltLit, Text=[2e100r4], Size=FourBytes, Value=2E+100
+Range=(181,188), Tid=FltLit, Text=[2e100r8], Size=EightBytes, Value=2E+100
+Range=(189,195), Tid=FltLit, Text=[2e100r], Size=Unspecified, Value=2E+100
+Range=(197,204), Tid=FltLit, Text=[1e-400d], Size=EightBytes, Value=0
+Range=(205,212), Tid=FltLit, Text=[1e-400f], Size=FourBytes, Value=0
+Range=(213,220), Tid=FltLit, Text=[2e-100d], Size=EightBytes, Value=2E-100
+Range=(221,228), Tid=FltLit, Text=[2e-100f], Size=FourBytes, Value=2E-100
+Range=(229,237), Tid=FltLit, Text=[2e-100r4], Size=FourBytes, Value=2E-100
+Range=(238,246), Tid=FltLit, Text=[2e-100r8], Size=EightBytes, Value=2E-100
+Range=(247,254), Tid=FltLit, Text=[2e-100r], Size=Unspecified, Value=2E-100
+Range=(256,260), Tid=FltLit, Text=[12.3], Size=Unspecified, Value=12.3
+Range=(260,262), Tid=Ident, Text=[a1], Name=[a1], Flags=None
+Range=(263,268), Tid=FltLit, Text=[12.3d], Size=EightBytes, Value=12.3
+Range=(268,269), Tid=IntLit, Text=[2], Size=Unspecified, Value=2, Flags=None
+Range=(270,275), Tid=FltLit, Text=[12.3f], Size=FourBytes, Value=12.3
+Range=(275,276), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(276,276), Tid=Eof, Text=[]
+###
+> 0xFFu
+> 0xFFu1
+> 0x7Fu1
+> 0x80u1
+> 0xFFu2
+> 0xFFu4
+> 0xFFu8
+> 0xFFu3
+> 0xFFi
+> 0xFFi1
+> 0x7Fi1
+> 0x80i1
+> 0xFFi2
+> 0xFFi4
+> 0xFFi8
+> 0xFFia
+> 0xFFi3
+> 0xFFd
+> 0xFFf
+> 0xFFr4
+> 0xFFr8
+> 0xFFr
+> 0xFFr1
+> 0xFFr2
+> 0xFFr3
+> 0xFFa1
+> 0xFFd2
+> 0xFFf3
+> 0xFFFFu
+> 0xFFFFu1
+> 0xFFFFu2
+> 0x7FFFu2
+> 0x8000u2
+> 0xFFFFu4
+> 0xFFFFu8
+> 0xFFFFi
+> 0xFFFFi1
+> 0xFFFFi2
+> 0x7FFFi2
+> 0x8000i2
+> 0xFFFFi4
+> 0xFFFFi8
+> 0xFFFFia
+> 0xFFFFFFFFu
+> 0xFFFFFFFFu1
+> 0xFFFFFFFFu2
+> 0xFFFFFFFFu4
+> 0x7FFFFFFFu4
+> 0x80000000u4
+> 0xFFFFFFFFu8
+> 0xFFFFFFFFi
+> 0xFFFFFFFFi1
+> 0xFFFFFFFFi2
+> 0xFFFFFFFFi4
+> 0x7FFFFFFFi4
+> 0x80000000i4
+> 0xFFFFFFFFi8
+> 0xFFFFFFFFia
+> 0xFFFFFFFFFFFFFFFFu
+> 0xFFFFFFFFFFFFFFFFu1
+> 0xFFFFFFFFFFFFFFFFu2
+> 0xFFFFFFFFFFFFFFFFu4
+> 0xFFFFFFFFFFFFFFFFu8
+> 0x7FFFFFFFFFFFFFFFu8
+> 0x8000000000000000u8
+> 0xFFFFFFFFFFFFFFFFuL
+> 0xFFFFFFFFFFFFFFFFi
+> 0xFFFFFFFFFFFFFFFFi1
+> 0xFFFFFFFFFFFFFFFFi2
+> 0xFFFFFFFFFFFFFFFFi4
+> 0xFFFFFFFFFFFFFFFFi8
+> 0x7FFFFFFFFFFFFFFFi8
+> 0x7FFFFFFFFFFFFFFFL
+> 0x8000000000000000i8
+> 0xFFFFFFFFFFFFFFFFia
+> 0x8000000000000000L
+> // *** Digit separator
+Range=(0,5), Tid=IntLit, Text=[0xFFu], Size=Unspecified, Value=255, Flags=Hex, Unsigned
+Range=(6,12), Tid=IntLit, Text=[0xFFu1], Size=OneByte, Value=255, Flags=Hex, Unsigned
+Range=(13,19), Tid=IntLit, Text=[0x7Fu1], Size=OneByte, Value=127, Flags=Hex, Unsigned
+Range=(20,26), Tid=IntLit, Text=[0x80u1], Size=OneByte, Value=128, Flags=Hex, Unsigned
+Range=(27,33), Tid=IntLit, Text=[0xFFu2], Size=TwoBytes, Value=255, Flags=Hex, Unsigned
+Range=(34,40), Tid=IntLit, Text=[0xFFu4], Size=FourBytes, Value=255, Flags=Hex, Unsigned
+Range=(41,47), Tid=IntLit, Text=[0xFFu8], Size=EightBytes, Value=255, Flags=Hex, Unsigned
+Range=(48,53), Tid=IntLit, Text=[0xFFu], Size=Unspecified, Value=255, Flags=Hex, Unsigned
+Range=(53,54), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(56,61), Tid=IntLit, Text=[0xFFi], Size=Unspecified, Value=255, Flags=Hex
+Range=(62,68), Tid=IntLit, Text=[0xFFi1], Size=OneByte, Value=255, Flags=Hex
+Range=(69,75), Tid=IntLit, Text=[0x7Fi1], Size=OneByte, Value=127, Flags=Hex
+Range=(76,82), Tid=IntLit, Text=[0x80i1], Size=OneByte, Value=128, Flags=Hex
+Range=(83,89), Tid=IntLit, Text=[0xFFi2], Size=TwoBytes, Value=255, Flags=Hex
+Range=(90,96), Tid=IntLit, Text=[0xFFi4], Size=FourBytes, Value=255, Flags=Hex
+Range=(97,103), Tid=IntLit, Text=[0xFFi8], Size=EightBytes, Value=255, Flags=Hex
+Range=(104,110), Tid=IntLit, Text=[0xFFia], Size=UnlimitedSize, Value=255, Flags=Hex
+Range=(111,116), Tid=IntLit, Text=[0xFFi], Size=Unspecified, Value=255, Flags=Hex
+Range=(116,117), Tid=IntLit, Text=[3], Size=Unspecified, Value=3, Flags=None
+Range=(119,124), Tid=IntLit, Text=[0xFFd], Size=Unspecified, Value=4093, Flags=Hex
+Range=(125,130), Tid=IntLit, Text=[0xFFf], Size=Unspecified, Value=4095, Flags=Hex
+Range=(131,135), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(135,137), Tid=Ident, Text=[r4], Name=[r4], Flags=None
+Range=(138,142), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(142,144), Tid=Ident, Text=[r8], Name=[r8], Flags=None
+Range=(145,149), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(149,150), Tid=Ident, Text=[r], Name=[r], Flags=None
+Range=(151,155), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(155,157), Tid=Ident, Text=[r1], Name=[r1], Flags=None
+Range=(158,162), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(162,164), Tid=Ident, Text=[r2], Name=[r2], Flags=None
+Range=(165,169), Tid=IntLit, Text=[0xFF], Size=Unspecified, Value=255, Flags=Hex
+Range=(169,171), Tid=Ident, Text=[r3], Name=[r3], Flags=None
+Range=(173,179), Tid=IntLit, Text=[0xFFa1], Size=Unspecified, Value=65441, Flags=Hex
+Range=(180,186), Tid=IntLit, Text=[0xFFd2], Size=Unspecified, Value=65490, Flags=Hex
+Range=(187,193), Tid=IntLit, Text=[0xFFf3], Size=Unspecified, Value=65523, Flags=Hex
+Range=(195,202), Tid=IntLit, Text=[0xFFFFu], Size=Unspecified, Value=65535, Flags=Hex, Unsigned
+Range=(203,211), Tid=IntLit, Text=[0xFFFFu1], Size=OneByte, Value=65535, Flags=Hex, Unsigned
+Range=(212,220), Tid=IntLit, Text=[0xFFFFu2], Size=TwoBytes, Value=65535, Flags=Hex, Unsigned
+Range=(221,229), Tid=IntLit, Text=[0x7FFFu2], Size=TwoBytes, Value=32767, Flags=Hex, Unsigned
+Range=(230,238), Tid=IntLit, Text=[0x8000u2], Size=TwoBytes, Value=32768, Flags=Hex, Unsigned
+Range=(239,247), Tid=IntLit, Text=[0xFFFFu4], Size=FourBytes, Value=65535, Flags=Hex, Unsigned
+Range=(248,256), Tid=IntLit, Text=[0xFFFFu8], Size=EightBytes, Value=65535, Flags=Hex, Unsigned
+Range=(258,265), Tid=IntLit, Text=[0xFFFFi], Size=Unspecified, Value=65535, Flags=Hex
+Range=(266,274), Tid=IntLit, Text=[0xFFFFi1], Size=OneByte, Value=65535, Flags=Hex
+Range=(275,283), Tid=IntLit, Text=[0xFFFFi2], Size=TwoBytes, Value=65535, Flags=Hex
+Range=(284,292), Tid=IntLit, Text=[0x7FFFi2], Size=TwoBytes, Value=32767, Flags=Hex
+Range=(293,301), Tid=IntLit, Text=[0x8000i2], Size=TwoBytes, Value=32768, Flags=Hex
+Range=(302,310), Tid=IntLit, Text=[0xFFFFi4], Size=FourBytes, Value=65535, Flags=Hex
+Range=(311,319), Tid=IntLit, Text=[0xFFFFi8], Size=EightBytes, Value=65535, Flags=Hex
+Range=(320,328), Tid=IntLit, Text=[0xFFFFia], Size=UnlimitedSize, Value=65535, Flags=Hex
+Range=(330,341), Tid=IntLit, Text=[0xFFFFFFFFu], Size=Unspecified, Value=4294967295, Flags=Hex, Unsigned
+Range=(342,354), Tid=IntLit, Text=[0xFFFFFFFFu1], Size=OneByte, Value=4294967295, Flags=Hex, Unsigned
+Range=(355,367), Tid=IntLit, Text=[0xFFFFFFFFu2], Size=TwoBytes, Value=4294967295, Flags=Hex, Unsigned
+Range=(368,380), Tid=IntLit, Text=[0xFFFFFFFFu4], Size=FourBytes, Value=4294967295, Flags=Hex, Unsigned
+Range=(381,393), Tid=IntLit, Text=[0x7FFFFFFFu4], Size=FourBytes, Value=2147483647, Flags=Hex, Unsigned
+Range=(394,406), Tid=IntLit, Text=[0x80000000u4], Size=FourBytes, Value=2147483648, Flags=Hex, Unsigned
+Range=(407,419), Tid=IntLit, Text=[0xFFFFFFFFu8], Size=EightBytes, Value=4294967295, Flags=Hex, Unsigned
+Range=(421,432), Tid=IntLit, Text=[0xFFFFFFFFi], Size=Unspecified, Value=4294967295, Flags=Hex
+Range=(433,445), Tid=IntLit, Text=[0xFFFFFFFFi1], Size=OneByte, Value=4294967295, Flags=Hex
+Range=(446,458), Tid=IntLit, Text=[0xFFFFFFFFi2], Size=TwoBytes, Value=4294967295, Flags=Hex
+Range=(459,471), Tid=IntLit, Text=[0xFFFFFFFFi4], Size=FourBytes, Value=4294967295, Flags=Hex
+Range=(472,484), Tid=IntLit, Text=[0x7FFFFFFFi4], Size=FourBytes, Value=2147483647, Flags=Hex
+Range=(485,497), Tid=IntLit, Text=[0x80000000i4], Size=FourBytes, Value=2147483648, Flags=Hex
+Range=(498,510), Tid=IntLit, Text=[0xFFFFFFFFi8], Size=EightBytes, Value=4294967295, Flags=Hex
+Range=(511,523), Tid=IntLit, Text=[0xFFFFFFFFia], Size=UnlimitedSize, Value=4294967295, Flags=Hex
+Range=(525,544), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu], Size=Unspecified, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(545,565), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu1], Size=OneByte, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(566,586), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu2], Size=TwoBytes, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(587,607), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu4], Size=FourBytes, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(608,628), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFu8], Size=EightBytes, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(629,649), Tid=IntLit, Text=[0x7FFFFFFFFFFFFFFFu8], Size=EightBytes, Value=9223372036854775807, Flags=Hex, Unsigned
+Range=(650,670), Tid=IntLit, Text=[0x8000000000000000u8], Size=EightBytes, Value=9223372036854775808, Flags=Hex, Unsigned
+Range=(671,691), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFuL], Size=EightBytes, Value=18446744073709551615, Flags=Hex, Unsigned
+Range=(693,712), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFi], Size=Unspecified, Value=18446744073709551615, Flags=Hex
+Range=(713,733), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFi1], Size=OneByte, Value=18446744073709551615, Flags=Hex
+Range=(734,754), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFi2], Size=TwoBytes, Value=18446744073709551615, Flags=Hex
+Range=(755,775), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFi4], Size=FourBytes, Value=18446744073709551615, Flags=Hex
+Range=(776,796), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFi8], Size=EightBytes, Value=18446744073709551615, Flags=Hex
+Range=(797,817), Tid=IntLit, Text=[0x7FFFFFFFFFFFFFFFi8], Size=EightBytes, Value=9223372036854775807, Flags=Hex
+Range=(818,837), Tid=IntLit, Text=[0x7FFFFFFFFFFFFFFFL], Size=EightBytes, Value=9223372036854775807, Flags=Hex
+Range=(838,858), Tid=IntLit, Text=[0x8000000000000000i8], Size=EightBytes, Value=9223372036854775808, Flags=Hex
+Range=(859,879), Tid=IntLit, Text=[0xFFFFFFFFFFFFFFFFia], Size=UnlimitedSize, Value=18446744073709551615, Flags=Hex
+Range=(880,899), Tid=IntLit, Text=[0x8000000000000000L], Size=EightBytes, Value=9223372036854775808, Flags=Hex
+Range=(901,923), Tid=CommentLine, Text=[// *** Digit separator]
+Range=(923,923), Tid=Eof, Text=[]
+###
+> 0xFFFF_FFFF_FFFF_FFFFi8
+> 0xFF__FF
+> 0x_FF_FF
+> 0xFF_FF_
+Range=(0,23), Tid=IntLit, Text=[0xFFFF_FFFF_FFFF_FFFFi8], Size=EightBytes, Value=18446744073709551615, Flags=Hex
+Range=(24,32), Tid=IntLit, Text=[0xFF__FF], Size=Unspecified, Value=65535, Flags=Hex, Error
+Range=(33,41), Tid=IntLit, Text=[0x_FF_FF], Size=Unspecified, Value=65535, Flags=Hex, Error
+Range=(42,50), Tid=IntLit, Text=[0xFF_FF_], Size=Unspecified, Value=65535, Flags=Hex, Error
+Range=(50,50), Tid=Eof, Text=[]
+###
+> 123_45_6789
+> 123_
+> 123_456.1_25
+> 123_456_.1_25
+> 123_456.1_25_
+> 123_456e1_25
+> 123_456_e1_25
+> 123_456e1_25_
+> 123___456.1_____25
+> 123_456.1_25
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> 123_456._1_25
+> 123_456e_1_25
+Range=(0,11), Tid=IntLit, Text=[123_45_6789], Size=Unspecified, Value=123456789, Flags=None
+Range=(12,16), Tid=IntLit, Text=[123_], Size=Unspecified, Value=123, Flags=Error
+Range=(17,29), Tid=FltLit, Text=[123_456.1_25], Size=Unspecified, Value=123456.125
+Range=(30,43), Tid=FltLit, Text=[123_456_.1_25], Size=Unspecified, Value=123456.125<Err>
+Range=(44,57), Tid=FltLit, Text=[123_456.1_25_], Size=Unspecified, Value=123456.125<Err>
+Range=(58,70), Tid=FltLit, Text=[123_456e1_25], Size=Unspecified, Value=1.23456E+130
+Range=(71,84), Tid=FltLit, Text=[123_456_e1_25], Size=Unspecified, Value=1.23456E+130<Err>
+Range=(85,98), Tid=FltLit, Text=[123_456e1_25_], Size=Unspecified, Value=1.23456E+130<Err>
+Range=(99,117), Tid=FltLit, Text=[123___456.1_____25], Size=Unspecified, Value=123456.125<Err>
+Range=(118,130), Tid=FltLit, Text=[123_456.1_25], Size=Unspecified, Value=123456.125
+Range=(131,208), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(209,216), Tid=IntLit, Text=[123_456], Size=Unspecified, Value=123456, Flags=None
+Range=(216,217), Tid=Dot, Text=[.], Punc=[.]
+Range=(217,222), Tid=Ident, Text=[_1_25], Name=[_1_25], Flags=None
+Range=(223,230), Tid=IntLit, Text=[123_456], Size=Unspecified, Value=123456, Flags=None
+Range=(230,236), Tid=Ident, Text=[e_1_25], Name=[e_1_25], Flags=None
+Range=(236,236), Tid=Eof, Text=[]
+###
+> 0b1000
+> 0B1000
+> 0b1_0011
+> 0b1__0011
+> 0b_1000
+> 0b1000_
+> // REVIEW: This might be useful for binary (supporting two adjacent _).
+> 0b0001_0010_0011_0100__0101_0110_0111_1000__1001_1010_1011_1100__1101_1110_1111_0000
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000
+> 0b_0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000_
+> // *** Coverage
+Range=(0,6), Tid=IntLit, Text=[0b1000], Size=Unspecified, Value=8, Flags=Bin
+Range=(7,13), Tid=IntLit, Text=[0B1000], Size=Unspecified, Value=8, Flags=Bin
+Range=(14,22), Tid=IntLit, Text=[0b1_0011], Size=Unspecified, Value=19, Flags=Bin
+Range=(23,32), Tid=IntLit, Text=[0b1__0011], Size=Unspecified, Value=19, Flags=Bin, Error
+Range=(33,40), Tid=IntLit, Text=[0b_1000], Size=Unspecified, Value=8, Flags=Bin, Error
+Range=(41,48), Tid=IntLit, Text=[0b1000_], Size=Unspecified, Value=8, Flags=Bin, Error
+Range=(49,120), Tid=CommentLine, Text=[// REVIEW: This might be useful for binary (supporting two adjacent _).]
+Range=(121,205), Tid=IntLit, Text=[0b0001_0010_0011_0100__0101_0110_0111_1000__1001_1010_1011_1100__1101_1110_1111_0000], Size=Unspecified, Value=1311768467463790320, Flags=Bin, Error
+Range=(206,287), Tid=IntLit, Text=[0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000], Size=Unspecified, Value=1311768467463790320, Flags=Bin
+Range=(288,370), Tid=IntLit, Text=[0b_0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000], Size=Unspecified, Value=1311768467463790320, Flags=Bin, Error
+Range=(371,453), Tid=IntLit, Text=[0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000_], Size=Unspecified, Value=1311768467463790320, Flags=Bin, Error
+Range=(455,470), Tid=CommentLine, Text=[// *** Coverage]
+Range=(470,470), Tid=Eof, Text=[]
+###
+> // REVIEW: these produce unhelpful bind errors. Better to produce lex errors?
+> 1.0L
+> 0b0101f
+> 0b0101d
+Range=(0,77), Tid=CommentLine, Text=[// REVIEW: these produce unhelpful bind errors. Better to produce lex errors?]
+Range=(78,81), Tid=FltLit, Text=[1.0], Size=Unspecified, Value=1
+Range=(81,82), Tid=Ident, Text=[L], Name=[L], Flags=None
+Range=(83,89), Tid=IntLit, Text=[0b0101], Size=Unspecified, Value=5, Flags=Bin
+Range=(89,90), Tid=Ident, Text=[f], Name=[f], Flags=None
+Range=(91,97), Tid=IntLit, Text=[0b0101], Size=Unspecified, Value=5, Flags=Bin
+Range=(97,98), Tid=Ident, Text=[d], Name=[d], Flags=None
+Range=(98,98), Tid=Eof, Text=[]
+###

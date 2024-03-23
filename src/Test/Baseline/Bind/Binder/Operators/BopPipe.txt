@@ -1,0 +1,157 @@
+**** New globals: {T:{A:r8, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:r8}, I:i}*, b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 7 | _ + 3
+7 | _ + 3 : i8
+Binder : Add(7, 3)
+Reducer: 10
+###
+> i1 | 3 + _
+i1 | 3 + _ : i8
+Binder : Add(3, Num<i8>(i1))
+Reducer: Add(Num<i8>(i1), 3)
+###
+> i1 | 3 + _ * _ // Error.
+i1 | 3 + _ * _ : i8
+*** Error: (13,14) Node: _, Message: The target box, '_', can be used only once on the right side of =>. Consider using 'With(x : _, ...)'
+Binder : Add(3, Mul(Num<i8>(i1), Num<i8>(Error(ErrMultipleUseOfBox))))
+Reducer: Add(Mul(Num<i8>(i1), Num<i8>(Error(ErrMultipleUseOfBox))), 3)
+###
+> i1 | With(x: _, 3 + x * x)
+i1 | With(x : _, 3 + x * x) : i8
+Binder : With(!1: i1, Add(3, Mul(Num<i8>(!1), Num<i8>(!1))))
+Reducer: Add(Mul(Num<i8>(i1), Num<i8>(i1)), 3)
+###
+> Wrap(i1) | With(x: _, 3 + x * x)
+Wrap(i1) | With(x : _, 3 + x * x) : i8
+Binder : With(!1: Test.Wrap(i1), Add(3, Mul(Num<i8>(!1), Num<i8>(!1))))
+Reducer: With(!1: Test.Wrap(i1), Add(Mul(Num<i8>(!1), Num<i8>(!1)), 3))
+###
+> i1 -> Wrap()
+i1->Wrap() : i1
+Binder : Test.Wrap(i1)
+###
+> i1 -> Wrap() -> Wrap()
+i1->Wrap()->Wrap() : i1
+Binder : Test.Wrap(Test.Wrap(i1))
+###
+> i1 -> Wrap() | Wrap(_)
+i1->Wrap() | Wrap(_) : i1
+Binder : Test.Wrap(Test.Wrap(i1))
+###
+> i1 | Wrap(_) -> Wrap()
+i1 | Wrap(_)->Wrap() : i1
+Binder : Test.Wrap(Test.Wrap(i1))
+###
+> i1 -> Wrap() -> Wrap() | Wrap(_)
+i1->Wrap()->Wrap() | Wrap(_) : i1
+Binder : Test.Wrap(Test.Wrap(Test.Wrap(i1)))
+###
+> i1 | Wrap(_) -> Wrap() | Wrap(_)
+i1 | Wrap(_)->Wrap() | Wrap(_) : i1
+Binder : Test.Wrap(Test.Wrap(Test.Wrap(i1)))
+###
+> i1 -> GuardMap(3+it)
+i1->GuardMap(3 + it) : i8
+Binder : Guard(!1: i1, Add(3, Num<i8>(!1)))
+Reducer: Add(Num<i8>(i1), 3)
+###
+> i1 -> GuardMap(3+it) -> With(5+it)
+i1->GuardMap(3 + it)->With(5 + it) : i8
+Binder : With(!2: Guard(!1: i1, Add(3, Num<i8>(!1))), Add(5, !2))
+Reducer: Add(Num<i8>(i1), 8)
+###
+> i1 -> GuardMap(3+it) | With(_, 5+it)
+i1->GuardMap(3 + it) | With(_, 5 + it) : i8
+Binder : With(!2: Guard(!1: i1, Add(3, Num<i8>(!1))), Add(5, !2))
+Reducer: Add(Num<i8>(i1), 8)
+###
+> i1 | GuardMap(_,3+it) -> With(5+it)
+i1 | GuardMap(_, 3 + it)->With(5 + it) : i8
+Binder : With(!2: Guard(!1: i1, Add(3, Num<i8>(!1))), Add(5, !2))
+Reducer: Add(Num<i8>(i1), 8)
+###
+> i1 -> GuardMap(3+it) -> With(5+it) | WithMap(_,7+it)
+i1->GuardMap(3 + it)->With(5 + it) | WithMap(_, 7 + it) : i8
+Binder : With(!3: With(!2: Guard(!1: i1, Add(3, Num<i8>(!1))), Add(5, !2)), Add(7, !3))
+Reducer: Add(Num<i8>(i1), 15)
+###
+> i1 | GuardMap(_,3+it) -> With(5+it) | WithMap(_,7+it)
+i1 | GuardMap(_, 3 + it)->With(5 + it) | WithMap(_, 7 + it) : i8
+Binder : With(!3: With(!2: Guard(!1: i1, Add(3, Num<i8>(!1))), Add(5, !2)), Add(7, !3))
+Reducer: Add(Num<i8>(i1), 15)
+###
+> i1 -> Wrap() -> With(3+it)
+i1->Wrap()->With(3 + it) : i8
+Binder : With(!1: Test.Wrap(i1), Add(3, Num<i8>(!1)))
+Reducer: Add(Num<i8>(Test.Wrap(i1)), 3)
+###
+> i1 -> Wrap() | With(_, 3+it)
+i1->Wrap() | With(_, 3 + it) : i8
+Binder : With(!1: Test.Wrap(i1), Add(3, Num<i8>(!1)))
+Reducer: Add(Num<i8>(Test.Wrap(i1)), 3)
+###
+> i1 | Wrap(_) -> With(3+it)
+i1 | Wrap(_)->With(3 + it) : i8
+Binder : With(!1: Test.Wrap(i1), Add(3, Num<i8>(!1)))
+Reducer: Add(Num<i8>(Test.Wrap(i1)), 3)
+###
+> T -> GroupBy(A, Nested)
+T->GroupBy(A, Nested) : {A:r8, Nested:{B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:r8}, I:i}*}*
+Binder : GroupBy(*1: T, [key] A:*1.A, [auto] Nested:<auto>)
+###
+> With(x:i4, x -> Div(i4))
+With(x : i4, x->Div(i4)) : i8
+Binder : With(!1: i4, Div(Num<i8>(!1), Num<i8>(i4)))
+Reducer: Div(Num<i8>(i4), Num<i8>(i4))
+###
+> T -> Guard(T)
+T->Guard(T) : {A:r8, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:r8}, I:i}*
+Binder : Guard(?1: T, T)
+###
+> i1 | i2
+i1 | i2 : i2
+*** Warning: (3,4) Node: i1 | i2, Message: The right side of | should contain the target box, '_'
+Binder : i2
+###
+> _ + 3
+_ + 3 : i8
+*** Error: (0,1) Node: _, Message: The target box, '_', can only be used on the right side of =>
+Binder : Add(Unit<i8>(Error(ErrUnboundBox)), 3)
+Reducer: 3
+###
+> i1 -> i2
+i1->i2() : v
+=== Parse diagnostics:
+*** Error: (8,8) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+*** Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,5) Node: i1->i2(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i1)
+###
+> i1 -> F()
+i1->F() : v
+*** Error: (3,5) Node: i1->F(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i1)
+###
+> i1 -> Div()
+i1->Div() : i8
+*** Error: (3,5) Node: i1->Div(), Message: Too few arguments for Div, expected 1 additional
+Binder : Div(Num<i8>(i1), Unit<i8>(<missing>))
+Reducer: 0
+###
+> i1 -> Div(i1,i1)
+i1->Div(i1, i1) : i8
+*** Error: (13,15) Node: i1, Message: Too many arguments for Div, expected 1 fewer
+Binder : Div(Num<i8>(i1), Num<i8>(i1))
+###
+> [] -> Map()
+[]->Map() : v*
+*** Error: (3,5) Node: []->Map(), Message: Too few arguments for ForEach, expected 1 additional
+Binder : ForEach(*1: null, <missing>)
+Reducer: null
+###
+> [] -> Map([], it+1)
+[]->Map([], it + 1) : i8*
+Binder : ForEach(*1: null, *2: null, Add(Unit<i8>(*2), 1))
+Reducer: null
+###

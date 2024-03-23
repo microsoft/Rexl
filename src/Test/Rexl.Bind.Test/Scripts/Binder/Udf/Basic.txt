@@ -1,0 +1,136 @@
+﻿`` i8 := 17i8;
+`` qi8 := 17i8->Opt();
+`` r8 := 3.5;
+`` func F(x) := x + Abs(x);
+`` func G(x, y) := x + Abs(y);
+`` func H(x) := F(x) * G(x, x);
+`` func H(x, y, z) := F(x) * G(y, z);
+`` function I(x) := (x, Abs(x));
+`` func V(x) := Date.Now.Utc() + Time(x);
+
+F(i8)
+F(r8)
+F(3)
+F(-7)
+F(-7.5)
+F(3.5)
+F(i8 * i8)
+F(i8 + r8)
+
+G(i8, i8)
+G(Wrap(i8), i8)
+G(i8, Wrap(i8))
+G(Wrap(i8), Wrap(i8))
+G(i8, r8)
+G(i8, -12)
+G(3, -12)
+
+H(i8)
+H(Wrap(i8))
+H(3)
+
+H(i8, i8, i8)
+H(Wrap(i8), i8, i8)
+H(i8, Wrap(i8), i8)
+H(i8, i8, Wrap(i8))
+H(Wrap(i8), Wrap(i8), i8)
+H(Wrap(i8), i8, Wrap(i8))
+H(i8, Wrap(i8), Wrap(i8))
+H(Wrap(i8), Wrap(i8), Wrap(i8))
+H(i8, r8, 7)
+H(3, i8, -12)
+H(3, -12, 5)
+
+I(i8)
+I(-12)
+
+V(3) // Error - volatile not allowed.
+
+// Lifting happens inside.
+F(Range(i8))
+G(Range(i8), 3)
+G(Range(i8), Range(3))
+I(Range(i8)) // Tuple with a sequence, not sequence of tuples.
+
+F(qi8)
+G(qi8, qi8)
+G(qi8, 3)
+G(Range(i8), qi8)
+I(qi8) // The Guard is inside the tuple.
+
+// Wrong arity.
+F()
+F(3, -12)
+
+H()
+H(3, -12)
+H(3, -12, 5, 4)
+
+// Case correction.
+f(-7)
+f()
+f(3, -12)
+h()
+h(3, -12)
+h(3, -12, 5, 4)
+
+// Remove F and get errors.
+`` func F(x) := _;
+
+F(i8)
+G(3, -12)
+H(i8)
+H(3)
+
+`` func F(x, y, x) := (x, y);
+
+F(1,2,3)
+
+`` x := -17; // The funcs don't bind to this.
+`` func K() := x + @x; // Error: can't see globals, qualified or not.
+`` func L(x) := x + @x; // Error: can't see globals.
+`` func M(x) := x * x;
+
+K()
+L(2)
+M(2)
+
+// The func body won't see this x.
+With(x: 12, M(3))
+
+`` func Text.HalfUpper(x, split) := Part(x, 0, split).Upper & Part(x, split);
+`` prop Text.HalfUpper(x) := HalfUpper(x, Text.Len(x) div 2);
+`` function Text.HalfSwap(x, split) := Part(x, split) & Part(x, 0, split);
+`` property Text.HalfSwap(x) := HalfSwap(x, Text.Len(x) div 2);
+`` s := "Hello, World";
+
+Text.HalfUpper(s)
+s.HalfUpper
+s->HalfUpper()
+s->HalfUpper(3)
+
+Text.HalfUpper("Hello, World")
+"Hello, World".HalfUpper
+"Hello, World"->HalfUpper()
+"Hello, World"->HalfUpper(3)
+"Hello, World"->HalfUpper(10)
+
+Text.HalfSwap(s)
+s.HalfSwap
+s->HalfSwap()
+s->HalfSwap(3)
+
+Text.HalfSwap("Hello, World")
+"Hello, World".HalfSwap
+"Hello, World"->HalfSwap()
+"Hello, World"->HalfSwap(3)
+"Hello, World"->HalfSwap(10)
+
+// Suggestion from UDF shouldn't get pasted into formula.
+`` func J(x) := GlueMap(x, Range(it + 1));
+J(Range(3))
+
+// Suggestions crossing over multiple formulas.
+`` func Q(x) := R(x);
+`` func R(y) := y ~in Range(3);
+Q(2)

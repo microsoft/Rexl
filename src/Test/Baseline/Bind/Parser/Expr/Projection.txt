@@ -1,0 +1,335 @@
+> A->{ X: F }
+Node: [A->{ X : F }]
+Dump:
+  00 Node[id:5, kind:RecordProjection, depth:5, tok:SubGrt, rng:(1,3) [->], full:(0,11) [A->{ X: F }]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Record, depth:4, tok:CurlyOpen, rng:(3,4) [{], full:(3,11) [{ X: F }]], count=1
+  02     Node[id:3, kind:ExprList, depth:3, tok:X, rng:(5,6) [X], full:(5,9) [X: F]], count=1
+  03       Node[id:2, kind:VariableDecl, depth:2, tok:Colon, rng:(6,7) [:], full:(5,9) [X: F], extra=[var:X]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:F, rng:(8,9) [F], full:(8,9) [F], extra=[F]]
+###
+> A+>{ X: F }
+Node: [A+>{ X : F }]
+Dump:
+  00 Node[id:5, kind:RecordProjection, depth:5, tok:AddGrt, rng:(1,3) [+>], full:(0,11) [A+>{ X: F }], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Record, depth:4, tok:CurlyOpen, rng:(3,4) [{], full:(3,11) [{ X: F }]], count=1
+  02     Node[id:3, kind:ExprList, depth:3, tok:X, rng:(5,6) [X], full:(5,9) [X: F]], count=1
+  03       Node[id:2, kind:VariableDecl, depth:2, tok:Colon, rng:(6,7) [:], full:(5,9) [X: F], extra=[var:X]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:F, rng:(8,9) [F], full:(8,9) [F], extra=[F]]
+###
+> // No longer supported.
+> A+>{+ X: F }
+Node: [A+>{ '' : +X }]
+Dump:
+  00 Node[id:6, kind:RecordProjection, depth:6, tok:AddGrt, rng:(25,27) [+>], full:(24,31) [A+>{+ X], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+  01   Node[id:5, kind:Record, depth:5, tok:CurlyOpen, rng:(27,28) [{], full:(27,31) [{+ X]], count=1
+  02     Node[id:4, kind:ExprList, depth:4, tok:Add, rng:(28,29) [+], full:(28,31) [+ X]], count=1
+  03       Node[id:3, kind:VariableDecl, depth:3, tok:'', rng:(31,31) [], full:(28,31) [+ X], extra=[var:_X]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Add, rng:(28,29) [+], full:(28,31) [+ X], extra=[Posate]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:X, rng:(30,31) [X], full:(30,31) [X], extra=[X]]
+Error: (31,32) Tok: ':', Message: Expected: 'as', Found: ':'
+Error: (31,32) Tok: ':', Message: Expected: '<identifier>', Found: ':'
+Error: (31,32) Tok: ':', Message: Expected: '}', Found: ':'
+Error: (31,32) Tok: ':', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> A->&{ X: F }
+Node: [A+>{ X : F }]
+Dump:
+  00 Node[id:5, kind:RecordProjection, depth:5, tok:SubGrt, rng:(1,3) [->], full:(0,12) [A->&{ X: F }], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Record, depth:4, tok:CurlyOpen, rng:(4,5) [{], full:(4,12) [{ X: F }]], count=1
+  02     Node[id:3, kind:ExprList, depth:3, tok:X, rng:(6,7) [X], full:(6,10) [X: F]], count=1
+  03       Node[id:2, kind:VariableDecl, depth:2, tok:Colon, rng:(7,8) [:], full:(6,10) [X: F], extra=[var:X]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:F, rng:(9,10) [F], full:(9,10) [F], extra=[F]]
+###
+> A+>&{ X: F }
+Node: [A+>{ X : F }]
+Dump:
+  00 Node[id:5, kind:RecordProjection, depth:5, tok:AddGrt, rng:(1,3) [+>], full:(0,12) [A+>&{ X: F }], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Record, depth:4, tok:CurlyOpen, rng:(4,5) [{], full:(4,12) [{ X: F }]], count=1
+  02     Node[id:3, kind:ExprList, depth:3, tok:X, rng:(6,7) [X], full:(6,10) [X: F]], count=1
+  03       Node[id:2, kind:VariableDecl, depth:2, tok:Colon, rng:(7,8) [:], full:(6,10) [X: F], extra=[var:X]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:F, rng:(9,10) [F], full:(9,10) [F], extra=[F]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+###
+> // No longer supported.
+> A->&{+ X: F }
+Node: [A+>{ '' : +X }]
+Dump:
+  00 Node[id:6, kind:RecordProjection, depth:6, tok:SubGrt, rng:(25,27) [->], full:(24,32) [A->&{+ X], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+  01   Node[id:5, kind:Record, depth:5, tok:CurlyOpen, rng:(28,29) [{], full:(28,32) [{+ X]], count=1
+  02     Node[id:4, kind:ExprList, depth:4, tok:Add, rng:(29,30) [+], full:(29,32) [+ X]], count=1
+  03       Node[id:3, kind:VariableDecl, depth:3, tok:'', rng:(32,32) [], full:(29,32) [+ X], extra=[var:_X]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Add, rng:(29,30) [+], full:(29,32) [+ X], extra=[Posate]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:X, rng:(31,32) [X], full:(31,32) [X], extra=[X]]
+Error: (32,33) Tok: ':', Message: Expected: 'as', Found: ':'
+Error: (32,33) Tok: ':', Message: Expected: '<identifier>', Found: ':'
+Error: (32,33) Tok: ':', Message: Expected: '}', Found: ':'
+Error: (32,33) Tok: ':', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> // No longer supported.
+> A+>&{+ X: F }
+Node: [A+>{ '' : +X }]
+Dump:
+  00 Node[id:6, kind:RecordProjection, depth:6, tok:AddGrt, rng:(25,27) [+>], full:(24,32) [A+>&{+ X], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+  01   Node[id:5, kind:Record, depth:5, tok:CurlyOpen, rng:(28,29) [{], full:(28,32) [{+ X]], count=1
+  02     Node[id:4, kind:ExprList, depth:4, tok:Add, rng:(29,30) [+], full:(29,32) [+ X]], count=1
+  03       Node[id:3, kind:VariableDecl, depth:3, tok:'', rng:(32,32) [], full:(29,32) [+ X], extra=[var:_X]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Add, rng:(29,30) [+], full:(29,32) [+ X], extra=[Posate]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:X, rng:(31,32) [X], full:(31,32) [X], extra=[X]]
+Error: (25,27) Tok: '+>', Message: Expected: '->', Found: '+>'
+Error: (32,33) Tok: ':', Message: Expected: 'as', Found: ':'
+Error: (32,33) Tok: ':', Message: Expected: '<identifier>', Found: ':'
+Error: (32,33) Tok: ':', Message: Expected: '}', Found: ':'
+Error: (32,33) Tok: ':', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> A->(F)
+Node: [A->(F)]
+Dump:
+  00 Node[id:4, kind:ValueProjection, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,6) [A->(F)]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(F)]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+###
+> A+>(F)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,6) [A+>(F)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(F)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:F, rng:(4,5) [F], full:(4,5) [F]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+###
+> A->&(F)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,7) [A->&(F)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,7) [(F)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:F, rng:(5,6) [F], full:(5,6) [F]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+###
+> A+>&(F)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,7) [A+>&(F)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,7) [(F)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:F, rng:(5,6) [F], full:(5,6) [F]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+###
+> A->(F,)
+Node: [A->(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,7) [A->(F,)]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,7) [(F,)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(5,6) [,], full:(4,6) [F,]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+###
+> A+>(F,)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,7) [A+>(F,)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,7) [(F,)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(5,6) [,], full:(4,6) [F,]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+###
+> A->&(F,)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,8) [A->&(F,)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,8) [(F,)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,7) [F,]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+###
+> A+>&(F,)
+Node: [A+>(F,)]
+Dump:
+  00 Node[id:4, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,8) [A+>&(F,)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,8) [(F,)]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,7) [F,]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+###
+> A->(F, G)
+Node: [A->(F, G)]
+Dump:
+  00 Node[id:5, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,9) [A->(F, G)]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Tuple, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,9) [(F, G)]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(5,6) [,], full:(4,8) [F, G]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:G, rng:(7,8) [G], full:(7,8) [G], extra=[G]]
+###
+> A+>(F, G)
+Node: [A+>(F, G)]
+Dump:
+  00 Node[id:5, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,9) [A+>(F, G)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Tuple, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(3,9) [(F, G)]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(5,6) [,], full:(4,8) [F, G]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(4,5) [F], full:(4,5) [F], extra=[F]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:G, rng:(7,8) [G], full:(7,8) [G], extra=[G]]
+###
+> A->&(F, G)
+Node: [A+>(F, G)]
+Dump:
+  00 Node[id:5, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,10) [A->&(F, G)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,10) [(F, G)]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,9) [F, G]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:G, rng:(8,9) [G], full:(8,9) [G], extra=[G]]
+###
+> A+>&(F, G)
+Node: [A+>(F, G)]
+Dump:
+  00 Node[id:5, kind:TupleProjection, depth:4, tok:AddGrt, rng:(1,3) [+>], full:(0,10) [A+>&(F, G)], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,10) [(F, G)]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,9) [F, G]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:G, rng:(8,9) [G], full:(8,9) [G], extra=[G]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+###
+> A->&X
+Node: [A->X()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,5) [A->&X], extra=[X]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:Eof, rng:(5,5) [], full:(0,5) [A->&X]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Error: (3,4) Tok: '&', Message: Unexpected token
+Error: (5,5) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (5,5) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A+>&X
+Node: [A+>X()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:AddGrt, rng:(1,3) [+>], full:(0,5) [A+>&X], extra=[X]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:Eof, rng:(5,5) [], full:(0,5) [A+>&X]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+Error: (3,4) Tok: '&', Message: Unexpected token
+Error: (5,5) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (5,5) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A->&X(Y)
+Node: [A->X(Y)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,8) [A->&X(Y)], extra=[X]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:Y, rng:(6,7) [Y], full:(0,7) [A->&X(Y]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(6,7) [Y], full:(6,7) [Y], extra=[Y]]
+Error: (3,4) Tok: '&', Message: Unexpected token
+###
+> A+>&X(Y)
+Node: [A+>X(Y)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:AddGrt, rng:(1,3) [+>], full:(0,8) [A+>&X(Y)], extra=[X]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:Y, rng:(6,7) [Y], full:(0,7) [A+>&X(Y]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(6,7) [Y], full:(6,7) [Y], extra=[Y]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+Error: (3,4) Tok: '&', Message: Unexpected token
+###
+> A->_(Y)
+Node: [A->'_'(Y)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,7) [A->_(Y)], extra=['_']], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:Y, rng:(5,6) [Y], full:(0,6) [A->_(Y]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(5,6) [Y], full:(5,6) [Y], extra=[Y]]
+Error: (3,4) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+###
+> A->&(A, B,
+Node: [A+>(A, B)]
+Dump:
+  00 Node[id:5, kind:TupleProjection, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,10) [A->&(A, B,], extra=[concat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Tuple, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(4,10) [(A, B,]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,9) [A, B]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:B, rng:(8,9) [B], full:(8,9) [B], extra=[B]]
+Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A+>F()
+Node: [A+>F()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:AddGrt, rng:(1,3) [+>], full:(0,6) [A+>F()], extra=[F]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:ParenClose, rng:(5,6) [)], full:(0,6) [A+>F()]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Error: (1,3) Tok: '+>', Message: Expected: '->', Found: '+>'
+###
+> A->(X | _ + 2)
+Node: [A->(X | _ + 2)]
+Dump:
+  00 Node[id:8, kind:ValueProjection, depth:5, tok:SubGrt, rng:(1,3) [->], full:(0,14) [A->(X | _ + 2)]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:Paren, depth:4, tok:ParenOpen, rng:(3,4) [(], full:(3,14) [(X | _ + 2)]], count=1
+  02     Node[id:5, kind:BinaryOp, depth:3, tok:Bar, rng:(6,7) [|], full:(4,13) [X | _ + 2], extra=[Pipe]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:X, rng:(4,5) [X], full:(4,5) [X], extra=[X]]
+  03       Node[id:4, kind:BinaryOp, depth:2, tok:Add, rng:(10,11) [+], full:(8,13) [_ + 2], extra=[Add]], count=2
+  04         Node[id:2, kind:Box, depth:1, tok:Box, rng:(8,9) [_], full:(8,9) [_]]
+  04         Node[id:3, kind:NumLit, depth:1, tok:2, rng:(12,13) [2], full:(12,13) [2], extra=[2]]
+###
+> C->If(T,F)
+Node: [C->If(T, F)]
+Dump:
+  00 Node[id:4, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,10) [C->If(T,F)], extra=[If]], count=1
+  01   Node[id:3, kind:ExprList, depth:2, tok:T, rng:(6,7) [T], full:(0,9) [C->If(T,F]], count=3
+  02     Node[id:0, kind:FirstName, depth:1, tok:C, rng:(0,1) [C], full:(0,1) [C], extra=[C]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:T, rng:(6,7) [T], full:(6,7) [T], extra=[T]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:F, rng:(8,9) [F], full:(8,9) [F], extra=[F]]
+###
+> C->'if'(T,F)
+Node: [C->'if'(T, F)]
+Dump:
+  00 Node[id:4, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,12) [C->'if'(T,F)], extra=['if']], count=1
+  01   Node[id:3, kind:ExprList, depth:2, tok:T, rng:(8,9) [T], full:(0,11) [C->'if'(T,F]], count=3
+  02     Node[id:0, kind:FirstName, depth:1, tok:C, rng:(0,1) [C], full:(0,1) [C], extra=[C]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:T, rng:(8,9) [T], full:(8,9) [T], extra=[T]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:F, rng:(10,11) [F], full:(10,11) [F], extra=[F]]
+###
+> C->if(T,F)
+Node: [C->''((<missing>) if (T, F) else (<missing>))]
+Dump:
+  00 Node[id:9, kind:Call, depth:6, tok:SubGrt, rng:(1,3) [->], full:(0,10) [C->if(T,F)], extra=[_X]], count=1
+  01   Node[id:8, kind:ExprList, depth:5, tok:KwdIf, rng:(3,5) [if], full:(0,10) [C->if(T,F)]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:C, rng:(0,1) [C], full:(0,1) [C], extra=[C]]
+  02     Node[id:7, kind:If, depth:4, tok:KwdIf, rng:(3,5) [if], full:(3,10) [if(T,F)]], count=3
+  03       Node[id:1, kind:MissingValue, depth:1, tok:KwdIf, rng:(3,5) [if], full:(3,5) [if], extra=[<missing>]]
+  03       Node[id:5, kind:Tuple, depth:3, tok:ParenOpen, rng:(5,6) [(], full:(5,10) [(T,F)]], count=1
+  04         Node[id:4, kind:ExprList, depth:2, tok:Comma, rng:(7,8) [,], full:(6,9) [T,F]], count=2
+  05           Node[id:2, kind:FirstName, depth:1, tok:T, rng:(6,7) [T], full:(6,7) [T], extra=[T]]
+  05           Node[id:3, kind:FirstName, depth:1, tok:F, rng:(8,9) [F], full:(8,9) [F], extra=[F]]
+  03       Node[id:6, kind:MissingValue, depth:1, tok:Eof, rng:(10,10) [], full:(10,10) [], extra=[<missing>]]
+Error: (3,5) Tok: 'if', Message: Expected: '<identifier>', Found: 'if'
+Error: (3,5) Tok: 'if', Message: Expected: '(', Found: 'if'
+Error: (3,5) Tok: 'if', Message: Expected an operand
+Error: (10,10) Tok: '<eof>', Message: Expected: 'else', Found: '<eof>'
+Error: (10,10) Tok: '<eof>', Message: Expected an operand
+Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> C->_(T,F)
+Node: [C->'_'(T, F)]
+Dump:
+  00 Node[id:4, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,9) [C->_(T,F)], extra=['_']], count=1
+  01   Node[id:3, kind:ExprList, depth:2, tok:T, rng:(5,6) [T], full:(0,8) [C->_(T,F]], count=3
+  02     Node[id:0, kind:FirstName, depth:1, tok:C, rng:(0,1) [C], full:(0,1) [C], extra=[C]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:T, rng:(5,6) [T], full:(5,6) [T], extra=[T]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:F, rng:(7,8) [F], full:(7,8) [F], extra=[F]]
+Error: (3,4) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+###

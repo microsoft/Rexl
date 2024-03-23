@@ -1,0 +1,454 @@
+**** New definitions: sb, type: b*
+**** New definitions: sbq, type: b?*
+
+> Any([true, false])
+Any([true, false]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([true:b, false:b]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 1
+    [0](1): Any([true, false])
+###
+> Any([false])
+Any([false]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([false:b]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 2
+    [0](2): Any([false])
+###
+> Any([null])
+Any([null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 2
+    [0](2): Any([null])
+###
+> Any([true, null])
+Any([true, null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([Opt<b?>(true:b), null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 1
+    [0](1): Any([Opt<b?>(true), null])
+###
+> Any([false, null])
+Any([false, null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([Opt<b?>(false:b), null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): Any([Opt<b?>(false), null])
+###
+> Any([null, false])
+Any([null, false]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([null:b?, Opt<b?>(false:b)]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): Any([null, Opt<b?>(false)])
+###
+> [[true, false], null] | Map(_, Any(it))
+[[true, false], null] | Map(_, Any(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[true:b, false:b]:b*, null:b*]:b**, Call(∂.Any(Scope(1)):b)):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+*** Ctx ping count: 1
+    [0](1): Any(*1x)
+###
+> [[true, false, null], null] | Map(_, Any(it,it))
+[[true, false, null], null] | Map(_, Any(it, it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.ForEach([map:1] [[Opt<b?>(true:b), Opt<b?>(false:b), null:b?]:b?*, null:b?*]:b?**, Call(∂.Any([map:2] Scope(1), Scope(2)):b?)):b?*))
+Func sig: (<ctx>:x) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) true 
+ 1) false
+*** Ctx ping count: 1
+    [0](1): Any(*2: *1x, *2)
+###
+> Any(Wrap(null))
+Any(Wrap(null)) : b?
+BndKind:CastOpt, Type:b?, Bnd:(Opt<b?>(false:b))
+Func sig: () to b?
+Type: bool, Value: false
+###
+> Any(sb)
+Any(sb) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any(Global(sb)):b))
+Func sig: (<ctx>:x, sb:b*) to b
+Type: bool, Value: false
+*** Ctx ping count: 0
+###
+> Any(sbq)
+Any(sbq) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any(Global(sbq)):b?))
+Func sig: (<ctx>:x, sbq:b?*) to b?
+Type: bool, Value: false
+*** Ctx ping count: 0
+###
+> Any([Any([true]), Any(Wrap([]))])
+Any([Any([true]), Any(Wrap([]))]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([Call(∂.Any([true:b]:b*):b), Call(∂.Any(Call(∂.ForEach([map:1] Call(∂.Test.Wrap(null:v*):v*), false:b):b*)):b)]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 2
+    [0](1): Any([true])
+    [2](1): Any([Any([true]), Any(ForEach(*1: Test.Wrap(null), false))])
+###
+> Any([Any([false]), Any(Wrap([]))])
+Any([Any([false]), Any(Wrap([]))]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([Call(∂.Any([false:b]:b*):b), Call(∂.Any(Call(∂.ForEach([map:1] Call(∂.Test.Wrap(null:v*):v*), false:b):b*)):b)]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 5
+    [0](2): Any([false])
+    [2](3): Any([Any([false]), Any(ForEach(*1: Test.Wrap(null), false))])
+###
+> Any(Range(10), it > 2)
+Any(Range(10), it $> 2) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 2:i8)):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 4
+    [0](4): Any(*1: Range(10), *1 @> 2)
+###
+> Any(Range(10), it > 20)
+Any(Range(10), it $> 20) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 20:i8)):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 11
+    [0](11): Any(*1: Range(10), *1 @> 20)
+###
+> [Range(10), null] | Map(_, Any(it, it > 3))
+[Range(10), null] | Map(_, Any(it, it $> 3)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Range(10:i8):i8*), null:i8*]:i8**, Call(∂.Any([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b)):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+*** Ctx ping count: 5
+    [0](5): Any(*2: *1x, *2 @> 3)
+###
+> Any([[true], [false]], First(it, it))
+Any([[true], [false]], First(it, it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:1] [[true:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Scope(2), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 1
+    [1](1): Any(*1: [[true], [false]], TakeOne(*2: *1, *2, [else] null))
+###
+> Any([[false], [false]], First(it, it))
+Any([[false], [false]], First(it, it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:1] [[false:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Scope(2), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 5
+    [0](2): TakeOne(*2: *1x, *2, [else] null)
+    [1](3): Any(*1: [[false], [false]], TakeOne(*2: *1, *2, [else] null))
+###
+> Any([[false], [true]], First(it, not it))
+Any([[false], [true]], First(it, not it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:1] [[false:b]:b*, [true:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 4
+    [0](1): TakeOne(*2: *1x, Xor(*2, true), [else] null)
+    [1](3): Any(*1: [[false], [true]], TakeOne(*2: *1, Xor(*2, true), [else] null))
+###
+> Any([[true], [false]], First(it, not it))
+Any([[true], [false]], First(it, not it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:1] [[true:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 4
+    [0](1): TakeOne(*2: *1x, Xor(*2, true), [else] null)
+    [1](3): Any(*1: [[true], [false]], TakeOne(*2: *1, Xor(*2, true), [else] null))
+###
+> Any([[false], [false]], First(it, not it))
+Any([[false], [false]], First(it, not it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:1] [[false:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: false
+*** Ctx ping count: 3
+    [1](3): Any(*1: [[false], [false]], TakeOne(*2: *1, Xor(*2, true), [else] null))
+###
+> All([true, false])
+All([true, false]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([true:b, false:b]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 0
+###
+> All([true])
+All([true]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([true:b]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> All([null])
+All([null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 2
+    [0](2): All([null])
+###
+> All([true, null])
+All([true, null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([Opt<b?>(true:b), null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): All([Opt<b?>(true), null])
+###
+> All([false, null])
+All([false, null]) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([Opt<b?>(false:b), null:b?]:b?*):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): All([Opt<b?>(false), null])
+###
+> [[true, false], null] | Map(_, All(it))
+[[true, false], null] | Map(_, All(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [[true:b, false:b]:b*, null:b*]:b**, Call(∂.All(Scope(1)):b)):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+*** Ctx ping count: 0
+###
+> All(Wrap(null))
+All(Wrap(null)) : b?
+BndKind:CastOpt, Type:b?, Bnd:(Opt<b?>(true:b))
+Func sig: () to b?
+Type: bool, Value: true 
+###
+> All(sb)
+All(sb) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All(Global(sb)):b))
+Func sig: (<ctx>:x, sb:b*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> All(sbq)
+All(sbq) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All(Global(sbq)):b?))
+Func sig: (<ctx>:x, sbq:b?*) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> All([All([true]), All(Wrap([]))])
+All([All([true]), All(Wrap([]))]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([Call(∂.All([true:b]:b*):b), Call(∂.All(Call(∂.ForEach([map:1] Call(∂.Test.Wrap(null:v*):v*), false:b):b*)):b)]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> All([All([false]), All(Wrap([]))])
+All([All([false]), All(Wrap([]))]) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([Call(∂.All([false:b]:b*):b), Call(∂.All(Call(∂.ForEach([map:1] Call(∂.Test.Wrap(null:v*):v*), false:b):b*)):b)]:b*):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 0
+###
+> All(Range(10), it > -1)
+All(Range(10), it $> -1) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> -1:i8)):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 11
+    [0](11): All(*1: Range(10), *1 @> -1)
+###
+> All(Range(10), it > 20)
+All(Range(10), it $> 20) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 20:i8)):b))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): All(*1: Range(10), *1 @> 20)
+###
+> [Range(10), null] | Map(_, All(it, it > 3))
+[Range(10), null] | Map(_, All(it, it $> 3)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Range(10:i8):i8*), null:i8*]:i8**, Call(∂.All([map:2] Scope(1), Cmp(Scope(2) @> 3:i8)):b)):b*))
+Func sig: (<ctx>:x) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+*** Ctx ping count: 1
+    [0](1): All(*2: *1x, *2 @> 3)
+###
+> [[true, false, null], null] | Map(_, All(it,it))
+[[true, false, null], null] | Map(_, All(it, it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.ForEach([map:1] [[Opt<b?>(true:b), Opt<b?>(false:b), null:b?]:b?*, null:b?*]:b?**, Call(∂.All([map:2] Scope(1), Scope(2)):b?)):b?*))
+Func sig: (<ctx>:x) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) false
+ 1) true 
+*** Ctx ping count: 2
+    [0](2): All(*2: *1x, *2)
+###
+> All([[true], [true]], First(it, it))
+All([[true], [true]], First(it, it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:1] [[true:b]:b*, [true:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Scope(2), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 3
+    [1](3): All(*1: [[true], [true]], TakeOne(*2: *1, *2, [else] null))
+###
+> All([[true], [false]], First(it, it))
+All([[true], [false]], First(it, it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:1] [[true:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Scope(2), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 4
+    [0](1): TakeOne(*2: *1x, *2, [else] null)
+    [1](3): All(*1: [[true], [false]], TakeOne(*2: *1, *2, [else] null))
+###
+> All([[false], [false]], First(it, it))
+All([[false], [false]], First(it, it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:1] [[false:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Scope(2), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 5
+    [0](2): TakeOne(*2: *1x, *2, [else] null)
+    [1](3): All(*1: [[false], [false]], TakeOne(*2: *1, *2, [else] null))
+###
+> All([[false], [true]], First(it, not it))
+All([[false], [true]], First(it, not it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:1] [[false:b]:b*, [true:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [1](1): All(*1: [[false], [true]], TakeOne(*2: *1, Xor(*2, true), [else] null))
+###
+> All([[true], [false]], First(it, not it))
+All([[true], [false]], First(it, not it)) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:1] [[true:b]:b*, [false:b]:b*]:b**, Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?)):b?))
+Func sig: (<ctx>:x) to b?
+Type: bool, Value: false
+*** Ctx ping count: 3
+    [0](1): TakeOne(*2: *1x, Xor(*2, true), [else] null)
+    [1](2): All(*1: [[true], [false]], TakeOne(*2: *1, Xor(*2, true), [else] null))
+###
+
+**** New definitions: S, type: i8*
+**** New definitions: Sn, type: i8?*
+
+> Any(S,  # > 5)
+Any(S, # $> 5) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:2] Global(S), Cmp(Scope(1) @> 5:i8)):b))
+Func sig: (<ctx>:x, S:i8*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 7
+    [0](7): Any(*2: S, #1 @> 5)
+###
+> Any(Sn, # > 5)
+Any(Sn, # $> 5) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:2] Global(Sn), Cmp(Scope(1) @> 5:i8)):b))
+Func sig: (<ctx>:x, Sn:i8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 7
+    [0](7): Any(*2: Sn, #1 @> 5)
+###
+> Any(S,  # > 10)
+Any(S, # $> 10) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:2] Global(S), Cmp(Scope(1) @> 10:i8)):b))
+Func sig: (<ctx>:x, S:i8*) to b
+Type: bool, Value: false
+*** Ctx ping count: 11
+    [0](11): Any(*2: S, #1 @> 10)
+###
+> Any(Sn, # > 10)
+Any(Sn, # $> 10) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.Any([map:2] Global(Sn), Cmp(Scope(1) @> 10:i8)):b))
+Func sig: (<ctx>:x, Sn:i8?*) to b
+Type: bool, Value: false
+*** Ctx ping count: 11
+    [0](11): Any(*2: Sn, #1 @> 10)
+###
+> Any(S,  null if # = 0 else # > 5)
+Any(S, null if # @= 0 else # $> 5) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:2] Global(S), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @> 5:i8)))):b?))
+Func sig: (<ctx>:x, S:i8*) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 7
+    [0](7): Any(*2: S, If(#1 @= 0, null, Opt<b?>(#1 @> 5)))
+###
+> Any(S,  null if # = 0 else # > 10)
+Any(S, null if # @= 0 else # $> 10) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:2] Global(S), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @> 10:i8)))):b?))
+Func sig: (<ctx>:x, S:i8*) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 11
+    [0](11): Any(*2: S, If(#1 @= 0, null, Opt<b?>(#1 @> 10)))
+###
+> Any(Sn, null if # = 0 else # > 5)
+Any(Sn, null if # @= 0 else # $> 5) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.Any([map:2] Global(Sn), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @> 5:i8)))):b?))
+Func sig: (<ctx>:x, Sn:i8?*) to b?
+Type: bool, Value: true 
+*** Ctx ping count: 7
+    [0](7): Any(*2: Sn, If(#1 @= 0, null, Opt<b?>(#1 @> 5)))
+###
+> All(S,  # > 5)
+All(S, # $> 5) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:2] Global(S), Cmp(Scope(1) @> 5:i8)):b))
+Func sig: (<ctx>:x, S:i8*) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): All(*2: S, #1 @> 5)
+###
+> All(Sn, # > 5)
+All(Sn, # $> 5) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:2] Global(Sn), Cmp(Scope(1) @> 5:i8)):b))
+Func sig: (<ctx>:x, Sn:i8?*) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): All(*2: Sn, #1 @> 5)
+###
+> All(S,  # < 10)
+All(S, # $< 10) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:2] Global(S), Cmp(Scope(1) @< 10:i8)):b))
+Func sig: (<ctx>:x, S:i8*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 11
+    [0](11): All(*2: S, #1 @< 10)
+###
+> All(Sn, # < 10)
+All(Sn, # $< 10) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.All([map:2] Global(Sn), Cmp(Scope(1) @< 10:i8)):b))
+Func sig: (<ctx>:x, Sn:i8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 11
+    [0](11): All(*2: Sn, #1 @< 10)
+###
+> All(S,  null if # = 0 else # > 5)
+All(S, null if # @= 0 else # $> 5) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:2] Global(S), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @> 5:i8)))):b?))
+Func sig: (<ctx>:x, S:i8*) to b?
+Type: bool, Value: false
+*** Ctx ping count: 2
+    [0](2): All(*2: S, If(#1 @= 0, null, Opt<b?>(#1 @> 5)))
+###
+> All(S,  null if # = 0 else # < 10)
+All(S, null if # @= 0 else # $< 10) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:2] Global(S), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @< 10:i8)))):b?))
+Func sig: (<ctx>:x, S:i8*) to b?
+Type: <null>, Value: <null>
+*** Ctx ping count: 11
+    [0](11): All(*2: S, If(#1 @= 0, null, Opt<b?>(#1 @< 10)))
+###
+> All(Sn, null if # = 0 else # > 5)
+All(Sn, null if # @= 0 else # $> 5) : b?
+BndKind:Call, Type:b?, Bnd:(Call(∂.All([map:2] Global(Sn), If(Cmp(Scope(1) @= 0:i8), null:b?, Opt<b?>(Cmp(Scope(1) @> 5:i8)))):b?))
+Func sig: (<ctx>:x, Sn:i8?*) to b?
+Type: bool, Value: false
+*** Ctx ping count: 2
+    [0](2): All(*2: Sn, If(#1 @= 0, null, Opt<b?>(#1 @> 5)))
+###

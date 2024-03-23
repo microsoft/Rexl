@@ -1,0 +1,62 @@
+﻿::: {A:i4*, B:i4?*, X:i4, T:{X:i4, Y:i2, S:{X:i4}*}*, N:o, NS:o*}
+
+Chain(A, A)
+Chain(A, B)
+Chain(B, A)
+Chain(A, [X])
+Chain([X], A)
+Chain(B, [X])
+Chain([X], B)
+
+Chain(A, null)
+Chain(null, A)
+Chain(A, N)
+Chain(N, A)
+
+Chain(B, null)
+Chain(null, B)
+Chain(B, N)
+Chain(N, B)
+
+Chain(A, [null])
+Chain([null], A)
+Chain(A, [N])
+Chain([N], A)
+
+Chain(B, [null])
+Chain([null], B)
+Chain(B, [N])
+Chain([N], B)
+
+Chain(A, NS)
+Chain(NS, A)
+
+Chain(B, NS)
+Chain(NS, B)
+
+Chain(T, [{X:3i1, Y:2i1, S:[{X:X}]}]) // No mapping.
+Chain([{X:3i1, Y:2i1, S:[{X:X}]}], T) // Ditto.
+
+// Add opt-ness.
+Chain(T, [null]) // Should be a simple reference cast.
+Chain([null], T) // Should be a simple reference cast.
+
+Chain(T, [{X:3i1, Y:2i1, S:[{X:X}, null]}]) // REVIEW: Would be nice for this to be a simple reference cast, but see the REVIEW in IsRecordRefConv.
+Chain([{X:3i1, Y:2i1, S:[{X:X}, null]}], T) // REVIEW: Ditto.
+
+Chain(T, [{X:null, Y:2i1, S:[{X:X}]}])
+Chain([{X:null, Y:2i1, S:[{X:X}]}], T)
+
+Chain(null)
+Chain(null, null)
+Chain(null, null, null)
+Chain(null, null, null, null)
+
+// Limit of sequences in ChainMap.
+ChainMap(a: Range(11), b: Range(12), c: Range(13), d: Range(14), e: Range(15), f: Range(16), g: Range(17), h: Range(18), Range(2)->{ a, b, c, d, e, f, g, h, N: it })
+ChainMap(a: Range(11), b: Range(12), c: Range(13), d: Range(14), e: Range(15), f: Range(16), g: Range(17), h: Range(18), i: Range(19), Range(2)->{ a, b, c, d, e, f, g, h, i, N: it })
+
+:: { T:{X:i4, Y:i4}?*, U:{X:r8, Z:i4}* }
+
+T ++ U
+Chain(T, U)

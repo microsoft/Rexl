@@ -1,0 +1,304 @@
+> func F(x) := Abs(x);
+Node: [func F(x) := Abs(x)]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:5, tok:func, rng:(0,4) [func], full:(0,20) [func F(x) := Abs(x);]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:4, tok:KtxFunc, rng:(0,4) [func], full:(0,19) [func F(x) := Abs(x)], extra=[F]], count=1
+  02     Node[id:2, kind:Call, depth:3, tok:ParenOpen, rng:(16,17) [(], full:(13,19) [Abs(x)], extra=[Abs]], count=1
+  03       Node[id:1, kind:ExprList, depth:2, tok:x, rng:(17,18) [x], full:(17,18) [x]], count=1
+  04         Node[id:0, kind:FirstName, depth:1, tok:x, rng:(17,18) [x], full:(17,18) [x], extra=[x]]
+
+   0) [0] DefineFunc F(x) <- Abs(x)
+   1) [0] End
+###
+> func N.F(x) := Abs(x);
+Node: [func N.F(x) := Abs(x)]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:5, tok:func, rng:(0,4) [func], full:(0,22) [func N.F(x) := Abs(x);]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:4, tok:KtxFunc, rng:(0,4) [func], full:(0,21) [func N.F(x) := Abs(x)], extra=[N.F]], count=1
+  02     Node[id:2, kind:Call, depth:3, tok:ParenOpen, rng:(18,19) [(], full:(15,21) [Abs(x)], extra=[Abs]], count=1
+  03       Node[id:1, kind:ExprList, depth:2, tok:x, rng:(19,20) [x], full:(19,20) [x]], count=1
+  04         Node[id:0, kind:FirstName, depth:1, tok:x, rng:(19,20) [x], full:(19,20) [x], extra=[x]]
+
+   0) [0] DefineFunc N.F(x) <- Abs(x)
+   1) [0] End
+###
+> func F(3) := 5;
+Node: [func F('') := 3; <missing>; '' := 5]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,15) [func F(3) := 5;]], count=3
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,8) [func F(3], extra=[F]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)]], count=1
+  02     Node[id:2, kind:MissingValue, depth:1, tok:ParenClose, rng:(8,9) [)], full:(8,9) [)], extra=[<missing>]]
+  01   Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(10,12) [:=], full:(10,14) [:= 5], extra=[_X]], count=1
+  02     Node[id:4, kind:NumLit, depth:1, tok:5, rng:(13,14) [5], full:(13,14) [5], extra=[5]]
+Error: (7,8) Tok: '3', Message: Expected: '<identifier>', Found: '3'
+Error: (7,8) Tok: '3', Message: Expected: ')', Found: '3'
+Error: (7,8) Tok: '3', Message: Expected: ':=', Found: '3'
+Error: (8,9) Tok: ')', Message: Expected: ';', Found: ')'
+Error: (8,9) Tok: ')', Message: Expected an operand
+Error: (10,12) Tok: ':=', Message: Expected: ';', Found: ':='
+Error: (10,12) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] DefineFunc F(_X) <- 3
+   1) [0] Expr (<missing>)
+   2) [0] Define _X <- 5
+   3) [0] End
+###
+> func F(x, y) := x * y
+Node: [func F(x, y) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,21) [func F(x, y) := x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,21) [func F(x, y) := x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(18,19) [*], full:(16,21) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(16,17) [x], full:(16,17) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(20,21) [y], full:(20,21) [y], extra=[y]]
+
+   0) [0] DefineFunc F(x, y) <- x * y
+   1) [0] End
+###
+> func F(x, y) := x *
+Node: [func F(x, y) := x * (<missing>)]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,19) [func F(x, y) := x *]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,19) [func F(x, y) := x *], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(18,19) [*], full:(16,19) [x *], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(16,17) [x], full:(16,17) [x], extra=[x]]
+  03       Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(19,19) [], full:(19,19) [], extra=[<missing>]]
+Error: (19,19) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x, y) <- x * (<missing>)
+   1) [0] End
+###
+> func F(x, y) :=
+Node: [func F(x, y) := (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,15) [func F(x, y) :=]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,15) [func F(x, y) :=], extra=[F]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(15,15) [], full:(15,15) [], extra=[<missing>]]
+Error: (15,15) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x, y) <- (<missing>)
+   1) [0] End
+###
+> func F(x, y)
+Node: [func F(x, y) := (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,12) [func F(x, y)]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,12) [func F(x, y)], extra=[F]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(12,12) [], full:(12,12) [], extra=[<missing>]]
+Error: (12,12) Tok: '<eof>', Message: Expected: ':=', Found: '<eof>'
+Error: (12,12) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x, y) <- (<missing>)
+   1) [0] End
+###
+> func F(x, y
+Node: [func F(x, y) := (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,11) [func F(x, y]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,11) [func F(x, y], extra=[F]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) [], extra=[<missing>]]
+Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected: ':=', Found: '<eof>'
+Error: (11,11) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x, y) <- (<missing>)
+   1) [0] End
+###
+> func F(x,
+Node: [func F(x, '') := (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,9) [func F(x,]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,9) [func F(x,], extra=[F]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(9,9) [], full:(9,9) [], extra=[<missing>]]
+Error: (9,9) Tok: '<eof>', Message: Expected: '<identifier>', Found: '<eof>'
+Error: (9,9) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (9,9) Tok: '<eof>', Message: Expected: ':=', Found: '<eof>'
+Error: (9,9) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x, _X) <- (<missing>)
+   1) [0] End
+###
+> func F(x
+Node: [func F(x) := (<missing>)]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,8) [func F(x]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,8) [func F(x], extra=[F]], count=1
+  02     Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected: ':=', Found: '<eof>'
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] DefineFunc F(x) <- (<missing>)
+   1) [0] End
+###
+> func F
+Node: [func; F]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,6) [func F]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:func, rng:(0,4) [func], full:(0,4) [func]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:func, rng:(0,4) [func], full:(0,4) [func], extra=[func]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:F, rng:(5,6) [F], full:(5,6) [F]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:F, rng:(5,6) [F], full:(5,6) [F], extra=[F]]
+Error: (5,6) Tok: 'F', Message: Expected: ';', Found: 'F'
+
+   0) [0] Expr func
+   1) [0] Expr F
+   2) [0] End
+###
+> func
+Node: [func]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,4) [func]], count=1
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:func, rng:(0,4) [func], full:(0,4) [func]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:func, rng:(0,4) [func], full:(0,4) [func], extra=[func]]
+
+   0) [0] Expr func
+   1) [0] End
+###
+> func F(x, y := x * y
+Node: [func F(x, y) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,20) [func F(x, y := x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,20) [func F(x, y := x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(17,18) [*], full:(15,20) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(15,16) [x], full:(15,16) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(19,20) [y], full:(19,20) [y], extra=[y]]
+Error: (12,14) Tok: ':=', Message: Expected: ')', Found: ':='
+
+   0) [0] DefineFunc F(x, y) <- x * y
+   1) [0] End
+###
+> func F(x, y)  x * y
+Node: [func F(x, y) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,19) [func F(x, y)  x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,19) [func F(x, y)  x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(16,17) [*], full:(14,19) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(14,15) [x], full:(14,15) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(18,19) [y], full:(18,19) [y], extra=[y]]
+Error: (14,15) Tok: 'x', Message: Expected: ':=', Found: 'x'
+
+   0) [0] DefineFunc F(x, y) <- x * y
+   1) [0] End
+###
+> func F(x y) := x * y
+Node: [func F(x) := y; <missing>; '' := x * y]
+Dump:
+  00 Node[id:8, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,20) [func F(x y) := x * y]], count=3
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,10) [func F(x y], extra=[F]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:y, rng:(9,10) [y], full:(9,10) [y], extra=[y]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:ParenClose, rng:(10,11) [)], full:(10,11) [)]], count=1
+  02     Node[id:2, kind:MissingValue, depth:1, tok:ParenClose, rng:(10,11) [)], full:(10,11) [)], extra=[<missing>]]
+  01   Node[id:7, kind:DefinitionStmt, depth:3, tok:ColEqu, rng:(12,14) [:=], full:(12,20) [:= x * y], extra=[_X]], count=1
+  02     Node[id:6, kind:BinaryOp, depth:2, tok:Mul, rng:(17,18) [*], full:(15,20) [x * y], extra=[Mul]], count=2
+  03       Node[id:4, kind:FirstName, depth:1, tok:x, rng:(15,16) [x], full:(15,16) [x], extra=[x]]
+  03       Node[id:5, kind:FirstName, depth:1, tok:y, rng:(19,20) [y], full:(19,20) [y], extra=[y]]
+Error: (9,10) Tok: 'y', Message: Expected: ')', Found: 'y'
+Error: (9,10) Tok: 'y', Message: Expected: ':=', Found: 'y'
+Error: (10,11) Tok: ')', Message: Expected: ';', Found: ')'
+Error: (10,11) Tok: ')', Message: Expected an operand
+Error: (12,14) Tok: ':=', Message: Expected: ';', Found: ':='
+Error: (12,14) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] DefineFunc F(x) <- y
+   1) [0] Expr (<missing>)
+   2) [0] Define _X <- x * y
+   3) [0] End
+###
+> func F(x, x) := x * y
+Node: [func F(x, x) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,21) [func F(x, x) := x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,21) [func F(x, x) := x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(18,19) [*], full:(16,21) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(16,17) [x], full:(16,17) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(20,21) [y], full:(20,21) [y], extra=[y]]
+Error: (10,11) Tok: 'x', Message: Duplicate parameter name: 'x'
+
+   0) [0] DefineFunc F(x, x) <- x * y
+   1) [0] End
+###
+> func F(x, y, x) := x * y
+Node: [func F(x, y, x) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,24) [func F(x, y, x) := x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,24) [func F(x, y, x) := x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(21,22) [*], full:(19,24) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(19,20) [x], full:(19,20) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(23,24) [y], full:(23,24) [y], extra=[y]]
+Error: (13,14) Tok: 'x', Message: Duplicate parameter name: 'x'
+
+   0) [0] DefineFunc F(x, y, x) <- x * y
+   1) [0] End
+###
+> func F(x, y, y) := x * y
+Node: [func F(x, y, y) := x * y]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:func, rng:(0,4) [func], full:(0,24) [func F(x, y, y) := x * y]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [func], full:(0,24) [func F(x, y, y) := x * y], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(21,22) [*], full:(19,24) [x * y], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(19,20) [x], full:(19,20) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(23,24) [y], full:(23,24) [y], extra=[y]]
+Error: (13,14) Tok: 'y', Message: Duplicate parameter name: 'y'
+
+   0) [0] DefineFunc F(x, y, y) <- x * y
+   1) [0] End
+###
+> func F() := 12;
+Node: [func F() := 12]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,15) [func F() := 12;]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,14) [func F() := 12], extra=[F]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:12, rng:(12,14) [12], full:(12,14) [12], extra=[12]]
+
+   0) [0] DefineFunc F() <- 12
+   1) [0] End
+###
+> prop Text.IsEmpty(x) := x = null or x = "";
+Node: [func Text.IsEmpty(x) := x @= null or x @= ""]
+Dump:
+  00 Node[id:8, kind:StmtList, depth:5, tok:prop, rng:(0,4) [prop], full:(0,43) [prop Text.IsEmpty(x) := x = null or x = "";]], count=1
+  01   Node[id:7, kind:FuncStmt, depth:4, tok:KtxProp, rng:(0,4) [prop], full:(0,42) [prop Text.IsEmpty(x) := x = null or x = ""], extra=[Text.IsEmpty]], count=1
+  02     Node[id:6, kind:BinaryOp, depth:3, tok:KtxOr, rng:(33,35) [or], full:(24,42) [x = null or x = ""], extra=[Or]], count=2
+  03       Node[id:2, kind:Compare, depth:2, tok:Equ, rng:(26,27) [=], full:(24,32) [x = null]], count=2
+  04         Op:Equal
+  04         Node[id:0, kind:FirstName, depth:1, tok:x, rng:(24,25) [x], full:(24,25) [x], extra=[x]]
+  04         Node[id:1, kind:NullLit, depth:1, tok:KwdNull, rng:(28,32) [null], full:(28,32) [null]]
+  03       Node[id:5, kind:Compare, depth:2, tok:Equ, rng:(38,39) [=], full:(36,42) [x = ""]], count=2
+  04         Op:Equal
+  04         Node[id:3, kind:FirstName, depth:1, tok:x, rng:(36,37) [x], full:(36,37) [x], extra=[x]]
+  04         Node[id:4, kind:TextLit, depth:1, tok:, rng:(40,42) [""], full:(40,42) [""]]
+
+   0) [0] DefineFunc [prop] Text.IsEmpty(x) <- x @= null or x @= ""
+   1) [0] End
+###
+> Func F(x) := x * 2;
+Node: [func F(x) := x * 2]
+Corrected: [func F(x) := x * 2;]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:Func, rng:(0,4) [Func], full:(0,19) [Func F(x) := x * 2;]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxFunc, rng:(0,4) [Func], full:(0,18) [Func F(x) := x * 2], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(15,16) [*], full:(13,18) [x * 2], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(13,14) [x], full:(13,14) [x], extra=[x]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:2, rng:(17,18) [2], full:(17,18) [2], extra=[2]]
+Error: (0,4) Tok: 'Func', Message: Expected 'func' but got 'Func'
+
+   0) [0] DefineFunc F(x) <- x * 2
+   1) [0] End
+###
+> Prop F(x) := x * 2;
+Node: [func F(x) := x * 2]
+Corrected: [prop F(x) := x * 2;]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:Prop, rng:(0,4) [Prop], full:(0,19) [Prop F(x) := x * 2;]], count=1
+  01   Node[id:3, kind:FuncStmt, depth:3, tok:KtxProp, rng:(0,4) [Prop], full:(0,18) [Prop F(x) := x * 2], extra=[F]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(15,16) [*], full:(13,18) [x * 2], extra=[Mul]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(13,14) [x], full:(13,14) [x], extra=[x]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:2, rng:(17,18) [2], full:(17,18) [2], extra=[2]]
+Error: (0,4) Tok: 'Prop', Message: Expected 'prop' but got 'Prop'
+
+   0) [0] DefineFunc [prop] F(x) <- x * 2
+   1) [0] End
+###

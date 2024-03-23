@@ -1,0 +1,146 @@
+**** New definitions: x0, type: i8*
+**** New definitions: x1, type: i8*
+
+> Map(x0, it + Count(x1))
+Map(x0, it + Count(x1)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Count(Global(x1)):i8), Call(∂.ForEach([map:2] Global(x0), Add(Scope(1), Scope(2))):i8*)):i8*))
+// (<ctx>, ∂.x1:i8*, ∂.x0:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [i8]
+      1) add
+      1) ret
+  Total Size: 15
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) stloc.3 [i8]
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.3 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 95
+
+Func sig: (<ctx>:x, x1:i8*, x0:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 25
+ 1) 26
+ 2) 27
+ 3) 28
+ 4) 29
+ 5) 30
+ 6) 31
+ 7) 32
+ 8) 33
+ 9) 34
+*** Ctx ping count: 0
+###
+> Map(x0, Count(x1) + Count(x1))
+Map(x0, Count(x1) + Count(x1)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Add(Call(∂.Count(Global(x1)):i8), Call(∂.Count(Global(x1)):i8)), Call(∂.ForEach([map:2] Global(x0), Scope(1)):i8*)):i8*))
+// (<ctx>, ∂.x1:i8*, ∂.x0:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ret
+  Total Size: 13
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) add
+      1) stloc.3 [i8]
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.3 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 104
+
+Func sig: (<ctx>:x, x1:i8*, x0:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 50
+ 1) 50
+ 2) 50
+ 3) 50
+ 4) 50
+ 5) 50
+ 6) 50
+ 7) 50
+ 8) 50
+ 9) 50
+*** Ctx ping count: 0
+###

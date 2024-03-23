@@ -1,0 +1,2058 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr:{I4:i4, S:s}?, qr4:r4?, qr8:r8?, qt:t?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r:{I4:i4, S:s}, r4:r4, r8:r8, s:s, t:t, u1:u1, u2:u2, u4:u4, u8:u8, v:v}
+
+> 1 max 2
+1 max 2 : i8
+Binder : Max(1, 2)
+Reducer: 2
+###
+> 1 min 2
+1 min 2 : i8
+Binder : Min(1, 2)
+Reducer: 1
+###
+> 2 max 1
+2 max 1 : i8
+Binder : Max(2, 1)
+Reducer: 2
+###
+> 2 min 1
+2 min 1 : i8
+Binder : Min(2, 1)
+Reducer: 1
+###
+> -10 max 20
+-10 max 20 : i8
+Binder : Max(-10, 20)
+Reducer: 20
+###
+> -10 min 20
+-10 min 20 : i8
+Binder : Min(-10, 20)
+Reducer: -10
+###
+> 0x7FFFFFFF max 10
+2147483647 max 10 : i8
+Binder : Max(2147483647, 10)
+Reducer: 2147483647
+###
+> 10 max 0x7FFFFFFF
+10 max 2147483647 : i8
+Binder : Max(10, 2147483647)
+Reducer: 2147483647
+###
+> 0x7FFFFFFF min 10
+2147483647 min 10 : i8
+Binder : Min(2147483647, 10)
+Reducer: 10
+###
+> 10 min 0x7FFFFFFF
+10 min 2147483647 : i8
+Binder : Min(10, 2147483647)
+Reducer: 10
+###
+> 0xFFFFFFFF max 10
+4294967295 max 10 : i8
+Binder : Max(4294967295, 10)
+Reducer: 4294967295
+###
+> 10 max 0xFFFFFFFF
+10 max 4294967295 : i8
+Binder : Max(10, 4294967295)
+Reducer: 4294967295
+###
+> 0xFFFFFFFF min 10
+4294967295 min 10 : i8
+Binder : Min(4294967295, 10)
+Reducer: 10
+###
+> 10 min 0xFFFFFFFF
+10 min 4294967295 : i8
+Binder : Min(10, 4294967295)
+Reducer: 10
+###
+> 0xFFFFFFFFu max 10u
+4294967295 max 10 : u8
+Binder : Max(4294967295, 10)
+Reducer: 4294967295
+###
+> 10u max 0xFFFFFFFFu
+10 max 4294967295 : u8
+Binder : Max(10, 4294967295)
+Reducer: 4294967295
+###
+> 0xFFFFFFFFu min 10u
+4294967295 min 10 : u8
+Binder : Min(4294967295, 10)
+Reducer: 10
+###
+> 10u min 0xFFFFFFFFu
+10 min 4294967295 : u8
+Binder : Min(10, 4294967295)
+Reducer: 10
+###
+> null max 10
+null max 10 : i8?
+Binder : Guard(?1: null, Max(Unit<i8>(?1), 10))
+Reducer: null
+###
+> 10 max null
+10 max null : i8?
+Binder : Guard(?1: null, Max(10, Unit<i8>(?1)))
+Reducer: null
+###
+> null min 10
+null min 10 : i8?
+Binder : Guard(?1: null, Min(Unit<i8>(?1), 10))
+Reducer: null
+###
+> 10 min null
+10 min null : i8?
+Binder : Guard(?1: null, Min(10, Unit<i8>(?1)))
+Reducer: null
+###
+> 1.0 max 2
+1 max 2 : r8
+Binder : Max(1, 2)
+Reducer: 2
+###
+> 1.0 min 2
+1 min 2 : r8
+Binder : Min(1, 2)
+Reducer: 1
+###
+> 2 max 1.0
+2 max 1 : r8
+Binder : Max(2, 1)
+Reducer: 2
+###
+> 2 min 1.0
+2 min 1 : r8
+Binder : Min(2, 1)
+Reducer: 1
+###
+> -0.0 max  0.0
+-0 max 0 : r8
+Binder : Max(-0, 0)
+Reducer: 0
+###
+> -0.0 min  0.0
+-0 min 0 : r8
+Binder : Min(-0, 0)
+Reducer: -0
+###
+> 0.0 max -0.0
+0 max -0 : r8
+Binder : Max(0, -0)
+Reducer: 0
+###
+> 0.0 min -0.0
+0 min -0 : r8
+Binder : Min(0, -0)
+Reducer: -0
+###
+> -0.0 max -0.0
+-0 max -0 : r8
+Binder : Max(-0, -0)
+Reducer: -0
+###
+> -0.0 min -0.0
+-0 min -0 : r8
+Binder : Min(-0, -0)
+Reducer: -0
+###
+> 1e20 max 1e30
+1E+20 max 1E+30 : r8
+Binder : Max(1E+20, 1E+30)
+Reducer: 1E+30
+###
+> 1e20 min 1e30
+1E+20 min 1E+30 : r8
+Binder : Min(1E+20, 1E+30)
+Reducer: 1E+20
+###
+> 1 max 1/0
+1 max 1 / 0 : r8
+Binder : Max(1, Mul(1, [/] 0))
+Reducer: ∞
+###
+> 1 max -1/0
+1 max -1 / 0 : r8
+Binder : Max(1, Mul(-1, [/] 0))
+Reducer: 1
+###
+> 1 min 1/0
+1 min 1 / 0 : r8
+Binder : Min(1, Mul(1, [/] 0))
+Reducer: 1
+###
+> 1 min -1/0
+1 min -1 / 0 : r8
+Binder : Min(1, Mul(-1, [/] 0))
+Reducer: -∞
+###
+> 1 max 0/0
+1 max 0 / 0 : r8
+Binder : Max(1, Mul(0, [/] 0))
+Reducer: NaN
+###
+> 1 min 0/0
+1 min 0 / 0 : r8
+Binder : Min(1, Mul(0, [/] 0))
+Reducer: NaN
+###
+> 1 max -0/0
+1 max -0 / 0 : r8
+Binder : Max(1, Mul(0, [/] 0))
+Reducer: NaN
+###
+> 1 min -0/0
+1 min -0 / 0 : r8
+Binder : Min(1, Mul(0, [/] 0))
+Reducer: NaN
+###
+> 0/0 max 1/0
+0 / 0 max 1 / 0 : r8
+Binder : Max(Mul(0, [/] 0), Mul(1, [/] 0))
+Reducer: NaN
+###
+> 0/0 min 1/0
+0 / 0 min 1 / 0 : r8
+Binder : Min(Mul(0, [/] 0), Mul(1, [/] 0))
+Reducer: NaN
+###
+> 0/0 max -1/0
+0 / 0 max -1 / 0 : r8
+Binder : Max(Mul(0, [/] 0), Mul(-1, [/] 0))
+Reducer: NaN
+###
+> 0/0 min -1/0
+0 / 0 min -1 / 0 : r8
+Binder : Min(Mul(0, [/] 0), Mul(-1, [/] 0))
+Reducer: NaN
+###
+> 1/0 max -1/0
+1 / 0 max -1 / 0 : r8
+Binder : Max(Mul(1, [/] 0), Mul(-1, [/] 0))
+Reducer: ∞
+###
+> 1/0 min -1/0
+1 / 0 min -1 / 0 : r8
+Binder : Min(Mul(1, [/] 0), Mul(-1, [/] 0))
+Reducer: -∞
+###
+> null max 4.5
+null max 4.5 : r8?
+Binder : Guard(?1: null, Max(Unit<r8>(?1), 4.5))
+Reducer: null
+###
+> null min 4.5
+null min 4.5 : r8?
+Binder : Guard(?1: null, Min(Unit<r8>(?1), 4.5))
+Reducer: null
+###
+> true max false
+true max false : b
+Binder : Max(true, false)
+Reducer: true
+###
+> true min false
+true min false : b
+Binder : Min(true, false)
+Reducer: false
+###
+> null max false
+null max false : b?
+Binder : Guard(?1: null, Max(Unit<b>(?1), false))
+Reducer: null
+###
+> null min false
+null min false : b?
+Binder : Guard(?1: null, Min(Unit<b>(?1), false))
+Reducer: null
+###
+> null and false
+null and false : b?
+Binder : And(null, false)
+Reducer: Opt<b?>(false)
+###
+> null min true
+null min true : b?
+Binder : Guard(?1: null, Min(Unit<b>(?1), true))
+Reducer: null
+###
+> null max true
+null max true : b?
+Binder : Guard(?1: null, Max(Unit<b>(?1), true))
+Reducer: null
+###
+> null or true
+null or true : b?
+Binder : Or(null, true)
+Reducer: Opt<b?>(true)
+###
+> "hello" max "world"
+"hello" max "world" : s
+Binder : Max("hello", "world")
+Reducer: "world"
+###
+> "world" max "hello"
+"world" max "hello" : s
+Binder : Max("world", "hello")
+Reducer: "world"
+###
+> "hello" min "world"
+"hello" min "world" : s
+Binder : Min("hello", "world")
+Reducer: "hello"
+###
+> "world" min "hello"
+"world" min "hello" : s
+Binder : Min("world", "hello")
+Reducer: "hello"
+###
+> "hello" max "HELLO"
+"hello" max "HELLO" : s
+Binder : Max("hello", "HELLO")
+Reducer: "HELLO"
+###
+> "HELLO" max "hello"
+"HELLO" max "hello" : s
+Binder : Max("HELLO", "hello")
+Reducer: "HELLO"
+###
+> "hello" min "HELLO"
+"hello" min "HELLO" : s
+Binder : Min("hello", "HELLO")
+Reducer: "hello"
+###
+> "HELLO" min "hello"
+"HELLO" min "hello" : s
+Binder : Min("HELLO", "hello")
+Reducer: "hello"
+###
+> "" max "world"
+"" max "world" : s
+Binder : Max("", "world")
+Reducer: "world"
+###
+> "world" max ""
+"world" max "" : s
+Binder : Max("world", "")
+Reducer: "world"
+###
+> "" min "world"
+"" min "world" : s
+Binder : Min("", "world")
+Reducer: ""
+###
+> "world" min ""
+"world" min "" : s
+Binder : Min("world", "")
+Reducer: ""
+###
+> null max "world"
+null max "world" : s
+Binder : Max(str(<null>), "world")
+Reducer: "world"
+###
+> "world" max null
+"world" max null : s
+Binder : Max("world", str(<null>))
+Reducer: "world"
+###
+> null min "world"
+null min "world" : s
+Binder : Min(str(<null>), "world")
+Reducer: str(<null>)
+###
+> "world" min null
+"world" min null : s
+Binder : Min("world", str(<null>))
+Reducer: str(<null>)
+###
+> i1 max i4
+i1 max i4 : i4
+Binder : Max(Num<i4>(i1), i4)
+###
+> i2 max i4
+i2 max i4 : i4
+Binder : Max(Num<i4>(i2), i4)
+###
+> i4 max i4
+i4 max i4 : i4
+Binder : Max(i4, i4)
+###
+> i8 max i4
+i8 max i4 : i8
+Binder : Max(i8, Num<i8>(i4))
+###
+> i  max i4
+i max i4 : i
+Binder : Max(i, Num<i>(i4))
+###
+> u1 max i4
+u1 max i4 : i4
+Binder : Max(Num<i4>(u1), i4)
+###
+> u2 max i4
+u2 max i4 : i4
+Binder : Max(Num<i4>(u2), i4)
+###
+> u4 max i4
+u4 max i4 : i8
+Binder : Max(Num<i8>(u4), Num<i8>(i4))
+###
+> u8 max i4
+u8 max i4 : i8
+*** Warning: (0,2) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Max(Num<i8>(u8), Num<i8>(i4))
+###
+> r4 max i4
+r4 max i4 : r4
+Binder : Max(r4, Num<r4>(i4))
+###
+> r8 max i4
+r8 max i4 : r8
+Binder : Max(r8, Num<r8>(i4))
+###
+> t  max i4
+t max i4 : t
+*** Error: (3,6) Node: t max i4, Message: The given types are not comparable: 't' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  max i4
+d max i4 : d
+*** Error: (3,6) Node: d max i4, Message: The given types are not comparable: 'd' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  max i4
+o max i4 : i4?
+Binder : Guard(?1: o, Max(Unit<i4>(?1), i4))
+Reducer: null
+###
+> b  max i4
+b max i4 : i4
+Binder : Max(Num<i4>(b), i4)
+###
+> s  max i4
+s max i4 : s
+*** Error: (3,6) Node: s max i4, Message: The given types are not comparable: 's' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max i4
+g max i4 : i4
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 max qi4
+i1 max qi4 : i4?
+Binder : Guard(?1: qi4, Max(Num<i4>(i1), ?1))
+###
+> i2 max qi4
+i2 max qi4 : i4?
+Binder : Guard(?1: qi4, Max(Num<i4>(i2), ?1))
+###
+> i4 max qi4
+i4 max qi4 : i4?
+Binder : Guard(?1: qi4, Max(i4, ?1))
+###
+> i8 max qi4
+i8 max qi4 : i8?
+Binder : Guard(?1: qi4, Max(i8, Num<i8>(?1)))
+###
+> i  max qi4
+i max qi4 : i?
+Binder : Guard(?1: qi4, Max(i, Num<i>(?1)))
+###
+> u1 max qi4
+u1 max qi4 : i4?
+Binder : Guard(?1: qi4, Max(Num<i4>(u1), ?1))
+###
+> u2 max qi4
+u2 max qi4 : i4?
+Binder : Guard(?1: qi4, Max(Num<i4>(u2), ?1))
+###
+> u4 max qi4
+u4 max qi4 : i8?
+Binder : Guard(?1: qi4, Max(Num<i8>(u4), Num<i8>(?1)))
+###
+> u8 max qi4
+u8 max qi4 : i8?
+*** Warning: (0,2) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qi4, Max(Num<i8>(u8), Num<i8>(?1)))
+###
+> r4 max qi4
+r4 max qi4 : r4?
+Binder : Guard(?1: qi4, Max(r4, Num<r4>(?1)))
+###
+> r8 max qi4
+r8 max qi4 : r8?
+Binder : Guard(?1: qi4, Max(r8, Num<r8>(?1)))
+###
+> t  max qi4
+t max qi4 : t?
+*** Error: (3,6) Node: t max qi4, Message: The given types are not comparable: 't' and 'i4'
+Binder : Guard(?1: qi4, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  max qi4
+d max qi4 : d?
+*** Error: (3,6) Node: d max qi4, Message: The given types are not comparable: 'd' and 'i4'
+Binder : Guard(?1: qi4, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  max qi4
+o max qi4 : i4?
+Binder : Guard(?1: o, ?2: qi4, Max(Unit<i4>(?1), ?2))
+Reducer: null
+###
+> b  max qi4
+b max qi4 : i4?
+Binder : Guard(?1: qi4, Max(Num<i4>(b), ?1))
+###
+> s  max qi4
+s max qi4 : s
+*** Error: (3,6) Node: s max qi4, Message: The given types are not comparable: 's' and 'i4?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max qi4
+g max qi4 : i4?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qi4, Error(ErrIncomparableType_Type))
+###
+> i1 max r4
+i1 max r4 : r4
+Binder : Max(Num<r4>(i1), r4)
+###
+> i2 max r4
+i2 max r4 : r4
+Binder : Max(Num<r4>(i2), r4)
+###
+> i4 max r4
+i4 max r4 : r4
+Binder : Max(Num<r4>(i4), r4)
+###
+> i8 max r4
+i8 max r4 : r4
+Binder : Max(Num<r4>(i8), r4)
+###
+> i  max r4
+i max r4 : r4
+Binder : Max(Num<r4>(i), r4)
+###
+> u1 max r4
+u1 max r4 : r4
+Binder : Max(Num<r4>(u1), r4)
+###
+> u2 max r4
+u2 max r4 : r4
+Binder : Max(Num<r4>(u2), r4)
+###
+> u4 max r4
+u4 max r4 : r4
+Binder : Max(Num<r4>(u4), r4)
+###
+> u8 max r4
+u8 max r4 : r4
+Binder : Max(Num<r4>(u8), r4)
+###
+> r4 max r4
+r4 max r4 : r4
+Binder : Max(r4, r4)
+###
+> r8 max r4
+r8 max r4 : r8
+Binder : Max(r8, Num<r8>(r4))
+###
+> t  max r4
+t max r4 : t
+*** Error: (3,6) Node: t max r4, Message: The given types are not comparable: 't' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  max r4
+d max r4 : d
+*** Error: (3,6) Node: d max r4, Message: The given types are not comparable: 'd' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  max r4
+o max r4 : r4?
+Binder : Guard(?1: o, Max(Unit<r4>(?1), r4))
+Reducer: null
+###
+> b  max r4
+b max r4 : r4
+Binder : Max(Num<r4>(b), r4)
+###
+> s  max r4
+s max r4 : s
+*** Error: (3,6) Node: s max r4, Message: The given types are not comparable: 's' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max r4
+g max r4 : r4
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 max qr4
+i1 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(i1), ?1))
+###
+> i2 max qr4
+i2 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(i2), ?1))
+###
+> i4 max qr4
+i4 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(i4), ?1))
+###
+> i8 max qr4
+i8 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(i8), ?1))
+###
+> i  max qr4
+i max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(i), ?1))
+###
+> u1 max qr4
+u1 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(u1), ?1))
+###
+> u2 max qr4
+u2 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(u2), ?1))
+###
+> u4 max qr4
+u4 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(u4), ?1))
+###
+> u8 max qr4
+u8 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(u8), ?1))
+###
+> r4 max qr4
+r4 max qr4 : r4?
+Binder : Guard(?1: qr4, Max(r4, ?1))
+###
+> r8 max qr4
+r8 max qr4 : r8?
+Binder : Guard(?1: qr4, Max(r8, Num<r8>(?1)))
+###
+> t  max qr4
+t max qr4 : t?
+*** Error: (3,6) Node: t max qr4, Message: The given types are not comparable: 't' and 'r4'
+Binder : Guard(?1: qr4, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  max qr4
+d max qr4 : d?
+*** Error: (3,6) Node: d max qr4, Message: The given types are not comparable: 'd' and 'r4'
+Binder : Guard(?1: qr4, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  max qr4
+o max qr4 : r4?
+Binder : Guard(?1: o, ?2: qr4, Max(Unit<r4>(?1), ?2))
+Reducer: null
+###
+> b  max qr4
+b max qr4 : r4?
+Binder : Guard(?1: qr4, Max(Num<r4>(b), ?1))
+###
+> s  max qr4
+s max qr4 : s
+*** Error: (3,6) Node: s max qr4, Message: The given types are not comparable: 's' and 'r4?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max qr4
+g max qr4 : r4?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qr4, Error(ErrIncomparableType_Type))
+###
+> i1 max b
+i1 max b : i1
+Binder : Max(i1, Num<i1>(b))
+###
+> i2 max b
+i2 max b : i2
+Binder : Max(i2, Num<i2>(b))
+###
+> i4 max b
+i4 max b : i4
+Binder : Max(i4, Num<i4>(b))
+###
+> i8 max b
+i8 max b : i8
+Binder : Max(i8, Num<i8>(b))
+###
+> i  max b
+i max b : i
+Binder : Max(i, Num<i>(b))
+###
+> u1 max b
+u1 max b : u1
+Binder : Max(u1, Num<u1>(b))
+###
+> u2 max b
+u2 max b : u2
+Binder : Max(u2, Num<u2>(b))
+###
+> u4 max b
+u4 max b : u4
+Binder : Max(u4, Num<u4>(b))
+###
+> u8 max b
+u8 max b : u8
+Binder : Max(u8, Num<u8>(b))
+###
+> r4 max b
+r4 max b : r4
+Binder : Max(r4, Num<r4>(b))
+###
+> r8 max b
+r8 max b : r8
+Binder : Max(r8, Num<r8>(b))
+###
+> t  max b
+t max b : t
+*** Error: (3,6) Node: t max b, Message: The given types are not comparable: 't' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  max b
+d max b : d
+*** Error: (3,6) Node: d max b, Message: The given types are not comparable: 'd' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  max b
+o max b : b?
+Binder : Guard(?1: o, Max(Unit<b>(?1), b))
+Reducer: null
+###
+> b  max b
+b max b : b
+Binder : Max(b, b)
+###
+> s  max b
+s max b : s
+*** Error: (3,6) Node: s max b, Message: The given types are not comparable: 's' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max b
+g max b : b
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 max qb
+i1 max qb : i1?
+Binder : Guard(?1: qb, Max(i1, Num<i1>(?1)))
+###
+> i2 max qb
+i2 max qb : i2?
+Binder : Guard(?1: qb, Max(i2, Num<i2>(?1)))
+###
+> i4 max qb
+i4 max qb : i4?
+Binder : Guard(?1: qb, Max(i4, Num<i4>(?1)))
+###
+> i8 max qb
+i8 max qb : i8?
+Binder : Guard(?1: qb, Max(i8, Num<i8>(?1)))
+###
+> i  max qb
+i max qb : i?
+Binder : Guard(?1: qb, Max(i, Num<i>(?1)))
+###
+> u1 max qb
+u1 max qb : u1?
+Binder : Guard(?1: qb, Max(u1, Num<u1>(?1)))
+###
+> u2 max qb
+u2 max qb : u2?
+Binder : Guard(?1: qb, Max(u2, Num<u2>(?1)))
+###
+> u4 max qb
+u4 max qb : u4?
+Binder : Guard(?1: qb, Max(u4, Num<u4>(?1)))
+###
+> u8 max qb
+u8 max qb : u8?
+Binder : Guard(?1: qb, Max(u8, Num<u8>(?1)))
+###
+> r4 max qb
+r4 max qb : r4?
+Binder : Guard(?1: qb, Max(r4, Num<r4>(?1)))
+###
+> r8 max qb
+r8 max qb : r8?
+Binder : Guard(?1: qb, Max(r8, Num<r8>(?1)))
+###
+> t  max qb
+t max qb : t?
+*** Error: (3,6) Node: t max qb, Message: The given types are not comparable: 't' and 'b'
+Binder : Guard(?1: qb, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  max qb
+d max qb : d?
+*** Error: (3,6) Node: d max qb, Message: The given types are not comparable: 'd' and 'b'
+Binder : Guard(?1: qb, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  max qb
+o max qb : b?
+Binder : Guard(?1: o, ?2: qb, Max(Unit<b>(?1), ?2))
+Reducer: null
+###
+> b  max qb
+b max qb : b?
+Binder : Guard(?1: qb, Max(b, ?1))
+###
+> s  max qb
+s max qb : s
+*** Error: (3,6) Node: s max qb, Message: The given types are not comparable: 's' and 'b?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max qb
+g max qb : b?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qb, Error(ErrIncomparableType_Type))
+###
+> i1 max s
+i1 max s : i1
+*** Error: (3,6) Node: i1 max s, Message: The given types are not comparable: 'i1' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 max s
+i2 max s : i2
+*** Error: (3,6) Node: i2 max s, Message: The given types are not comparable: 'i2' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 max s
+i4 max s : i4
+*** Error: (3,6) Node: i4 max s, Message: The given types are not comparable: 'i4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 max s
+i8 max s : i8
+*** Error: (3,6) Node: i8 max s, Message: The given types are not comparable: 'i8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  max s
+i max s : i
+*** Error: (3,6) Node: i max s, Message: The given types are not comparable: 'i' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 max s
+u1 max s : u1
+*** Error: (3,6) Node: u1 max s, Message: The given types are not comparable: 'u1' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 max s
+u2 max s : u2
+*** Error: (3,6) Node: u2 max s, Message: The given types are not comparable: 'u2' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 max s
+u4 max s : u4
+*** Error: (3,6) Node: u4 max s, Message: The given types are not comparable: 'u4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 max s
+u8 max s : u8
+*** Error: (3,6) Node: u8 max s, Message: The given types are not comparable: 'u8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 max s
+r4 max s : r4
+*** Error: (3,6) Node: r4 max s, Message: The given types are not comparable: 'r4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 max s
+r8 max s : r8
+*** Error: (3,6) Node: r8 max s, Message: The given types are not comparable: 'r8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  max s
+t max s : t
+*** Error: (3,6) Node: t max s, Message: The given types are not comparable: 't' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  max s
+d max s : d
+*** Error: (3,6) Node: d max s, Message: The given types are not comparable: 'd' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  max s
+o max s : s
+Binder : Max(str(<null>), s)
+###
+> s  max s
+s max s : s
+Binder : Max(s, s)
+###
+> g  max s
+g max s : s
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 max d
+i1 max d : i1
+*** Error: (3,6) Node: i1 max d, Message: The given types are not comparable: 'i1' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 max d
+i2 max d : i2
+*** Error: (3,6) Node: i2 max d, Message: The given types are not comparable: 'i2' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 max d
+i4 max d : i4
+*** Error: (3,6) Node: i4 max d, Message: The given types are not comparable: 'i4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 max d
+i8 max d : i8
+*** Error: (3,6) Node: i8 max d, Message: The given types are not comparable: 'i8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  max d
+i max d : i
+*** Error: (3,6) Node: i max d, Message: The given types are not comparable: 'i' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 max d
+u1 max d : u1
+*** Error: (3,6) Node: u1 max d, Message: The given types are not comparable: 'u1' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 max d
+u2 max d : u2
+*** Error: (3,6) Node: u2 max d, Message: The given types are not comparable: 'u2' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 max d
+u4 max d : u4
+*** Error: (3,6) Node: u4 max d, Message: The given types are not comparable: 'u4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 max d
+u8 max d : u8
+*** Error: (3,6) Node: u8 max d, Message: The given types are not comparable: 'u8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 max d
+r4 max d : r4
+*** Error: (3,6) Node: r4 max d, Message: The given types are not comparable: 'r4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 max d
+r8 max d : r8
+*** Error: (3,6) Node: r8 max d, Message: The given types are not comparable: 'r8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  max d
+t max d : t
+*** Error: (3,6) Node: t max d, Message: The given types are not comparable: 't' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  max d
+d max d : d
+Binder : Max(d, d)
+###
+> o  max d
+o max d : d?
+Binder : Guard(?1: o, Max(Unit<d>(?1), d))
+Reducer: null
+###
+> s  max d
+s max d : s
+*** Error: (3,6) Node: s max d, Message: The given types are not comparable: 's' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max d
+g max d : d
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 max t
+i1 max t : i1
+*** Error: (3,6) Node: i1 max t, Message: The given types are not comparable: 'i1' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 max t
+i2 max t : i2
+*** Error: (3,6) Node: i2 max t, Message: The given types are not comparable: 'i2' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 max t
+i4 max t : i4
+*** Error: (3,6) Node: i4 max t, Message: The given types are not comparable: 'i4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 max t
+i8 max t : i8
+*** Error: (3,6) Node: i8 max t, Message: The given types are not comparable: 'i8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  max t
+i max t : i
+*** Error: (3,6) Node: i max t, Message: The given types are not comparable: 'i' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 max t
+u1 max t : u1
+*** Error: (3,6) Node: u1 max t, Message: The given types are not comparable: 'u1' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 max t
+u2 max t : u2
+*** Error: (3,6) Node: u2 max t, Message: The given types are not comparable: 'u2' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 max t
+u4 max t : u4
+*** Error: (3,6) Node: u4 max t, Message: The given types are not comparable: 'u4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 max t
+u8 max t : u8
+*** Error: (3,6) Node: u8 max t, Message: The given types are not comparable: 'u8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 max t
+r4 max t : r4
+*** Error: (3,6) Node: r4 max t, Message: The given types are not comparable: 'r4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 max t
+r8 max t : r8
+*** Error: (3,6) Node: r8 max t, Message: The given types are not comparable: 'r8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  max t
+t max t : t
+Binder : Max(t, t)
+###
+> d  max t
+d max t : d
+*** Error: (3,6) Node: d max t, Message: The given types are not comparable: 'd' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  max t
+o max t : t?
+Binder : Guard(?1: o, Max(Unit<t>(?1), t))
+Reducer: null
+###
+> s  max t
+s max t : s
+*** Error: (3,6) Node: s max t, Message: The given types are not comparable: 's' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  max t
+g max t : t
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> r  max r
+r max r : {I4:i4, S:s}
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Error(ErrIncomparableType_Type)
+###
+> qr max qr
+qr max qr : {I4:i4, S:s}?
+*** Error: (0,2) Node: qr, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, ?2: qr, Error(ErrIncomparableType_Type))
+Reducer: Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> r  max qr
+r max qr : {I4:i4, S:s}?
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> r  max g
+r max g : g
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Error(ErrIncomparableType_Type)
+###
+> qr max g
+qr max g : g
+*** Error: (0,2) Node: qr, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> o  max o
+o max o : o
+*** Error: (0,1) Node: o, Message: Ordered comparison is not supported for items of type 'v'
+Binder : Guard(?1: o, ?2: o, Error(ErrIncomparableType_Type))
+Reducer: null
+###
+> v  max v
+v max v : v
+*** Error: (0,1) Node: v, Message: Ordered comparison is not supported for items of type 'v'
+Binder : Error(ErrIncomparableType_Type)
+###
+> g  max g
+g max g : g
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min i4
+i1 min i4 : i4
+Binder : Min(Num<i4>(i1), i4)
+###
+> i2 min i4
+i2 min i4 : i4
+Binder : Min(Num<i4>(i2), i4)
+###
+> i4 min i4
+i4 min i4 : i4
+Binder : Min(i4, i4)
+###
+> i8 min i4
+i8 min i4 : i8
+Binder : Min(i8, Num<i8>(i4))
+###
+> i  min i4
+i min i4 : i
+Binder : Min(i, Num<i>(i4))
+###
+> u1 min i4
+u1 min i4 : i4
+Binder : Min(Num<i4>(u1), i4)
+###
+> u2 min i4
+u2 min i4 : i4
+Binder : Min(Num<i4>(u2), i4)
+###
+> u4 min i4
+u4 min i4 : i8
+Binder : Min(Num<i8>(u4), Num<i8>(i4))
+###
+> u8 min i4
+u8 min i4 : i8
+*** Warning: (0,2) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Min(Num<i8>(u8), Num<i8>(i4))
+###
+> r4 min i4
+r4 min i4 : r4
+Binder : Min(r4, Num<r4>(i4))
+###
+> r8 min i4
+r8 min i4 : r8
+Binder : Min(r8, Num<r8>(i4))
+###
+> t  min i4
+t min i4 : t
+*** Error: (3,6) Node: t min i4, Message: The given types are not comparable: 't' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  min i4
+d min i4 : d
+*** Error: (3,6) Node: d min i4, Message: The given types are not comparable: 'd' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  min i4
+o min i4 : i4?
+Binder : Guard(?1: o, Min(Unit<i4>(?1), i4))
+Reducer: null
+###
+> b  min i4
+b min i4 : i4
+Binder : Min(Num<i4>(b), i4)
+###
+> s  min i4
+s min i4 : s
+*** Error: (3,6) Node: s min i4, Message: The given types are not comparable: 's' and 'i4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min i4
+g min i4 : i4
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min qi4
+i1 min qi4 : i4?
+Binder : Guard(?1: qi4, Min(Num<i4>(i1), ?1))
+###
+> i2 min qi4
+i2 min qi4 : i4?
+Binder : Guard(?1: qi4, Min(Num<i4>(i2), ?1))
+###
+> i4 min qi4
+i4 min qi4 : i4?
+Binder : Guard(?1: qi4, Min(i4, ?1))
+###
+> i8 min qi4
+i8 min qi4 : i8?
+Binder : Guard(?1: qi4, Min(i8, Num<i8>(?1)))
+###
+> i  min qi4
+i min qi4 : i?
+Binder : Guard(?1: qi4, Min(i, Num<i>(?1)))
+###
+> u1 min qi4
+u1 min qi4 : i4?
+Binder : Guard(?1: qi4, Min(Num<i4>(u1), ?1))
+###
+> u2 min qi4
+u2 min qi4 : i4?
+Binder : Guard(?1: qi4, Min(Num<i4>(u2), ?1))
+###
+> u4 min qi4
+u4 min qi4 : i8?
+Binder : Guard(?1: qi4, Min(Num<i8>(u4), Num<i8>(?1)))
+###
+> u8 min qi4
+u8 min qi4 : i8?
+*** Warning: (0,2) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qi4, Min(Num<i8>(u8), Num<i8>(?1)))
+###
+> r4 min qi4
+r4 min qi4 : r4?
+Binder : Guard(?1: qi4, Min(r4, Num<r4>(?1)))
+###
+> r8 min qi4
+r8 min qi4 : r8?
+Binder : Guard(?1: qi4, Min(r8, Num<r8>(?1)))
+###
+> t  min qi4
+t min qi4 : t?
+*** Error: (3,6) Node: t min qi4, Message: The given types are not comparable: 't' and 'i4'
+Binder : Guard(?1: qi4, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  min qi4
+d min qi4 : d?
+*** Error: (3,6) Node: d min qi4, Message: The given types are not comparable: 'd' and 'i4'
+Binder : Guard(?1: qi4, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  min qi4
+o min qi4 : i4?
+Binder : Guard(?1: o, ?2: qi4, Min(Unit<i4>(?1), ?2))
+Reducer: null
+###
+> b  min qi4
+b min qi4 : i4?
+Binder : Guard(?1: qi4, Min(Num<i4>(b), ?1))
+###
+> s  min qi4
+s min qi4 : s
+*** Error: (3,6) Node: s min qi4, Message: The given types are not comparable: 's' and 'i4?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min qi4
+g min qi4 : i4?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qi4, Error(ErrIncomparableType_Type))
+###
+> i1 min r4
+i1 min r4 : r4
+Binder : Min(Num<r4>(i1), r4)
+###
+> i2 min r4
+i2 min r4 : r4
+Binder : Min(Num<r4>(i2), r4)
+###
+> i4 min r4
+i4 min r4 : r4
+Binder : Min(Num<r4>(i4), r4)
+###
+> i8 min r4
+i8 min r4 : r4
+Binder : Min(Num<r4>(i8), r4)
+###
+> i  min r4
+i min r4 : r4
+Binder : Min(Num<r4>(i), r4)
+###
+> u1 min r4
+u1 min r4 : r4
+Binder : Min(Num<r4>(u1), r4)
+###
+> u2 min r4
+u2 min r4 : r4
+Binder : Min(Num<r4>(u2), r4)
+###
+> u4 min r4
+u4 min r4 : r4
+Binder : Min(Num<r4>(u4), r4)
+###
+> u8 min r4
+u8 min r4 : r4
+Binder : Min(Num<r4>(u8), r4)
+###
+> r4 min r4
+r4 min r4 : r4
+Binder : Min(r4, r4)
+###
+> r8 min r4
+r8 min r4 : r8
+Binder : Min(r8, Num<r8>(r4))
+###
+> t  min r4
+t min r4 : t
+*** Error: (3,6) Node: t min r4, Message: The given types are not comparable: 't' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  min r4
+d min r4 : d
+*** Error: (3,6) Node: d min r4, Message: The given types are not comparable: 'd' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  min r4
+o min r4 : r4?
+Binder : Guard(?1: o, Min(Unit<r4>(?1), r4))
+Reducer: null
+###
+> b  min r4
+b min r4 : r4
+Binder : Min(Num<r4>(b), r4)
+###
+> s  min r4
+s min r4 : s
+*** Error: (3,6) Node: s min r4, Message: The given types are not comparable: 's' and 'r4'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min r4
+g min r4 : r4
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min qr4
+i1 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(i1), ?1))
+###
+> i2 min qr4
+i2 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(i2), ?1))
+###
+> i4 min qr4
+i4 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(i4), ?1))
+###
+> i8 min qr4
+i8 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(i8), ?1))
+###
+> i  min qr4
+i min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(i), ?1))
+###
+> u1 min qr4
+u1 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(u1), ?1))
+###
+> u2 min qr4
+u2 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(u2), ?1))
+###
+> u4 min qr4
+u4 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(u4), ?1))
+###
+> u8 min qr4
+u8 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(u8), ?1))
+###
+> r4 min qr4
+r4 min qr4 : r4?
+Binder : Guard(?1: qr4, Min(r4, ?1))
+###
+> r8 min qr4
+r8 min qr4 : r8?
+Binder : Guard(?1: qr4, Min(r8, Num<r8>(?1)))
+###
+> t  min qr4
+t min qr4 : t?
+*** Error: (3,6) Node: t min qr4, Message: The given types are not comparable: 't' and 'r4'
+Binder : Guard(?1: qr4, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  min qr4
+d min qr4 : d?
+*** Error: (3,6) Node: d min qr4, Message: The given types are not comparable: 'd' and 'r4'
+Binder : Guard(?1: qr4, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  min qr4
+o min qr4 : r4?
+Binder : Guard(?1: o, ?2: qr4, Min(Unit<r4>(?1), ?2))
+Reducer: null
+###
+> b  min qr4
+b min qr4 : r4?
+Binder : Guard(?1: qr4, Min(Num<r4>(b), ?1))
+###
+> s  min qr4
+s min qr4 : s
+*** Error: (3,6) Node: s min qr4, Message: The given types are not comparable: 's' and 'r4?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min qr4
+g min qr4 : r4?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qr4, Error(ErrIncomparableType_Type))
+###
+> i1 min b
+i1 min b : i1
+Binder : Min(i1, Num<i1>(b))
+###
+> i2 min b
+i2 min b : i2
+Binder : Min(i2, Num<i2>(b))
+###
+> i4 min b
+i4 min b : i4
+Binder : Min(i4, Num<i4>(b))
+###
+> i8 min b
+i8 min b : i8
+Binder : Min(i8, Num<i8>(b))
+###
+> i  min b
+i min b : i
+Binder : Min(i, Num<i>(b))
+###
+> u1 min b
+u1 min b : u1
+Binder : Min(u1, Num<u1>(b))
+###
+> u2 min b
+u2 min b : u2
+Binder : Min(u2, Num<u2>(b))
+###
+> u4 min b
+u4 min b : u4
+Binder : Min(u4, Num<u4>(b))
+###
+> u8 min b
+u8 min b : u8
+Binder : Min(u8, Num<u8>(b))
+###
+> r4 min b
+r4 min b : r4
+Binder : Min(r4, Num<r4>(b))
+###
+> r8 min b
+r8 min b : r8
+Binder : Min(r8, Num<r8>(b))
+###
+> t  min b
+t min b : t
+*** Error: (3,6) Node: t min b, Message: The given types are not comparable: 't' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  min b
+d min b : d
+*** Error: (3,6) Node: d min b, Message: The given types are not comparable: 'd' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  min b
+o min b : b?
+Binder : Guard(?1: o, Min(Unit<b>(?1), b))
+Reducer: null
+###
+> b  min b
+b min b : b
+Binder : Min(b, b)
+###
+> s  min b
+s min b : s
+*** Error: (3,6) Node: s min b, Message: The given types are not comparable: 's' and 'b'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min b
+g min b : b
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min qb
+i1 min qb : i1?
+Binder : Guard(?1: qb, Min(i1, Num<i1>(?1)))
+###
+> i2 min qb
+i2 min qb : i2?
+Binder : Guard(?1: qb, Min(i2, Num<i2>(?1)))
+###
+> i4 min qb
+i4 min qb : i4?
+Binder : Guard(?1: qb, Min(i4, Num<i4>(?1)))
+###
+> i8 min qb
+i8 min qb : i8?
+Binder : Guard(?1: qb, Min(i8, Num<i8>(?1)))
+###
+> i  min qb
+i min qb : i?
+Binder : Guard(?1: qb, Min(i, Num<i>(?1)))
+###
+> u1 min qb
+u1 min qb : u1?
+Binder : Guard(?1: qb, Min(u1, Num<u1>(?1)))
+###
+> u2 min qb
+u2 min qb : u2?
+Binder : Guard(?1: qb, Min(u2, Num<u2>(?1)))
+###
+> u4 min qb
+u4 min qb : u4?
+Binder : Guard(?1: qb, Min(u4, Num<u4>(?1)))
+###
+> u8 min qb
+u8 min qb : u8?
+Binder : Guard(?1: qb, Min(u8, Num<u8>(?1)))
+###
+> r4 min qb
+r4 min qb : r4?
+Binder : Guard(?1: qb, Min(r4, Num<r4>(?1)))
+###
+> r8 min qb
+r8 min qb : r8?
+Binder : Guard(?1: qb, Min(r8, Num<r8>(?1)))
+###
+> t  min qb
+t min qb : t?
+*** Error: (3,6) Node: t min qb, Message: The given types are not comparable: 't' and 'b'
+Binder : Guard(?1: qb, Error(ErrIncomparableTypes_Type_Type))
+###
+> d  min qb
+d min qb : d?
+*** Error: (3,6) Node: d min qb, Message: The given types are not comparable: 'd' and 'b'
+Binder : Guard(?1: qb, Error(ErrIncomparableTypes_Type_Type))
+###
+> o  min qb
+o min qb : b?
+Binder : Guard(?1: o, ?2: qb, Min(Unit<b>(?1), ?2))
+Reducer: null
+###
+> b  min qb
+b min qb : b?
+Binder : Guard(?1: qb, Min(b, ?1))
+###
+> s  min qb
+s min qb : s
+*** Error: (3,6) Node: s min qb, Message: The given types are not comparable: 's' and 'b?'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min qb
+g min qb : b?
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Guard(?1: qb, Error(ErrIncomparableType_Type))
+###
+> i1 min s
+i1 min s : i1
+*** Error: (3,6) Node: i1 min s, Message: The given types are not comparable: 'i1' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 min s
+i2 min s : i2
+*** Error: (3,6) Node: i2 min s, Message: The given types are not comparable: 'i2' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 min s
+i4 min s : i4
+*** Error: (3,6) Node: i4 min s, Message: The given types are not comparable: 'i4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 min s
+i8 min s : i8
+*** Error: (3,6) Node: i8 min s, Message: The given types are not comparable: 'i8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  min s
+i min s : i
+*** Error: (3,6) Node: i min s, Message: The given types are not comparable: 'i' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 min s
+u1 min s : u1
+*** Error: (3,6) Node: u1 min s, Message: The given types are not comparable: 'u1' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 min s
+u2 min s : u2
+*** Error: (3,6) Node: u2 min s, Message: The given types are not comparable: 'u2' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 min s
+u4 min s : u4
+*** Error: (3,6) Node: u4 min s, Message: The given types are not comparable: 'u4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 min s
+u8 min s : u8
+*** Error: (3,6) Node: u8 min s, Message: The given types are not comparable: 'u8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 min s
+r4 min s : r4
+*** Error: (3,6) Node: r4 min s, Message: The given types are not comparable: 'r4' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 min s
+r8 min s : r8
+*** Error: (3,6) Node: r8 min s, Message: The given types are not comparable: 'r8' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  min s
+t min s : t
+*** Error: (3,6) Node: t min s, Message: The given types are not comparable: 't' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  min s
+d min s : d
+*** Error: (3,6) Node: d min s, Message: The given types are not comparable: 'd' and 's'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  min s
+o min s : s
+Binder : Min(str(<null>), s)
+###
+> s  min s
+s min s : s
+Binder : Min(s, s)
+###
+> g  min s
+g min s : s
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min d
+i1 min d : i1
+*** Error: (3,6) Node: i1 min d, Message: The given types are not comparable: 'i1' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 min d
+i2 min d : i2
+*** Error: (3,6) Node: i2 min d, Message: The given types are not comparable: 'i2' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 min d
+i4 min d : i4
+*** Error: (3,6) Node: i4 min d, Message: The given types are not comparable: 'i4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 min d
+i8 min d : i8
+*** Error: (3,6) Node: i8 min d, Message: The given types are not comparable: 'i8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  min d
+i min d : i
+*** Error: (3,6) Node: i min d, Message: The given types are not comparable: 'i' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 min d
+u1 min d : u1
+*** Error: (3,6) Node: u1 min d, Message: The given types are not comparable: 'u1' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 min d
+u2 min d : u2
+*** Error: (3,6) Node: u2 min d, Message: The given types are not comparable: 'u2' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 min d
+u4 min d : u4
+*** Error: (3,6) Node: u4 min d, Message: The given types are not comparable: 'u4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 min d
+u8 min d : u8
+*** Error: (3,6) Node: u8 min d, Message: The given types are not comparable: 'u8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 min d
+r4 min d : r4
+*** Error: (3,6) Node: r4 min d, Message: The given types are not comparable: 'r4' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 min d
+r8 min d : r8
+*** Error: (3,6) Node: r8 min d, Message: The given types are not comparable: 'r8' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  min d
+t min d : t
+*** Error: (3,6) Node: t min d, Message: The given types are not comparable: 't' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> d  min d
+d min d : d
+Binder : Min(d, d)
+###
+> o  min d
+o min d : d?
+Binder : Guard(?1: o, Min(Unit<d>(?1), d))
+Reducer: null
+###
+> s  min d
+s min d : s
+*** Error: (3,6) Node: s min d, Message: The given types are not comparable: 's' and 'd'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min d
+g min d : d
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i1 min t
+i1 min t : i1
+*** Error: (3,6) Node: i1 min t, Message: The given types are not comparable: 'i1' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i2 min t
+i2 min t : i2
+*** Error: (3,6) Node: i2 min t, Message: The given types are not comparable: 'i2' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i4 min t
+i4 min t : i4
+*** Error: (3,6) Node: i4 min t, Message: The given types are not comparable: 'i4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i8 min t
+i8 min t : i8
+*** Error: (3,6) Node: i8 min t, Message: The given types are not comparable: 'i8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> i  min t
+i min t : i
+*** Error: (3,6) Node: i min t, Message: The given types are not comparable: 'i' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u1 min t
+u1 min t : u1
+*** Error: (3,6) Node: u1 min t, Message: The given types are not comparable: 'u1' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u2 min t
+u2 min t : u2
+*** Error: (3,6) Node: u2 min t, Message: The given types are not comparable: 'u2' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u4 min t
+u4 min t : u4
+*** Error: (3,6) Node: u4 min t, Message: The given types are not comparable: 'u4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> u8 min t
+u8 min t : u8
+*** Error: (3,6) Node: u8 min t, Message: The given types are not comparable: 'u8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r4 min t
+r4 min t : r4
+*** Error: (3,6) Node: r4 min t, Message: The given types are not comparable: 'r4' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> r8 min t
+r8 min t : r8
+*** Error: (3,6) Node: r8 min t, Message: The given types are not comparable: 'r8' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> t  min t
+t min t : t
+Binder : Min(t, t)
+###
+> d  min t
+d min t : d
+*** Error: (3,6) Node: d min t, Message: The given types are not comparable: 'd' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> o  min t
+o min t : t?
+Binder : Guard(?1: o, Min(Unit<t>(?1), t))
+Reducer: null
+###
+> s  min t
+s min t : s
+*** Error: (3,6) Node: s min t, Message: The given types are not comparable: 's' and 't'
+Binder : Error(ErrIncomparableTypes_Type_Type)
+###
+> g  min t
+g min t : t
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i4 min g
+i4 min g : i4
+*** Error: (7,8) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> r  min r
+r min r : {I4:i4, S:s}
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Error(ErrIncomparableType_Type)
+###
+> qr min qr
+qr min qr : {I4:i4, S:s}?
+*** Error: (0,2) Node: qr, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, ?2: qr, Error(ErrIncomparableType_Type))
+Reducer: Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> r  min qr
+r min qr : {I4:i4, S:s}?
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> r  min g
+r min g : g
+*** Error: (0,1) Node: r, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Error(ErrIncomparableType_Type)
+###
+> qr min g
+qr min g : g
+*** Error: (0,2) Node: qr, Message: Ordered comparison is not supported for items of type '{I4:i4, S:s}'
+Binder : Guard(?1: qr, Error(ErrIncomparableType_Type))
+###
+> o  min o
+o min o : o
+*** Error: (0,1) Node: o, Message: Ordered comparison is not supported for items of type 'v'
+Binder : Guard(?1: o, ?2: o, Error(ErrIncomparableType_Type))
+Reducer: null
+###
+> v  min v
+v min v : v
+*** Error: (0,1) Node: v, Message: Ordered comparison is not supported for items of type 'v'
+Binder : Error(ErrIncomparableType_Type)
+###
+> g  min g
+g min g : g
+*** Error: (0,1) Node: g, Message: Ordered comparison is not supported for items of type 'g'
+Binder : Error(ErrIncomparableType_Type)
+###
+> i8 max i8 + i8 min i8
+i8 max i8 + i8 min i8 : i8
+Binder : Min(Max(i8, Add(i8, i8)), i8)
+###
+> i8 min i8 + i8 max i8
+i8 min i8 + i8 max i8 : i8
+Binder : Max(Min(i8, Add(i8, i8)), i8)
+###
+> i8 max i8 + i8 max i8
+i8 max i8 + i8 max i8 : i8
+Binder : Max(Max(i8, Add(i8, i8)), i8)
+###
+> i8 min i8 + i8 min i8
+i8 min i8 + i8 min i8 : i8
+Binder : Min(Min(i8, Add(i8, i8)), i8)
+###
+> b max b and b min b
+b max b and b min b : b
+Binder : And(Max(b, b), Min(b, b))
+###
+> b min b and b max b
+b min b and b max b : b
+Binder : And(Min(b, b), Max(b, b))
+###
+> b max b and b max b
+b max b and b max b : b
+Binder : And(Max(b, b), Max(b, b))
+###
+> b min b and b min b
+b min b and b min b : b
+Binder : And(Min(b, b), Min(b, b))
+###
+> b max b or b min b
+b max b or b min b : b
+Binder : Or(Max(b, b), Min(b, b))
+###
+> b min b or b max b
+b min b or b max b : b
+Binder : Or(Min(b, b), Max(b, b))
+###
+> b max b or b max b
+b max b or b max b : b
+Binder : Or(Max(b, b), Max(b, b))
+###
+> b min b or b min b
+b min b or b min b : b
+Binder : Or(Min(b, b), Min(b, b))
+###
+> b or  b min b  or b
+b or b min b or b : b
+Binder : Or(b, Min(b, b), b)
+###
+> b or  b max b  or b
+b or b max b or b : b
+Binder : Or(b, Max(b, b), b)
+###
+> b and b min b and b
+b and b min b and b : b
+Binder : And(b, Min(b, b), b)
+###
+> b and b max b and b
+b and b max b and b : b
+Binder : And(b, Max(b, b), b)
+###
+
+**** New globals: {b:b*, d:d*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, t:t*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> i4 max 3
+i4 max 3 : i8*
+Binder : ForEach(*1: i4, Max(Num<i8>(*1), 3))
+###
+> 3 max i4
+3 max i4 : i8*
+Binder : ForEach(*1: i4, Max(3, Num<i8>(*1)))
+###
+> i4 min 3
+i4 min 3 : i8*
+Binder : ForEach(*1: i4, Min(Num<i8>(*1), 3))
+###
+> 3 min i4
+3 min i4 : i8*
+Binder : ForEach(*1: i4, Min(3, Num<i8>(*1)))
+###
+> null max i4
+null max i4 : i4?*
+Binder : ForEach(*1: i4, Guard(?2: null, Max(Unit<i4>(?2), *1)))
+Reducer: ForEach(*1: i4, null)
+###
+> i4 max null
+i4 max null : i4?*
+Binder : ForEach(*1: i4, Guard(?2: null, Max(*1, Unit<i4>(?2))))
+Reducer: ForEach(*1: i4, null)
+###
+> null min i4
+null min i4 : i4?*
+Binder : ForEach(*1: i4, Guard(?2: null, Min(Unit<i4>(?2), *1)))
+Reducer: ForEach(*1: i4, null)
+###
+> i4 min null
+i4 min null : i4?*
+Binder : ForEach(*1: i4, Guard(?2: null, Min(*1, Unit<i4>(?2))))
+Reducer: ForEach(*1: i4, null)
+###
+> r4 max 3
+r4 max 3 : r4*
+Binder : ForEach(*1: r4, Max(*1, 3))
+###
+> 3 max r4
+3 max r4 : r4*
+Binder : ForEach(*1: r4, Max(3, *1))
+###
+> r4 min 3
+r4 min 3 : r4*
+Binder : ForEach(*1: r4, Min(*1, 3))
+###
+> 3 min r4
+3 min r4 : r4*
+Binder : ForEach(*1: r4, Min(3, *1))
+###
+> b max true
+b max true : b*
+Binder : ForEach(*1: b, Max(*1, true))
+###
+> true max b
+true max b : b*
+Binder : ForEach(*1: b, Max(true, *1))
+###
+> b min true
+b min true : b*
+Binder : ForEach(*1: b, Min(*1, true))
+###
+> true min b
+true min b : b*
+Binder : ForEach(*1: b, Min(true, *1))
+###
+> s max "s"
+s max "s" : s*
+Binder : ForEach(*1: s, Max(*1, "s"))
+###
+> "s" max s
+"s" max s : s*
+Binder : ForEach(*1: s, Max("s", *1))
+###
+> s min "s"
+s min "s" : s*
+Binder : ForEach(*1: s, Min(*1, "s"))
+###
+> "s" min s
+"s" min s : s*
+Binder : ForEach(*1: s, Min("s", *1))
+###
+> i4  max i4
+i4 max i4 : i4*
+Binder : ForEach(*1: i4, *2: i4, Max(*1, *2))
+Reducer: ForEach(*1: i4, Max(*1, *1))
+###
+> qi4 max qi4
+qi4 max qi4 : i4?*
+Binder : ForEach(*1: qi4, *2: qi4, Guard(?3: *1, ?4: *2, Max(?3, ?4)))
+Reducer: ForEach(*1: qi4, Guard(?2: *1, Max(?2, ?2)))
+###
+> r4  max r4
+r4 max r4 : r4*
+Binder : ForEach(*1: r4, *2: r4, Max(*1, *2))
+Reducer: ForEach(*1: r4, Max(*1, *1))
+###
+> qr4 max qr4
+qr4 max qr4 : r4?*
+Binder : ForEach(*1: qr4, *2: qr4, Guard(?3: *1, ?4: *2, Max(?3, ?4)))
+Reducer: ForEach(*1: qr4, Guard(?2: *1, Max(?2, ?2)))
+###
+> b   max b
+b max b : b*
+Binder : ForEach(*1: b, *2: b, Max(*1, *2))
+Reducer: ForEach(*1: b, Max(*1, *1))
+###
+> qb  max qb
+qb max qb : b?*
+Binder : ForEach(*1: qb, *2: qb, Guard(?3: *1, ?4: *2, Max(?3, ?4)))
+Reducer: ForEach(*1: qb, Guard(?2: *1, Max(?2, ?2)))
+###
+> s   max s
+s max s : s*
+Binder : ForEach(*1: s, *2: s, Max(*1, *2))
+Reducer: ForEach(*1: s, Max(*1, *1))
+###
+> d   max d
+d max d : d*
+Binder : ForEach(*1: d, *2: d, Max(*1, *2))
+Reducer: ForEach(*1: d, Max(*1, *1))
+###
+> t   max t
+t max t : t*
+Binder : ForEach(*1: t, *2: t, Max(*1, *2))
+Reducer: ForEach(*1: t, Max(*1, *1))
+###
+> i4  min i4
+i4 min i4 : i4*
+Binder : ForEach(*1: i4, *2: i4, Min(*1, *2))
+Reducer: ForEach(*1: i4, Min(*1, *1))
+###
+> qi4 min qi4
+qi4 min qi4 : i4?*
+Binder : ForEach(*1: qi4, *2: qi4, Guard(?3: *1, ?4: *2, Min(?3, ?4)))
+Reducer: ForEach(*1: qi4, Guard(?2: *1, Min(?2, ?2)))
+###
+> r4  min r4
+r4 min r4 : r4*
+Binder : ForEach(*1: r4, *2: r4, Min(*1, *2))
+Reducer: ForEach(*1: r4, Min(*1, *1))
+###
+> qr4 min qr4
+qr4 min qr4 : r4?*
+Binder : ForEach(*1: qr4, *2: qr4, Guard(?3: *1, ?4: *2, Min(?3, ?4)))
+Reducer: ForEach(*1: qr4, Guard(?2: *1, Min(?2, ?2)))
+###
+> b   min b
+b min b : b*
+Binder : ForEach(*1: b, *2: b, Min(*1, *2))
+Reducer: ForEach(*1: b, Min(*1, *1))
+###
+> qb  min qb
+qb min qb : b?*
+Binder : ForEach(*1: qb, *2: qb, Guard(?3: *1, ?4: *2, Min(?3, ?4)))
+Reducer: ForEach(*1: qb, Guard(?2: *1, Min(?2, ?2)))
+###
+> s   min s
+s min s : s*
+Binder : ForEach(*1: s, *2: s, Min(*1, *2))
+Reducer: ForEach(*1: s, Min(*1, *1))
+###
+> d   min d
+d min d : d*
+Binder : ForEach(*1: d, *2: d, Min(*1, *2))
+Reducer: ForEach(*1: d, Min(*1, *1))
+###
+> t   min t
+t min t : t*
+Binder : ForEach(*1: t, *2: t, Min(*1, *2))
+Reducer: ForEach(*1: t, Min(*1, *1))
+###
+> i4 ++ i8 max 17
+i4 ++ i8 max 17 : i8*
+Binder : SeqConcat(ForEach(*1: i4, Num<i8>(*1)), ForEach(*2: i8, Max(*2, 17)))
+###

@@ -1,0 +1,39 @@
+>>> *** Source:
+    namespace N {
+        X := 0;
+        L0: X := X + 1;
+        if (X > 2) goto L1;
+        goto L0;
+    }
+    L1: N.X; X;
+
+>>> *** Instructions:
+   0) [0] Enter (0=>1) N
+   1) [1] Define X <- 0
+   2) [1] Define X <- X + 1
+   3) [1] JumpIf 6 (1=>0) X $> 2
+   4) [1] Jump 2 (1=>1)
+   5) [1] Leave (1=>0)
+   6) [0] Expr N.X
+   7) [0] Expr X
+   8) [0] End
+
+>    0) [0] Enter (0=>1) N
+>    1) [1] Define X <- 0
+Global 'N.X' has DType: i8, SysType: i8
+>    2) [1] Define X <- X + 1
+>    3) [1] JumpIf 6 (1=>0) X $> 2
+>    4) [1] Jump 2 (1=>1)
+>    2) [1] Define X <- X + 1
+>    3) [1] JumpIf 6 (1=>0) X $> 2
+>    4) [1] Jump 2 (1=>1)
+>    2) [1] Define X <- X + 1
+>    3) [1] JumpIf 6 (1=>0) X $> 2
+>    6) [0] Expr N.X
+3
+>    7) [0] Expr X
+*** Bind diagnostics:
+  [Jumps.txt] Error: (94,95) Node: X, Message: Name does not exist in the current context
+>    8) [0] End
+###
+

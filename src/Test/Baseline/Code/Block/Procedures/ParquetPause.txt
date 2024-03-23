@@ -1,0 +1,439 @@
+>>> *** Source:
+    func Wait(n) := Sum(Range(n * 1_000_000));
+    // REVIEW: Need tuple slicing so we can do t[:3].
+    func Tup3(t) := (t[0], t[1], t[2]);
+    "*** Create a table and write it to parquet. ***";
+    T1 := Range(1_000_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    With(d : T1, (d->Count(), d->Sum(A), d->Sum(B)));
+    play Writer as WriteParquet(T1, "temp/pp1.parquet");
+    (Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+    Wait(5);
+    Writer$RealTimeState = null;
+    Wait(5);
+    pause Writer;
+    (Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Writer.RowCount;
+    play Writer;
+    (Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+    Wait(2);
+    Writer$RealTimeState = null;
+    pause Writer;
+    (Writer$State, Writer$RealTimeState = null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Writer.RowCount;
+    finish Writer;
+    (Writer$State, Writer$RealTimeState, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+    (Writer.RowCount, Writer.GroupCount, Writer.Size);
+    "";
+    "*** Play/abort reading the parquet. ***";
+    task Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    play Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Wait(5);
+    Reader$RealTimeState = null;
+    Wait(5);
+    abort Reader;
+    // Can't baseline whether it failed and the error message since they aren't deterministic -
+    // the reader may have completed successfully before being paused.
+    // (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+    (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed = (Reader$ErrorMessage != null), Reader$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Reader.RowCount;
+    "";
+    "*** Play/pause/abort reading the parquet. ***";
+    task Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    play Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Wait(5);
+    Reader$RealTimeState = null;
+    Wait(5);
+    pause Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Reader.RowCount;
+    abort Reader;
+    // Can't baseline whether it failed and the error message since they aren't deterministic -
+    // the reader may have completed successfully before being paused.
+    // (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+    (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed = (Reader$ErrorMessage != null), Reader$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Reader.RowCount;
+    "";
+    "*** Play/pause/finish reading the parquet. ***";
+    task Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    play Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Wait(5);
+    Reader$RealTimeState = null;
+    Wait(5);
+    pause Reader;
+    (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Reader.RowCount;
+    play Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Wait(1);
+    Reader$RealTimeState = null;
+    Wait(1);
+    pause Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3());
+    // Can't baseline the row count, since it isn't deterministic.
+    // Reader.RowCount;
+    finish Reader;
+    (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Reader.RowCount;
+    With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+    "";
+    "*** Prime/finish reading the parquet. ***";
+    task Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    prime Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    finish Reader;
+    (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Reader.RowCount;
+    With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+    "";
+    "*** Pause/prime/finish reading the parquet. ***";
+    task Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    pause Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    prime Reader;
+    (Reader$State, Reader$RealTimeState = null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    finish Reader;
+    (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames);
+    Reader.RowCount;
+    With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)));
+    "*** Created tasks for coverage of BeginAbort ***";
+    task W1 as WriteParquet    (T1, "temp/pp1.parquet");
+    task R1 as ReadParquet     (    "temp/pp1.parquet");
+
+>>> *** Instructions:
+   0) [0] DefineFunc Wait(n) <- Sum(Range(n * 1000000))
+   1) [0] DefineFunc Tup3(t) <- (t[0], t[1], t[2])
+   2) [0] Expr "*** Create a table and write it to parquet. ***"
+   3) [0] Define T1 <- Range(1000000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   4) [0] Expr With(d : T1, (d->Count(), d->Sum(A), d->Sum(B)))
+   5) [0] TaskProc play Writer as WriteParquet(T1, "temp/pp1.parquet")
+   6) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+   7) [0] Expr Wait(5)
+   8) [0] Expr Writer$RealTimeState @= null
+   9) [0] Expr Wait(5)
+  10) [0] TaskCmd pause Writer
+  11) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3())
+  12) [0] TaskCmd play Writer
+  13) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+  14) [0] Expr Wait(2)
+  15) [0] Expr Writer$RealTimeState @= null
+  16) [0] TaskCmd pause Writer
+  17) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3())
+  18) [0] TaskCmd finish Writer
+  19) [0] Expr (Writer$State, Writer$RealTimeState, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+  20) [0] Expr (Writer.RowCount, Writer.GroupCount, Writer.Size)
+  21) [0] Expr ""
+  22) [0] Expr "*** Play/abort reading the parquet. ***"
+  23) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+  24) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  25) [0] TaskCmd play Reader
+  26) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  27) [0] Expr Wait(5)
+  28) [0] Expr Reader$RealTimeState @= null
+  29) [0] Expr Wait(5)
+  30) [0] TaskCmd abort Reader
+  31) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed @= (Reader$ErrorMessage !@= null), Reader$ResultNames->Tup3())
+  32) [0] Expr ""
+  33) [0] Expr "*** Play/pause/abort reading the parquet. ***"
+  34) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+  35) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  36) [0] TaskCmd play Reader
+  37) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  38) [0] Expr Wait(5)
+  39) [0] Expr Reader$RealTimeState @= null
+  40) [0] Expr Wait(5)
+  41) [0] TaskCmd pause Reader
+  42) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+  43) [0] TaskCmd abort Reader
+  44) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed @= (Reader$ErrorMessage !@= null), Reader$ResultNames->Tup3())
+  45) [0] Expr ""
+  46) [0] Expr "*** Play/pause/finish reading the parquet. ***"
+  47) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+  48) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  49) [0] TaskCmd play Reader
+  50) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  51) [0] Expr Wait(5)
+  52) [0] Expr Reader$RealTimeState @= null
+  53) [0] Expr Wait(5)
+  54) [0] TaskCmd pause Reader
+  55) [0] Expr (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+  56) [0] TaskCmd play Reader
+  57) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  58) [0] Expr Wait(1)
+  59) [0] Expr Reader$RealTimeState @= null
+  60) [0] Expr Wait(1)
+  61) [0] TaskCmd pause Reader
+  62) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+  63) [0] TaskCmd finish Reader
+  64) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  65) [0] Expr Reader.RowCount
+  66) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+  67) [0] Expr ""
+  68) [0] Expr "*** Prime/finish reading the parquet. ***"
+  69) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+  70) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  71) [0] TaskCmd prime Reader
+  72) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  73) [0] TaskCmd finish Reader
+  74) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  75) [0] Expr Reader.RowCount
+  76) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+  77) [0] Expr ""
+  78) [0] Expr "*** Pause/prime/finish reading the parquet. ***"
+  79) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+  80) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  81) [0] TaskCmd pause Reader
+  82) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  83) [0] TaskCmd prime Reader
+  84) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  85) [0] TaskCmd finish Reader
+  86) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+  87) [0] Expr Reader.RowCount
+  88) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+  89) [0] Expr "*** Created tasks for coverage of BeginAbort ***"
+  90) [0] TaskProc task W1 as WriteParquet(T1, "temp/pp1.parquet")
+  91) [0] TaskProc task R1 as ReadParquet("temp/pp1.parquet")
+  92) [0] End
+
+>    0) [0] DefineFunc Wait(n) <- Sum(Range(n * 1000000))
+UDF 'Wait' has arity 1
+>    1) [0] DefineFunc Tup3(t) <- (t[0], t[1], t[2])
+UDF 'Tup3' has arity 1
+>    2) [0] Expr "*** Create a table and write it to parquet. ***"
+*** Create a table and write it to parquet. ***
+>    3) [0] Define T1 <- Range(1000000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T1' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    4) [0] Expr With(d : T1, (d->Count(), d->Sum(A), d->Sum(B)))
+(1000000, 499999500000, 333332833333500000)
+*** Ctx ping count: 2000002
+    [1](1000001): Sum(*1: T1, *1.A)
+    [2](1000001): Sum(*1: T1, *1.B)
+>    5) [0] TaskProc play Writer as WriteParquet(T1, "temp/pp1.parquet")
+Task 'Writer' added
+Task 'Writer' now playing
+>    6) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+(Playing, false, false, false, <null>, ())
+>    7) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>    8) [0] Expr Writer$RealTimeState @= null
+false
+>    9) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   10) [0] TaskCmd pause Writer
+Task 'Writer' now paused
+>   11) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3())
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount))
+>   12) [0] TaskCmd play Writer
+Task 'Writer' now playing
+>   13) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+(Playing, false, false, false, <null>, (Link, FullLink))
+>   14) [0] Expr Wait(2)
+1999999000000
+*** Ctx ping count: 2000001
+    [0](2000001): Sum(Range(2000000))
+>   15) [0] Expr Writer$RealTimeState @= null
+false
+>   16) [0] TaskCmd pause Writer
+Task 'Writer' now paused
+>   17) [0] Expr (Writer$State, Writer$RealTimeState @= null, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames->Tup3())
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount))
+>   18) [0] TaskCmd finish Writer
+Task 'Writer' now playing
+Task 'Writer' finished
+>   19) [0] Expr (Writer$State, Writer$RealTimeState, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+(Finished, Finished, true, false, <null>, (Link, FullLink, RowCount, GroupCount, Size))
+>   20) [0] Expr (Writer.RowCount, Writer.GroupCount, Writer.Size)
+(1000000, 200, 15155561)
+>   21) [0] Expr ""
+
+>   22) [0] Expr "*** Play/abort reading the parquet. ***"
+*** Play/abort reading the parquet. ***
+>   23) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+Task 'Reader' added
+>   24) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Created, false, false, false, <null>, (Link,))
+>   25) [0] TaskCmd play Reader
+Task 'Reader' now playing
+>   26) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Playing, false, false, false, <null>, ())
+>   27) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   28) [0] Expr Reader$RealTimeState @= null
+false
+>   29) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   30) [0] TaskCmd abort Reader
+Task 'Reader' finished
+>   31) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed @= (Reader$ErrorMessage !@= null), Reader$ResultNames->Tup3())
+(Finished, Finished, true, true, (Link, FullLink, RowCount))
+>   32) [0] Expr ""
+
+>   33) [0] Expr "*** Play/pause/abort reading the parquet. ***"
+*** Play/pause/abort reading the parquet. ***
+>   34) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+Overwriting task: Reader
+Task 'Reader' added
+>   35) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Created, false, false, false, <null>, (Link,))
+>   36) [0] TaskCmd play Reader
+Task 'Reader' now playing
+>   37) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Playing, false, false, false, <null>, ())
+>   38) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   39) [0] Expr Reader$RealTimeState @= null
+false
+>   40) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   41) [0] TaskCmd pause Reader
+Task 'Reader' now paused
+>   42) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount))
+>   43) [0] TaskCmd abort Reader
+Task 'Reader' finished
+>   44) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed @= (Reader$ErrorMessage !@= null), Reader$ResultNames->Tup3())
+(Finished, Finished, true, true, (Link, FullLink, RowCount))
+>   45) [0] Expr ""
+
+>   46) [0] Expr "*** Play/pause/finish reading the parquet. ***"
+*** Play/pause/finish reading the parquet. ***
+>   47) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+Overwriting task: Reader
+Task 'Reader' added
+>   48) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Created, false, false, false, <null>, (Link,))
+>   49) [0] TaskCmd play Reader
+Task 'Reader' now playing
+>   50) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Playing, false, false, false, <null>, ())
+>   51) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   52) [0] Expr Reader$RealTimeState @= null
+false
+>   53) [0] Expr Wait(5)
+12499997500000
+*** Ctx ping count: 5000001
+    [0](5000001): Sum(Range(5000000))
+>   54) [0] TaskCmd pause Reader
+Task 'Reader' now paused
+>   55) [0] Expr (Reader$State, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+(Paused, false, false, <null>, (Link, FullLink, RowCount))
+>   56) [0] TaskCmd play Reader
+Task 'Reader' now playing
+>   57) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Playing, false, false, false, <null>, (Link, FullLink, SData))
+>   58) [0] Expr Wait(1)
+499999500000
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   59) [0] Expr Reader$RealTimeState @= null
+false
+>   60) [0] Expr Wait(1)
+499999500000
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   61) [0] TaskCmd pause Reader
+Task 'Reader' now paused
+>   62) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames->Tup3())
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount))
+>   63) [0] TaskCmd finish Reader
+Task 'Reader' now playing
+Task 'Reader' finished
+>   64) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Finished, Finished, true, false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   65) [0] Expr Reader.RowCount
+1000000
+>   66) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+(1000000, 499999500000, 333332833333500000)
+*** Ctx ping count: 2000002
+    [1](1000001): Sum(*1: Reader.Data, *1.A)
+    [2](1000001): Sum(*1: Reader.Data, *1.B)
+>   67) [0] Expr ""
+
+>   68) [0] Expr "*** Prime/finish reading the parquet. ***"
+*** Prime/finish reading the parquet. ***
+>   69) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+Overwriting task: Reader
+Task 'Reader' added
+>   70) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Created, false, false, false, <null>, (Link,))
+>   71) [0] TaskCmd prime Reader
+Task 'Reader' now playing
+Task 'Reader' now paused
+>   72) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount, SData))
+>   73) [0] TaskCmd finish Reader
+Task 'Reader' now playing
+Task 'Reader' finished
+>   74) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Finished, Finished, true, false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   75) [0] Expr Reader.RowCount
+1000000
+>   76) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+(1000000, 499999500000, 333332833333500000)
+*** Ctx ping count: 2000002
+    [1](1000001): Sum(*1: Reader.Data, *1.A)
+    [2](1000001): Sum(*1: Reader.Data, *1.B)
+>   77) [0] Expr ""
+
+>   78) [0] Expr "*** Pause/prime/finish reading the parquet. ***"
+*** Pause/prime/finish reading the parquet. ***
+>   79) [0] TaskProc task Reader as ReadParquet(Writer.Link)
+Overwriting task: Reader
+Task 'Reader' added
+>   80) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Created, false, false, false, <null>, (Link,))
+>   81) [0] TaskCmd pause Reader
+Task 'Reader' now paused
+>   82) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount, SData))
+>   83) [0] TaskCmd prime Reader
+>   84) [0] Expr (Reader$State, Reader$RealTimeState @= null, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Paused, false, false, false, <null>, (Link, FullLink, RowCount, SData))
+>   85) [0] TaskCmd finish Reader
+Task 'Reader' now playing
+Task 'Reader' finished
+>   86) [0] Expr (Reader$State, Reader$RealTimeState, Reader$Finished, Reader$Failed, Reader$ErrorMessage, Reader$ResultNames)
+(Finished, Finished, true, false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   87) [0] Expr Reader.RowCount
+1000000
+>   88) [0] Expr With(d : Reader.Data, (d->Count(), d->Sum(A), d->Sum(B)))
+(1000000, 499999500000, 333332833333500000)
+*** Ctx ping count: 2000002
+    [1](1000001): Sum(*1: Reader.Data, *1.A)
+    [2](1000001): Sum(*1: Reader.Data, *1.B)
+>   89) [0] Expr "*** Created tasks for coverage of BeginAbort ***"
+*** Created tasks for coverage of BeginAbort ***
+>   90) [0] TaskProc task W1 as WriteParquet(T1, "temp/pp1.parquet")
+Task 'W1' added
+>   91) [0] TaskProc task R1 as ReadParquet("temp/pp1.parquet")
+Task 'R1' added
+>   92) [0] End
+

@@ -1,0 +1,67 @@
+﻿:: { i8: i8, i8s: i8*, r8s: r8*, r8: r8, r4: r4 }
+
+RandomS.Uniform(i8)
+RandomS.Uniform(i8s)
+
+RandomS.Uniform(i8, i8)
+RandomS.Uniform(i8s, i8)
+
+RandomS.Uniform(i8, r8, r8)
+RandomS.Uniform(i8, r8, r4)
+RandomS.Uniform(i8, r4, r8)
+RandomS.Uniform(i8, r4, r4)
+RandomS.Uniform(i8s, r8, r8)
+RandomS.Uniform(i8s, r8, r4)
+
+RandomS.Uniform(i8, r8, r8, i8)
+RandomS.Uniform(i8, r8, r4, i8)
+RandomS.Uniform(i8, r4, r8, i8)
+RandomS.Uniform(i8, r4, r4, i8)
+RandomS.Uniform(i8s, r8, r8, i8)
+RandomS.Uniform(i8s, r8, r4, i8)
+
+RandomS.Uniform(0)
+RandomS.Uniform(i8, 0, 1)
+RandomS.Uniform(i8, 1, 0) // Not reduced.
+RandomS.Uniform(i8, 1, 1) // Constant.
+RandomS.Uniform(i8, 0, 0) // Constant.
+RandomS.Uniform(i8, 1, 1/0) // Constant infinity.
+RandomS.Uniform(i8, 1/0, -3) // Constant infinity.
+RandomS.Uniform(i8, 1, -1/0) // Constant negative infinity.
+RandomS.Uniform(i8, -1/0, 3) // Constant negative infinity.
+RandomS.Uniform(i8, -1/0, 1/0) // Constant nan.
+RandomS.Uniform(i8, 0.1, 0.9) // Not reduced.
+
+RandomS.Uniform(i8, 0, 1, i8)
+RandomS.Uniform(i8, 1, 0, i8) // Not reduced.
+RandomS.Uniform(i8, 1, 1, i8) // Constant.
+RandomS.Uniform(i8, 0, 0, i8) // Constant.
+RandomS.Uniform(i8, 1, 1/0, i8) // Constant infinity.
+RandomS.Uniform(i8, 1/0, -3, i8) // Constant infinity.
+RandomS.Uniform(i8, 1, -1/0, i8) // Constant negative infinity.
+RandomS.Uniform(i8, -1/0, 3, i8) // Constant negative infinity.
+RandomS.Uniform(i8, -1/0, 1/0, i8) // Constant nan.
+RandomS.Uniform(i8, 0.1, 0.9, i8) // Not reduced.
+With(C: 0, (RandomS.Uniform(C), RandomS.Uniform(C)))
+RandomS.Uniform([-1, 0, 1])
+
+RandomS.Uniform(i8, -1)
+RandomS.Uniform(i8, 0)
+RandomS.Uniform(i8, r8, r8, -1)
+RandomS.Uniform(i8, r8, r8, 0)
+
+// Errors.
+RandomS.Uniform(r8) // Error.
+
+RandomS.Uniform(i8, r8) // Error.
+RandomS.Uniform(i8, i8s) // Error.
+
+RandomS.Uniform(i8, r8, r8s) // Error.
+RandomS.Uniform(i8, r8s, r8) // Error.
+RandomS.Uniform(r8, r8, r8) // Error.
+
+RandomS.Uniform(i8, r8, r8, i8s) // Error.
+RandomS.Uniform(i8, r8, r8, r8) // Error.
+RandomS.Uniform(i8, r8, r8s, i8) // Error.
+RandomS.Uniform(i8, r8s, r8, i8) // Error.
+RandomS.Uniform(r8, r8, r8, i8) // Error.

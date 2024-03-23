@@ -1,0 +1,52 @@
+() & 1;
+() & 2;
+3;
+###
+/*recover*/
+() & 1;
+() & 2;
+3;
+###
+execute "() & 1; () & 2; 3;";
+() & 4;
+5;
+###
+/*recover*/
+execute "() & 1; () & 2; 3;";
+() & 4;
+5;
+###
+execute "/*recover*/() & 1; () & 2; 3;";
+() & 4;
+5;
+###
+/*recover*/
+execute "/*recover*/() & 1; () & 2; 3;";
+() & 4;
+5;
+###
+WrapNYI(1);
+2;
+###
+/*recover*/
+WrapNYI(1);
+2;
+###
+// REVIEW: Currently, recover mode doesn't handle exceptions in execution. Should it?
+execute "WrapNYI(1); 2;";
+WrapNYI(3);
+4;
+###
+/*recover*/
+execute "WrapNYI(1); 2;";
+WrapNYI(3);
+4;
+###
+execute "/*recover*/ WrapNYI(1); 2;";
+WrapNYI(3);
+4;
+###
+/*recover*/
+execute "/*recover*/ WrapNYI(1); 2;";
+WrapNYI(3);
+4;

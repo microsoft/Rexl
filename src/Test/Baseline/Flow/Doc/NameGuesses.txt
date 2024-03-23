@@ -1,0 +1,98 @@
+*** Create node 'N.X'
+Add: 00000001 [N.X], Fma: [[1, 3, 8, -2, 0]->{ A: it, B: it * it }]
+Status: 1 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000001 [N.X]: [A  tT  B C dD  ], Base: {A:i8, B:i8}*
+###
+*** Create node 'Test'
+Add: 00000002 [Test], Fma: [N.X]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [A  tTuUB C dD  ], Base: {A:i8, B:i8}*
+###
+*** Fma: N.x
+Fma: 00000002 [Test], Main: [N.X] => [N.x]
+Status: 2 nodes, 3 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [     uUB C dDE ], Base: {A:i8, B:i8}*
+      *) Error: (1,2) Node: N.x, Message: Namespace 'N' doesn't contain 'x', did you intend 'X'?
+###
+N.x
+*** Fma: n.X
+Fma: 00000002 [Test], Main: [N.x] => [n.X]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [     uUB C dDE ], Base: {A:i8, B:i8}*
+      *) Error: (0,1) Node: n, Message: Name does not exist in the current context, did you intend 'N'?
+###
+N.X
+*** Fma: M.X
+Fma: 00000002 [Test], Main: [n.X] => [M.X]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [   tTuUB C dDE ], Base: v
+      *) Error: (0,1) Node: M, Message: Name does not exist in the current context
+      *) Error: (1,2) Node: M.X, Message: Invalid use of '.'
+###
+Error(ErrInvalidDot)
+*** Fma: sum(N.X, b)
+Fma: 00000002 [Test], Main: [M.X] => [sum(N.X, b)]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [   tTuUB C dDE ], Base: i8
+      *) Error: (3,4) Node: sum(N.X, b), Message: Invocation of unknown function, did you intend 'Sum'?
+      *) Error: (9,10) Node: b, Tok: 'b', Message: Unknown field, did you intend 'B' in type: '{A:i8, B:i8}'
+###
+Sum(*1: N.X, *1.B)
+*** Fma: Sum(Item: N.X, item.B)
+Fma: 00000002 [Test], Main: [sum(N.X, b)] => [Sum(Item: N.X, item.B)]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [       B C dDE ], Base: i8
+      *) Error: (15,19) Node: item, Message: Name does not exist in the current context, did you intend 'Item'?
+###
+Sum(*1: N.X, *1.B)
+*** Create node 'n.Y'
+Add: 00000003 [n.Y], Fma: [true]
+Status: 3 nodes, 8 undos, 0 redos
+  Namespaces changed: ∂, ∂.n, ∂.N
+  Node changes:
+    00000002 [Test]: [       B C dDE ], Base: i8
+      *) Error: (15,19) Node: item, Message: Name does not exist in the current context, did you intend 'Item'?
+    00000003 [n.Y]: [A  tT  B C dD  ], Base: b
+###
+*** Cross-namespace fuzzy match
+*** Fma: n.X
+Fma: 00000002 [Test], Main: [Sum(Item: N.X, item.B)] => [n.X]
+Status: 3 nodes, 9 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [   tTuUB C dDE ], Base: v
+      *) Error: (1,2) Node: n.X, Message: Namespace 'n' doesn't contain 'X'
+###
+Error(ErrBadNamespaceChild_Ns_Child)
+*** Fma: N.Y
+Fma: 00000002 [Test], Main: [n.X] => [N.Y]
+Status: 3 nodes, 10 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [       B C dDE ], Base: v
+      *) Error: (1,2) Node: N.Y, Message: Namespace 'N' doesn't contain 'Y'
+###
+Error(ErrBadNamespaceChild_Ns_Child)
+*** Create node 'N.'X 2''
+Add: 00000004 [N.'X 2'], Fma: [3]
+Status: 4 nodes, 11 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [       B C dDE ], Base: v
+      *) Error: (1,2) Node: N.Y, Message: Namespace 'N' doesn't contain 'Y'
+    00000004 [N.'X 2']: [A  tT  B C dD  ], Base: i8
+###
+*** Cross-namespace fuzzy match with escaping
+*** Fma: n.'X 2'
+Fma: 00000002 [Test], Main: [N.Y] => [n.'X 2']
+Status: 4 nodes, 12 undos, 0 redos
+  Node changes:
+    00000002 [Test]: [       B C dDE ], Base: v
+      *) Error: (1,2) Node: n.'X 2', Message: Namespace 'n' doesn't contain ''X 2''
+###
+Error(ErrBadNamespaceChild_Ns_Child)

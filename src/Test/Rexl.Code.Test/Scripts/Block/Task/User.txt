@@ -1,0 +1,97 @@
+﻿proc P() play { publish X := 17; }
+
+finish T as P();
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.X;
+###
+proc P(a) play {
+    publish X := a;
+    publish Y := a * a;
+    primary Both := { X, Y };
+}
+
+finish T as P(3);
+(T$Failed, T$ErrorMessage, T$ResultNames);
+{ T.X, T.Y };
+T.Both;
+
+finish T as P(-17);
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Both;
+
+finish T as P("Blah");
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Both;
+
+P(7);
+###
+// Test coverage with opt args.
+proc P(b, c, a) play {
+    publish Res := (a, b, c);
+}
+
+finish T as P("hi", Opt(3), true);
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Res;
+
+finish T as P(Opt(Time(3, 2)), Null(3), true);
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.Res;
+###
+proc P(x, y) play {
+    publish X := x;
+    publish Y := y;
+    primary Both := { X, Y };
+}
+
+finish T as P(3, "hi");
+(T$Failed, T$ErrorMessage, T$ResultNames);
+{ T.X, T.Y };
+
+P("Blah", 42.5);
+###
+// Parse error.
+proc P(x, x) play { publish X := x; }
+P(3, 5);
+###
+// REVIEW: Need to figure out how to publish streaming results.
+proc P(x) play { stream XS := x; publish X := x; }
+
+finish T as P(Range(10));
+(T$Failed, T$ErrorMessage, T$ResultNames);
+T.X->GetType();
+###
+proc P(z, y, x) play {
+    publish X := x;
+    publish Y := y;
+    publish Z := z;
+    primary All := { X, Y, Z };
+}
+
+P(1, 3, 5);
+P(2, "hi", true);
+###
+proc P(z, y, x, w, v) play {
+    publish V := v;
+    publish W := w;
+    publish X := x;
+    publish Y := y;
+    publish Z := z;
+    primary All := { V, W, X, Y, Z };
+}
+
+P(1, 3, 5, 7, 9);
+P(2, "hi", true, (3,4), Time(1,2,3));
+###
+proc P(z, y, x, w, v, u) play {
+    publish U := u;
+    publish V := v;
+    publish W := w;
+    publish X := x;
+    publish Y := y;
+    publish Z := z;
+    primary All := { U, V, W, X, Y, Z };
+}
+
+P(1, 3, 5, 7, 9, 11);
+P(2, "hi", true, (3,4), Time(1,2,3), Date(2023, 3, 15));

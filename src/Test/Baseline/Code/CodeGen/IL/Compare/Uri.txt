@@ -1,0 +1,539 @@
+**** New definitions: A1, type: U<Image>
+**** New definitions: B1, type: U<Image>
+**** New definitions: C1, type: U<Image>
+**** New definitions: D1, type: U<Image>
+**** New definitions: E1, type: U<Image>
+**** New definitions: A2, type: U<Image>
+**** New definitions: B2, type: U<Image>
+**** New definitions: C2, type: U<Image>
+**** New definitions: D2, type: U<Image>
+**** New definitions: E2, type: U<Image>
+**** New definitions: NL, type: U<Image>
+**** New definitions: L1s, type: U<Image>*
+**** New definitions: L2s, type: U<Image>*
+**** New udf: Glue, arity: 2
+**** New udf: M, arity: 1
+**** New udf: Polish, arity: 1
+**** New udf: G, arity: 2
+**** New definitions: __IL_Func_Ind, type: i8
+**** New udf: H, arity: 2
+
+> G(L1s, L1s)
+G(L1s, L1s) : (s, U<Image>, U<Image>)*
+BndKind:Call, Type:(s, U<Image>, U<Image>)*, Bnd:(Call(∂.ForEach([map:6] Call(∂.Test.Wrap(Call(∂.ForEach([map:3] Call(∂.Test.Wrap(Call(∂.ChainMap([map:1] Global(L1s), Call(∂.ForEach([map:2] Global(L1s), (Scope(1), Scope(2)):(U<Image>, U<Image>)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*), Call(∂.With([with:4] Call(∂.Test.Wrap(GetSlot(Scope(3), 0)):U<Image>), [with:5] Call(∂.Test.Wrap(GetSlot(Scope(3), 1)):U<Image>), (Cmp(Scope(4) @= Scope(5)), Cmp(Scope(4) $= Scope(5)), Cmp(Scope(4) !@= Scope(5)), Cmp(Scope(4) !$= Scope(5)), Scope(4), Scope(5)):(b, b, b, b, U<Image>, U<Image>)):(b, b, b, b, U<Image>, U<Image>))):(b, b, b, b, U<Image>, U<Image>)*)):(b, b, b, b, U<Image>, U<Image>)*), TupleConcat((StrConcat(If(GetSlot(Scope(6), 0), str(M), str(_)), If(GetSlot(Scope(6), 1), str(M), str(_)), If(GetSlot(Scope(6), 2), str(M), str(_)), If(GetSlot(Scope(6), 3), str(M), str(_))),):(s), GetSlice(Scope(6), 4:6:1):(U<Image>, U<Image>))):(s, U<Image>, U<Image>)*))
+ForEach_1(Arr<obj>, (Link,Link)):(bool,bool,bool,bool,Link,Link)
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F0:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.0 [Link]
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F1:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.1 [Link]
+      5) newobj (bool,bool,bool,bool,Link,Link)()
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F0:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F1:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F2:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F3:bool
+      1) dup
+      1) ldloc.0 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F4:Link
+      1) dup
+      1) ldloc.1 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F5:Link
+      1) ret
+  Total Size: 102
+
+Func sig: (<ctx>:x, L1s:U<Image>*) to (s, U<Image>, U<Image>)*
+Sequence: Seq<(str,Link,Link)>
+ 0) (MM__, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, foo.bmp))
+ 1) (__MM, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, bar.bmp))
+ 2) (__MM, Link<Generic>(<null>, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 3) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+ 4) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+ 5) (__MM, Link<Generic>(<null>, foo.bmp), <null>)
+ 6) (__MM, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, foo.bmp))
+ 7) (MM__, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, bar.bmp))
+ 8) (__MM, Link<Generic>(<null>, bar.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 9) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+10) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+11) (__MM, Link<Generic>(<null>, bar.bmp), <null>)
+12) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, foo.bmp))
+13) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, bar.bmp))
+14) (MM__, Link<Http>(<null>, https://blah/foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+15) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+16) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+17) (__MM, Link<Http>(<null>, https://blah/foo.bmp), <null>)
+18) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, foo.bmp))
+19) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, bar.bmp))
+20) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+21) (MM__, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+22) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+23) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), <null>)
+24) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, foo.bmp))
+25) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, bar.bmp))
+26) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+27) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+28) (MM__, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+29) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), <null>)
+30) (__MM, <null>, Link<Generic>(<null>, foo.bmp))
+31) (__MM, <null>, Link<Generic>(<null>, bar.bmp))
+32) (__MM, <null>, Link<Http>(<null>, https://blah/foo.bmp))
+33) (__MM, <null>, Link<AzureBlob>(blobstorage, foo.bmp))
+34) (__MM, <null>, Link<AzureBlob>(blobstorage2, foo.bmp))
+35) (M__M, <null>, <null>)
+*** Ctx ping count: 7
+    [0](7): ChainMap(*1: L1s, ForEach(*2: L1s, (*1, *2)))
+###
+> G(L1s, L2s)
+G(L1s, L2s) : (s, U<Image>, U<Image>)*
+BndKind:Call, Type:(s, U<Image>, U<Image>)*, Bnd:(Call(∂.ForEach([map:6] Call(∂.Test.Wrap(Call(∂.ForEach([map:3] Call(∂.Test.Wrap(Call(∂.ChainMap([map:1] Global(L1s), Call(∂.ForEach([map:2] Global(L2s), (Scope(1), Scope(2)):(U<Image>, U<Image>)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*), Call(∂.With([with:4] Call(∂.Test.Wrap(GetSlot(Scope(3), 0)):U<Image>), [with:5] Call(∂.Test.Wrap(GetSlot(Scope(3), 1)):U<Image>), (Cmp(Scope(4) @= Scope(5)), Cmp(Scope(4) $= Scope(5)), Cmp(Scope(4) !@= Scope(5)), Cmp(Scope(4) !$= Scope(5)), Scope(4), Scope(5)):(b, b, b, b, U<Image>, U<Image>)):(b, b, b, b, U<Image>, U<Image>))):(b, b, b, b, U<Image>, U<Image>)*)):(b, b, b, b, U<Image>, U<Image>)*), TupleConcat((StrConcat(If(GetSlot(Scope(6), 0), str(M), str(_)), If(GetSlot(Scope(6), 1), str(M), str(_)), If(GetSlot(Scope(6), 2), str(M), str(_)), If(GetSlot(Scope(6), 3), str(M), str(_))),):(s), GetSlice(Scope(6), 4:6:1):(U<Image>, U<Image>))):(s, U<Image>, U<Image>)*))
+ForEach_1(Arr<obj>, (Link,Link)):(bool,bool,bool,bool,Link,Link)
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F0:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.0 [Link]
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F1:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.1 [Link]
+      5) newobj (bool,bool,bool,bool,Link,Link)()
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F0:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F1:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F2:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F3:bool
+      1) dup
+      1) ldloc.0 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F4:Link
+      1) dup
+      1) ldloc.1 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F5:Link
+      1) ret
+  Total Size: 102
+
+Func sig: (<ctx>:x, L1s:U<Image>*, L2s:U<Image>*) to (s, U<Image>, U<Image>)*
+Sequence: Seq<(str,Link,Link)>
+ 0) (MM__, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, foo.bmp))
+ 1) (__MM, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, bar.bmp))
+ 2) (__MM, Link<Generic>(<null>, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 3) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+ 4) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+ 5) (__MM, Link<Generic>(<null>, foo.bmp), <null>)
+ 6) (__MM, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, foo.bmp))
+ 7) (MM__, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, bar.bmp))
+ 8) (__MM, Link<Generic>(<null>, bar.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 9) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+10) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+11) (__MM, Link<Generic>(<null>, bar.bmp), <null>)
+12) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, foo.bmp))
+13) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, bar.bmp))
+14) (MM__, Link<Http>(<null>, https://blah/foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+15) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+16) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+17) (__MM, Link<Http>(<null>, https://blah/foo.bmp), <null>)
+18) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, foo.bmp))
+19) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, bar.bmp))
+20) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+21) (MM__, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+22) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+23) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), <null>)
+24) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, foo.bmp))
+25) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, bar.bmp))
+26) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+27) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+28) (MM__, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+29) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), <null>)
+30) (__MM, <null>, Link<Generic>(<null>, foo.bmp))
+31) (__MM, <null>, Link<Generic>(<null>, bar.bmp))
+32) (__MM, <null>, Link<Http>(<null>, https://blah/foo.bmp))
+33) (__MM, <null>, Link<AzureBlob>(blobstorage, foo.bmp))
+34) (__MM, <null>, Link<AzureBlob>(blobstorage2, foo.bmp))
+35) (M__M, <null>, <null>)
+*** Ctx ping count: 7
+    [0](7): ChainMap(*1: L1s, ForEach(*2: L2s, (*1, *2)))
+###
+
+**** Redefined udf: H, arity: 2
+
+> G(L1s, L1s)
+G(L1s, L1s) : (s, U<Image>, U<Image>)*
+BndKind:Call, Type:(s, U<Image>, U<Image>)*, Bnd:(Call(∂.ForEach([map:6] Call(∂.Test.Wrap(Call(∂.ForEach([map:3] Call(∂.Test.Wrap(Call(∂.ChainMap([map:1] Global(L1s), Call(∂.ForEach([map:2] Global(L1s), (Scope(1), Scope(2)):(U<Image>, U<Image>)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*), Call(∂.With([with:4] Call(∂.Test.Wrap(GetSlot(Scope(3), 0)):U<Image>), [with:5] Call(∂.Test.Wrap(GetSlot(Scope(3), 1)):U<Image>), (Cmp(Scope(4) @= Scope(5) @= Scope(4)), Cmp(Scope(4) $= Scope(5) $= Scope(4)), Cmp(Scope(4) !@= Scope(5) !@= Scope(4)), Cmp(Scope(4) !$= Scope(5) !$= Scope(4)), Scope(4), Scope(5)):(b, b, b, b, U<Image>, U<Image>)):(b, b, b, b, U<Image>, U<Image>))):(b, b, b, b, U<Image>, U<Image>)*)):(b, b, b, b, U<Image>, U<Image>)*), TupleConcat((StrConcat(If(GetSlot(Scope(6), 0), str(M), str(_)), If(GetSlot(Scope(6), 1), str(M), str(_)), If(GetSlot(Scope(6), 2), str(M), str(_)), If(GetSlot(Scope(6), 3), str(M), str(_))),):(s), GetSlice(Scope(6), 4:6:1):(U<Image>, U<Image>))):(s, U<Image>, U<Image>)*))
+ForEach_1(Arr<obj>, (Link,Link)):(bool,bool,bool,bool,Link,Link)
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F0:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.0 [Link]
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F1:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.1 [Link]
+      5) newobj (bool,bool,bool,bool,Link,Link)()
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F0:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) brfalse [2]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) br [3]
+  Label [2]:
+      1) ldc.i4.0
+  Label [3]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F1:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [4]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) br [5]
+  Label [4]:
+      1) ldc.i4.0
+  Label [5]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F2:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) brtrue [6]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) br [7]
+  Label [6]:
+      1) ldc.i4.0
+  Label [7]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F3:bool
+      1) dup
+      1) ldloc.0 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F4:Link
+      1) dup
+      1) ldloc.1 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F5:Link
+      1) ret
+  Total Size: 174
+
+Func sig: (<ctx>:x, L1s:U<Image>*) to (s, U<Image>, U<Image>)*
+Sequence: Seq<(str,Link,Link)>
+ 0) (MM__, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, foo.bmp))
+ 1) (__MM, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, bar.bmp))
+ 2) (__MM, Link<Generic>(<null>, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 3) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+ 4) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+ 5) (__MM, Link<Generic>(<null>, foo.bmp), <null>)
+ 6) (__MM, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, foo.bmp))
+ 7) (MM__, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, bar.bmp))
+ 8) (__MM, Link<Generic>(<null>, bar.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 9) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+10) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+11) (__MM, Link<Generic>(<null>, bar.bmp), <null>)
+12) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, foo.bmp))
+13) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, bar.bmp))
+14) (MM__, Link<Http>(<null>, https://blah/foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+15) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+16) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+17) (__MM, Link<Http>(<null>, https://blah/foo.bmp), <null>)
+18) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, foo.bmp))
+19) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, bar.bmp))
+20) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+21) (MM__, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+22) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+23) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), <null>)
+24) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, foo.bmp))
+25) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, bar.bmp))
+26) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+27) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+28) (MM__, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+29) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), <null>)
+30) (__MM, <null>, Link<Generic>(<null>, foo.bmp))
+31) (__MM, <null>, Link<Generic>(<null>, bar.bmp))
+32) (__MM, <null>, Link<Http>(<null>, https://blah/foo.bmp))
+33) (__MM, <null>, Link<AzureBlob>(blobstorage, foo.bmp))
+34) (__MM, <null>, Link<AzureBlob>(blobstorage2, foo.bmp))
+35) (M__M, <null>, <null>)
+*** Ctx ping count: 7
+    [0](7): ChainMap(*1: L1s, ForEach(*2: L1s, (*1, *2)))
+###
+> G(L1s, L2s)
+G(L1s, L2s) : (s, U<Image>, U<Image>)*
+BndKind:Call, Type:(s, U<Image>, U<Image>)*, Bnd:(Call(∂.ForEach([map:6] Call(∂.Test.Wrap(Call(∂.ForEach([map:3] Call(∂.Test.Wrap(Call(∂.ChainMap([map:1] Global(L1s), Call(∂.ForEach([map:2] Global(L2s), (Scope(1), Scope(2)):(U<Image>, U<Image>)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*)):(U<Image>, U<Image>)*), Call(∂.With([with:4] Call(∂.Test.Wrap(GetSlot(Scope(3), 0)):U<Image>), [with:5] Call(∂.Test.Wrap(GetSlot(Scope(3), 1)):U<Image>), (Cmp(Scope(4) @= Scope(5) @= Scope(4)), Cmp(Scope(4) $= Scope(5) $= Scope(4)), Cmp(Scope(4) !@= Scope(5) !@= Scope(4)), Cmp(Scope(4) !$= Scope(5) !$= Scope(4)), Scope(4), Scope(5)):(b, b, b, b, U<Image>, U<Image>)):(b, b, b, b, U<Image>, U<Image>))):(b, b, b, b, U<Image>, U<Image>)*)):(b, b, b, b, U<Image>, U<Image>)*), TupleConcat((StrConcat(If(GetSlot(Scope(6), 0), str(M), str(_)), If(GetSlot(Scope(6), 1), str(M), str(_)), If(GetSlot(Scope(6), 2), str(M), str(_)), If(GetSlot(Scope(6), 3), str(M), str(_))),):(s), GetSlice(Scope(6), 4:6:1):(U<Image>, U<Image>))):(s, U<Image>, U<Image>)*))
+ForEach_1(Arr<obj>, (Link,Link)):(bool,bool,bool,bool,Link,Link)
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F0:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.0 [Link]
+      1) ldarg.1 [(Link,Link)]
+      5) ldfld (Link,Link)::_F1:Link
+      5) call static WrapFuncGen::Exec(Link):Link
+      1) stloc.1 [Link]
+      5) newobj (bool,bool,bool,bool,Link,Link)()
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F0:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) brfalse [2]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) br [3]
+  Label [2]:
+      1) ldc.i4.0
+  Label [3]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F1:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [4]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) br [5]
+  Label [4]:
+      1) ldc.i4.0
+  Label [5]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F2:bool
+      1) dup
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      5) brtrue [6]
+      1) ldloc.1 [Link]
+      1) ldloc.0 [Link]
+      5) call static CodeGenUtil::EqStrict(Link, Link):bool
+      1) ldc.i4.0
+      2) ceq
+      5) br [7]
+  Label [6]:
+      1) ldc.i4.0
+  Label [7]:
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F3:bool
+      1) dup
+      1) ldloc.0 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F4:Link
+      1) dup
+      1) ldloc.1 [Link]
+      5) stfld (bool,bool,bool,bool,Link,Link)::_F5:Link
+      1) ret
+  Total Size: 174
+
+Func sig: (<ctx>:x, L1s:U<Image>*, L2s:U<Image>*) to (s, U<Image>, U<Image>)*
+Sequence: Seq<(str,Link,Link)>
+ 0) (MM__, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, foo.bmp))
+ 1) (__MM, Link<Generic>(<null>, foo.bmp), Link<Generic>(<null>, bar.bmp))
+ 2) (__MM, Link<Generic>(<null>, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 3) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+ 4) (__MM, Link<Generic>(<null>, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+ 5) (__MM, Link<Generic>(<null>, foo.bmp), <null>)
+ 6) (__MM, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, foo.bmp))
+ 7) (MM__, Link<Generic>(<null>, bar.bmp), Link<Generic>(<null>, bar.bmp))
+ 8) (__MM, Link<Generic>(<null>, bar.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+ 9) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+10) (__MM, Link<Generic>(<null>, bar.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+11) (__MM, Link<Generic>(<null>, bar.bmp), <null>)
+12) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, foo.bmp))
+13) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<Generic>(<null>, bar.bmp))
+14) (MM__, Link<Http>(<null>, https://blah/foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+15) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+16) (__MM, Link<Http>(<null>, https://blah/foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+17) (__MM, Link<Http>(<null>, https://blah/foo.bmp), <null>)
+18) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, foo.bmp))
+19) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Generic>(<null>, bar.bmp))
+20) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+21) (MM__, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+22) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+23) (__MM, Link<AzureBlob>(blobstorage, foo.bmp), <null>)
+24) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, foo.bmp))
+25) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Generic>(<null>, bar.bmp))
+26) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<Http>(<null>, https://blah/foo.bmp))
+27) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage, foo.bmp))
+28) (MM__, Link<AzureBlob>(blobstorage2, foo.bmp), Link<AzureBlob>(blobstorage2, foo.bmp))
+29) (__MM, Link<AzureBlob>(blobstorage2, foo.bmp), <null>)
+30) (__MM, <null>, Link<Generic>(<null>, foo.bmp))
+31) (__MM, <null>, Link<Generic>(<null>, bar.bmp))
+32) (__MM, <null>, Link<Http>(<null>, https://blah/foo.bmp))
+33) (__MM, <null>, Link<AzureBlob>(blobstorage, foo.bmp))
+34) (__MM, <null>, Link<AzureBlob>(blobstorage2, foo.bmp))
+35) (M__M, <null>, <null>)
+*** Ctx ping count: 7
+    [0](7): ChainMap(*1: L1s, ForEach(*2: L2s, (*1, *2)))
+###
+
+**** New definitions: __IL_Func_Ind, type: s
+
+> A1 = A2 != B1 = B2 != C1 = C2 != D1 = D2 != E1 = E2
+A1 @= A2 !@= B1 @= B2 !@= C1 @= C2 !@= D1 @= D2 !@= E1 @= E2 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(A1) @= Global(A2) !@= Global(B1) @= Global(B2) !@= Global(C1) @= Global(C2) !@= Global(D1) @= Global(D2) !@= Global(E1) @= Global(E2)))
+// (∂.A1:U<Image>, ∂.A2:U<Image>, ∂.B1:U<Image>, ∂.B2:U<Image>, ∂.C1:U<Image>, ∂.C2:U<Image>, ∂.D1:U<Image>, ∂.D2:U<Image>, ∂.E1:U<Image>, ∂.E2:U<Image>) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      1) stloc.0 [Link]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      1) stloc.1 [Link]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      1) stloc.2 [Link]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.3
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      1) stloc.3 [Link]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.4
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (4)]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.5
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (5)]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.6
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (6)]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.7
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (7)]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.8
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (8)]
+      1) ldarg.1 [Arr<obj>]
+      2) ldc.i4.s [9]
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Link
+      2) stloc.s [Link (9)]
+      1) ldloc.0 [Link]
+      1) ldloc.1 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      1) ldloc.1 [Link]
+      1) ldloc.2 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [0]
+      1) ldloc.2 [Link]
+      1) ldloc.3 [Link]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      1) ldloc.3 [Link]
+      2) ldloc.s [Link (4)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [0]
+      2) ldloc.s [Link (4)]
+      2) ldloc.s [Link (5)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      2) ldloc.s [Link (5)]
+      2) ldloc.s [Link (6)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [0]
+      2) ldloc.s [Link (6)]
+      2) ldloc.s [Link (7)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brfalse [0]
+      2) ldloc.s [Link (7)]
+      2) ldloc.s [Link (8)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) brtrue [0]
+      2) ldloc.s [Link (8)]
+      2) ldloc.s [Link (9)]
+      5) call static CodeGenUtil::EqOpt(Link, Link):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 223
+
+Func sig: (A1:U<Image>, A2:U<Image>, B1:U<Image>, B2:U<Image>, C1:U<Image>, C2:U<Image>, D1:U<Image>, D2:U<Image>, E1:U<Image>, E2:U<Image>) to b
+Type: bool, Value: true 
+###

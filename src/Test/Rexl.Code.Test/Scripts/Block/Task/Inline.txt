@@ -1,0 +1,44 @@
+finish T as {
+    publish X := 3;
+    publish Y := "hi";
+}
+(T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+{ T.X, T.Y };
+###
+finish T as {
+    publish X := 3;
+    publish Y := "hi";
+    publish X := (7, 12);
+}
+(T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+{ T.X, T.Y };
+###
+D := Range(10)->{ A: it, B: it * it, C: it mod 3 != 0 };
+play T1 with { D } as {
+    S := SumC(D, B);
+    publish C := S.Count;
+    publish M := S.Sum / S.Count;
+}
+play T2 with { D } as {
+    S := SumC(D, B if C else null);
+    publish C := S.Count;
+    publish M := S.Sum / S.Count;
+}
+finish T1;
+finish T2;
+(T1$Finished, T1$Failed, T1$ErrorMessage, T1$ResultNames);
+(T2$Finished, T2$Failed, T2$ErrorMessage, T2$ResultNames);
+(T1.C, T1.M);
+(T2.C, T2.M);
+###
+finish T with { A: 5 } play {
+    publish X := A + 3;
+}
+(T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+T.X;
+###
+finish T with { A: "hi" } play {
+    publish X := A + 3; //Bind error.
+}
+(T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+T.X;

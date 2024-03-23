@@ -1,0 +1,33 @@
+﻿:: { T:{A:i8, B:s, D:d}*, ti8:i8[*] }
+`` func V(x) := Date.Now.Utc() + Time(x);
+
+Range(10)->ForEach(Ping()) // Don't hoist or reduce to Repeat.
+With(x: Ping(), Range(10)->ForEach(x)) // Can reduce to Repeat.
+Range(1)->ForEach(Ping()) // Can reduce to [Ping()]
+
+Range(10)->ForEach((it, Ping()))
+With(x: Ping(), Range(10)->ForEach((it, x)))
+
+ForEach(a:Range(10), b:Repeat(Ping(), 10), Ping() - b)
+
+Ping() + Range(10) // Don't repeat Ping()
+ti8[Ping()::-1]
+
+Sort(T, A - Ping()) // Error: volatile key.
+With(x: Ping(), Sort(T, A - x))
+Sort(T+>{ X: Ping() }, X)
+
+KeyJoin(a:T, b:T, Ping(), A, (a, b)) // Error: volatile key.
+KeyJoin(a:T, b:T, A, Ping(), (a, b)) // Error: volatile key.
+With(p: Ping(), KeyJoin(a:T, b:T, p, A, (a, b)))
+With(p: Ping(), KeyJoin(a:T, b:T, A, p, (a, b)))
+KeyJoin(a:T+>{ X: Ping() }, b:T, X, A, (a, b))
+
+GroupBy(T, A * Ping()) // Error: volatile key.
+With(p: Ping(), GroupBy(T, A * p))
+
+V(3) // Volatile in UDF is allowed here.
+
+:: { T:{A:i4, B:r8, C:s, X:d}*, U:{A:i4, B:r4, C:s}* }
+CrossJoin(t:T, u:U, t.A = u.A + Ping(), { t, u }) // Volatile in CrossJoin condition inhibits reduction to KeyJoin.
+With(p: Ping(), CrossJoin(t:T, u:U, t.A = u.A + p, { t, u }))

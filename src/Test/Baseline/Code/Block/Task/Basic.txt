@@ -1,0 +1,140 @@
+>>> *** Source:
+    task T as Unknown(3);
+    task T as Pipe(Range(10));
+
+>>> *** Instructions:
+   0) [0] TaskProc task T as Unknown(3)
+   1) [0] TaskProc task T as Pipe(Range(10))
+   2) [0] End
+
+>    0) [0] TaskProc task T as Unknown(3)
+*** Bind diagnostics:
+  [Basic.txt] Error: (17,18) Node: Unknown(3), Message: Invocation of unknown or unsupported function
+>    1) [0] TaskProc task T as Pipe(Range(10))
+Task 'T' added
+>    2) [0] End
+###
+>>> *** Source:
+    task T as FailProc(3);
+    task T as Pipe(Range(10));
+
+>>> *** Instructions:
+   0) [0] TaskProc task T as FailProc(3)
+   1) [0] TaskProc task T as Pipe(Range(10))
+   2) [0] End
+
+>    0) [0] TaskProc task T as FailProc(3)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): FailProc throws!
+Error, not creating task: T
+>    1) [0] TaskProc task T as Pipe(Range(10))
+Task 'T' added
+>    2) [0] End
+###
+>>> *** Source:
+    task T as Pipe(Range(9));
+    task T as Pipe(Range(10));
+
+>>> *** Instructions:
+   0) [0] TaskProc task T as Pipe(Range(9))
+   1) [0] TaskProc task T as Pipe(Range(10))
+   2) [0] End
+
+>    0) [0] TaskProc task T as Pipe(Range(9))
+Task 'T' added
+>    1) [0] TaskProc task T as Pipe(Range(10))
+Overwriting task: T
+Task 'T' added
+>    2) [0] End
+###
+>>> *** Source:
+    task T as Pipe(Range(9));
+    task T as FailProc(7);
+
+>>> *** Instructions:
+   0) [0] TaskProc task T as Pipe(Range(9))
+   1) [0] TaskProc task T as FailProc(7)
+   2) [0] End
+
+>    0) [0] TaskProc task T as Pipe(Range(9))
+Task 'T' added
+>    1) [0] TaskProc task T as FailProc(7)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): FailProc throws!
+Error, setting task to null: T
+>    2) [0] End
+###
+>>> *** Source:
+    X := 1;
+    task X as Pipe(Range(10));
+    abort X;
+
+>>> *** Instructions:
+   0) [0] Define X <- 1
+   1) [0] TaskProc task X as Pipe(Range(10))
+   2) [0] TaskCmd abort X
+   3) [0] End
+
+>    0) [0] Define X <- 1
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] TaskProc task X as Pipe(Range(10))
+Task name same as global: X
+Task 'X' added
+>    2) [0] TaskCmd abort X
+Task 'X' finished
+>    3) [0] End
+###
+>>> *** Source:
+    M := module { param K := 3; };
+    task M as Pipe(Range(10));
+    finish M;
+
+>>> *** Instructions:
+   0) [0] Define M <- module { param K := 3 }
+   1) [0] TaskProc task M as Pipe(Range(10))
+   2) [0] TaskCmd finish M
+   3) [0] End
+
+>    0) [0] Define M <- module { param K := 3 }
+Global 'M' has DType: M{param K:i8}, SysType: RuntimeModule<{i8},(i8)>
+>    1) [0] TaskProc task M as Pipe(Range(10))
+Task name same as global: M
+Task 'M' added
+>    2) [0] TaskCmd finish M
+Task 'M' now playing
+Task 'M' finished
+>    3) [0] End
+###
+>>> *** Source:
+    N.X := 2;
+    task N as Pipe(Range(10));
+    play N;
+
+>>> *** Instructions:
+   0) [0] Define N.X <- 2
+   1) [0] TaskProc task N as Pipe(Range(10))
+   2) [0] TaskCmd play N
+   3) [0] End
+
+>    0) [0] Define N.X <- 2
+Global 'N.X' has DType: i8, SysType: i8
+>    1) [0] TaskProc task N as Pipe(Range(10))
+Task name same as namespace: N
+Task 'N' added
+>    2) [0] TaskCmd play N
+Task 'N' now playing
+>    3) [0] End
+###
+>>> *** Source:
+    finish Pipe(Range(3));
+
+>>> *** Instructions:
+   0) [0] TaskProc finish Pipe(Range(3))
+   1) [0] End
+
+>    0) [0] TaskProc finish Pipe(Range(3))
+<Anonymous task> now playing
+<Anonymous task> finished
+>    1) [0] End
+###
+

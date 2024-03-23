@@ -1,0 +1,308 @@
+> this
+this : v
+*** Error: (0,4) Node: this, Message: 'this' is not valid in the current context
+Binder : <this>
+###
+> THIS
+THIS : v
+*** Error: (0,4) Node: THIS, Message: Name does not exist in the current context
+Binder : Error(ErrNameDoesNotExist)
+###
+> tHis ThIs
+((tHis) <error> (ThIs)) : v
+=== Parse diagnostics:
+*** Error: (5,9) Tok: 'ThIs', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (0,4) Node: tHis, Message: Name does not exist in the current context
+*** Error: (5,9) Node: ThIs, Message: Name does not exist in the current context
+*** Error: (5,9) Node: ((tHis) <error> (ThIs)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+
+**** New globals: {T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}
+
+> T
+T : {A:i8, B:b}*
+Binder : T
+###
+> T.A
+T.A : i8*
+Binder : ForEach(*1: T, *1.A)
+###
+> T.B
+T.B : b*
+Binder : ForEach(*1: T, *1.B)
+###
+> and
+and : b
+Binder : and
+###
+
+**** New definition: <this>, type: {T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}
+
+> this
+this : {T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}
+Binder : <this>
+###
+> this.T
+this.T : {A:i8, B:b}*
+Binder : <this>.T
+###
+> this.T.A
+this.T.A : i8*
+Binder : ForEach(*1: <this>.T, *1.A)
+###
+> this.T.B
+this.T.B : b*
+Binder : ForEach(*1: <this>.T, *1.B)
+###
+> it
+it : v
+*** Error: (0,2) Node: it, Message: There are no values in scope for 'it'
+Binder : Error(ErrBadIt)
+###
+> it$0
+it : v
+*** Error: (0,4) Node: it, Message: There are no values in scope for 'it'
+Binder : Error(ErrBadIt)
+###
+> it$1
+it$1 : v
+*** Error: (0,4) Node: it$1, Message: There are no values in scope for 'it'
+Binder : Error(ErrBadIt)
+###
+> Sum(T, it.A)
+Sum(T, it.A) : i8
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, it$.A)
+Sum(T, it.A) : i8
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, it$0.A)
+Sum(T, it.A) : i8
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, it$1.A)
+Sum(T, it$1.A) : i8
+*** Error: (7,11) Node: it$1, Message: Invalid scope index; there are not enough values in scope
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, it$123.A)
+Sum(T, it$123.A) : i8
+*** Error: (7,13) Node: it$123, Message: Invalid scope index; there are not enough values in scope
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, y: A) // Arg name when not expected.
+Sum(T, y : A) : i8
+*** Error: (7,8) Node: y : A, Tok: 'y', Message: Unexpected name
+Binder : Sum(*1: T, *1.A)
+###
+> Test.Wrap(17)
+Test.Wrap(17) : i8
+Binder : Test.Wrap(17)
+###
+> Test.Old(17)
+Test.Old(17) : i8
+*** Warning: (8,9) Node: Test.Old(17), Message: This function is deprecated and may be removed in the future
+Binder : Test.Wrap(17)
+###
+> Test.OldAlt(17)
+Corrected by binder: [Test.Wrap(17)]
+Test.OldAlt(17) : i8
+*** Warning: (11,12) Node: Test.OldAlt(17), Message: This function is deprecated and may be removed in the future, use 'Test.Wrap' instead
+Binder : Test.Wrap(17)
+###
+> Test.Old()
+Test.Old() : v
+*** Error: (8,9) Node: Test.Old(), Message: Too few arguments for Test.Wrap, expected 1 additional
+Binder : Test.Wrap(<missing>)
+###
+> Test.Old(17, "hi")
+Test.Old(17, "hi") : i8
+*** Error: (13,17) Node: "hi", Message: Too many arguments for Test.Wrap, expected 1 fewer
+Binder : Test.Wrap(17)
+###
+> Sum(x: T, X.A)
+Corrected by binder: [Sum(x: T, x.A)]
+Sum(x : T, X.A) : i8
+*** Error: (10,11) Node: X, Message: Name does not exist in the current context, did you intend 'x'?
+Binder : Sum(*1: T, *1.A)
+###
+> Sum('x 1': T, 'X 1'.A)
+Corrected by binder: [Sum('x 1': T, 'x 1'.A)]
+Sum('x 1' : T, 'X 1'.A) : i8
+*** Error: (14,19) Node: 'X 1', Message: Name does not exist in the current context, did you intend 'x 1'?
+Binder : Sum(*1: T, *1.A)
+###
+> Sum(T, a * A)
+Corrected by binder: [Sum(T, A * A)]
+Sum(T, a * A) : i8
+*** Error: (7,8) Node: a, Tok: 'a', Message: Unknown field, did you intend 'A' in type: '{A:i8, B:b}'
+Binder : Sum(*1: T, Mul(*1.A, *1.A))
+###
+> T->{b}
+Corrected by binder: [T->{B}]
+T->{ b } : {b:b}*
+*** Error: (4,5) Node: b, Tok: 'b', Message: Unknown field, did you intend 'B' in type: '{A:i8, B:b}'
+Binder : ForEach(*1: T, Guard(!2: *1, {b:!2.B}))
+Reducer: ForEach(*1: T, {b:*1.B})
+###
+> AND
+Corrected by binder: [and]
+AND : b
+*** Error: (0,3) Node: AND, Message: Name does not exist in the current context, did you intend 'and'?
+Binder : AND
+###
+> AND AND AND
+Corrected by binder: [and AND and]
+AND and AND : b
+=== Parse diagnostics:
+*** Error: (4,7) Tok: 'AND', Message: Expected an operator but got 'AND'. Did you intend 'and'?
+=== Bind diagnostics:
+*** Error: (0,3) Node: AND, Message: Name does not exist in the current context, did you intend 'and'?
+*** Error: (8,11) Node: AND, Message: Name does not exist in the current context, did you intend 'and'?
+Binder : And(AND, AND)
+=== Corrected by parser: [AND and AND]
+Corrected by binder: [and and and]
+AND and AND : b
+*** Error: (0,3) Node: AND, Message: Name does not exist in the current context, did you intend 'and'?
+*** Error: (8,11) Node: AND, Message: Name does not exist in the current context, did you intend 'and'?
+Binder : And(AND, AND)
+###
+> TRUE
+Corrected by binder: [true]
+TRUE : b
+*** Error: (0,4) Node: TRUE, Message: Name does not exist in the current context, did you intend 'true'?
+Binder : true
+###
+> FALSE
+Corrected by binder: [false]
+FALSE : b
+*** Error: (0,5) Node: FALSE, Message: Name does not exist in the current context, did you intend 'false'?
+Binder : false
+###
+> NULL
+Corrected by binder: [null]
+NULL : o
+*** Error: (0,4) Node: NULL, Message: Name does not exist in the current context, did you intend 'null'?
+Binder : null
+###
+> THIS
+Corrected by binder: [this]
+THIS : {T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}
+*** Error: (0,4) Node: THIS, Message: Name does not exist in the current context, did you intend 'this'?
+Binder : <this>
+###
+> TrUe tRuE
+Corrected by binder: [true true]
+((TrUe) <error> (tRuE)) : v
+=== Parse diagnostics:
+*** Error: (5,9) Tok: 'tRuE', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (0,4) Node: TrUe, Message: Name does not exist in the current context, did you intend 'true'?
+*** Error: (5,9) Node: tRuE, Message: Name does not exist in the current context, did you intend 'true'?
+*** Error: (5,9) Node: ((TrUe) <error> (tRuE)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> TrUe XOR tRuE
+Corrected by binder: [true XOR true]
+TrUe xor tRuE : b
+=== Parse diagnostics:
+*** Error: (5,8) Tok: 'XOR', Message: Expected an operator but got 'XOR'. Did you intend 'xor'?
+=== Bind diagnostics:
+*** Error: (0,4) Node: TrUe, Message: Name does not exist in the current context, did you intend 'true'?
+*** Error: (9,13) Node: tRuE, Message: Name does not exist in the current context, did you intend 'true'?
+Binder : Xor(true, true)
+Reducer: false
+=== Corrected by parser: [TrUe xor tRuE]
+Corrected by binder: [true xor true]
+TrUe xor tRuE : b
+*** Error: (0,4) Node: TrUe, Message: Name does not exist in the current context, did you intend 'true'?
+*** Error: (9,13) Node: tRuE, Message: Name does not exist in the current context, did you intend 'true'?
+Binder : Xor(true, true)
+Reducer: false
+###
+> NuLl nUlL
+Corrected by binder: [null null]
+((NuLl) <error> (nUlL)) : v
+=== Parse diagnostics:
+*** Error: (5,9) Tok: 'nUlL', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (0,4) Node: NuLl, Message: Name does not exist in the current context, did you intend 'null'?
+*** Error: (5,9) Node: nUlL, Message: Name does not exist in the current context, did you intend 'null'?
+*** Error: (5,9) Node: ((NuLl) <error> (nUlL)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> NuLl & nUlL
+Corrected by binder: [null & null]
+NuLl & nUlL : s
+*** Error: (0,4) Node: NuLl, Message: Name does not exist in the current context, did you intend 'null'?
+*** Error: (7,11) Node: nUlL, Message: Name does not exist in the current context, did you intend 'null'?
+Binder : StrConcat(str(<null>), str(<null>))
+Reducer: ""
+###
+> tHiS ThIs
+Corrected by binder: [this this]
+((tHiS) <error> (ThIs)) : v
+=== Parse diagnostics:
+*** Error: (5,9) Tok: 'ThIs', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (0,4) Node: tHiS, Message: Name does not exist in the current context, did you intend 'this'?
+*** Error: (5,9) Node: ThIs, Message: Name does not exist in the current context, did you intend 'this'?
+*** Error: (5,9) Node: ((tHiS) <error> (ThIs)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> tHiS & ThIs
+Corrected by binder: [this & this]
+tHiS & ThIs : {T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}
+*** Error: (0,4) Node: tHiS, Message: Name does not exist in the current context, did you intend 'this'?
+*** Error: (7,11) Node: ThIs, Message: Name does not exist in the current context, did you intend 'this'?
+Binder : RecordConcat(<this>, <this>)
+Reducer: <this>
+###
+> 3 + 'ET AL'
+Corrected by binder: [3 + 'et al']
+3 + 'ET AL' : i8
+*** Error: (4,11) Node: 'ET AL', Message: Name does not exist in the current context, did you intend ''et al''?
+Binder : Add(3, 'ET AL')
+Reducer: Add('ET AL', 3)
+###
+> 'Et Al'bor 7
+Corrected by binder: ['et al' bor 7]
+'Et Al' bor 7 : i8
+*** Error: (0,7) Node: 'Et Al', Message: Name does not exist in the current context, did you intend ''et al''?
+Binder : BitOr('Et Al', 7)
+###
+> 'I4'bor 7i4
+Corrected by binder: [i4 bor 7i4]
+'I4' bor 7 : i4
+*** Error: (0,4) Node: 'I4', Message: Name does not exist in the current context, did you intend 'i4'?
+Binder : BitOr(I4, 7)
+###
+> 7i4 bor'I4'
+Corrected by binder: [7i4 bor i4]
+7 bor 'I4' : i4
+*** Error: (7,11) Node: 'I4', Message: Name does not exist in the current context, did you intend 'i4'?
+Binder : BitOr(7, I4)
+Reducer: BitOr(I4, 7)
+###
+> this.'eTc.'.len
+Corrected by binder: [this.'etc.'.Len]
+this.'eTc.'.len : i8
+*** Error: (5,11) Node: this.'eTc.', Tok: ''eTc.'', Message: Unknown field, did you intend ''etc.'' in type: '{T:{A:i8, B:b}*, and:b, 'et al':i8, 'etc.':s, i4:i4}'
+*** Error: (11,12) Node: this.'eTc.'.len, Message: Unknown property, did you intend 'Len'?
+Binder : Text.Len(<this>.etc.)
+###
+> Test.'Wrap one'(17)
+Corrected by binder: [Test.'Wrap One'(17)]
+Test.'Wrap one'(17) : i8
+*** Error: (15,16) Node: Test.'Wrap one'(17), Message: Invocation of unknown function, did you intend 'Test.'Wrap One''?
+Binder : Test.Wrap(17)
+###
+> 'Wrap one'(17)
+Corrected by binder: ['Wrap One'(17)]
+'Wrap one'(17) : i8
+*** Error: (10,11) Node: 'Wrap one'(17), Message: Invocation of unknown function, did you intend 'Wrap One'?
+Binder : Test.Wrap(17)
+###

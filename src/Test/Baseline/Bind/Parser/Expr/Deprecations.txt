@@ -1,0 +1,356 @@
+> // Once these deprecations are removed, these tests 
+> // should be updated if there is no corresponding non-
+> // deprecated test, and then relocated out of this file.
+Node: [(<missing>)]
+Dump:
+  00 Node[id:0, kind:MissingValue, depth:1, tok:Eof, rng:(164,164) [], full:(164,164) [], extra=[<missing>]]
+Error: (164,164) Tok: '<eof>', Message: Expected an operand
+Comment: Range=(0,52), Tid=CommentLine, Text=[// Once these deprecations are removed, these tests ]
+Comment: Range=(53,107), Tid=CommentLine, Text=[// should be updated if there is no corresponding non-]
+Comment: Range=(108,164), Tid=CommentLine, Text=[// deprecated test, and then relocated out of this file.]
+###
+> A.B!C
+Node: [A.B !@= C]
+Corrected: [A.B!=C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:3, tok:Bng, rng:(3,4) [!], full:(0,5) [A.B!C]], count=2
+  01   Op:NotEqual
+  01   Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(1,2) [.], full:(0,3) [A.B], extra=[B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+Error: (4,5) Tok: 'C', Message: Expected a comparison operator
+###
+> A -> @F.G!H.@I()
+Node: [A->@F.G.H.@I()]
+Corrected: [A -> @F.G.H.I()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,16) [A -> @F.G!H.@I()], extra=[@F.G.H.I]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:ParenClose, rng:(15,16) [)], full:(0,16) [A -> @F.G!H.@I()]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Warning: (9,10) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Error: (12,13) Tok: '@', Message: Globally scoped identifier not allowed
+###
+> A && B in C
+Node: [A and B in C]
+Corrected: [A and B in C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:AmpAmp, rng:(2,4) [&&], full:(0,11) [A && B in C], extra=[And]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:InHas, depth:2, tok:KwdIn, rng:(7,9) [in], full:(5,11) [B in C], extra=[In]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Warning: (2,4) Tok: '&&', Message: The binary operator '&&' is deprecated, use 'and' instead
+###
+> A and B && C
+Node: [A and B and C]
+Corrected: [A and B and C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:AmpAmp, rng:(8,10) [&&], full:(0,12) [A and B && C], extra=[And]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [and], full:(0,7) [A and B], extra=[And]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Warning: (8,10) Tok: '&&', Message: The binary operator '&&' is deprecated, use 'and' instead
+###
+> A or B ^^ C
+Node: [A or B xor C]
+Corrected: [A or B xor C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:KtxOr, rng:(2,4) [or], full:(0,11) [A or B ^^ C], extra=[Or]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:CarCar, rng:(7,9) [^^], full:(5,11) [B ^^ C], extra=[Xor]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Warning: (7,9) Tok: '^^', Message: The binary operator '^^' is deprecated, use 'xor' instead
+###
+> A xor B || C
+Node: [A xor B or C]
+Corrected: [A xor B or C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:BarBar, rng:(8,10) [||], full:(0,12) [A xor B || C], extra=[Or]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxXor, rng:(2,5) [xor], full:(0,7) [A xor B], extra=[Xor]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Warning: (8,10) Tok: '||', Message: The binary operator '||' is deprecated, use 'or' instead
+###
+> A xor B && C
+Node: [A xor B and C]
+Corrected: [A xor B and C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:KtxXor, rng:(2,5) [xor], full:(0,12) [A xor B && C], extra=[Xor]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:AmpAmp, rng:(8,10) [&&], full:(6,12) [B && C], extra=[And]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Warning: (8,10) Tok: '&&', Message: The binary operator '&&' is deprecated, use 'and' instead
+###
+> A and B ^^ C
+Node: [A and B xor C]
+Corrected: [A and B xor C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:CarCar, rng:(8,10) [^^], full:(0,12) [A and B ^^ C], extra=[Xor]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [and], full:(0,7) [A and B], extra=[And]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Warning: (8,10) Tok: '^^', Message: The binary operator '^^' is deprecated, use 'xor' instead
+###
+> (A || B ; C)
+Node: [A or B]
+Corrected: [(A or B ; C)]
+Dump:
+  00 Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,7) [(A || B]], count=1
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:BarBar, rng:(3,5) [||], full:(1,7) [A || B], extra=[Or]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+Warning: (3,5) Tok: '||', Message: The binary operator '||' is deprecated, use 'or' instead
+Error: (8,9) Tok: ';', Message: Expected: ')', Found: ';'
+Error: (8,9) Tok: ';', Message: Unexpected token
+###
+> 2 ** 3
+Node: [2^3]
+Corrected: [2 ^ 3]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:MulMul, rng:(2,4) [**], full:(0,6) [2 ** 3], extra=[Power]], count=2
+  01   Node[id:0, kind:NumLit, depth:1, tok:2, rng:(0,1) [2], full:(0,1) [2], extra=[2]]
+  01   Node[id:1, kind:NumLit, depth:1, tok:3, rng:(5,6) [3], full:(5,6) [3], extra=[3]]
+Warning: (2,4) Tok: '**', Message: The binary operator '**' is deprecated, use '^' instead
+###
+> // No longer supported.
+> x%{a, b}
+Node: [x%]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:Per, rng:(25,26) [%], full:(24,26) [x%], extra=[Percent]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:x, rng:(24,25) [x], full:(24,25) [x], extra=[x]]
+Error: (26,27) Tok: '{', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> T!3
+Node: [T[3]]
+Corrected: [T[3]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:Bng, rng:(1,2) [!], full:(0,3) [T!3]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Bng, rng:(1,2) [!], full:(1,3) [!3]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:3, rng:(2,3) [3], full:(2,3) [3], extra=[v]], count=1
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(2,3) [3], full:(2,3) [3], extra=[3]]
+Warning: (1,2) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+###
+> T!~3 // Error.
+Node: [T !~@= 3]
+Corrected: [T!~=3 // Error.]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Bng, rng:(1,2) [!], full:(0,4) [T!~3]], count=2
+  01   Op:NotEqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:1, kind:NumLit, depth:1, tok:3, rng:(3,4) [3], full:(3,4) [3], extra=[3]]
+Error: (3,4) Tok: '3', Message: Expected a comparison operator
+Comment: Range=(5,14), Tid=CommentLine, Text=[// Error.]
+###
+> T~3 // Error.
+Node: [T ~@= 3]
+Corrected: [T~=3 // Error.]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Tld, rng:(1,2) [~], full:(0,3) [T~3]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:1, kind:NumLit, depth:1, tok:3, rng:(2,3) [3], full:(2,3) [3], extra=[3]]
+Error: (2,3) Tok: '3', Message: Expected a comparison operator
+Comment: Range=(4,13), Tid=CommentLine, Text=[// Error.]
+###
+> T not 3 // Error.
+Node: [T !@= 3]
+Corrected: [T not = 3 // Error.]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:KwdNot, rng:(2,5) [not], full:(0,7) [T not 3]], count=2
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:1, kind:NumLit, depth:1, tok:3, rng:(6,7) [3], full:(6,7) [3], extra=[3]]
+Error: (6,7) Tok: '3', Message: Expected a comparison operator
+Comment: Range=(8,17), Tid=CommentLine, Text=[// Error.]
+###
+> T ! 0x1C
+Node: [T[28]]
+Corrected: [T [28]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:Bng, rng:(2,3) [!], full:(0,8) [T ! 0x1C]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Bng, rng:(2,3) [!], full:(2,8) [! 0x1C]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:28, rng:(4,8) [0x1C], full:(4,8) [0x1C], extra=[v]], count=1
+  03       Node[id:1, kind:NumLit, depth:1, tok:28, rng:(4,8) [0x1C], full:(4,8) [0x1C], extra=[28]]
+Warning: (2,3) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+###
+> T ! 0b0001_1100
+Node: [T[28]]
+Corrected: [T [28]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:Bng, rng:(2,3) [!], full:(0,15) [T ! 0b0001_1100]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Bng, rng:(2,3) [!], full:(2,15) [! 0b0001_1100]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:28, rng:(4,15) [0b0001_1100], full:(4,15) [0b0001_1100], extra=[v]], count=1
+  03       Node[id:1, kind:NumLit, depth:1, tok:28, rng:(4,15) [0b0001_1100], full:(4,15) [0b0001_1100], extra=[28]]
+Warning: (2,3) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+###
+> T!
+Node: [T !@= (<missing>)]
+Corrected: [T!=]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Bng, rng:(1,2) [!], full:(0,2) [T!]], count=2
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) [], extra=[<missing>]]
+Error: (2,2) Tok: '<eof>', Message: Expected a comparison operator
+Error: (2,2) Tok: '<eof>', Message: Expected an operand
+###
+> T!-3
+Node: [T !@= -3]
+Corrected: [T!=-3]
+Dump:
+  00 Node[id:3, kind:Compare, depth:3, tok:Bng, rng:(1,2) [!], full:(0,4) [T!-3]], count=2
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:2, kind:UnaryOp, depth:2, tok:Sub, rng:(2,3) [-], full:(2,4) [-3], extra=[Negate]], count=1
+  02     Node[id:1, kind:NumLit, depth:1, tok:3, rng:(3,4) [3], full:(3,4) [3], extra=[3]]
+Error: (2,3) Tok: '-', Message: Expected a comparison operator
+###
+> T!3.e10
+Node: [T[3].e10]
+Corrected: [T[3].e10]
+Dump:
+  00 Node[id:5, kind:DottedName, depth:5, tok:Dot, rng:(3,4) [.], full:(0,7) [T!3.e10], extra=[e10]], count=1
+  01   Node[id:4, kind:Indexing, depth:4, tok:Bng, rng:(1,2) [!], full:(0,3) [T!3]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  02     Node[id:3, kind:SliceList, depth:3, tok:Bng, rng:(1,2) [!], full:(1,3) [!3]], count=1
+  03       Node[id:2, kind:SliceItem, depth:2, tok:3, rng:(2,3) [3], full:(2,3) [3], extra=[v]], count=1
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(2,3) [3], full:(2,3) [3], extra=[3]]
+Warning: (1,2) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+###
+> T!"foo"
+Node: [T !@= "foo"]
+Corrected: [T!="foo"]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Bng, rng:(1,2) [!], full:(0,7) [T!"foo"]], count=2
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:T, rng:(0,1) [T], full:(0,1) [T], extra=[T]]
+  01   Node[id:1, kind:TextLit, depth:1, tok:foo, rng:(2,7) ["foo"], full:(2,7) ["foo"]]
+Error: (2,7) Tok: 'foo', Message: Expected a comparison operator
+###
+> A << B >> C >>> D
+Node: [A shl B shr C shru D]
+Corrected: [A shl B shr C shru D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:GrtGrtGrt, rng:(12,15) [>>>], full:(0,17) [A << B >> C >>> D], extra=[Shru]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:GrtGrt, rng:(7,9) [>>], full:(0,11) [A << B >> C], extra=[Shr]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:LssLss, rng:(2,4) [<<], full:(0,6) [A << B], extra=[Shl]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+Warning: (2,4) Tok: '<<', Message: The binary operator '<<' is deprecated, use 'shl' instead
+Warning: (7,9) Tok: '>>', Message: The binary operator '>>' is deprecated, use 'shr' instead
+Warning: (12,15) Tok: '>>>', Message: The binary operator '>>>' is deprecated, use 'shru' instead
+###
+> A == B <> C
+Node: [A @= B $< (<missing>) $> C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:2, tok:Equ, rng:(2,3) [=], full:(0,11) [A == B <> C]], count=4
+  01   Op:Equal
+  01   Op:StrictLess
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Grt, rng:(8,9) [>], full:(8,9) [>], extra=[<missing>]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (3,4) Tok: '=', Message: Redundant '='
+Error: (8,9) Tok: '>', Message: Expected an operand
+###
+> A !~ B
+Node: [A !~@= B]
+Corrected: [A !~= B]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Bng, rng:(2,3) [!], full:(0,6) [A !~ B]], count=2
+  01   Op:NotEqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+Error: (5,6) Tok: 'B', Message: Expected a comparison operator
+###
+> A ~ B
+Node: [A ~@= B]
+Corrected: [A ~= B]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Tld, rng:(2,3) [~], full:(0,5) [A ~ B]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+Error: (4,5) Tok: 'B', Message: Expected a comparison operator
+###
+> it.name1!name2
+Node: [it.name1 !@= name2]
+Corrected: [it.name1!=name2]
+Dump:
+  00 Node[id:3, kind:Compare, depth:3, tok:Bng, rng:(8,9) [!], full:(0,14) [it.name1!name2]], count=2
+  01   Op:NotEqual
+  01   Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(2,3) [.], full:(0,8) [it.name1], extra=[name1]], count=1
+  02     Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(0,2) [it], full:(0,2) [it], extra=[slot=0]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:name2, rng:(9,14) [name2], full:(9,14) [name2], extra=[name2]]
+Error: (9,14) Tok: 'name2', Message: Expected a comparison operator
+###
+> it!name1.name2
+Node: [it !@= name1.name2]
+Corrected: [it!=name1.name2]
+Dump:
+  00 Node[id:3, kind:Compare, depth:3, tok:Bng, rng:(2,3) [!], full:(0,14) [it!name1.name2]], count=2
+  01   Op:NotEqual
+  01   Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(0,2) [it], full:(0,2) [it], extra=[slot=0]]
+  01   Node[id:2, kind:DottedName, depth:2, tok:Dot, rng:(8,9) [.], full:(3,14) [name1.name2], extra=[name2]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:name1, rng:(3,8) [name1], full:(3,8) [name1], extra=[name1]]
+Error: (3,8) Tok: 'name1', Message: Expected a comparison operator
+###
+> @A.B!C.@D(3)
+Node: [@A.B !@= C.@D(3)]
+Corrected: [@A.B!=C.D(3)]
+Dump:
+  00 Node[id:7, kind:Compare, depth:4, tok:Bng, rng:(4,5) [!], full:(0,12) [@A.B!C.@D(3)]], count=2
+  01   Op:NotEqual
+  01   Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(2,3) [.], full:(0,4) [@A.B], extra=[B]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(0,2) [@A], extra=[@A]]
+  01   Node[id:6, kind:Call, depth:3, tok:ParenOpen, rng:(9,10) [(], full:(5,12) [C.@D(3)], extra=[C.D]], count=1
+  02     Node[id:5, kind:ExprList, depth:2, tok:3, rng:(10,11) [3], full:(10,11) [3]], count=1
+  03       Node[id:4, kind:NumLit, depth:1, tok:3, rng:(10,11) [3], full:(10,11) [3], extra=[3]]
+Error: (5,6) Tok: 'C', Message: Expected a comparison operator
+Error: (7,8) Tok: '@', Message: Globally scoped identifier not allowed
+###
+> // No longer supported.
+> A{ X: F }
+Node: [A]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+Error: (25,26) Tok: '{', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> // No longer supported.
+> A{+ X: F }
+Node: [A]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+Error: (25,26) Tok: '{', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###
+> // No longer supported.
+> A->{+ X: F }
+Node: [A->{ '' : +X }]
+Dump:
+  00 Node[id:6, kind:RecordProjection, depth:6, tok:SubGrt, rng:(25,27) [->], full:(24,31) [A->{+ X]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(24,25) [A], full:(24,25) [A], extra=[A]]
+  01   Node[id:5, kind:Record, depth:5, tok:CurlyOpen, rng:(27,28) [{], full:(27,31) [{+ X]], count=1
+  02     Node[id:4, kind:ExprList, depth:4, tok:Add, rng:(28,29) [+], full:(28,31) [+ X]], count=1
+  03       Node[id:3, kind:VariableDecl, depth:3, tok:'', rng:(31,31) [], full:(28,31) [+ X], extra=[var:_X]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Add, rng:(28,29) [+], full:(28,31) [+ X], extra=[Posate]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:X, rng:(30,31) [X], full:(30,31) [X], extra=[X]]
+Error: (31,32) Tok: ':', Message: Expected: 'as', Found: ':'
+Error: (31,32) Tok: ':', Message: Expected: '<identifier>', Found: ':'
+Error: (31,32) Tok: ':', Message: Expected: '}', Found: ':'
+Error: (31,32) Tok: ':', Message: Unexpected token
+Comment: Range=(0,23), Tid=CommentLine, Text=[// No longer supported.]
+###

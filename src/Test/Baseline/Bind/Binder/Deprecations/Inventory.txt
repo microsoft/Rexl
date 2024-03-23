@@ -1,0 +1,311 @@
+**** New globals: {B:{A:r8, C:s}*, Het:(i8, s, b), Hom:(s, s, s), R:{A:r8}, b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, ss:s*, sss:s**, u:b, u1:u1, u2:u2, u4:u4, u8:u8, v:b}
+
+> GlueMap(sss)
+Corrected by binder: [ChainMap(sss)]
+GlueMap(sss) : s*
+*** Warning: (7,8) Node: GlueMap(sss), Message: This function is deprecated and may be removed in the future, use 'ChainMap' instead
+{
+  IsDeprecation: true
+  TokText: GlueMap
+  Guess: ChainMap
+  MessageTag: WrnDeprecatedFunction_Alt
+  IsError: false
+}
+Binder : ChainMap(sss)
+###
+> i8 << i8
+i8 shl i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,5) Tok: '<<', Message: The binary operator '<<' is deprecated, use 'shl' instead
+{
+  IsDeprecation: true
+  TokText: <<
+  Guess: shl
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Shl(i8, i8)
+=== Corrected by parser: [i8 shl i8]
+i8 shl i8 : i8
+Binder : Shl(i8, i8)
+###
+> i8 >> i8
+i8 shr i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,5) Tok: '>>', Message: The binary operator '>>' is deprecated, use 'shr' instead
+{
+  IsDeprecation: true
+  TokText: >>
+  Guess: shr
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Shri(i8, i8)
+=== Corrected by parser: [i8 shr i8]
+i8 shr i8 : i8
+Binder : Shri(i8, i8)
+###
+> i8 >>> i8
+i8 shru i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,6) Tok: '>>>', Message: The binary operator '>>>' is deprecated, use 'shru' instead
+{
+  IsDeprecation: true
+  TokText: >>>
+  Guess: shru
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Shru(i8, i8)
+=== Corrected by parser: [i8 shru i8]
+i8 shru i8 : i8
+Binder : Shru(i8, i8)
+###
+> u && v
+u and v : b
+=== Parse diagnostics:
+*** Warning: (2,4) Tok: '&&', Message: The binary operator '&&' is deprecated, use 'and' instead
+{
+  IsDeprecation: true
+  TokText: &&
+  Guess: and
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : And(u, v)
+=== Corrected by parser: [u and v]
+u and v : b
+Binder : And(u, v)
+###
+> u ^^ v
+u xor v : b
+=== Parse diagnostics:
+*** Warning: (2,4) Tok: '^^', Message: The binary operator '^^' is deprecated, use 'xor' instead
+{
+  IsDeprecation: true
+  TokText: ^^
+  Guess: xor
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Xor(u, v)
+=== Corrected by parser: [u xor v]
+u xor v : b
+Binder : Xor(u, v)
+###
+> u || v
+u or v : b
+=== Parse diagnostics:
+*** Warning: (2,4) Tok: '||', Message: The binary operator '||' is deprecated, use 'or' instead
+{
+  IsDeprecation: true
+  TokText: ||
+  Guess: or
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Or(u, v)
+=== Corrected by parser: [u or v]
+u or v : b
+Binder : Or(u, v)
+###
+> 2 ** 3
+2^3 : i8
+=== Parse diagnostics:
+*** Warning: (2,4) Tok: '**', Message: The binary operator '**' is deprecated, use '^' instead
+{
+  IsDeprecation: true
+  TokText: **
+  Guess: ^
+  MessageTag: WrnDeprecatedBinOp_Old_New
+  IsError: false
+}
+Binder : Power(2, 3)
+Reducer: 8
+=== Corrected by parser: [2 ^ 3]
+2^3 : i8
+Binder : Power(2, 3)
+Reducer: 8
+###
+> r8%{D: r8}
+r8% : r8
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '{', Message: Unexpected token
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrBadToken
+  IsError: true
+}
+Binder : Mul(r8, [/] 100)
+###
+> B{C}
+B : {A:r8, C:s}*
+=== Parse diagnostics:
+*** Error: (1,2) Tok: '{', Message: Unexpected token
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrBadToken
+  IsError: true
+}
+Binder : B
+###
+> B{+C}
+B : {A:r8, C:s}*
+=== Parse diagnostics:
+*** Error: (1,2) Tok: '{', Message: Unexpected token
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrBadToken
+  IsError: true
+}
+Binder : B
+###
+> B->{+C}
+B->{ '' : +C } : {_X:i8?}*
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '}', Message: Expected: 'as', Found: '}'
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrExpectedFound_Ex_Fnd
+  IsError: true
+}
+*** Error: (6,7) Tok: '}', Message: Expected: '<identifier>', Found: '}'
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrExpectedFound_Ex_Fnd
+  IsError: true
+}
+=== Bind diagnostics:
+*** Error: (5,6) Node: C, Message: Invalid operand type: cannot convert type 's' to 'i8?'
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrBadType_Src_Dst
+  IsError: true
+}
+Binder : ForEach(*1: B, Guard(!2: *1, {_X:Error(ErrBadType_Src_Dst)}))
+Reducer: ForEach(*1: B, {_X:Error(ErrBadType_Src_Dst)})
+###
+> "foo" + "bar"
+Corrected by binder: ["foo" & "bar"]
+"foo" + "bar" : s
+*** Warning: (6,7) Node: "foo" + "bar", Message: The binary operator '+' for text concatenation is deprecated, use '&' instead
+{
+  IsDeprecation: true
+  TokText: +
+  Guess: &
+  MessageTag: WrnDeprecatedStrCat
+  IsError: false
+}
+Binder : StrConcat("foo", "bar")
+Reducer: "foobar"
+###
+> Het!0
+Het[0] : i8
+=== Parse diagnostics:
+*** Warning: (3,4) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+{
+  IsDeprecation: true
+  TokText: !0
+  Guess: [0]
+  MessageTag: WrnDeprecatedTupleGetSlot
+  IsError: false
+}
+Binder : Het.0
+=== Corrected by parser: [Het[0]]
+Het[0] : i8
+Binder : Het.0
+###
+> Het!3
+Het[3] : v
+=== Parse diagnostics:
+*** Warning: (3,4) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+{
+  IsDeprecation: true
+  TokText: !3
+  Guess: [3]
+  MessageTag: WrnDeprecatedTupleGetSlot
+  IsError: false
+}
+=== Bind diagnostics:
+*** Error: (4,5) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrHetTupleIndexOutOfRange_Arity
+  IsError: true
+}
+Binder : Error(ErrHetTupleIndexOutOfRange_Arity)
+=== Corrected by parser: [Het[3]]
+Het[3] : v
+*** Error: (4,5) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrHetTupleIndexOutOfRange_Arity
+  IsError: true
+}
+Binder : Error(ErrHetTupleIndexOutOfRange_Arity)
+###
+> Hom!0
+Hom[0] : s
+=== Parse diagnostics:
+*** Warning: (3,4) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+{
+  IsDeprecation: true
+  TokText: !0
+  Guess: [0]
+  MessageTag: WrnDeprecatedTupleGetSlot
+  IsError: false
+}
+Binder : Hom.0
+=== Corrected by parser: [Hom[0]]
+Hom[0] : s
+Binder : Hom.0
+###
+> Hom!3
+Hom[3] : s
+=== Parse diagnostics:
+*** Warning: (3,4) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+{
+  IsDeprecation: true
+  TokText: !3
+  Guess: [3]
+  MessageTag: WrnDeprecatedTupleGetSlot
+  IsError: false
+}
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: WrnHomTupleIndexOutOfRange
+  IsError: false
+}
+Binder : str(<null>)
+=== Corrected by parser: [Hom[3]]
+Hom[3] : s
+*** Warning: (4,5) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: WrnHomTupleIndexOutOfRange
+  IsError: false
+}
+Binder : str(<null>)
+###

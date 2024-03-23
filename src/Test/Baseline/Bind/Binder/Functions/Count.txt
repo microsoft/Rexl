@@ -1,0 +1,215 @@
+**** New globals: {I:i8, R:{W:{X:i4}*, X:i4, Y:i2}*, S:i8*, b:b}
+
+> Count(null)
+Count(null) : i8
+Binder : Count(null)
+Reducer: 0
+###
+> Count([])
+Count([]) : i8
+Binder : Count(null)
+Reducer: 0
+###
+> Count(Range(0))
+Count(Range(0)) : i8
+Binder : Count(Range(0))
+Reducer: 0
+###
+> Count(Range(10))
+Count(Range(10)) : i8
+Binder : Count(Range(10))
+Reducer: 10
+###
+> Count(Null(Range(10)))
+Count(Null(Range(10))) : i8
+Binder : Count(DefOpt*(Range(10)))
+Reducer: 0
+###
+> Count(Null([ "hi" ]))
+Count(Null(["hi"])) : i8
+Binder : Count(DefOpt*(["hi"]))
+Reducer: 0
+###
+> Count(null, true)
+Count(null, true) : i8
+Binder : Count(*1: null, true)
+Reducer: 0
+###
+> Count(null, false)
+Count(null, false) : i8
+Binder : Count(*1: null, false)
+Reducer: 0
+###
+> Count([], true)
+Count([], true) : i8
+Binder : Count(*1: null, true)
+Reducer: 0
+###
+> Count([], false)
+Count([], false) : i8
+Binder : Count(*1: null, false)
+Reducer: 0
+###
+> Count(Range(0), true)
+Count(Range(0), true) : i8
+Binder : Count(*1: Range(0), true)
+Reducer: 0
+###
+> Count(Range(0), false)
+Count(Range(0), false) : i8
+Binder : Count(*1: Range(0), false)
+Reducer: 0
+###
+> Count(Null(Range(10)), b)
+Count(Null(Range(10)), b) : i8
+Binder : Count(*1: DefOpt*(Range(10)), b)
+Reducer: 0
+###
+> Count(Null(Range(10)), true)
+Count(Null(Range(10)), true) : i8
+Binder : Count(*1: DefOpt*(Range(10)), true)
+Reducer: 0
+###
+> Count(Null(Range(10)), false)
+Count(Null(Range(10)), false) : i8
+Binder : Count(*1: DefOpt*(Range(10)), false)
+Reducer: 0
+###
+> Count(Null([ "hi" ]), b)
+Count(Null(["hi"]), b) : i8
+Binder : Count(*1: DefOpt*(["hi"]), b)
+Reducer: 0
+###
+> Count(Null([ "hi" ]), true)
+Count(Null(["hi"]), true) : i8
+Binder : Count(*1: DefOpt*(["hi"]), true)
+Reducer: 0
+###
+> Count(Null([ "hi" ]), false)
+Count(Null(["hi"]), false) : i8
+Binder : Count(*1: DefOpt*(["hi"]), false)
+Reducer: 0
+###
+> Count(Range(10), true)
+Count(Range(10), true) : i8
+Binder : Count(*1: Range(10), true)
+Reducer: 10
+###
+> Count(Range(10), false)
+Count(Range(10), false) : i8
+Binder : Count(*1: Range(10), false)
+Reducer: 0
+###
+> Count(null, it > 3)
+Count(null, it $> 3) : i8
+Binder : Count(*1: null, null $> 3)
+Reducer: 0
+###
+> Count([], it > 3)
+Count([], it $> 3) : i8
+Binder : Count(*1: null, Unit<i8>(*1) @> 3)
+Reducer: 0
+###
+> Count(Range(0), it > 3)
+Count(Range(0), it $> 3) : i8
+Binder : Count(*1: Range(0), *1 @> 3)
+Reducer: 0
+###
+> Count(Range(0), [if] it > 3)
+Count(Range(0), [if] it $> 3) : i8
+Binder : Count(*1: Range(0), [if] *1 @> 3)
+Reducer: 0
+###
+> Count(Range(0), [while] it > 3)
+Count(Range(0), [while] it $> 3) : i8
+Binder : Count(*1: Range(0), [while] *1 @> 3)
+Reducer: 0
+###
+> Count(Range(10), it > 3)
+Count(Range(10), it $> 3) : i8
+Binder : Count(*1: Range(10), *1 @> 3)
+###
+> Count(Range(10), [if] it > 3)
+Count(Range(10), [if] it $> 3) : i8
+Binder : Count(*1: Range(10), [if] *1 @> 3)
+###
+> Count(Range(10), [while] it > 3)
+Count(Range(10), [while] it $> 3) : i8
+Binder : Count(*1: Range(10), [while] *1 @> 3)
+###
+> Count(Range(10), [while] it < 3)
+Count(Range(10), [while] it $< 3) : i8
+Binder : Count(*1: Range(10), [while] *1 @< 3)
+###
+> Count(Range(10), [while] it < 20)
+Count(Range(10), [while] it $< 20) : i8
+Binder : Count(*1: Range(10), [while] *1 @< 20)
+###
+> Count(S)
+Count(S) : i8
+Binder : Count(S)
+###
+> Count(S, it > 3)
+Count(S, it $> 3) : i8
+Binder : Count(*1: S, *1 @> 3)
+###
+> Count(S, true)
+Count(S, true) : i8
+Binder : Count(*1: S, true)
+Reducer: Count(S)
+###
+> Count(S, false)
+Count(S, false) : i8
+Binder : Count(*1: S, false)
+Reducer: 0
+###
+> Count(S, [if] it > 3)
+Count(S, [if] it $> 3) : i8
+Binder : Count(*1: S, [if] *1 @> 3)
+###
+> Count(S, [while] it > 3)
+Count(S, [while] it $> 3) : i8
+Binder : Count(*1: S, [while] *1 @> 3)
+###
+> Count(R)
+Count(R) : i8
+Binder : Count(R)
+###
+> Count(R, true)
+Count(R, true) : i8
+Binder : Count(*1: R, true)
+Reducer: Count(R)
+###
+> Count(R, false)
+Count(R, false) : i8
+Binder : Count(*1: R, false)
+Reducer: 0
+###
+> Count(R, [if] it.X > 3)
+Count(R, [if] it.X $> 3) : i8
+Binder : Count(*1: R, [if] Num<i8>(*1.X) @> 3)
+###
+> Count(R, [while] it.X > 3)
+Count(R, [while] it.X $> 3) : i8
+Binder : Count(*1: R, [while] Num<i8>(*1.X) @> 3)
+###
+> Count(I) // Error.
+Count(I) : i8
+*** Error: (6,7) Node: I, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Count(Error(ErrBadType_Src_Dst))
+###
+> Count(I, [if] it > 3) // Error.
+Count(I, [if] it $> 3) : i8
+*** Error: (6,7) Node: I, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Count(*1: Error(ErrBadType_Src_Dst), [if] *1 @> 3)
+###
+> Count(S, [key] it > 3) // Error.
+Count(S, [key] it $> 3) : i8
+*** Error: (9,14) Node: [key] it $> 3, Tok: '[key]', Message: Unexpected directive
+Binder : Count(*1: S, *1 @> 3)
+###
+> Count([if] S, it > 3) // Error.
+Count([if] S, it $> 3) : i8
+*** Error: (6,10) Node: [if] S, Tok: '[if]', Message: Unexpected directive
+Binder : Count(*1: S, *1 @> 3)
+###

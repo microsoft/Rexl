@@ -1,0 +1,74 @@
+>>> *** Source:
+    T := Range(10)->{ A: it, B: it / 2, C: it > 5, D: Date(2022 + it, 1, 1) };
+    "*** Thread-based ***";
+    Bad := "some\u0000name.parquet";
+    task Wrt as WriteParquet(T, Bad);
+    (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames);
+    Wrt.Link.Path = Bad;
+    finish Wrt;
+    (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames);
+    Wrt.Link.Path = Bad;
+    Wrt.FullLink; // Error - FullLink not usable when Wrt wasn't primed successfully.
+    Wrt.GroupCount; // Error - GroupCount not usable when Wrt wasn't successful.
+    Wrt.Size; // Error - GroupCount not usable when Wrt wasn't successful.
+    Wrt.Blarg; // Error - unknown result.
+    Wrt$Glop; // Error - bad meta prop.
+    Writer$State;
+
+>>> *** Instructions:
+   0) [0] Define T <- Range(10)->{ A : it, B : it / 2, C : it $> 5, D : Date(2022 + it, 1, 1) }
+   1) [0] Expr "*** Thread-based ***"
+   2) [0] Define Bad <- "some\x00name.parquet"
+   3) [0] TaskProc task Wrt as WriteParquet(T, Bad)
+   4) [0] Expr (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames)
+   5) [0] Expr Wrt.Link.Path @= Bad
+   6) [0] TaskCmd finish Wrt
+   7) [0] Expr (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames)
+   8) [0] Expr Wrt.Link.Path @= Bad
+   9) [0] Expr Wrt.FullLink
+  10) [0] Expr Wrt.GroupCount
+  11) [0] Expr Wrt.Size
+  12) [0] Expr Wrt.Blarg
+  13) [0] Expr Wrt$Glop
+  14) [0] Expr Writer$State
+  15) [0] End
+
+>    0) [0] Define T <- Range(10)->{ A : it, B : it / 2, C : it $> 5, D : Date(2022 + it, 1, 1) }
+Global 'T' has DType: {A:i8, B:r8, C:b, D:d}*, SysType: Seq<{i8,r8,bool,Date}>
+>    1) [0] Expr "*** Thread-based ***"
+*** Thread-based ***
+>    2) [0] Define Bad <- "some\x00name.parquet"
+Global 'Bad' has DType: s, SysType: str
+>    3) [0] TaskProc task Wrt as WriteParquet(T, Bad)
+Task 'Wrt' added
+>    4) [0] Expr (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames)
+(Created, false, <null>, (Link,))
+>    5) [0] Expr Wrt.Link.Path @= Bad
+true
+>    6) [0] TaskCmd finish Wrt
+Task 'Wrt' now playing
+Task 'Wrt' finished
+>    7) [0] Expr (Wrt$State, Wrt$Failed, Wrt$ErrorMessage, Wrt$ResultNames)
+(Finished, true, Illegal characters in path. (Parameter 'path'), (Link,))
+>    8) [0] Expr Wrt.Link.Path @= Bad
+true
+>    9) [0] Expr Wrt.FullLink
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (346,347) Node: Wrt.FullLink, Message: Namespace 'Wrt' doesn't contain 'FullLink'
+>   10) [0] Expr Wrt.GroupCount
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (428,429) Node: Wrt.GroupCount, Message: Namespace 'Wrt' doesn't contain 'GroupCount'
+>   11) [0] Expr Wrt.Size
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (505,506) Node: Wrt.Size, Message: Namespace 'Wrt' doesn't contain 'Size'
+>   12) [0] Expr Wrt.Blarg
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (576,577) Node: Wrt.Blarg, Message: Namespace 'Wrt' doesn't contain 'Blarg'
+>   13) [0] Expr Wrt$Glop
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (616,620) Node: Wrt$Glop, Tok: 'Glop', Message: Container doesn't have meta property 'Glop'
+>   14) [0] Expr Writer$State
+*** Bind diagnostics:
+  [ParquetErrors.txt] Error: (648,654) Node: Writer$State, Tok: 'Writer', Message: Unknown meta property container
+>   15) [0] End
+

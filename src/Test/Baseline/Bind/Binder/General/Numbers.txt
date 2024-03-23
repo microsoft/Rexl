@@ -1,0 +1,1511 @@
+**** New globals: {i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, r4:r4, r8:r8, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 1
+1 : i8
+Binder : 1
+###
+> 123456
+123456 : i8
+Binder : 123456
+###
+> 123456789012345678901234567890
+123456789012345678901234567890 : i
+Binder : 123456789012345678901234567890
+###
+> 123456789012345678901234567890f
+1.2345678901234568E+29 : r4
+Binder : 1.2345678918272927E+29
+###
+> 123456789012345678901234567890F
+1.2345678901234568E+29 : r4
+Binder : 1.2345678918272927E+29
+###
+> 1.0
+1 : r8
+Binder : 1
+###
+> .5
+0.5 : r8
+Binder : 0.5
+###
+> 1e3
+1000 : r8
+Binder : 1000
+###
+> 1e+3
+1000 : r8
+Binder : 1000
+###
+> 1e-3
+0.001 : r8
+Binder : 0.001
+###
+> .1e4
+1000 : r8
+Binder : 1000
+###
+> .123456789012345678901234567890
+0.12345678901234568 : r8
+Binder : 0.12345678901234568
+###
+> 123456.789012345678901234567890
+123456.78901234567 : r8
+Binder : 123456.78901234567
+###
+> 123456.789012345678901234567890E-6
+0.12345678901234568 : r8
+Binder : 0.12345678901234568
+###
+> 1e308
+1E+308 : r8
+Binder : 1E+308
+###
+> 1e309
+Infinity : r8
+Binder : ∞
+###
+> .01e310
+1E+308 : r8
+Binder : 1E+308
+###
+> 1e308 * 10
+1E+308 * 10 : r8
+Binder : Mul(1E+308, 10)
+Reducer: ∞
+###
+> .e3
+(<missing>).e3 : v
+=== Parse diagnostics:
+*** Error: (0,1) Tok: '.', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (0,1) Node: (<missing>), Message: Expected an operand
+*** Error: (0,1) Node: (<missing>).e3, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> 5.
+5.'' : v
+=== Parse diagnostics:
+*** Error: (2,2) Tok: '<eof>', Message: Expected: '<identifier>', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (1,2) Node: 5.'', Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> 5.e3
+5.e3 : v
+*** Error: (1,2) Node: 5.e3, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> 0xFFFFFFFFFFFFFFFFu
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 0xFFFFFFFFFFFFFFFFU
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 18446744073709551615u
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 18446744073709551615U
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 0xFFFFFFFFFFFFFFFF
+18446744073709551615 : i
+Binder : 18446744073709551615
+###
+> 18446744073709551615
+18446744073709551615 : i
+Binder : 18446744073709551615
+###
+> 0x8000000000000000
+9223372036854775808 : i
+Binder : 9223372036854775808
+###
+> 9223372036854775808
+9223372036854775808 : i
+Binder : 9223372036854775808
+###
+> 0x7FFFFFFFFFFFFFFF
+9223372036854775807 : i8
+Binder : 9223372036854775807
+###
+> 9223372036854775807
+9223372036854775807 : i8
+Binder : 9223372036854775807
+###
+> 0x10000000000000000
+18446744073709551616 : i
+Binder : 18446744073709551616
+###
+> 0x10000000000000000U
+18446744073709551616 : i
+*** Warning: (0,20) Node: 18446744073709551616, Message: Unsigned int literal overflow as signed
+Binder : 18446744073709551616
+###
+> 18446744073709551616
+18446744073709551616 : i
+Binder : 18446744073709551616
+###
+> 18446744073709551616u
+18446744073709551616 : i
+*** Warning: (0,21) Node: 18446744073709551616, Message: Unsigned int literal overflow as signed
+Binder : 18446744073709551616
+###
+> 12345
+12345 : i8
+Binder : 12345
+###
+> 12345f
+12345 : r4
+Binder : 12345
+###
+> 12345U
+12345 : u8
+Binder : 12345
+###
+> 255
+255 : i8
+Binder : 255
+###
+> 255u
+255 : u8
+Binder : 255
+###
+> 123.5u
+((123.5) <error> (u)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: 'u', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: u, Message: Name does not exist in the current context
+*** Error: (5,6) Node: ((123.5) <error> (u)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1234.5
+1234.5 : r8
+Binder : 1234.5
+###
+> 123.45
+123.45 : r8
+Binder : 123.45
+###
+> 123e45
+1.23E+47 : r8
+Binder : 1.23E+47
+###
+> 123e+
+((123) <error> (e)) + (<missing>) : i8
+=== Parse diagnostics:
+*** Error: (3,4) Tok: 'e', Message: Expected an operator
+*** Error: (5,5) Tok: '<eof>', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (3,4) Node: e, Message: Name does not exist in the current context
+*** Error: (3,4) Node: ((123) <error> (e)), Message: Expected an operator
+*** Error: (5,5) Node: (<missing>), Message: Expected an operand
+Binder : Add(Unit<i8>(Error(ErrOperatorExpected)), Unit<i8>(<missing>))
+Reducer: 0
+###
+> 123E-
+((123) <error> (E)) - (<missing>) : i8
+=== Parse diagnostics:
+*** Error: (3,4) Tok: 'E', Message: Expected an operator
+*** Error: (5,5) Tok: '<eof>', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (3,4) Node: E, Message: Name does not exist in the current context
+*** Error: (3,4) Node: ((123) <error> (E)), Message: Expected an operator
+*** Error: (5,5) Node: (<missing>), Message: Expected an operand
+Binder : Add(Unit<i8>(Error(ErrOperatorExpected)), [-] Unit<i8>(<missing>))
+Reducer: 0
+###
+> 123e
+((123) <error> (e)) : v
+=== Parse diagnostics:
+*** Error: (3,4) Tok: 'e', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,4) Node: e, Message: Name does not exist in the current context
+*** Error: (3,4) Node: ((123) <error> (e)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0x
+0 : i8
+=== Parse diagnostics:
+*** Error: (0,2) Tok: '0', Message: Invalid numeric literal
+Binder : 0
+###
+> 0X
+0 : i8
+=== Parse diagnostics:
+*** Error: (0,2) Tok: '0', Message: Invalid numeric literal
+Binder : 0
+###
+> 0xABCDEFGH
+((11259375) <error> (GH)) : v
+=== Parse diagnostics:
+*** Error: (8,10) Tok: 'GH', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (8,10) Node: GH, Message: Name does not exist in the current context
+*** Error: (8,10) Node: ((11259375) <error> (GH)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1u
+1 : u8
+Binder : 1
+###
+> 1U
+1 : u8
+Binder : 1
+###
+> 1u1
+1 : u1
+Binder : 1
+###
+> 1u2
+1 : u2
+Binder : 1
+###
+> 1u4
+1 : u4
+Binder : 1
+###
+> 1u8
+1 : u8
+Binder : 1
+###
+> 1u3
+((1) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1i
+1 : i8
+Binder : 1
+###
+> 1i1
+1 : i1
+Binder : 1
+###
+> 1i2
+1 : i2
+Binder : 1
+###
+> 1i4
+1 : i4
+Binder : 1
+###
+> 1i8
+1 : i8
+Binder : 1
+###
+> 1ia
+1 : i
+Binder : 1
+###
+> 1i3
+((1) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1l
+1 : i8
+Binder : 1
+###
+> 1L
+1 : i8
+Binder : 1
+###
+> 1ul
+1 : u8
+Binder : 1
+###
+> 1uL
+1 : u8
+Binder : 1
+###
+> 1Ul
+1 : u8
+Binder : 1
+###
+> 1UL
+1 : u8
+Binder : 1
+###
+> 1lu
+1 : u8
+Binder : 1
+###
+> 1lU
+1 : u8
+Binder : 1
+###
+> 1Lu
+1 : u8
+Binder : 1
+###
+> 1LU
+1 : u8
+Binder : 1
+###
+> 1l2
+((1) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1ul2
+((1) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,4) Node: ((1) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1lu2
+((1) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,4) Node: ((1) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1d
+1 : r8
+Binder : 1
+###
+> 1f
+1 : r4
+Binder : 1
+###
+> 1r4
+1 : r4
+Binder : 1
+###
+> 1r8
+1 : r8
+Binder : 1
+###
+> 1r
+1 : r8
+Binder : 1
+###
+> 1r1
+1 : r8
+*** Error: (0,3) Node: 1, Message: Unsupported rational type suffix
+Binder : 1
+###
+> 1r2
+1 : r8
+*** Error: (0,3) Node: 1, Message: Unsupported rational type suffix
+Binder : 1
+###
+> 1r3
+((1) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1a1
+((1) <error> (a1)) : v
+=== Parse diagnostics:
+*** Error: (1,3) Tok: 'a1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (1,3) Node: a1, Message: Name does not exist in the current context
+*** Error: (1,3) Node: ((1) <error> (a1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1d2
+((1) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1f3
+((1) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (2,3) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (2,3) Node: ((1) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256u
+256 : u8
+Binder : 256
+###
+> 256u1
+256 : u1
+*** Warning: (0,5) Node: 256, Message: Int literal out of range for specified type
+Binder : 0
+###
+> 256u2
+256 : u2
+Binder : 256
+###
+> 256u4
+256 : u4
+Binder : 256
+###
+> 256u8
+256 : u8
+Binder : 256
+###
+> 256u3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256i
+256 : i8
+Binder : 256
+###
+> 256i1
+256 : i1
+*** Warning: (0,5) Node: 256, Message: Int literal out of range for specified type
+Binder : 0
+###
+> 256i2
+256 : i2
+Binder : 256
+###
+> 256i4
+256 : i4
+Binder : 256
+###
+> 256i8
+256 : i8
+Binder : 256
+###
+> 256ia
+256 : i
+Binder : 256
+###
+> 256i3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256d
+256 : r8
+Binder : 256
+###
+> 256f
+256 : r4
+Binder : 256
+###
+> 256r4
+256 : r4
+Binder : 256
+###
+> 256r8
+256 : r8
+Binder : 256
+###
+> 256r
+256 : r8
+Binder : 256
+###
+> 256r1
+256 : r8
+*** Error: (0,5) Node: 256, Message: Unsupported rational type suffix
+Binder : 256
+###
+> 256r2
+256 : r8
+*** Error: (0,5) Node: 256, Message: Unsupported rational type suffix
+Binder : 256
+###
+> 256r3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256a1
+((256) <error> (a1)) : v
+=== Parse diagnostics:
+*** Error: (3,5) Tok: 'a1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,5) Node: a1, Message: Name does not exist in the current context
+*** Error: (3,5) Node: ((256) <error> (a1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256d2
+((256) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256f3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256U
+256 : u8
+Binder : 256
+###
+> 256U1
+256 : u1
+*** Warning: (0,5) Node: 256, Message: Int literal out of range for specified type
+Binder : 0
+###
+> 256U2
+256 : u2
+Binder : 256
+###
+> 256U4
+256 : u4
+Binder : 256
+###
+> 256U8
+256 : u8
+Binder : 256
+###
+> 256U3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256I
+256 : i8
+Binder : 256
+###
+> 256I1
+256 : i1
+*** Warning: (0,5) Node: 256, Message: Int literal out of range for specified type
+Binder : 0
+###
+> 256I2
+256 : i2
+Binder : 256
+###
+> 256I4
+256 : i4
+Binder : 256
+###
+> 256I8
+256 : i8
+Binder : 256
+###
+> 256IA
+256 : i
+Binder : 256
+###
+> 256I3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256D
+256 : r8
+Binder : 256
+###
+> 256F
+256 : r4
+Binder : 256
+###
+> 256R4
+256 : r4
+Binder : 256
+###
+> 256R8
+256 : r8
+Binder : 256
+###
+> 256R
+256 : r8
+Binder : 256
+###
+> 256R1
+256 : r8
+*** Error: (0,5) Node: 256, Message: Unsupported rational type suffix
+Binder : 256
+###
+> 256R2
+256 : r8
+*** Error: (0,5) Node: 256, Message: Unsupported rational type suffix
+Binder : 256
+###
+> 256R3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256A1
+((256) <error> (A1)) : v
+=== Parse diagnostics:
+*** Error: (3,5) Tok: 'A1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,5) Node: A1, Message: Name does not exist in the current context
+*** Error: (3,5) Node: ((256) <error> (A1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256D2
+((256) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 256F3
+((256) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((256) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u
+((12.3) <error> (u)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: 'u', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: u, Message: Name does not exist in the current context
+*** Error: (4,5) Node: ((12.3) <error> (u)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u1
+((12.3) <error> (u1)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'u1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (u1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u2
+((12.3) <error> (u2)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'u2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (u2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u4
+((12.3) <error> (u4)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'u4', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (u4)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u8
+((12.3) <error> (u8)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'u8', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (u8)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3u3
+((12.3) <error> (u3)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'u3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: u3, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((12.3) <error> (u3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i
+((12.3) <error> (i)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: 'i', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: ((12.3) <error> (i)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i1
+((12.3) <error> (i1)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'i1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (i1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i2
+((12.3) <error> (i2)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'i2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (i2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i4
+((12.3) <error> (i4)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'i4', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (i4)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i8
+((12.3) <error> (i8)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'i8', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((12.3) <error> (i8)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3ia
+((12.3) <error> (ia)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'ia', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ia, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((12.3) <error> (ia)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3i3
+((12.3) <error> (i3)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'i3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: i3, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((12.3) <error> (i3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3d
+12.3 : r8
+Binder : 12.3
+###
+> 12.3f
+12.3 : r4
+Binder : 12.300000190734863
+###
+> 12.3r4
+12.3 : r4
+Binder : 12.300000190734863
+###
+> 12.3r8
+12.3 : r8
+Binder : 12.3
+###
+> 12.3r
+12.3 : r8
+Binder : 12.3
+###
+> 12.3r1
+12.3 : r8
+*** Error: (0,6) Node: 12.3, Message: Unsupported rational type suffix
+Binder : 12.3
+###
+> 12.3r2
+12.3 : r8
+*** Error: (0,6) Node: 12.3, Message: Unsupported rational type suffix
+Binder : 12.3
+###
+> 12.3r3
+((12.3) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: ((12.3) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 1e400d
+Infinity : r8
+Binder : ∞
+###
+> 1e400f
+Infinity : r4
+Binder : ∞
+###
+> 2e100d
+2E+100 : r8
+Binder : 2E+100
+###
+> 2e100f
+2E+100 : r4
+Binder : ∞
+###
+> 2e100r8
+2E+100 : r8
+Binder : 2E+100
+###
+> 2e100r4
+2E+100 : r4
+Binder : ∞
+###
+> 2e100r
+2E+100 : r8
+Binder : 2E+100
+###
+> 1e-400d
+0 : r8
+Binder : 0
+###
+> 1e-400f
+0 : r4
+Binder : 0
+###
+> 2e-100d
+2E-100 : r8
+Binder : 2E-100
+###
+> 2e-100f
+2E-100 : r4
+Binder : 0
+###
+> 2e-100r8
+2E-100 : r8
+Binder : 2E-100
+###
+> 2e-100r4
+2E-100 : r4
+Binder : 0
+###
+> 2e-100r
+2E-100 : r8
+Binder : 2E-100
+###
+> 12.3a1
+((12.3) <error> (a1)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'a1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: a1, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((12.3) <error> (a1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3d2
+((12.3) <error> (2)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: '2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: ((12.3) <error> (2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 12.3f3
+((12.3) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: ((12.3) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFu
+255 : u8
+Binder : 255
+###
+> 0xFFu1
+255 : u1
+Binder : 255
+###
+> 0x7Fu1
+127 : u1
+Binder : 127
+###
+> 0x80u1
+128 : u1
+Binder : 128
+###
+> 0xFFu2
+255 : u2
+Binder : 255
+###
+> 0xFFu4
+255 : u4
+Binder : 255
+###
+> 0xFFu8
+255 : u8
+Binder : 255
+###
+> 0xFFu3
+((255) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: ((255) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFi
+255 : i8
+Binder : 255
+###
+> 0xFFi1
+255 : i1
+Binder : -1
+###
+> 0x7Fi1
+127 : i1
+Binder : 127
+###
+> 0x80i1
+128 : i1
+Binder : -128
+###
+> 0xFFi2
+255 : i2
+Binder : 255
+###
+> 0xFFi4
+255 : i4
+Binder : 255
+###
+> 0xFFi8
+255 : i8
+Binder : 255
+###
+> 0xFFia
+255 : i
+Binder : 255
+###
+> 0xFFi3
+((255) <error> (3)) : v
+=== Parse diagnostics:
+*** Error: (5,6) Tok: '3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (5,6) Node: ((255) <error> (3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFd
+4093 : i8
+Binder : 4093
+###
+> 0xFFf
+4095 : i8
+Binder : 4095
+###
+> 0xFFr4
+((255) <error> (r4)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'r4', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((255) <error> (r4)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFr8
+((255) <error> (r8)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'r8', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: ((255) <error> (r8)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFr
+((255) <error> (r)) : v
+=== Parse diagnostics:
+*** Error: (4,5) Tok: 'r', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,5) Node: r, Message: Name does not exist in the current context
+*** Error: (4,5) Node: ((255) <error> (r)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFr1
+((255) <error> (r1)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'r1', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: r1, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((255) <error> (r1)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFr2
+((255) <error> (r2)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'r2', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: r2, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((255) <error> (r2)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFr3
+((255) <error> (r3)) : v
+=== Parse diagnostics:
+*** Error: (4,6) Tok: 'r3', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (4,6) Node: r3, Message: Name does not exist in the current context
+*** Error: (4,6) Node: ((255) <error> (r3)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0xFFa1
+65441 : i8
+Binder : 65441
+###
+> 0xFFd2
+65490 : i8
+Binder : 65490
+###
+> 0xFFf3
+65523 : i8
+Binder : 65523
+###
+> 0xFFFFu
+65535 : u8
+Binder : 65535
+###
+> 0xFFFFu1
+65535 : u1
+*** Warning: (0,8) Node: 65535, Message: Int literal out of range for specified type
+Binder : 255
+###
+> 0xFFFFu2
+65535 : u2
+Binder : 65535
+###
+> 0x7FFFu2
+32767 : u2
+Binder : 32767
+###
+> 0x8000u2
+32768 : u2
+Binder : 32768
+###
+> 0xFFFFu4
+65535 : u4
+Binder : 65535
+###
+> 0xFFFFu8
+65535 : u8
+Binder : 65535
+###
+> 0xFFFFi
+65535 : i8
+Binder : 65535
+###
+> 0xFFFFi1
+65535 : i1
+*** Warning: (0,8) Node: 65535, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFi2
+65535 : i2
+Binder : -1
+###
+> 0x7FFFi2
+32767 : i2
+Binder : 32767
+###
+> 0x8000i2
+32768 : i2
+Binder : -32768
+###
+> 0xFFFFi4
+65535 : i4
+Binder : 65535
+###
+> 0xFFFFi8
+65535 : i8
+Binder : 65535
+###
+> 0xFFFFia
+65535 : i
+Binder : 65535
+###
+> 0xFFFFFFFFu
+4294967295 : u8
+Binder : 4294967295
+###
+> 0xFFFFFFFFu1
+4294967295 : u1
+*** Warning: (0,12) Node: 4294967295, Message: Int literal out of range for specified type
+Binder : 255
+###
+> 0xFFFFFFFFu2
+4294967295 : u2
+*** Warning: (0,12) Node: 4294967295, Message: Int literal out of range for specified type
+Binder : 65535
+###
+> 0xFFFFFFFFu4
+4294967295 : u4
+Binder : 4294967295
+###
+> 0x7FFFFFFFu4
+2147483647 : u4
+Binder : 2147483647
+###
+> 0x80000000u4
+2147483648 : u4
+Binder : 2147483648
+###
+> 0xFFFFFFFFu8
+4294967295 : u8
+Binder : 4294967295
+###
+> 0xFFFFFFFFi
+4294967295 : i8
+Binder : 4294967295
+###
+> 0xFFFFFFFFi1
+4294967295 : i1
+*** Warning: (0,12) Node: 4294967295, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFFFFFi2
+4294967295 : i2
+*** Warning: (0,12) Node: 4294967295, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFFFFFi4
+4294967295 : i4
+Binder : -1
+###
+> 0x7FFFFFFFi4
+2147483647 : i4
+Binder : 2147483647
+###
+> 0x80000000i4
+2147483648 : i4
+Binder : -2147483648
+###
+> 0xFFFFFFFFi8
+4294967295 : i8
+Binder : 4294967295
+###
+> 0xFFFFFFFFia
+4294967295 : i
+Binder : 4294967295
+###
+> 0xFFFFFFFFFFFFFFFFu
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 0xFFFFFFFFFFFFFFFFu1
+18446744073709551615 : u1
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : 255
+###
+> 0xFFFFFFFFFFFFFFFFu2
+18446744073709551615 : u2
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : 65535
+###
+> 0xFFFFFFFFFFFFFFFFu4
+18446744073709551615 : u4
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : 4294967295
+###
+> 0xFFFFFFFFFFFFFFFFu8
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 0x7FFFFFFFFFFFFFFFu8
+9223372036854775807 : u8
+Binder : 9223372036854775807
+###
+> 0x8000000000000000u8
+9223372036854775808 : u8
+Binder : 9223372036854775808
+###
+> 0xFFFFFFFFFFFFFFFFuL
+18446744073709551615 : u8
+Binder : 18446744073709551615
+###
+> 0xFFFFFFFFFFFFFFFFi
+18446744073709551615 : i
+Binder : 18446744073709551615
+###
+> 0xFFFFFFFFFFFFFFFFi1
+18446744073709551615 : i1
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFFFFFFFFFFFFFi2
+18446744073709551615 : i2
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFFFFFFFFFFFFFi4
+18446744073709551615 : i4
+*** Warning: (0,20) Node: 18446744073709551615, Message: Int literal out of range for specified type
+Binder : -1
+###
+> 0xFFFFFFFFFFFFFFFFi8
+18446744073709551615 : i8
+Binder : -1
+###
+> 0x7FFFFFFFFFFFFFFFi8
+9223372036854775807 : i8
+Binder : 9223372036854775807
+###
+> 0x7FFFFFFFFFFFFFFFL
+9223372036854775807 : i8
+Binder : 9223372036854775807
+###
+> 0x8000000000000000i8
+9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> 0x8000000000000000L
+9223372036854775808 : i8
+Binder : -9223372036854775808
+###
+> 0xFFFFFFFFFFFFFFFFia
+18446744073709551615 : i
+Binder : 18446744073709551615
+###
+> 0xFFFF_FFFF_FFFF_FFFFi8
+18446744073709551615 : i8
+Binder : -1
+###
+> 0x_FF_FF
+65535 : i8
+=== Parse diagnostics:
+*** Error: (0,8) Tok: '65535', Message: Invalid numeric literal
+Binder : 65535
+###
+> 0x_FF_FF_
+65535 : i8
+=== Parse diagnostics:
+*** Error: (0,9) Tok: '65535', Message: Invalid numeric literal
+Binder : 65535
+###
+> 123_45_6789
+123456789 : i8
+Binder : 123456789
+###
+> 123_
+123 : i8
+=== Parse diagnostics:
+*** Error: (0,4) Tok: '123', Message: Invalid numeric literal
+Binder : 123
+###
+> 123_456.1_25
+123456.125 : r8
+Binder : 123456.125
+###
+> 123_456_.1_25
+123456.125 : r8
+=== Parse diagnostics:
+*** Error: (0,13) Tok: '123456.125', Message: Invalid numeric literal
+Binder : 123456.125
+###
+> 123_456.1_25_
+123456.125 : r8
+=== Parse diagnostics:
+*** Error: (0,13) Tok: '123456.125', Message: Invalid numeric literal
+Binder : 123456.125
+###
+> 123_456e1_25
+1.23456E+130 : r8
+Binder : 1.23456E+130
+###
+> 123_456_e1_25
+1.23456E+130 : r8
+=== Parse diagnostics:
+*** Error: (0,13) Tok: '1.23456E+130', Message: Invalid numeric literal
+Binder : 1.23456E+130
+###
+> 123_456e1_25_
+1.23456E+130 : r8
+=== Parse diagnostics:
+*** Error: (0,13) Tok: '1.23456E+130', Message: Invalid numeric literal
+Binder : 1.23456E+130
+###
+> 123___456.1_____25
+123456.125 : r8
+=== Parse diagnostics:
+*** Error: (0,18) Tok: '123456.125', Message: Invalid numeric literal
+Binder : 123456.125
+###
+> 123_456.1_25
+123456.125 : r8
+Binder : 123456.125
+###
+> 123_456._1_25
+123456._1_25 : v
+*** Error: (7,8) Node: 123456._1_25, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> 123_456e_1_25
+((123456) <error> (e_1_25)) : v
+=== Parse diagnostics:
+*** Error: (7,13) Tok: 'e_1_25', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (7,13) Node: e_1_25, Message: Name does not exist in the current context
+*** Error: (7,13) Node: ((123456) <error> (e_1_25)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0b1000
+8 : i8
+Binder : 8
+###
+> 0B1000
+8 : i8
+Binder : 8
+###
+> 0b1_0011
+19 : i8
+Binder : 19
+###
+> 0b1__0011
+19 : i8
+=== Parse diagnostics:
+*** Error: (0,9) Tok: '19', Message: Invalid numeric literal
+Binder : 19
+###
+> 0b_1000
+8 : i8
+=== Parse diagnostics:
+*** Error: (0,7) Tok: '8', Message: Invalid numeric literal
+Binder : 8
+###
+> 0b1000_
+8 : i8
+=== Parse diagnostics:
+*** Error: (0,7) Tok: '8', Message: Invalid numeric literal
+Binder : 8
+###
+> 0b0001_0010_0011_0100__0101_0110_0111_1000__1001_1010_1011_1100__1101_1110_1111_0000
+1311768467463790320 : i8
+=== Parse diagnostics:
+*** Error: (0,84) Tok: '1311768467463790320', Message: Invalid numeric literal
+Binder : 1311768467463790320
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000
+1311768467463790320 : i8
+Binder : 1311768467463790320
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000_
+1311768467463790320 : i8
+=== Parse diagnostics:
+*** Error: (0,82) Tok: '1311768467463790320', Message: Invalid numeric literal
+Binder : 1311768467463790320
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 60 band 0xF
+1311768467463790320 shr 60 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 60), 15)
+Reducer: 1
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 56 band 0xF
+1311768467463790320 shr 56 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 56), 15)
+Reducer: 2
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 52 band 0xF
+1311768467463790320 shr 52 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 52), 15)
+Reducer: 3
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 48 band 0xF
+1311768467463790320 shr 48 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 48), 15)
+Reducer: 4
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 44 band 0xF
+1311768467463790320 shr 44 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 44), 15)
+Reducer: 5
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 40 band 0xF
+1311768467463790320 shr 40 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 40), 15)
+Reducer: 6
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 36 band 0xF
+1311768467463790320 shr 36 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 36), 15)
+Reducer: 7
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 32 band 0xF
+1311768467463790320 shr 32 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 32), 15)
+Reducer: 8
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 28 band 0xF
+1311768467463790320 shr 28 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 28), 15)
+Reducer: 9
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 24 band 0xF
+1311768467463790320 shr 24 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 24), 15)
+Reducer: 10
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 20 band 0xF
+1311768467463790320 shr 20 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 20), 15)
+Reducer: 11
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 16 band 0xF
+1311768467463790320 shr 16 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 16), 15)
+Reducer: 12
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr 12 band 0xF
+1311768467463790320 shr 12 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 12), 15)
+Reducer: 13
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr  8 band 0xF
+1311768467463790320 shr 8 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 8), 15)
+Reducer: 14
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr  4 band 0xF
+1311768467463790320 shr 4 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 4), 15)
+Reducer: 15
+###
+> 0b0001_0010_0011_0100_0101_0110_0111_1000_1001_1010_1011_1100_1101_1110_1111_0000 shr  0 band 0xF
+1311768467463790320 shr 0 band 15 : i8
+Binder : BitAnd(Shri(1311768467463790320, 0), 15)
+Reducer: 0
+###
+> 1.0L
+((1) <error> (L)) : v
+=== Parse diagnostics:
+*** Error: (3,4) Tok: 'L', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (3,4) Node: L, Message: Name does not exist in the current context
+*** Error: (3,4) Node: ((1) <error> (L)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0b0101f
+((5) <error> (f)) : v
+=== Parse diagnostics:
+*** Error: (6,7) Tok: 'f', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (6,7) Node: f, Message: Name does not exist in the current context
+*** Error: (6,7) Node: ((5) <error> (f)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0b0101d
+((5) <error> (d)) : v
+=== Parse diagnostics:
+*** Error: (6,7) Tok: 'd', Message: Expected an operator
+=== Bind diagnostics:
+*** Error: (6,7) Node: d, Message: Name does not exist in the current context
+*** Error: (6,7) Node: ((5) <error> (d)), Message: Expected an operator
+Binder : Error(ErrOperatorExpected)
+###
+> 0.0 + 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+0 + 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890 : r8
+*** Warning: (6,406) Node: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890, Message: Constant floating point overflow to infinity
+Binder : Add(0, ∞)
+Reducer: ∞
+###

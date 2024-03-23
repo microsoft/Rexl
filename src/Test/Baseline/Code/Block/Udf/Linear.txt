@@ -1,0 +1,266 @@
+>>> *** Source:
+    namespace Linear;
+        namespace Linear.Private;
+            // Given non-negative integer n, produce the sequence of true/false bits from low to high.
+            func Bits(n) :=
+                Range(64)
+                    ->ScanX(cur: n max 0, cur shru 1)
+                    ->TakeWhile(it > 0)
+                    ->ForEach(it band 1 != 0);
+            // Return the identity matrix of dimension d.
+            func Id(d) :=
+                Tensor.From(
+                    Range(d)->ChainMap(as i, Range(d)->ForEach(as j, 1ia if i = j else 0)),
+                    d, d
+                );
+            func TM(d, coefs) :=
+                Tensor.From(
+                    Range(d - 1)->ChainMap(as i, Range(d)->ForEach(as j, 1ia if i + 1 = j else 0)) ++ coefs,
+                    d, d
+                );
+            // Raise tm to the power n and then multiply be v.
+            func PowTimes(n, d, tm, v) :=
+                Bits(n)->Fold(as bit,
+                    cur: (Id(d), tm, false),
+                    With(
+                        // For the first we don't square the matrix M.
+                        M: cur[1]->Dot(cur[1]) if cur[2] else cur[1],
+                        ( cur[0]->Dot(M) if bit else cur[0], M, true)
+                    ),
+                    cur[0]->Dot(v)
+                );
+            // Compute the nth item of the linear recurrence defined by the given transition matrix
+            // and initial values.
+            func One(n, d, tm, vals) := vals[n] if n < d else PowTimes(n - d + 1, d, tm, vals)[d - 1];
+            // Compute the sequence form 0 through n of the linear recurrence defined by the given
+            // transition matrix and initial values.
+            func Seq(n, d, tm, vals) :=
+                Range(n)->ScanX(
+                    cur: (vals, 1),
+                    (cur[0] if cur[1] < d else tm->Dot(cur[0]), cur[1] + 1),
+                    cur[0][(cur[1] min d) - 1]
+                );
+            // Compute the sequence form 0 through n of the linear recurrence defined by the given
+            // transition matrix and initial values. Include the index in the result.
+            func SeqInd(n, d, tm, vals) :=
+                Range(n)->ScanX(
+                    cur: (vals, 1),
+                    (cur[0] if cur[1] < d else tm->Dot(cur[0]), cur[1] + 1),
+                    (cur[1] - 1, cur[0][(cur[1] min d) - 1])
+                );
+        namespace Linear;
+        func One(n, ts, init) :=
+            With(
+                d: ts->Count(),
+                Private.One(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+            );
+        func Seq(n, ts, init) :=
+            With(
+                d: ts->Count(),
+                Private.Seq(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+            );
+        func SeqInd(n, ts, init) :=
+            With(
+                d: ts->Count(),
+                Private.SeqInd(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d))
+            );
+        func FibOne(n) := One(n, [1, 1], [0, 1]);
+        func FibSeq(n) := Seq(n, [1, 1], [0, 1]);
+        func FibSeqInd(n) := SeqInd(n, [1, 1], [0, 1]);
+    namespace;
+    Linear.FibOne(10);
+    Linear.FibSeq(10);
+    Linear.FibSeqInd(10);
+    "*** Golden Ratio ***";
+    (1 + Sqrt(5)) / 2;
+    Range(11)->ForEach(With(n: 1 shl it, (n, Linear.FibOne(n))))->ForEach(Exp(Ln(it[1]) / it[0]));
+    // Sum the previous three.
+    Coefs := [1, 1, 1];
+    Inits := [0, 0, 1];
+    Linear.One(10, Coefs, Inits);
+    Linear.Seq(10, Coefs, Inits);
+    Linear.SeqInd(10, Coefs, Inits);
+    "*** Largest Eigenvalue ***";
+    Range(11)->ForEach(With(n: 1 shl it, (n, Linear.One(n, Coefs, Inits))))->ForEach(Exp(Ln(it[1]) / it[0]));
+
+>>> *** Instructions:
+   0) [0] Namespace Linear
+   1) [0] Namespace Linear.Private
+   2) [0] DefineFunc Bits(n) <- Range(64)->ScanX(cur : n max 0, cur shru 1)->TakeWhile(it $> 0)->ForEach(it band 1 !@= 0)
+   3) [0] DefineFunc Id(d) <- Tensor.From(Range(d)->ChainMap(as i, Range(d)->ForEach(as j, 1 if i @= j else 0)), d, d)
+   4) [0] DefineFunc TM(d, coefs) <- Tensor.From(Range(d - 1)->ChainMap(as i, Range(d)->ForEach(as j, 1 if i + 1 @= j else 0)) ++ coefs, d, d)
+   5) [0] DefineFunc PowTimes(n, d, tm, v) <- Bits(n)->Fold(as bit, cur : (Id(d), tm, false), With(M : cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)), cur[0]->Dot(v))
+   6) [0] DefineFunc One(n, d, tm, vals) <- vals[n] if n $< d else PowTimes(n - d + 1, d, tm, vals)[d - 1]
+   7) [0] DefineFunc Seq(n, d, tm, vals) <- Range(n)->ScanX(cur : (vals, 1), (cur[0] if cur[1] $< d else tm->Dot(cur[0]), cur[1] + 1), cur[0][(cur[1] min d) - 1])
+   8) [0] DefineFunc SeqInd(n, d, tm, vals) <- Range(n)->ScanX(cur : (vals, 1), (cur[0] if cur[1] $< d else tm->Dot(cur[0]), cur[1] + 1), (cur[1] - 1, cur[0][(cur[1] min d) - 1]))
+   9) [0] Namespace Linear
+  10) [0] DefineFunc One(n, ts, init) <- With(d : ts->Count(), Private.One(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+  11) [0] DefineFunc Seq(n, ts, init) <- With(d : ts->Count(), Private.Seq(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+  12) [0] DefineFunc SeqInd(n, ts, init) <- With(d : ts->Count(), Private.SeqInd(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+  13) [0] DefineFunc FibOne(n) <- One(n, [1, 1], [0, 1])
+  14) [0] DefineFunc FibSeq(n) <- Seq(n, [1, 1], [0, 1])
+  15) [0] DefineFunc FibSeqInd(n) <- SeqInd(n, [1, 1], [0, 1])
+  16) [0] Namespace _
+  17) [0] Expr Linear.FibOne(10)
+  18) [0] Expr Linear.FibSeq(10)
+  19) [0] Expr Linear.FibSeqInd(10)
+  20) [0] Expr "*** Golden Ratio ***"
+  21) [0] Expr (1 + Sqrt(5)) / 2
+  22) [0] Expr Range(11)->ForEach(With(n : 1 shl it, (n, Linear.FibOne(n))))->ForEach(Exp(Ln(it[1]) / it[0]))
+  23) [0] Define Coefs <- [1, 1, 1]
+  24) [0] Define Inits <- [0, 0, 1]
+  25) [0] Expr Linear.One(10, Coefs, Inits)
+  26) [0] Expr Linear.Seq(10, Coefs, Inits)
+  27) [0] Expr Linear.SeqInd(10, Coefs, Inits)
+  28) [0] Expr "*** Largest Eigenvalue ***"
+  29) [0] Expr Range(11)->ForEach(With(n : 1 shl it, (n, Linear.One(n, Coefs, Inits))))->ForEach(Exp(Ln(it[1]) / it[0]))
+  30) [0] End
+
+>    0) [0] Namespace Linear
+>    1) [0] Namespace Linear.Private
+>    2) [0] DefineFunc Bits(n) <- Range(64)->ScanX(cur : n max 0, cur shru 1)->TakeWhile(it $> 0)->ForEach(it band 1 !@= 0)
+UDF 'Linear.Private.Bits' has arity 1
+>    3) [0] DefineFunc Id(d) <- Tensor.From(Range(d)->ChainMap(as i, Range(d)->ForEach(as j, 1 if i @= j else 0)), d, d)
+UDF 'Linear.Private.Id' has arity 1
+>    4) [0] DefineFunc TM(d, coefs) <- Tensor.From(Range(d - 1)->ChainMap(as i, Range(d)->ForEach(as j, 1 if i + 1 @= j else 0)) ++ coefs, d, d)
+UDF 'Linear.Private.TM' has arity 2
+>    5) [0] DefineFunc PowTimes(n, d, tm, v) <- Bits(n)->Fold(as bit, cur : (Id(d), tm, false), With(M : cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)), cur[0]->Dot(v))
+UDF 'Linear.Private.PowTimes' has arity 4
+>    6) [0] DefineFunc One(n, d, tm, vals) <- vals[n] if n $< d else PowTimes(n - d + 1, d, tm, vals)[d - 1]
+UDF 'Linear.Private.One' has arity 4
+>    7) [0] DefineFunc Seq(n, d, tm, vals) <- Range(n)->ScanX(cur : (vals, 1), (cur[0] if cur[1] $< d else tm->Dot(cur[0]), cur[1] + 1), cur[0][(cur[1] min d) - 1])
+UDF 'Linear.Private.Seq' has arity 4
+>    8) [0] DefineFunc SeqInd(n, d, tm, vals) <- Range(n)->ScanX(cur : (vals, 1), (cur[0] if cur[1] $< d else tm->Dot(cur[0]), cur[1] + 1), (cur[1] - 1, cur[0][(cur[1] min d) - 1]))
+UDF 'Linear.Private.SeqInd' has arity 4
+>    9) [0] Namespace Linear
+>   10) [0] DefineFunc One(n, ts, init) <- With(d : ts->Count(), Private.One(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+UDF 'Linear.One' has arity 3
+>   11) [0] DefineFunc Seq(n, ts, init) <- With(d : ts->Count(), Private.Seq(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+UDF 'Linear.Seq' has arity 3
+>   12) [0] DefineFunc SeqInd(n, ts, init) <- With(d : ts->Count(), Private.SeqInd(n, d, Private.TM(d, ts), Tensor.From(init->CastIA(), d)))
+UDF 'Linear.SeqInd' has arity 3
+>   13) [0] DefineFunc FibOne(n) <- One(n, [1, 1], [0, 1])
+UDF 'Linear.FibOne' has arity 1
+>   14) [0] DefineFunc FibSeq(n) <- Seq(n, [1, 1], [0, 1])
+UDF 'Linear.FibSeq' has arity 1
+>   15) [0] DefineFunc FibSeqInd(n) <- SeqInd(n, [1, 1], [0, 1])
+UDF 'Linear.FibSeqInd' has arity 1
+>   16) [0] Namespace _
+>   17) [0] Expr Linear.FibOne(10)
+55
+*** Ctx ping count: 9
+    [2](2): ChainMap(*2: Range(!1x), ForEach(*4: !3x, If(*2 @= *4, 1, 0)))
+    [4](2): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+    [6](5): Fold(*14: ForEach(*5: Take(*4: ScanX(*2: Range(64), %3: Max(Add([-] !1x, 11), 0), Shru(%3, 1)), [while] *4 @> 0), BitAnd(*5, 1) !@= 0), %15: (Tensor.From(ChainMap(*6: Range(!1x), ForEach(*8: !7x, If(*6 @= *8, 1, 0))), !1x, !1x), Tensor.From(SeqConcat(ChainMap(*9: Range(Add(!1x, [-] 1)), With(!10: Add(*9, 1), ForEach(*11: !7x, If(!10 @= *11, 1, 0)))), ForEach(*13: !12x, Num<i>(*13))), !1x, !1x), false), With(!16: If(%15.2, Tensor.Dot(%15.1, %15.1), %15.1), (If(*14, Tensor.Dot(%15.0, !16), %15.0), !16, true)), Tensor.Dot(%15.0, !17x))
+>   18) [0] Expr Linear.FibSeq(10)
+Seq<ia>
+   0) 0
+   1) 1
+   2) 1
+   3) 2
+   4) 3
+   5) 5
+   6) 8
+   7) 13
+   8) 21
+   9) 34
+  10) 55
+*** Ctx ping count: 2
+    [1](2): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+>   19) [0] Expr Linear.FibSeqInd(10)
+Seq<(i8,ia)>
+   0) (0, 0)
+   1) (1, 1)
+   2) (2, 1)
+   3) (3, 2)
+   4) (4, 3)
+   5) (5, 5)
+   6) (6, 8)
+   7) (7, 13)
+   8) (8, 21)
+   9) (9, 34)
+  10) (10, 55)
+*** Ctx ping count: 2
+    [1](2): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+>   20) [0] Expr "*** Golden Ratio ***"
+*** Golden Ratio ***
+>   21) [0] Expr (1 + Sqrt(5)) / 2
+1.618033988749895
+>   22) [0] Expr Range(11)->ForEach(With(n : 1 shl it, (n, Linear.FibOne(n))))->ForEach(Exp(Ln(it[1]) / it[0]))
+Seq<r8>
+   0) 1
+   1) 1
+   2) 1.3160740129524926
+   3) 1.4631114595026833
+   4) 1.5386676466851748
+   5) 1.5778518883823665
+   6) 1.597816630472933
+   7) 1.6078935337562112
+   8) 1.6129557922983278
+   9) 1.6154928951529655
+  10) 1.6167629427165469
+*** Ctx ping count: 69
+    [2](2): ChainMap(*2: !1x, ForEach(*3: !1x, If(*2 @= *3, 1, 0)))
+    [4](2): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+    [6](65): Fold(*9: ForEach(*7: Take(*6: ScanX(*4: !1x, %5: Max(Add(!2x, !3x), 0), Shru(%5, 1)), [while] *6 @> 0), BitAnd(*7, 1) !@= 0), %10: !8x, With(!11: If(%10.2, Tensor.Dot(%10.1, %10.1), %10.1), (If(*9, Tensor.Dot(%10.0, !11), %10.0), !11, true)), Tensor.Dot(%10.0, !12x))
+>   23) [0] Define Coefs <- [1, 1, 1]
+Global 'Coefs' has DType: i8*, SysType: Seq<i8>
+>   24) [0] Define Inits <- [0, 0, 1]
+Global 'Inits' has DType: i8*, SysType: Seq<i8>
+>   25) [0] Expr Linear.One(10, Coefs, Inits)
+81
+*** Ctx ping count: 11
+    [2](3): ChainMap(*2: Range(!1x), ForEach(*4: !3x, If(*2 @= *4, 1, 0)))
+    [4](3): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+    [6](5): Fold(*13: ForEach(*5: Take(*4: ScanX(*2: Range(64), %3: Max(Add([-] !1x, 11), 0), Shru(%3, 1)), [while] *4 @> 0), BitAnd(*5, 1) !@= 0), %14: (Tensor.From(ChainMap(*6: Range(!1x), ForEach(*8: !7x, If(*6 @= *8, 1, 0))), !1x, !1x), Tensor.From(SeqConcat(ChainMap(*9: Range(Add(!1x, [-] 1)), With(!10: Add(*9, 1), ForEach(*11: !7x, If(!10 @= *11, 1, 0)))), ForEach(*12: Coefs, Num<i>(*12))), !1x, !1x), false), With(!15: If(%14.2, Tensor.Dot(%14.1, %14.1), %14.1), (If(*13, Tensor.Dot(%14.0, !15), %14.0), !15, true)), Tensor.Dot(%14.0, !16x))
+>   26) [0] Expr Linear.Seq(10, Coefs, Inits)
+Seq<ia>
+   0) 0
+   1) 0
+   2) 1
+   3) 1
+   4) 2
+   5) 4
+   6) 7
+   7) 13
+   8) 24
+   9) 44
+  10) 81
+*** Ctx ping count: 3
+    [1](3): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+>   27) [0] Expr Linear.SeqInd(10, Coefs, Inits)
+Seq<(i8,ia)>
+   0) (0, 0)
+   1) (1, 0)
+   2) (2, 1)
+   3) (3, 1)
+   4) (4, 2)
+   5) (5, 4)
+   6) (6, 7)
+   7) (7, 13)
+   8) (8, 24)
+   9) (9, 44)
+  10) (10, 81)
+*** Ctx ping count: 3
+    [1](3): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+>   28) [0] Expr "*** Largest Eigenvalue ***"
+*** Largest Eigenvalue ***
+>   29) [0] Expr Range(11)->ForEach(With(n : 1 shl it, (n, Linear.One(n, Coefs, Inits))))->ForEach(Exp(Ln(it[1]) / it[0]))
+Seq<r8>
+   0) 0
+   1) 1
+   2) 1.189207115002721
+   3) 1.4877378261644902
+   4) 1.6539542919121923
+   5) 1.7441605600950878
+   6) 1.791092241385089
+   7) 1.8150295416181081
+   8) 1.8271178933557124
+   9) 1.8331922270902095
+  10) 1.836236962662655
+*** Ctx ping count: 69
+    [2](3): ChainMap(*2: !1x, ForEach(*3: !1x, If(*2 @= *3, 1, 0)))
+    [4](3): ChainMap(*2: Range(Add(!1x, [-] 1)), With(!3: Add(*2, 1), ForEach(*5: !4x, If(!3 @= *5, 1, 0))))
+    [6](63): Fold(*9: ForEach(*7: Take(*6: ScanX(*4: !1x, %5: Max(Add(!2x, !3x), 0), Shru(%5, 1)), [while] *6 @> 0), BitAnd(*7, 1) !@= 0), %10: !8x, With(!11: If(%10.2, Tensor.Dot(%10.1, %10.1), %10.1), (If(*9, Tensor.Dot(%10.0, !11), %10.0), !11, true)), Tensor.Dot(%10.0, !12x))
+>   30) [0] End
+

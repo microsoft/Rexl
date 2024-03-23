@@ -1,0 +1,105 @@
+>>> *** Source:
+    "*** Create a table and write it to parquet. ***";
+    T1 := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    T1;
+    P := "sometable.parquet";
+    finish Writer as WriteParquet(T1, "temp/" & P);
+    "*** Wrote table to '" & Writer.Link.Path & "' ***";
+    (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+    (Writer.RowCount, Writer.GroupCount);
+    "*** Read the parquet. ***";
+    finish Reader as ReadParquet(Writer.Link);
+    (Reader$State, Reader$Finished, Reader$Failed, Reader$ResultNames);
+    "*** Read table from '" & Reader.Link.Path & "' ***";
+    (Reader.FullLink.Path.Len > Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) >= 0, Reader.Link.Path->IndexOf(P) >= 0, Reader.RowCount);
+    Reader.Data;
+    "*** Writing rbin to '" & Writer.Link.Path & "' should fail. ***";
+    P := "sometable.rbin";
+    finish Writer as WriteRbin(T1, "temp/" & P);
+    (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+
+>>> *** Instructions:
+   0) [0] Expr "*** Create a table and write it to parquet. ***"
+   1) [0] Define T1 <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   2) [0] Expr T1
+   3) [0] Define P <- "sometable.parquet"
+   4) [0] TaskProc finish Writer as WriteParquet(T1, "temp/" & P)
+   5) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+   6) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+   7) [0] Expr (Writer.RowCount, Writer.GroupCount)
+   8) [0] Expr "*** Read the parquet. ***"
+   9) [0] TaskProc finish Reader as ReadParquet(Writer.Link)
+  10) [0] Expr (Reader$State, Reader$Finished, Reader$Failed, Reader$ResultNames)
+  11) [0] Expr "*** Read table from '" & Reader.Link.Path & "' ***"
+  12) [0] Expr (Reader.FullLink.Path.Len $> Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) $>= 0, Reader.Link.Path->IndexOf(P) $>= 0, Reader.RowCount)
+  13) [0] Expr Reader.Data
+  14) [0] Expr "*** Writing rbin to '" & Writer.Link.Path & "' should fail. ***"
+  15) [0] Define P <- "sometable.rbin"
+  16) [0] TaskProc finish Writer as WriteRbin(T1, "temp/" & P)
+  17) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+  18) [0] End
+
+>    0) [0] Expr "*** Create a table and write it to parquet. ***"
+*** Create a table and write it to parquet. ***
+>    1) [0] Define T1 <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T1' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    2) [0] Expr T1
+Seq<{i8,i8,str,bool}>
+   0) { A: 0, B: 0, C: Blah_0, D: true }
+   1) { A: 1, B: 1, C: Blah_1, D: false }
+   2) { A: 2, B: 4, C: Blah_2, D: false }
+   3) { A: 3, B: 9, C: Blah_3, D: true }
+   4) { A: 4, B: 16, C: Blah_4, D: false }
+   5) { A: 5, B: 25, C: Blah_5, D: false }
+   6) { A: 6, B: 36, C: Blah_6, D: true }
+   7) { A: 7, B: 49, C: Blah_7, D: false }
+   8) { A: 8, B: 64, C: Blah_8, D: false }
+   9) { A: 9, B: 81, C: Blah_9, D: true }
+>    3) [0] Define P <- "sometable.parquet"
+Global 'P' has DType: s, SysType: str
+>    4) [0] TaskProc finish Writer as WriteParquet(T1, "temp/" & P)
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>    5) [0] Expr "*** Wrote table to '" & Writer.Link.Path & "' ***"
+*** Wrote table to 'temp/sometable.parquet' ***
+>    6) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, GroupCount))
+>    7) [0] Expr (Writer.RowCount, Writer.GroupCount)
+(10, 1)
+>    8) [0] Expr "*** Read the parquet. ***"
+*** Read the parquet. ***
+>    9) [0] TaskProc finish Reader as ReadParquet(Writer.Link)
+Task 'Reader' added
+Task 'Reader' now playing
+Task 'Reader' finished
+>   10) [0] Expr (Reader$State, Reader$Finished, Reader$Failed, Reader$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, SData, Data))
+>   11) [0] Expr "*** Read table from '" & Reader.Link.Path & "' ***"
+*** Read table from 'temp/sometable.parquet' ***
+>   12) [0] Expr (Reader.FullLink.Path.Len $> Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) $>= 0, Reader.Link.Path->IndexOf(P) $>= 0, Reader.RowCount)
+(true, true, true, 10)
+>   13) [0] Expr Reader.Data
+Seq<{i8,i8,str,bool}>
+   0) { A: 0, B: 0, C: Blah_0, D: true }
+   1) { A: 1, B: 1, C: Blah_1, D: false }
+   2) { A: 2, B: 4, C: Blah_2, D: false }
+   3) { A: 3, B: 9, C: Blah_3, D: true }
+   4) { A: 4, B: 16, C: Blah_4, D: false }
+   5) { A: 5, B: 25, C: Blah_5, D: false }
+   6) { A: 6, B: 36, C: Blah_6, D: true }
+   7) { A: 7, B: 49, C: Blah_7, D: false }
+   8) { A: 8, B: 64, C: Blah_8, D: false }
+   9) { A: 9, B: 81, C: Blah_9, D: true }
+>   14) [0] Expr "*** Writing rbin to '" & Writer.Link.Path & "' should fail. ***"
+*** Writing rbin to 'temp/sometable.parquet' should fail. ***
+>   15) [0] Define P <- "sometable.rbin"
+>   16) [0] TaskProc finish Writer as WriteRbin(T1, "temp/" & P)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>   17) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+(Finished, true, true, Can't create seekable stream, (Link, Compression))
+>   18) [0] End
+

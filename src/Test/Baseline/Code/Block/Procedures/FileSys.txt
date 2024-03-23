@@ -1,0 +1,153 @@
+>>> *** Source:
+    func Clean(path) := Clean(path, "Data");
+    func Clean(path, key) := path[path->LastIndexOf(key) : ]->Replace("\\", "/");
+    finish T as ListFiles();
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Data->(Path->Clean("Scripts"))->Sort();
+    finish T as ListFiles(_DATA_);
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Data->(Path->Clean())->Sort();
+    finish T as ListFiles(Link.LocalData(_DATA_));
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    (T.Link.Path->Clean(), T.FullLink.Path->Clean());
+    T.Data->(Path->Clean())->Sort();
+    finish T as ListFiles("../../Junk"); // Should fail.
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    finish W as WriteRbin("Hello", "junk/Hello.rbin");
+    (W$Failed, W$ErrorMessage, W$ResultNames);
+    (W.Size, W.Compression);
+    finish T as ListFiles("junk");
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Data->Count() > 0;
+    T.Data->All(Path->IndexOf("XTemp") >= 0);
+    T.Data->Any(Path->IndexOf("Hello.rbin") >= 0);
+
+>>> *** Instructions:
+   0) [0] DefineFunc Clean(path) <- Clean(path, "Data")
+   1) [0] DefineFunc Clean(path, key) <- path[path->LastIndexOf(key):]->Replace("\\", "/")
+   2) [0] TaskProc finish T as ListFiles()
+   3) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   4) [0] Expr T.Data->(Path->Clean("Scripts"))->Sort()
+   5) [0] TaskProc finish T as ListFiles(_DATA_)
+   6) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   7) [0] Expr T.Data->(Path->Clean())->Sort()
+   8) [0] TaskProc finish T as ListFiles(Link.LocalData(_DATA_))
+   9) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+  10) [0] Expr (T.Link.Path->Clean(), T.FullLink.Path->Clean())
+  11) [0] Expr T.Data->(Path->Clean())->Sort()
+  12) [0] TaskProc finish T as ListFiles("../../Junk")
+  13) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+  14) [0] TaskProc finish W as WriteRbin("Hello", "junk/Hello.rbin")
+  15) [0] Expr (W$Failed, W$ErrorMessage, W$ResultNames)
+  16) [0] Expr (W.Size, W.Compression)
+  17) [0] TaskProc finish T as ListFiles("junk")
+  18) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+  19) [0] Expr T.Data->Count() $> 0
+  20) [0] Expr T.Data->All(Path->IndexOf("XTemp") $>= 0)
+  21) [0] Expr T.Data->Any(Path->IndexOf("Hello.rbin") $>= 0)
+  22) [0] End
+
+>    0) [0] DefineFunc Clean(path) <- Clean(path, "Data")
+UDF 'Clean' has arity 1
+>    1) [0] DefineFunc Clean(path, key) <- path[path->LastIndexOf(key):]->Replace("\\", "/")
+UDF 'Clean' has arity 2
+>    2) [0] TaskProc finish T as ListFiles()
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    3) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Link, FullLink, Data))
+>    4) [0] Expr T.Data->(Path->Clean("Scripts"))->Sort()
+Seq<str>
+   0) Scripts/Block/Procedures/Bytes.txt
+   1) Scripts/Block/Procedures/FileSys.txt
+   2) Scripts/Block/Procedures/MultiFormProc.txt
+   3) Scripts/Block/Procedures/NonSeekable.txt
+   4) Scripts/Block/Procedures/Now.txt
+   5) Scripts/Block/Procedures/Parquet.txt
+   6) Scripts/Block/Procedures/ParquetErrors.txt
+   7) Scripts/Block/Procedures/ParquetPause.txt
+   8) Scripts/Block/Procedures/PipeSafety.txt
+   9) Scripts/Block/Procedures/Piping.txt
+  10) Scripts/Block/Procedures/States.txt
+  11) Scripts/Block/Procedures/Text.txt
+*** Ctx ping count: 13
+    [0](13): Sort(ForEach(*1: T.Data, Guard(?2: *1, !3: Link.Path(?2), Text.Replace(!3[Text.LastIndexOf(!3, "Scripts")::], "\\", "/"))))
+>    5) [0] TaskProc finish T as ListFiles(_DATA_)
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    6) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Link, FullLink, Data))
+>    7) [0] Expr T.Data->(Path->Clean())->Sort()
+Seq<str>
+   0) Data/dog.jpeg
+   1) Data/Games.0105.rbin
+   2) Data/Games.rexl
+   3) Data/I4s.0105.rbin
+   4) Data/I8s.0105.rbin
+   5) Data/kitten.jpg
+   6) Data/Presidents.rexl
+   7) Data/U4s.0105.rbin
+   8) Data/U8s.0105.rbin
+*** Ctx ping count: 10
+    [0](10): Sort(ForEach(*1: T.Data, Guard(?2: *1, !3: Link.Path(?2), Text.Replace(!3[Text.LastIndexOf(!3, "Data")::], "\\", "/"))))
+>    8) [0] TaskProc finish T as ListFiles(Link.LocalData(_DATA_))
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    9) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Link, FullLink, Data))
+>   10) [0] Expr (T.Link.Path->Clean(), T.FullLink.Path->Clean())
+(Data/, Data/)
+>   11) [0] Expr T.Data->(Path->Clean())->Sort()
+Seq<str>
+   0) Data/dog.jpeg
+   1) Data/Games.0105.rbin
+   2) Data/Games.rexl
+   3) Data/I4s.0105.rbin
+   4) Data/I8s.0105.rbin
+   5) Data/kitten.jpg
+   6) Data/Presidents.rexl
+   7) Data/U4s.0105.rbin
+   8) Data/U8s.0105.rbin
+*** Ctx ping count: 10
+    [0](10): Sort(ForEach(*1: T.Data, Guard(?2: *1, !3: Link.Path(?2), Text.Replace(!3[Text.LastIndexOf(!3, "Data")::], "\\", "/"))))
+>   12) [0] TaskProc finish T as ListFiles("../../Junk")
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>   13) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(true, Directory not found: '../../Junk', (Link,))
+>   14) [0] TaskProc finish W as WriteRbin("Hello", "junk/Hello.rbin")
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   15) [0] Expr (W$Failed, W$ErrorMessage, W$ResultNames)
+(false, <null>, (Link, Compression, FullLink, Size))
+>   16) [0] Expr (W.Size, W.Compression)
+(36, Brotli)
+>   17) [0] TaskProc finish T as ListFiles("junk")
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>   18) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Link, FullLink, Data))
+>   19) [0] Expr T.Data->Count() $> 0
+true
+*** Ctx ping count: 2
+    [0](2): Count(T.Data)
+>   20) [0] Expr T.Data->All(Path->IndexOf("XTemp") $>= 0)
+true
+*** Ctx ping count: 2
+    [0](2): All(*1: T.Data, Text.IndexOf(Link.Path(*1), "XTemp") @>= 0)
+>   21) [0] Expr T.Data->Any(Path->IndexOf("Hello.rbin") $>= 0)
+true
+*** Ctx ping count: 1
+    [0](1): Any(*1: T.Data, Text.IndexOf(Link.Path(*1), "Hello.rbin") @>= 0)
+>   22) [0] End
+

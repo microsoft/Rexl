@@ -1,0 +1,200 @@
+::: {A:i8*, SS:s*, T:{A:s, B:i8}*, SA:i8**, B:i8?*, X:i4, b:b, R:{X:i4, Y:i2, S:{X:i4}*}*, RE:{X:i4, Y:i2}*, QRE:{X:i4, Y:i2}?*, SV:v*, tups:(i8,s,b)*, qtups:(i8,s,b)?*, ims:U<Image>* }
+
+Distinct(A)
+Distinct([key] A) // Error.
+Distinct(tups)
+Distinct(qtups)
+Distinct(SV)
+Distinct(R) // Error.
+Distinct(R, X)
+Distinct(R, [key] X)
+Distinct([key] R, X) // Error.
+Distinct(R, S) // Error.
+Distinct(RE)
+Distinct(RE, Y)
+Distinct(QRE)
+Distinct(QRE, X)
+Distinct(SA) // Error.
+Distinct(SA, Sum(it))
+Distinct(ims)
+
+Distinct([=] A)
+Distinct([~] A) // Warning.
+Distinct([~=] A) // Warning.
+Distinct([~] SS)
+Distinct([~=] SS)
+Distinct([key] SS) // Error.
+Distinct([~] T)
+Distinct([~=] T)
+Distinct(T, [=] A)
+Distinct(T, [~] A)
+Distinct(T, [~=] A)
+Distinct([~] T, [key] A) // Error.
+Distinct([<] SS) // Error.
+
+Filter(R, X > 100)
+Filter(r : R, [if] r.X > 100)
+
+Filter(QRE, X > 100)
+
+Filter(R, X > Y)
+Filter(r : R, r.X > r.Y)
+
+Filter(ims, Path.Len > 10)
+
+// FUTURE???: Filter(R.S, X > 100)
+Map(R, Filter(S, X > 100))
+Map(r : R, Filter(s : S, s.X > 100))
+
+// FUTURE????: Filter(R.S, X > R.X)
+Map(r : R, Filter(S, X > r.X)) // REVIEW: No way without cursor over R.
+Map(r : R, Filter(s : S, s.X > r.X))
+
+TakeOne([])
+TakeOne([], [else] null)
+TakeOne(Range(0))
+TakeOne(Range(0), [else] null)
+TakeOne(Range(0), [else] -1)
+TakeOne(Range(4, 7))
+TakeOne(Range(4, 7), [else] null)
+TakeOne([4, 5, 6])
+TakeOne([4, 5, 6], [else] null)
+TakeOne([], b)
+TakeOne(A)
+TakeOne(A, [if] true)
+TakeOne(A, [if] false)
+TakeOne(A, [else] 0)
+TakeOne(A, [else] -1)
+TakeOne(A, [else] null)
+TakeOne(A, [if] true, [else] 0)
+TakeOne(A, [if] true, [else] -1)
+TakeOne(A, true, -1)
+TakeOne(A, true, null)
+TakeOne(A, [if] false, [else] 0)
+TakeOne(A, [if] true, [else] null)
+TakeOne(A, [if] false, [else] null)
+TakeOne(R)
+TakeOne(R.S)
+TakeOne(R, [if] true)
+TakeOne(R.S, [if] true)
+TakeOne(R, [if] false)
+TakeOne(R.S, [if] false)
+TakeOne(R, [else] null)
+TakeOne(R.S, [else] null)
+TakeOne(R, true, null)
+TakeOne(R.S, true, null)
+TakeOne(R, [if] true, [else] null)
+TakeOne(R.S, [if] true, [else] null)
+TakeOne(R, [if] false, [else] null)
+TakeOne(R.S, [if] false, [else] null)
+First(A)
+DropOne(A)
+
+TakeOne(a : A, [if] a > 100)
+TakeOne(a : A, a > 100, [else] 0)
+TakeOne(a : A, a > 100, null)
+First(a : A, a > 100)
+DropOne(a : A, a > 100)
+DropOne(a : A, [if] a > 100)
+
+TakeOne(a : A, [while] a > 100) // Error.
+DropOne(a : A, [while] a > 100) // Error.
+TakeOne([if] a : A, a > 100) // Error.
+DropOne([if] a : A, a > 100) // Error.
+TakeOne(a : A, [else] -1, [if] a > 100) // Error.
+First(a : A, [while] a > 100) // Error.
+First([if] a : A, a > 100) // Error.
+
+TakeOne(B)
+First(B)
+
+TakeOne(b : B, b > 100)
+First(b : B, [if] b > 100)
+
+TakeOne(R)
+TakeOne(R, [else] null)
+First(R)
+
+TakeOne(R, X > Y)
+TakeOne(R, X > Y, null)
+First(R, [if] X > Y)
+First(r : R, r.X > r.Y)
+
+TakeOne(Filter(R, X > Y)) // REVIEW: Optimize to just TakeOne(R, X > Y).
+TakeOne(Filter(R, X > Y), [else] null) // REVIEW: Optimize to just TakeOne(R, X > Y, null).
+First(Filter(R, X > Y)) // REVIEW: Optimize to just First(R, X > Y).
+First(Filter(r : R, r.X > r.Y))
+
+TakeOne(SV)
+First(SV)
+
+First(Range(0))
+First(null)
+First(["A", "B", "C"])
+
+// REVIEW: Should support selectors and use the common super-type.
+TakeOne([], [else] -1) // Error.
+TakeOne([], [else] "hi") // Error.
+TakeOne([], [else] true) // Error.
+TakeOne(A, [else] 3.5) // Error.
+TakeOne(A, [else] "hello") // Error.
+TakeOne(R, [else] 0) // Error.
+TakeOne(R, [else] -1) // Error.
+TakeOne(R, true, -1) // Error.
+TakeOne(R, [if] false, [else] 0) // Error.
+TakeOne(R, [if] true, [else] 0) // Error.
+TakeOne(R, [if] true, [else] -1) // Error.
+
+TakeAt(Range(5), 0)
+TakeAt(Range(5), 0, null)
+TakeAt(Range(5), 0, [else] -1)
+TakeAt(Range(5), 4)
+TakeAt(Range(5), 5)
+TakeAt(Range(5), -1)
+TakeAt(Range(5), -5)
+TakeAt(Range(5), -6)
+TakeAt(Range(5), b)
+TakeAt(Range(5), X)
+TakeAt(["A", "B", "C"], 0)
+TakeAt(["A", "B", "C"], 2)
+TakeAt(["A", "B", "C"], 3)
+TakeAt(["A", "B", "C"], -1)
+TakeAt(["A", "B", "C"], -3)
+TakeAt(["A", "B", "C"], -4)
+TakeAt([4, 5, 6], 2)
+TakeAt([4, 5, 6], 2, null)
+TakeAt([4, 5, 6], 3, null)
+TakeAt(A, X)
+TakeAt(R, X)
+TakeAt(R.S, X)
+TakeAt([{ S: 1 }], 2)
+TakeAt(SA, 0)
+TakeAt(SA, -1)
+TakeAt(SA, X)
+TakeAt([], 0)
+TakeAt([], 1)
+TakeAt([], -1)
+TakeAt([], X)
+TakeAt([], b)
+TakeAt(SV, X)
+TakeAt(SA, B)
+TakeAt(A, null)
+TakeAt([], null)
+TakeAt(Range(5), -10, [else] null)
+TakeAt(Range(5), X, null)
+TakeAt(R, X, [else] null)
+TakeAt(B, X, [else] -1)
+TakeAt(Range(5)->TakeIf(false), X)
+TakeAt(Range(5)->TakeIf(false), X, null)
+
+TakeAt(s: A, X) // Error.
+TakeAt(A, [else] 1) // Error.
+TakeAt([else] A, 1) // Error.
+TakeAt(A, X, [if] 1) // Error.
+
+// REVIEW: Use the common super-type.
+TakeAt([], 5, 10) // Error.
+TakeAt(B, X, [else] 3.14) // Error.
+TakeAt(R, X, [else] 0) // Error.
+TakeAt(R, X, [else] R.S) // Error.
+TakeAt(["A", "B", "C"], X, [else] 0) // Error.

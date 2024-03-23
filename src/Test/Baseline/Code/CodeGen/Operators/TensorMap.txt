@@ -1,0 +1,112 @@
+> Tensor.Fill(17, 3, 4)->Wrap()->Map(it * 2)
+Tensor.Fill(17, 3, 4)->Wrap()->Map(it * 2) : i8[*,*]
+BndKind:Call, Type:i8[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Test.Wrap(Call(∂.Tensor.Fill(17:i8, 3:i8, 4:i8):i8[*,*])):i8[*,*]), Mul(Scope(1), 2:i8)):i8[*,*]))
+Func sig: (<ctx>:x) to i8[*,*]
+Ten<i8>(3,4)<0,0>
+  [[34, 34, 34, 34]
+   [34, 34, 34, 34]
+   [34, 34, 34, 34]]
+*** Ctx ping count: 0
+###
+> Tensor.From(Range(12), 3, 4)->Wrap()->Map(it * 2)
+Tensor.From(Range(12), 3, 4)->Wrap()->Map(it * 2) : i8[*,*]
+BndKind:Call, Type:i8[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Test.Wrap(Call(∂.Tensor.From(Call(∂.Range(12:i8):i8*), 3:i8, 4:i8):i8[*,*])):i8[*,*]), Mul(Scope(1), 2:i8)):i8[*,*]))
+Func sig: (<ctx>:x) to i8[*,*]
+Ten<i8>(3,4)<4,1>
+  [[0, 2, 4, 6]
+   [8, 10, 12, 14]
+   [16, 18, 20, 22]]
+*** Ctx ping count: 0
+###
+> Tensor.Fill(17, 3, 4)->Wrap()->Map("V" & it->ToText())
+Tensor.Fill(17, 3, 4)->Wrap()->Map("V" & it->ToText()) : s[*,*]
+BndKind:Call, Type:s[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Test.Wrap(Call(∂.Tensor.Fill(17:i8, 3:i8, 4:i8):i8[*,*])):i8[*,*]), StrConcat(str(V), Call(∂.ToText(Scope(1)):s))):s[*,*]))
+Func sig: (<ctx>:x) to s[*,*]
+Ten<str>(3,4)<0,0>
+  [[V17, V17, V17, V17]
+   [V17, V17, V17, V17]
+   [V17, V17, V17, V17]]
+*** Ctx ping count: 0
+###
+> Tensor.From(Range(12), 3, 4)->Wrap()->Map("V" & it->ToText())
+Tensor.From(Range(12), 3, 4)->Wrap()->Map("V" & it->ToText()) : s[*,*]
+BndKind:Call, Type:s[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Test.Wrap(Call(∂.Tensor.From(Call(∂.Range(12:i8):i8*), 3:i8, 4:i8):i8[*,*])):i8[*,*]), StrConcat(str(V), Call(∂.ToText(Scope(1)):s))):s[*,*]))
+Func sig: (<ctx>:x) to s[*,*]
+Ten<str>(3,4)<4,1>
+  [[V0, V1, V2, V3]
+   [V4, V5, V6, V7]
+   [V8, V9, V10, V11]]
+*** Ctx ping count: 0
+###
+> Tensor.Fill(17, 3, 4)->Map(it * 2)
+Tensor.Fill(17, 3, 4)->Map(it * 2) : i8[*,*]
+BndKind:Call, Type:i8[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.Fill(17:i8, 3:i8, 4:i8):i8[*,*]), Mul(Scope(1), 2:i8)):i8[*,*]))
+Func sig: (<ctx>:x) to i8[*,*]
+Ten<i8>(3,4)<0,0>
+  [[34, 34, 34, 34]
+   [34, 34, 34, 34]
+   [34, 34, 34, 34]]
+*** Ctx ping count: 0
+###
+> Tensor.From(Range(12), 3, 4)->Map(it * 2)
+Tensor.From(Range(12), 3, 4)->Map(it * 2) : i8[*,*]
+BndKind:Call, Type:i8[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.From(Call(∂.Range(12:i8):i8*), 3:i8, 4:i8):i8[*,*]), Mul(Scope(1), 2:i8)):i8[*,*]))
+Func sig: (<ctx>:x) to i8[*,*]
+Ten<i8>(3,4)<4,1>
+  [[0, 2, 4, 6]
+   [8, 10, 12, 14]
+   [16, 18, 20, 22]]
+*** Ctx ping count: 0
+###
+> Tensor.Fill(17, 3, 4)->Map("V" & it->ToText())
+Tensor.Fill(17, 3, 4)->Map("V" & it->ToText()) : s[*,*]
+BndKind:Call, Type:s[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.Fill(17:i8, 3:i8, 4:i8):i8[*,*]), StrConcat(str(V), Call(∂.ToText(Scope(1)):s))):s[*,*]))
+Func sig: (<ctx>:x) to s[*,*]
+Ten<str>(3,4)<0,0>
+  [[V17, V17, V17, V17]
+   [V17, V17, V17, V17]
+   [V17, V17, V17, V17]]
+*** Ctx ping count: 0
+###
+> Tensor.From(Range(12), 3, 4)->Map("V" & it->ToText())
+Tensor.From(Range(12), 3, 4)->Map("V" & it->ToText()) : s[*,*]
+BndKind:Call, Type:s[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.From(Call(∂.Range(12:i8):i8*), 3:i8, 4:i8):i8[*,*]), StrConcat(str(V), Call(∂.ToText(Scope(1)):s))):s[*,*]))
+Func sig: (<ctx>:x) to s[*,*]
+Ten<str>(3,4)<4,1>
+  [[V0, V1, V2, V3]
+   [V4, V5, V6, V7]
+   [V8, V9, V10, V11]]
+*** Ctx ping count: 0
+###
+
+**** New definitions: T, type: u1[*,*]
+**** New definitions: U, type: r8[*,*]
+
+> Tensor.Add(T, U)
+Tensor.Add(T, U) : r8[*,*]
+BndKind:Call, Type:r8[*,*], Bnd:(Call(∂.Tensor.Add(Call(∂.Tensor.ForEachLazy([ten:1] Global(T), Num<r8>(Scope(1))):r8[*,*]), Global(U)):r8[*,*]))
+Func sig: (T:u1[*,*], U:r8[*,*]) to r8[*,*]
+Ten<r8>(8,5)<5,1>
+  [[7.5, 8.5, 9.5, 10.5, 11.5]
+   [12.5, 13.5, 14.5, 15.5, 16.5]
+   [17.5, 18.5, 19.5, 20.5, 21.5]
+   [22.5, 23.5, 24.5, 25.5, 26.5]
+   [27.5, 28.5, 29.5, 30.5, 31.5]
+   [32.5, 33.5, 34.5, 35.5, 36.5]
+   [37.5, 38.5, 39.5, 40.5, 41.5]
+   [42.5, 43.5, 44.5, 45.5, 46.5]]
+###
+> T + U
+T + U : r8[*,*]
+BndKind:Call, Type:r8[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), [ten:2] Global(U), Add(Num<r8>(Scope(1)), Scope(2))):r8[*,*]))
+Func sig: (T:u1[*,*], U:r8[*,*]) to r8[*,*]
+Ten<r8>(8,5)<5,1>
+  [[7.5, 8.5, 9.5, 10.5, 11.5]
+   [12.5, 13.5, 14.5, 15.5, 16.5]
+   [17.5, 18.5, 19.5, 20.5, 21.5]
+   [22.5, 23.5, 24.5, 25.5, 26.5]
+   [27.5, 28.5, 29.5, 30.5, 31.5]
+   [32.5, 33.5, 34.5, 35.5, 36.5]
+   [37.5, 38.5, 39.5, 40.5, 41.5]
+   [42.5, 43.5, 44.5, 45.5, 46.5]]
+###

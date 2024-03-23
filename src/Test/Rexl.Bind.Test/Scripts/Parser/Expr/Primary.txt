@@ -1,0 +1,217 @@
+(a + b)
+###
+((a + b) + c)
+###
+(a + (b + c))
+###
+M(a)
+###
+M()
+###
+M(a, b)
+###
+N.M()
+###
+N.M(a, b, c)
+###
+N(a, b).M(3)
+###
+N(a, b)(3)
+###
+F(1, b,
+###
+G(a,,,x)
+###
+{ A : 3, b : "hello", 'Long Name' : false }
+###
+{ field : "missing" & " close" /*}*/
+###
+{ /*missing ident*/ : 7 }
+###
+{ }
+###
+{ field false }
+###
+{ field1, field2 }
+###
+{ field1, field2 : value2 }
+###
+{ field1, value2 as field2 }
+###
+{ a.b.c, x.y, z }
+###
+{ field * }
+###
+{ "hello" }
+###
+{ and, or: if }
+###
+{ and, if as or }
+###
+{ and, if or as }
+###
+{ and, if or as or }
+###
+{ x: 3 as y }
+###
+{ x: 3 as _ }
+###
+{ x: 3 as }
+###
+// Should be an error token, so produce an error expr.
+`
+###
+@ 'some name'
+###
+'   '
+###
+'xyz
+###
+[ ]
+###
+[ { a : 3 }, x, { b : 4 } ]
+###
+[ { 3 as a }, x, { 4 as b } ]
+###
+[
+###
+[a
+###
+[a,
+###
+[a, b
+###
+[a, b,
+###
+[a, b,]
+###
+[,
+
+###
+( )
+###
+(1,)
+###
+(1,2)
+###
+(1,"hi",)
+###
+(
+###
+(a
+###
+(a,
+###
+(a, b
+###
+(a, b,
+###
+(a, b,)
+###
+(,
+
+###
+* 5
+###
+A(); B()
+###
+A.@B
+###
+(A
+###
+((A)
+###
+A)
+###
+(A))
+
+###
+F(3 + 2, 7 * 8)
+###
+F(
+###
+H->{hello, field}
+###
+H->{hello, field, a.b.c, ThisItem.b.c}
+###
+H->{hello, field, a + b.c, b * c}
+###
+F(some, args)->{some, fields}
+###
+F(some, args)->{some * expr}
+###
+(a + b)->{}
+###
+(head ^ 2)->{a, b
+###
+head->{
+###
+head->{a, b, }
+###
+head->{a, b,
+
+###
+it.name
+###
+it$.name
+###
+it$0.name
+###
+it$1.name
+###
+it$2.name
+###
+it$123.name
+###
+it.name1.name2
+###
+it$1.name1.name2
+###
+it$2.name1.name2
+###
+it$0000000000000000000000123.name1.name2
+
+###
+F([<] x)
+###
+F([<] x, [>] y, [key] k, [agg] a, [map] m)
+
+###
+F(x: A, B, y: C)
+###
+F(A as x, B, C as y)
+###
+F(_: A, x: B)
+###
+F(A as _, B as x)
+###
+F(x: A as _, x: B as x)
+
+###
+F(and: A)
+###
+F(A as and)
+###
+[ { a : 3 }, x, { b : 4 } ]->{a, b, c: it}
+
+###
+@A.B(3)
+###
+A.@(3)
+###
+A.@B(3)
+###
+[ "Bad \Escapes", "\uA" ]
+###
+"Bad Escape\
+###
+"Bad Escape line term\
+
+###
+X.[>].Y
+###
+with(y: 3 + x, y * y)
+###
+with + 3
+###
+#@X

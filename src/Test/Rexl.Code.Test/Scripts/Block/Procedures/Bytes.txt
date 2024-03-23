@@ -1,0 +1,111 @@
+﻿func HexByte(u) := With(hi: (u shr 4) band 0x0F, lo: u band 0x0F, digs: "0123456789ABCDEF",  digs->Part(hi, hi + 1) & digs->Part(lo, lo + 1));
+func Hex(ten) := ten.Values->ForEach(as u, HexByte(u))->Concat(" ");
+func HexN(ten, n) := Range((ten.Shape[0] + n - 1) div n)->ForEach(as p, ten[n * p : n * (p + 1)]->Hex());
+func EqTen(a, b) := a.Shape = b.Shape and (a = b).Values->All();
+
+Path := "temp/table.rbin";
+Path2 := "temp/table-2.rbin";
+Link := Link.LocalData(Path);
+
+T := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+GetType(T);
+finish Writer as WriteRbin(T, Path, true, false);
+"*** Wrote table to '" & Writer.Link.Path & "' ***";
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+(Writer.Size, Writer.Compression);
+
+// Use ReadBytes.
+finish R as ReadBytes(Path);
+(R$Finished, R$Failed, R$ResultNames);
+R.FullLink.Path  = Writer.FullLink.Path;
+R.Data.Shape;
+
+"*** Bytes:";
+R.Data->HexN(16);
+
+// Write it back out.
+finish W2 as WriteBytes(R.Data, Path2);
+(W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+(W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = R.Data.Shape[0]);
+
+finish R2 as ReadBytes(Path2);
+(R2$Finished, R2$Failed, R2$ResultNames);
+R2.FullLink.Path  = W2.FullLink.Path;
+R2.Data.Shape;
+(R2.Data.Shape = R.Data.Shape, (R2.Data = R.Data).Values->All());
+
+EqTen(ReadAll(R.FullLink), R.Data);
+EqTen(ReadAll(Path), R.Data);
+ReadAll(Null(R.FullLink))->IsNull();
+ReadAll(Null(Path))->IsNull();
+ReadAll(" ")->IsNull();
+ReadAll("Blarg")->IsNull();
+
+// Use ReadByteBlocks with block size 16.
+finish R as ReadByteBlocks(Path, 16);
+(R$Finished, R$Failed, R$ResultNames);
+R.FullLink.Path  = Writer.FullLink.Path;
+(R.BlockSize, R.BlockCount, R.ByteCount);
+R.Data.Shape;
+R.Data.Shape[0]->Sum();
+
+"*** Bytes:";
+R.Data->@ForEach(as ten, ten->Hex());
+
+// Use ReadByteBlocks with large block size.
+finish R as ReadByteBlocks(Link);
+(R$Finished, R$Failed, R$ResultNames);
+R.FullLink.Path  = Writer.FullLink.Path;
+(R.BlockSize, R.BlockCount, R.ByteCount);
+R.Data.Shape;
+R.Data.Shape[0]->Sum();
+
+"*** Bytes:";
+R.Data->TakeOne()->HexN(16);
+
+// Larger data.
+T := Range(10_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+GetType(T);
+finish Writer as WriteRbin(T, Path, true, false);
+"*** Wrote table to '" & Writer.Link.Path & "' ***";
+(Writer$State, Writer$Finished, Writer$Failed, Writer$ResultNames);
+(Writer.Size, Writer.Compression);
+
+// Use ReadBytes.
+finish R as ReadBytes(Path);
+(R$Finished, R$Failed, R$ResultNames);
+R.FullLink.Path  = Writer.FullLink.Path;
+R.Data.Shape;
+
+"*** Bytes:";
+R.Data->HexN(16);
+
+// Write it back out.
+finish W2 as WriteBytes(R.Data, Path2);
+(W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+(W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = R.Data.Shape[0]);
+
+finish R2 as ReadBytes(Path2);
+(R2$Finished, R2$Failed, R2$ResultNames);
+R2.FullLink.Path  = W2.FullLink.Path;
+R2.Data.Shape;
+(R2.Data.Shape = R.Data.Shape, (R2.Data = R.Data).Values->All());
+
+// Non-contiguous.
+D := R.Data[::-1];
+finish W2 as WriteBytes(D, Path2);
+(W2$State, W2$Finished, W2$Failed, W2$ResultNames);
+(W2.ByteCount = Writer.Size, W2.Size = Writer.Size, W2.Size = D.Shape[0]);
+
+finish R2 as ReadBytes(Path2);
+(R2$Finished, R2$Failed, R2$ResultNames);
+R2.FullLink.Path  = W2.FullLink.Path;
+R2.Data.Shape;
+(R2.Data.Shape = D.Shape, (R2.Data = D).Values->All());
+
+// Errors.
+finish W2 as WriteBytes(D, Null(Path2));
+(W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage);
+
+finish W2 as WriteBytes(Null(D), Path2);
+(W2$State, W2$Finished, W2$Failed, W2$ResultNames, W2$ErrorMessage);

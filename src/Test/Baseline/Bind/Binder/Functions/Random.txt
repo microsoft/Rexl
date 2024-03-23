@@ -1,0 +1,250 @@
+**** New globals: {i8:i8, i8s:i8*, r4:r4, r8:r8, r8s:r8*}
+
+> RandomS.Uniform(i8)
+RandomS.Uniform(i8) : r8
+Binder : RandomS.Uniform(i8)
+###
+> RandomS.Uniform(i8s)
+RandomS.Uniform(i8s) : r8*
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1))
+###
+> RandomS.Uniform(i8, i8)
+RandomS.Uniform(i8, i8) : r8*
+Binder : RandomS.Uniform(i8, i8)
+###
+> RandomS.Uniform(i8s, i8)
+RandomS.Uniform(i8s, i8) : r8**
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1, i8))
+###
+> RandomS.Uniform(i8, r8, r8)
+RandomS.Uniform(i8, r8, r8) : r8
+Binder : RandomS.Uniform(i8, r8, r8)
+###
+> RandomS.Uniform(i8, r8, r4)
+RandomS.Uniform(i8, r8, r4) : r8
+Binder : RandomS.Uniform(i8, r8, Num<r8>(r4))
+###
+> RandomS.Uniform(i8, r4, r8)
+RandomS.Uniform(i8, r4, r8) : r8
+Binder : RandomS.Uniform(i8, Num<r8>(r4), r8)
+###
+> RandomS.Uniform(i8, r4, r4)
+RandomS.Uniform(i8, r4, r4) : r8
+Binder : RandomS.Uniform(i8, Num<r8>(r4), Num<r8>(r4))
+###
+> RandomS.Uniform(i8s, r8, r8)
+RandomS.Uniform(i8s, r8, r8) : r8*
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1, r8, r8))
+###
+> RandomS.Uniform(i8s, r8, r4)
+RandomS.Uniform(i8s, r8, r4) : r8*
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1, r8, Num<r8>(r4)))
+###
+> RandomS.Uniform(i8, r8, r8, i8)
+RandomS.Uniform(i8, r8, r8, i8) : r8*
+Binder : RandomS.Uniform(i8, r8, r8, i8)
+###
+> RandomS.Uniform(i8, r8, r4, i8)
+RandomS.Uniform(i8, r8, r4, i8) : r8*
+Binder : RandomS.Uniform(i8, r8, Num<r8>(r4), i8)
+###
+> RandomS.Uniform(i8, r4, r8, i8)
+RandomS.Uniform(i8, r4, r8, i8) : r8*
+Binder : RandomS.Uniform(i8, Num<r8>(r4), r8, i8)
+###
+> RandomS.Uniform(i8, r4, r4, i8)
+RandomS.Uniform(i8, r4, r4, i8) : r8*
+Binder : RandomS.Uniform(i8, Num<r8>(r4), Num<r8>(r4), i8)
+###
+> RandomS.Uniform(i8s, r8, r8, i8)
+RandomS.Uniform(i8s, r8, r8, i8) : r8**
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1, r8, r8, i8))
+###
+> RandomS.Uniform(i8s, r8, r4, i8)
+RandomS.Uniform(i8s, r8, r4, i8) : r8**
+Binder : ForEach(*1: i8s, RandomS.Uniform(*1, r8, Num<r8>(r4), i8))
+###
+> RandomS.Uniform(0)
+RandomS.Uniform(0) : r8
+Binder : RandomS.Uniform(0)
+###
+> RandomS.Uniform(i8, 0, 1)
+RandomS.Uniform(i8, 0, 1) : r8
+Binder : RandomS.Uniform(i8, 0, 1)
+Reducer: RandomS.Uniform(i8)
+###
+> RandomS.Uniform(i8, 1, 0) // Not reduced.
+RandomS.Uniform(i8, 1, 0) : r8
+Binder : RandomS.Uniform(i8, 1, 0)
+###
+> RandomS.Uniform(i8, 1, 1) // Constant.
+RandomS.Uniform(i8, 1, 1) : r8
+Binder : RandomS.Uniform(i8, 1, 1)
+Reducer: 1
+###
+> RandomS.Uniform(i8, 0, 0) // Constant.
+RandomS.Uniform(i8, 0, 0) : r8
+Binder : RandomS.Uniform(i8, 0, 0)
+Reducer: 0
+###
+> RandomS.Uniform(i8, 1, 1/0) // Constant infinity.
+RandomS.Uniform(i8, 1, 1 / 0) : r8
+Binder : RandomS.Uniform(i8, 1, Mul(1, [/] 0))
+Reducer: ∞
+###
+> RandomS.Uniform(i8, 1/0, -3) // Constant infinity.
+RandomS.Uniform(i8, 1 / 0, -3) : r8
+Binder : RandomS.Uniform(i8, Mul(1, [/] 0), -3)
+Reducer: ∞
+###
+> RandomS.Uniform(i8, 1, -1/0) // Constant negative infinity.
+RandomS.Uniform(i8, 1, -1 / 0) : r8
+Binder : RandomS.Uniform(i8, 1, Mul(-1, [/] 0))
+Reducer: -∞
+###
+> RandomS.Uniform(i8, -1/0, 3) // Constant negative infinity.
+RandomS.Uniform(i8, -1 / 0, 3) : r8
+Binder : RandomS.Uniform(i8, Mul(-1, [/] 0), 3)
+Reducer: -∞
+###
+> RandomS.Uniform(i8, -1/0, 1/0) // Constant nan.
+RandomS.Uniform(i8, -1 / 0, 1 / 0) : r8
+Binder : RandomS.Uniform(i8, Mul(-1, [/] 0), Mul(1, [/] 0))
+Reducer: NaN
+###
+> RandomS.Uniform(i8, 0.1, 0.9) // Not reduced.
+RandomS.Uniform(i8, 0.1, 0.9) : r8
+Binder : RandomS.Uniform(i8, 0.1, 0.9)
+###
+> RandomS.Uniform(i8, 0, 1, i8)
+RandomS.Uniform(i8, 0, 1, i8) : r8*
+Binder : RandomS.Uniform(i8, 0, 1, i8)
+Reducer: RandomS.Uniform(i8, i8)
+###
+> RandomS.Uniform(i8, 1, 0, i8) // Not reduced.
+RandomS.Uniform(i8, 1, 0, i8) : r8*
+Binder : RandomS.Uniform(i8, 1, 0, i8)
+###
+> RandomS.Uniform(i8, 1, 1, i8) // Constant.
+RandomS.Uniform(i8, 1, 1, i8) : r8*
+Binder : RandomS.Uniform(i8, 1, 1, i8)
+Reducer: Repeat(1, i8)
+###
+> RandomS.Uniform(i8, 0, 0, i8) // Constant.
+RandomS.Uniform(i8, 0, 0, i8) : r8*
+Binder : RandomS.Uniform(i8, 0, 0, i8)
+Reducer: Repeat(0, i8)
+###
+> RandomS.Uniform(i8, 1, 1/0, i8) // Constant infinity.
+RandomS.Uniform(i8, 1, 1 / 0, i8) : r8*
+Binder : RandomS.Uniform(i8, 1, Mul(1, [/] 0), i8)
+Reducer: Repeat(∞, i8)
+###
+> RandomS.Uniform(i8, 1/0, -3, i8) // Constant infinity.
+RandomS.Uniform(i8, 1 / 0, -3, i8) : r8*
+Binder : RandomS.Uniform(i8, Mul(1, [/] 0), -3, i8)
+Reducer: Repeat(∞, i8)
+###
+> RandomS.Uniform(i8, 1, -1/0, i8) // Constant negative infinity.
+RandomS.Uniform(i8, 1, -1 / 0, i8) : r8*
+Binder : RandomS.Uniform(i8, 1, Mul(-1, [/] 0), i8)
+Reducer: Repeat(-∞, i8)
+###
+> RandomS.Uniform(i8, -1/0, 3, i8) // Constant negative infinity.
+RandomS.Uniform(i8, -1 / 0, 3, i8) : r8*
+Binder : RandomS.Uniform(i8, Mul(-1, [/] 0), 3, i8)
+Reducer: Repeat(-∞, i8)
+###
+> RandomS.Uniform(i8, -1/0, 1/0, i8) // Constant nan.
+RandomS.Uniform(i8, -1 / 0, 1 / 0, i8) : r8*
+Binder : RandomS.Uniform(i8, Mul(-1, [/] 0), Mul(1, [/] 0), i8)
+Reducer: Repeat(NaN, i8)
+###
+> RandomS.Uniform(i8, 0.1, 0.9, i8) // Not reduced.
+RandomS.Uniform(i8, 0.1, 0.9, i8) : r8*
+Binder : RandomS.Uniform(i8, 0.1, 0.9, i8)
+###
+> With(C: 0, (RandomS.Uniform(C), RandomS.Uniform(C)))
+With(C : 0, (RandomS.Uniform(C), RandomS.Uniform(C))) : (r8, r8)
+Binder : With(!1: 0, (RandomS.Uniform(!1), RandomS.Uniform(!1)))
+Reducer: (RandomS.Uniform(0), RandomS.Uniform(0))
+###
+> RandomS.Uniform([-1, 0, 1])
+RandomS.Uniform([-1, 0, 1]) : r8*
+Binder : ForEach(*1: [-1, 0, 1], RandomS.Uniform(*1))
+###
+> RandomS.Uniform(i8, -1)
+RandomS.Uniform(i8, -1) : r8*
+Binder : RandomS.Uniform(i8, -1)
+Reducer: null
+###
+> RandomS.Uniform(i8, 0)
+RandomS.Uniform(i8, 0) : r8*
+Binder : RandomS.Uniform(i8, 0)
+Reducer: null
+###
+> RandomS.Uniform(i8, r8, r8, -1)
+RandomS.Uniform(i8, r8, r8, -1) : r8*
+Binder : RandomS.Uniform(i8, r8, r8, -1)
+Reducer: null
+###
+> RandomS.Uniform(i8, r8, r8, 0)
+RandomS.Uniform(i8, r8, r8, 0) : r8*
+Binder : RandomS.Uniform(i8, r8, r8, 0)
+Reducer: null
+###
+> RandomS.Uniform(r8) // Error.
+RandomS.Uniform(r8) : r8
+*** Error: (16,18) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : RandomS.Uniform(Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, r8) // Error.
+RandomS.Uniform(i8, r8) : r8*
+*** Error: (20,22) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : RandomS.Uniform(i8, Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, i8s) // Error.
+RandomS.Uniform(i8, i8s) : r8*
+*** Error: (20,23) Node: i8s, Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+Binder : RandomS.Uniform(i8, Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, r8, r8s) // Error.
+RandomS.Uniform(i8, r8, r8s) : r8
+*** Error: (24,27) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : RandomS.Uniform(i8, r8, Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, r8s, r8) // Error.
+RandomS.Uniform(i8, r8s, r8) : r8
+*** Error: (20,23) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : RandomS.Uniform(i8, Error(ErrBadType_Src_Dst), r8)
+###
+> RandomS.Uniform(r8, r8, r8) // Error.
+RandomS.Uniform(r8, r8, r8) : r8
+*** Error: (16,18) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : RandomS.Uniform(Error(ErrBadType_Src_Dst), r8, r8)
+###
+> RandomS.Uniform(i8, r8, r8, i8s) // Error.
+RandomS.Uniform(i8, r8, r8, i8s) : r8*
+*** Error: (28,31) Node: i8s, Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+Binder : RandomS.Uniform(i8, r8, r8, Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, r8, r8, r8) // Error.
+RandomS.Uniform(i8, r8, r8, r8) : r8*
+*** Error: (28,30) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : RandomS.Uniform(i8, r8, r8, Error(ErrBadType_Src_Dst))
+###
+> RandomS.Uniform(i8, r8, r8s, i8) // Error.
+RandomS.Uniform(i8, r8, r8s, i8) : r8*
+*** Error: (24,27) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : RandomS.Uniform(i8, r8, Error(ErrBadType_Src_Dst), i8)
+###
+> RandomS.Uniform(i8, r8s, r8, i8) // Error.
+RandomS.Uniform(i8, r8s, r8, i8) : r8*
+*** Error: (20,23) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : RandomS.Uniform(i8, Error(ErrBadType_Src_Dst), r8, i8)
+###
+> RandomS.Uniform(r8, r8, r8, i8) // Error.
+RandomS.Uniform(r8, r8, r8, i8) : r8*
+*** Error: (16,18) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : RandomS.Uniform(Error(ErrBadType_Src_Dst), r8, r8, i8)
+###

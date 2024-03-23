@@ -1,0 +1,152 @@
+Add: 00000001 [X], <config>
+Add: 00000002 [Y], <config>
+Add: 00000003 [Z], <config>
+Status: 3 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [X]: [A  tT      dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*
+    00000002 [Y]: [A  tT      dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*
+    00000003 [Z]: [A  tT      dD  ], <config>, Base: i8
+###
+*** Add extra formulas
+Fma: 00000001 [X], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+###
+*** Undo(1)
+Fma: 00000001 [X], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [X]: [  F T       D  ], <config>, Base: {A:i4, B:b?, C:i8?}*
+    00000002 [Y]: [  F T       D  ], <config>, Base: {A:i4, B:b?, C:i8?}*
+###
+*** Redo(1)
+Fma: 00000001 [X], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [X]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [  F T   b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+###
+Fma: 00000001 [X], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:this+>{ C: C * Z }]
+  New 1: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:[{C: Z}]]
+  New 1: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [X]: [  F   U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [  F T U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** Undo(1)
+Fma: 00000001 [X], <config>
+  Old 0: [0:this+>{ C: C * Z }]
+  Old 1: [0:this+>{ D: C * 1 }]
+  New 0: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  Old 0: [0:[{C: Z}]]
+  Old 1: [0:this+>{ D: C * 1 }]
+  New 0: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 2 undos, 1 redos
+  Node changes:
+    00000001 [X]: [  F   U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [  F T U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?, D:i8?}*
+###
+*** Redo(1)
+Fma: 00000001 [X], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:this+>{ C: C * Z }]
+  New 1: [0:this+>{ D: C * 1 }]
+Fma: 00000002 [Y], <config>
+  Old 0: [0:this+>{ D: C * 1 }]
+  New 0: [0:[{C: Z}]]
+  New 1: [0:this+>{ D: C * 1 }]
+Status: 3 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [X]: [  F   U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [  F T U b c D  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** ChangeConfig to same type with extra formulas
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [X]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** Undo(1)
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [X]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** Redo(1)
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [X]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [        b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** ChangeConfig to different type with extra formulas
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [X]: [   tT   b cdD  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {A:u8?, B:b, C:i8}*, Extra[1]: {A:u8?, B:b, C:i8, D:i8}*
+    00000002 [Y]: [   t    b  dD  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** Undo(1)
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 4 undos, 1 redos
+  Node changes:
+    00000001 [X]: [   tT   b cdD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {A:i4, B:b?, C:i8?}*, Extra[1]: {A:i4, B:b?, C:i8?, D:i8?}*
+    00000002 [Y]: [   t    b  dD  ], <config>, Base: {A:i4, B:b?, C:i8?}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** Redo(1)
+Cfg: 00000001 [X], <config>
+Cfg: 00000002 [Y], <config>
+Status: 3 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [X]: [   tT   b cdD  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {A:u8?, B:b, C:i8}*, Extra[1]: {A:u8?, B:b, C:i8, D:i8}*
+    00000002 [Y]: [   t    b  dD  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+###
+*** ChangeConfig of referenced node to different type
+Cfg: 00000003 [Z], <config>
+Status: 3 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [X]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {A:u8?, B:b, C:r8?}*, Extra[1]: {A:u8?, B:b, C:r8?, D:r8?}*
+    00000002 [Y]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {C:r8?}*, Extra[1]: {C:r8?, D:r8?}*
+    00000003 [Z]: [   tT      dD  ], <config>, Base: r8?
+###
+*** Undo(1)
+Cfg: 00000003 [Z], <config>
+Status: 3 nodes, 5 undos, 1 redos
+  Node changes:
+    00000001 [X]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {A:u8?, B:b, C:i8}*, Extra[1]: {A:u8?, B:b, C:i8, D:i8}*
+    00000002 [Y]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {C:i8}*, Extra[1]: {C:i8, D:i8}*
+    00000003 [Z]: [   tT      dD  ], <config>, Base: i8
+###
+*** Redo(1)
+Cfg: 00000003 [Z], <config>
+Status: 3 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [X]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {A:u8?, B:b, C:r8?}*, Extra[1]: {A:u8?, B:b, C:r8?, D:r8?}*
+    00000002 [Y]: [    T   b c D  ], <config>, Base: {A:u8?, B:b, C:i8}*, Extra[0]: {C:r8?}*, Extra[1]: {C:r8?, D:r8?}*
+    00000003 [Z]: [   tT      dD  ], <config>, Base: r8?
+###

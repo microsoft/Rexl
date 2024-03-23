@@ -1,0 +1,129 @@
+﻿:: { i:i, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1, b:b }
+
+0xC3 band 0x55
+0xC3 bxor 0x55
+0xC3 bor 0x55
+
+// Should all be optimized to zero.
+i  band 0i1
+i8 band 0i1
+i4 band 0i1
+i2 band 0i1
+i1 band 0i1
+0i1 band i
+0i1 band i8
+0i1 band i4
+0i1 band i2
+0i1 band i1
+u8 band 0u1
+u4 band 0u1
+u2 band 0u1
+u1 band 0u1
+b band false
+0u1 band u8
+0u1 band u4
+0u1 band u2
+0u1 band u1
+false band b
+
+// Should be optimized to the variable.
+i  band -1i1
+i8 band -1i1
+i4 band -1i1
+i2 band -1i1
+i1 band -1i1
+-1i1 band i
+-1i1 band i8
+-1i1 band i4
+-1i1 band i2
+-1i1 band i1
+u8 band bnot 0u8
+u4 band bnot 0u4
+u2 band bnot 0u2
+u1 band bnot 0u1
+b band true
+bnot 0u8 band u8
+bnot 0u4 band u4
+bnot 0u2 band u2
+bnot 0u1 band u1
+true band b
+
+// Should be optimized to the variable.
+i  bor 0i1
+i8 bor 0i1
+i4 bor 0i1
+i2 bor 0i1
+i1 bor 0i1
+0i1 bor i
+0i1 bor i8
+0i1 bor i4
+0i1 bor i2
+0i1 bor i1
+u8 bor 0u1
+u4 bor 0u1
+u2 bor 0u1
+u1 bor 0u1
+b bor false
+0u1 bor u8
+0u1 bor u4
+0u1 bor u2
+0u1 bor u1
+false bor b
+
+// Should be optimized to all ones.
+i  bor -1i1
+i8 bor -1i1
+i4 bor -1i1
+i2 bor -1i1
+i1 bor -1i1
+-1i1 bor i
+-1i1 bor i8
+-1i1 bor i4
+-1i1 bor i2
+-1i1 bor i1
+u8 bor bnot 0u8
+u4 bor bnot 0u4
+u2 bor bnot 0u2
+u1 bor bnot 0u1
+b bor true
+bnot 0u8 bor u8
+bnot 0u4 bor u4
+bnot 0u2 bor u2
+bnot 0u1 bor u1
+true bor b
+
+// Should be optimized to the variable.
+i  bxor 0i1
+i8 bxor 0i1
+i4 bxor 0i1
+i2 bxor 0i1
+i1 bxor 0i1
+0i1 bxor i
+0i1 bxor i8
+0i1 bxor i4
+0i1 bxor i2
+0i1 bxor i1
+u8 bxor 0u1
+u4 bxor 0u1
+u2 bxor 0u1
+u1 bxor 0u1
+b bxor false
+0u1 bxor u8
+0u1 bxor u4
+0u1 bxor u2
+0u1 bxor u1
+false bxor b
+
+// Combine constant terms at the end.
+i1 band 0x55i1 band i1
+i1 band 0x00i1 band i1
+i1 band 0xFFi1 band i1
+i1 bor  0x55i1 bor  i1
+i1 bor  0x00i1 bor  i1
+i1 bor  0xFFi1 bor  i1
+i1 bxor 0x55i1 bxor i1
+i1 bxor 0x00i1 bxor i1
+i1 bxor 0xFFi1 bxor i1
+
+i1 band 0x55i1 band (i1 band 0x11i1)
+i1 band 0x55i1 band (i1 band 0xAAi1)

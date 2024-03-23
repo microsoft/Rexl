@@ -1,0 +1,836 @@
+**** New globals: {b:b, s0:i8*, s1:i4*, s2:i2*}
+
+> ForEachIf(x:Null(s0), y:s1, x > 0, y)
+ForEachIf(x : Null(s0), y : s1, x $> 0, y) : i4*
+Binder : ForEachIf*(*1: DefOpt*(s0), *2: s1, *1 @> 0, *2)
+Reducer: null
+###
+> ForEachWhile(x:Null(s0), y:s1, x > 0, y)
+ForEachWhile(x : Null(s0), y : s1, x $> 0, y) : i4*
+Binder : ForEachWhile*(*1: DefOpt*(s0), *2: s1, *1 @> 0, *2)
+Reducer: null
+###
+> ForEach(x:Null(s0), y:s1, [if] x > 0, y)
+ForEach(x : Null(s0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> ForEach(x:Null(s0), y:s1, [while] x > 0, y)
+ForEach(x : Null(s0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> Map(x:Null(s0), y:s1, [if] x > 0, y)
+Map(x : Null(s0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> Map(x:Null(s0), y:s1, [while] x > 0, y)
+Map(x : Null(s0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> Zip(x:Null(s0), y:s1, [if] x > 0, y)
+Zip(x : Null(s0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> Zip(x:Null(s0), y:s1, [while] x > 0, y)
+Zip(x : Null(s0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: DefOpt*(s0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> ForEachIf(x:s0->Take(0), y:s1, x > 0, y)
+ForEachIf(x : s0->Take(0), y : s1, x $> 0, y) : i4*
+Binder : ForEachIf*(*1: Take(s0, 0), *2: s1, *1 @> 0, *2)
+Reducer: null
+###
+> ForEachWhile(x:s0->Take(0), y:s1, x > 0, y)
+ForEachWhile(x : s0->Take(0), y : s1, x $> 0, y) : i4*
+Binder : ForEachWhile*(*1: Take(s0, 0), *2: s1, *1 @> 0, *2)
+Reducer: null
+###
+> ForEach(x:s0->Take(0), y:s1, [if] x > 0, y)
+ForEach(x : s0->Take(0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> ForEach(x:s0->Take(0), y:s1, [while] x > 0, y)
+ForEach(x : s0->Take(0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> Map(x:s0->Take(0), y:s1, [if] x > 0, y)
+Map(x : s0->Take(0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> Map(x:s0->Take(0), y:s1, [while] x > 0, y)
+Map(x : s0->Take(0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> Zip(x:s0->Take(0), y:s1, [if] x > 0, y)
+Zip(x : s0->Take(0), y : s1, [if] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [if] *1 @> 0, *2)
+Reducer: null
+###
+> Zip(x:s0->Take(0), y:s1, [while] x > 0, y)
+Zip(x : s0->Take(0), y : s1, [while] x $> 0, y) : i4*
+Binder : ForEach(*1: Take(s0, 0), *2: s1, [while] *1 @> 0, *2)
+Reducer: null
+###
+> ForEachIf(x:s0, x > 0, x)
+ForEachIf(x : s0, x $> 0, x) : i8*
+Binder : ForEachIf*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEachWhile(x:s0, x > 0, x)
+ForEachWhile(x : s0, x $> 0, x) : i8*
+Binder : ForEachWhile*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach(x:s0, x > 0, x) // Error.
+ForEach(x : s0, x $> 0, x) : i8*
+*** Error: (14,15) Node: x, Message: Name does not exist in the current context
+*** Error: (16,17) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), *1)
+###
+> ForEachIf(x:s0, [if] x > 0, x)
+ForEachIf(x : s0, [if] x $> 0, x) : i8*
+Binder : ForEachIf*(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEachWhile(x:s0, [while] x > 0, x)
+ForEachWhile(x : s0, [while] x $> 0, x) : i8*
+Binder : ForEachWhile*(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach(x:s0, [if] x > 0, x)
+ForEach(x : s0, [if] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEach(x:s0, [while] x > 0, x)
+ForEach(x : s0, [while] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> Map(x:s0, [if] x > 0, x)
+Map(x : s0, [if] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> Map(x:s0, [while] x > 0, x)
+Map(x : s0, [while] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> Zip(x:s0, [if] x > 0, x)
+Zip(x : s0, [if] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> Zip(x:s0, [while] x > 0, x)
+Zip(x : s0, [while] x $> 0, x) : i8*
+Binder : ForEach(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEachIf(x:s0, [while] x > 0, x) // Error.
+ForEachIf(x : s0, [while] x $> 0, x) : i8*
+*** Error: (16,23) Node: [while] x $> 0, Tok: '[while]', Message: Unexpected directive
+Binder : ForEachIf*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEachWhile(x:s0, [if] x > 0, x) // Error.
+ForEachWhile(x : s0, [if] x $> 0, x) : i8*
+*** Error: (19,23) Node: [if] x $> 0, Tok: '[if]', Message: Unexpected directive
+Binder : ForEachWhile*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEachIf([if] x:s0, x > 0, x) // Error.
+ForEachIf([if] x : s0, x $> 0, x) : i8*
+*** Error: (10,14) Node: [if] x : s0, Tok: '[if]', Message: Unexpected directive
+Binder : ForEachIf*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEachWhile([while] x:s0, x > 0, x) // Error.
+ForEachWhile([while] x : s0, x $> 0, x) : i8*
+*** Error: (13,20) Node: [while] x : s0, Tok: '[while]', Message: Unexpected directive
+Binder : ForEachWhile*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach([if] x:s0, x > 0, x) // Error.
+ForEach([if] x : s0, x $> 0, x) : i8*
+*** Error: (8,12) Node: [if] x : s0, Tok: '[if]', Message: Unexpected directive
+*** Error: (19,20) Node: x, Message: Name does not exist in the current context
+*** Error: (21,22) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), *1)
+###
+> ForEach([while] x:s0, x > 0, x) // Error.
+ForEach([while] x : s0, x $> 0, x) : i8*
+*** Error: (8,15) Node: [while] x : s0, Tok: '[while]', Message: Unexpected directive
+*** Error: (22,23) Node: x, Message: Name does not exist in the current context
+*** Error: (24,25) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), *1)
+###
+> ForEachIf(x:s0, x > 0, [if] x) // Error.
+ForEachIf(x : s0, x $> 0, [if] x) : i8*
+*** Error: (23,27) Node: [if] x, Tok: '[if]', Message: Unexpected directive
+Binder : ForEachIf*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEachWhile(x:s0, x > 0, [while] x) // Error.
+ForEachWhile(x : s0, x $> 0, [while] x) : i8*
+*** Error: (26,33) Node: [while] x, Tok: '[while]', Message: Unexpected directive
+Binder : ForEachWhile*(*1: s0, *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach(x:s0, x > 0, [if] x) // Error.
+ForEach(x : s0, x $> 0, [if] x) : i8*
+*** Error: (14,15) Node: x, Message: Name does not exist in the current context
+*** Error: (16,17) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+*** Error: (21,25) Node: [if] x, Tok: '[if]', Message: Unexpected directive
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), *1)
+###
+> ForEach(x:s0, x > 0, [while] x) // Error.
+ForEach(x : s0, x $> 0, [while] x) : i8*
+*** Error: (14,15) Node: x, Message: Name does not exist in the current context
+*** Error: (16,17) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+*** Error: (21,28) Node: [while] x, Tok: '[while]', Message: Unexpected directive
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), *1)
+###
+> ForEach([if] x:s0, [if] x > 0, x) // Error.
+ForEach([if] x : s0, [if] x $> 0, x) : i8*
+*** Error: (8,12) Node: [if] x : s0, Tok: '[if]', Message: Unexpected directive
+Binder : ForEach(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEach([while] x:s0, [while] x > 0, x) // Error.
+ForEach([while] x : s0, [while] x $> 0, x) : i8*
+*** Error: (8,15) Node: [while] x : s0, Tok: '[while]', Message: Unexpected directive
+Binder : ForEach(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach(x:s0, [if] x > 0, [if] x) // Error.
+ForEach(x : s0, [if] x $> 0, [if] x) : i8*
+*** Error: (26,30) Node: [if] x, Tok: '[if]', Message: Unexpected directive
+Binder : ForEach(*1: s0, [if] *1 @> 0, *1)
+Reducer: Take(*1: s0, [if] *1 @> 0)
+###
+> ForEach(x:s0, [while] x > 0, [while] x) // Error.
+ForEach(x : s0, [while] x $> 0, [while] x) : i8*
+*** Error: (29,36) Node: [while] x, Tok: '[while]', Message: Unexpected directive
+Binder : ForEach(*1: s0, [while] *1 @> 0, *1)
+Reducer: Take(*1: s0, [while] *1 @> 0)
+###
+> ForEach(x:s0, [if] x > 0, [if] x mod 2 = 0, x) // Error.
+ForEach(x : s0, [if] x $> 0, [if] x mod 2 @= 0, x) : i8*
+*** Error: (19,20) Node: x, Message: Name does not exist in the current context
+*** Error: (14,18) Node: [if] x $> 0, Tok: '[if]', Message: Unexpected directive
+*** Error: (21,22) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), [if] IntMod(*1, 2) @= 0, *1)
+###
+> ForEach(x:s0, [while] x > 0, [while] x mod 2 = 0, x) // Error.
+ForEach(x : s0, [while] x $> 0, [while] x mod 2 @= 0, x) : i8*
+*** Error: (22,23) Node: x, Message: Name does not exist in the current context
+*** Error: (14,21) Node: [while] x $> 0, Tok: '[while]', Message: Unexpected directive
+*** Error: (24,25) Node: x $> 0, Message: Invalid operand type: cannot convert type 'b' to 'b*'
+Binder : ForEach(*1: s0, *2: Error(ErrBadType_Src_Dst), [while] IntMod(*1, 2) @= 0, *1)
+###
+> ForEachIf(x:s0, [if] true, x->CastR8())
+ForEachIf(x : s0, [if] true, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: s0, [if] true, CastR8*(*1))
+Reducer: ForEach(*1: s0, Num<r8>(*1))
+###
+> ForEachWhile(x:s0, [while] true, x->CastR8())
+ForEachWhile(x : s0, [while] true, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: s0, [while] true, CastR8*(*1))
+Reducer: ForEach(*1: s0, Num<r8>(*1))
+###
+> ForEach(x:s0, [if] true, x->CastR8())
+ForEach(x : s0, [if] true, x->CastR8()) : r8*
+Binder : ForEach(*1: s0, [if] true, CastR8*(*1))
+Reducer: ForEach(*1: s0, Num<r8>(*1))
+###
+> ForEach(x:s0, [while] true, x->CastR8())
+ForEach(x : s0, [while] true, x->CastR8()) : r8*
+Binder : ForEach(*1: s0, [while] true, CastR8*(*1))
+Reducer: ForEach(*1: s0, Num<r8>(*1))
+###
+> ForEachIf(x:s0, [if] false, x->CastR8())
+ForEachIf(x : s0, [if] false, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: s0, [if] false, CastR8*(*1))
+Reducer: null
+###
+> ForEachWhile(x:s0, [while] false, x->CastR8())
+ForEachWhile(x : s0, [while] false, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: s0, [while] false, CastR8*(*1))
+Reducer: null
+###
+> ForEach(x:s0, [if] false, x->CastR8())
+ForEach(x : s0, [if] false, x->CastR8()) : r8*
+Binder : ForEach(*1: s0, [if] false, CastR8*(*1))
+Reducer: null
+###
+> ForEach(x:s0, [while] false, x->CastR8())
+ForEach(x : s0, [while] false, x->CastR8()) : r8*
+Binder : ForEach(*1: s0, [while] false, CastR8*(*1))
+Reducer: null
+###
+> ForEachIf(x:s0->Take(10), y:Range(100), x > 0, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(100), x $> 0, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Range(100), *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [if] *1 @> 0, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(100), x > 0, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(100), x $> 0, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Range(100), *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [while] *1 @> 0, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100), [if] x > 0, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100), [if] x $> 0, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(100), [if] *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [if] *1 @> 0, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100), [while] x > 0, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100), [while] x $> 0, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(100), [while] *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [while] *1 @> 0, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Range(10), x > 0, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(10), x $> 0, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Range(10), *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [if] *1 @> 0, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(10), x > 0, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(10), x $> 0, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Range(10), *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [while] *1 @> 0, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(10), [if] x > 0, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(10), [if] x $> 0, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(10), [if] *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [if] *1 @> 0, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(10), [while] x > 0, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(10), [while] x $> 0, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(10), [while] *1 @> 0, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), [while] *1 @> 0, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Range(100), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Range(100), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100), [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(100), [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100), [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(100), [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(1, 100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Range(1, 100), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(1, 100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Range(1, 100), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(1, 100), [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(1, 100), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(1, 100), [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(1, 100), [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(1, 100), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(1, 100), [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(1, 100, 2), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Range(1, 100, 2), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(1, 100, 2), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Range(1, 100, 2), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(1, 100, 2), [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(1, 100, 2), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(1, 100, 2), [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(1, 100, 2), [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(1, 100, 2), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Range(1, 100, 2), [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Repeat(4, 20), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Repeat(4, 20), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Repeat(4, 20), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Repeat(4, 20), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Repeat(4, 20), [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Repeat(4, 20), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Repeat(4, 20), [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Repeat(4, 20), [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Repeat(4, 20), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Repeat(4, 20), [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(x:s0->Take(10), y:Range(100)->Sort(), y > 3, x->CastR8())
+ForEachIf(x : s0->Take(10), y : Range(100)->Sort(), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Take(s0, 10), *2: Sort(Range(100)), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(x:s0->Take(10), y:Range(100)->Sort(), y > 3, x->CastR8())
+ForEachWhile(x : s0->Take(10), y : Range(100)->Sort(), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Take(s0, 10), *2: Sort(Range(100)), *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100)->Sort(), [if] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100)->Sort(), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [if] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(x:s0->Take(10), y:Range(100)->Sort(), [while] y > 3, x->CastR8())
+ForEach(x : s0->Take(10), y : Range(100)->Sort(), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [while] *2 @> 3, CastR8*(*1))
+Reducer: ForEach(*1: Take(s0, 10), *2: Sort(Range(100)), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(Range(1000), x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachIf(Range(1000), x : s0->Take(10), y : Range(100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Range(1000), *2: Take(s0, 10), *3: Range(100), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(Range(1000), x:s0->Take(10), y:Range(100), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x : s0->Take(10), y : Range(100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Take(s0, 10), *3: Range(100), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(100), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(100), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(100), [if] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(100), [while] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(100), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(100), [while] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(Range(1000), x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachIf(Range(1000), x : s0->Take(10), y : Range(1, 100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(Range(1000), x:s0->Take(10), y:Range(1, 100), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x : s0->Take(10), y : Range(1, 100), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(1, 100), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100), [if] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100), [while] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(1, 100), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100), [while] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 11), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachIf(Range(1000), x : s0->Take(10), y : Range(1, 100, 2), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100, 2), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x : s0->Take(10), y : Range(1, 100, 2), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100, 2), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(1, 100, 2), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100, 2), [if] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Range(1, 100, 2), [while] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Range(1, 100, 2), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Range(1, 100, 2), [while] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Range(1, 21, 2), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachIf(Range(1000), x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Range(1000), *2: Take(s0, 10), *3: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], y > 3, x->CastR8())
+ForEachWhile(Range(1000), x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Take(s0, 10), *3: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [if] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [if] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7], [while] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7], [while] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEachIf(Range(1000), x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachIf(Range(1000), x : s0->Take(10), y : Repeat(4, 20), y $> 3, x->CastR8()) : r8*
+Binder : ForEachIf*(*1: Range(1000), *2: Take(s0, 10), *3: Repeat(4, 20), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEachWhile(Range(1000), x:s0->Take(10), y:Repeat(4, 20), y > 3, x->CastR8())
+ForEachWhile(Range(1000), x : s0->Take(10), y : Repeat(4, 20), y $> 3, x->CastR8()) : r8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Take(s0, 10), *3: Repeat(4, 20), *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Repeat(4, 20), [if] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Repeat(4, 20), [if] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Repeat(4, 20), [if] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [if] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), x:s0->Take(10), y:Repeat(4, 20), [while] y > 3, x->CastR8())
+ForEach(Range(1000), x : s0->Take(10), y : Repeat(4, 20), [while] y $> 3, x->CastR8()) : r8*
+Binder : ForEach(*1: Range(1000), *2: Take(s0, 10), *3: Repeat(4, 20), [while] *3 @> 3, CastR8*(*2))
+Reducer: ForEach(*1: Take(s0, 10), *2: Repeat(4, 10), [while] *2 @> 3, Num<r8>(*1))
+###
+> ForEach(Range(1000), Repeat("hi", 17), [3], "data")
+ForEach(Range(1000), Repeat("hi", 17), [3], "data") : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [3], "data")
+Reducer: ["data"]
+###
+> ForEachIf(Range(1000), Repeat("hi", 17), [3], "data") // Error.
+ForEachIf(Range(1000), Repeat("hi", 17), [3], "data") : s*
+*** Error: (41,42) Node: [3], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEachIf*(*1: Range(1000), *2: Repeat("hi", 17), Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [if] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEachWhile(Range(1000), Repeat("hi", 17), [3], "data") // Error.
+ForEachWhile(Range(1000), Repeat("hi", 17), [3], "data") : s*
+*** Error: (44,45) Node: [3], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEachWhile*(*1: Range(1000), *2: Repeat("hi", 17), Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [while] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEach(Range(1000), Repeat("hi", 17), [if] [3], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [if] [3], "data") : s*
+*** Error: (44,45) Node: [3], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), [if] Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [if] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEach(Range(1000), Repeat("hi", 17), [while] [3], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [while] [3], "data") : s*
+*** Error: (47,48) Node: [3], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), [while] Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [while] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEach(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data")
+ForEach(Range(1000), Repeat("hi", 17), [0, 1, 2, 3, 4], "data") : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], "data")
+Reducer: Repeat("data", 5)
+###
+> ForEachIf(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data") // Error.
+ForEachIf(Range(1000), Repeat("hi", 17), [0, 1, 2, 3, 4], "data") : s*
+*** Error: (41,42) Node: [0, 1, 2, 3, 4], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEachIf*(*1: Range(1000), *2: Repeat("hi", 17), Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [if] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEachWhile(Range(1000), Repeat("hi", 17), [0,1,2,3,4], "data") // Error.
+ForEachWhile(Range(1000), Repeat("hi", 17), [0, 1, 2, 3, 4], "data") : s*
+*** Error: (44,45) Node: [0, 1, 2, 3, 4], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEachWhile*(*1: Range(1000), *2: Repeat("hi", 17), Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [while] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEach(Range(1000), Repeat("hi", 17), [if] [0,1,2,3,4], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [if] [0, 1, 2, 3, 4], "data") : s*
+*** Error: (44,45) Node: [0, 1, 2, 3, 4], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), [if] Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [if] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEach(Range(1000), Repeat("hi", 17), [while] [0,1,2,3,4], "data") // Error.
+ForEach(Range(1000), Repeat("hi", 17), [while] [0, 1, 2, 3, 4], "data") : s*
+*** Error: (47,48) Node: [0, 1, 2, 3, 4], Message: Invalid operand type: cannot convert type 'i8*' to 'b'
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), [while] Error(ErrBadType_Src_Dst), "data")
+Reducer: ForEach(*1: Repeat(false, 17), [while] Error(ErrBadType_Src_Dst), "data")
+###
+> ForEachIf(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], x > 5, y)
+ForEachIf(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], x $> 5, y) : s*
+Binder : ForEachIf*(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], *1 @> 5, *2)
+Reducer: ForEach(*1: Range(5), *2: Repeat("hi", 5), [if] *1 @> 5, *2)
+###
+> ForEachWhile(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], x > 5, y)
+ForEachWhile(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], x $> 5, y) : s*
+Binder : ForEachWhile*(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], *1 @> 5, *2)
+Reducer: ForEach(*1: Range(5), *2: Repeat("hi", 5), [while] *1 @> 5, *2)
+###
+> ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [if] x > 5, y)
+ForEach(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], [if] x $> 5, y) : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], [if] *1 @> 5, *2)
+Reducer: ForEach(*1: Range(5), *2: Repeat("hi", 5), [if] *1 @> 5, *2)
+###
+> ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [while] x > 5, y)
+ForEach(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], [while] x $> 5, y) : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], [while] *1 @> 5, *2)
+Reducer: ForEach(*1: Range(5), *2: Repeat("hi", 5), [while] *1 @> 5, *2)
+###
+> ForEachIf(x:s0, y:s1, Range(100), x > 5, y)
+ForEachIf(x : s0, y : s1, Range(100), x $> 5, y) : i4*
+Binder : ForEachIf*(*1: s0, *2: s1, *3: Range(100), *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat(false, 100), [if] *1 @> 5, *2)
+###
+> ForEachWhile(x:s0, y:s1, Range(100), x > 5, y)
+ForEachWhile(x : s0, y : s1, Range(100), x $> 5, y) : i4*
+Binder : ForEachWhile*(*1: s0, *2: s1, *3: Range(100), *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat(false, 100), [while] *1 @> 5, *2)
+###
+> ForEach(x:s0, y:s1, Range(100), [if] x > 5, y)
+ForEach(x : s0, y : s1, Range(100), [if] x $> 5, y) : i4*
+Binder : ForEach(*1: s0, *2: s1, *3: Range(100), [if] *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat(false, 100), [if] *1 @> 5, *2)
+###
+> ForEach(x:s0, y:s1, Range(100), [while] x > 5, y)
+ForEach(x : s0, y : s1, Range(100), [while] x $> 5, y) : i4*
+Binder : ForEach(*1: s0, *2: s1, *3: Range(100), [while] *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat(false, 100), [while] *1 @> 5, *2)
+###
+> ForEachIf(x:s0, y:s1, Repeat("hi", 100), x > 5, y)
+ForEachIf(x : s0, y : s1, Repeat("hi", 100), x $> 5, y) : i4*
+Binder : ForEachIf*(*1: s0, *2: s1, *3: Repeat("hi", 100), *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat("hi", 100), [if] *1 @> 5, *2)
+###
+> ForEachWhile(x:s0, y:s1, Repeat("hi", 100), x > 5, y)
+ForEachWhile(x : s0, y : s1, Repeat("hi", 100), x $> 5, y) : i4*
+Binder : ForEachWhile*(*1: s0, *2: s1, *3: Repeat("hi", 100), *1 @> 5, *2)
+Reducer: ForEach(*1: s0, *2: s1, *3: Repeat("hi", 100), [while] *1 @> 5, *2)
+###
+> ForEach(x:s0, y:s1, Repeat("hi", 100), [if] x > 5, y)
+ForEach(x : s0, y : s1, Repeat("hi", 100), [if] x $> 5, y) : i4*
+Binder : ForEach(*1: s0, *2: s1, *3: Repeat("hi", 100), [if] *1 @> 5, *2)
+###
+> ForEach(x:s0, y:s1, Repeat("hi", 100), [while] x > 5, y)
+ForEach(x : s0, y : s1, Repeat("hi", 100), [while] x $> 5, y) : i4*
+Binder : ForEach(*1: s0, *2: s1, *3: Repeat("hi", 100), [while] *1 @> 5, *2)
+###
+> ForEachIf(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], b, "data")
+ForEachIf(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], b, "data") : s*
+Binder : ForEachIf*(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], b, "data")
+Reducer: ForEach(*1: Repeat(false, 5), [if] b, "data")
+###
+> ForEachWhile(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], b, "data")
+ForEachWhile(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], b, "data") : s*
+Binder : ForEachWhile*(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], b, "data")
+Reducer: ForEach(*1: Repeat(false, 5), [while] b, "data")
+###
+> ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [if] b, "data")
+ForEach(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], [if] b, "data") : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], [if] b, "data")
+Reducer: ForEach(*1: Repeat(false, 5), [if] b, "data")
+###
+> ForEach(x:Range(1000), y:Repeat("hi", 17), [0,1,2,3,4], [while] b, "data")
+ForEach(x : Range(1000), y : Repeat("hi", 17), [0, 1, 2, 3, 4], [while] b, "data") : s*
+Binder : ForEach(*1: Range(1000), *2: Repeat("hi", 17), *3: [0, 1, 2, 3, 4], [while] b, "data")
+Reducer: ForEach(*1: Repeat(false, 5), [while] b, "data")
+###
+> ForEachIf(x:Range(1000), y:Range(100), x > 5, y)
+ForEachIf(x : Range(1000), y : Range(100), x $> 5, y) : i8*
+Binder : ForEachIf*(*1: Range(1000), *2: Range(100), *1 @> 5, *2)
+Reducer: Take(*1: Range(100), [if] *1 @> 5)
+###
+> ForEachWhile(x:Range(1000), y:Range(100), x > 5, y)
+ForEachWhile(x : Range(1000), y : Range(100), x $> 5, y) : i8*
+Binder : ForEachWhile*(*1: Range(1000), *2: Range(100), *1 @> 5, *2)
+Reducer: Take(*1: Range(100), [while] *1 @> 5)
+###
+> ForEach(x:Range(1000), y:Range(100), [if] x > 5, y)
+ForEach(x : Range(1000), y : Range(100), [if] x $> 5, y) : i8*
+Binder : ForEach(*1: Range(1000), *2: Range(100), [if] *1 @> 5, *2)
+Reducer: Take(*1: Range(100), [if] *1 @> 5)
+###
+> ForEach(x:Range(1000), y:Range(100), [while] x > 5, y)
+ForEach(x : Range(1000), y : Range(100), [while] x $> 5, y) : i8*
+Binder : ForEach(*1: Range(1000), *2: Range(100), [while] *1 @> 5, *2)
+Reducer: Take(*1: Range(100), [while] *1 @> 5)
+###
+> ForEachIf(p:ForEach(x:s0, y:s1, x * y), q:Range(17), q mod 3 != 0, p)
+ForEachIf(p : ForEach(x : s0, y : s1, x * y), q : Range(17), q mod 3 !@= 0, p) : i8*
+Binder : ForEachIf*(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *4: Range(17), IntMod(*4, 3) !@= 0, *3)
+Reducer: ForEach(*1: s0, *2: s1, *3: Range(17), [if] IntMod(*3, 3) !@= 0, Mul(*1, Num<i8>(*2)))
+###
+> ForEachWhile(p:ForEach(x:s0, y:s1, x * y), q:Range(17), q mod 3 != 0, p)
+ForEachWhile(p : ForEach(x : s0, y : s1, x * y), q : Range(17), q mod 3 !@= 0, p) : i8*
+Binder : ForEachWhile*(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *4: Range(17), IntMod(*4, 3) !@= 0, *3)
+Reducer: ForEach(*1: s0, *2: s1, *3: Range(17), [while] IntMod(*3, 3) !@= 0, Mul(*1, Num<i8>(*2)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, x * y), q:Range(17), [if] q mod 3 != 0, p)
+ForEach(p : ForEach(x : s0, y : s1, x * y), q : Range(17), [if] q mod 3 !@= 0, p) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *4: Range(17), [if] IntMod(*4, 3) !@= 0, *3)
+Reducer: ForEach(*1: s0, *2: s1, *3: Range(17), [if] IntMod(*3, 3) !@= 0, Mul(*1, Num<i8>(*2)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, x * y), q:Range(17), [while] q mod 3 != 0, p)
+ForEach(p : ForEach(x : s0, y : s1, x * y), q : Range(17), [while] q mod 3 !@= 0, p) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *4: Range(17), [while] IntMod(*4, 3) !@= 0, *3)
+Reducer: ForEach(*1: s0, *2: s1, *3: Range(17), [while] IntMod(*3, 3) !@= 0, Mul(*1, Num<i8>(*2)))
+###
+> ForEachIf(p:ForEach(x:s0, y:s1, (x, y)), p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEachIf(p : ForEach(x : s0, y : s1, (x, y)), p[0] mod 3 !@= 0, p[0] * p[1]) : i8*
+Binder : ForEachIf*(*3: ForEach(*1: s0, *2: s1, (*1, *2)), IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+Reducer: ForEach(*3: ForEach(*1: s0, *2: s1, (*1, *2)), [if] IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+###
+> ForEachWhile(p:ForEach(x:s0, y:s1, (x, y)), p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEachWhile(p : ForEach(x : s0, y : s1, (x, y)), p[0] mod 3 !@= 0, p[0] * p[1]) : i8*
+Binder : ForEachWhile*(*3: ForEach(*1: s0, *2: s1, (*1, *2)), IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+Reducer: ForEach(*3: ForEach(*1: s0, *2: s1, (*1, *2)), [while] IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, (x, y)), [if] p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, (x, y)), [if] p[0] mod 3 !@= 0, p[0] * p[1]) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, (*1, *2)), [if] IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, (x, y)), [while] p[0] mod 3 != 0, p[0] * p[1]) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, (x, y)), [while] p[0] mod 3 !@= 0, p[0] * p[1]) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, (*1, *2)), [while] IntMod(*3.0, 3) !@= 0, Mul(*3.0, Num<i8>(*3.1)))
+###
+> ForEachIf(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEachIf(p : ForEach(x : s0, y : s1, z : s2, (x, y, z)), p[0] mod 3 !@= 0, p[0] * p[1] * p[2]) : i8*
+Binder : ForEachIf*(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+Reducer: ForEach(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), [if] IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+###
+> ForEachWhile(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEachWhile(p : ForEach(x : s0, y : s1, z : s2, (x, y, z)), p[0] mod 3 !@= 0, p[0] * p[1] * p[2]) : i8*
+Binder : ForEachWhile*(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+Reducer: ForEach(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), [while] IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), [if] p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, z : s2, (x, y, z)), [if] p[0] mod 3 !@= 0, p[0] * p[1] * p[2]) : i8*
+Binder : ForEach(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), [if] IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+###
+> ForEach(p:ForEach(x:s0, y:s1, z:s2, (x, y, z)), [while] p[0] mod 3 != 0, p[0] * p[1] * p[2]) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, z : s2, (x, y, z)), [while] p[0] mod 3 !@= 0, p[0] * p[1] * p[2]) : i8*
+Binder : ForEach(*4: ForEach(*1: s0, *2: s1, *3: s2, (*1, *2, *3)), [while] IntMod(*4.0, 3) !@= 0, Mul(*4.0, Num<i8>(*4.1), Num<i8>(*4.2)))
+###
+> ForEachIf(p:ForEach(x:s0, y:s1, x * y), p > 0, p) // Not flattened.
+ForEachIf(p : ForEach(x : s0, y : s1, x * y), p $> 0, p) : i8*
+Binder : ForEachIf*(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *3 @> 0, *3)
+Reducer: Take(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [if] *3 @> 0)
+###
+> ForEachWhile(p:ForEach(x:s0, y:s1, x * y), p > 0, p) // Not flattened.
+ForEachWhile(p : ForEach(x : s0, y : s1, x * y), p $> 0, p) : i8*
+Binder : ForEachWhile*(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), *3 @> 0, *3)
+Reducer: Take(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [while] *3 @> 0)
+###
+> ForEach(p:ForEach(x:s0, y:s1, x * y), [if] p > 0, p) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, x * y), [if] p $> 0, p) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [if] *3 @> 0, *3)
+Reducer: Take(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [if] *3 @> 0)
+###
+> ForEach(p:ForEach(x:s0, y:s1, x * y), [while] p > 0, p) // Not flattened.
+ForEach(p : ForEach(x : s0, y : s1, x * y), [while] p $> 0, p) : i8*
+Binder : ForEach(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [while] *3 @> 0, *3)
+Reducer: Take(*3: ForEach(*1: s0, *2: s1, Mul(*1, Num<i8>(*2))), [while] *3 @> 0)
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), i * 2)
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), Mul(*2, 2))
+Reducer: ForEach(*1: s0, [if] *1 @< 7, Mul(Add(*1, 1), 2))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: s1, (i, j))
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), j : s1, (i, j)) : (i8, i4)*
+Binder : ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *3: s1, (*2, *3))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, [if] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), j : ForEach(s1, [if] it $< 15, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, [if] Num<i8>(*2) @< 15, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, [while] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), j : ForEach(s1, [while] it $< 15, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, [while] Num<i8>(*2) @< 15, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+Reducer: ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *3: s1, [while] Num<i8>(*3) @< 15, (*2, Add(Num<i8>(*3), [-] 1)))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), j: ForEach(s1, it - 1), (i, j))
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), j : ForEach(s1, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+Reducer: ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), *3: s1, (*2, Add(Num<i8>(*3), [-] 1)))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), i * 2)
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), Mul(*2, 2))
+Reducer: ForEach(*1: s0, [while] *1 @< 7, Mul(Add(*1, 1), 2))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: s1, (i, j))
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), j : s1, (i, j)) : (i8, i4)*
+Binder : ForEach(*2: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), *3: s1, (*2, *3))
+Reducer: ForEach(*1: s0, *2: s1, [while] *1 @< 7, (Add(*1, 1), *2))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, [while] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), j : ForEach(s1, [while] it $< 15, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, [while] Num<i8>(*2) @< 15, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+Reducer: ForEach(*1: s0, *2: s1, [while] And(*1 @< 7, Num<i8>(*2) @< 15), (Add(*1, 1), Add(Num<i8>(*2), [-] 1)))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, [if] it < 15, it - 1), (i, j))
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), j : ForEach(s1, [if] it $< 15, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, [if] Num<i8>(*2) @< 15, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+Reducer: ForEach(*2: s0, *3: ForEach(*1: s1, [if] Num<i8>(*1) @< 15, Add(Num<i8>(*1), [-] 1)), [while] *2 @< 7, (Add(*2, 1), *3))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), j: ForEach(s1, it - 1), (i, j))
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), j : ForEach(s1, it - 1), (i, j)) : (i8, i8)*
+Binder : ForEach(*3: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), *4: ForEach(*2: s1, Add(Num<i8>(*2), [-] 1)), (*3, *4))
+Reducer: ForEach(*1: s0, *2: s1, [while] *1 @< 7, (Add(*1, 1), Add(Num<i8>(*2), [-] 1)))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), [if] it > 3, i * 2) // Not flattened.
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), [if] it $> 3, i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), [if] *2 @> 3, Mul(*2, 2))
+###
+> ForEach(i: ForEach(s0, [if] it < 7, it + 1), [while] it > 3, i * 2) // Not flattened.
+ForEach(i : ForEach(s0, [if] it $< 7, it + 1), [while] it $> 3, i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [if] *1 @< 7, Add(*1, 1)), [while] *2 @> 3, Mul(*2, 2))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), [if] it > 3, i * 2) // Not flattened.
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), [if] it $> 3, i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), [if] *2 @> 3, Mul(*2, 2))
+###
+> ForEach(i: ForEach(s0, [while] it < 7, it + 1), [while] it > 3, i * 2) // Not flattened.
+ForEach(i : ForEach(s0, [while] it $< 7, it + 1), [while] it $> 3, i * 2) : i8*
+Binder : ForEach(*2: ForEach(*1: s0, [while] *1 @< 7, Add(*1, 1)), [while] *2 @> 3, Mul(*2, 2))
+###

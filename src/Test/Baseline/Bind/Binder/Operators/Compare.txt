@@ -1,0 +1,1458 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 3    !~= 5
+Corrected by binder: [3    != 5]
+3 !~@= 5 : b
+*** Warning: (6,7) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3    ~!= 5
+Corrected by binder: [3    != 5]
+3 !~@= 5 : b
+*** Warning: (5,6) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 not ~= 5
+Corrected by binder: [3 not = 5]
+3 !~@= 5 : b
+*** Warning: (6,7) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3  ~not= 5
+Corrected by binder: [3  not= 5]
+3 !~@= 5 : b
+*** Warning: (3,4) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 ==    5
+3 @= 5 : b
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '=', Message: Redundant '='
+Binder : 3 @= 5
+Reducer: false
+###
+> 3  <>   5
+3 $< (<missing>) $> 5 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '>', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (4,5) Node: (<missing>), Message: Expected an operand
+Binder : 3 @< Unit<i8>(<missing>) @> 5
+Reducer: false
+###
+> 3 !<>   5
+3 !$< (<missing>) $> 5 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '>', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (4,5) Node: (<missing>), Message: Expected an operand
+Binder : 3 @>= Unit<i8>(<missing>) @> 5
+Reducer: false
+###
+> 3 !     5
+3[5] : i8
+=== Parse diagnostics:
+*** Warning: (2,3) Tok: '!', Message: This form of tuple item access is deprecated, use '[<slot>]' instead
+=== Bind diagnostics:
+*** Error: (2,3) Node: 3[5], Message: Operand must be either a tensor or a tuple
+Binder : Error(ErrNotIndexable)
+=== Corrected by parser: [3 [5]]
+3[5] : i8
+*** Error: (2,3) Node: 3[5], Message: Operand must be either a tensor or a tuple
+Binder : Error(ErrNotIndexable)
+###
+> 3 !~    5
+Corrected by binder: [3 !    5]
+3 !~@= 5 : b
+=== Parse diagnostics:
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (3,4) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 !~=    5]
+Corrected by binder: [3 !=    5]
+3 !~@= 5 : b
+*** Warning: (3,4) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 ~ not 5
+Corrected by binder: [3  not 5]
+3 !~@= 5 : b
+=== Parse diagnostics:
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (2,3) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 ~ not = 5]
+Corrected by binder: [3  not = 5]
+3 !~@= 5 : b
+*** Warning: (2,3) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 not ~ 5
+Corrected by binder: [3 not  5]
+3 !~@= 5 : b
+=== Parse diagnostics:
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (6,7) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 not ~= 5]
+Corrected by binder: [3 not = 5]
+3 !~@= 5 : b
+*** Warning: (6,7) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 ~!    5
+Corrected by binder: [3 !    5]
+3 !~@= 5 : b
+=== Parse diagnostics:
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (2,3) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 ~!=    5]
+Corrected by binder: [3 !=    5]
+3 !~@= 5 : b
+*** Warning: (2,3) Node: 3 !~@= 5, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 !!    5
+3 !@= 5 : b
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '!', Message: Redundant '!'
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 !=    5]
+3 !@= 5 : b
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 ! not 5
+3 !@= 5 : b
+=== Parse diagnostics:
+*** Error: (4,7) Tok: 'not', Message: Redundant 'not'
+*** Error: (8,9) Tok: '5', Message: Expected a comparison operator
+Binder : 3 !@= 5
+Reducer: true
+=== Corrected by parser: [3 !=  5]
+3 !@= 5 : b
+Binder : 3 !@= 5
+Reducer: true
+###
+> 3 ! ~ ~ not =  7
+Corrected by binder: [3 !  ~ not =  7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 ! ~   =  7]
+Corrected by binder: [3 !    =  7]
+3 !~@= 7 : b
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ! ~ ~ not <  7
+Corrected by binder: [3 !  ~ not <  7]
+3 !~$< 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~$< 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @>= 7
+Reducer: false
+=== Corrected by parser: [3 ! ~   <  7]
+Corrected by binder: [3 !    <  7]
+3 !~$< 7 : b
+*** Warning: (4,5) Node: 3 !~$< 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @>= 7
+Reducer: false
+###
+> 3 ! ~ ~ not >  7
+Corrected by binder: [3 !  ~ not >  7]
+3 !~$> 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~$> 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @<= 7
+Reducer: true
+=== Corrected by parser: [3 ! ~   >  7]
+Corrected by binder: [3 !    >  7]
+3 !~$> 7 : b
+*** Warning: (4,5) Node: 3 !~$> 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @<= 7
+Reducer: true
+###
+> 3 ! ~ ~ not <= 7
+Corrected by binder: [3 !  ~ not <= 7]
+3 !~$<= 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~$<= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @> 7
+Reducer: false
+=== Corrected by parser: [3 ! ~   <= 7]
+Corrected by binder: [3 !    <= 7]
+3 !~$<= 7 : b
+*** Warning: (4,5) Node: 3 !~$<= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @> 7
+Reducer: false
+###
+> 3 ! ~ ~ not >= 7
+Corrected by binder: [3 !  ~ not >= 7]
+3 !~$>= 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~$>= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @< 7
+Reducer: true
+=== Corrected by parser: [3 ! ~   >= 7]
+Corrected by binder: [3 !    >= 7]
+3 !~$>= 7 : b
+*** Warning: (4,5) Node: 3 !~$>= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @< 7
+Reducer: true
+###
+> 3 ! ~ ~ not 7
+Corrected by binder: [3 !  ~ not 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 ! ~=   7]
+Corrected by binder: [3 ! =   7]
+3 !~@= 7 : b
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ! ~ not ~ 7
+Corrected by binder: [3 !  not ~ 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (6,9) Tok: 'not', Message: Redundant 'not'
+*** Error: (10,11) Tok: '~', Message: Redundant '~'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 ! ~=   7]
+Corrected by binder: [3 ! =   7]
+3 !~@= 7 : b
+*** Warning: (4,5) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ! not ~ ~ 7
+Corrected by binder: [3 ! not  ~ 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (4,7) Tok: 'not', Message: Redundant 'not'
+*** Error: (10,11) Tok: '~', Message: Redundant '~'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (8,9) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 !  ~=  7]
+Corrected by binder: [3 !  =  7]
+3 !~@= 7 : b
+*** Warning: (5,6) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 not ! ! ~ 7
+Corrected by binder: [3 not ! !  7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (6,7) Tok: '!', Message: Redundant '!'
+*** Error: (8,9) Tok: '!', Message: Redundant '!'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (10,11) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 not   ~= 7]
+Corrected by binder: [3 not   = 7]
+3 !~@= 7 : b
+*** Warning: (8,9) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 !   ~ ~ ! 7
+Corrected by binder: [3 !    ~ ! 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (8,9) Tok: '~', Message: Redundant '~'
+*** Error: (10,11) Tok: '!', Message: Redundant '!'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (6,7) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 !   ~=   7]
+Corrected by binder: [3 !   =   7]
+3 !~@= 7 : b
+*** Warning: (6,7) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ~ ~ not ~ 7
+Corrected by binder: [3  ~ not ~ 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '~', Message: Redundant '~'
+*** Error: (10,11) Tok: '~', Message: Redundant '~'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (2,3) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 ~  not =  7]
+Corrected by binder: [3   not =  7]
+3 !~@= 7 : b
+*** Warning: (2,3) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ~ ~ ~ not 7
+Corrected by binder: [3  ~ ~ not 7]
+3 !~@= 7 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '~', Message: Redundant '~'
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (2,3) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 ~   not = 7]
+Corrected by binder: [3    not = 7]
+3 !~@= 7 : b
+*** Warning: (2,3) Node: 3 !~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 !@= 7
+Reducer: true
+###
+> 3 ~ ~ ~ ~   7
+Corrected by binder: [3  ~ ~ ~   7]
+3 ~@= 7 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '~', Message: Redundant '~'
+*** Error: (6,7) Tok: '~', Message: Redundant '~'
+*** Error: (8,9) Tok: '~', Message: Redundant '~'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+=== Bind diagnostics:
+*** Warning: (2,3) Node: 3 ~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @= 7
+Reducer: false
+=== Corrected by parser: [3 ~=      7]
+Corrected by binder: [3 =      7]
+3 ~@= 7 : b
+*** Warning: (2,3) Node: 3 ~@= 7, Tok: '~', Message: Case insensitive comparison doesn't apply to type 'i8'
+Binder : 3 @= 7
+Reducer: false
+###
+> 3 ! ! ! not 7
+3 !@= 7 : b
+=== Parse diagnostics:
+*** Error: (4,5) Tok: '!', Message: Redundant '!'
+*** Error: (6,7) Tok: '!', Message: Redundant '!'
+*** Error: (8,11) Tok: 'not', Message: Redundant 'not'
+*** Error: (12,13) Tok: '7', Message: Expected a comparison operator
+Binder : 3 !@= 7
+Reducer: true
+=== Corrected by parser: [3 !=    7]
+3 !@= 7 : b
+Binder : 3 !@= 7
+Reducer: true
+###
+> CastTime()  = CastTime()
+CastTime() @= CastTime() : b
+Binder : CastTime*() @= CastTime*()
+Reducer: true
+###
+> CastTime() <  CastTime()
+CastTime() $< CastTime() : b
+Binder : CastTime*() @< CastTime*()
+Reducer: false
+###
+> CastTime() <= CastTime()
+CastTime() $<= CastTime() : b
+Binder : CastTime*() @<= CastTime*()
+Reducer: true
+###
+> CastTime() >  CastTime()
+CastTime() $> CastTime() : b
+Binder : CastTime*() @> CastTime*()
+Reducer: false
+###
+> CastTime() >= CastTime()
+CastTime() $>= CastTime() : b
+Binder : CastTime*() @>= CastTime*()
+Reducer: true
+###
+> CastGuid()  = CastGuid()
+CastGuid() @= CastGuid() : b
+Binder : CastGuid() @= CastGuid()
+Reducer: true
+###
+> CastGuid() <  CastGuid()
+CastGuid() $< CastGuid() : b
+Binder : CastGuid() @< CastGuid()
+Reducer: false
+###
+> CastGuid() <= CastGuid()
+CastGuid() $<= CastGuid() : b
+Binder : CastGuid() @<= CastGuid()
+Reducer: true
+###
+> CastGuid() >  CastGuid()
+CastGuid() $> CastGuid() : b
+Binder : CastGuid() @> CastGuid()
+Reducer: false
+###
+> CastGuid() >= CastGuid()
+CastGuid() $>= CastGuid() : b
+Binder : CastGuid() @>= CastGuid()
+Reducer: true
+###
+
+**** New globals: {t1:(i8, s, b), t2:(i4, s, i2), t3:(r8, s, u1), t4:(i8?, s, b), tb:(i8, s, b*), tx:(i8, b, b)}
+**** Add globals: {qt1:(i8, s, b)?, qt2:(i4, s, i2)?, qt3:(r8, s, u1)?, qt4:(i8?, s, b)?, qtb:(i8, s, b*)?, qtx:(i8, b, b)?}
+
+> t1  = t1
+t1 @= t1 : b
+Binder : t1 @= t1
+###
+> t1  = t2
+t1 @= t2 : b
+Binder : With(!1: t1, (!1.0, !1.1, Num<i2>(!1.2))) @= With(!2: t2, (Num<i8>(!2.0), !2.1, !2.2))
+Reducer: (t1.0, t1.1, Num<i2>(t1.2)) @= (Num<i8>(t2.0), t2.1, t2.2)
+###
+> t1  = t3
+t1 @= t3 : b
+Binder : With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2))) @= t3
+Reducer: (Num<r8>(t1.0), t1.1, Num<u1>(t1.2)) @= t3
+###
+> t1  = t4
+t1 @= t4 : b
+Binder : With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2)) @= t4
+Reducer: (Opt<i8?>(t1.0), t1.1, t1.2) @= t4
+###
+> t2  = t1
+t2 @= t1 : b
+Binder : With(!1: t2, (Num<i8>(!1.0), !1.1, !1.2)) @= With(!2: t1, (!2.0, !2.1, Num<i2>(!2.2)))
+Reducer: (Num<i8>(t2.0), t2.1, t2.2) @= (t1.0, t1.1, Num<i2>(t1.2))
+###
+> t3  = t1
+t3 @= t1 : b
+Binder : t3 @= With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2)))
+Reducer: t3 @= (Num<r8>(t1.0), t1.1, Num<u1>(t1.2))
+###
+> t4  = t1
+t4 @= t1 : b
+Binder : t4 @= With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2))
+Reducer: t4 @= (Opt<i8?>(t1.0), t1.1, t1.2)
+###
+> t1 != t1
+t1 !@= t1 : b
+Binder : t1 !@= t1
+###
+> t1 != t2
+t1 !@= t2 : b
+Binder : With(!1: t1, (!1.0, !1.1, Num<i2>(!1.2))) !@= With(!2: t2, (Num<i8>(!2.0), !2.1, !2.2))
+Reducer: (t1.0, t1.1, Num<i2>(t1.2)) !@= (Num<i8>(t2.0), t2.1, t2.2)
+###
+> t1 != t3
+t1 !@= t3 : b
+Binder : With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2))) !@= t3
+Reducer: (Num<r8>(t1.0), t1.1, Num<u1>(t1.2)) !@= t3
+###
+> t1 != t4
+t1 !@= t4 : b
+Binder : With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2)) !@= t4
+Reducer: (Opt<i8?>(t1.0), t1.1, t1.2) !@= t4
+###
+> t2 != t1
+t2 !@= t1 : b
+Binder : With(!1: t2, (Num<i8>(!1.0), !1.1, !1.2)) !@= With(!2: t1, (!2.0, !2.1, Num<i2>(!2.2)))
+Reducer: (Num<i8>(t2.0), t2.1, t2.2) !@= (t1.0, t1.1, Num<i2>(t1.2))
+###
+> t3 != t1
+t3 !@= t1 : b
+Binder : t3 !@= With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2)))
+Reducer: t3 !@= (Num<r8>(t1.0), t1.1, Num<u1>(t1.2))
+###
+> t4 != t1
+t4 !@= t1 : b
+Binder : t4 !@= With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2))
+Reducer: t4 !@= (Opt<i8?>(t1.0), t1.1, t1.2)
+###
+> qt1  = t1
+qt1 @= t1 : b
+Binder : qt1 @= t1
+###
+> qt1  = t2
+qt1 @= t2 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (!2.0, !2.1, Num<i2>(!2.2)))) @= With(!3: t2, (Num<i8>(!3.0), !3.1, !3.2))
+Reducer: Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2))) @= (Num<i8>(t2.0), t2.1, t2.2)
+###
+> qt1  = t3
+qt1 @= t3 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2)))) @= t3
+Reducer: Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2))) @= t3
+###
+> qt1  = t4
+qt1 @= t4 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2))) @= t4
+Reducer: Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2)) @= t4
+###
+> qt2  = t1
+qt2 @= t1 : b
+Binder : Guard(?1: qt2, With(!2: ?1, (Num<i8>(!2.0), !2.1, !2.2))) @= With(!3: t1, (!3.0, !3.1, Num<i2>(!3.2)))
+Reducer: Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2)) @= (t1.0, t1.1, Num<i2>(t1.2))
+###
+> qt3  = t1
+qt3 @= t1 : b
+Binder : qt3 @= With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2)))
+Reducer: qt3 @= (Num<r8>(t1.0), t1.1, Num<u1>(t1.2))
+###
+> qt4  = t1
+qt4 @= t1 : b
+Binder : qt4 @= With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2))
+Reducer: qt4 @= (Opt<i8?>(t1.0), t1.1, t1.2)
+###
+> qt1 != t1
+qt1 !@= t1 : b
+Binder : qt1 !@= t1
+###
+> qt1 != t2
+qt1 !@= t2 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (!2.0, !2.1, Num<i2>(!2.2)))) !@= With(!3: t2, (Num<i8>(!3.0), !3.1, !3.2))
+Reducer: Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2))) !@= (Num<i8>(t2.0), t2.1, t2.2)
+###
+> qt1 != t3
+qt1 !@= t3 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2)))) !@= t3
+Reducer: Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2))) !@= t3
+###
+> qt1 != t4
+qt1 !@= t4 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2))) !@= t4
+Reducer: Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2)) !@= t4
+###
+> qt2 != t1
+qt2 !@= t1 : b
+Binder : Guard(?1: qt2, With(!2: ?1, (Num<i8>(!2.0), !2.1, !2.2))) !@= With(!3: t1, (!3.0, !3.1, Num<i2>(!3.2)))
+Reducer: Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2)) !@= (t1.0, t1.1, Num<i2>(t1.2))
+###
+> qt3 != t1
+qt3 !@= t1 : b
+Binder : qt3 !@= With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2)))
+Reducer: qt3 !@= (Num<r8>(t1.0), t1.1, Num<u1>(t1.2))
+###
+> qt4 != t1
+qt4 !@= t1 : b
+Binder : qt4 !@= With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2))
+Reducer: qt4 !@= (Opt<i8?>(t1.0), t1.1, t1.2)
+###
+> t1  = qt1
+t1 @= qt1 : b
+Binder : t1 @= qt1
+###
+> t1  = qt2
+t1 @= qt2 : b
+Binder : With(!1: t1, (!1.0, !1.1, Num<i2>(!1.2))) @= Guard(?2: qt2, With(!3: ?2, (Num<i8>(!3.0), !3.1, !3.2)))
+Reducer: (t1.0, t1.1, Num<i2>(t1.2)) @= Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2))
+###
+> t1  = qt3
+t1 @= qt3 : b
+Binder : With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2))) @= qt3
+Reducer: (Num<r8>(t1.0), t1.1, Num<u1>(t1.2)) @= qt3
+###
+> t1  = qt4
+t1 @= qt4 : b
+Binder : With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2)) @= qt4
+Reducer: (Opt<i8?>(t1.0), t1.1, t1.2) @= qt4
+###
+> t2  = qt1
+t2 @= qt1 : b
+Binder : With(!1: t2, (Num<i8>(!1.0), !1.1, !1.2)) @= Guard(?2: qt1, With(!3: ?2, (!3.0, !3.1, Num<i2>(!3.2))))
+Reducer: (Num<i8>(t2.0), t2.1, t2.2) @= Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2)))
+###
+> t3  = qt1
+t3 @= qt1 : b
+Binder : t3 @= Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2))))
+Reducer: t3 @= Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2)))
+###
+> t4  = qt1
+t4 @= qt1 : b
+Binder : t4 @= Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2)))
+Reducer: t4 @= Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2))
+###
+> t1 != qt1
+t1 !@= qt1 : b
+Binder : t1 !@= qt1
+###
+> t1 != qt2
+t1 !@= qt2 : b
+Binder : With(!1: t1, (!1.0, !1.1, Num<i2>(!1.2))) !@= Guard(?2: qt2, With(!3: ?2, (Num<i8>(!3.0), !3.1, !3.2)))
+Reducer: (t1.0, t1.1, Num<i2>(t1.2)) !@= Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2))
+###
+> t1 != qt3
+t1 !@= qt3 : b
+Binder : With(!1: t1, (Num<r8>(!1.0), !1.1, Num<u1>(!1.2))) !@= qt3
+Reducer: (Num<r8>(t1.0), t1.1, Num<u1>(t1.2)) !@= qt3
+###
+> t1 != qt4
+t1 !@= qt4 : b
+Binder : With(!1: t1, (Opt<i8?>(!1.0), !1.1, !1.2)) !@= qt4
+Reducer: (Opt<i8?>(t1.0), t1.1, t1.2) !@= qt4
+###
+> t2 != qt1
+t2 !@= qt1 : b
+Binder : With(!1: t2, (Num<i8>(!1.0), !1.1, !1.2)) !@= Guard(?2: qt1, With(!3: ?2, (!3.0, !3.1, Num<i2>(!3.2))))
+Reducer: (Num<i8>(t2.0), t2.1, t2.2) !@= Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2)))
+###
+> t3 != qt1
+t3 !@= qt1 : b
+Binder : t3 !@= Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2))))
+Reducer: t3 !@= Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2)))
+###
+> t4 != qt1
+t4 !@= qt1 : b
+Binder : t4 !@= Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2)))
+Reducer: t4 !@= Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2))
+###
+> qt1  = qt1
+qt1 @= qt1 : b
+Binder : qt1 @= qt1
+###
+> qt1  = qt2
+qt1 @= qt2 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (!2.0, !2.1, Num<i2>(!2.2)))) @= Guard(?3: qt2, With(!4: ?3, (Num<i8>(!4.0), !4.1, !4.2)))
+Reducer: Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2))) @= Guard(?2: qt2, (Num<i8>(?2.0), ?2.1, ?2.2))
+###
+> qt1  = qt3
+qt1 @= qt3 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2)))) @= qt3
+Reducer: Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2))) @= qt3
+###
+> qt1  = qt4
+qt1 @= qt4 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2))) @= qt4
+Reducer: Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2)) @= qt4
+###
+> qt2  = qt1
+qt2 @= qt1 : b
+Binder : Guard(?1: qt2, With(!2: ?1, (Num<i8>(!2.0), !2.1, !2.2))) @= Guard(?3: qt1, With(!4: ?3, (!4.0, !4.1, Num<i2>(!4.2))))
+Reducer: Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2)) @= Guard(?2: qt1, (?2.0, ?2.1, Num<i2>(?2.2)))
+###
+> qt3  = qt1
+qt3 @= qt1 : b
+Binder : qt3 @= Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2))))
+Reducer: qt3 @= Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2)))
+###
+> qt4  = qt1
+qt4 @= qt1 : b
+Binder : qt4 @= Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2)))
+Reducer: qt4 @= Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2))
+###
+> qt1 != qt1
+qt1 !@= qt1 : b
+Binder : qt1 !@= qt1
+###
+> qt1 != qt2
+qt1 !@= qt2 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (!2.0, !2.1, Num<i2>(!2.2)))) !@= Guard(?3: qt2, With(!4: ?3, (Num<i8>(!4.0), !4.1, !4.2)))
+Reducer: Guard(?1: qt1, (?1.0, ?1.1, Num<i2>(?1.2))) !@= Guard(?2: qt2, (Num<i8>(?2.0), ?2.1, ?2.2))
+###
+> qt1 != qt3
+qt1 !@= qt3 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2)))) !@= qt3
+Reducer: Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2))) !@= qt3
+###
+> qt1 != qt4
+qt1 !@= qt4 : b
+Binder : Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2))) !@= qt4
+Reducer: Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2)) !@= qt4
+###
+> qt2 != qt1
+qt2 !@= qt1 : b
+Binder : Guard(?1: qt2, With(!2: ?1, (Num<i8>(!2.0), !2.1, !2.2))) !@= Guard(?3: qt1, With(!4: ?3, (!4.0, !4.1, Num<i2>(!4.2))))
+Reducer: Guard(?1: qt2, (Num<i8>(?1.0), ?1.1, ?1.2)) !@= Guard(?2: qt1, (?2.0, ?2.1, Num<i2>(?2.2)))
+###
+> qt3 != qt1
+qt3 !@= qt1 : b
+Binder : qt3 !@= Guard(?1: qt1, With(!2: ?1, (Num<r8>(!2.0), !2.1, Num<u1>(!2.2))))
+Reducer: qt3 !@= Guard(?1: qt1, (Num<r8>(?1.0), ?1.1, Num<u1>(?1.2)))
+###
+> qt4 != qt1
+qt4 !@= qt1 : b
+Binder : qt4 !@= Guard(?1: qt1, With(!2: ?1, (Opt<i8?>(!2.0), !2.1, !2.2)))
+Reducer: qt4 !@= Guard(?1: qt1, (Opt<i8?>(?1.0), ?1.1, ?1.2))
+###
+> t1   = t1
+t1 @= t1 : b
+Binder : t1 @= t1
+###
+> t1  ~= t1
+t1 ~@= t1 : b
+Binder : t1 ~@= t1
+###
+> t1 ! = t1
+t1 !@= t1 : b
+Binder : t1 !@= t1
+###
+> t1 !~= t1
+t1 !~@= t1 : b
+Binder : t1 !~@= t1
+###
+> tx   = tx
+tx @= tx : b
+Binder : tx @= tx
+###
+> tx  ~= tx
+Corrected by binder: [tx  = tx]
+tx ~@= tx : b
+*** Warning: (4,5) Node: tx ~@= tx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : tx @= tx
+###
+> tx ! = tx
+tx !@= tx : b
+Binder : tx !@= tx
+###
+> tx !~= tx
+Corrected by binder: [tx != tx]
+tx !~@= tx : b
+*** Warning: (4,5) Node: tx !~@= tx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : tx !@= tx
+###
+> qt1   = t1
+qt1 @= t1 : b
+Binder : qt1 @= t1
+###
+> qt1  ~= t1
+qt1 ~@= t1 : b
+Binder : qt1 ~@= t1
+###
+> qt1 ! = t1
+qt1 !@= t1 : b
+Binder : qt1 !@= t1
+###
+> qt1 !~= t1
+qt1 !~@= t1 : b
+Binder : qt1 !~@= t1
+###
+> qtx   = tx
+qtx @= tx : b
+Binder : qtx @= tx
+###
+> qtx  ~= tx
+Corrected by binder: [qtx  = tx]
+qtx ~@= tx : b
+*** Warning: (5,6) Node: qtx ~@= tx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : qtx @= tx
+###
+> qtx ! = tx
+qtx !@= tx : b
+Binder : qtx !@= tx
+###
+> qtx !~= tx
+Corrected by binder: [qtx != tx]
+qtx !~@= tx : b
+*** Warning: (5,6) Node: qtx !~@= tx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : qtx !@= tx
+###
+> t1   = qt1
+t1 @= qt1 : b
+Binder : t1 @= qt1
+###
+> t1  ~= qt1
+t1 ~@= qt1 : b
+Binder : t1 ~@= qt1
+###
+> t1 ! = qt1
+t1 !@= qt1 : b
+Binder : t1 !@= qt1
+###
+> t1 !~= qt1
+t1 !~@= qt1 : b
+Binder : t1 !~@= qt1
+###
+> tx   = qtx
+tx @= qtx : b
+Binder : tx @= qtx
+###
+> tx  ~= qtx
+Corrected by binder: [tx  = qtx]
+tx ~@= qtx : b
+*** Warning: (4,5) Node: tx ~@= qtx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : tx @= qtx
+###
+> tx ! = qtx
+tx !@= qtx : b
+Binder : tx !@= qtx
+###
+> tx !~= qtx
+Corrected by binder: [tx != qtx]
+tx !~@= qtx : b
+*** Warning: (4,5) Node: tx !~@= qtx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : tx !@= qtx
+###
+> qt1   = qt1
+qt1 @= qt1 : b
+Binder : qt1 @= qt1
+###
+> qt1  ~= qt1
+qt1 ~@= qt1 : b
+Binder : qt1 ~@= qt1
+###
+> qt1 ! = qt1
+qt1 !@= qt1 : b
+Binder : qt1 !@= qt1
+###
+> qt1 !~= qt1
+qt1 !~@= qt1 : b
+Binder : qt1 !~@= qt1
+###
+> qtx   = qtx
+qtx @= qtx : b
+Binder : qtx @= qtx
+###
+> qtx  ~= qtx
+Corrected by binder: [qtx  = qtx]
+qtx ~@= qtx : b
+*** Warning: (5,6) Node: qtx ~@= qtx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : qtx @= qtx
+###
+> qtx ! = qtx
+qtx !@= qtx : b
+Binder : qtx !@= qtx
+###
+> qtx !~= qtx
+Corrected by binder: [qtx != qtx]
+qtx !~@= qtx : b
+*** Warning: (5,6) Node: qtx !~@= qtx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '(i8, b, b)'
+Binder : qtx !@= qtx
+###
+> t1  = tx
+t1 @= tx : b
+*** Error: (6,8) Node: tx, Message: Invalid operand type: cannot convert type '(i8, b, b)' to '(i8, s, b)'
+Binder : t1 @= Error(ErrBadType_Src_Dst)
+###
+> tx  = t1
+tx @= t1 : b
+*** Error: (6,8) Node: t1, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, b, b)'
+Binder : tx @= Error(ErrBadType_Src_Dst)
+###
+> t1  = tb
+t1 @= tb : b
+*** Error: (6,8) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to '(i8, s, b)'
+Binder : t1 @= Error(ErrBadType_Src_Dst)
+###
+> tb  = tb
+tb @= tb : b
+*** Error: (0,2) Node: tb, Message: Equality comparison is not supported for items of type '(i8, s, b*)'
+*** Error: (0,2) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to 'i8'
+*** Error: (6,8) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) @= Error(ErrBadType_Src_Dst)
+###
+> t1 != tx
+t1 !@= tx : b
+*** Error: (6,8) Node: tx, Message: Invalid operand type: cannot convert type '(i8, b, b)' to '(i8, s, b)'
+Binder : t1 !@= Error(ErrBadType_Src_Dst)
+###
+> tx != t1
+tx !@= t1 : b
+*** Error: (6,8) Node: t1, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, b, b)'
+Binder : tx !@= Error(ErrBadType_Src_Dst)
+###
+> t1 != tb
+t1 !@= tb : b
+*** Error: (6,8) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to '(i8, s, b)'
+Binder : t1 !@= Error(ErrBadType_Src_Dst)
+###
+> tb != tb
+tb !@= tb : b
+*** Error: (0,2) Node: tb, Message: Equality comparison is not supported for items of type '(i8, s, b*)'
+*** Error: (0,2) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to 'i8'
+*** Error: (6,8) Node: tb, Message: Invalid operand type: cannot convert type '(i8, s, b*)' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) !@= Error(ErrBadType_Src_Dst)
+###
+> t1  < t1
+t1 $< t1 : b
+*** Error: (0,2) Node: t1, Message: Ordered comparison is not supported for items of type '(i8, s, b)'
+*** Error: (0,2) Node: t1, Message: Invalid operand type: cannot convert type '(i8, s, b)' to 'i8'
+*** Error: (6,8) Node: t1, Message: Invalid operand type: cannot convert type '(i8, s, b)' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) @< Error(ErrBadType_Src_Dst)
+###
+
+**** New globals: {r1:{A:i8, B:s, C:b}, r2:{A:i4, B:s, C:i2}, r3:{A:r8, B:s, C:u1}, r4:{A:i8?, B:s, C:b}, rb:{A:i8, B:s, C:b*}, rx:{A:i8, B:b, C:b}}
+**** Add globals: {qr1:{A:i8, B:s, C:b}?, qr2:{A:i4, B:s, C:i2}?, qr3:{A:r8, B:s, C:u1}?, qr4:{A:i8?, B:s, C:b}?, qrb:{A:i8, B:s, C:b*}?, qrx:{A:i8, B:b, C:b}?}
+
+> r1  = r1
+r1 @= r1 : b
+Binder : r1 @= r1
+###
+> r1  = r2
+r1 @= r2 : b
+Binder : With(!1: r1, {A:!1.A, B:!1.B, C:Num<i2>(!1.C)}) @= With(!2: r2, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})
+Reducer: {A:r1.A, B:r1.B, C:Num<i2>(r1.C)} @= {A:Num<i8>(r2.A), B:r2.B, C:r2.C}
+###
+> r1  = r3
+r1 @= r3 : b
+Binder : With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)}) @= r3
+Reducer: {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)} @= r3
+###
+> r1  = r4
+r1 @= r4 : b
+Binder : Ref<{A:i8?, B:s, C:b}>(r1) @= r4
+###
+> r2  = r1
+r2 @= r1 : b
+Binder : With(!1: r2, {A:Num<i8>(!1.A), B:!1.B, C:!1.C}) @= With(!2: r1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})
+Reducer: {A:Num<i8>(r2.A), B:r2.B, C:r2.C} @= {A:r1.A, B:r1.B, C:Num<i2>(r1.C)}
+###
+> r3  = r1
+r3 @= r1 : b
+Binder : r3 @= With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)})
+Reducer: r3 @= {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)}
+###
+> r4  = r1
+r4 @= r1 : b
+Binder : r4 @= Ref<{A:i8?, B:s, C:b}>(r1)
+###
+> r1 != r1
+r1 !@= r1 : b
+Binder : r1 !@= r1
+###
+> r1 != r2
+r1 !@= r2 : b
+Binder : With(!1: r1, {A:!1.A, B:!1.B, C:Num<i2>(!1.C)}) !@= With(!2: r2, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})
+Reducer: {A:r1.A, B:r1.B, C:Num<i2>(r1.C)} !@= {A:Num<i8>(r2.A), B:r2.B, C:r2.C}
+###
+> r1 != r3
+r1 !@= r3 : b
+Binder : With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)}) !@= r3
+Reducer: {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)} !@= r3
+###
+> r1 != r4
+r1 !@= r4 : b
+Binder : Ref<{A:i8?, B:s, C:b}>(r1) !@= r4
+###
+> r2 != r1
+r2 !@= r1 : b
+Binder : With(!1: r2, {A:Num<i8>(!1.A), B:!1.B, C:!1.C}) !@= With(!2: r1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})
+Reducer: {A:Num<i8>(r2.A), B:r2.B, C:r2.C} !@= {A:r1.A, B:r1.B, C:Num<i2>(r1.C)}
+###
+> r3 != r1
+r3 !@= r1 : b
+Binder : r3 !@= With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)})
+Reducer: r3 !@= {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)}
+###
+> r4 != r1
+r4 !@= r1 : b
+Binder : r4 !@= Ref<{A:i8?, B:s, C:b}>(r1)
+###
+> qr1  = r1
+qr1 @= r1 : b
+Binder : qr1 @= r1
+###
+> qr1  = r2
+qr1 @= r2 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})) @= With(!3: r2, {A:Num<i8>(!3.A), B:!3.B, C:!3.C})
+Reducer: Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)}) @= {A:Num<i8>(r2.A), B:r2.B, C:r2.C}
+###
+> qr1  = r3
+qr1 @= r3 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)})) @= r3
+Reducer: Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)}) @= r3
+###
+> qr1  = r4
+qr1 @= r4 : b
+Binder : Ref<{A:i8?, B:s, C:b}?>(qr1) @= r4
+###
+> qr2  = r1
+qr2 @= r1 : b
+Binder : Guard(?1: qr2, With(!2: ?1, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})) @= With(!3: r1, {A:!3.A, B:!3.B, C:Num<i2>(!3.C)})
+Reducer: Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C}) @= {A:r1.A, B:r1.B, C:Num<i2>(r1.C)}
+###
+> qr3  = r1
+qr3 @= r1 : b
+Binder : qr3 @= With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)})
+Reducer: qr3 @= {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)}
+###
+> qr4  = r1
+qr4 @= r1 : b
+Binder : qr4 @= Ref<{A:i8?, B:s, C:b}>(r1)
+###
+> qr1 != r1
+qr1 !@= r1 : b
+Binder : qr1 !@= r1
+###
+> qr1 != r2
+qr1 !@= r2 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})) !@= With(!3: r2, {A:Num<i8>(!3.A), B:!3.B, C:!3.C})
+Reducer: Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)}) !@= {A:Num<i8>(r2.A), B:r2.B, C:r2.C}
+###
+> qr1 != r3
+qr1 !@= r3 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)})) !@= r3
+Reducer: Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)}) !@= r3
+###
+> qr1 != r4
+qr1 !@= r4 : b
+Binder : Ref<{A:i8?, B:s, C:b}?>(qr1) !@= r4
+###
+> qr2 != r1
+qr2 !@= r1 : b
+Binder : Guard(?1: qr2, With(!2: ?1, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})) !@= With(!3: r1, {A:!3.A, B:!3.B, C:Num<i2>(!3.C)})
+Reducer: Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C}) !@= {A:r1.A, B:r1.B, C:Num<i2>(r1.C)}
+###
+> qr3 != r1
+qr3 !@= r1 : b
+Binder : qr3 !@= With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)})
+Reducer: qr3 !@= {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)}
+###
+> qr4 != r1
+qr4 !@= r1 : b
+Binder : qr4 !@= Ref<{A:i8?, B:s, C:b}>(r1)
+###
+> r1  = qr1
+r1 @= qr1 : b
+Binder : r1 @= qr1
+###
+> r1  = qr2
+r1 @= qr2 : b
+Binder : With(!1: r1, {A:!1.A, B:!1.B, C:Num<i2>(!1.C)}) @= Guard(?2: qr2, With(!3: ?2, {A:Num<i8>(!3.A), B:!3.B, C:!3.C}))
+Reducer: {A:r1.A, B:r1.B, C:Num<i2>(r1.C)} @= Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C})
+###
+> r1  = qr3
+r1 @= qr3 : b
+Binder : With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)}) @= qr3
+Reducer: {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)} @= qr3
+###
+> r1  = qr4
+r1 @= qr4 : b
+Binder : Ref<{A:i8?, B:s, C:b}>(r1) @= qr4
+###
+> r2  = qr1
+r2 @= qr1 : b
+Binder : With(!1: r2, {A:Num<i8>(!1.A), B:!1.B, C:!1.C}) @= Guard(?2: qr1, With(!3: ?2, {A:!3.A, B:!3.B, C:Num<i2>(!3.C)}))
+Reducer: {A:Num<i8>(r2.A), B:r2.B, C:r2.C} @= Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)})
+###
+> r3  = qr1
+r3 @= qr1 : b
+Binder : r3 @= Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)}))
+Reducer: r3 @= Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)})
+###
+> r4  = qr1
+r4 @= qr1 : b
+Binder : r4 @= Ref<{A:i8?, B:s, C:b}?>(qr1)
+###
+> r1 != qr1
+r1 !@= qr1 : b
+Binder : r1 !@= qr1
+###
+> r1 != qr2
+r1 !@= qr2 : b
+Binder : With(!1: r1, {A:!1.A, B:!1.B, C:Num<i2>(!1.C)}) !@= Guard(?2: qr2, With(!3: ?2, {A:Num<i8>(!3.A), B:!3.B, C:!3.C}))
+Reducer: {A:r1.A, B:r1.B, C:Num<i2>(r1.C)} !@= Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C})
+###
+> r1 != qr3
+r1 !@= qr3 : b
+Binder : With(!1: r1, {A:Num<r8>(!1.A), B:!1.B, C:Num<u1>(!1.C)}) !@= qr3
+Reducer: {A:Num<r8>(r1.A), B:r1.B, C:Num<u1>(r1.C)} !@= qr3
+###
+> r1 != qr4
+r1 !@= qr4 : b
+Binder : Ref<{A:i8?, B:s, C:b}>(r1) !@= qr4
+###
+> r2 != qr1
+r2 !@= qr1 : b
+Binder : With(!1: r2, {A:Num<i8>(!1.A), B:!1.B, C:!1.C}) !@= Guard(?2: qr1, With(!3: ?2, {A:!3.A, B:!3.B, C:Num<i2>(!3.C)}))
+Reducer: {A:Num<i8>(r2.A), B:r2.B, C:r2.C} !@= Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)})
+###
+> r3 != qr1
+r3 !@= qr1 : b
+Binder : r3 !@= Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)}))
+Reducer: r3 !@= Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)})
+###
+> r4 != qr1
+r4 !@= qr1 : b
+Binder : r4 !@= Ref<{A:i8?, B:s, C:b}?>(qr1)
+###
+> qr1  = qr1
+qr1 @= qr1 : b
+Binder : qr1 @= qr1
+###
+> qr1  = qr2
+qr1 @= qr2 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})) @= Guard(?3: qr2, With(!4: ?3, {A:Num<i8>(!4.A), B:!4.B, C:!4.C}))
+Reducer: Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)}) @= Guard(?2: qr2, {A:Num<i8>(?2.A), B:?2.B, C:?2.C})
+###
+> qr1  = qr3
+qr1 @= qr3 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)})) @= qr3
+Reducer: Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)}) @= qr3
+###
+> qr1  = qr4
+qr1 @= qr4 : b
+Binder : Ref<{A:i8?, B:s, C:b}?>(qr1) @= qr4
+###
+> qr2  = qr1
+qr2 @= qr1 : b
+Binder : Guard(?1: qr2, With(!2: ?1, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})) @= Guard(?3: qr1, With(!4: ?3, {A:!4.A, B:!4.B, C:Num<i2>(!4.C)}))
+Reducer: Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C}) @= Guard(?2: qr1, {A:?2.A, B:?2.B, C:Num<i2>(?2.C)})
+###
+> qr3  = qr1
+qr3 @= qr1 : b
+Binder : qr3 @= Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)}))
+Reducer: qr3 @= Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)})
+###
+> qr4  = qr1
+qr4 @= qr1 : b
+Binder : qr4 @= Ref<{A:i8?, B:s, C:b}?>(qr1)
+###
+> qr1 != qr1
+qr1 !@= qr1 : b
+Binder : qr1 !@= qr1
+###
+> qr1 != qr2
+qr1 !@= qr2 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:!2.A, B:!2.B, C:Num<i2>(!2.C)})) !@= Guard(?3: qr2, With(!4: ?3, {A:Num<i8>(!4.A), B:!4.B, C:!4.C}))
+Reducer: Guard(?1: qr1, {A:?1.A, B:?1.B, C:Num<i2>(?1.C)}) !@= Guard(?2: qr2, {A:Num<i8>(?2.A), B:?2.B, C:?2.C})
+###
+> qr1 != qr3
+qr1 !@= qr3 : b
+Binder : Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)})) !@= qr3
+Reducer: Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)}) !@= qr3
+###
+> qr1 != qr4
+qr1 !@= qr4 : b
+Binder : Ref<{A:i8?, B:s, C:b}?>(qr1) !@= qr4
+###
+> qr2 != qr1
+qr2 !@= qr1 : b
+Binder : Guard(?1: qr2, With(!2: ?1, {A:Num<i8>(!2.A), B:!2.B, C:!2.C})) !@= Guard(?3: qr1, With(!4: ?3, {A:!4.A, B:!4.B, C:Num<i2>(!4.C)}))
+Reducer: Guard(?1: qr2, {A:Num<i8>(?1.A), B:?1.B, C:?1.C}) !@= Guard(?2: qr1, {A:?2.A, B:?2.B, C:Num<i2>(?2.C)})
+###
+> qr3 != qr1
+qr3 !@= qr1 : b
+Binder : qr3 !@= Guard(?1: qr1, With(!2: ?1, {A:Num<r8>(!2.A), B:!2.B, C:Num<u1>(!2.C)}))
+Reducer: qr3 !@= Guard(?1: qr1, {A:Num<r8>(?1.A), B:?1.B, C:Num<u1>(?1.C)})
+###
+> qr4 != qr1
+qr4 !@= qr1 : b
+Binder : qr4 !@= Ref<{A:i8?, B:s, C:b}?>(qr1)
+###
+> r1   = r1
+r1 @= r1 : b
+Binder : r1 @= r1
+###
+> r1  ~= r1
+r1 ~@= r1 : b
+Binder : r1 ~@= r1
+###
+> r1 ! = r1
+r1 !@= r1 : b
+Binder : r1 !@= r1
+###
+> r1 !~= r1
+r1 !~@= r1 : b
+Binder : r1 !~@= r1
+###
+> rx   = rx
+rx @= rx : b
+Binder : rx @= rx
+###
+> rx  ~= rx
+Corrected by binder: [rx  = rx]
+rx ~@= rx : b
+*** Warning: (4,5) Node: rx ~@= rx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : rx @= rx
+###
+> rx ! = rx
+rx !@= rx : b
+Binder : rx !@= rx
+###
+> rx !~= rx
+Corrected by binder: [rx != rx]
+rx !~@= rx : b
+*** Warning: (4,5) Node: rx !~@= rx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : rx !@= rx
+###
+> qr1   = r1
+qr1 @= r1 : b
+Binder : qr1 @= r1
+###
+> qr1  ~= r1
+qr1 ~@= r1 : b
+Binder : qr1 ~@= r1
+###
+> qr1 ! = r1
+qr1 !@= r1 : b
+Binder : qr1 !@= r1
+###
+> qr1 !~= r1
+qr1 !~@= r1 : b
+Binder : qr1 !~@= r1
+###
+> qrx   = rx
+qrx @= rx : b
+Binder : qrx @= rx
+###
+> qrx  ~= rx
+Corrected by binder: [qrx  = rx]
+qrx ~@= rx : b
+*** Warning: (5,6) Node: qrx ~@= rx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : qrx @= rx
+###
+> qrx ! = rx
+qrx !@= rx : b
+Binder : qrx !@= rx
+###
+> qrx !~= rx
+Corrected by binder: [qrx != rx]
+qrx !~@= rx : b
+*** Warning: (5,6) Node: qrx !~@= rx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : qrx !@= rx
+###
+> r1   = qr1
+r1 @= qr1 : b
+Binder : r1 @= qr1
+###
+> r1  ~= qr1
+r1 ~@= qr1 : b
+Binder : r1 ~@= qr1
+###
+> r1 ! = qr1
+r1 !@= qr1 : b
+Binder : r1 !@= qr1
+###
+> r1 !~= qr1
+r1 !~@= qr1 : b
+Binder : r1 !~@= qr1
+###
+> rx   = qrx
+rx @= qrx : b
+Binder : rx @= qrx
+###
+> rx  ~= qrx
+Corrected by binder: [rx  = qrx]
+rx ~@= qrx : b
+*** Warning: (4,5) Node: rx ~@= qrx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : rx @= qrx
+###
+> rx ! = qrx
+rx !@= qrx : b
+Binder : rx !@= qrx
+###
+> rx !~= qrx
+Corrected by binder: [rx != qrx]
+rx !~@= qrx : b
+*** Warning: (4,5) Node: rx !~@= qrx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : rx !@= qrx
+###
+> qr1   = qr1
+qr1 @= qr1 : b
+Binder : qr1 @= qr1
+###
+> qr1  ~= qr1
+qr1 ~@= qr1 : b
+Binder : qr1 ~@= qr1
+###
+> qr1 ! = qr1
+qr1 !@= qr1 : b
+Binder : qr1 !@= qr1
+###
+> qr1 !~= qr1
+qr1 !~@= qr1 : b
+Binder : qr1 !~@= qr1
+###
+> qrx   = qrx
+qrx @= qrx : b
+Binder : qrx @= qrx
+###
+> qrx  ~= qrx
+Corrected by binder: [qrx  = qrx]
+qrx ~@= qrx : b
+*** Warning: (5,6) Node: qrx ~@= qrx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : qrx @= qrx
+###
+> qrx ! = qrx
+qrx !@= qrx : b
+Binder : qrx !@= qrx
+###
+> qrx !~= qrx
+Corrected by binder: [qrx != qrx]
+qrx !~@= qrx : b
+*** Warning: (5,6) Node: qrx !~@= qrx, Tok: '~', Message: Case insensitive comparison doesn't apply to type '{A:i8, B:b, C:b}'
+Binder : qrx !@= qrx
+###
+> r1  = rx
+r1 @= rx : b
+*** Error: (6,8) Node: rx, Message: Invalid operand type: cannot convert type '{A:i8, B:b, C:b}' to '{A:i8, B:s, C:b}'
+Binder : r1 @= Error(ErrBadType_Src_Dst)
+###
+> rx  = r1
+rx @= r1 : b
+*** Error: (6,8) Node: r1, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b}' to '{A:i8, B:b, C:b}'
+Binder : rx @= Error(ErrBadType_Src_Dst)
+###
+> r1  = rb
+r1 @= rb : b
+*** Error: (6,8) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to '{A:i8, B:s, C:b}'
+Binder : r1 @= Error(ErrBadType_Src_Dst)
+###
+> rb  = rb
+rb @= rb : b
+*** Error: (0,2) Node: rb, Message: Equality comparison is not supported for items of type '{A:i8, B:s, C:b*}'
+*** Error: (0,2) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to 'i8'
+*** Error: (6,8) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) @= Error(ErrBadType_Src_Dst)
+###
+> r1 != rx
+r1 !@= rx : b
+*** Error: (6,8) Node: rx, Message: Invalid operand type: cannot convert type '{A:i8, B:b, C:b}' to '{A:i8, B:s, C:b}'
+Binder : r1 !@= Error(ErrBadType_Src_Dst)
+###
+> rx != r1
+rx !@= r1 : b
+*** Error: (6,8) Node: r1, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b}' to '{A:i8, B:b, C:b}'
+Binder : rx !@= Error(ErrBadType_Src_Dst)
+###
+> r1 != rb
+r1 !@= rb : b
+*** Error: (6,8) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to '{A:i8, B:s, C:b}'
+Binder : r1 !@= Error(ErrBadType_Src_Dst)
+###
+> rb != rb
+rb !@= rb : b
+*** Error: (0,2) Node: rb, Message: Equality comparison is not supported for items of type '{A:i8, B:s, C:b*}'
+*** Error: (0,2) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to 'i8'
+*** Error: (6,8) Node: rb, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b*}' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) !@= Error(ErrBadType_Src_Dst)
+###
+> r1  < r1
+r1 $< r1 : b
+*** Error: (0,2) Node: r1, Message: Ordered comparison is not supported for items of type '{A:i8, B:s, C:b}'
+*** Error: (0,2) Node: r1, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b}' to 'i8'
+*** Error: (6,8) Node: r1, Message: Invalid operand type: cannot convert type '{A:i8, B:s, C:b}' to 'i8'
+Binder : Error(ErrBadType_Src_Dst) @< Error(ErrBadType_Src_Dst)
+###
+
+**** New globals: {d:U<Document>, i:U<Image>, n:o, r:U<Text.Rexl>, v:U<Video>}
+
+> i  = i
+i @= i : b
+Binder : i @= i
+###
+> i  = n
+i @= n : b
+Binder : i @= null
+###
+> i  = d
+i @= d : b
+Binder : Ref<U<>>(i) @= Ref<U<>>(d)
+###
+> i  = v
+i @= v : b
+Binder : Ref<U<>>(i) @= Ref<U<>>(v)
+###
+> i  = r
+i @= r : b
+Binder : Ref<U<>>(i) @= Ref<U<>>(r)
+###
+> i != i
+i !@= i : b
+Binder : i !@= i
+###
+> i != n
+i !@= n : b
+Binder : i !@= null
+###
+> i != d
+i !@= d : b
+Binder : Ref<U<>>(i) !@= Ref<U<>>(d)
+###
+> i != v
+i !@= v : b
+Binder : Ref<U<>>(i) !@= Ref<U<>>(v)
+###
+> i != r
+i !@= r : b
+Binder : Ref<U<>>(i) !@= Ref<U<>>(r)
+###
+> i  = i
+i @= i : b
+Binder : i @= i
+###
+> n  = i
+n @= i : b
+Binder : null @= i
+###
+> d  = i
+d @= i : b
+Binder : Ref<U<>>(d) @= Ref<U<>>(i)
+###
+> v  = i
+v @= i : b
+Binder : Ref<U<>>(v) @= Ref<U<>>(i)
+###
+> r  = i
+r @= i : b
+Binder : Ref<U<>>(r) @= Ref<U<>>(i)
+###
+> i != i
+i !@= i : b
+Binder : i !@= i
+###
+> n != i
+n !@= i : b
+Binder : null !@= i
+###
+> d != i
+d !@= i : b
+Binder : Ref<U<>>(d) !@= Ref<U<>>(i)
+###
+> v != i
+v !@= i : b
+Binder : Ref<U<>>(v) !@= Ref<U<>>(i)
+###
+> r != i
+r !@= i : b
+Binder : Ref<U<>>(r) !@= Ref<U<>>(i)
+###

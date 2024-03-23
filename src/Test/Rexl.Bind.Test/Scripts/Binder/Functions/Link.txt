@@ -1,0 +1,246 @@
+﻿:: { s1:s, s2:s, ui:U<Image>, ux:U<Image.Xray>, qui:U<Image>? }
+
+// The return type varies in optness depending on the args.
+Link.LocalText(s1)
+Link.LocalData(s1)
+Link.LocalImage(s1)
+Link.LocalAudio(s1)
+Link.LocalVideo(s1)
+Link.LocalPDF(s1)
+Link.LocalText("file")
+Link.LocalData("file")
+Link.LocalImage("file")
+Link.LocalAudio("file")
+Link.LocalVideo("file")
+Link.LocalPDF("file")
+Link.LocalText("")
+Link.LocalData("")
+Link.LocalImage("")
+Link.LocalAudio("")
+Link.LocalVideo("")
+Link.LocalPDF("")
+Link.LocalText(null)
+Link.LocalData(null)
+Link.LocalImage(null)
+Link.LocalAudio(null)
+Link.LocalVideo(null)
+Link.LocalPDF(null)
+
+Link.LocalText(s1)->IsNull()
+Link.LocalText("some path")->IsNull()
+Link.LocalText("")->IsNull()
+Link.LocalText(null)->IsNull()
+
+Link.WebText(s1)
+Link.WebData(s1)
+Link.WebImage(s1)
+Link.WebAudio(s1)
+Link.WebVideo(s1)
+Link.WebPDF(s1)
+
+Link.BlobText(s1, s2)
+Link.BlobData(s1, s2)
+Link.BlobImage(s1, s2)
+Link.BlobAudio(s1, s2)
+Link.BlobVideo(s1, s2)
+Link.BlobPDF(s1, s2)
+Link.BlobText(s1, "file")
+Link.BlobData(s1, "file")
+Link.BlobImage(s1, "file")
+Link.BlobAudio(s1, "file")
+Link.BlobVideo(s1, "file")
+Link.BlobPDF(s1, "file")
+Link.BlobText("acct", s2)
+Link.BlobData("acct", s2)
+Link.BlobImage("acct", s2)
+Link.BlobAudio("acct", s2)
+Link.BlobVideo("acct", s2)
+Link.BlobPDF("acct", s2)
+Link.BlobText("acct", "file")
+Link.BlobData("acct", "file")
+Link.BlobImage("acct", "file")
+Link.BlobAudio("acct", "file")
+Link.BlobVideo("acct", "file")
+Link.BlobPDF("acct", "file")
+Link.BlobText("acct", null)
+Link.BlobData("acct", null)
+Link.BlobImage("acct", null)
+Link.BlobAudio("acct", null)
+Link.BlobVideo("acct", null)
+Link.BlobPDF("acct", null)
+Link.BlobText("", "file")
+Link.BlobData("", "file")
+Link.BlobImage("", "file")
+Link.BlobAudio("", "file")
+Link.BlobVideo("", "file")
+Link.BlobPDF("", "file")
+
+Link.BlobText(s1, s2)->IsNull()
+Link.BlobText("my account", s2)->IsNull()
+Link.BlobText("", s2)->IsNull()
+Link.BlobText(null, s2)->IsNull()
+Link.BlobText(s1, "")->IsNull()
+Link.BlobText(s1, null)->IsNull()
+Link.BlobText(null, "")->IsNull()
+
+Link.DataLakeText(s1, s2)
+Link.DataLakeData(s1, s2)
+Link.DataLakeImage(s1, s2)
+Link.DataLakeAudio(s1, s2)
+Link.DataLakeVideo(s1, s2)
+Link.DataLakePDF(s1, s2)
+
+Link.LegacyDataLakeText(s1, s2)
+Link.LegacyDataLakeData(s1, s2)
+Link.LegacyDataLakeImage(s1, s2)
+Link.LegacyDataLakeAudio(s1, s2)
+Link.LegacyDataLakeVideo(s1, s2)
+Link.LegacyDataLakePDF(s1, s2)
+
+// Bad arity.
+Link.LocalText(s1, s2) // Error
+Link.LocalData(s1, s2) // Error
+Link.LocalImage(s1, s2) // Error
+Link.LocalAudio(s1, s2) // Error
+Link.LocalVideo(s1, s2) // Error
+Link.LocalPDF(s1, s2) // Error
+Link.BlobText(s1) // Error
+Link.BlobImage(s1) // Error
+Link.BlobAudio(s1) // Error
+Link.BlobVideo(s1) // Error
+Link.BlobPDF(s1) // Error
+
+// Legacy names.
+LinkToWebText(s1)
+LinkToWebData(s1)
+LinkToWebImage(s1)
+LinkToWebAudio(s1)
+LinkToWebVideo(s1)
+LinkToWebPDF(s1)
+
+LinkToBlobStorageText(s1, s2)
+LinkToBlobStorageData(s1, s2)
+LinkToBlobStorageImage(s1, s2)
+LinkToBlobStorageAudio(s1, s2)
+LinkToBlobStorageVideo(s1, s2)
+LinkToBlobStoragePDF(s1, s2)
+
+LinkToDataLakeText(s1, s2)
+LinkToDataLakeData(s1, s2)
+LinkToDataLakeImage(s1, s2)
+LinkToDataLakeAudio(s1, s2)
+LinkToDataLakeVideo(s1, s2)
+LinkToDataLakePDF(s1, s2)
+
+LinkToLegacyDataLakeText(s1, s2)
+LinkToLegacyDataLakeData(s1, s2)
+LinkToLegacyDataLakeImage(s1, s2)
+LinkToLegacyDataLakeAudio(s1, s2)
+LinkToLegacyDataLakeVideo(s1, s2)
+LinkToLegacyDataLakePDF(s1, s2)
+
+Link.Kind(s1)
+
+Link.Kind(ui)
+Link.Account(ui)
+Link.Path(ui)
+ui->Link.Kind()
+ui->Link.Account()
+ui->Link.Path()
+ui->Kind()
+ui->Account()
+ui->Path()
+ui.Kind
+ui.Account
+ui.Path
+
+Link.Kind(qui)
+Link.Account(qui)
+Link.Path(qui)
+qui->Link.Kind()
+qui->Link.Account()
+qui->Link.Path()
+qui->Kind()
+qui->Account()
+qui->Path()
+qui.Kind
+qui.Account
+qui.Path
+
+ux.Kind
+ux.Account
+ux.Path
+
+// Link with flavor
+Link.Local("Text", s1)
+Link.Local("Image", "file")
+Link.Local("PDF", "")
+Link.Local("Mof", null)
+Link.Local("A.B.C", s1)
+Link.Local("'Test flavor'", s1)
+Link.Local("'Test flavor'.'B'.C", s1)
+Link.Local("'Test flavor'.'B'.'C.D.E'", s1)
+Link.Local("'Test flavor.B.C.D.E'", s1)
+Link.Local("'Test'.'flavor.B.C.D.E'.", s1) // Error
+Link.Local("Test flavor.B.C.D.E", s1) // Error
+Link.Local("A.B.C.D.E.-", s1) // Error
+
+Link.Local(1234, s1) // Error
+Link.Local(null, s1)
+Link.Local("", s1)
+Link.Local(s1, s2) // Error
+Link.Local(s1, "file") // Error
+Link.Local("Im ag e", s1) // Error
+Link.Local("Text", s1)->IsNull()
+Link.Local(null, s1)->IsNull()
+Link.Local("", "file")->IsNull()
+Link.Local(s1, s2)->IsNull() // Error
+
+Link.Web("Audio", s1)
+Link.Web(1234, s1) // Error
+Link.Web(null, s1)
+Link.Web("", s1)
+Link.Web("Im ag e", s1) // Error
+Link.Web("Image" & ".Xray", s1) // Error
+
+Link.Blob("Audio", s1, s2)
+Link.Blob(1234, s1, s2) // Error
+Link.Blob(null, s1, s2)
+Link.Blob(" ", s1, s2) // Error
+Link.Blob("Data", s1, "file")
+Link.Blob(1234, s1, "file") // Error
+Link.Blob(null, s1, "file")
+Link.Blob(" ", s1, "file") // Error
+Link.Blob("Mof", "acct", s2)
+Link.Blob(1234, "acct", s2) // Error
+Link.Blob(null, "acct", s2)
+Link.Blob(" ", "acct", s2) // Error
+Link.Blob("Text", "acct", "file")
+Link.Blob(1234, "acct", "file") // Error
+Link.Blob(null, "acct", "file")
+Link.Blob(" ", "acct", "file") // Error
+Link.Blob("Text", "acct", null)
+Link.Blob(1234, "acct", null) // Error
+Link.Blob("Text", "", "file")
+Link.Blob(1234, "", "file") // Error
+Link.Blob(null, "", "file")
+Link.Blob("Text", s1, s2)->IsNull()
+Link.Blob("Image", "account", s2)->IsNull()
+Link.Blob("Audio", "", "file")->IsNull()
+Link.Blob(1234, s1, s2)->IsNull() // Error
+Link.Blob(null, s1, "file")->IsNull()
+Link.Blob(" ", "", "file")->IsNull() // Error
+
+Link.DataLake("PDF", s1, s2)
+Link.DataLake(1234, s1, s2) // Error
+Link.DataLake(null, s1, s2)
+
+Link.LegacyDataLake("Video", s1, s2)
+Link.LegacyDataLake(1234, s1, s2) // Error
+Link.LegacyDataLake(null, s1, s2)
+Link.LegacyDataLake("", s1, s2)
+
+// Bad arity
+Link.Local("PDF", s1, s2) // Error
+Link.Blob("PDF", s1) // Error
+Link.Web("PDF") // Error

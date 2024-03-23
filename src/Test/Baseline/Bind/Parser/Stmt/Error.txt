@@ -1,0 +1,195 @@
+> func @_!() := 12;
+Node: [func @'_'.''() := 12]
+Corrected: [func @_.() := 12;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,17) [func @_!() := 12;]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,16) [func @_!() := 12], extra=[@'_'._X]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:12, rng:(14,16) [12], full:(14,16) [12], extra=[12]]
+Error: (6,7) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+Warning: (7,8) Tok: '!', Message: The binary operator '!' is deprecated, use '.' instead
+Error: (8,9) Tok: '(', Message: Expected: '<identifier>', Found: '('
+
+   0) [0] DefineFunc @'_'._X() <- 12
+   1) [0] End
+###
+> func @_.() := 12;
+Node: [func @'_'.''() := 12]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,17) [func @_.() := 12;]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,16) [func @_.() := 12], extra=[@'_'._X]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:12, rng:(14,16) [12], full:(14,16) [12], extra=[12]]
+Error: (6,7) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+Error: (8,9) Tok: '(', Message: Expected: '<identifier>', Found: '('
+
+   0) [0] DefineFunc @'_'._X() <- 12
+   1) [0] End
+###
+> func _.X.@_() := 12;
+Node: [func '_'.X.@'_'() := 12]
+Corrected: [func _.X._() := 12;]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:func, rng:(0,4) [func], full:(0,20) [func _.X.@_() := 12;]], count=1
+  01   Node[id:1, kind:FuncStmt, depth:2, tok:KtxFunc, rng:(0,4) [func], full:(0,19) [func _.X.@_() := 12], extra=['_'.X.'_']], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:12, rng:(17,19) [12], full:(17,19) [12], extra=[12]]
+Error: (5,6) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+Error: (9,10) Tok: '@', Message: Globally scoped identifier not allowed
+Error: (10,11) Tok: '_', Message: Expected: '<identifier>', Found: '_'
+
+   0) [0] DefineFunc '_'.X.'_'() <- 12
+   1) [0] End
+###
+> finish x + w;
+Node: [finish x; +w]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:finish, rng:(0,6) [finish], full:(0,13) [finish x + w;]], count=2
+  01   Node[id:0, kind:TaskCmdStmt, depth:1, tok:KtxFinish, rng:(0,6) [finish], full:(0,8) [finish x], extra=[KtxFinish]], count=0
+  01   Node[id:3, kind:ExprStmt, depth:3, tok:Add, rng:(9,10) [+], full:(9,12) [+ w]], count=1
+  02     Node[id:2, kind:UnaryOp, depth:2, tok:Add, rng:(9,10) [+], full:(9,12) [+ w], extra=[Posate]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:w, rng:(11,12) [w], full:(11,12) [w], extra=[w]]
+Error: (9,10) Tok: '+', Message: Expected: ';', Found: '+'
+
+   0) [0] TaskCmd finish x
+   1) [0] Expr +w
+   2) [0] End
+###
+> Namespace N;
+Node: [Namespace; N]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:Namespace, rng:(0,9) [Namespace], full:(0,12) [Namespace N;]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:Namespace, rng:(0,9) [Namespace], full:(0,9) [Namespace]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:Namespace, rng:(0,9) [Namespace], full:(0,9) [Namespace], extra=[Namespace]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:N, rng:(10,11) [N], full:(10,11) [N]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:N, rng:(10,11) [N], full:(10,11) [N], extra=[N]]
+Error: (10,11) Tok: 'N', Message: Expected: ';', Found: 'N'
+
+   0) [0] Expr Namespace
+   1) [0] Expr N
+   2) [0] End
+###
+> Import A;
+Node: [Import; A]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:Import, rng:(0,6) [Import], full:(0,9) [Import A;]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:Import, rng:(0,6) [Import], full:(0,6) [Import]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:Import, rng:(0,6) [Import], full:(0,6) [Import], extra=[Import]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:A, rng:(7,8) [A], full:(7,8) [A]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:A, rng:(7,8) [A], full:(7,8) [A], extra=[A]]
+Error: (7,8) Tok: 'A', Message: Expected: ';', Found: 'A'
+
+   0) [0] Expr Import
+   1) [0] Expr A
+   2) [0] End
+###
+> Execute A;
+Node: [Execute; A]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:Execute, rng:(0,7) [Execute], full:(0,10) [Execute A;]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:Execute, rng:(0,7) [Execute], full:(0,7) [Execute]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:Execute, rng:(0,7) [Execute], full:(0,7) [Execute], extra=[Execute]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:A, rng:(8,9) [A], full:(8,9) [A]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:A, rng:(8,9) [A], full:(8,9) [A], extra=[A]]
+Error: (8,9) Tok: 'A', Message: Expected: ';', Found: 'A'
+
+   0) [0] Expr Execute
+   1) [0] Expr A
+   2) [0] End
+###
+> import A in Namespace N;
+Node: [import A in Namespace; N]
+Dump:
+  00 Node[id:6, kind:StmtList, depth:4, tok:KwdImport, rng:(0,6) [import], full:(0,24) [import A in Namespace N;]], count=2
+  01   Node[id:3, kind:ImportStmt, depth:3, tok:KwdImport, rng:(0,6) [import], full:(0,21) [import A in Namespace]], count=1
+  02     Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(9,11) [in], full:(7,21) [A in Namespace], extra=[In]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(7,8) [A], full:(7,8) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:Namespace, rng:(12,21) [Namespace], full:(12,21) [Namespace], extra=[Namespace]]
+  01   Node[id:5, kind:ExprStmt, depth:2, tok:N, rng:(22,23) [N], full:(22,23) [N]], count=1
+  02     Node[id:4, kind:FirstName, depth:1, tok:N, rng:(22,23) [N], full:(22,23) [N], extra=[N]]
+Error: (22,23) Tok: 'N', Message: Expected: ';', Found: 'N'
+
+   0) [0] Import: A in Namespace
+   1) [0] Expr N
+   2) [0] End
+###
+> @ := 3;
+Node: [@'' := 3]
+Dump:
+  00 Node[id:2, kind:StmtList, depth:3, tok:At, rng:(0,1) [@], full:(0,7) [@ := 3;]], count=1
+  01   Node[id:1, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(2,4) [:=], full:(0,6) [@ := 3], extra=[@_X]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:3, rng:(5,6) [3], full:(5,6) [3], extra=[3]]
+Error: (2,4) Tok: ':=', Message: Expected: '<identifier>', Found: ':='
+
+   0) [0] Define @_X <- 3
+   1) [0] End
+###
+> @ + 3;
+Node: [@'' + 3]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:4, tok:At, rng:(0,1) [@], full:(0,6) [@ + 3;]], count=1
+  01   Node[id:3, kind:ExprStmt, depth:3, tok:Add, rng:(2,3) [+], full:(0,5) [@ + 3]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [@ + 3], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:'', rng:(2,2) [], full:(0,2) [@ ], extra=[@'']]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(4,5) [3], full:(4,5) [3], extra=[3]]
+Error: (2,3) Tok: '+', Message: Expected: '<identifier>', Found: '+'
+
+   0) [0] Expr @'' + 3
+   1) [0] End
+###
+> If (A) B := 5; else C := 0;
+Node: [If(A); B := 5; <missing>; C := 0]
+Dump:
+  00 Node[id:10, kind:StmtList, depth:5, tok:If, rng:(0,2) [If], full:(0,27) [If (A) B := 5; else C := 0;]], count=4
+  01   Node[id:3, kind:ExprStmt, depth:4, tok:ParenOpen, rng:(3,4) [(], full:(0,6) [If (A)]], count=1
+  02     Node[id:2, kind:Call, depth:3, tok:ParenOpen, rng:(3,4) [(], full:(0,6) [If (A)], extra=[If]], count=1
+  03       Node[id:1, kind:ExprList, depth:2, tok:A, rng:(4,5) [A], full:(4,5) [A]], count=1
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  01   Node[id:5, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(9,11) [:=], full:(7,13) [B := 5], extra=[B]], count=1
+  02     Node[id:4, kind:NumLit, depth:1, tok:5, rng:(12,13) [5], full:(12,13) [5], extra=[5]]
+  01   Node[id:7, kind:ExprStmt, depth:2, tok:KwdElse, rng:(15,19) [else], full:(15,19) [else]], count=1
+  02     Node[id:6, kind:MissingValue, depth:1, tok:KwdElse, rng:(15,19) [else], full:(15,19) [else], extra=[<missing>]]
+  01   Node[id:9, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(20,26) [C := 0], extra=[C]], count=1
+  02     Node[id:8, kind:NumLit, depth:1, tok:0, rng:(25,26) [0], full:(25,26) [0], extra=[0]]
+Error: (7,8) Tok: 'B', Message: Expected: ';', Found: 'B'
+Error: (15,19) Tok: 'else', Message: Expected an operand
+Error: (20,21) Tok: 'C', Message: Expected: ';', Found: 'C'
+
+   0) [0] Expr If(A)
+   1) [0] Define B <- 5
+   2) [0] Expr (<missing>)
+   3) [0] Define C <- 0
+   4) [0] End
+###
+> if (A) B := 5; Else C := 0;
+Node: [if (A) B := 5; Else; C := 0]
+Dump:
+  00 Node[id:9, kind:StmtList, depth:4, tok:Semi, rng:(13,14) [;], full:(0,27) [if (A) B := 5; Else C := 0;]], count=3
+  01   Node[id:4, kind:IfStmt, depth:3, tok:KwdIf, rng:(0,2) [if], full:(0,13) [if (A) B := 5]], count=2
+  02     Node[id:1, kind:Paren, depth:2, tok:ParenOpen, rng:(3,4) [(], full:(3,6) [(A)]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:3, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(9,11) [:=], full:(7,13) [B := 5], extra=[B]], count=1
+  03       Node[id:2, kind:NumLit, depth:1, tok:5, rng:(12,13) [5], full:(12,13) [5], extra=[5]]
+  01   Node[id:6, kind:ExprStmt, depth:2, tok:Else, rng:(15,19) [Else], full:(15,19) [Else]], count=1
+  02     Node[id:5, kind:FirstName, depth:1, tok:Else, rng:(15,19) [Else], full:(15,19) [Else], extra=[Else]]
+  01   Node[id:8, kind:DefinitionStmt, depth:2, tok:ColEqu, rng:(22,24) [:=], full:(20,26) [C := 0], extra=[C]], count=1
+  02     Node[id:7, kind:NumLit, depth:1, tok:0, rng:(25,26) [0], full:(25,26) [0], extra=[0]]
+Error: (20,21) Tok: 'C', Message: Expected: ';', Found: 'C'
+
+   0) [0] JumpIfNot 2 (0=>0) A
+   1) [0] Define B <- 5
+   2) [0] Expr Else
+   3) [0] Define C <- 0
+   4) [0] End
+###
+> Goto X;
+Node: [Goto; X]
+Dump:
+  00 Node[id:4, kind:StmtList, depth:3, tok:Goto, rng:(0,4) [Goto], full:(0,7) [Goto X;]], count=2
+  01   Node[id:1, kind:ExprStmt, depth:2, tok:Goto, rng:(0,4) [Goto], full:(0,4) [Goto]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:Goto, rng:(0,4) [Goto], full:(0,4) [Goto], extra=[Goto]]
+  01   Node[id:3, kind:ExprStmt, depth:2, tok:X, rng:(5,6) [X], full:(5,6) [X]], count=1
+  02     Node[id:2, kind:FirstName, depth:1, tok:X, rng:(5,6) [X], full:(5,6) [X], extra=[X]]
+Error: (5,6) Tok: 'X', Message: Expected: ';', Found: 'X'
+
+   0) [0] Expr Goto
+   1) [0] Expr X
+   2) [0] End
+###

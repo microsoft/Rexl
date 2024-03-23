@@ -1,0 +1,218 @@
+> module := 10
+Node: [module := 10]
+
+   0) [0] Define module <- 10
+   1) [0] End
+###
+> // Module expressions:
+> module {
+> };
+Node: [module {  }]
+Comment: Range=(0,22), Tid=CommentLine, Text=[// Module expressions:]
+
+   0) [0] Expr module {  }
+   1) [0] End
+###
+> module {
+>     ;;;
+> };
+Node: [module {  }]
+
+   0) [0] Expr module {  }
+   1) [0] End
+###
+> module {
+Node: [module {  }]
+Error: (8,8) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] Expr module {  }
+   1) [0] End
+###
+> module {
+> namespace N
+Node: [module {  }; namespace N]
+Error: (9,18) Tok: 'namespace', Message: Expected: '<identifier>', Found: 'namespace'
+Error: (9,18) Tok: 'namespace', Message: Expected: ':=', Found: 'namespace'
+Error: (9,18) Tok: 'namespace', Message: Expected an operand
+Error: (9,18) Tok: 'namespace', Message: Expected: '}', Found: 'namespace'
+Error: (9,18) Tok: 'namespace', Message: Expected: ';', Found: 'namespace'
+
+   0) [0] Expr module {  }
+   1) [0] Namespace N
+   2) [0] End
+###
+> module {
+>     param A := 3
+Node: [module { param A := 3 }]
+Error: (25,25) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] Expr module { param A := 3 }
+   1) [0] End
+###
+> module {
+>     param A := 3;
+> };
+Node: [module { param A := 3 }]
+
+   0) [0] Expr module { param A := 3 }
+   1) [0] End
+###
+> module {
+>     param A := 3;
+>     const B := A * 2;
+> };
+Node: [module { param A := 3; const B := A * 2 }]
+
+   0) [0] Expr module { param A := 3; const B := A * 2 }
+   1) [0] End
+###
+> // Missing semicolon.
+> module {
+>     param A := 3
+>     const B := A * 2
+> };
+Node: [module { param A := 3; const B := A * 2 }]
+Error: (52,57) Tok: 'const', Message: Expected: ';', Found: 'const'
+Comment: Range=(0,21), Tid=CommentLine, Text=[// Missing semicolon.]
+
+   0) [0] Expr module { param A := 3; const B := A * 2 }
+   1) [0] End
+###
+> // Missing semicolon.
+> module {
+>     param A := 3
+>     X := 3
+Node: [module { param A := 3; let X := 3 }]
+Error: (52,53) Tok: 'X', Message: Expected: ';', Found: 'X'
+Error: (58,58) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+Comment: Range=(0,21), Tid=CommentLine, Text=[// Missing semicolon.]
+
+   0) [0] Expr module { param A := 3; let X := 3 }
+   1) [0] End
+###
+> // Missing close curly.
+> module {
+> param A := 3
+> namespace N
+Node: [module { param A := 3 }; namespace N]
+Error: (46,55) Tok: 'namespace', Message: Expected: '}', Found: 'namespace'
+Error: (46,55) Tok: 'namespace', Message: Expected: ';', Found: 'namespace'
+Comment: Range=(0,23), Tid=CommentLine, Text=[// Missing close curly.]
+
+   0) [0] Expr module { param A := 3 }
+   1) [0] Namespace N
+   2) [0] End
+###
+> module {
+>     parameter A default 3;
+>     constant B := A * 2;
+>     var V from 0r;
+>     let W := V * 2;
+>     msr M1 := W * W;
+>     measure M2 := W * W;
+>     con C1 := W <= 100;
+>     constraint C2 := W <= 100;
+> };
+Node: [module { param A := 3; const B := A * 2; var V from 0; let W := V * 2; msr M1 := W * W; msr M2 := W * W; con C1 := W $<= 100; con C2 := W $<= 100 }]
+
+   0) [0] Expr module { param A := 3; const B := A * 2; var V from 0; let W := V * 2; msr M1 := W * W; msr M2 := W * W; con C1 := W $<= 100; con C2 := W $<= 100 }
+   1) [0] End
+###
+> module {
+>     var V1 from 0r from 1r;
+>     var V2 from 0r to 1r;
+>     var @V3 def 0r;
+>     var V4 in S opt;
+>     var @V7 := 3 required;
+>     @P := 17;
+>     Q := 17;
+> }
+Node: [module { var V1 from 0; var V2 from 0 to 1; var @V3 def 0; var V4 in S opt; var @V7 def 3 req; let @P := 17; let Q := 17 }]
+Corrected: [module {
+    var V1 from 0r from 1r;
+    var V2 from 0r to 1r;
+    var V3 def 0r;
+    var V4 in S opt;
+    var V7 := 3 required;
+    P := 17;
+    Q := 17;
+}]
+Error: (28,32) Tok: 'from', Message: Duplicate free variable domain clause
+Error: (71,72) Tok: '@', Message: Globally scoped identifier not allowed
+Error: (112,113) Tok: '@', Message: Globally scoped identifier not allowed
+Error: (135,136) Tok: '@', Message: Globally scoped identifier not allowed
+
+   0) [0] Expr module { var V1 from 0; var V2 from 0 to 1; var @V3 def 0; var V4 in S opt; var @V7 def 3 req; let @P := 17; let Q := 17 }
+   1) [0] End
+###
+> module { var V in S from 0; }
+Node: [module { var V in S }]
+Error: (20,24) Tok: 'from', Message: A module free variable can't have both 'in' and 'from'
+
+   0) [0] Expr module { var V in S }
+   1) [0] End
+###
+> module { var V in S to 0; }
+Node: [module { var V in S }]
+Error: (20,22) Tok: 'to', Message: A module free variable can't have both 'in' and 'to'
+
+   0) [0] Expr module { var V in S }
+   1) [0] End
+###
+> module { var V in S def 0; }
+Node: [module { var V in S def 0 }]
+
+   0) [0] Expr module { var V in S def 0 }
+   1) [0] End
+###
+> module { var V from 0 in S; }
+Node: [module { var V from 0 }]
+Error: (22,24) Tok: 'in', Message: A module free variable can't have both 'from' and 'in'
+
+   0) [0] Expr module { var V from 0 }
+   1) [0] End
+###
+> module { var V to 0 in S; }
+Node: [module { var V to 0 }]
+Error: (20,22) Tok: 'in', Message: A module free variable can't have both 'to' and 'in'
+
+   0) [0] Expr module { var V to 0 }
+   1) [0] End
+###
+> module { var V def 0 in S; }
+Node: [module { var V in S def 0 }]
+
+   0) [0] Expr module { var V in S def 0 }
+   1) [0] End
+###
+> // with expressions:
+> X := Y with
+Node: [X := Y=>(<missing>)]
+Error: (32,32) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (32,32) Tok: '<eof>', Message: Expected an operand
+Comment: Range=(0,20), Tid=CommentLine, Text=[// with expressions:]
+
+   0) [0] Define X <- Y=>(<missing>)
+   1) [0] End
+###
+> Y with
+Node: [Y=>(<missing>)]
+Error: (6,6) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (6,6) Tok: '<eof>', Message: Expected an operand
+
+   0) [0] Expr Y=>(<missing>)
+   1) [0] End
+###
+> Y with { A:3
+Node: [Y=>{ A : 3 }]
+Error: (12,12) Tok: '<eof>', Message: Expected: '}', Found: '<eof>'
+
+   0) [0] Expr Y=>{ A : 3 }
+   1) [0] End
+###
+> Y with { A:10 };
+Node: [Y=>{ A : 10 }]
+
+   0) [0] Expr Y=>{ A : 10 }
+   1) [0] End
+###

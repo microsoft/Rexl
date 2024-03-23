@@ -1,0 +1,88 @@
+﻿:: { i4:i4, i4s:i4*, r:{ C:i4, D:s }, rs:{ C:i4, D:s }*, t:(i4, b), ts:(i4, b)* }
+
+i4->{ }
+i4->()
+
+i4s->{ }
+i4s->()
+
+i4->{ A: it, B: it * it }
+i4->(it, it * it)
+i4->(it * it,)
+i4->(it * it)
+
+i4s->{ A: it, B: it * it }
+i4s->(it, it * it)
+i4s->(it * it,)
+i4s->(it * it)
+
+r->{ }
+r+>{ }
+r->&{ }
+
+rs->{ }
+rs+>{ }
+rs->&{ }
+
+r->{ A: C, B: C * C }
+r+>{ A: C, B: C * C }
+// Note that this isn't quite the same - it keeps field C.
+r->(it & { A: C, B: C * C })
+
+rs->{ A: C, B: C * C }
+rs+>{ A: C, B: C * C }
+// Note that this isn't quite the same - it keeps field C.
+rs->(it & { A: C, B: C * C })
+
+t->()
+t+>()
+
+ts->()
+ts+>()
+
+Wrap(t)->(Item0 if Item1 else Item0 * Item0)
+Wrap(t)+>(Item0 if Item1 else Item0 * Item0)
+Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0))
+
+Wrap(t)->(Item0 if Item1 else Item0 * Item0,)
+Wrap(t)+>(Item0 if Item1 else Item0 * Item0,)
+Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0,))
+
+Wrap(t)->(Item0, Item0 if Item1 else Item0 * Item0)
+Wrap(t)+>(Item0, Item0 if Item1 else Item0 * Item0)
+Wrap(t)->(it & (Item0, Item0 if Item1 else Item0 * Item0))
+
+ts->(Item0 if Item1 else Item0 * Item0)
+ts+>(Item0 if Item1 else Item0 * Item0)
+ts->(it & (Item0 if Item1 else Item0 * Item0))
+
+ts->(Item0 if Item1 else Item0 * Item0,)
+ts+>(Item0 if Item1 else Item0 * Item0,)
+ts->(it & (Item0 if Item1 else Item0 * Item0,))
+
+ts->(Item0, Item0 if Item1 else Item0 * Item0)
+ts+>(Item0, Item0 if Item1 else Item0 * Item0)
+ts->(it & (Item0, Item0 if Item1 else Item0 * Item0))
+
+// Mixed.
+r->(C, C * C)
+Wrap(t)->{ A: Item0, B: Item1 }
+t->{ A: Item0, B: Item1 }
+rs->(C, C * C)
+ts->{ A: Item0, B: Item1 }
+
+// Some errors.
+i4+>{ }
+i4->&{ }
+i4->&()
+r->&(C, C * C)
+Wrap(t)->&{ A: Item0, B: Item1 }
+t->&{ A: Item0, B: Item1 }
+
+i4s+>{ }
+i4s->&{ }
+i4s->&()
+rs->&(C, C * C)
+ts->&{ A: Item0, B: Item1 }
+
+({a: b},)[8].a // Error, found from fuzz testing.

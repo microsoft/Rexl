@@ -1,0 +1,1286 @@
+> 3    = ToU4(Wrap(3.14))
+3 @= ToU4(Wrap(3.14)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(1/0))
+null @= ToU4(Wrap(1 / 0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(3.14), null)
+3 @= ToU4(Wrap(3.14), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), null:u4?):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(1/0),  null)
+null @= ToU4(Wrap(1 / 0), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), null:u4?):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(3.14), Null(5u2))
+3 @= ToU4(Wrap(3.14), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), null:u4?):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(3.14), Opt (5u2))
+3 @= ToU4(Wrap(3.14), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(1/0),  Null(5u2))
+null @= ToU4(Wrap(1 / 0), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), null:u4?):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToU4(Wrap(1/0),  Opt (5u2))
+5 @= ToU4(Wrap(1 / 0), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(3.14), 5u2)
+3 @= ToU4(Wrap(3.14), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToU4(Wrap(1/0),  5u2)
+5 @= ToU4(Wrap(1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Null(3.14)))
+null @= ToU4(Wrap(Null(3.14))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1)):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(Opt (3.14)))
+3 @= ToU4(Wrap(Opt(3.14))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1)):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Opt (1/0 )))
+null @= ToU4(Wrap(Opt(1 / 0))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToU4(Scope(1)):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Null(3.14)), null)
+null @= ToU4(Wrap(Null(3.14)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(Opt (3.14)), null)
+3 @= ToU4(Wrap(Opt(3.14)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), null:u4?):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Opt (1/0 )), null)
+null @= ToU4(Wrap(Opt(1 / 0)), null) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Null(3.14)), Null(5u2))
+null @= ToU4(Wrap(Null(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Null(3.14)), Opt (5u2))
+null @= ToU4(Wrap(Null(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(Opt (3.14)), Null(5u2))
+3 @= ToU4(Wrap(Opt(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), null:u4?):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(Opt (3.14)), Opt (5u2))
+3 @= ToU4(Wrap(Opt(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Opt (1/0 )), Null(5u2))
+null @= ToU4(Wrap(Opt(1 / 0)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToU4(Wrap(Opt (1/0 )), Opt (5u2))
+5 @= ToU4(Wrap(Opt(1 / 0)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(Null(3.14)), 5u2)
+null @= ToU4(Wrap(Null(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), 5:u4):u4)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = ToU4(Wrap(Opt (3.14)), 5u2)
+3 @= ToU4(Wrap(Opt(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Num<i8>(Call(∂.ToU4(Scope(1), 5:u4):u4))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = ToU4(Wrap(Opt (1/0 )), 5u2)
+5 @= ToU4(Wrap(Opt(1 / 0)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Num<i8>(Call(∂.ToU4(Scope(1), 5:u4):u4))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), Null(5u4))
+3 @= To(Wrap(3.14), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), null:u4?):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), Opt (5u4))
+3 @= To(Wrap(3.14), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(1/0),  Null(5u4))
+null @= To(Wrap(1 / 0), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), null:u4?):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(1/0),  Opt (5u4))
+5 @= To(Wrap(1 / 0), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(3.14), 5u4)
+3 @= To(Wrap(3.14), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(3.14:r8):r8), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(1/0),  5u4)
+5 @= To(Wrap(1 / 0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(∞:r8):r8), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), Null(5u4))
+null @= To(Wrap(Null(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), Opt (5u4))
+null @= To(Wrap(Null(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), Null(5u4))
+3 @= To(Wrap(Opt(3.14)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), null:u4?):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), Opt (5u4))
+3 @= To(Wrap(Opt(3.14)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Opt (1/0 )), Null(5u4))
+null @= To(Wrap(Opt(1 / 0)), Null(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Call(∂.ToU4(Scope(1), null:u4?):u4?)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(Opt (1/0 )), Opt (5u4))
+5 @= To(Wrap(Opt(1 / 0)), Opt(5)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), [guard:2] Call(∂.ToU4(Scope(1), Opt<u4?>(5:u4)):u4?), Num<i8>(Scope(2))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = To(Wrap(Null(3.14)), 5u4)
+null @= To(Wrap(Null(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(null:r8?):r8?), Call(∂.ToU4(Scope(1), 5:u4):u4)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 3    = To(Wrap(Opt (3.14)), 5u4)
+3 @= To(Wrap(Opt(3.14)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(3:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(3.14:r8)):r8?), Num<i8>(Call(∂.ToU4(Scope(1), 5:u4):u4))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5    = To(Wrap(Opt (1/0 )), 5u4)
+5 @= To(Wrap(Opt(1 / 0)), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Call(∂.Guard([guard:1] Call(∂.Test.Wrap(Opt<r8?>(∞:r8)):r8?), Num<i8>(Call(∂.ToU4(Scope(1), 5:u4):u4))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU8(["", "0"])
+ToU8(["", "0"]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [str(), str(0)]:s*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+###
+> ToU1([Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)])
+ToU1([Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):d), Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):d)]:d*, Call(∂.ToU1(Call(∂.Date.TotalTicks(Scope(1)):i8)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 127
+ 1) <null>
+###
+> ToU1([      Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)])
+ToU1([Time(0, 0, 0, 0, 0, 127), Time(0, 0, 0, 0, 1, 0)]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):t), Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):t)]:t*, Call(∂.ToU1(Call(∂.Time.TotalTicks(Scope(1)):i8)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 127
+ 1) <null>
+###
+> ToU8([0r8, CastR8(0/0)])
+ToU8([0, CastR8(0 / 0)]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [0:r8, NaN:r8]:r8*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 0
+ 1) <null>
+###
+> ToU8([0r4, CastR4(0/0)])
+ToU8([0, CastR4(0 / 0)]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [0:r4, NaN:r4]:r4*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 0
+ 1) <null>
+###
+> ToU8([0ia, -1ia])
+ToU8([0, -1]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [0:i, -1:i]:i*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 0
+ 1) <null>
+###
+> ToU8([0i8, -1i8])
+ToU8([0, -1]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [0:i8, -1:i8]:i8*, Call(∂.ToU8(Scope(1)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 0
+ 1) <null>
+###
+> ToU4([0i4, -1i4])
+ToU4([0, -1]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [0:i4, -1:i4]:i4*, Call(∂.ToU4(Scope(1)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) 0
+ 1) <null>
+###
+> ToU2([0i2, -1i2])
+ToU2([0, -1]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [0:i2, -1:i2]:i2*, Call(∂.ToU2(Scope(1)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 0
+ 1) <null>
+###
+> ToU1([0i1, -1i1])
+ToU1([0, -1]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [0:i1, -1:i1]:i1*, Call(∂.ToU1(Scope(1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 0
+ 1) <null>
+###
+> ToU4([0u8, (1u8 shl 32)])
+ToU4([0, 1 shl 32]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [0:u8, 4294967296:u8]:u8*, Call(∂.ToU4(Scope(1)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) 0
+ 1) <null>
+###
+> ToU2([0u4, (1u4 shl 16)])
+ToU2([0, 1 shl 16]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [0:u4, 65536:u4]:u4*, Call(∂.ToU2(Scope(1)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 0
+ 1) <null>
+###
+> ToU1([0u2, (1u2 shl 8)])
+ToU1([0, 1 shl 8]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [0:u2, 256:u2]:u2*, Call(∂.ToU1(Scope(1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 0
+ 1) <null>
+###
+> ToU1([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)])
+ToU1([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:d?, Opt<d?>(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):d)), Opt<d?>(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):d))]:d?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Call(∂.Date.TotalTicks(Scope(2)):i8)):u1?)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 127
+ 2) <null>
+###
+> ToU1([null,       Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)])
+ToU1([null, Time(0, 0, 0, 0, 0, 127), Time(0, 0, 0, 0, 1, 0)]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:t?, Opt<t?>(Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):t)), Opt<t?>(Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):t))]:t?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Call(∂.Time.TotalTicks(Scope(2)):i8)):u1?)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 127
+ 2) <null>
+###
+> ToU8([null, 0r8, CastR8(0/0)])
+ToU8([null, 0, CastR8(0 / 0)]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:r8?, Opt<r8?>(0:r8), Opt<r8?>(NaN:r8)]:r8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2)):u8?)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU8([null, 0r4, CastR4(0/0)])
+ToU8([null, 0, CastR4(0 / 0)]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:r4?, Opt<r4?>(0:r4), Opt<r4?>(NaN:r4)]:r4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2)):u8?)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU8([null, 0ia, -1ia])
+ToU8([null, 0, -1]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:i?, Opt<i?>(0:i), Opt<i?>(-1:i)]:i?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2)):u8?)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU8([null, 0i8, -1i8])
+ToU8([null, 0, -1]) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:i8?, Opt<i8?>(0:i8), Opt<i8?>(-1:i8)]:i8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2)):u8?)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU4([null, 0i4, -1i4])
+ToU4([null, 0, -1]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [null:i4?, Opt<i4?>(0:i4), Opt<i4?>(-1:i4)]:i4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU4(Scope(2)):u4?)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU2([null, 0i2, -1i2])
+ToU2([null, 0, -1]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [null:i2?, Opt<i2?>(0:i2), Opt<i2?>(-1:i2)]:i2?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU2(Scope(2)):u2?)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU1([null, 0i1, -1i1])
+ToU1([null, 0, -1]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:i1?, Opt<i1?>(0:i1), Opt<i1?>(-1:i1)]:i1?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Scope(2)):u1?)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU4([null, 0u8, (1u8 shl 32)])
+ToU4([null, 0, 1 shl 32]) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [null:u8?, Opt<u8?>(0:u8), Opt<u8?>(4294967296:u8)]:u8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU4(Scope(2)):u4?)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU2([null, 0u4, (1u4 shl 16)])
+ToU2([null, 0, 1 shl 16]) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [null:u4?, Opt<u4?>(0:u4), Opt<u4?>(65536:u4)]:u4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU2(Scope(2)):u2?)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> ToU1([null, 0u2, (1u2 shl 8)])
+ToU1([null, 0, 1 shl 8]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:u2?, Opt<u2?>(0:u2), Opt<u2?>(256:u2)]:u2?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Scope(2)):u1?)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 0
+ 2) <null>
+###
+> To([null, "", "0"], 5u1)
+To([null, "", "0"], 5) : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.ForEach([map:1] [str(<null>), str(), str(0)]:s*, Call(∂.ToU1(Scope(1), 5:u1):u1)):u1*))
+Func sig: () to u1*
+Sequence: Seq<u1>
+ 0) 5
+ 1) 5
+ 2) 0
+###
+> To([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)], 5u1)
+To([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)], 5) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:d?, Opt<d?>(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):d)), Opt<d?>(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):d))]:d?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Call(∂.Date.TotalTicks(Scope(2)):i8), 5:u1):u1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 127
+ 2) 5
+###
+> To([null,       Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)], 5u1)
+To([null, Time(0, 0, 0, 0, 0, 127), Time(0, 0, 0, 0, 1, 0)], 5) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:t?, Opt<t?>(Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 0:i8, 127:i8):t)), Opt<t?>(Call(∂.Time(0:i8, 0:i8, 0:i8, 0:i8, 1:i8, 0:i8):t))]:t?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Call(∂.Time.TotalTicks(Scope(2)):i8), 5:u1):u1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 127
+ 2) 5
+###
+> ToU8([null, 0r8, CastR8(0/0)], 5u1)
+ToU8([null, 0, CastR8(0 / 0)], 5) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:r8?, Opt<r8?>(0:r8), Opt<r8?>(NaN:r8)]:r8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), 5:u8):u8)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU8([null, 0r4, CastR4(0/0)], 5u1)
+ToU8([null, 0, CastR4(0 / 0)], 5) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:r4?, Opt<r4?>(0:r4), Opt<r4?>(NaN:r4)]:r4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), 5:u8):u8)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU8([null, 0ia, -1ia], 5u1)
+ToU8([null, 0, -1], 5) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:i?, Opt<i?>(0:i), Opt<i?>(-1:i)]:i?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), 5:u8):u8)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU8([null, 0i8, -1i8], 5u1)
+ToU8([null, 0, -1], 5) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.ForEach([map:1] [null:i8?, Opt<i8?>(0:i8), Opt<i8?>(-1:i8)]:i8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU8(Scope(2), 5:u8):u8)):u8?)):u8?*))
+Func sig: () to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU4([null, 0i4, -1i4], 5u1)
+ToU4([null, 0, -1], 5) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [null:i4?, Opt<i4?>(0:i4), Opt<i4?>(-1:i4)]:i4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU4(Scope(2), 5:u4):u4)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU2([null, 0i2, -1i2], 5u1)
+ToU2([null, 0, -1], 5) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [null:i2?, Opt<i2?>(0:i2), Opt<i2?>(-1:i2)]:i2?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU2(Scope(2), 5:u2):u2)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> To([null, 0i1, -1i1], 5u1)
+To([null, 0, -1], 5) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:i1?, Opt<i1?>(0:i1), Opt<i1?>(-1:i1)]:i1?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Scope(2), 5:u1):u1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU4([null, 0u8, (1u8 shl 32)], 5u1)
+ToU4([null, 0, 1 shl 32], 5) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.ForEach([map:1] [null:u8?, Opt<u8?>(0:u8), Opt<u8?>(4294967296:u8)]:u8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU4(Scope(2), 5:u4):u4)):u4?)):u4?*))
+Func sig: () to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU2([null, 0u4, (1u4 shl 16)], 5u1)
+ToU2([null, 0, 1 shl 16], 5) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.ForEach([map:1] [null:u4?, Opt<u4?>(0:u4), Opt<u4?>(65536:u4)]:u4?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU2(Scope(2), 5:u2):u2)):u2?)):u2?*))
+Func sig: () to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> ToU1([null, 0u2, (1u2 shl 8)], 5u1)
+ToU1([null, 0, 1 shl 8], 5) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [null:u2?, Opt<u2?>(0:u2), Opt<u2?>(256:u2)]:u2?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.ToU1(Scope(2), 5:u1):u1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) 0
+ 2) 5
+###
+> null = ToU4(Wrap(-1i8))
+null @= ToU4(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(-1:i8):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU8(Wrap(-1i4))
+null @= ToU8(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(-1:i4):i4)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(-1i4))
+null @= ToU4(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(-1:i4):i4)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1i8 shl 32) - 1 = ToU4(Wrap((1i8 shl 32) - 1))
+(1 shl 32) - 1 @= ToU4(Wrap((1 shl 32) - 1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(4294967295:i8):i8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1u4 shl 31) - 1 = ToU8(Wrap(CastI4((1u4 shl 31) - 1)))
+(1 shl 31) - 1 @= ToU8(Wrap(CastI4((1 shl 31) - 1))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(2147483647:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(2147483647:i4):i4)):u8?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (23,24) Node: ToU8(Wrap(CastI4((1 shl 31) - 1))), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1u4 shl 31) - 1 = ToU4(Wrap(CastI4((1u4 shl 31) - 1)))
+(1 shl 31) - 1 @= ToU4(Wrap(CastI4((1 shl 31) - 1))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(2147483647:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(2147483647:i4):i4)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1u8 shl 32) - 1 = ToU4(Wrap((1u8 shl 32) - 1))
+(1 shl 32) - 1 @= ToU4(Wrap((1 shl 32) - 1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(4294967295:i8):i8)):u4?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (0,1) Node: 1 shl 32, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+*** Warning: (29,30) Node: 1 shl 32, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(1i8 shl 32))
+null @= ToU4(Wrap(1 shl 32)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967296:i8):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(1u8 shl 32))
+null @= ToU4(Wrap(1 shl 32)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967296:u8):u8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0 = ToU1(Wrap(false))
+0 @= ToU1(Wrap(false)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Num<i8>(Num<u1>(Call(∂.Test.Wrap(false:b):b)))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 1 = ToU1(Wrap(true))
+1 @= ToU1(Wrap(true)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(1:i8 @= Num<i8>(Num<u1>(Call(∂.Test.Wrap(true:b):b)))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap(-1))
+null @= ToU1(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(-1:i8):i8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU1(Wrap(0))
+0 @= ToU1(Wrap(0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(0:i8):i8)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 255  = ToU1(Wrap(255))
+255 @= ToU1(Wrap(255)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(255:i8):i8)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap(256))
+null @= ToU1(Wrap(256)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(256:i8):i8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(-1), 5u1)
+5 @= To(Wrap(-1), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU1(Call(∂.Test.Wrap(-1:i8):i8), 5:u1):u1))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU2(Wrap(-1))
+null @= ToU2(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(-1:i8):i8)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU2(Wrap(0))
+0 @= ToU2(Wrap(0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(0:i8):i8)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 65535 = ToU2(Wrap(65535))
+65535 @= ToU2(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(65535:i8):i8)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null  = ToU2(Wrap(65536))
+null @= ToU2(Wrap(65536)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(65536:i8):i8)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0 = To(Wrap(0), 5u2)
+0 @= To(Wrap(0), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Num<i8>(Call(∂.ToU2(Call(∂.Test.Wrap(0:i8):i8), 5:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(-1i8))
+null @= ToU4(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(-1:i8):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU4(Wrap(0i8))
+0 @= ToU4(Wrap(0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(0:i8):i8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 4294967295 = ToU4(Wrap(4294967295i8))
+4294967295 @= ToU4(Wrap(4294967295)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(4294967295:i8):i8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null       = ToU4(Wrap(4294967296i8))
+null @= ToU4(Wrap(4294967296)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967296:i8):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 4294967295 = To(Wrap(4294967295i8), 5u4)
+4294967295 @= To(Wrap(4294967295), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(4294967295:i8):i8), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU8(Wrap(-1ia))
+null @= ToU8(Wrap(-1)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(-1:i):i)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU8(Wrap(0ia))
+0 @= ToU8(Wrap(0)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(0:i):i)):u8?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (11,12) Node: ToU8(Wrap(0)), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 18446744073709551615 = ToU8(Wrap(18446744073709551615ia))
+18446744073709551615 @= ToU8(Wrap(18446744073709551615)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(18446744073709551615:i @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(18446744073709551615:i):i)):u8?), Num<i>(Scope(1))):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null                 = ToU8(Wrap(18446744073709551616ia))
+null @= ToU8(Wrap(18446744073709551616)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(18446744073709551616:i):i)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(18446744073709551616), 5u8)
+5 @= To(Wrap(18446744073709551616), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU8(Call(∂.Test.Wrap(18446744073709551616:i):i), 5:u8):u8))))
+*** Warning: (6,7) Node: To(Wrap(18446744073709551616), 5), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(-1/0)
+null @= ToU4(-1 / 0) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(1/0)
+null @= ToU4(1 / 0) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(0/0)
+null @= ToU4(0 / 0) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(-1/0, 5u4)
+5 @= To(-1 / 0, 5) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(1/0, 5u4)
+5 @= To(1 / 0, 5) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(0/0, 5u4)
+5 @= ToU4(0 / 0, 5) : b
+BndKind:Int, Type:b, Bnd:(true:b)
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap(-0x10000000000000 * 2r ^ -52))
+null @= ToU1(Wrap(-4503599627370496 * 2^-52)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(-1:r8):r8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU1(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0 @= ToU1(Wrap(-9007199254740991 * 2^-53)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(-0.9999999999999999:r8):r8)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU1(Wrap(-ToR4(0x7FFFFF    * 2r ^ -23)))
+0 @= ToU1(Wrap(-ToR4(8388607 * 2^-23))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(-0.9999998807907104:r8):r8)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU1(ToR4(0xFFFFFF    * 2r ^ -16)) = ToU1(Wrap(ToR4(0xFFFFFF    * 2r ^ -16)))
+ToU1(ToR4(16777215 * 2^-16)) @= ToU1(Wrap(ToR4(16777215 * 2^-16))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:u1 @= Call(∂.ToU1(Call(∂.Test.Wrap(255.99998474121094:r4):r4)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU1(0x1FFFFFFFFFFFFF * 2r ^ -45)  = ToU1(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -45))
+ToU1(9007199254740991 * 2^-45) @= ToU1(Wrap(9007199254740991 * 2^-45)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:u1 @= Call(∂.ToU1(Call(∂.Test.Wrap(255.99999999999997:r8):r8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap(0x10000000000000 * 2r ^ -44))
+null @= ToU1(Wrap(4503599627370496 * 2^-44)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(256:r8):r8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU2(Wrap(-0x10000000000000 * 2r ^ -52))
+null @= ToU2(Wrap(-4503599627370496 * 2^-52)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(-1:r8):r8)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU2(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0 @= ToU2(Wrap(-9007199254740991 * 2^-53)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(-0.9999999999999999:r8):r8)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU2(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+0 @= ToU2(Wrap(-ToR4(8388607 * 2^-23))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(-0.9999998807907104:r8):r8)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU2(ToR4(0xFFFFFF    * 2r ^ -8)) = ToU2(Wrap(ToR4(0xFFFFFF    * 2r ^ -8)))
+ToU2(ToR4(16777215 * 2^-8)) @= ToU2(Wrap(ToR4(16777215 * 2^-8))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:u2 @= Call(∂.ToU2(Call(∂.Test.Wrap(65535.99609375:r4):r4)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU2(0x1FFFFFFFFFFFFF * 2r ^ -37) = ToU2(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -37))
+ToU2(9007199254740991 * 2^-37) @= ToU2(Wrap(9007199254740991 * 2^-37)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:u2 @= Call(∂.ToU2(Call(∂.Test.Wrap(65535.99999999999:r8):r8)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU2(Wrap(0x10000000000000 * 2r ^ -36))
+null @= ToU2(Wrap(4503599627370496 * 2^-36)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(65536:r8):r8)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(-0x10000000000000 * 2r ^ -52))
+null @= ToU4(Wrap(-4503599627370496 * 2^-52)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(-1:r8):r8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU4(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0 @= ToU4(Wrap(-9007199254740991 * 2^-53)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(-0.9999999999999999:r8):r8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU4(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+0 @= ToU4(Wrap(-ToR4(8388607 * 2^-23))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(-0.9999998807907104:r8):r8)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU4(ToR4(0xFFFFFF    * 2r ^ 8))  = ToU4(Wrap(ToR4(0xFFFFFF    * 2r ^ 8)))
+ToU4(ToR4(16777215 * 2^8)) @= ToU4(Wrap(ToR4(16777215 * 2^8))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967040:u4 @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967040:r4):r4)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU4(0x1FFFFFFFFFFFFF * 2r ^ -21) = ToU4(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -21))
+ToU4(9007199254740991 * 2^-21) @= ToU4(Wrap(9007199254740991 * 2^-21)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:u4 @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967295.9999995:r8):r8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(0x10000000000000 * 2r ^ -20))
+null @= ToU4(Wrap(4503599627370496 * 2^-20)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(4294967296:r8):r8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU8(Wrap(-0x10000000000000 * 2r ^ -52))
+null @= ToU8(Wrap(-4503599627370496 * 2^-52)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(-1:r8):r8)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU8(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0 @= ToU8(Wrap(-9007199254740991 * 2^-53)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(-0.9999999999999999:r8):r8)):u8?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (11,12) Node: ToU8(Wrap(-9007199254740991 * 2^-53)), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU8(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+0 @= ToU8(Wrap(-ToR4(8388607 * 2^-23))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(-0.9999998807907104:r8):r8)):u8?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (11,12) Node: ToU8(Wrap(-ToR4(8388607 * 2^-23))), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU8(ToR4(0xFFFFFF    * 2r ^ 40)) = ToU8(Wrap(ToR4(0xFFFFFF    * 2r ^ 40)))
+ToU8(ToR4(16777215 * 2^40)) @= ToU8(Wrap(ToR4(16777215 * 2^40))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(18446742974197923840:u8 @= Call(∂.ToU8(Call(∂.Test.Wrap(1.8446742974197924E+19:r4):r4)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU8(0x1FFFFFFFFFFFFF * 2r ^ 11)  = ToU8(Wrap(0x1FFFFFFFFFFFFF * 2r ^ 11))
+ToU8(9007199254740991 * 2^11) @= ToU8(Wrap(9007199254740991 * 2^11)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(18446744073709549568:u8 @= Call(∂.ToU8(Call(∂.Test.Wrap(1.844674407370955E+19:r8):r8)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU8(Wrap(0x10000000000000 * 2r ^ 12))
+null @= ToU8(Wrap(4503599627370496 * 2^12)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(1.8446744073709552E+19:r8):r8)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(""))
+null @= ToU4(Wrap("")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str()):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap(" "))
+null @= ToU4(Wrap(" ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str( )):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap(""), 5u2)
+5 @= To(Wrap(""), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU2(Call(∂.Test.Wrap(str()):s), 5:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap(" "), 5u2)
+5 @= ToU4(Wrap(" "), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str( )):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("false"))
+null @= ToU4(Wrap("false")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(false)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("true"))
+null @= ToU4(Wrap("true")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(true)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("false"), 5u2)
+5 @= To(Wrap("false"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU2(Call(∂.Test.Wrap(str(false)):s), 5:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("true"), 5u2)
+5 @= ToU4(Wrap("true"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(true)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("-0.0"))
+null @= ToU4(Wrap("-0.0")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(-0.0)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("12 34"))
+null @= ToU4(Wrap("12 34")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(12 34)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("2e20"))
+null @= ToU4(Wrap("2e20")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(2e20)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("∞"))
+null @= ToU4(Wrap("∞")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(∞)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("Infinity"))
+null @= ToU4(Wrap("Infinity")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(Infinity)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("NaN"))
+null @= ToU4(Wrap("NaN")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(NaN)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("-0.0"), 5u4)
+5 @= To(Wrap("-0.0"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(-0.0)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("12 34"), 5u4)
+5 @= To(Wrap("12 34"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(12 34)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("2e20"), 5u4)
+5 @= To(Wrap("2e20"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(2e20)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("∞"), 5u2)
+5 @= ToU4(Wrap("∞"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(∞)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("Infinity"), 5u2)
+5 @= ToU4(Wrap("Infinity"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(Infinity)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("NaN"), 5u2)
+5 @= ToU4(Wrap("NaN"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(NaN)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap("-1 "))
+null @= ToU1(Wrap("-1 ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(str(-1 )):s)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU1(Wrap("(0)"))
+0 @= ToU1(Wrap("(0)")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(str((0))):s)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 255  = ToU1(Wrap("255"))
+255 @= ToU1(Wrap("255")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Test.Wrap(str(255)):s)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap("256"))
+null @= ToU1(Wrap("256")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Test.Wrap(str(256)):s)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("-1"), 5u1)
+5 @= To(Wrap("-1"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU1(Call(∂.Test.Wrap(str(-1)):s), 5:u1):u1))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU2(Wrap("(1)"))
+null @= ToU2(Wrap("(1)")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(str((1))):s)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU2(Wrap("-0 "))
+0 @= ToU2(Wrap("-0 ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(str(-0 )):s)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 65535 = ToU2(Wrap("65535"))
+65535 @= ToU2(Wrap("65535")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU2(Call(∂.Test.Wrap(str(65535)):s)):u2?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null  = ToU2(Wrap("65536"))
+null @= ToU2(Wrap("65536")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u2? @= Call(∂.ToU2(Call(∂.Test.Wrap(str(65536)):s)):u2?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0 = To(Wrap("0"), 5u2)
+0 @= To(Wrap("0"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Num<i8>(Call(∂.ToU2(Call(∂.Test.Wrap(str(0)):s), 5:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("-1 "))
+null @= ToU4(Wrap("-1 ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(-1 )):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU4(Wrap("(0)"))
+0 @= ToU4(Wrap("(0)")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(str((0))):s)):u4?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1ia shl 32) - 1 = ToU4(Wrap("4,294,967,295"))
+(1 shl 32) - 1 @= ToU4(Wrap("4,294,967,295")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i @= Call(∂.Guard([guard:1] Call(∂.ToU4(Call(∂.Test.Wrap(str(4,294,967,295)):s)):u4?), Num<i>(Scope(1))):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null            = ToU4(Wrap("4,294,967,296"))
+null @= ToU4(Wrap("4,294,967,296")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(4,294,967,296)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 4294967295 = To(Wrap("4294967295"), 5u4)
+4294967295 @= To(Wrap("4294967295"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(4294967295:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(4294967295)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU8(Wrap("(1)"))
+null @= ToU8(Wrap("(1)")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(str((1))):s)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 0    = ToU8(Wrap(" 0 "))
+0 @= ToU8(Wrap(" 0 ")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(0:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(str( 0 )):s)):u8?), Num<i8>(Scope(1))):i8?)))
+*** Warning: (11,12) Node: ToU8(Wrap(" 0 ")), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> (1ia shl 64) - 1 = ToU8(Wrap("18,446,744,073,709,551,615"))
+(1 shl 64) - 1 @= ToU8(Wrap("18,446,744,073,709,551,615")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(18446744073709551615:i @= Call(∂.Guard([guard:1] Call(∂.ToU8(Call(∂.Test.Wrap(str(18,446,744,073,709,551,615)):s)):u8?), Num<i>(Scope(1))):i?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null            = ToU8(Wrap("18,446,744,073,709,551,616"))
+null @= ToU8(Wrap("18,446,744,073,709,551,616")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u8? @= Call(∂.ToU8(Call(∂.Test.Wrap(str(18,446,744,073,709,551,616)):s)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("18,446,744,073,709,551,616"), 5u8)
+5 @= To(Wrap("18,446,744,073,709,551,616"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU8(Call(∂.Test.Wrap(str(18,446,744,073,709,551,616)):s), 5:u8):u8))))
+*** Warning: (6,7) Node: To(Wrap("18,446,744,073,709,551,616"), 5), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("-0.0"))
+null @= ToU4(Wrap("-0.0")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(-0.0)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("12.34"))
+null @= ToU4(Wrap("12.34")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(12.34)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("2e20"))
+null @= ToU4(Wrap("2e20")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(2e20)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("∞"))
+null @= ToU4(Wrap("∞")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(∞)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("Infinity"))
+null @= ToU4(Wrap("Infinity")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(Infinity)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU4(Wrap("NaN"))
+null @= ToU4(Wrap("NaN")) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Test.Wrap(str(NaN)):s)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("-0.0"), 5u4)
+5 @= To(Wrap("-0.0"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(-0.0)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("12.34"), 5u4)
+5 @= To(Wrap("12.34"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(12.34)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = To(Wrap("2e20"), 5u4)
+5 @= To(Wrap("2e20"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(2e20)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("∞"), 5u2)
+5 @= ToU4(Wrap("∞"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(∞)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("Infinity"), 5u2)
+5 @= ToU4(Wrap("Infinity"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(Infinity)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 5 = ToU4(Wrap("NaN"), 5u2)
+5 @= ToU4(Wrap("NaN"), 5) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(5:i8 @= Num<i8>(Call(∂.ToU4(Call(∂.Test.Wrap(str(NaN)):s), 5:u4):u4))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> 255  = ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 255)))
+255 @= ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 255))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:i8 @= Call(∂.Guard([guard:1] Call(∂.ToU1(Call(∂.Date.TotalTicks(Call(∂.Test.Wrap(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 255:i8):d)):d)):i8)):u1?), Num<i8>(Scope(1))):i8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null = ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 256)))
+null @= ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 256))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u1? @= Call(∂.ToU1(Call(∂.Date.TotalTicks(Call(∂.Test.Wrap(Call(∂.Date(1:i8, 1:i8, 1:i8, 0:i8, 0:i8, 0:i8, 0:i8, 256:i8):d)):d)):i8)):u1?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU4(Time( 0,  0, 59)) = ToU4(Wrap(Time( 0,  0, 59)))
+ToU4(Time(0, 0, 59)) @= ToU4(Wrap(Time(0, 0, 59))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.ToU4(Call(∂.Time.TotalTicks(Call(∂.Time(0:i8, 0:i8, 59:i8):t)):i8)):u4?) @= Call(∂.ToU4(Call(∂.Time.TotalTicks(Call(∂.Test.Wrap(Call(∂.Time(0:i8, 0:i8, 59:i8):t)):t)):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> null                   = ToU4(Wrap(Time(23, 59, 59)))
+null @= ToU4(Wrap(Time(23, 59, 59))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(null:u4? @= Call(∂.ToU4(Call(∂.Time.TotalTicks(Call(∂.Test.Wrap(Call(∂.Time(23:i8, 59:i8, 59:i8):t)):t)):i8)):u4?)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> ToU8(Time(23, 59, 59)) = ToU8(Wrap(Time(23, 59, 59)))
+ToU8(Time(23, 59, 59)) @= ToU8(Wrap(Time(23, 59, 59))) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.ToU8(Call(∂.Time.TotalTicks(Call(∂.Time(23:i8, 59:i8, 59:i8):t)):i8)):u8?) @= Call(∂.ToU8(Call(∂.Time.TotalTicks(Call(∂.Test.Wrap(Call(∂.Time(23:i8, 59:i8, 59:i8):t)):t)):i8)):u8?)))
+Func sig: () to b
+Type: bool, Value: true 
+###

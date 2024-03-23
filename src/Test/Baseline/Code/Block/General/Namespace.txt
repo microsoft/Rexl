@@ -1,0 +1,381 @@
+>>> *** Source:
+    namespace @N;
+    @X := "X";
+    X := "N.X";
+    @P.X := "P.X";
+    P.X := "N.P.X";
+    "";
+    namespace @N.P;
+    X;
+    @X;
+    N.X;
+    @N.X;
+    P.X;
+    @P.X;
+    "";
+    namespace @N;
+    X;
+    @X;
+    N.X;
+    @N.X;
+    P.X;
+    @P.X;
+    "";
+    namespace @P;
+    X;
+    @X;
+    N.X;
+    @N.X;
+    P.X;
+    @P.X;
+    "";
+    namespace @;
+    X;
+    @X;
+    N.X;
+    @N.X;
+    P.X;
+    @P.X;
+    "";
+    namespace A {
+        H := "A.H";
+        I := "A.I";
+        namespace B {
+            H := "A.B.H";
+            J := "A.B.J";
+        };
+        (H, I);
+        with B, P {
+            (H, I, J, X);
+        };
+    };
+    with A {
+        (H, I);
+        with B, P { // Error on B.
+            (H, I, X);
+            J; // Error.
+        };
+    };
+    with A.B {
+        (H, J);
+    };
+    with A, A.B {
+        (H, I, J, A.H, A.B.H);
+    };
+    with A;
+    (H, I);
+    J; // Error.
+    with B; // Error.
+    with A.B;
+    "*** A.B before A";
+    (H, I, J);
+    with A {
+        "*** A before A.B";
+        (H, I, J);
+    };
+    "*** A.B before A";
+    (H, I, J);
+    with A;
+    "*** A before A.B";
+    (H, I, J);
+    "*** Fuzzy in with";
+    (h, i, j);
+    "*** Fuzzy namespace";
+    p.X;
+    "*** With coverage";
+    @N.X := "N.X";
+    @N.N.X := "N.N.X";
+    @N.N.N.X := "N.N.N.X";
+    with N { X; }
+    with N.N { X; }
+    with N, N { X; }
+
+>>> *** Instructions:
+   0) [0] Namespace @N
+   1) [0] Define @X <- "X"
+   2) [0] Define X <- "N.X"
+   3) [0] Define @P.X <- "P.X"
+   4) [0] Define P.X <- "N.P.X"
+   5) [0] Expr ""
+   6) [0] Namespace @N.P
+   7) [0] Expr X
+   8) [0] Expr @X
+   9) [0] Expr N.X
+  10) [0] Expr @N.X
+  11) [0] Expr P.X
+  12) [0] Expr @P.X
+  13) [0] Expr ""
+  14) [0] Namespace @N
+  15) [0] Expr X
+  16) [0] Expr @X
+  17) [0] Expr N.X
+  18) [0] Expr @N.X
+  19) [0] Expr P.X
+  20) [0] Expr @P.X
+  21) [0] Expr ""
+  22) [0] Namespace @P
+  23) [0] Expr X
+  24) [0] Expr @X
+  25) [0] Expr N.X
+  26) [0] Expr @N.X
+  27) [0] Expr P.X
+  28) [0] Expr @P.X
+  29) [0] Expr ""
+  30) [0] Namespace @
+  31) [0] Expr X
+  32) [0] Expr @X
+  33) [0] Expr N.X
+  34) [0] Expr @N.X
+  35) [0] Expr P.X
+  36) [0] Expr @P.X
+  37) [0] Expr ""
+  38) [0] Enter (0=>1) A
+  39) [1] Define H <- "A.H"
+  40) [1] Define I <- "A.I"
+  41) [1] Enter (1=>2) B
+  42) [2] Define H <- "A.B.H"
+  43) [2] Define J <- "A.B.J"
+  44) [2] Leave (2=>1)
+  45) [1] Expr (H, I)
+  46) [1] Enter (1=>2)
+  47) [2] With B, P
+  48) [2] Expr (H, I, J, X)
+  49) [2] Leave (2=>1)
+  50) [1] Leave (1=>0)
+  51) [0] Enter (0=>1)
+  52) [1] With A
+  53) [1] Expr (H, I)
+  54) [1] Enter (1=>2)
+  55) [2] With B, P
+  56) [2] Expr (H, I, X)
+  57) [2] Expr J
+  58) [2] Leave (2=>1)
+  59) [1] Leave (1=>0)
+  60) [0] Enter (0=>1)
+  61) [1] With A.B
+  62) [1] Expr (H, J)
+  63) [1] Leave (1=>0)
+  64) [0] Enter (0=>1)
+  65) [1] With A, A.B
+  66) [1] Expr (H, I, J, A.H, A.B.H)
+  67) [1] Leave (1=>0)
+  68) [0] With A
+  69) [0] Expr (H, I)
+  70) [0] Expr J
+  71) [0] With B
+  72) [0] With A.B
+  73) [0] Expr "*** A.B before A"
+  74) [0] Expr (H, I, J)
+  75) [0] Enter (0=>1)
+  76) [1] With A
+  77) [1] Expr "*** A before A.B"
+  78) [1] Expr (H, I, J)
+  79) [1] Leave (1=>0)
+  80) [0] Expr "*** A.B before A"
+  81) [0] Expr (H, I, J)
+  82) [0] With A
+  83) [0] Expr "*** A before A.B"
+  84) [0] Expr (H, I, J)
+  85) [0] Expr "*** Fuzzy in with"
+  86) [0] Expr (h, i, j)
+  87) [0] Expr "*** Fuzzy namespace"
+  88) [0] Expr p.X
+  89) [0] Expr "*** With coverage"
+  90) [0] Define @N.X <- "N.X"
+  91) [0] Define @N.N.X <- "N.N.X"
+  92) [0] Define @N.N.N.X <- "N.N.N.X"
+  93) [0] Enter (0=>1)
+  94) [1] With N
+  95) [1] Expr X
+  96) [1] Leave (1=>0)
+  97) [0] Enter (0=>1)
+  98) [1] With N.N
+  99) [1] Expr X
+ 100) [1] Leave (1=>0)
+ 101) [0] Enter (0=>1)
+ 102) [1] With N, N
+ 103) [1] Expr X
+ 104) [1] Leave (1=>0)
+ 105) [0] End
+
+>    0) [0] Namespace @N
+>    1) [0] Define @X <- "X"
+Global 'X' has DType: s, SysType: str
+>    2) [0] Define X <- "N.X"
+Global 'N.X' has DType: s, SysType: str
+>    3) [0] Define @P.X <- "P.X"
+Global 'P.X' has DType: s, SysType: str
+>    4) [0] Define P.X <- "N.P.X"
+Global 'N.P.X' has DType: s, SysType: str
+>    5) [0] Expr ""
+
+>    6) [0] Namespace @N.P
+>    7) [0] Expr X
+N.P.X
+>    8) [0] Expr @X
+X
+>    9) [0] Expr N.X
+N.X
+>   10) [0] Expr @N.X
+N.X
+>   11) [0] Expr P.X
+N.P.X
+>   12) [0] Expr @P.X
+P.X
+>   13) [0] Expr ""
+
+>   14) [0] Namespace @N
+>   15) [0] Expr X
+N.X
+>   16) [0] Expr @X
+X
+>   17) [0] Expr N.X
+N.X
+>   18) [0] Expr @N.X
+N.X
+>   19) [0] Expr P.X
+N.P.X
+>   20) [0] Expr @P.X
+P.X
+>   21) [0] Expr ""
+
+>   22) [0] Namespace @P
+>   23) [0] Expr X
+P.X
+>   24) [0] Expr @X
+X
+>   25) [0] Expr N.X
+N.X
+>   26) [0] Expr @N.X
+N.X
+>   27) [0] Expr P.X
+P.X
+>   28) [0] Expr @P.X
+P.X
+>   29) [0] Expr ""
+
+>   30) [0] Namespace @
+>   31) [0] Expr X
+X
+>   32) [0] Expr @X
+X
+>   33) [0] Expr N.X
+N.X
+>   34) [0] Expr @N.X
+N.X
+>   35) [0] Expr P.X
+P.X
+>   36) [0] Expr @P.X
+P.X
+>   37) [0] Expr ""
+
+>   38) [0] Enter (0=>1) A
+>   39) [1] Define H <- "A.H"
+Global 'A.H' has DType: s, SysType: str
+>   40) [1] Define I <- "A.I"
+Global 'A.I' has DType: s, SysType: str
+>   41) [1] Enter (1=>2) B
+>   42) [2] Define H <- "A.B.H"
+Global 'A.B.H' has DType: s, SysType: str
+>   43) [2] Define J <- "A.B.J"
+Global 'A.B.J' has DType: s, SysType: str
+>   44) [2] Leave (2=>1)
+>   45) [1] Expr (H, I)
+(A.H, A.I)
+>   46) [1] Enter (1=>2)
+>   47) [2] With B, P
+>   48) [2] Expr (H, I, J, X)
+(A.B.H, A.I, A.B.J, P.X)
+>   49) [2] Leave (2=>1)
+>   50) [1] Leave (1=>0)
+>   51) [0] Enter (0=>1)
+>   52) [1] With A
+>   53) [1] Expr (H, I)
+(A.H, A.I)
+>   54) [1] Enter (1=>2)
+>   55) [2] With B, P
+*** Statement diagnostics:
+  [Namespace.txt] Error: (474,475) Tok: 'B', Message: Unknown namespace
+>   56) [2] Expr (H, I, X)
+(A.H, A.I, P.X)
+>   57) [2] Expr J
+*** Bind diagnostics:
+  [Namespace.txt] Error: (523,524) Node: J, Message: Name does not exist in the current context
+>   58) [2] Leave (2=>1)
+>   59) [1] Leave (1=>0)
+>   60) [0] Enter (0=>1)
+>   61) [1] With A.B
+>   62) [1] Expr (H, J)
+(A.B.H, A.B.J)
+>   63) [1] Leave (1=>0)
+>   64) [0] Enter (0=>1)
+>   65) [1] With A, A.B
+>   66) [1] Expr (H, I, J, A.H, A.B.H)
+(A.B.H, A.I, A.B.J, A.H, A.B.H)
+>   67) [1] Leave (1=>0)
+>   68) [0] With A
+>   69) [0] Expr (H, I)
+(A.H, A.I)
+>   70) [0] Expr J
+*** Bind diagnostics:
+  [Namespace.txt] Error: (635,636) Node: J, Message: Name does not exist in the current context
+>   71) [0] With B
+*** Statement diagnostics:
+  [Namespace.txt] Error: (654,655) Tok: 'B', Message: Unknown namespace
+>   72) [0] With A.B
+>   73) [0] Expr "*** A.B before A"
+*** A.B before A
+>   74) [0] Expr (H, I, J)
+(A.B.H, A.I, A.B.J)
+>   75) [0] Enter (0=>1)
+>   76) [1] With A
+>   77) [1] Expr "*** A before A.B"
+*** A before A.B
+>   78) [1] Expr (H, I, J)
+(A.H, A.I, A.B.J)
+>   79) [1] Leave (1=>0)
+>   80) [0] Expr "*** A.B before A"
+*** A.B before A
+>   81) [0] Expr (H, I, J)
+(A.B.H, A.I, A.B.J)
+>   82) [0] With A
+>   83) [0] Expr "*** A before A.B"
+*** A before A.B
+>   84) [0] Expr (H, I, J)
+(A.H, A.I, A.B.J)
+>   85) [0] Expr "*** Fuzzy in with"
+*** Fuzzy in with
+>   86) [0] Expr (h, i, j)
+*** Bind diagnostics:
+  [Namespace.txt] Error: (856,857) Node: h, Message: Name does not exist in the current context, did you intend 'H'?
+  [Namespace.txt] Error: (859,860) Node: i, Message: Name does not exist in the current context, did you intend 'I'?
+  [Namespace.txt] Error: (862,863) Node: j, Message: Name does not exist in the current context, did you intend 'J'?
+>   87) [0] Expr "*** Fuzzy namespace"
+*** Fuzzy namespace
+>   88) [0] Expr p.X
+*** Bind diagnostics:
+  [Namespace.txt] Error: (890,891) Node: p, Message: Name does not exist in the current context, did you intend 'P'?
+>   89) [0] Expr "*** With coverage"
+*** With coverage
+>   90) [0] Define @N.X <- "N.X"
+>   91) [0] Define @N.N.X <- "N.N.X"
+Global 'N.N.X' has DType: s, SysType: str
+>   92) [0] Define @N.N.N.X <- "N.N.N.X"
+Global 'N.N.N.X' has DType: s, SysType: str
+>   93) [0] Enter (0=>1)
+>   94) [1] With N
+>   95) [1] Expr X
+N.X
+>   96) [1] Leave (1=>0)
+>   97) [0] Enter (0=>1)
+>   98) [1] With N.N
+>   99) [1] Expr X
+N.N.X
+>  100) [1] Leave (1=>0)
+>  101) [0] Enter (0=>1)
+>  102) [1] With N, N
+>  103) [1] Expr X
+N.X
+>  104) [1] Leave (1=>0)
+>  105) [0] End
+

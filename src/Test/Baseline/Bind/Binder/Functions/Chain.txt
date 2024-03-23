@@ -1,0 +1,222 @@
+**** New globals: {A:i4*, B:i4?*, N:o, NS:o*, T:{S:{X:i4}*, X:i4, Y:i2}*, X:i4}
+
+> Chain(A, A)
+Chain(A, A) : i4*
+Binder : Chain*(A, A)
+Reducer: SeqConcat(A, A)
+###
+> Chain(A, B)
+Chain(A, B) : i4?*
+Binder : Chain*(ForEach(*1: A, Opt<i4?>(*1)), B)
+Reducer: SeqConcat(ForEach(*1: A, Opt<i4?>(*1)), B)
+###
+> Chain(B, A)
+Chain(B, A) : i4?*
+Binder : Chain*(B, ForEach(*1: A, Opt<i4?>(*1)))
+Reducer: SeqConcat(B, ForEach(*1: A, Opt<i4?>(*1)))
+###
+> Chain(A, [X])
+Chain(A, [X]) : i4*
+Binder : Chain*(A, [X])
+Reducer: SeqConcat(A, [X])
+###
+> Chain([X], A)
+Chain([X], A) : i4*
+Binder : Chain*([X], A)
+Reducer: SeqConcat([X], A)
+###
+> Chain(B, [X])
+Chain(B, [X]) : i4?*
+Binder : Chain*(B, [Opt<i4?>(X)])
+Reducer: SeqConcat(B, [Opt<i4?>(X)])
+###
+> Chain([X], B)
+Chain([X], B) : i4?*
+Binder : Chain*([Opt<i4?>(X)], B)
+Reducer: SeqConcat([Opt<i4?>(X)], B)
+###
+> Chain(A, null)
+Chain(A, null) : i4*
+Binder : Chain*(A, null)
+Reducer: A
+###
+> Chain(null, A)
+Chain(null, A) : i4*
+Binder : Chain*(null, A)
+Reducer: A
+###
+> Chain(A, N)
+Chain(A, N) : i4*
+Binder : Chain*(A, null)
+Reducer: A
+###
+> Chain(N, A)
+Chain(N, A) : i4*
+Binder : Chain*(null, A)
+Reducer: A
+###
+> Chain(B, null)
+Chain(B, null) : i4?*
+Binder : Chain*(B, null)
+Reducer: B
+###
+> Chain(null, B)
+Chain(null, B) : i4?*
+Binder : Chain*(null, B)
+Reducer: B
+###
+> Chain(B, N)
+Chain(B, N) : i4?*
+Binder : Chain*(B, null)
+Reducer: B
+###
+> Chain(N, B)
+Chain(N, B) : i4?*
+Binder : Chain*(null, B)
+Reducer: B
+###
+> Chain(A, [null])
+Chain(A, [null]) : i4?*
+Binder : Chain*(ForEach(*1: A, Opt<i4?>(*1)), [null])
+Reducer: SeqConcat(ForEach(*1: A, Opt<i4?>(*1)), [null])
+###
+> Chain([null], A)
+Chain([null], A) : i4?*
+Binder : Chain*([null], ForEach(*1: A, Opt<i4?>(*1)))
+Reducer: SeqConcat([null], ForEach(*1: A, Opt<i4?>(*1)))
+###
+> Chain(A, [N])
+Chain(A, [N]) : i4?*
+Binder : Chain*(ForEach(*1: A, Opt<i4?>(*1)), [null])
+Reducer: SeqConcat(ForEach(*1: A, Opt<i4?>(*1)), [null])
+###
+> Chain([N], A)
+Chain([N], A) : i4?*
+Binder : Chain*([null], ForEach(*1: A, Opt<i4?>(*1)))
+Reducer: SeqConcat([null], ForEach(*1: A, Opt<i4?>(*1)))
+###
+> Chain(B, [null])
+Chain(B, [null]) : i4?*
+Binder : Chain*(B, [null])
+Reducer: SeqConcat(B, [null])
+###
+> Chain([null], B)
+Chain([null], B) : i4?*
+Binder : Chain*([null], B)
+Reducer: SeqConcat([null], B)
+###
+> Chain(B, [N])
+Chain(B, [N]) : i4?*
+Binder : Chain*(B, [null])
+Reducer: SeqConcat(B, [null])
+###
+> Chain([N], B)
+Chain([N], B) : i4?*
+Binder : Chain*([null], B)
+Reducer: SeqConcat([null], B)
+###
+> Chain(A, NS)
+Chain(A, NS) : i4?*
+Binder : Chain*(ForEach(*1: A, Opt<i4?>(*1)), ForEach(*2: NS, null))
+Reducer: SeqConcat(ForEach(*1: A, Opt<i4?>(*1)), ForEach(*2: NS, null))
+###
+> Chain(NS, A)
+Chain(NS, A) : i4?*
+Binder : Chain*(ForEach(*1: NS, null), ForEach(*2: A, Opt<i4?>(*2)))
+Reducer: SeqConcat(ForEach(*1: NS, null), ForEach(*2: A, Opt<i4?>(*2)))
+###
+> Chain(B, NS)
+Chain(B, NS) : i4?*
+Binder : Chain*(B, ForEach(*1: NS, null))
+Reducer: SeqConcat(B, ForEach(*1: NS, null))
+###
+> Chain(NS, B)
+Chain(NS, B) : i4?*
+Binder : Chain*(ForEach(*1: NS, null), B)
+Reducer: SeqConcat(ForEach(*1: NS, null), B)
+###
+> Chain(T, [{X:3i1, Y:2i1, S:[{X:X}]}]) // No mapping.
+Chain(T, [{ X : 3, Y : 2, S : [{ X : X }] }]) : {S:{X:i4}*, X:i4, Y:i2}*
+Binder : Chain*(T, [{S:[{X:X}], X:3, Y:2}])
+Reducer: SeqConcat(T, [{S:[{X:X}], X:3, Y:2}])
+###
+> Chain([{X:3i1, Y:2i1, S:[{X:X}]}], T) // Ditto.
+Chain([{ X : 3, Y : 2, S : [{ X : X }] }], T) : {S:{X:i4}*, X:i4, Y:i2}*
+Binder : Chain*([{S:[{X:X}], X:3, Y:2}], T)
+Reducer: SeqConcat([{S:[{X:X}], X:3, Y:2}], T)
+###
+> Chain(T, [null]) // Should be a simple reference cast.
+Chain(T, [null]) : {S:{X:i4}*, X:i4, Y:i2}?*
+Binder : Chain*(Ref<{S:{X:i4}*, X:i4, Y:i2}?*>(T), [null])
+Reducer: SeqConcat(Ref<{S:{X:i4}*, X:i4, Y:i2}?*>(T), [null])
+###
+> Chain([null], T) // Should be a simple reference cast.
+Chain([null], T) : {S:{X:i4}*, X:i4, Y:i2}?*
+Binder : Chain*([null], Ref<{S:{X:i4}*, X:i4, Y:i2}?*>(T))
+Reducer: SeqConcat([null], Ref<{S:{X:i4}*, X:i4, Y:i2}?*>(T))
+###
+> Chain(T, [{X:3i1, Y:2i1, S:[{X:X}, null]}]) // REVIEW: Would be nice for this to be a simple reference cast, but see the REVIEW in IsRecordRefConv.
+Chain(T, [{ X : 3, Y : 2, S : [{ X : X }, null] }]) : {S:{X:i4}?*, X:i4, Y:i2}*
+Binder : Chain*(ForEach(*1: T, With(!2: *1, {S:Ref<{X:i4}?*>(!2.S), X:!2.X, Y:!2.Y})), [{S:[Ref<{X:i4}?>({X:X}), null], X:3, Y:2}])
+Reducer: SeqConcat(ForEach(*1: T, {S:Ref<{X:i4}?*>(*1.S), X:*1.X, Y:*1.Y}), [{S:[Ref<{X:i4}?>({X:X}), null], X:3, Y:2}])
+###
+> Chain([{X:3i1, Y:2i1, S:[{X:X}, null]}], T) // REVIEW: Ditto.
+Chain([{ X : 3, Y : 2, S : [{ X : X }, null] }], T) : {S:{X:i4}?*, X:i4, Y:i2}*
+Binder : Chain*([{S:[Ref<{X:i4}?>({X:X}), null], X:3, Y:2}], ForEach(*1: T, With(!2: *1, {S:Ref<{X:i4}?*>(!2.S), X:!2.X, Y:!2.Y})))
+Reducer: SeqConcat([{S:[Ref<{X:i4}?>({X:X}), null], X:3, Y:2}], ForEach(*1: T, {S:Ref<{X:i4}?*>(*1.S), X:*1.X, Y:*1.Y}))
+###
+> Chain(T, [{X:null, Y:2i1, S:[{X:X}]}])
+Chain(T, [{ X : null, Y : 2, S : [{ X : X }] }]) : {S:{X:i4}*, X:i4?, Y:i2}*
+Binder : Chain*(Ref<{S:{X:i4}*, X:i4?, Y:i2}*>(T), [{S:[{X:X}], X:null, Y:2}])
+Reducer: SeqConcat(Ref<{S:{X:i4}*, X:i4?, Y:i2}*>(T), [{S:[{X:X}], X:null, Y:2}])
+###
+> Chain([{X:null, Y:2i1, S:[{X:X}]}], T)
+Chain([{ X : null, Y : 2, S : [{ X : X }] }], T) : {S:{X:i4}*, X:i4?, Y:i2}*
+Binder : Chain*([{S:[{X:X}], X:null, Y:2}], Ref<{S:{X:i4}*, X:i4?, Y:i2}*>(T))
+Reducer: SeqConcat([{S:[{X:X}], X:null, Y:2}], Ref<{S:{X:i4}*, X:i4?, Y:i2}*>(T))
+###
+> Chain(null)
+Chain(null) : v*
+Binder : Chain*(null)
+Reducer: null
+###
+> Chain(null, null)
+Chain(null, null) : v*
+Binder : Chain*(null, null)
+Reducer: null
+###
+> Chain(null, null, null)
+Chain(null, null, null) : v*
+Binder : Chain*(null, null, null)
+Reducer: null
+###
+> Chain(null, null, null, null)
+Chain(null, null, null, null) : v*
+Binder : Chain*(null, null, null, null)
+Reducer: null
+###
+> ChainMap(a: Range(11), b: Range(12), c: Range(13), d: Range(14), e: Range(15), f: Range(16), g: Range(17), h: Range(18), Range(2)->{ a, b, c, d, e, f, g, h, N: it })
+ChainMap(a : Range(11), b : Range(12), c : Range(13), d : Range(14), e : Range(15), f : Range(16), g : Range(17), h : Range(18), Range(2)->{ a, b, c, d, e, f, g, h, N : it }) : {N:i8, a:i8, b:i8, c:i8, d:i8, e:i8, f:i8, g:i8, h:i8}*
+Binder : ChainMap(*1: Range(11), *2: Range(12), *3: Range(13), *4: Range(14), *5: Range(15), *6: Range(16), *7: Range(17), *8: Range(18), ForEach(*9: Range(2), Guard(!10: *9, {N:!10, a:*1, b:*2, c:*3, d:*4, e:*5, f:*6, g:*7, h:*8})))
+Reducer: ChainMap(*1: Range(11), *2: Range(12), *3: Range(13), *4: Range(14), *5: Range(15), *6: Range(16), *7: Range(17), *8: Range(18), ForEach(*9: Range(2), {N:*9, a:*1, b:*2, c:*3, d:*4, e:*5, f:*6, g:*7, h:*8}))
+Hoister: With(!1: Range(2), ChainMap(*2: Range(11), *3: Range(12), *4: Range(13), *5: Range(14), *6: Range(15), *7: Range(16), *8: Range(17), *9: Range(18), ForEach(*10: !1, {N:*10, a:*2, b:*3, c:*4, d:*5, e:*6, f:*7, g:*8, h:*9})))
+###
+> ChainMap(a: Range(11), b: Range(12), c: Range(13), d: Range(14), e: Range(15), f: Range(16), g: Range(17), h: Range(18), i: Range(19), Range(2)->{ a, b, c, d, e, f, g, h, i, N: it })
+ChainMap(a : Range(11), b : Range(12), c : Range(13), d : Range(14), e : Range(15), f : Range(16), g : Range(17), h : Range(18), i : Range(19), Range(2)->{ a, b, c, d, e, f, g, h, i, N : it }) : {N:i8, a:i8, b:i8, c:i8, d:i8, e:i8, f:i8, g:i8, h:i8, i:i8}*
+Binder : ChainMap(*1: Range(11), *2: Range(12), *3: Range(13), *4: Range(14), *5: Range(15), *6: Range(16), *7: Range(17), *8: Range(18), *9: Range(19), ForEach(*10: Range(2), Guard(!11: *10, {N:!11, a:*1, b:*2, c:*3, d:*4, e:*5, f:*6, g:*7, h:*8, i:*9})))
+Reducer: ChainMap(*1: Range(11), *2: Range(12), *3: Range(13), *4: Range(14), *5: Range(15), *6: Range(16), *7: Range(17), *8: Range(18), *9: Range(19), ForEach(*10: Range(2), {N:*10, a:*1, b:*2, c:*3, d:*4, e:*5, f:*6, g:*7, h:*8, i:*9}))
+Hoister: With(!1: Range(2), ChainMap(*2: Range(11), *3: Range(12), *4: Range(13), *5: Range(14), *6: Range(15), *7: Range(16), *8: Range(17), *9: Range(18), *10: Range(19), ForEach(*11: !1, {N:*11, a:*2, b:*3, c:*4, d:*5, e:*6, f:*7, g:*8, h:*9, i:*10})))
+###
+
+**** New globals: {T:{X:i4, Y:i4}?*, U:{X:r8, Z:i4}*}
+
+> T ++ U
+T ++ U : {X:r8, Y:i4?, Z:i4?}?*
+Binder : SeqConcat(ForEach(*1: T, Guard(?2: *1, With(!3: ?2, {X:Num<r8>(!3.X), Y:Opt<i4?>(!3.Y), Z:null}))), ForEach(*4: U, Ref<{X:r8, Y:i4?, Z:i4?}?>(With(!5: *4, {X:!5.X, Y:null, Z:Opt<i4?>(!5.Z)}))))
+Reducer: SeqConcat(ForEach(*1: T, Guard(?2: *1, {X:Num<r8>(?2.X), Y:Opt<i4?>(?2.Y), Z:null})), ForEach(*3: U, Ref<{X:r8, Y:i4?, Z:i4?}?>({X:*3.X, Y:null, Z:Opt<i4?>(*3.Z)})))
+###
+> Chain(T, U)
+Chain(T, U) : {X:r8, Y:i4?, Z:i4?}?*
+Binder : Chain*(ForEach(*1: T, Guard(?2: *1, With(!3: ?2, {X:Num<r8>(!3.X), Y:Opt<i4?>(!3.Y), Z:null}))), ForEach(*4: U, Ref<{X:r8, Y:i4?, Z:i4?}?>(With(!5: *4, {X:!5.X, Y:null, Z:Opt<i4?>(!5.Z)}))))
+Reducer: SeqConcat(ForEach(*1: T, Guard(?2: *1, {X:Num<r8>(?2.X), Y:Opt<i4?>(?2.Y), Z:null})), ForEach(*3: U, Ref<{X:r8, Y:i4?, Z:i4?}?>({X:*3.X, Y:null, Z:Opt<i4?>(*3.Z)})))
+###

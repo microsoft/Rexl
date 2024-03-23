@@ -1,0 +1,493 @@
+**** New globals: {b:b, bit:b, i4:i4, i8:i8, qb:b?, r4:r4, r8:r8, u4:u4, u8:u8, x:i8}
+
+> If(b, 3)
+If(b, 3) : i8?
+Binder : If*(b, Opt<i8?>(3))
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If(!b, 3)
+If(!b, 3) : i8?
+Binder : If*(Xor(b, true), Opt<i8?>(3))
+Reducer: If(Xor(b, true), Opt<i8?>(3), null)
+###
+> If([if] b, 3)
+If([if] b, 3) : i8?
+Binder : If*([if] b, Opt<i8?>(3))
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If(b, [if] 3) // Error.
+If(b, [if] 3) : i8?
+*** Error: (6,10) Node: [if] 3, Tok: '[if]', Message: Unexpected directive
+Binder : If*(b, Opt<i8?>(3))
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If(b, [else] 3) // Error.
+If(b, [else] 3) : i8?
+*** Error: (6,12) Node: [else] 3, Tok: '[else]', Message: Unexpected directive
+Binder : If*(b, Opt<i8?>(3))
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If([while] b, 3) // Error.
+If([while] b, 3) : i8?
+*** Error: (3,10) Node: [while] b, Tok: '[while]', Message: Unexpected directive
+Binder : If*(b, Opt<i8?>(3))
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If(b, 3, 5)
+If(b, 3, 5) : i8
+Binder : If*(b, 3, 5)
+Reducer: If(b, 3, 5)
+###
+> If(!b, 3, 5)
+If(!b, 3, 5) : i8
+Binder : If*(Xor(b, true), 3, 5)
+Reducer: If(Xor(b, true), 3, 5)
+###
+> If(b, 3, null)
+If(b, 3, null) : i8?
+Binder : If*(b, Opt<i8?>(3), null)
+Reducer: If(b, Opt<i8?>(3), null)
+###
+> If(b, 3, [else] 5)
+If(b, 3, [else] 5) : i8
+Binder : If*(b, 3, [else] 5)
+Reducer: If(b, 3, 5)
+###
+> If([if] b, 3, 5)
+If([if] b, 3, 5) : i8
+Binder : If*([if] b, 3, 5)
+Reducer: If(b, 3, 5)
+###
+> If([if] b, 3, [else] 5)
+If([if] b, 3, [else] 5) : i8
+Binder : If*([if] b, 3, [else] 5)
+Reducer: If(b, 3, 5)
+###
+> If([if] b, 3, [if] 5) // Error.
+If([if] b, 3, [if] 5) : i8
+*** Error: (14,18) Node: [if] 5, Tok: '[if]', Message: Unexpected directive
+Binder : If*([if] b, 3, 5)
+Reducer: If(b, 3, 5)
+###
+> If([else] b, 3, 5) // Error.
+If([else] b, 3, 5) : i8
+*** Error: (3,9) Node: [else] b, Tok: '[else]', Message: Unexpected directive
+Binder : If*(b, 3, 5)
+Reducer: If(b, 3, 5)
+###
+> If(b, 3, b, 5)
+If(b, 3, b, 5) : i8?
+Binder : If*(b, Opt<i8?>(3), b, Opt<i8?>(5))
+Reducer: If(b, Opt<i8?>(3), If(b, Opt<i8?>(5), null))
+###
+> If(b, 3, b, 5, 7)
+If(b, 3, b, 5, 7) : i8
+Binder : If*(b, 3, b, 5, 7)
+Reducer: If(b, 3, If(b, 5, 7))
+###
+> If(b, 3, b, 5, b, 7)
+If(b, 3, b, 5, b, 7) : i8?
+Binder : If*(b, Opt<i8?>(3), b, Opt<i8?>(5), b, Opt<i8?>(7))
+Reducer: If(b, Opt<i8?>(3), If(b, Opt<i8?>(5), If(b, Opt<i8?>(7), null)))
+###
+> If(b, 3, b, 5, b, 7, 9)
+If(b, 3, b, 5, b, 7, 9) : i8
+Binder : If*(b, 3, b, 5, b, 7, 9)
+Reducer: If(b, 3, If(b, 5, If(b, 7, 9)))
+###
+> If(3, 5, 7)
+If(3, 5, 7) : i8
+*** Error: (3,4) Node: 3, Message: Invalid operand type: cannot convert type 'i8' to 'b'
+Binder : If*(Error(ErrBadType_Src_Dst), 5, 7)
+Reducer: If(Error(ErrBadType_Src_Dst), 5, 7)
+###
+> If(b, i8, r4) // Type r4
+If(b, i8, r4) : r4
+Binder : If*(b, Num<r4>(i8), r4)
+Reducer: If(b, Num<r4>(i8), r4)
+###
+> If(b, bit, i4) // Type i4
+If(b, bit, i4) : i4
+Binder : If*(b, Num<i4>(bit), i4)
+Reducer: If(b, Num<i4>(bit), i4)
+###
+> If(b, u4, i4) // Type i8
+If(b, u4, i4) : i8
+Binder : If*(b, Num<i8>(u4), Num<i8>(i4))
+Reducer: If(b, Num<i8>(u4), Num<i8>(i4))
+###
+> If(b, "hi", i4) // Type g
+If(b, "hi", i4) : g
+Binder : If*(b, Ref<g>("hi"), Box<g>(i4))
+Reducer: If(b, Ref<g>("hi"), Box<g>(i4))
+###
+> If(b, i8, b, r4) // Type r4?
+If(b, i8, b, r4) : r4?
+Binder : If*(b, Opt<r4?>(Num<r4>(i8)), b, Opt<r4?>(r4))
+Reducer: If(b, Opt<r4?>(Num<r4>(i8)), If(b, Opt<r4?>(r4), null))
+###
+> If(b, bit, b, i4) // Type i4?
+If(b, bit, b, i4) : i4?
+Binder : If*(b, Opt<i4?>(Num<i4>(bit)), b, Opt<i4?>(i4))
+Reducer: If(b, Opt<i4?>(Num<i4>(bit)), If(b, Opt<i4?>(i4), null))
+###
+> If(b, u4, b, i4) // Type i8?
+If(b, u4, b, i4) : i8?
+Binder : If*(b, Opt<i8?>(Num<i8>(u4)), b, Opt<i8?>(Num<i8>(i4)))
+Reducer: If(b, Opt<i8?>(Num<i8>(u4)), If(b, Opt<i8?>(Num<i8>(i4)), null))
+###
+> If(b, "hi", b, i4) // Type g
+If(b, "hi", b, i4) : g
+Binder : If*(b, Ref<g>("hi"), b, Box<g>(i4))
+Reducer: If(b, Ref<g>("hi"), If(b, Box<g>(i4), null))
+###
+> If(b, i8, b, r4, i4) // Type r4
+If(b, i8, b, r4, i4) : r4
+Binder : If*(b, Num<r4>(i8), b, r4, Num<r4>(i4))
+Reducer: If(b, Num<r4>(i8), If(b, r4, Num<r4>(i4)))
+###
+> If(b, i8, b, "hi", i4) // Type g
+If(b, i8, b, "hi", i4) : g
+Binder : If*(b, Box<g>(i8), b, Ref<g>("hi"), Box<g>(i4))
+Reducer: If(b, Box<g>(i8), If(b, Ref<g>("hi"), Box<g>(i4)))
+###
+> If(b, i8, b, r4, b, i4) // Type r4?
+If(b, i8, b, r4, b, i4) : r4?
+Binder : If*(b, Opt<r4?>(Num<r4>(i8)), b, Opt<r4?>(r4), b, Opt<r4?>(Num<r4>(i4)))
+Reducer: If(b, Opt<r4?>(Num<r4>(i8)), If(b, Opt<r4?>(r4), If(b, Opt<r4?>(Num<r4>(i4)), null)))
+###
+> If(b, i8, b, "hi", b, i4) // Type g
+If(b, i8, b, "hi", b, i4) : g
+Binder : If*(b, Box<g>(i8), b, Ref<g>("hi"), b, Box<g>(i4))
+Reducer: If(b, Box<g>(i8), If(b, Ref<g>("hi"), If(b, Box<g>(i4), null)))
+###
+> If(x < 5, "A")
+If(x $< 5, "A") : s
+Binder : If*(x @< 5, "A")
+Reducer: If(x @< 5, "A", str(<null>))
+###
+> If(3 < 5, "A")
+If(3 $< 5, "A") : s
+Binder : If*(3 @< 5, "A")
+Reducer: "A"
+###
+> If(7 < 5, "A")
+If(7 $< 5, "A") : s
+Binder : If*(7 @< 5, "A")
+Reducer: str(<null>)
+###
+> If(x < 5, "A", "B")
+If(x $< 5, "A", "B") : s
+Binder : If*(x @< 5, "A", "B")
+Reducer: If(x @< 5, "A", "B")
+###
+> If(3 < 5, "A", "B")
+If(3 $< 5, "A", "B") : s
+Binder : If*(3 @< 5, "A", "B")
+Reducer: "A"
+###
+> If(7 < 5, "A", "B")
+If(7 $< 5, "A", "B") : s
+Binder : If*(7 @< 5, "A", "B")
+Reducer: "B"
+###
+> If(x < 5, "A", null)
+If(x $< 5, "A", null) : s
+Binder : If*(x @< 5, "A", str(<null>))
+Reducer: If(x @< 5, "A", str(<null>))
+###
+> If(3 < 5, "A", null)
+If(3 $< 5, "A", null) : s
+Binder : If*(3 @< 5, "A", str(<null>))
+Reducer: "A"
+###
+> If(7 < 5, "A", null)
+If(7 $< 5, "A", null) : s
+Binder : If*(7 @< 5, "A", str(<null>))
+Reducer: str(<null>)
+###
+> If(x < 5, null, "B")
+If(x $< 5, null, "B") : s
+Binder : If*(x @< 5, str(<null>), "B")
+Reducer: If(x @< 5, str(<null>), "B")
+###
+> If(3 < 5, null, "B")
+If(3 $< 5, null, "B") : s
+Binder : If*(3 @< 5, str(<null>), "B")
+Reducer: str(<null>)
+###
+> If(7 < 5, null, "B")
+If(7 $< 5, null, "B") : s
+Binder : If*(7 @< 5, str(<null>), "B")
+Reducer: "B"
+###
+> If(x < 5, "A", x < 5, "B")
+If(x $< 5, "A", x $< 5, "B") : s
+Binder : If*(x @< 5, "A", x @< 5, "B")
+Reducer: If(x @< 5, "A", If(x @< 5, "B", str(<null>)))
+###
+> If(x < 5, "A", 3 < 5, "B")
+If(x $< 5, "A", 3 $< 5, "B") : s
+Binder : If*(x @< 5, "A", 3 @< 5, "B")
+Reducer: If(x @< 5, "A", "B")
+###
+> If(x < 5, "A", 7 < 5, "B")
+If(x $< 5, "A", 7 $< 5, "B") : s
+Binder : If*(x @< 5, "A", 7 @< 5, "B")
+Reducer: If(x @< 5, "A", str(<null>))
+###
+> If(3 < 5, "A", x < 5, "B")
+If(3 $< 5, "A", x $< 5, "B") : s
+Binder : If*(3 @< 5, "A", x @< 5, "B")
+Reducer: "A"
+###
+> If(3 < 5, "A", 3 < 5, "B")
+If(3 $< 5, "A", 3 $< 5, "B") : s
+Binder : If*(3 @< 5, "A", 3 @< 5, "B")
+Reducer: "A"
+###
+> If(3 < 5, "A", 7 < 5, "B")
+If(3 $< 5, "A", 7 $< 5, "B") : s
+Binder : If*(3 @< 5, "A", 7 @< 5, "B")
+Reducer: "A"
+###
+> If(7 < 5, "A", x < 5, "B")
+If(7 $< 5, "A", x $< 5, "B") : s
+Binder : If*(7 @< 5, "A", x @< 5, "B")
+Reducer: If(x @< 5, "B", str(<null>))
+###
+> If(7 < 5, "A", 3 < 5, "B")
+If(7 $< 5, "A", 3 $< 5, "B") : s
+Binder : If*(7 @< 5, "A", 3 @< 5, "B")
+Reducer: "B"
+###
+> If(7 < 5, "A", 7 < 5, "B")
+If(7 $< 5, "A", 7 $< 5, "B") : s
+Binder : If*(7 @< 5, "A", 7 @< 5, "B")
+Reducer: str(<null>)
+###
+> If(x < 5, "A", x < 5, "B", "C")
+If(x $< 5, "A", x $< 5, "B", "C") : s
+Binder : If*(x @< 5, "A", x @< 5, "B", "C")
+Reducer: If(x @< 5, "A", If(x @< 5, "B", "C"))
+###
+> If(x < 5, "A", 3 < 5, "B", "C")
+If(x $< 5, "A", 3 $< 5, "B", "C") : s
+Binder : If*(x @< 5, "A", 3 @< 5, "B", "C")
+Reducer: If(x @< 5, "A", "B")
+###
+> If(x < 5, "A", 7 < 5, "B", "C")
+If(x $< 5, "A", 7 $< 5, "B", "C") : s
+Binder : If*(x @< 5, "A", 7 @< 5, "B", "C")
+Reducer: If(x @< 5, "A", "C")
+###
+> If(3 < 5, "A", x < 5, "B", "C")
+If(3 $< 5, "A", x $< 5, "B", "C") : s
+Binder : If*(3 @< 5, "A", x @< 5, "B", "C")
+Reducer: "A"
+###
+> If(3 < 5, "A", 3 < 5, "B", "C")
+If(3 $< 5, "A", 3 $< 5, "B", "C") : s
+Binder : If*(3 @< 5, "A", 3 @< 5, "B", "C")
+Reducer: "A"
+###
+> If(3 < 5, "A", 7 < 5, "B", "C")
+If(3 $< 5, "A", 7 $< 5, "B", "C") : s
+Binder : If*(3 @< 5, "A", 7 @< 5, "B", "C")
+Reducer: "A"
+###
+> If(7 < 5, "A", x < 5, "B", "C")
+If(7 $< 5, "A", x $< 5, "B", "C") : s
+Binder : If*(7 @< 5, "A", x @< 5, "B", "C")
+Reducer: If(x @< 5, "B", "C")
+###
+> If(7 < 5, "A", 3 < 5, "B", "C")
+If(7 $< 5, "A", 3 $< 5, "B", "C") : s
+Binder : If*(7 @< 5, "A", 3 @< 5, "B", "C")
+Reducer: "B"
+###
+> If(7 < 5, "A", 7 < 5, "B", "C")
+If(7 $< 5, "A", 7 $< 5, "B", "C") : s
+Binder : If*(7 @< 5, "A", 7 @< 5, "B", "C")
+Reducer: "C"
+###
+> If(x < 5, "A", x < 5, "B", null)
+If(x $< 5, "A", x $< 5, "B", null) : s
+Binder : If*(x @< 5, "A", x @< 5, "B", str(<null>))
+Reducer: If(x @< 5, "A", If(x @< 5, "B", str(<null>)))
+###
+> If(x < 5, "A", 3 < 5, "B", null)
+If(x $< 5, "A", 3 $< 5, "B", null) : s
+Binder : If*(x @< 5, "A", 3 @< 5, "B", str(<null>))
+Reducer: If(x @< 5, "A", "B")
+###
+> If(x < 5, "A", 7 < 5, "B", null)
+If(x $< 5, "A", 7 $< 5, "B", null) : s
+Binder : If*(x @< 5, "A", 7 @< 5, "B", str(<null>))
+Reducer: If(x @< 5, "A", str(<null>))
+###
+> If(3 < 5, "A", x < 5, "B", null)
+If(3 $< 5, "A", x $< 5, "B", null) : s
+Binder : If*(3 @< 5, "A", x @< 5, "B", str(<null>))
+Reducer: "A"
+###
+> If(3 < 5, "A", 3 < 5, "B", null)
+If(3 $< 5, "A", 3 $< 5, "B", null) : s
+Binder : If*(3 @< 5, "A", 3 @< 5, "B", str(<null>))
+Reducer: "A"
+###
+> If(3 < 5, "A", 7 < 5, "B", null)
+If(3 $< 5, "A", 7 $< 5, "B", null) : s
+Binder : If*(3 @< 5, "A", 7 @< 5, "B", str(<null>))
+Reducer: "A"
+###
+> If(7 < 5, "A", x < 5, "B", null)
+If(7 $< 5, "A", x $< 5, "B", null) : s
+Binder : If*(7 @< 5, "A", x @< 5, "B", str(<null>))
+Reducer: If(x @< 5, "B", str(<null>))
+###
+> If(7 < 5, "A", 3 < 5, "B", null)
+If(7 $< 5, "A", 3 $< 5, "B", null) : s
+Binder : If*(7 @< 5, "A", 3 @< 5, "B", str(<null>))
+Reducer: "B"
+###
+> If(7 < 5, "A", 7 < 5, "B", null)
+If(7 $< 5, "A", 7 $< 5, "B", null) : s
+Binder : If*(7 @< 5, "A", 7 @< 5, "B", str(<null>))
+Reducer: str(<null>)
+###
+> If(x < 5, "A", x < 5, null, "C")
+If(x $< 5, "A", x $< 5, null, "C") : s
+Binder : If*(x @< 5, "A", x @< 5, str(<null>), "C")
+Reducer: If(x @< 5, "A", If(x @< 5, str(<null>), "C"))
+###
+> If(x < 5, "A", 3 < 5, null, "C")
+If(x $< 5, "A", 3 $< 5, null, "C") : s
+Binder : If*(x @< 5, "A", 3 @< 5, str(<null>), "C")
+Reducer: If(x @< 5, "A", str(<null>))
+###
+> If(x < 5, "A", 7 < 5, null, "C")
+If(x $< 5, "A", 7 $< 5, null, "C") : s
+Binder : If*(x @< 5, "A", 7 @< 5, str(<null>), "C")
+Reducer: If(x @< 5, "A", "C")
+###
+> If(3 < 5, "A", x < 5, null, "C")
+If(3 $< 5, "A", x $< 5, null, "C") : s
+Binder : If*(3 @< 5, "A", x @< 5, str(<null>), "C")
+Reducer: "A"
+###
+> If(3 < 5, "A", 3 < 5, null, "C")
+If(3 $< 5, "A", 3 $< 5, null, "C") : s
+Binder : If*(3 @< 5, "A", 3 @< 5, str(<null>), "C")
+Reducer: "A"
+###
+> If(3 < 5, "A", 7 < 5, null, "C")
+If(3 $< 5, "A", 7 $< 5, null, "C") : s
+Binder : If*(3 @< 5, "A", 7 @< 5, str(<null>), "C")
+Reducer: "A"
+###
+> If(7 < 5, "A", x < 5, null, "C")
+If(7 $< 5, "A", x $< 5, null, "C") : s
+Binder : If*(7 @< 5, "A", x @< 5, str(<null>), "C")
+Reducer: If(x @< 5, str(<null>), "C")
+###
+> If(7 < 5, "A", 3 < 5, null, "C")
+If(7 $< 5, "A", 3 $< 5, null, "C") : s
+Binder : If*(7 @< 5, "A", 3 @< 5, str(<null>), "C")
+Reducer: str(<null>)
+###
+> If(7 < 5, "A", 7 < 5, null, "C")
+If(7 $< 5, "A", 7 $< 5, null, "C") : s
+Binder : If*(7 @< 5, "A", 7 @< 5, str(<null>), "C")
+Reducer: "C"
+###
+> If(x < 5, null, x < 5, "B", "C")
+If(x $< 5, null, x $< 5, "B", "C") : s
+Binder : If*(x @< 5, str(<null>), x @< 5, "B", "C")
+Reducer: If(x @< 5, str(<null>), If(x @< 5, "B", "C"))
+###
+> If(x < 5, null, 3 < 5, "B", "C")
+If(x $< 5, null, 3 $< 5, "B", "C") : s
+Binder : If*(x @< 5, str(<null>), 3 @< 5, "B", "C")
+Reducer: If(x @< 5, str(<null>), "B")
+###
+> If(x < 5, null, 7 < 5, "B", "C")
+If(x $< 5, null, 7 $< 5, "B", "C") : s
+Binder : If*(x @< 5, str(<null>), 7 @< 5, "B", "C")
+Reducer: If(x @< 5, str(<null>), "C")
+###
+> If(3 < 5, null, x < 5, "B", "C")
+If(3 $< 5, null, x $< 5, "B", "C") : s
+Binder : If*(3 @< 5, str(<null>), x @< 5, "B", "C")
+Reducer: str(<null>)
+###
+> If(3 < 5, null, 3 < 5, "B", "C")
+If(3 $< 5, null, 3 $< 5, "B", "C") : s
+Binder : If*(3 @< 5, str(<null>), 3 @< 5, "B", "C")
+Reducer: str(<null>)
+###
+> If(3 < 5, null, 7 < 5, "B", "C")
+If(3 $< 5, null, 7 $< 5, "B", "C") : s
+Binder : If*(3 @< 5, str(<null>), 7 @< 5, "B", "C")
+Reducer: str(<null>)
+###
+> If(7 < 5, null, x < 5, "B", "C")
+If(7 $< 5, null, x $< 5, "B", "C") : s
+Binder : If*(7 @< 5, str(<null>), x @< 5, "B", "C")
+Reducer: If(x @< 5, "B", "C")
+###
+> If(7 < 5, null, 3 < 5, "B", "C")
+If(7 $< 5, null, 3 $< 5, "B", "C") : s
+Binder : If*(7 @< 5, str(<null>), 3 @< 5, "B", "C")
+Reducer: "B"
+###
+> If(7 < 5, null, 7 < 5, "B", "C")
+If(7 $< 5, null, 7 $< 5, "B", "C") : s
+Binder : If*(7 @< 5, str(<null>), 7 @< 5, "B", "C")
+Reducer: "C"
+###
+> Range(10)->(If(it mod 3 != 0, it))
+Range(10)->(If(it mod 3 !@= 0, it)) : i8?*
+Binder : ForEach(*1: Range(10), Guard(!2: *1, If*(IntMod(!2, 3) !@= 0, Opt<i8?>(!2))))
+Reducer: ForEach(*1: Range(10), If(IntMod(*1, 3) !@= 0, Opt<i8?>(*1), null))
+###
+> Range(10)->(If(it mod 3 != 0, it, null))
+Range(10)->(If(it mod 3 !@= 0, it, null)) : i8?*
+Binder : ForEach(*1: Range(10), Guard(!2: *1, If*(IntMod(!2, 3) !@= 0, Opt<i8?>(!2), null)))
+Reducer: ForEach(*1: Range(10), If(IntMod(*1, 3) !@= 0, Opt<i8?>(*1), null))
+###
+> Range(10)->(If(it mod 3 = 0, null, it))
+Range(10)->(If(it mod 3 @= 0, null, it)) : i8?*
+Binder : ForEach(*1: Range(10), Guard(!2: *1, If*(IntMod(!2, 3) @= 0, null, Opt<i8?>(!2))))
+Reducer: ForEach(*1: Range(10), If(IntMod(*1, 3) @= 0, null, Opt<i8?>(*1)))
+###
+> If(qb, 3)
+If(qb, 3) : i8?
+*** Error: (3,5) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 'b'
+Binder : If*(Error(ErrBadType_Src_Dst), Opt<i8?>(3))
+Reducer: If(Error(ErrBadType_Src_Dst), Opt<i8?>(3), null)
+###
+> If(qb, 3, 5)
+If(qb, 3, 5) : i8
+*** Error: (3,5) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 'b'
+Binder : If*(Error(ErrBadType_Src_Dst), 3, 5)
+Reducer: If(Error(ErrBadType_Src_Dst), 3, 5)
+###
+> If(b, 3, qb, 5)
+If(b, 3, qb, 5) : i8?
+*** Error: (9,11) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 'b'
+Binder : If*(b, Opt<i8?>(3), Error(ErrBadType_Src_Dst), Opt<i8?>(5))
+Reducer: If(b, Opt<i8?>(3), If(Error(ErrBadType_Src_Dst), Opt<i8?>(5), null))
+###
+> If(b, 3, qb, 5, 7)
+If(b, 3, qb, 5, 7) : i8
+*** Error: (9,11) Node: qb, Message: Invalid operand type: cannot convert type 'b?' to 'b'
+Binder : If*(b, 3, Error(ErrBadType_Src_Dst), 5, 7)
+Reducer: If(b, 3, If(Error(ErrBadType_Src_Dst), 5, 7))
+###
+> If(Range(10) mod 3 = 0, 0, 1)
+If(Range(10) mod 3 @= 0, 0, 1) : i8
+*** Error: (19,20) Node: Range(10) mod 3 @= 0, Message: Invalid operand type: cannot convert type 'b*' to 'b'
+Binder : If*(Error(ErrBadType_Src_Dst), 0, 1)
+Reducer: If(Error(ErrBadType_Src_Dst), 0, 1)
+###

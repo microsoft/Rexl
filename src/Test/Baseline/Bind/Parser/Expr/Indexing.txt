@@ -1,0 +1,517 @@
+> A[]
+Node: [A[]]
+Dump:
+  00 Node[id:2, kind:Indexing, depth:2, tok:SquareOpen, rng:(1,2) [[], full:(0,3) [A[]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:SliceList, depth:1, tok:SquareClose, rng:(2,3) []], full:(2,3) []]], count=0
+###
+> A[B]
+Node: [A[B]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,4) [A[B]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,3) [B]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+###
+> A[B, C]
+Node: [A[B, C]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[B, C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(3,4) [,], full:(2,6) [B, C]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[C]]
+###
+> A[
+Node: [A[]]
+Dump:
+  00 Node[id:2, kind:Indexing, depth:2, tok:SquareOpen, rng:(1,2) [[], full:(0,2) [A[]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:SliceList, depth:1, tok:Eof, rng:(2,2) [], full:(2,2) []], count=0
+Error: (2,2) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B
+Node: [A[B]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,3) [A[B]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,3) [B]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+Error: (3,3) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B,
+Node: [A[B, (<missing>)]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,4) [A[B,]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(3,4) [,], full:(2,4) [B,]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:Eof, rng:(4,4) [], full:(4,4) [], extra=[v]], count=1
+  03       Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(4,4) [], full:(4,4) [], extra=[<missing>]]
+Error: (4,4) Tok: '<eof>', Message: Expected an operand
+Error: (4,4) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B, C
+Node: [A[B, C]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[B, C]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(3,4) [,], full:(2,6) [B, C]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[C]]
+Error: (6,6) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B, C, ]
+Node: [A[B, C, (<missing>)]]
+Dump:
+  00 Node[id:8, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[B, C, ]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:SliceList, depth:3, tok:Comma, rng:(3,4) [,], full:(2,9) [B, C, ]]], count=3
+  02     Node[id:2, kind:SliceItem, depth:2, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[C]]
+  02     Node[id:6, kind:SliceItem, depth:2, tok:SquareClose, rng:(8,9) []], full:(8,9) []], extra=[v]], count=1
+  03       Node[id:5, kind:MissingValue, depth:1, tok:SquareClose, rng:(8,9) []], full:(8,9) []], extra=[<missing>]]
+Error: (8,9) Tok: ']', Message: Expected an operand
+###
+> A[B:C]
+Node: [A[B:C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[B:C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,5) [B:C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,5) [B:C], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> A[B:]
+Node: [A[B:]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,5) [A[B:]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,3) [B]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,3) [B], extra=[v:]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+###
+> A[:C]
+Node: [A[:C]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,5) [A[:C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Colon, rng:(2,3) [:], full:(2,4) [:C]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,4) [:C], extra=[:v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(3,4) [C], full:(3,4) [C], extra=[C]]
+###
+> A[:]
+Node: [A[:]]
+Dump:
+  00 Node[id:3, kind:Indexing, depth:3, tok:SquareOpen, rng:(1,2) [[], full:(0,4) [A[:]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:2, kind:SliceList, depth:2, tok:Colon, rng:(2,3) [:], full:(2,3) [:]], count=1
+  02     Node[id:1, kind:SliceItem, depth:1, tok:Colon, rng:(2,3) [:], full:(2,3) [:], extra=[:]], count=0
+###
+> A[B:C:D]
+Node: [A[B:C:D]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[B:C:D]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,7) [B:C:D]], count=1
+  02     Node[id:4, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,7) [B:C:D], extra=[v:v:v]], count=3
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:D, rng:(6,7) [D], full:(6,7) [D], extra=[D]]
+###
+> A[B::D]
+Node: [A[B::D]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[B::D]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,6) [B::D]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B::D], extra=[v::v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:D, rng:(5,6) [D], full:(5,6) [D], extra=[D]]
+###
+> A[:C:D]
+Node: [A[:C:D]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[:C:D]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Colon, rng:(2,3) [:], full:(2,6) [:C:D]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,6) [:C:D], extra=[:v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(3,4) [C], full:(3,4) [C], extra=[C]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:D, rng:(5,6) [D], full:(5,6) [D], extra=[D]]
+###
+> A[::D]
+Node: [A[::D]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[::D]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Colon, rng:(2,3) [:], full:(2,5) [::D]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,5) [::D], extra=[::v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:D, rng:(4,5) [D], full:(4,5) [D], extra=[D]]
+###
+> A[B:C:
+Node: [A[B:C:]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[B:C:]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,6) [B:C:]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B:C:], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+Error: (6,6) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B:C:]
+Node: [A[B:C:]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[B:C:]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,6) [B:C:]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B:C:], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> A[B:C, E]
+Node: [A[B:C, E]]
+Dump:
+  00 Node[id:7, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[B:C, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:SliceList, depth:3, tok:Comma, rng:(5,6) [,], full:(2,8) [B:C, E]], count=2
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,5) [B:C], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+  02     Node[id:5, kind:SliceItem, depth:2, tok:E, rng:(7,8) [E], full:(7,8) [E], extra=[v]], count=1
+  03       Node[id:4, kind:FirstName, depth:1, tok:E, rng:(7,8) [E], full:(7,8) [E], extra=[E]]
+###
+> A[B:, E]
+Node: [A[B:, E]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[B:, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(4,5) [,], full:(2,7) [B:, E]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,3) [B], extra=[v:]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:E, rng:(6,7) [E], full:(6,7) [E], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:E, rng:(6,7) [E], full:(6,7) [E], extra=[E]]
+###
+> A[:C, E]
+Node: [A[:C, E]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[:C, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(4,5) [,], full:(2,7) [:C, E]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,4) [:C], extra=[:v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(3,4) [C], full:(3,4) [C], extra=[C]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:E, rng:(6,7) [E], full:(6,7) [E], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:E, rng:(6,7) [E], full:(6,7) [E], extra=[E]]
+###
+> A[:, E]
+Node: [A[:, E]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[:, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Comma, rng:(3,4) [,], full:(2,6) [:, E]], count=2
+  02     Node[id:1, kind:SliceItem, depth:1, tok:Colon, rng:(2,3) [:], full:(2,3) [:], extra=[:]], count=0
+  02     Node[id:3, kind:SliceItem, depth:2, tok:E, rng:(5,6) [E], full:(5,6) [E], extra=[v]], count=1
+  03       Node[id:2, kind:FirstName, depth:1, tok:E, rng:(5,6) [E], full:(5,6) [E], extra=[E]]
+###
+> A[B:C:D, E]
+Node: [A[B:C:D, E]]
+Dump:
+  00 Node[id:8, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,11) [A[B:C:D, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:SliceList, depth:3, tok:Comma, rng:(7,8) [,], full:(2,10) [B:C:D, E]], count=2
+  02     Node[id:4, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,7) [B:C:D], extra=[v:v:v]], count=3
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:D, rng:(6,7) [D], full:(6,7) [D], extra=[D]]
+  02     Node[id:6, kind:SliceItem, depth:2, tok:E, rng:(9,10) [E], full:(9,10) [E], extra=[v]], count=1
+  03       Node[id:5, kind:FirstName, depth:1, tok:E, rng:(9,10) [E], full:(9,10) [E], extra=[E]]
+###
+> A[B::D, E]
+Node: [A[B::D, E]]
+Dump:
+  00 Node[id:7, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,10) [A[B::D, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:SliceList, depth:3, tok:Comma, rng:(6,7) [,], full:(2,9) [B::D, E]], count=2
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B::D], extra=[v::v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:D, rng:(5,6) [D], full:(5,6) [D], extra=[D]]
+  02     Node[id:5, kind:SliceItem, depth:2, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[v]], count=1
+  03       Node[id:4, kind:FirstName, depth:1, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[E]]
+###
+> A[:C:D, E]
+Node: [A[:C:D, E]]
+Dump:
+  00 Node[id:7, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,10) [A[:C:D, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:SliceList, depth:3, tok:Comma, rng:(6,7) [,], full:(2,9) [:C:D, E]], count=2
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,6) [:C:D], extra=[:v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(3,4) [C], full:(3,4) [C], extra=[C]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:D, rng:(5,6) [D], full:(5,6) [D], extra=[D]]
+  02     Node[id:5, kind:SliceItem, depth:2, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[v]], count=1
+  03       Node[id:4, kind:FirstName, depth:1, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[E]]
+###
+> A[::D, E]
+Node: [A[::D, E]]
+Dump:
+  00 Node[id:6, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[::D, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:SliceList, depth:3, tok:Comma, rng:(5,6) [,], full:(2,8) [::D, E]], count=2
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,5) [::D], extra=[::v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:D, rng:(4,5) [D], full:(4,5) [D], extra=[D]]
+  02     Node[id:4, kind:SliceItem, depth:2, tok:E, rng:(7,8) [E], full:(7,8) [E], extra=[v]], count=1
+  03       Node[id:3, kind:FirstName, depth:1, tok:E, rng:(7,8) [E], full:(7,8) [E], extra=[E]]
+###
+> A[B:C:, E
+Node: [A[B:C:, E]]
+Dump:
+  00 Node[id:7, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[B:C:, E]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:SliceList, depth:3, tok:Comma, rng:(6,7) [,], full:(2,9) [B:C:, E]], count=2
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B:C:], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+  02     Node[id:5, kind:SliceItem, depth:2, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[v]], count=1
+  03       Node[id:4, kind:FirstName, depth:1, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[E]]
+Error: (9,9) Tok: '<eof>', Message: Expected: ']', Found: '<eof>'
+###
+> A[B:C:, E]
+Node: [A[B:C:, E]]
+Dump:
+  00 Node[id:7, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,10) [A[B:C:, E]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:SliceList, depth:3, tok:Comma, rng:(6,7) [,], full:(2,9) [B:C:, E]], count=2
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B:C:], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+  02     Node[id:5, kind:SliceItem, depth:2, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[v]], count=1
+  03       Node[id:4, kind:FirstName, depth:1, tok:E, rng:(8,9) [E], full:(8,9) [E], extra=[E]]
+###
+> A[B + C : D band E : F if G else H, I]
+Node: [A[B + C:D band E:F if G else H, I]]
+Dump:
+  00 Node[id:15, kind:Indexing, depth:5, tok:SquareOpen, rng:(1,2) [[], full:(0,38) [A[B + C : D band E : F if G else H, I]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:14, kind:SliceList, depth:4, tok:Comma, rng:(34,35) [,], full:(2,37) [B + C : D band E : F if G else H, I]], count=2
+  02     Node[id:11, kind:SliceItem, depth:3, tok:Colon, rng:(8,9) [:], full:(2,34) [B + C : D band E : F if G else H], extra=[v:v:v]], count=3
+  03       Node[id:3, kind:BinaryOp, depth:2, tok:Add, rng:(4,5) [+], full:(2,7) [B + C], extra=[Add]], count=2
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  04         Node[id:2, kind:FirstName, depth:1, tok:C, rng:(6,7) [C], full:(6,7) [C], extra=[C]]
+  03       Node[id:6, kind:BinaryOp, depth:2, tok:KtxBand, rng:(12,16) [band], full:(10,18) [D band E], extra=[BitAnd]], count=2
+  04         Node[id:4, kind:FirstName, depth:1, tok:D, rng:(10,11) [D], full:(10,11) [D], extra=[D]]
+  04         Node[id:5, kind:FirstName, depth:1, tok:E, rng:(17,18) [E], full:(17,18) [E], extra=[E]]
+  03       Node[id:10, kind:If, depth:2, tok:KwdIf, rng:(23,25) [if], full:(21,34) [F if G else H]], count=3
+  04         Node[id:7, kind:FirstName, depth:1, tok:F, rng:(21,22) [F], full:(21,22) [F], extra=[F]]
+  04         Node[id:8, kind:FirstName, depth:1, tok:G, rng:(26,27) [G], full:(26,27) [G], extra=[G]]
+  04         Node[id:9, kind:FirstName, depth:1, tok:H, rng:(33,34) [H], full:(33,34) [H], extra=[H]]
+  02     Node[id:13, kind:SliceItem, depth:2, tok:I, rng:(36,37) [I], full:(36,37) [I], extra=[v]], count=1
+  03       Node[id:12, kind:FirstName, depth:1, tok:I, rng:(36,37) [I], full:(36,37) [I], extra=[I]]
+###
+> A[^i]
+Node: [A[^i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,5) [A[^i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Car, rng:(2,3) [^], full:(2,4) [^i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(3,4) [i], full:(2,4) [^i], extra=[^v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+###
+> A[%i]
+Node: [A[%i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,5) [A[%i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Per, rng:(2,3) [%], full:(2,4) [%i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(3,4) [i], full:(2,4) [%i], extra=[%v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+###
+> A[&i]
+Node: [A[&i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,5) [A[&i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Amp, rng:(2,3) [&], full:(2,4) [&i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(3,4) [i], full:(2,4) [&i], extra=[&v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+###
+> A[^&i]
+Node: [A[^&i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[^&i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Car, rng:(2,3) [^], full:(2,5) [^&i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(4,5) [i], full:(2,5) [^&i], extra=[^&v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(4,5) [i], full:(4,5) [i], extra=[i]]
+###
+> A[%^i]
+Node: [A[^%i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[%^i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Per, rng:(2,3) [%], full:(2,5) [%^i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(4,5) [i], full:(2,5) [%^i], extra=[^%v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(4,5) [i], full:(4,5) [i], extra=[i]]
+###
+> A[^ ^i]
+Node: [A[^i]]
+Corrected: [A[^ i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[^ ^i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Car, rng:(2,3) [^], full:(2,6) [^ ^i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(5,6) [i], full:(2,6) [^ ^i], extra=[^v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(5,6) [i], full:(5,6) [i], extra=[i]]
+Error: (4,5) Tok: '^', Message: Redundant '^'
+###
+> A[%^%i]
+Node: [A[^%i]]
+Corrected: [A[%^i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[%^%i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Per, rng:(2,3) [%], full:(2,6) [%^%i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(5,6) [i], full:(2,6) [%^%i], extra=[^%v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(5,6) [i], full:(5,6) [i], extra=[i]]
+Error: (4,5) Tok: '%', Message: Redundant '%'
+###
+> A[^i:%j]
+Node: [A[^i:j]]
+Corrected: [A[^i:j]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[^i:%j]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Car, rng:(2,3) [^], full:(2,7) [^i:%j]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(4,5) [:], full:(2,7) [^i:%j], extra=[^v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:j, rng:(6,7) [j], full:(6,7) [j], extra=[j]]
+Error: (5,6) Tok: '%', Message: Index modifier '%' not allowed in slice
+###
+> A[&i:^j]
+Node: [A[i:^j]]
+Corrected: [A[i:^j]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[&i:^j]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Amp, rng:(2,3) [&], full:(2,7) [&i:^j]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(4,5) [:], full:(3,7) [i:^j], extra=[v:^v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:j, rng:(6,7) [j], full:(6,7) [j], extra=[j]]
+Error: (2,3) Tok: '&', Message: Index modifier '&' not allowed in slice
+###
+> A[^i:^j:]
+Node: [A[^i:^j:]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[^i:^j:]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Car, rng:(2,3) [^], full:(2,8) [^i:^j:]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(4,5) [:], full:(2,8) [^i:^j:], extra=[^v:^v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(3,4) [i], full:(3,4) [i], extra=[i]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:j, rng:(6,7) [j], full:(6,7) [j], extra=[j]]
+###
+> A[%& i]
+Node: [A[%i]]
+Corrected: [A[% i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[%& i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Per, rng:(2,3) [%], full:(2,6) [%& i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(5,6) [i], full:(2,6) [%& i], extra=[%v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(5,6) [i], full:(5,6) [i], extra=[i]]
+Error: (3,4) Tok: '&', Message: Index modifier '&' conflicts with '%'
+###
+> A[&%& i]
+Node: [A[&i]]
+Corrected: [A[& i]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[&%& i]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Amp, rng:(2,3) [&], full:(2,7) [&%& i]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:i, rng:(6,7) [i], full:(2,7) [&%& i], extra=[&v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:i, rng:(6,7) [i], full:(6,7) [i], extra=[i]]
+Error: (3,4) Tok: '%', Message: Index modifier '%' conflicts with '&'
+Error: (4,5) Tok: '&', Message: Redundant '&'
+###
+> A[B:*C]
+Node: [A[B:*C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[B:*C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,6) [B:*C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,6) [B:*C], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[C]]
+###
+> A[B:*^C]
+Node: [A[B:^*C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[B:*^C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,7) [B:*^C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,7) [B:*^C], extra=[v:^v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(6,7) [C], full:(6,7) [C], extra=[C]]
+###
+> A[:*C]
+Node: [A[:*C]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,6) [A[:*C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Colon, rng:(2,3) [:], full:(2,5) [:*C]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,5) [:*C], extra=[:v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> A[:*^C]
+Node: [A[:^*C]]
+Dump:
+  00 Node[id:4, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,7) [A[:*^C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:SliceList, depth:3, tok:Colon, rng:(2,3) [:], full:(2,6) [:*^C]], count=1
+  02     Node[id:2, kind:SliceItem, depth:2, tok:Colon, rng:(2,3) [:], full:(2,6) [:*^C], extra=[:^v]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:C, rng:(5,6) [C], full:(5,6) [C], extra=[C]]
+###
+> A[B:*^*C]
+Node: [A[B:^*C]]
+Corrected: [A[B:*^C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[B:*^*C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:B, rng:(2,3) [B], full:(2,8) [B:*^*C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(3,4) [:], full:(2,8) [B:*^*C], extra=[v:^v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(7,8) [C], full:(7,8) [C], extra=[C]]
+Error: (6,7) Tok: '*', Message: Redundant '*'
+###
+> A[*B:*C]
+Node: [A[B:*C]]
+Corrected: [A[B:*C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,8) [A[*B:*C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Mul, rng:(2,3) [*], full:(2,7) [*B:*C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(4,5) [:], full:(3,7) [B:*C], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(3,4) [B], full:(3,4) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(6,7) [C], full:(6,7) [C], extra=[C]]
+Error: (2,3) Tok: '*', Message: Index modifier '*' only allowed for stop value
+###
+> A[&%B:*C]
+Node: [A[B:*C]]
+Corrected: [A[B:*C]]
+Dump:
+  00 Node[id:5, kind:Indexing, depth:4, tok:SquareOpen, rng:(1,2) [[], full:(0,9) [A[&%B:*C]]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:SliceList, depth:3, tok:Amp, rng:(2,3) [&], full:(2,8) [&%B:*C]], count=1
+  02     Node[id:3, kind:SliceItem, depth:2, tok:Colon, rng:(5,6) [:], full:(4,8) [B:*C], extra=[v:v]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(7,8) [C], full:(7,8) [C], extra=[C]]
+Error: (3,4) Tok: '%', Message: Index modifier '%' conflicts with '&'
+Error: (2,3) Tok: '&', Message: Index modifier '&' not allowed in slice
+###

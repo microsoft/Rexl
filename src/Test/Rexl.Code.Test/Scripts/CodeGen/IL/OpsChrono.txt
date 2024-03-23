@@ -1,0 +1,85 @@
+﻿``` Ds := [ Date(2020, 12, 25), Date(2020, 7, 1), Date(2020, 1, 1, 12, 37, 18), CastDate(0), CastDate(3_155_378_975_999_999_999) ];
+``` Ts := [
+```     Time(0), Time(1), Time(-1), Time(7), Time(0, 7, 30, 100), Time(0, 1), Time(0, 0, 1), Time(0, 0, 0, 1), Time(0, 0, 0, 0, 1), Time(0, 0, 0, 0, 0, 1),
+```     Time(-2), Time(-2, -7, -30, -100), Time(-1, -1), Time(-1, 0, -1), Time(-1, 0, 0, -1), Time(-1, 0, 0, 0, -1), Time(-1, 0, 0, 0, 0, -1),
+```     Time(+2, +23, +59, +59, +999, +9999), Time(-2, -23, -59, -59, -999, -9999),
+``` ];
+
+Ds
+Ds + Time(1) // REVIEW: Should hoisting be applied here?
+Time(1) + Ds
+Ds - Time(1)
+Ds - Ds
+Ts
+Ts + Ts
+Ts - Ts
+
+Map(x: Ts, Ds + x)
+Map(x: Ts, Ds - x)
+Map(x: Ds, Ds - x)
+Map(x: Ts, Ts + x)
+Map(x: Ts, Ts - x)
+
+// TimeSpan Overflow.
+``` Ticks := [ 0x7FFF_FFFF_FFFF_FFFF, 0x8000_0000_0000_0000i8 ];
+``` Diffs := [ 0, 1, -1 ];
+Map(x: Diffs, Ticks->CastTime() + CastTime(x))
+Map(x: Diffs, Ticks->CastTime() - CastTime(x))
+
+Map(Ds, Year)
+
+Ds.Year
+Ds.Month
+Ds.Day
+Ds.Hour
+Ds.Minute
+Ds.Second
+Ds.Millisecond
+Ds.Tick
+Ds.DayOfYear
+Ds.DayOfWeek
+Ds.Time
+Ds.Date
+Ds.StartOfYear
+Ds.StartOfMonth
+Ds.StartOfWeek
+
+Map(Ts, Day)
+
+Ts.Day
+Ts.Hour
+Ts.Minute
+Ts.Second
+Ts.Millisecond
+Ts.Tick
+Ts.TotalDays
+Ts.TotalHours
+Ts.TotalMinutes
+Ts.TotalSeconds
+Ts.TotalMilliseconds
+Ts.TotalTicks
+
+``` TestR8Reqs := [1.0, -1.0, 2.0, 0.5, 3.5, 0.0, -0.0, 0.0/0.0, 1.0/0.0, -1.0/0.0, 1e50];
+``` TestR8Opts := [null] ++ TestR8Reqs;
+``` TestI8Reqs := [1, -1, 2, 3, 0, 100, -100, 1_000_000];
+``` TestI8Opts := [null] ++ TestI8Reqs;
+``` Times := [Time(1), Time(-1), Time(50000), Time(10_000_000), CastTime(0x7FFF_FFFF_0000_0000), CastTime(0x7FFF_FFFF_FFFF_FFFF)];
+``` Intervals := [Time(1), Time(7), Time(-7), Time(100), Time(400_000), Time(0), CastTime(-1) ];
+
+-Times
+
+Map(x: TestR8Reqs, Times * x)
+Map(x: TestR8Opts, Times * x)
+Map(x: TestI8Reqs, Times * x)
+Map(x: TestI8Opts, Times * x)
+Map(x: TestR8Reqs, Times / x)
+Map(x: TestR8Opts, Times / x)
+Map(x: TestI8Reqs, Times / x)
+Map(x: TestI8Opts, Times / x)
+
+Map(x: TestI8Reqs, Times div x)
+Map(x: TestI8Opts, Times div x)
+
+Map(x: Intervals, Times / x)
+Map(x: Intervals, Times div x)
+Map(x: Intervals, Times mod x)

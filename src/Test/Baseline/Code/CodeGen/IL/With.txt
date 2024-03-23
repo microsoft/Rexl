@@ -1,0 +1,593 @@
+**** New definitions: x0, type: i8
+**** New definitions: x1, type: i8
+**** New definitions: S, type: s
+**** New definitions: T, type: b
+**** New definitions: s1, type: i8*
+**** New definitions: s0, type: i8*
+
+> Guard([with] a: S, [with] b: a if T else null, [guard] c: b if true else "x", [c if T else "y", a, b, c])
+Guard([with] a : S, [with] b : a if T else null, [guard] c : b if true else "x", [c if T else "y", a, b, c]) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Guard([with:1] If(Global(T), Global(S), str(<null>)), [guard:2] Scope(1), [If(Global(T), Scope(2), str(y)), Global(S), Scope(1), Scope(2)]:s*):s*))
+// (∂.T:b, ∂.S:s) : s*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.1 [str]
+      1) ldloc.0 [bool]
+      5) brfalse [1]
+      1) ldloc.1 [str]
+      5) br [2]
+  Label [1]:
+      1) ldnull
+  Label [2]:
+      1) stloc.2 [str]
+      1) ldloc.2 [str]
+      5) brfalse [0]
+      1) ldc.i4.4
+      5) newarr [str]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [bool]
+      5) brfalse [3]
+      1) ldloc.2 [str]
+      5) br [4]
+  Label [3]:
+      5) ldstr [y]
+  Label [4]:
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [str]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [str]
+      5) stelem [str]
+      1) dup
+      1) ldc.i4.3
+      1) ldloc.2 [str]
+      5) stelem [str]
+      5) br [5]
+  Label [0]:
+      1) ldnull
+  Label [5]:
+      1) ret
+  Total Size: 99
+
+Func sig: (T:b, S:s) to s*
+Sequence: Seq<str>
+ 0) hello
+ 1) hello
+ 2) hello
+ 3) hello
+###
+> With(x0:x0, x1:x0+1, x2:x1+1, x3:x2+1, x4:x3+1, x5:x4+1, x6:x5+1, x7:x6+1, x8:x7+1, x9:x8+1, x10:x9+1, x11:x10+1, x12:x11+1, x13:x12+1, x14:x13+1, x15:x14+1, x16:x15+1, x17:x16+1, x18:x17+1, x19:x18+1, x20:x19+1, x21:x20+1, x22:x21+1, x23:x22+1, x24:x23+1, x25:x24+1, x26:x25+1, x27:x26+1, x28:x27+1, x29:x28+1, x30:x29+1, x31:x30+1, x32:x31+1, x33:x32+1, x34:x33+1, x35:x34+1, x36:x35+1, x37:x36+1, x38:x37+1, x39:x38+1, x40:x39+1, x40)
+With(x0 : x0, x1 : x0 + 1, x2 : x1 + 1, x3 : x2 + 1, x4 : x3 + 1, x5 : x4 + 1, x6 : x5 + 1, x7 : x6 + 1, x8 : x7 + 1, x9 : x8 + 1, x10 : x9 + 1, x11 : x10 + 1, x12 : x11 + 1, x13 : x12 + 1, x14 : x13 + 1, x15 : x14 + 1, x16 : x15 + 1, x17 : x16 + 1, x18 : x17 + 1, x19 : x18 + 1, x20 : x19 + 1, x21 : x20 + 1, x22 : x21 + 1, x23 : x22 + 1, x24 : x23 + 1, x25 : x24 + 1, x26 : x25 + 1, x27 : x26 + 1, x28 : x27 + 1, x29 : x28 + 1, x30 : x29 + 1, x31 : x30 + 1, x32 : x31 + 1, x33 : x32 + 1, x34 : x33 + 1, x35 : x34 + 1, x36 : x35 + 1, x37 : x36 + 1, x38 : x37 + 1, x39 : x38 + 1, x40 : x39 + 1, x40) : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Global(x0), 40:i8))
+// (∂.x0:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      2) ldc.i4.s [40]
+      1) conv.i8
+      1) add
+      5) box [i8]
+      1) ret
+  Total Size: 20
+
+Func sig: (x0:i8) to i8
+Type: i8, Value: 41
+###
+> With(x0:x0, x1:x0+x0, x2:x1+x1, x3:x2+x2, x4:x3+x3, x5:x4+x4, x6:x5+x5, x7:x6+x6, x8:x7+x7, x9:x8+x8, x10:x9+x9, x11:x10+x10, x12:x11+x11, x13:x12+x12, x14:x13+x13, x15:x14+x14, x16:x15+x15, x17:x16+x16, x18:x17+x17, x19:x18+x18, x20:x19+x19, x21:x20+x20, x22:x21+x21, x23:x22+x22, x24:x23+x23, x25:x24+x24, x26:x25+x25, x27:x26+x26, x28:x27+x27, x29:x28+x28, x30:x29+x29, x31:x30+x30, x32:x31+x31, x33:x32+x32, x34:x33+x33, x35:x34+x34, x36:x35+x35, x37:x36+x36, x38:x37+x37, x39:x38+x38, x40:x39+x39, x40)
+With(x0 : x0, x1 : x0 + x0, x2 : x1 + x1, x3 : x2 + x2, x4 : x3 + x3, x5 : x4 + x4, x6 : x5 + x5, x7 : x6 + x6, x8 : x7 + x7, x9 : x8 + x8, x10 : x9 + x9, x11 : x10 + x10, x12 : x11 + x11, x13 : x12 + x12, x14 : x13 + x13, x15 : x14 + x14, x16 : x15 + x15, x17 : x16 + x16, x18 : x17 + x17, x19 : x18 + x18, x20 : x19 + x19, x21 : x20 + x20, x22 : x21 + x21, x23 : x22 + x22, x24 : x23 + x23, x25 : x24 + x24, x26 : x25 + x25, x27 : x26 + x26, x28 : x27 + x27, x29 : x28 + x28, x30 : x29 + x29, x31 : x30 + x30, x32 : x31 + x31, x33 : x32 + x32, x34 : x33 + x33, x35 : x34 + x34, x36 : x35 + x35, x37 : x36 + x36, x38 : x37 + x37, x39 : x38 + x38, x40 : x39 + x39, x40) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Add(Global(x0), Global(x0)), [with:2] Add(Scope(1), Scope(1)), [with:3] Add(Scope(2), Scope(2)), [with:4] Add(Scope(3), Scope(3)), [with:5] Add(Scope(4), Scope(4)), [with:6] Add(Scope(5), Scope(5)), [with:7] Add(Scope(6), Scope(6)), [with:8] Add(Scope(7), Scope(7)), [with:9] Add(Scope(8), Scope(8)), [with:10] Add(Scope(9), Scope(9)), [with:11] Add(Scope(10), Scope(10)), [with:12] Add(Scope(11), Scope(11)), [with:13] Add(Scope(12), Scope(12)), [with:14] Add(Scope(13), Scope(13)), [with:15] Add(Scope(14), Scope(14)), [with:16] Add(Scope(15), Scope(15)), [with:17] Add(Scope(16), Scope(16)), [with:18] Add(Scope(17), Scope(17)), [with:19] Add(Scope(18), Scope(18)), [with:20] Add(Scope(19), Scope(19)), [with:21] Add(Scope(20), Scope(20)), [with:22] Add(Scope(21), Scope(21)), [with:23] Add(Scope(22), Scope(22)), [with:24] Add(Scope(23), Scope(23)), [with:25] Add(Scope(24), Scope(24)), [with:26] Add(Scope(25), Scope(25)), [with:27] Add(Scope(26), Scope(26)), [with:28] Add(Scope(27), Scope(27)), [with:29] Add(Scope(28), Scope(28)), [with:30] Add(Scope(29), Scope(29)), [with:31] Add(Scope(30), Scope(30)), [with:32] Add(Scope(31), Scope(31)), [with:33] Add(Scope(32), Scope(32)), [with:34] Add(Scope(33), Scope(33)), [with:35] Add(Scope(34), Scope(34)), [with:36] Add(Scope(35), Scope(35)), [with:37] Add(Scope(36), Scope(36)), [with:38] Add(Scope(37), Scope(37)), [with:39] Add(Scope(38), Scope(38)), Add(Scope(39), Scope(39))):i8))
+// (∂.x0:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) add
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      1) ldloc.1 [i8]
+      1) add
+      1) stloc.2 [i8]
+      1) ldloc.2 [i8]
+      1) ldloc.2 [i8]
+      1) add
+      1) stloc.3 [i8]
+      1) ldloc.3 [i8]
+      1) ldloc.3 [i8]
+      1) add
+      2) stloc.s [i8 (4)]
+      2) ldloc.s [i8 (4)]
+      2) ldloc.s [i8 (4)]
+      1) add
+      2) stloc.s [i8 (5)]
+      2) ldloc.s [i8 (5)]
+      2) ldloc.s [i8 (5)]
+      1) add
+      2) stloc.s [i8 (6)]
+      2) ldloc.s [i8 (6)]
+      2) ldloc.s [i8 (6)]
+      1) add
+      2) stloc.s [i8 (7)]
+      2) ldloc.s [i8 (7)]
+      2) ldloc.s [i8 (7)]
+      1) add
+      2) stloc.s [i8 (8)]
+      2) ldloc.s [i8 (8)]
+      2) ldloc.s [i8 (8)]
+      1) add
+      2) stloc.s [i8 (9)]
+      2) ldloc.s [i8 (9)]
+      2) ldloc.s [i8 (9)]
+      1) add
+      2) stloc.s [i8 (10)]
+      2) ldloc.s [i8 (10)]
+      2) ldloc.s [i8 (10)]
+      1) add
+      2) stloc.s [i8 (11)]
+      2) ldloc.s [i8 (11)]
+      2) ldloc.s [i8 (11)]
+      1) add
+      2) stloc.s [i8 (12)]
+      2) ldloc.s [i8 (12)]
+      2) ldloc.s [i8 (12)]
+      1) add
+      2) stloc.s [i8 (13)]
+      2) ldloc.s [i8 (13)]
+      2) ldloc.s [i8 (13)]
+      1) add
+      2) stloc.s [i8 (14)]
+      2) ldloc.s [i8 (14)]
+      2) ldloc.s [i8 (14)]
+      1) add
+      2) stloc.s [i8 (15)]
+      2) ldloc.s [i8 (15)]
+      2) ldloc.s [i8 (15)]
+      1) add
+      2) stloc.s [i8 (16)]
+      2) ldloc.s [i8 (16)]
+      2) ldloc.s [i8 (16)]
+      1) add
+      2) stloc.s [i8 (17)]
+      2) ldloc.s [i8 (17)]
+      2) ldloc.s [i8 (17)]
+      1) add
+      2) stloc.s [i8 (18)]
+      2) ldloc.s [i8 (18)]
+      2) ldloc.s [i8 (18)]
+      1) add
+      2) stloc.s [i8 (19)]
+      2) ldloc.s [i8 (19)]
+      2) ldloc.s [i8 (19)]
+      1) add
+      2) stloc.s [i8 (20)]
+      2) ldloc.s [i8 (20)]
+      2) ldloc.s [i8 (20)]
+      1) add
+      2) stloc.s [i8 (21)]
+      2) ldloc.s [i8 (21)]
+      2) ldloc.s [i8 (21)]
+      1) add
+      2) stloc.s [i8 (22)]
+      2) ldloc.s [i8 (22)]
+      2) ldloc.s [i8 (22)]
+      1) add
+      2) stloc.s [i8 (23)]
+      2) ldloc.s [i8 (23)]
+      2) ldloc.s [i8 (23)]
+      1) add
+      2) stloc.s [i8 (24)]
+      2) ldloc.s [i8 (24)]
+      2) ldloc.s [i8 (24)]
+      1) add
+      2) stloc.s [i8 (25)]
+      2) ldloc.s [i8 (25)]
+      2) ldloc.s [i8 (25)]
+      1) add
+      2) stloc.s [i8 (26)]
+      2) ldloc.s [i8 (26)]
+      2) ldloc.s [i8 (26)]
+      1) add
+      2) stloc.s [i8 (27)]
+      2) ldloc.s [i8 (27)]
+      2) ldloc.s [i8 (27)]
+      1) add
+      2) stloc.s [i8 (28)]
+      2) ldloc.s [i8 (28)]
+      2) ldloc.s [i8 (28)]
+      1) add
+      2) stloc.s [i8 (29)]
+      2) ldloc.s [i8 (29)]
+      2) ldloc.s [i8 (29)]
+      1) add
+      2) stloc.s [i8 (30)]
+      2) ldloc.s [i8 (30)]
+      2) ldloc.s [i8 (30)]
+      1) add
+      2) stloc.s [i8 (31)]
+      2) ldloc.s [i8 (31)]
+      2) ldloc.s [i8 (31)]
+      1) add
+      2) stloc.s [i8 (32)]
+      2) ldloc.s [i8 (32)]
+      2) ldloc.s [i8 (32)]
+      1) add
+      2) stloc.s [i8 (33)]
+      2) ldloc.s [i8 (33)]
+      2) ldloc.s [i8 (33)]
+      1) add
+      2) stloc.s [i8 (34)]
+      2) ldloc.s [i8 (34)]
+      2) ldloc.s [i8 (34)]
+      1) add
+      2) stloc.s [i8 (35)]
+      2) ldloc.s [i8 (35)]
+      2) ldloc.s [i8 (35)]
+      1) add
+      2) stloc.s [i8 (36)]
+      2) ldloc.s [i8 (36)]
+      2) ldloc.s [i8 (36)]
+      1) add
+      2) stloc.s [i8 (37)]
+      2) ldloc.s [i8 (37)]
+      2) ldloc.s [i8 (37)]
+      1) add
+      2) stloc.s [i8 (38)]
+      2) ldloc.s [i8 (38)]
+      2) ldloc.s [i8 (38)]
+      1) add
+      2) stloc.s [i8 (39)]
+      2) ldloc.s [i8 (39)]
+      2) ldloc.s [i8 (39)]
+      1) add
+      5) box [i8]
+      1) ret
+  Total Size: 282
+
+Func sig: (x0:i8) to i8
+Type: i8, Value: 1099511627776
+###
+> With(w:x1, Map(x2: s1, Range(x2) ++ Range(w)))
+With(w : x1, Map(x2 : s1, Range(x2) ++ Range(w))) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.With([with:1] Call(∂.Range(Global(x1)):i8*), Call(∂.ForEach([map:2] Global(s1), SeqConcat(Call(∂.Range(Scope(2)):i8*), Scope(1))):i8**)):i8**))
+// (∂.x1:i8, ∂.s1:i8*) : i8**
+ForEach_1(Arr<obj>, i8):Seq<i8>
+      1) ldarg.1 [i8]
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(Seq<i8>)]
+      5) ldfld (Seq<i8>)::_F0:Seq<i8>
+      5) call static CodeGenUtil::SeqConcat(Seq<i8>, Seq<i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 29
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.0 [i8]
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (Seq<i8>)()
+      1) dup
+      1) ldloc.2 [Seq<i8>]
+      5) stfld (Seq<i8>)::_F0:Seq<i8>
+      5) stelem [(Seq<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<i8>>):Seq<Seq<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<i8>>):Seq<Seq<i8>>
+      1) ret
+  Total Size: 84
+
+Func sig: (x1:i8, s1:i8*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+     3) 3
+ 1) Sequence: Seq<i8>
+     0) 0
+     1) 0
+     2) 1
+     3) 2
+     4) 3
+ 2) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 0
+     3) 1
+     4) 2
+     5) 3
+ 3) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+     3) 0
+     4) 1
+     5) 2
+     6) 3
+ 4) Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+     3) 3
+     4) 0
+     5) 1
+     6) 2
+     7) 3
+###
+> Map(m:s1, With(w:m, w+Count(s1)))
+Map(m : s1, With(w : m, w + Count(s1))) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Count(Global(s1)):i8), Call(∂.ForEach([map:2] Global(s1), Add(Scope(1), Scope(2))):i8*)):i8*))
+// (<ctx>, ∂.s1:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [i8]
+      1) add
+      1) ret
+  Total Size: 15
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) stloc.2 [i8]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.2 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 86
+
+Func sig: (<ctx>:x, s1:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 5
+ 1) 6
+ 2) 7
+ 3) 8
+ 4) 9
+*** Ctx ping count: 0
+###
+> With(w1:Count(s1), Map(m:s1, With(w2:m, Count(s1)+w1)))
+With(w1 : Count(s1), Map(m : s1, With(w2 : m, Count(s1) + w1))) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Add(Call(∂.Count(Global(s1)):i8), Call(∂.Count(Global(s1)):i8)), Call(∂.ForEach([map:2] Global(s1), Scope(1)):i8*)):i8*))
+// (<ctx>, ∂.s1:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ret
+  Total Size: 13
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) ldloc.1 [Seq<i8>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      1) add
+      1) stloc.2 [i8]
+      1) ldloc.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldloc.2 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 95
+
+Func sig: (<ctx>:x, s1:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 10
+ 1) 10
+ 2) 10
+ 3) 10
+ 4) 10
+*** Ctx ping count: 0
+###
+> ForEach([ s0, s1, s1->TakeIf(it > 3), s1->TakeIf(it > 100) ], Guard(it, Count(it)))
+ForEach([s0, s1, s1->TakeIf(it $> 3), s1->TakeIf(it $> 100)], Guard(it, Count(it))) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:3] [Global(s0), Global(s1), Call(∂.Take([map:1] Global(s1), [if] Cmp(Scope(1) @> 3:i8)):i8*), Call(∂.Take([map:2] Global(s1), [if] Cmp(Scope(2) @> 100:i8)):i8*)]:i8**, Call(∂.Guard([guard:4] Scope(3), Call(∂.Count(Scope(4)):i8)):i8?)):i8?*))
+// (<ctx>, ∂.s0:i8*, ∂.s1:i8*) : i8?*
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      2) cgt
+      1) ret
+  Total Size: 6
+
+Take_1(Arr<obj>, i8):bool
+      1) ldarg.1 [i8]
+      2) ldc.i4.s [100]
+      1) conv.i8
+      2) cgt
+      1) ret
+  Total Size: 7
+
+ForEach_1(Arr<obj>, Seq<i8>):Opt<i8>
+      1) ldarg.1 [Seq<i8>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<i8>):bool
+      5) brtrue [0]
+      1) ldarg.1 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.2
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      5) newobj Opt<i8>(i8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [1]:
+      1) ret
+  Total Size: 41
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.2 [Seq<i8>]
+      1) ldc.i4.4
+      5) newarr [Seq<i8>]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.1 [Seq<i8>]
+      5) stelem [Seq<i8>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.2 [Seq<i8>]
+      5) stelem [Seq<i8>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,bool>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      5) stelem [Seq<i8>]
+      1) dup
+      1) ldc.i4.3
+      1) ldloc.2 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<i8,bool>]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static TakeDropGen::ExecTakeIf(Seq<i8>, Func<i8,bool>, ExecCtx, i4):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      5) stelem [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Seq<i8>,Opt<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Seq<i8>>, Func<Seq<i8>,Opt<i8>>):Seq<Opt<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<i8>>):Seq<Opt<i8>>
+      1) ret
+  Total Size: 150
+
+Func sig: (<ctx>:x, s0:i8*, s1:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) 5
+ 2) 1
+ 3) <null>
+*** Ctx ping count: 10
+    [0](4): Take(*1: s1, [if] *1 @> 3)
+    [1](5): Take(*1: s1, [if] *1 @> 100)
+    [2](1): Count(?1x)
+###

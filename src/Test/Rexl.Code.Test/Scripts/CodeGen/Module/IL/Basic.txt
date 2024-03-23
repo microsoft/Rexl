@@ -1,0 +1,45 @@
+module {
+    param A := 3;
+    const B := A * A;
+}
+###
+module {
+    param A := 3;
+    param B := A * A;
+    const K := A + B;
+    var X from 3 to B def K;
+    let Y := X * X;
+    msr M := Y + X;
+    con C := Y <= 100;
+}
+###
+// Module field access.
+With(M : module { var X from Range(10); let N := X->Count() }, M.X)
+###
+With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N))
+###
+// Two modules of the same type.
+With(
+    M1 : module { var X in Range(10) def 7; let Y := X * X },
+    M2 : module { var X := 17; let Y := X + 1 },
+    (M1, M2, [M1, M2]))
+###
+// Conversion from module to canonical record.
+With(
+    M : module { var X in Range(10) },
+    R : { X: 17 },
+    (M, R, [M, R]))
+###
+// Conversion from module to non-canonical record.
+With(
+    M : module { var X in Range(10); var Z from 0.0 to 100 },
+    R : { X: 17, Y: "Blah" },
+    (M, R, [M, R]))
+###
+With(
+    M : module { param A := 3; const B := A * 2; },
+    M with { A: 17 })
+###
+With(
+    M : module { param A := 3; const B := A * 2; param C := { X: true } },
+    M with { A: 17 })

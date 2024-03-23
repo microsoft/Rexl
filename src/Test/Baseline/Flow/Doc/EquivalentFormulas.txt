@@ -1,0 +1,199 @@
+Add: 00000001 [A], Fma: [Range(10)->Sort([>]it)]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8*
+###
+*** Change whitespace only
+Fma: 00000001 [A], Main: [Range(10)->Sort([>]it)] => [Range(10)->Sort( [>] it )]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B       ], Base: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A], Main: [Range(10)->Sort( [>] it )] => [Range(10)->Sort([>]it)]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       B       ], Base: i8*
+###
+*** Change directive syntax but not kind
+Fma: 00000001 [A], Main: [Range(10)->Sort([>]it)] => [Range(10)->Sort([down] it)]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B       ], Base: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A], Main: [Range(10)->Sort([down] it)] => [Range(10)->Sort([>]it)]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       B       ], Base: i8*
+###
+*** Change directive kind
+Fma: 00000001 [A], Main: [Range(10)->Sort([>]it)] => [Range(10)->Sort([up] it)]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B C dD  ], Base: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A], Main: [Range(10)->Sort([up] it)] => [Range(10)->Sort([>]it)]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       B C dD  ], Base: i8*
+###
+Fma: 00000001 [A], Main: [Range(10)->Sort([>]it)] => [Range(10)]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B C dD  ], Base: i8*
+###
+Fma: 00000001 [A]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [A]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+*** Change extra formula whitespace only
+Fma: 00000001 [A]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort( [>] this )]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       Bb      ], Base: i8*, Extra[0]: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A]
+  Old 0: [0:Sort( [>] this )]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       Bb      ], Base: i8*, Extra[0]: i8*
+###
+*** Change extra formula directive syntax but not kind
+Fma: 00000001 [A]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([down] this)]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       Bb      ], Base: i8*, Extra[0]: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A]
+  Old 0: [0:Sort([down] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       Bb      ], Base: i8*, Extra[0]: i8*
+###
+*** Change extra formula directive kind
+Fma: 00000001 [A]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([<] this)]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+*** Undo(1)
+Fma: 00000001 [A]
+  Old 0: [0:Sort([<] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 1 redos
+  Node changes:
+    00000001 [A]: [       Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+*** Test name equivalency
+Fma: 00000001 [A], Main: [Range(10)] => [Map(x: Range(1), x+1)]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       BbC dD  ], Base: i8*, Extra[0]: i8*
+###
+Fma: 00000001 [A], Main: [Map(x: Range(1), x+1)] => [Map(y: Range(1), y+1)]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       Bb      ], Base: i8*, Extra[0]: i8*
+###
+*** Undo(2)
+Fma: 00000001 [A], Main: [Map(y: Range(1), y+1)] => [Range(10)]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 2 redos
+  Node changes:
+    00000001 [A]: [       BbC dD  ], Base: i8*, Extra[0]: i8*
+###
+*** Parse errors
+Fma: 00000001 [A], Main: [Range(10)] => [Range(10]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       BbC dDE ], Base: i8*, Extra[0]: i8*
+      *) Parse Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+Fma: 00000001 [A], Main: [Range(10] => [Range(10)]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       BbC dD  ], Base: i8*, Extra[0]: i8*
+###
+Fma: 00000001 [A]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this]
+Status: 1 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       Bb    E ], Base: i8*, Extra[0]: i8*
+      0) Parse Error: (13,13) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+*** Undo(3)
+Fma: 00000001 [A], Main: [Range(10)] => [Range(10)]
+  Old 0: [0:Sort([>] this]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 3 redos
+  Node changes:
+    00000001 [A]: [       Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+*** Bind errors
+Fma: 00000001 [A], Main: [Range(10)] => [Range("s")]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 4 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       BbC dDE ], Base: i8*, Extra[0]: i8*
+      *) Error: (6,9) Node: "s", Message: Invalid operand type: cannot convert type 's' to 'i8'
+###
+Fma: 00000001 [A], Main: [Range("s")] => [Range(10)]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 5 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       BbC dD  ], Base: i8*, Extra[0]: i8*
+###
+Fma: 00000001 [A]
+  Old 0: [0:Sort([>] this)]
+  New 0: [0:Sort([>] "s")]
+Status: 1 nodes, 6 undos, 0 redos
+  Node changes:
+    00000001 [A]: [    T  Bb c DE ], Base: i8*, Extra[0]: s*
+      0) Error: (9,12) Node: "s", Message: Invalid operand type: cannot convert type 's' to 's*'
+###
+*** Undo(3)
+Fma: 00000001 [A], Main: [Range(10)] => [Range(10)]
+  Old 0: [0:Sort([>] "s")]
+  New 0: [0:Sort([>] this)]
+Status: 1 nodes, 3 undos, 3 redos
+  Node changes:
+    00000001 [A]: [    T  Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+Add: 00000002 [B], Fma: [Count(A)]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+###
+Del: 00000001 [A]
+Add: 00000003 [A], Fma: [Range(10)->Sort([>]it)]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [B]: [     uUB   dD  ], Base: i8
+    00000003 [A]: [A  tT  B C dD  ], Base: i8*
+###

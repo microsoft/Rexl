@@ -1,0 +1,161 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using Microsoft.Rexl.Private;
+
+<#
+var _kinds = new (string name, bool stmt, bool leaf)[] {
+    // List kinds.
+    ("StmtList", true, false),
+    ("ExprList", false, false),
+    ("SymList", false, false),
+    ("SliceList", false, false),
+
+    // Statement kinds.
+    ("ExprStmt", true, false), // Wrapper around an Expr.
+    ("BlockStmt", true, false),
+    ("GotoStmt", true, true),
+    ("LabelStmt", true, true),
+    ("IfStmt", true, false),
+    ("WhileStmt", true, false),
+    ("ImportStmt", true, false),
+    ("ExecuteStmt", true, false),
+    ("NamespaceStmt", true, false),
+    ("WithStmt", true, false),
+    ("DefinitionStmt", true, false),
+    ("FuncStmt", true, false),
+    ("TaskCmdStmt", true, false),
+    ("TaskProcStmt", true, false),
+    ("TaskBlockStmt", true, false),
+    ("UserProcStmt", true, false),
+
+    // Expression kinds.
+    ("Error", false, true),
+    ("MissingValue", false, true),
+
+    // Parenthesized expression. Technically, this isn't need for semantics, but
+    // is useful for representing the source Range values and token extent.
+    ("Paren", false, false),
+
+    // Literals
+    ("NullLit", false, true),
+    ("BoolLit", false, true),
+    ("NumLit", false, true),
+    ("TextLit", false, true),
+
+    ("Box", false, true),
+
+    ("ItName", false, true),
+    ("ThisName", false, true),
+    ("FirstName", false, true),
+    ("DottedName", false, false),
+    ("MetaProp", false, true),
+    ("GetIndex", false, false),
+
+    ("UnaryOp", false, false),
+    ("BinaryOp", false, false),
+    ("InHas", false, false),
+    ("Compare", false, false),
+
+    ("SliceItem", false, false),
+    ("Indexing", false, false),
+    ("Call", false, false),
+    ("VariableDecl", false, false),
+    ("Directive", false, false),
+    ("ValueSymDecl", false, false),
+    ("FreeVarDecl", false, false),
+    ("If", false, false),
+
+    ("Record", false, false),
+    ("Sequence", false, false),
+    ("Tuple", false, false),
+    ("RecordProjection", false, false),
+    ("TupleProjection", false, false),
+    ("ValueProjection", false, false),
+    ("ModuleProjection", false, false),
+    ("Module", false, false),
+};
+
+var _leafs = _kinds.Where(t => t.leaf).Select(t => t.name).ToArray();
+var _parents = _kinds.Where(t => !t.leaf).Select(t => t.name).ToArray();
+
+#>
+namespace Microsoft.Rexl.Parse;
+
+/// <summary>
+/// Parse node kind.
+/// </summary>
+public enum NodeKind
+{
+<#  foreach (var (name, stmt, leaf) in _kinds) {#>
+    <#=name#>,
+<#  }#>
+}
+
+<#  foreach (var name in _leafs) {#>
+public sealed partial class <#=name#>Node
+{
+    public override NodeKind Kind => NodeKind.<#=name#>;
+
+    public override void Accept(RexlTreeVisitor visitor)
+    {
+        Validation.AssertValue(visitor);
+        visitor.Visit(this);
+    }
+}
+<#  }#>
+<#  foreach (var name in _parents) {#>
+partial class <#=name#>Node
+{
+    public override NodeKind Kind => NodeKind.<#=name#>;
+}
+<#  }#>
+
+partial class RexlTreeVisitor
+{
+    // Visit methods for leaf node types.
+<#  foreach (var name in _leafs) {#>
+    public void Visit(<#=name#>Node node) { Enter(node); VisitImpl(node); Leave(node); }
+<#  }#>
+
+<#  foreach (var name in _leafs) {#>
+    protected abstract void VisitImpl(<#=name#>Node node);
+<#  }#>
+
+    // Visit methods for non-leaf node types.
+    // If PreVisit returns true, the children are visited and PostVisit is called.
+<#  foreach (var name in _parents) {#>
+    public bool PreVisit(<#=name#>Node node) { Enter(node); bool res = PreVisitImpl(node); if (!res) Leave(node); return res; }
+<#  }#>
+
+<#  foreach (var name in _parents) {#>
+    protected virtual bool PreVisitImpl(<#=name#>Node node) { return PreVisitCore(node); }
+<#  }#>
+
+<#  foreach (var name in _parents) {#>
+    public void PostVisit(<#=name#>Node node) { PostVisitImpl(node); Leave(node); }
+<#  }#>
+
+<#  foreach (var name in _parents) {#>
+    protected abstract void PostVisitImpl(<#=name#>Node node);
+<#  }#>
+}
+
+partial class NoopTreeVisitor
+{
+<#  foreach (var name in _leafs) {#>
+    protected override void VisitImpl(<#=name#>Node node) { VisitCore(node); }
+<#  }#>
+
+<#  foreach (var name in _parents) {#>
+    protected override void PostVisitImpl(<#=name#>Node node) { PostVisitCore(node); }
+<#  }#>
+}

@@ -1,0 +1,31 @@
+﻿`` A1 := Link.LocalImage("foo.bmp");
+`` B1 := Link.LocalImage("bar.bmp");
+`` C1 := Link.WebImage("https://blah/foo.bmp");
+`` D1 := Link.BlobImage("blobstorage", "foo.bmp");
+`` E1 := Link.BlobImage("blobstorage2", "foo.bmp");
+`` A2 := Link.LocalImage("foo.bmp");
+`` B2 := Link.LocalImage("bar.bmp");
+`` C2 := Link.WebImage("https://blah/foo.bmp");
+`` D2 := Link.BlobImage("blobstorage", "foo.bmp");
+`` E2 := Link.BlobImage("blobstorage2", "foo.bmp");
+`` NL := A1->Null();
+`` L1s := [ A1, B1, C1, D1, E1, NL ];
+`` L2s := [ A2, B2, C2, D2, E2, NL ];
+
+`` func Glue(x, y) := ChainMap(a: x, ForEach(b: y, (a, b)));
+`` func M(x) := "M" if x else "_";
+`` func Polish(ts) := ForEach(t: ts, With(code: M(t[0]) & M(t[1]) & M(t[2]) & M(t[3]), (code,) & t[4:]));
+`` func G(x, y) := Glue(x, y)->Wrap()->ForEach(as t, With(a:Wrap(t[0]), b:Wrap(t[1]), H(a, b)))->Wrap()->Polish();
+`` __IL_Func_Ind := 2;
+
+`` func H(a, b) := (a = b, a $= b, a != b, a !$= b, a, b);
+G(L1s, L1s)
+G(L1s, L2s)
+
+`` func H(a, b) := (a = b = a, a $= b $= a, a != b != a, a !$= b !$= a, a, b);
+G(L1s, L1s)
+G(L1s, L2s)
+
+`` __IL_Func_Ind := "all";
+
+A1 = A2 != B1 = B2 != C1 = C2 != D1 = D2 != E1 = E2

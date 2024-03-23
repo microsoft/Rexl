@@ -1,0 +1,3077 @@
+**** New definitions: Data, type: i8?*
+
+> Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+Data->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Global(Data), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:i8?*) to s
+Type: str, Value: 2,8,14,4,10,16,0,6,12,18,5,11,17,1,7,13,19,3,9,15,<null>
+*** Ctx ping count: 22
+    [0](22): Text.Concat(ForEach(*1: Data, Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp(Global(Data)):i8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:i8?*) to s
+Type: str, Value: <null>,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+*** Ctx ping count: 44
+    [0](22): SortUp(Data)
+    [1](22): Text.Concat(ForEach(*1: SortUp(Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([<] Global(Data)):i8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:i8?*) to s
+Type: str, Value: <null>,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+*** Ctx ping count: 44
+    [0](22): SortUp([<] Data)
+    [1](22): Text.Concat(ForEach(*1: SortUp([<] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([>] Global(Data)):i8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:i8?*) to s
+Type: str, Value: 19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,<null>
+*** Ctx ping count: 44
+    [0](22): SortUp([>] Data)
+    [1](22): Text.Concat(ForEach(*1: SortUp([>] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):i8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):i8?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:i8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 45
+    [0](44): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp([<] Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([<] Global(Data)):i8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):i8?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:i8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 45
+    [0](44): SortUp([<] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+With(T : SortUp([>] Data), ForEach(a : T, b : T->DropOne(), a @>= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([>] Global(Data)):i8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):i8?*), Cmp(Scope(2) @>= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:i8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 45
+    [0](44): SortUp([>] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp(   Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @= b))->Count(it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):i8?*), Call(∂.Count([map:4] Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):i8?*), Cmp(Scope(2) @= Scope(3))):b*), Scope(4)):i8)):i8))
+Func sig: (<ctx>:x, Data:i8?*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 66
+    [0](44): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+    [2](21): Count(*4: ForEach(*2: !1x, *3: Drop(!1x, 1), *2 @= *3), *4)
+###
+
+**** New definitions: Data, type: r8?*
+
+> Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+Data->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Global(Data), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:r8?*) to s
+Type: str, Value: 3.5,∞,-∞,NaN,<null>,-2.5,1E+100,-1E+100,-∞,NaN,<null>
+*** Ctx ping count: 12
+    [0](12): Text.Concat(ForEach(*1: Data, Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp(Global(Data)):r8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:r8?*) to s
+Type: str, Value: <null>,<null>,NaN,NaN,-∞,-∞,-1E+100,-2.5,3.5,1E+100,∞
+*** Ctx ping count: 24
+    [0](12): SortUp(Data)
+    [1](12): Text.Concat(ForEach(*1: SortUp(Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([<] Global(Data)):r8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:r8?*) to s
+Type: str, Value: <null>,<null>,NaN,NaN,-∞,-∞,-1E+100,-2.5,3.5,1E+100,∞
+*** Ctx ping count: 24
+    [0](12): SortUp([<] Data)
+    [1](12): Text.Concat(ForEach(*1: SortUp([<] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([>] Global(Data)):r8?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:r8?*) to s
+Type: str, Value: ∞,1E+100,3.5,-2.5,-1E+100,-∞,-∞,NaN,NaN,<null>,<null>
+*** Ctx ping count: 24
+    [0](12): SortUp([>] Data)
+    [1](12): Text.Concat(ForEach(*1: SortUp([>] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):r8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):r8?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:r8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 25
+    [0](24): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp([<] Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([<] Global(Data)):r8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):r8?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:r8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 25
+    [0](24): SortUp([<] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+With(T : SortUp([>] Data), ForEach(a : T, b : T->DropOne(), a @>= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([>] Global(Data)):r8?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):r8?*), Cmp(Scope(2) @>= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:r8?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 25
+    [0](24): SortUp([>] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @= b))->Count(it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):r8?*), Call(∂.Count([map:4] Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):r8?*), Cmp(Scope(2) @= Scope(3))):b*), Scope(4)):i8)):i8))
+Func sig: (<ctx>:x, Data:r8?*) to i8
+Type: i8, Value: 3
+*** Ctx ping count: 36
+    [0](24): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+    [2](11): Count(*4: ForEach(*2: !1x, *3: Drop(!1x, 1), *2 @= *3), *4)
+###
+
+**** New definitions: Data, type: b?*
+
+> Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+Data->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Global(Data), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:b?*) to s
+Type: str, Value: <null>,true,false,false,false,<null>,true,true,false,false,<null>,false,true,true,false,<null>,false,false,true,true
+*** Ctx ping count: 21
+    [0](21): Text.Concat(ForEach(*1: Data, Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp(Global(Data)):b?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:b?*) to s
+Type: str, Value: <null>,<null>,<null>,<null>,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true
+*** Ctx ping count: 42
+    [0](21): SortUp(Data)
+    [1](21): Text.Concat(ForEach(*1: SortUp(Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([<] Global(Data)):b?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:b?*) to s
+Type: str, Value: <null>,<null>,<null>,<null>,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true
+*** Ctx ping count: 42
+    [0](21): SortUp([<] Data)
+    [1](21): Text.Concat(ForEach(*1: SortUp([<] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([>] Global(Data)):b?*), Coalesce(Call(∂.Guard([guard:2] Scope(1), Call(∂.ToText(Scope(2)):s)):s), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:b?*) to s
+Type: str, Value: true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,<null>,<null>,<null>,<null>
+*** Ctx ping count: 42
+    [0](21): SortUp([>] Data)
+    [1](21): Text.Concat(ForEach(*1: SortUp([>] Data), Coalesce(Guard(?2: *1, ToText(?2)), "<null>")), ",")
+###
+> With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):b?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):b?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:b?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 43
+    [0](42): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T : SortUp([<] Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([<] Global(Data)):b?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):b?*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:b?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 43
+    [0](42): SortUp([<] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+With(T : SortUp([>] Data), ForEach(a : T, b : T->DropOne(), a @>= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([>] Global(Data)):b?*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):b?*), Cmp(Scope(2) @>= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:b?*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 43
+    [0](42): SortUp([>] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp(   Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @= b))->Count(it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):b?*), Call(∂.Count([map:4] Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):b?*), Cmp(Scope(2) @= Scope(3))):b*), Scope(4)):i8)):i8))
+Func sig: (<ctx>:x, Data:b?*) to i8
+Type: i8, Value: 17
+*** Ctx ping count: 63
+    [0](42): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+    [2](20): Count(*4: ForEach(*2: !1x, *3: Drop(!1x, 1), *2 @= *3), *4)
+###
+
+**** New definitions: Data, type: s*
+
+> SortUp(     Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp(Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: <null>,, ,0,9,a,A,A,á,Á,à,À,az,az,aZ,Az,AZ,AZ,b,B,Ba,BA,Bz,BZ,ss,SS,ß,ß,st,st,St,ST
+*** Ctx ping count: 66
+    [0](33): SortUp(Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp(Data), Coalesce(*1, "<null>")), ",")
+###
+> SortUp([<]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([<] Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: <null>,, ,0,9,a,A,A,á,Á,à,À,az,az,aZ,Az,AZ,AZ,b,B,Ba,BA,Bz,BZ,ss,SS,ß,ß,st,st,St,ST
+*** Ctx ping count: 66
+    [0](33): SortUp([<] Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp([<] Data), Coalesce(*1, "<null>")), ",")
+###
+> SortUp([>]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([>] Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: ST,St,st,st,ß,ß,SS,ss,BZ,Bz,BA,Ba,B,b,AZ,AZ,Az,aZ,az,az,À,à,Á,á,A,A,a,9,0, ,,<null>
+*** Ctx ping count: 66
+    [0](33): SortUp([>] Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp([>] Data), Coalesce(*1, "<null>")), ",")
+###
+> SortUp([~]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~] Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([~] Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: <null>,, ,0,9,A,a,A,Á,á,À,à,AZ,AZ,az,aZ,Az,az,B,b,Ba,BA,BZ,Bz,ss,SS,ß,ß,st,St,ST,st
+*** Ctx ping count: 66
+    [0](33): SortUp([~] Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp([~] Data), Coalesce(*1, "<null>")), ",")
+###
+> SortUp([~<] Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~<] Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([~<] Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: <null>,, ,0,9,A,a,A,Á,á,À,à,AZ,AZ,az,aZ,Az,az,B,b,Ba,BA,BZ,Bz,ss,SS,ß,ß,st,St,ST,st
+*** Ctx ping count: 66
+    [0](33): SortUp([~<] Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp([~<] Data), Coalesce(*1, "<null>")), ",")
+###
+> SortUp([~>] Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~>] Data)->ForEach(it ?? "<null>")->Text.Concat(",") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Text.Concat(Call(∂.ForEach([map:1] Call(∂.SortUp([~>] Global(Data)):s*), Coalesce(Scope(1), str(<null>))):s*), str(,)):s))
+Func sig: (<ctx>:x, Data:s*) to s
+Type: str, Value: st,St,ST,st,ß,ß,ss,SS,BZ,Bz,Ba,BA,B,b,AZ,AZ,az,aZ,Az,az,À,à,Á,á,A,a,A,9,0, ,,<null>
+*** Ctx ping count: 66
+    [0](33): SortUp([~>] Data)
+    [1](33): Text.Concat(ForEach(*1: SortUp([~>] Data), Coalesce(*1, "<null>")), ",")
+###
+> With(T: SortUp(     Data), ForEach(a: T, b: T->DropOne(), a  @<=  b))->All()
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([<]  Data), ForEach(a: T, b: T->DropOne(), a  @<=  b))->All()
+With(T : SortUp([<] Data), ForEach(a : T, b : T->DropOne(), a @<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([<] Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) @<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp([<] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([~]  Data), ForEach(a: T, b: T->DropOne(), a ~@<= b))->All()
+With(T : SortUp([~] Data), ForEach(a : T, b : T->DropOne(), a ~@<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([~] Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) ~@<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp([~] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([~<] Data), ForEach(a: T, b: T->DropOne(), a ~@<= b))->All()
+With(T : SortUp([~<] Data), ForEach(a : T, b : T->DropOne(), a ~@<= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([~<] Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) ~@<= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp([~<] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([>]  Data), ForEach(a: T, b: T->DropOne(), a  @>=  b))->All()
+With(T : SortUp([>] Data), ForEach(a : T, b : T->DropOne(), a @>= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([>] Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) @>= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp([>] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp([~>] Data), ForEach(a: T, b: T->DropOne(), a ~@>= b))->All()
+With(T : SortUp([~>] Data), ForEach(a : T, b : T->DropOne(), a ~@>= b))->All() : b
+BndKind:Call, Type:b, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([~>] Global(Data)):s*), Call(∂.All(Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) ~@>= Scope(3))):b*)):b)):b))
+Func sig: (<ctx>:x, Data:s*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 67
+    [0](66): SortUp([~>] Data)
+    [1](1): Drop(!1x, 1)
+###
+> With(T: SortUp(     Data), ForEach(a: T, b: T->DropOne(), a  @= b))->Count(it)
+With(T : SortUp(Data), ForEach(a : T, b : T->DropOne(), a @= b))->Count(it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Call(∂.SortUp(Global(Data)):s*), Call(∂.Count([map:4] Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) @= Scope(3))):b*), Scope(4)):i8)):i8))
+Func sig: (<ctx>:x, Data:s*) to i8
+Type: i8, Value: 5
+*** Ctx ping count: 99
+    [0](66): SortUp(Data)
+    [1](1): Drop(!1x, 1)
+    [2](32): Count(*4: ForEach(*2: !1x, *3: Drop(!1x, 1), *2 @= *3), *4)
+###
+> With(T: SortUp([~]  Data), ForEach(a: T, b: T->DropOne(), a ~@= b))->Count(it)
+With(T : SortUp([~] Data), ForEach(a : T, b : T->DropOne(), a ~@= b))->Count(it) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.With([with:1] Call(∂.SortUp([~] Global(Data)):s*), Call(∂.Count([map:4] Call(∂.ForEach([map:2] Scope(1), [map:3] Call(∂.Drop(Scope(1), 1:i8):s*), Cmp(Scope(2) ~@= Scope(3))):b*), Scope(4)):i8)):i8))
+Func sig: (<ctx>:x, Data:s*) to i8
+Type: i8, Value: 17
+*** Ctx ping count: 99
+    [0](66): SortUp([~] Data)
+    [1](1): Drop(!1x, 1)
+    [2](32): Count(*4: ForEach(*2: !1x, *3: Drop(!1x, 1), *2 ~@= *3), *4)
+###
+
+**** New definitions: Dates, type: d*
+
+> Sort(Dates)
+Sort(Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort(Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(Dates)
+###
+> Sort([>] Dates)
+Sort([>] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([>] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort([>] Dates)
+###
+> Sort([<] Dates)
+Sort([<] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([<] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): Sort([<] Dates)
+###
+> SortUp(Dates)
+SortUp(Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp(Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortUp(Dates)
+###
+> SortUp([>] Dates)
+SortUp([>] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([>] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortUp([>] Dates)
+###
+> SortUp([<] Dates)
+SortUp([<] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([<] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortUp([<] Dates)
+###
+> SortDown(Dates)
+SortDown(Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown(Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(Dates)
+###
+> SortDown([>] Dates)
+SortDown([>] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([>] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown([>] Dates)
+###
+> SortDown([<] Dates)
+SortDown([<] Dates) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([<] Global(Dates)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortDown([<] Dates)
+###
+> Sort(Dates, it)
+Sort(Dates, it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, *1)
+###
+> Sort(Dates, [>] it)
+Sort(Dates, [>] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [>] *1)
+###
+> Sort(Dates, [<] it)
+Sort(Dates, [<] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [<] *1)
+###
+> SortUp(Dates, it)
+SortUp(Dates, it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, *1)
+###
+> SortUp(Dates, [>] it)
+SortUp(Dates, [>] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [>] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [>] *1)
+###
+> SortUp(Dates, [<] it)
+SortUp(Dates, [<] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [<] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [<] *1)
+###
+> SortDown(Dates, it)
+SortDown(Dates, it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, *1)
+###
+> SortDown(Dates, [>] it)
+SortDown(Dates, [>] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [>] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 1) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [>] *1)
+###
+> SortDown(Dates, [<] it)
+SortDown(Dates, [<] it) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [<] Scope(1)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [<] *1)
+###
+> Dates
+Dates : d*
+BndKind:Global, Type:d*, Bnd:(Global(Dates))
+Func sig: (Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 3) DT(1500, 8, 1, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+###
+> Sort(Dates, Date)
+Sort(Dates, Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, Date.Date(*1))
+###
+> Sort(Dates, [>] Date)
+Sort(Dates, [>] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [>] Date.Date(*1))
+###
+> Sort(Dates, [<] Date)
+Sort(Dates, [<] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [<] Date.Date(*1))
+###
+> SortUp(Dates, Date)
+SortUp(Dates, Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, Date.Date(*1))
+###
+> SortUp(Dates, [>] Date)
+SortUp(Dates, [>] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [>] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [>] Date.Date(*1))
+###
+> SortUp(Dates, [<] Date)
+SortUp(Dates, [<] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [<] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [<] Date.Date(*1))
+###
+> SortDown(Dates, Date)
+SortDown(Dates, Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, Date.Date(*1))
+###
+> SortDown(Dates, [>] Date)
+SortDown(Dates, [>] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [>] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [>] Date.Date(*1))
+###
+> SortDown(Dates, [<] Date)
+SortDown(Dates, [<] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [<] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [<] Date.Date(*1))
+###
+> Dates
+Dates : d*
+BndKind:Global, Type:d*, Bnd:(Global(Dates))
+Func sig: (Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 3) DT(1500, 8, 1, 0, 0, 0, 0)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+###
+> Sort(Dates, Time)
+Sort(Dates, Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, Date.Time(*1))
+###
+> Sort(Dates, [>] Time)
+Sort(Dates, [>] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [>] Date.Time(*1))
+###
+> Sort(Dates, [<] Time)
+Sort(Dates, [<] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [<] Date.Time(*1))
+###
+> SortUp(Dates, Time)
+SortUp(Dates, Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, Date.Time(*1))
+###
+> SortUp(Dates, [>] Time)
+SortUp(Dates, [>] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [>] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [>] Date.Time(*1))
+###
+> SortUp(Dates, [<] Time)
+SortUp(Dates, [<] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortUp([map:1] Global(Dates), [<] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortUp(*1: Dates, [<] Date.Time(*1))
+###
+> SortDown(Dates, Time)
+SortDown(Dates, Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, Date.Time(*1))
+###
+> SortDown(Dates, [>] Time)
+SortDown(Dates, [>] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [>] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [>] Date.Time(*1))
+###
+> SortDown(Dates, [<] Time)
+SortDown(Dates, [<] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.SortDown([map:1] Global(Dates), [<] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): SortDown(*1: Dates, [<] Date.Time(*1))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(Data, #)
+Sort(Data, #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 9
+ 1) -8
+ 2) 7
+ 3) -6
+ 4) 5
+ 5) -4
+ 6) 3
+ 7) -2
+ 8) 1
+ 9) 0
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, #1)
+###
+> Sort(Data, [>] #)
+Sort(Data, [>] #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), [>] Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 9
+ 1) -8
+ 2) 7
+ 3) -6
+ 4) 5
+ 5) -4
+ 6) 3
+ 7) -2
+ 8) 1
+ 9) 0
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, [>] #1)
+###
+> Sort(Data, [<] #)
+Sort(Data, [<] #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), [<] Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) -2
+ 3) 3
+ 4) -4
+ 5) 5
+ 6) -6
+ 7) 7
+ 8) -8
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, [<] #1)
+###
+> Sort(Data, it mod 2 = 0, #)
+Sort(Data, it mod 2 @= 0, #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 9
+ 6) 7
+ 7) 5
+ 8) 3
+ 9) 1
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, #1)
+###
+> Sort(Data, it mod 2 = 0, [>] #)
+Sort(Data, it mod 2 @= 0, [>] #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), [>] Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 9
+ 6) 7
+ 7) 5
+ 8) 3
+ 9) 1
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, [>] #1)
+###
+> Sort(Data, it mod 2 = 0, [<] #)
+Sort(Data, it mod 2 @= 0, [<] #) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), [<] Scope(1)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) -2
+ 2) -4
+ 3) -6
+ 4) -8
+ 5) 1
+ 6) 3
+ 7) 5
+ 8) 7
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, [<] #1)
+###
+> Sort(Data, # * -it)
+Sort(Data, # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 1
+ 6) 3
+ 7) 5
+ 8) 7
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, Add([-] Mul(#1, *2)))
+###
+> Sort(Data, [>] # * -it)
+Sort(Data, [>] # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), [>] Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 1
+ 6) 3
+ 7) 5
+ 8) 7
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, [>] Add([-] Mul(#1, *2)))
+###
+> Sort(Data, [<] # * -it)
+Sort(Data, [<] # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), [<] Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 9
+ 1) 7
+ 2) 5
+ 3) 3
+ 4) 1
+ 5) 0
+ 6) -2
+ 7) -4
+ 8) -6
+ 9) -8
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, [<] Add([-] Mul(#1, *2)))
+###
+> Sort(Data, it mod 2 = 0, # * -it)
+Sort(Data, it mod 2 @= 0, # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 1
+ 6) 3
+ 7) 5
+ 8) 7
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, Add([-] Mul(#1, *2)))
+###
+> Sort(Data, it mod 2 = 0, [>] # * -it)
+Sort(Data, it mod 2 @= 0, [>] # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), [>] Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -8
+ 1) -6
+ 2) -4
+ 3) -2
+ 4) 0
+ 5) 1
+ 6) 3
+ 7) 5
+ 8) 7
+ 9) 9
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, [>] Add([-] Mul(#1, *2)))
+###
+> Sort(Data, it mod 2 = 0, [<] # * -it)
+Sort(Data, it mod 2 @= 0, [<] # * -it) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), Cmp(IntMod(Scope(2), 2:i8) @= 0:i8), [<] Add([-] Mul(Scope(1), Scope(2)))):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) -2
+ 2) -4
+ 3) -6
+ 4) -8
+ 5) 9
+ 6) 7
+ 7) 5
+ 8) 3
+ 9) 1
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, IntMod(*2, 2) @= 0, [<] Add([-] Mul(#1, *2)))
+###
+> Sort(Data, [<] #it mod 3)
+Sort(Data, [<] #it mod 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:2] Global(Data), [<] IntMod(Scope(1), 3:i8)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 3
+ 2) -6
+ 3) 9
+ 4) 1
+ 5) -4
+ 6) 7
+ 7) -2
+ 8) 5
+ 9) -8
+*** Ctx ping count: 11
+    [0](11): Sort(*2: Data, [<] IntMod(#1, 3))
+###
+
+**** New definitions: Data, type: r8*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):r8)):r8*))
+Func sig: (<ctx>:x, Data:r8*) to r8*
+Sequence: Seq<r8>
+ 0) NaN
+ 1) NaN
+ 2) -∞
+ 3) 0.1
+ 4) 0.2
+ 5) 0.3
+ 6) 0.3
+ 7) ∞
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):r8)):r8*)):r8*))
+Func sig: (<ctx>:x, Data:r8*) to r8*
+Sequence: Seq<r8>
+ 0) NaN
+ 1) NaN
+ 2) -∞
+ 3) 0.1
+ 4) 0.2
+ 5) 0.3
+ 6) 0.3
+ 7) ∞
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):r8)):r8*))
+Func sig: (<ctx>:x, Data:r8*) to r8*
+Sequence: Seq<r8>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):r8)):r8*)):r8*))
+Func sig: (<ctx>:x, Data:r8*) to r8*
+Sequence: Seq<r8>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+> Sort(CastR4(Data), [<] Wrap(it))
+Sort(CastR4(Data), [<] Wrap(it)) : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastR4(Scope(1)):r4)):r4*), [<] Call(∂.Test.Wrap(Scope(2)):r4)):r4*))
+Func sig: (<ctx>:x, Data:r8*) to r4*
+Sequence: Seq<r4>
+ 0) NaN
+ 1) NaN
+ 2) -∞
+ 3) 0.1
+ 4) 0.2
+ 5) 0.3
+ 6) 0.3
+ 7) ∞
+*** Ctx ping count: 9
+    [0](9): Sort(*2: ForEach(*1: Data, CastR4(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastR4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [<] Wrap(it)) : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastR4(Scope(2)):r4)):r4*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):r4)):r4*)):r4*))
+Func sig: (<ctx>:x, Data:r8*) to r4*
+Sequence: Seq<r4>
+ 0) NaN
+ 1) NaN
+ 2) -∞
+ 3) 0.1
+ 4) 0.2
+ 5) 0.3
+ 6) 0.3
+ 7) ∞
+*** Ctx ping count: 9
+    [0](9): Sort(*2: ForEach(*1: Data, CastR4(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastR4(Data), [>] Wrap(it))
+Sort(CastR4(Data), [>] Wrap(it)) : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastR4(Scope(1)):r4)):r4*), [>] Call(∂.Test.Wrap(Scope(2)):r4)):r4*))
+Func sig: (<ctx>:x, Data:r8*) to r4*
+Sequence: Seq<r4>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+*** Ctx ping count: 9
+    [0](9): Sort(*2: ForEach(*1: Data, CastR4(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastR4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [>] Wrap(it)) : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastR4(Scope(2)):r4)):r4*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):r4)):r4*)):r4*))
+Func sig: (<ctx>:x, Data:r8*) to r4*
+Sequence: Seq<r4>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+*** Ctx ping count: 9
+    [0](9): Sort(*2: ForEach(*1: Data, CastR4(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: r8?*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):r8?)):r8?*))
+Func sig: (<ctx>:x, Data:r8?*) to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) NaN
+ 4) NaN
+ 5) -∞
+ 6) 0.1
+ 7) 0.2
+ 8) 0.3
+ 9) 0.3
+10) ∞
+*** Ctx ping count: 12
+    [0](12): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):r8?)):r8?*)):r8?*))
+Func sig: (<ctx>:x, Data:r8?*) to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) NaN
+ 4) NaN
+ 5) -∞
+ 6) 0.1
+ 7) 0.2
+ 8) 0.3
+ 9) 0.3
+10) ∞
+*** Ctx ping count: 12
+    [0](12): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):r8?)):r8?*))
+Func sig: (<ctx>:x, Data:r8?*) to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+ 8) <null>
+ 9) <null>
+10) <null>
+*** Ctx ping count: 12
+    [0](12): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):r8?)):r8?*)):r8?*))
+Func sig: (<ctx>:x, Data:r8?*) to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+ 8) <null>
+ 9) <null>
+10) <null>
+*** Ctx ping count: 12
+    [0](12): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+> Sort(CastR4(Data), [<] Wrap(it))
+Sort(CastR4(Data), [<] Wrap(it)) : r4?*
+BndKind:Call, Type:r4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastR4(Scope(2)):r4)):r4?)):r4?*), [<] Call(∂.Test.Wrap(Scope(3)):r4?)):r4?*))
+Func sig: (<ctx>:x, Data:r8?*) to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) NaN
+ 4) NaN
+ 5) -∞
+ 6) 0.1
+ 7) 0.2
+ 8) 0.3
+ 9) 0.3
+10) ∞
+*** Ctx ping count: 12
+    [0](12): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastR4(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastR4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [<] Wrap(it)) : r4?*
+BndKind:Call, Type:r4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastR4(Scope(3)):r4)):r4?)):r4?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):r4?)):r4?*)):r4?*))
+Func sig: (<ctx>:x, Data:r8?*) to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) NaN
+ 4) NaN
+ 5) -∞
+ 6) 0.1
+ 7) 0.2
+ 8) 0.3
+ 9) 0.3
+10) ∞
+*** Ctx ping count: 12
+    [0](12): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastR4(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastR4(Data), [>] Wrap(it))
+Sort(CastR4(Data), [>] Wrap(it)) : r4?*
+BndKind:Call, Type:r4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastR4(Scope(2)):r4)):r4?)):r4?*), [>] Call(∂.Test.Wrap(Scope(3)):r4?)):r4?*))
+Func sig: (<ctx>:x, Data:r8?*) to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+ 8) <null>
+ 9) <null>
+10) <null>
+*** Ctx ping count: 12
+    [0](12): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastR4(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastR4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [>] Wrap(it)) : r4?*
+BndKind:Call, Type:r4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastR4(Scope(3)):r4)):r4?)):r4?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):r4?)):r4?*)):r4?*))
+Func sig: (<ctx>:x, Data:r8?*) to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) ∞
+ 1) 0.3
+ 2) 0.3
+ 3) 0.2
+ 4) 0.1
+ 5) -∞
+ 6) NaN
+ 7) NaN
+ 8) <null>
+ 9) <null>
+10) <null>
+*** Ctx ping count: 12
+    [0](12): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastR4(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: b*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):b)):b*))
+Func sig: (<ctx>:x, Data:b*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) false
+ 3) true 
+ 4) true 
+*** Ctx ping count: 6
+    [0](6): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):b)):b*)):b*))
+Func sig: (<ctx>:x, Data:b*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) false
+ 3) true 
+ 4) true 
+*** Ctx ping count: 6
+    [0](6): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):b)):b*))
+Func sig: (<ctx>:x, Data:b*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+ 4) false
+*** Ctx ping count: 6
+    [0](6): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):b)):b*)):b*))
+Func sig: (<ctx>:x, Data:b*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+ 4) false
+*** Ctx ping count: 6
+    [0](6): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+**** New definitions: Data, type: b?*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):b?)):b?*))
+Func sig: (<ctx>:x, Data:b?*) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) false
+ 4) false
+ 5) false
+ 6) true 
+ 7) true 
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):b?)):b?*)):b?*))
+Func sig: (<ctx>:x, Data:b?*) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) false
+ 4) false
+ 5) false
+ 6) true 
+ 7) true 
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):b?)):b?*))
+Func sig: (<ctx>:x, Data:b?*) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+ 4) false
+ 5) <null>
+ 6) <null>
+ 7) <null>
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : b?*
+BndKind:Call, Type:b?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):b?)):b?*)):b?*))
+Func sig: (<ctx>:x, Data:b?*) to b?*
+Sequence: Seq<Opt<bool>>
+ 0) true 
+ 1) true 
+ 2) false
+ 3) false
+ 4) false
+ 5) <null>
+ 6) <null>
+ 7) <null>
+*** Ctx ping count: 9
+    [0](9): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+**** New definitions: Data, type: i*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):i)):i*))
+Func sig: (<ctx>:x, Data:i*) to i*
+Sequence: Seq<ia>
+ 0) -1361129467683753853853498429727072845824
+ 1) -1361129467683753853853498429727072845824
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 1361129467683753853853498429727072845824
+ 6) 1361129467683753853853498429727072845824
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):i)):i*)):i*))
+Func sig: (<ctx>:x, Data:i*) to i*
+Sequence: Seq<ia>
+ 0) -1361129467683753853853498429727072845824
+ 1) -1361129467683753853853498429727072845824
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 1361129467683753853853498429727072845824
+ 6) 1361129467683753853853498429727072845824
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):i)):i*))
+Func sig: (<ctx>:x, Data:i*) to i*
+Sequence: Seq<ia>
+ 0) 1361129467683753853853498429727072845824
+ 1) 1361129467683753853853498429727072845824
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -1361129467683753853853498429727072845824
+ 6) -1361129467683753853853498429727072845824
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):i)):i*)):i*))
+Func sig: (<ctx>:x, Data:i*) to i*
+Sequence: Seq<ia>
+ 0) 1361129467683753853853498429727072845824
+ 1) 1361129467683753853853498429727072845824
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -1361129467683753853853498429727072845824
+ 6) -1361129467683753853853498429727072845824
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+**** New definitions: Data, type: i?*
+
+> Sort(Data, [<] Wrap(it))
+Sort(Data, [<] Wrap(it)) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):i?)):i?*))
+Func sig: (<ctx>:x, Data:i?*) to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -1361129467683753853853498429727072845824
+ 4) -1361129467683753853853498429727072845824
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 1361129467683753853853498429727072845824
+ 9) 1361129467683753853853498429727072845824
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it)) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):i?)):i?*)):i?*))
+Func sig: (<ctx>:x, Data:i?*) to i?*
+Sequence: Seq<Opt<ia>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -1361129467683753853853498429727072845824
+ 4) -1361129467683753853853498429727072845824
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 1361129467683753853853498429727072845824
+ 9) 1361129467683753853853498429727072845824
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(Data, [>] Wrap(it))
+Sort(Data, [>] Wrap(it)) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):i?)):i?*))
+Func sig: (<ctx>:x, Data:i?*) to i?*
+Sequence: Seq<Opt<ia>>
+ 0) 1361129467683753853853498429727072845824
+ 1) 1361129467683753853853498429727072845824
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -1361129467683753853853498429727072845824
+ 6) -1361129467683753853853498429727072845824
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it)) : i?*
+BndKind:Call, Type:i?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):i?)):i?*)):i?*))
+Func sig: (<ctx>:x, Data:i?*) to i?*
+Sequence: Seq<Opt<ia>>
+ 0) 1361129467683753853853498429727072845824
+ 1) 1361129467683753853853498429727072845824
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -1361129467683753853853498429727072845824
+ 6) -1361129467683753853853498429727072845824
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+Warning while binding definition for [Data]: [[-2^63, 2^63 - 1, -2^63, 2^63 - 1, -1, 0, 1]].
+Bind warnings:
+Warning: (9,10) Node: -2^63, Message: Constant integer overflow
+Warning: (23,24) Node: 2^63 - 1, Message: Constant integer overflow
+Warning: (28,29) Node: -2^63, Message: Constant integer overflow
+Warning: (42,43) Node: 2^63 - 1, Message: Constant integer overflow
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastI8(Data), [<] Wrap(it))
+Sort(CastI8(Data), [<] Wrap(it)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):i8)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -9223372036854775808
+ 1) -9223372036854775808
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 9223372036854775807
+ 6) 9223372036854775807
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [<] Wrap(it)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -9223372036854775808
+ 1) -9223372036854775808
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 9223372036854775807
+ 6) 9223372036854775807
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), [>] Wrap(it))
+Sort(CastI8(Data), [>] Wrap(it)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):i8)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 9223372036854775807
+ 1) 9223372036854775807
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -9223372036854775808
+ 6) -9223372036854775808
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [>] Wrap(it)) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Data:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 9223372036854775807
+ 1) 9223372036854775807
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -9223372036854775808
+ 6) -9223372036854775808
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastI8(Data), [<] Wrap(it))
+Sort(CastI8(Data), [<] Wrap(it)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [<] Call(∂.Test.Wrap(Scope(1)):i8?)):i8?*))
+Func sig: (<ctx>:x, Data:i8?*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -9223372036854775808
+ 4) -9223372036854775808
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 9223372036854775807
+ 9) 9223372036854775807
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, [<] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [<] Wrap(it)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [<] Call(∂.Test.Wrap(Scope(2)):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Data:i8?*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -9223372036854775808
+ 4) -9223372036854775808
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 9223372036854775807
+ 9) 9223372036854775807
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, !2x, [<] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), [>] Wrap(it))
+Sort(CastI8(Data), [>] Wrap(it)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.Sort([map:1] Global(Data), [>] Call(∂.Test.Wrap(Scope(1)):i8?)):i8?*))
+Func sig: (<ctx>:x, Data:i8?*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 9223372036854775807
+ 1) 9223372036854775807
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -9223372036854775808
+ 6) -9223372036854775808
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, [>] Test.Wrap(*1))
+###
+> Sort(CastI8(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [>] Wrap(it)) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Data), Scope(1), [>] Call(∂.Test.Wrap(Scope(2)):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Data:i8?*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 9223372036854775807
+ 1) 9223372036854775807
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -9223372036854775808
+ 6) -9223372036854775808
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Data, !2x, [>] Test.Wrap(*1))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastI4(Data), [<] Wrap(it))
+Sort(CastI4(Data), [<] Wrap(it)) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI4(Scope(1)):i4)):i4*), [<] Call(∂.Test.Wrap(Scope(2)):i4)):i4*))
+Func sig: (<ctx>:x, Data:i8*) to i4*
+Sequence: Seq<i4>
+ 0) -2147483648
+ 1) -2147483648
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 2147483647
+ 6) 2147483647
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI4(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastI4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [<] Wrap(it)) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI4(Scope(2)):i4)):i4*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):i4)):i4*)):i4*))
+Func sig: (<ctx>:x, Data:i8*) to i4*
+Sequence: Seq<i4>
+ 0) -2147483648
+ 1) -2147483648
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 2147483647
+ 6) 2147483647
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI4(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastI4(Data), [>] Wrap(it))
+Sort(CastI4(Data), [>] Wrap(it)) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI4(Scope(1)):i4)):i4*), [>] Call(∂.Test.Wrap(Scope(2)):i4)):i4*))
+Func sig: (<ctx>:x, Data:i8*) to i4*
+Sequence: Seq<i4>
+ 0) 2147483647
+ 1) 2147483647
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -2147483648
+ 6) -2147483648
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI4(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastI4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [>] Wrap(it)) : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI4(Scope(2)):i4)):i4*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):i4)):i4*)):i4*))
+Func sig: (<ctx>:x, Data:i8*) to i4*
+Sequence: Seq<i4>
+ 0) 2147483647
+ 1) 2147483647
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -2147483648
+ 6) -2147483648
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI4(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastI4(Data), [<] Wrap(it))
+Sort(CastI4(Data), [<] Wrap(it)) : i4?*
+BndKind:Call, Type:i4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI4(Scope(2)):i4)):i4?)):i4?*), [<] Call(∂.Test.Wrap(Scope(3)):i4?)):i4?*))
+Func sig: (<ctx>:x, Data:i8?*) to i4?*
+Sequence: Seq<Opt<i4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -2147483648
+ 4) -2147483648
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 2147483647
+ 9) 2147483647
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI4(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastI4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [<] Wrap(it)) : i4?*
+BndKind:Call, Type:i4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI4(Scope(3)):i4)):i4?)):i4?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):i4?)):i4?*)):i4?*))
+Func sig: (<ctx>:x, Data:i8?*) to i4?*
+Sequence: Seq<Opt<i4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -2147483648
+ 4) -2147483648
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 2147483647
+ 9) 2147483647
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI4(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastI4(Data), [>] Wrap(it))
+Sort(CastI4(Data), [>] Wrap(it)) : i4?*
+BndKind:Call, Type:i4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI4(Scope(2)):i4)):i4?)):i4?*), [>] Call(∂.Test.Wrap(Scope(3)):i4?)):i4?*))
+Func sig: (<ctx>:x, Data:i8?*) to i4?*
+Sequence: Seq<Opt<i4>>
+ 0) 2147483647
+ 1) 2147483647
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -2147483648
+ 6) -2147483648
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI4(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastI4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [>] Wrap(it)) : i4?*
+BndKind:Call, Type:i4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI4(Scope(3)):i4)):i4?)):i4?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):i4?)):i4?*)):i4?*))
+Func sig: (<ctx>:x, Data:i8?*) to i4?*
+Sequence: Seq<Opt<i4>>
+ 0) 2147483647
+ 1) 2147483647
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -2147483648
+ 6) -2147483648
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI4(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastI2(Data), [<] Wrap(it))
+Sort(CastI2(Data), [<] Wrap(it)) : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI2(Scope(1)):i2)):i2*), [<] Call(∂.Test.Wrap(Scope(2)):i2)):i2*))
+Func sig: (<ctx>:x, Data:i8*) to i2*
+Sequence: Seq<i2>
+ 0) -32768
+ 1) -32768
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 32767
+ 6) 32767
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI2(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastI2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [<] Wrap(it)) : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI2(Scope(2)):i2)):i2*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):i2)):i2*)):i2*))
+Func sig: (<ctx>:x, Data:i8*) to i2*
+Sequence: Seq<i2>
+ 0) -32768
+ 1) -32768
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 32767
+ 6) 32767
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI2(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastI2(Data), [>] Wrap(it))
+Sort(CastI2(Data), [>] Wrap(it)) : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI2(Scope(1)):i2)):i2*), [>] Call(∂.Test.Wrap(Scope(2)):i2)):i2*))
+Func sig: (<ctx>:x, Data:i8*) to i2*
+Sequence: Seq<i2>
+ 0) 32767
+ 1) 32767
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -32768
+ 6) -32768
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI2(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastI2(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [>] Wrap(it)) : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI2(Scope(2)):i2)):i2*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):i2)):i2*)):i2*))
+Func sig: (<ctx>:x, Data:i8*) to i2*
+Sequence: Seq<i2>
+ 0) 32767
+ 1) 32767
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -32768
+ 6) -32768
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI2(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastI2(Data), [<] Wrap(it))
+Sort(CastI2(Data), [<] Wrap(it)) : i2?*
+BndKind:Call, Type:i2?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI2(Scope(2)):i2)):i2?)):i2?*), [<] Call(∂.Test.Wrap(Scope(3)):i2?)):i2?*))
+Func sig: (<ctx>:x, Data:i8?*) to i2?*
+Sequence: Seq<Opt<i2>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -32768
+ 4) -32768
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 32767
+ 9) 32767
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI2(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastI2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [<] Wrap(it)) : i2?*
+BndKind:Call, Type:i2?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI2(Scope(3)):i2)):i2?)):i2?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):i2?)):i2?*)):i2?*))
+Func sig: (<ctx>:x, Data:i8?*) to i2?*
+Sequence: Seq<Opt<i2>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -32768
+ 4) -32768
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 32767
+ 9) 32767
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI2(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastI2(Data), [>] Wrap(it))
+Sort(CastI2(Data), [>] Wrap(it)) : i2?*
+BndKind:Call, Type:i2?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI2(Scope(2)):i2)):i2?)):i2?*), [>] Call(∂.Test.Wrap(Scope(3)):i2?)):i2?*))
+Func sig: (<ctx>:x, Data:i8?*) to i2?*
+Sequence: Seq<Opt<i2>>
+ 0) 32767
+ 1) 32767
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -32768
+ 6) -32768
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI2(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastI2(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [>] Wrap(it)) : i2?*
+BndKind:Call, Type:i2?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI2(Scope(3)):i2)):i2?)):i2?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):i2?)):i2?*)):i2?*))
+Func sig: (<ctx>:x, Data:i8?*) to i2?*
+Sequence: Seq<Opt<i2>>
+ 0) 32767
+ 1) 32767
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -32768
+ 6) -32768
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI2(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastI1(Data), [<] Wrap(it))
+Sort(CastI1(Data), [<] Wrap(it)) : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI1(Scope(1)):i1)):i1*), [<] Call(∂.Test.Wrap(Scope(2)):i1)):i1*))
+Func sig: (<ctx>:x, Data:i8*) to i1*
+Sequence: Seq<i1>
+ 0) -128
+ 1) -128
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 127
+ 6) 127
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI1(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastI1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [<] Wrap(it)) : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI1(Scope(2)):i1)):i1*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):i1)):i1*)):i1*))
+Func sig: (<ctx>:x, Data:i8*) to i1*
+Sequence: Seq<i1>
+ 0) -128
+ 1) -128
+ 2) -1
+ 3) 0
+ 4) 1
+ 5) 127
+ 6) 127
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI1(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastI1(Data), [>] Wrap(it))
+Sort(CastI1(Data), [>] Wrap(it)) : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastI1(Scope(1)):i1)):i1*), [>] Call(∂.Test.Wrap(Scope(2)):i1)):i1*))
+Func sig: (<ctx>:x, Data:i8*) to i1*
+Sequence: Seq<i1>
+ 0) 127
+ 1) 127
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -128
+ 6) -128
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI1(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastI1(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [>] Wrap(it)) : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastI1(Scope(2)):i1)):i1*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):i1)):i1*)):i1*))
+Func sig: (<ctx>:x, Data:i8*) to i1*
+Sequence: Seq<i1>
+ 0) 127
+ 1) 127
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -128
+ 6) -128
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastI1(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastI1(Data), [<] Wrap(it))
+Sort(CastI1(Data), [<] Wrap(it)) : i1?*
+BndKind:Call, Type:i1?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI1(Scope(2)):i1)):i1?)):i1?*), [<] Call(∂.Test.Wrap(Scope(3)):i1?)):i1?*))
+Func sig: (<ctx>:x, Data:i8?*) to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -128
+ 4) -128
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 127
+ 9) 127
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI1(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastI1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [<] Wrap(it)) : i1?*
+BndKind:Call, Type:i1?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI1(Scope(3)):i1)):i1?)):i1?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):i1?)):i1?*)):i1?*))
+Func sig: (<ctx>:x, Data:i8?*) to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) -128
+ 4) -128
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 127
+ 9) 127
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI1(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastI1(Data), [>] Wrap(it))
+Sort(CastI1(Data), [>] Wrap(it)) : i1?*
+BndKind:Call, Type:i1?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastI1(Scope(2)):i1)):i1?)):i1?*), [>] Call(∂.Test.Wrap(Scope(3)):i1?)):i1?*))
+Func sig: (<ctx>:x, Data:i8?*) to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) 127
+ 1) 127
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -128
+ 6) -128
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI1(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastI1(Data), Wrap(0), [>] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [>] Wrap(it)) : i1?*
+BndKind:Call, Type:i1?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastI1(Scope(3)):i1)):i1?)):i1?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):i1?)):i1?*)):i1?*))
+Func sig: (<ctx>:x, Data:i8?*) to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) 127
+ 1) 127
+ 2) 1
+ 3) 0
+ 4) -1
+ 5) -128
+ 6) -128
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastI1(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastU8(Data), [<] Wrap(it))
+Sort(CastU8(Data), [<] Wrap(it)) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU8(Scope(1)):u8)):u8*), [<] Call(∂.Test.Wrap(Scope(2)):u8)):u8*))
+Func sig: (<ctx>:x, Data:i8*) to u8*
+Sequence: Seq<u8>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 9223372036854775808
+ 4) 18446744073709551615
+ 5) 18446744073709551615
+*** Ctx ping count: 7
+    [0](7): Sort(*2: ForEach(*1: Data, CastU8(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastU8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [<] Wrap(it)) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU8(Scope(2)):u8)):u8*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):u8)):u8*)):u8*))
+Func sig: (<ctx>:x, Data:i8*) to u8*
+Sequence: Seq<u8>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 9223372036854775808
+ 4) 18446744073709551615
+ 5) 18446744073709551615
+*** Ctx ping count: 7
+    [0](7): Sort(*2: ForEach(*1: Data, CastU8(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastU8(Data), [>] Wrap(it))
+Sort(CastU8(Data), [>] Wrap(it)) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU8(Scope(1)):u8)):u8*), [>] Call(∂.Test.Wrap(Scope(2)):u8)):u8*))
+Func sig: (<ctx>:x, Data:i8*) to u8*
+Sequence: Seq<u8>
+ 0) 18446744073709551615
+ 1) 18446744073709551615
+ 2) 9223372036854775808
+ 3) 1
+ 4) 0
+ 5) 0
+*** Ctx ping count: 7
+    [0](7): Sort(*2: ForEach(*1: Data, CastU8(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastU8(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [>] Wrap(it)) : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU8(Scope(2)):u8)):u8*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):u8)):u8*)):u8*))
+Func sig: (<ctx>:x, Data:i8*) to u8*
+Sequence: Seq<u8>
+ 0) 18446744073709551615
+ 1) 18446744073709551615
+ 2) 9223372036854775808
+ 3) 1
+ 4) 0
+ 5) 0
+*** Ctx ping count: 7
+    [0](7): Sort(*2: ForEach(*1: Data, CastU8(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastU8(Data), [<] Wrap(it))
+Sort(CastU8(Data), [<] Wrap(it)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU8(Scope(2)):u8)):u8?)):u8?*), [<] Call(∂.Test.Wrap(Scope(3)):u8?)):u8?*))
+Func sig: (<ctx>:x, Data:i8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 9223372036854775808
+ 7) 18446744073709551615
+ 8) 18446744073709551615
+*** Ctx ping count: 10
+    [0](10): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU8(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastU8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [<] Wrap(it)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU8(Scope(3)):u8)):u8?)):u8?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):u8?)):u8?*)):u8?*))
+Func sig: (<ctx>:x, Data:i8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 9223372036854775808
+ 7) 18446744073709551615
+ 8) 18446744073709551615
+*** Ctx ping count: 10
+    [0](10): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU8(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastU8(Data), [>] Wrap(it))
+Sort(CastU8(Data), [>] Wrap(it)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU8(Scope(2)):u8)):u8?)):u8?*), [>] Call(∂.Test.Wrap(Scope(3)):u8?)):u8?*))
+Func sig: (<ctx>:x, Data:i8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 18446744073709551615
+ 1) 18446744073709551615
+ 2) 9223372036854775808
+ 3) 1
+ 4) 0
+ 5) 0
+ 6) <null>
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 10
+    [0](10): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU8(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastU8(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [>] Wrap(it)) : u8?*
+BndKind:Call, Type:u8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU8(Scope(3)):u8)):u8?)):u8?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):u8?)):u8?*)):u8?*))
+Func sig: (<ctx>:x, Data:i8?*) to u8?*
+Sequence: Seq<Opt<u8>>
+ 0) 18446744073709551615
+ 1) 18446744073709551615
+ 2) 9223372036854775808
+ 3) 1
+ 4) 0
+ 5) 0
+ 6) <null>
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 10
+    [0](10): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU8(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastU4(Data), [<] Wrap(it))
+Sort(CastU4(Data), [<] Wrap(it)) : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU4(Scope(1)):u4)):u4*), [<] Call(∂.Test.Wrap(Scope(2)):u4)):u4*))
+Func sig: (<ctx>:x, Data:i8*) to u4*
+Sequence: Seq<u4>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 2147483647
+ 4) 2147483648
+ 5) 4294967295
+ 6) 4294967295
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU4(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastU4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [<] Wrap(it)) : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU4(Scope(2)):u4)):u4*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):u4)):u4*)):u4*))
+Func sig: (<ctx>:x, Data:i8*) to u4*
+Sequence: Seq<u4>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 2147483647
+ 4) 2147483648
+ 5) 4294967295
+ 6) 4294967295
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU4(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastU4(Data), [>] Wrap(it))
+Sort(CastU4(Data), [>] Wrap(it)) : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU4(Scope(1)):u4)):u4*), [>] Call(∂.Test.Wrap(Scope(2)):u4)):u4*))
+Func sig: (<ctx>:x, Data:i8*) to u4*
+Sequence: Seq<u4>
+ 0) 4294967295
+ 1) 4294967295
+ 2) 2147483648
+ 3) 2147483647
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU4(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastU4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [>] Wrap(it)) : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU4(Scope(2)):u4)):u4*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):u4)):u4*)):u4*))
+Func sig: (<ctx>:x, Data:i8*) to u4*
+Sequence: Seq<u4>
+ 0) 4294967295
+ 1) 4294967295
+ 2) 2147483648
+ 3) 2147483647
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU4(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastU4(Data), [<] Wrap(it))
+Sort(CastU4(Data), [<] Wrap(it)) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU4(Scope(2)):u4)):u4?)):u4?*), [<] Call(∂.Test.Wrap(Scope(3)):u4?)):u4?*))
+Func sig: (<ctx>:x, Data:i8?*) to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 2147483647
+ 7) 2147483648
+ 8) 4294967295
+ 9) 4294967295
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU4(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastU4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [<] Wrap(it)) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU4(Scope(3)):u4)):u4?)):u4?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):u4?)):u4?*)):u4?*))
+Func sig: (<ctx>:x, Data:i8?*) to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 2147483647
+ 7) 2147483648
+ 8) 4294967295
+ 9) 4294967295
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU4(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastU4(Data), [>] Wrap(it))
+Sort(CastU4(Data), [>] Wrap(it)) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU4(Scope(2)):u4)):u4?)):u4?*), [>] Call(∂.Test.Wrap(Scope(3)):u4?)):u4?*))
+Func sig: (<ctx>:x, Data:i8?*) to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) 4294967295
+ 1) 4294967295
+ 2) 2147483648
+ 3) 2147483647
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU4(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastU4(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [>] Wrap(it)) : u4?*
+BndKind:Call, Type:u4?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU4(Scope(3)):u4)):u4?)):u4?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):u4?)):u4?*)):u4?*))
+Func sig: (<ctx>:x, Data:i8?*) to u4?*
+Sequence: Seq<Opt<u4>>
+ 0) 4294967295
+ 1) 4294967295
+ 2) 2147483648
+ 3) 2147483647
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU4(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastU2(Data), [<] Wrap(it))
+Sort(CastU2(Data), [<] Wrap(it)) : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU2(Scope(1)):u2)):u2*), [<] Call(∂.Test.Wrap(Scope(2)):u2)):u2*))
+Func sig: (<ctx>:x, Data:i8*) to u2*
+Sequence: Seq<u2>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 32767
+ 4) 32768
+ 5) 65535
+ 6) 65535
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU2(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastU2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [<] Wrap(it)) : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU2(Scope(2)):u2)):u2*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):u2)):u2*)):u2*))
+Func sig: (<ctx>:x, Data:i8*) to u2*
+Sequence: Seq<u2>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 32767
+ 4) 32768
+ 5) 65535
+ 6) 65535
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU2(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastU2(Data), [>] Wrap(it))
+Sort(CastU2(Data), [>] Wrap(it)) : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU2(Scope(1)):u2)):u2*), [>] Call(∂.Test.Wrap(Scope(2)):u2)):u2*))
+Func sig: (<ctx>:x, Data:i8*) to u2*
+Sequence: Seq<u2>
+ 0) 65535
+ 1) 65535
+ 2) 32768
+ 3) 32767
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU2(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastU2(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [>] Wrap(it)) : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU2(Scope(2)):u2)):u2*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):u2)):u2*)):u2*))
+Func sig: (<ctx>:x, Data:i8*) to u2*
+Sequence: Seq<u2>
+ 0) 65535
+ 1) 65535
+ 2) 32768
+ 3) 32767
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU2(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastU2(Data), [<] Wrap(it))
+Sort(CastU2(Data), [<] Wrap(it)) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU2(Scope(2)):u2)):u2?)):u2?*), [<] Call(∂.Test.Wrap(Scope(3)):u2?)):u2?*))
+Func sig: (<ctx>:x, Data:i8?*) to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 32767
+ 7) 32768
+ 8) 65535
+ 9) 65535
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU2(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastU2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [<] Wrap(it)) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU2(Scope(3)):u2)):u2?)):u2?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):u2?)):u2?*)):u2?*))
+Func sig: (<ctx>:x, Data:i8?*) to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 32767
+ 7) 32768
+ 8) 65535
+ 9) 65535
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU2(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastU2(Data), [>] Wrap(it))
+Sort(CastU2(Data), [>] Wrap(it)) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU2(Scope(2)):u2)):u2?)):u2?*), [>] Call(∂.Test.Wrap(Scope(3)):u2?)):u2?*))
+Func sig: (<ctx>:x, Data:i8?*) to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 65535
+ 1) 65535
+ 2) 32768
+ 3) 32767
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU2(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastU2(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [>] Wrap(it)) : u2?*
+BndKind:Call, Type:u2?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU2(Scope(3)):u2)):u2?)):u2?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):u2?)):u2?*)):u2?*))
+Func sig: (<ctx>:x, Data:i8?*) to u2?*
+Sequence: Seq<Opt<u2>>
+ 0) 65535
+ 1) 65535
+ 2) 32768
+ 3) 32767
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU2(?2))), !4x, [>] Test.Wrap(*3))
+###
+
+**** New definitions: Data, type: i8*
+
+> Sort(CastU1(Data), [<] Wrap(it))
+Sort(CastU1(Data), [<] Wrap(it)) : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU1(Scope(1)):u1)):u1*), [<] Call(∂.Test.Wrap(Scope(2)):u1)):u1*))
+Func sig: (<ctx>:x, Data:i8*) to u1*
+Sequence: Seq<u1>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 127
+ 4) 128
+ 5) 255
+ 6) 255
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU1(*1)), [<] Test.Wrap(*2))
+###
+> Sort(CastU1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [<] Wrap(it)) : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU1(Scope(2)):u1)):u1*), Scope(1), [<] Call(∂.Test.Wrap(Scope(3)):u1)):u1*)):u1*))
+Func sig: (<ctx>:x, Data:i8*) to u1*
+Sequence: Seq<u1>
+ 0) 0
+ 1) 0
+ 2) 1
+ 3) 127
+ 4) 128
+ 5) 255
+ 6) 255
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU1(*1)), !3x, [<] Test.Wrap(*2))
+###
+> Sort(CastU1(Data), [>] Wrap(it))
+Sort(CastU1(Data), [>] Wrap(it)) : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.Sort([map:2] Call(∂.ForEach([map:1] Global(Data), Call(∂.CastU1(Scope(1)):u1)):u1*), [>] Call(∂.Test.Wrap(Scope(2)):u1)):u1*))
+Func sig: (<ctx>:x, Data:i8*) to u1*
+Sequence: Seq<u1>
+ 0) 255
+ 1) 255
+ 2) 128
+ 3) 127
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU1(*1)), [>] Test.Wrap(*2))
+###
+> Sort(CastU1(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [>] Wrap(it)) : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:3] Call(∂.ForEach([map:2] Global(Data), Call(∂.CastU1(Scope(2)):u1)):u1*), Scope(1), [>] Call(∂.Test.Wrap(Scope(3)):u1)):u1*)):u1*))
+Func sig: (<ctx>:x, Data:i8*) to u1*
+Sequence: Seq<u1>
+ 0) 255
+ 1) 255
+ 2) 128
+ 3) 127
+ 4) 1
+ 5) 0
+ 6) 0
+*** Ctx ping count: 8
+    [0](8): Sort(*2: ForEach(*1: Data, CastU1(*1)), !3x, [>] Test.Wrap(*2))
+###
+
+**** New definitions: Data, type: i8?*
+
+> Sort(CastU1(Data), [<] Wrap(it))
+Sort(CastU1(Data), [<] Wrap(it)) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU1(Scope(2)):u1)):u1?)):u1?*), [<] Call(∂.Test.Wrap(Scope(3)):u1?)):u1?*))
+Func sig: (<ctx>:x, Data:i8?*) to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 127
+ 7) 128
+ 8) 255
+ 9) 255
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU1(?2))), [<] Test.Wrap(*3))
+###
+> Sort(CastU1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [<] Wrap(it)) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU1(Scope(3)):u1)):u1?)):u1?*), Scope(1), [<] Call(∂.Test.Wrap(Scope(4)):u1?)):u1?*)):u1?*))
+Func sig: (<ctx>:x, Data:i8?*) to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 0
+ 4) 0
+ 5) 1
+ 6) 127
+ 7) 128
+ 8) 255
+ 9) 255
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU1(?2))), !4x, [<] Test.Wrap(*3))
+###
+> Sort(CastU1(Data), [>] Wrap(it))
+Sort(CastU1(Data), [>] Wrap(it)) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.Sort([map:3] Call(∂.ForEach([map:1] Global(Data), Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU1(Scope(2)):u1)):u1?)):u1?*), [>] Call(∂.Test.Wrap(Scope(3)):u1?)):u1?*))
+Func sig: (<ctx>:x, Data:i8?*) to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 255
+ 1) 255
+ 2) 128
+ 3) 127
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU1(?2))), [>] Test.Wrap(*3))
+###
+> Sort(CastU1(Data), Wrap(0), [>] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [>] Wrap(it)) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:4] Call(∂.ForEach([map:2] Global(Data), Call(∂.Guard([guard:3] Scope(2), Call(∂.CastU1(Scope(3)):u1)):u1?)):u1?*), Scope(1), [>] Call(∂.Test.Wrap(Scope(4)):u1?)):u1?*)):u1?*))
+Func sig: (<ctx>:x, Data:i8?*) to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 255
+ 1) 255
+ 2) 128
+ 3) 127
+ 4) 1
+ 5) 0
+ 6) 0
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*3: ForEach(*1: Data, Guard(?2: *1, CastU1(?2))), !4x, [>] Test.Wrap(*3))
+###
+> Sort(Dates, [<] Time)
+Sort(Dates, [<] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [<] Date.Time(*1))
+###
+> Sort(Dates, Wrap(0), [<] Time)
+Sort(Dates, Wrap(0), [<] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [<] Call(∂.Date.Time(Scope(2)):t)):d*)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 5) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, !2x, [<] Date.Time(*1))
+###
+> Sort(Dates, [>] Time)
+Sort(Dates, [>] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Date.Time(Scope(1)):t)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [>] Date.Time(*1))
+###
+> Sort(Dates, Wrap(0), [>] Time)
+Sort(Dates, Wrap(0), [>] Time) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [>] Call(∂.Date.Time(Scope(2)):t)):d*)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, !2x, [>] Date.Time(*1))
+###
+> Sort(Dates, [<] Date)
+Sort(Dates, [<] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [<] Date.Date(*1))
+###
+> Sort(Dates, Wrap(0), [<] Date)
+Sort(Dates, Wrap(0), [<] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [<] Call(∂.Date.Date(Scope(2)):d)):d*)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1500, 8, 1, 0, 0, 0, 0)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0)
+ 3) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 5) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, !2x, [<] Date.Date(*1))
+###
+> Sort(Dates, [>] Date)
+Sort(Dates, [>] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Date.Date(Scope(1)):d)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, [>] Date.Date(*1))
+###
+> Sort(Dates, Wrap(0), [>] Date)
+Sort(Dates, Wrap(0), [>] Date) : d*
+BndKind:Call, Type:d*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [>] Call(∂.Date.Date(Scope(2)):d)):d*)):d*))
+Func sig: (<ctx>:x, Dates:d*) to d*
+Sequence: Seq<Date>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 8
+    [0](8): Sort(*1: Dates, !2x, [>] Date.Date(*1))
+###
+
+**** New definitions: Dates, type: d?*
+
+> Sort(Dates, [<] Time)
+Sort(Dates, [<] Time) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Guard([guard:2] Scope(1), Call(∂.Date.Time(Scope(2)):t)):t?)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1500, 8, 1, 0, 0, 0, 0)
+ 5) DT(1776, 7, 4, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 7) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 8) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 9) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, [<] Guard(?2: *1, Date.Time(?2)))
+###
+> Sort(Dates, Wrap(0), [<] Time)
+Sort(Dates, Wrap(0), [<] Time) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [<] Call(∂.Guard([guard:3] Scope(2), Call(∂.Date.Time(Scope(3)):t)):t?)):d?*)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) DT(1776, 7, 4, 0, 0, 0, 0)
+ 4) DT(1500, 8, 1, 0, 0, 0, 0)
+ 5) DT(1776, 7, 4, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 7) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 8) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 9) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, !2x, [<] Guard(?3: *1, Date.Time(?3)))
+###
+> Sort(Dates, [>] Time)
+Sort(Dates, [>] Time) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Guard([guard:2] Scope(1), Call(∂.Date.Time(Scope(2)):t)):t?)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, [>] Guard(?2: *1, Date.Time(?2)))
+###
+> Sort(Dates, Wrap(0), [>] Time)
+Sort(Dates, Wrap(0), [>] Time) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [>] Call(∂.Guard([guard:3] Scope(2), Call(∂.Date.Time(Scope(3)):t)):t?)):d?*)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 3) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 0, 0, 0, 0)
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, !2x, [>] Guard(?3: *1, Date.Time(?3)))
+###
+> Sort(Dates, [<] Date)
+Sort(Dates, [<] Date) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [<] Call(∂.Guard([guard:2] Scope(1), Call(∂.Date.Date(Scope(2)):d)):d?)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 4) DT(1500, 8, 1, 0, 0, 0, 0)
+ 5) DT(1776, 7, 4, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 7) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 8) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 9) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, [<] Guard(?2: *1, Date.Date(?2)))
+###
+> Sort(Dates, Wrap(0), [<] Date)
+Sort(Dates, Wrap(0), [<] Date) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [<] Call(∂.Guard([guard:3] Scope(2), Call(∂.Date.Date(Scope(3)):d)):d?)):d?*)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 4) DT(1500, 8, 1, 0, 0, 0, 0)
+ 5) DT(1776, 7, 4, 0, 0, 0, 0)
+ 6) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 7) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 8) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 9) DT(1776, 7, 4, 0, 0, 0, 0)
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, !2x, [<] Guard(?3: *1, Date.Date(?3)))
+###
+> Sort(Dates, [>] Date)
+Sort(Dates, [>] Date) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.Sort([map:1] Global(Dates), [>] Call(∂.Guard([guard:2] Scope(1), Call(∂.Date.Date(Scope(2)):d)):d?)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, [>] Guard(?2: *1, Date.Date(?2)))
+###
+> Sort(Dates, Wrap(0), [>] Date)
+Sort(Dates, Wrap(0), [>] Date) : d?*
+BndKind:Call, Type:d?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap(0:i8):i8), Call(∂.Sort([map:2] Global(Dates), Scope(1), [>] Call(∂.Guard([guard:3] Scope(2), Call(∂.Date.Date(Scope(3)):d)):d?)):d?*)):d?*))
+Func sig: (<ctx>:x, Dates:d?*) to d?*
+Sequence: Seq<Opt<Date>>
+ 0) DT(1776, 7, 4, 0, 0, 0, 0)
+ 1) DT(1776, 7, 4, 15, 28, 37, 123, 4567)
+ 2) DT(1776, 7, 4, 0, 0, 0, 0, 1)
+ 3) DT(1776, 7, 4, 15, 28, 37, 12, 345)
+ 4) DT(1776, 7, 4, 0, 0, 0, 0)
+ 5) DT(1500, 8, 1, 0, 0, 0, 0)
+ 6) DT(1066, 9, 12, 21, 19, 17, 15, 13)
+ 7) <null>
+ 8) <null>
+ 9) <null>
+*** Ctx ping count: 11
+    [0](11): Sort(*1: Dates, !2x, [>] Guard(?3: *1, Date.Date(?3)))
+###

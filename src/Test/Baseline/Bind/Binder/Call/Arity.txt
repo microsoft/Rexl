@@ -1,0 +1,688 @@
+**** New globals: {R:{X:i4}, SI:i4*, SS:s*, T:{X:i4}*}
+
+> F()
+F() : v
+*** Error: (1,2) Node: F(), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown()
+###
+> F(true)
+F(true) : v
+*** Error: (1,2) Node: F(true), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(true)
+###
+> F(1, "hi")
+F(1, "hi") : v
+*** Error: (1,2) Node: F(1, "hi"), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(1, "hi")
+###
+> F("hi", true, 3.5)
+F("hi", true, 3.5) : v
+*** Error: (1,2) Node: F("hi", true, 3.5), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown("hi", true, 3.5)
+###
+> Abs(
+Abs() : i8
+=== Parse diagnostics:
+*** Error: (4,4) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,4) Node: Abs(), Message: Too few arguments for Abs, expected 1 additional
+Binder : Abs(Unit<i8>(<missing>))
+Reducer: 0
+###
+> Abs()
+Abs() : i8
+*** Error: (3,4) Node: Abs(), Message: Too few arguments for Abs, expected 1 additional
+Binder : Abs(Unit<i8>(<missing>))
+Reducer: 0
+###
+> Abs(-7
+Abs(-7) : i8
+=== Parse diagnostics:
+*** Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7)
+Abs(-7) : i8
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7,
+Abs(-7, (<missing>)) : i8
+=== Parse diagnostics:
+*** Error: (7,7) Tok: '<eof>', Message: Expected an operand
+*** Error: (7,7) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (7,7) Node: (<missing>), Message: Too many arguments for Abs, expected 1 fewer
+*** Error: (7,7) Node: (<missing>), Message: Expected an operand
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7, -3)
+Abs(-7, -3) : i8
+*** Error: (8,9) Node: -3, Message: Too many arguments for Abs, expected 1 fewer
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7, -3,
+Abs(-7, -3, (<missing>)) : i8
+=== Parse diagnostics:
+*** Error: (11,11) Tok: '<eof>', Message: Expected an operand
+*** Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,9) Node: -3, Message: Too many arguments for Abs, expected 2 fewer
+*** Error: (11,11) Node: (<missing>), Message: Expected an operand
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7, -3, 5
+Abs(-7, -3, 5) : i8
+=== Parse diagnostics:
+*** Error: (13,13) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,9) Node: -3, Message: Too many arguments for Abs, expected 2 fewer
+Binder : Abs(-7)
+Reducer: 7
+###
+> Abs(-7, -3, 5)
+Abs(-7, -3, 5) : i8
+*** Error: (8,9) Node: -3, Message: Too many arguments for Abs, expected 2 fewer
+Binder : Abs(-7)
+Reducer: 7
+###
+> Div(
+Div() : i8
+=== Parse diagnostics:
+*** Error: (4,4) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,4) Node: Div(), Message: Too few arguments for Div, expected 2 additional
+Binder : Div(Unit<i8>(<missing>), Unit<i8>(<missing>))
+Reducer: 0
+###
+> Div()
+Div() : i8
+*** Error: (3,4) Node: Div(), Message: Too few arguments for Div, expected 2 additional
+Binder : Div(Unit<i8>(<missing>), Unit<i8>(<missing>))
+Reducer: 0
+###
+> Div(17
+Div(17) : i8
+=== Parse diagnostics:
+*** Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,4) Node: Div(17), Message: Too few arguments for Div, expected 1 additional
+Binder : Div(17, Unit<i8>(<missing>))
+Reducer: 0
+###
+> Div(17)
+Div(17) : i8
+*** Error: (3,4) Node: Div(17), Message: Too few arguments for Div, expected 1 additional
+Binder : Div(17, Unit<i8>(<missing>))
+Reducer: 0
+###
+> Div(17,
+Div(17, (<missing>)) : i8
+=== Parse diagnostics:
+*** Error: (7,7) Tok: '<eof>', Message: Expected an operand
+*** Error: (7,7) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (7,7) Node: (<missing>), Message: Expected an operand
+Binder : Div(17, Unit<i8>(<missing>))
+Reducer: 0
+###
+> Div(17, 3
+Div(17, 3) : i8
+=== Parse diagnostics:
+*** Error: (9,9) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : Div(17, 3)
+Reducer: 5
+###
+> Div(17, 3)
+Div(17, 3) : i8
+Binder : Div(17, 3)
+Reducer: 5
+###
+> Div(17, 3,
+Div(17, 3, (<missing>)) : i8
+=== Parse diagnostics:
+*** Error: (10,10) Tok: '<eof>', Message: Expected an operand
+*** Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (10,10) Node: (<missing>), Message: Too many arguments for Div, expected 1 fewer
+*** Error: (10,10) Node: (<missing>), Message: Expected an operand
+Binder : Div(17, 3)
+Reducer: 5
+###
+> Div(17, 3, 2
+Div(17, 3, 2) : i8
+=== Parse diagnostics:
+*** Error: (12,12) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (11,12) Node: 2, Message: Too many arguments for Div, expected 1 fewer
+Binder : Div(17, 3)
+Reducer: 5
+###
+> Div(17, 3, 2)
+Div(17, 3, 2) : i8
+*** Error: (11,12) Node: 2, Message: Too many arguments for Div, expected 1 fewer
+Binder : Div(17, 3)
+Reducer: 5
+###
+> Map(
+Map() : v*
+=== Parse diagnostics:
+*** Error: (4,4) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,4) Node: Map(), Message: Too few arguments for ForEach, expected 2 additional
+Binder : ForEach(*1: Unit<v*>(<missing>), <missing>)
+Reducer: null
+###
+> Map()
+Map() : v*
+*** Error: (3,4) Node: Map(), Message: Too few arguments for ForEach, expected 2 additional
+Binder : ForEach(*1: Unit<v*>(<missing>), <missing>)
+Reducer: null
+###
+> Map(SI
+Map(SI) : v*
+=== Parse diagnostics:
+*** Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (3,4) Node: Map(SI), Message: Too few arguments for ForEach, expected 1 additional
+Binder : ForEach(*1: SI, <missing>)
+###
+> Map(SI)
+Map(SI) : v*
+*** Error: (3,4) Node: Map(SI), Message: Too few arguments for ForEach, expected 1 additional
+Binder : ForEach(*1: SI, <missing>)
+###
+> Map(SI,
+Map(SI, (<missing>)) : v*
+=== Parse diagnostics:
+*** Error: (7,7) Tok: '<eof>', Message: Expected an operand
+*** Error: (7,7) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (7,7) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: SI, <missing>)
+###
+> Map(SI, it + 1
+Map(SI, it + 1) : i8*
+=== Parse diagnostics:
+*** Error: (14,14) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : ForEach(*1: SI, Add(Num<i8>(*1), 1))
+###
+> Map(SI, it + 1)
+Map(SI, it + 1) : i8*
+Binder : ForEach(*1: SI, Add(Num<i8>(*1), 1))
+###
+> Map(SI, it + 1,
+Map(SI, it + 1, (<missing>)) : v*
+=== Parse diagnostics:
+*** Error: (15,15) Tok: '<eof>', Message: Expected an operand
+*** Error: (15,15) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,10) Node: it, Message: There are no values in scope for 'it'
+*** Error: (11,12) Node: it + 1, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+*** Error: (15,15) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: SI, *2: Error(ErrBadType_Src_Dst), <missing>)
+###
+> Map(SI, it + 1, it + 2
+Map(SI, it + 1, it + 2) : i8*
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,10) Node: it, Message: There are no values in scope for 'it'
+*** Error: (11,12) Node: it + 1, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : ForEach(*1: SI, *2: Error(ErrBadType_Src_Dst), Add(*2, 2))
+###
+> SetFields(
+SetFields() : {}
+=== Parse diagnostics:
+*** Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (9,10) Node: SetFields(), Message: Too few arguments for SetFields, expected 2 additional
+Binder : <missing>
+###
+> SetFields(R
+SetFields(R) : {X:i4}
+=== Parse diagnostics:
+*** Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (9,10) Node: SetFields(R), Message: Too few arguments for SetFields, expected 1 additional
+Binder : R
+###
+> SetFields(T
+SetFields(T) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (9,10) Node: SetFields(T), Message: Too few arguments for SetFields, expected 1 additional
+Binder : ForEach(*1: T, *1)
+Reducer: T
+###
+> SetFields(R)
+SetFields(R) : {X:i4}
+*** Error: (9,10) Node: SetFields(R), Message: Too few arguments for SetFields, expected 1 additional
+Binder : R
+###
+> SetFields(T)
+SetFields(T) : {X:i4}*
+*** Error: (9,10) Node: SetFields(T), Message: Too few arguments for SetFields, expected 1 additional
+Binder : ForEach(*1: T, *1)
+Reducer: T
+###
+> SetFields(R,
+SetFields(R, (<missing>)) : {X:i4}
+=== Parse diagnostics:
+*** Error: (12,12) Tok: '<eof>', Message: Expected an operand
+*** Error: (12,12) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (12,12) Node: (<missing>), Message: Expected an operand
+Binder : R
+###
+> SetFields(T,
+SetFields(T, (<missing>)) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (12,12) Tok: '<eof>', Message: Expected an operand
+*** Error: (12,12) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (12,12) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: T, *1)
+Reducer: T
+###
+> SetFields(R, Y: X + 1
+SetFields(R, Y : X + 1) : {X:i4, Y:i8}
+=== Parse diagnostics:
+*** Error: (21,21) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : SetFields(!1: R, Y : Add(Num<i8>(!1.X), 1))
+###
+> SetFields(T, Y: X + 1
+SetFields(T, Y : X + 1) : {X:i4, Y:i8}*
+=== Parse diagnostics:
+*** Error: (21,21) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : ForEach(*1: T, SetFields(!2: *1, Y : Add(Num<i8>(!2.X), 1)))
+###
+> SetFields(R, Y: X + 1)
+SetFields(R, Y : X + 1) : {X:i4, Y:i8}
+Binder : SetFields(!1: R, Y : Add(Num<i8>(!1.X), 1))
+###
+> SetFields(T, Y: X + 1)
+SetFields(T, Y : X + 1) : {X:i4, Y:i8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, Y : Add(Num<i8>(!2.X), 1)))
+###
+> SetFields(R, Y: X + 1,
+SetFields(R, Y : X + 1, (<missing>)) : {X:i4, Y:i8}
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected an operand
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (22,22) Node: (<missing>), Message: Expected an operand
+Binder : SetFields(!1: R, Y : Add(Num<i8>(!1.X), 1))
+###
+> SetFields(T, Y: X + 1,
+SetFields(T, Y : X + 1, (<missing>)) : {X:i4, Y:i8}*
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected an operand
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (22,22) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: T, SetFields(!2: *1, Y : Add(Num<i8>(!2.X), 1)))
+###
+> SetFields(R,    X + 1,
+SetFields(R, X + 1, (<missing>)) : {X:i4}
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected an operand
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,19) Node: X + 1, Message: The argument in position 2 of 'SetFields' should include a name ('name: value')
+*** Error: (22,22) Node: (<missing>), Message: Expected an operand
+Binder : R
+###
+> SetFields(T,    X + 1,
+SetFields(T, X + 1, (<missing>)) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected an operand
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,19) Node: X + 1, Message: The argument in position 2 of 'SetFields' should include a name ('name: value')
+*** Error: (22,22) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: T, *1)
+Reducer: T
+###
+> SetFields(R,    X + 1,    X + 2
+SetFields(R, X + 1, X + 2) : {X:i4}
+=== Parse diagnostics:
+*** Error: (31,31) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,19) Node: X + 1, Message: The argument in position 2 of 'SetFields' should include a name ('name: value')
+*** Error: (28,29) Node: X + 2, Message: The argument in position 3 of 'SetFields' should include a name ('name: value')
+Binder : R
+###
+> SetFields(T,    X + 1,    X + 2
+SetFields(T, X + 1, X + 2) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (31,31) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,19) Node: X + 1, Message: The argument in position 2 of 'SetFields' should include a name ('name: value')
+*** Error: (28,29) Node: X + 2, Message: The argument in position 3 of 'SetFields' should include a name ('name: value')
+Binder : ForEach(*1: T, *1)
+Reducer: T
+###
+> SetFields(SI)
+SetFields(SI) : {}*
+*** Error: (9,10) Node: SetFields(SI), Message: Too few arguments for SetFields, expected 1 additional
+*** Error: (10,12) Node: SI, Message: Invalid operand type: cannot convert type 'i4' to '{}'
+Binder : ForEach(*1: SI, Error(ErrBadType_Src_Dst))
+###
+> SetFields(SS)
+SetFields(SS) : {}*
+*** Error: (9,10) Node: SetFields(SS), Message: Too few arguments for SetFields, expected 1 additional
+*** Error: (10,12) Node: SS, Message: Invalid operand type: cannot convert type 's' to '{}'
+Binder : ForEach(*1: SS, Error(ErrBadType_Src_Dst))
+###
+> GuardMap(
+GuardMap() : v
+=== Parse diagnostics:
+*** Error: (9,9) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,9) Node: GuardMap(), Message: Too few arguments for GuardMap, expected 2 additional
+Binder : Guard(!1: <missing>, <missing>)
+Reducer: <missing>
+###
+> GuardMap(R
+GuardMap(R) : v
+=== Parse diagnostics:
+*** Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,9) Node: GuardMap(R), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : Guard(!1: R, <missing>)
+Reducer: <missing>
+###
+> GuardMap(T
+GuardMap(T) : v*
+=== Parse diagnostics:
+*** Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (8,9) Node: GuardMap(T), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : ForEach(*1: T, Guard(!2: *1, <missing>))
+Reducer: ForEach(*1: T, <missing>)
+###
+> GuardMap(R)
+GuardMap(R) : v
+*** Error: (8,9) Node: GuardMap(R), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : Guard(!1: R, <missing>)
+Reducer: <missing>
+###
+> GuardMap(T)
+GuardMap(T) : v*
+*** Error: (8,9) Node: GuardMap(T), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : ForEach(*1: T, Guard(!2: *1, <missing>))
+Reducer: ForEach(*1: T, <missing>)
+###
+> GuardMap(R,
+GuardMap(R, (<missing>)) : v
+=== Parse diagnostics:
+*** Error: (11,11) Tok: '<eof>', Message: Expected an operand
+*** Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (11,11) Node: (<missing>), Message: Expected an operand
+Binder : Guard(!1: R, <missing>)
+Reducer: <missing>
+###
+> GuardMap(T,
+GuardMap(T, (<missing>)) : v*
+=== Parse diagnostics:
+*** Error: (11,11) Tok: '<eof>', Message: Expected an operand
+*** Error: (11,11) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (11,11) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: T, Guard(!2: *1, <missing>))
+Reducer: ForEach(*1: T, <missing>)
+###
+> GuardMap(R, X + 1
+GuardMap(R, X + 1) : i8
+=== Parse diagnostics:
+*** Error: (17,17) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : Guard(!1: R, Add(Num<i8>(!1.X), 1))
+Reducer: Add(Num<i8>(R.X), 1)
+###
+> GuardMap(T, X + 1
+GuardMap(T, X + 1) : i8*
+=== Parse diagnostics:
+*** Error: (17,17) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : ForEach(*1: T, Guard(!2: *1, Add(Num<i8>(!2.X), 1)))
+Reducer: ForEach(*1: T, Add(Num<i8>(*1.X), 1))
+###
+> GuardMap(R, X + 1)
+GuardMap(R, X + 1) : i8
+Binder : Guard(!1: R, Add(Num<i8>(!1.X), 1))
+Reducer: Add(Num<i8>(R.X), 1)
+###
+> GuardMap(T, X + 1)
+GuardMap(T, X + 1) : i8*
+Binder : ForEach(*1: T, Guard(!2: *1, Add(Num<i8>(!2.X), 1)))
+Reducer: ForEach(*1: T, Add(Num<i8>(*1.X), 1))
+###
+> GuardMap(R, X + 1,
+GuardMap(R, X + 1, (<missing>)) : v
+=== Parse diagnostics:
+*** Error: (18,18) Tok: '<eof>', Message: Expected an operand
+*** Error: (18,18) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,18) Node: (<missing>), Message: Expected an operand
+Binder : Guard(!1: R, !2: Add(Num<i8>(!1.X), 1), <missing>)
+Reducer: <missing>
+###
+> GuardMap(T, X + 1,
+GuardMap(T, X + 1, (<missing>)) : v*
+=== Parse diagnostics:
+*** Error: (18,18) Tok: '<eof>', Message: Expected an operand
+*** Error: (18,18) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (18,18) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: T, Guard(!2: *1, !3: Add(Num<i8>(!2.X), 1), <missing>))
+Reducer: ForEach(*1: T, <missing>)
+###
+> GuardMap(R, X + 1, X + Y
+GuardMap(R, X + 1, X + Y) : i8
+=== Parse diagnostics:
+*** Error: (24,24) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (23,24) Node: Y, Message: Name does not exist in the current context
+Binder : Guard(!1: R, !2: Add(Num<i8>(!1.X), 1), Add(Num<i8>(!1.X), Unit<i8>(Error(ErrNameDoesNotExist))))
+Reducer: Num<i8>(R.X)
+###
+> GuardMap(T, X + 1, X + Y
+GuardMap(T, X + 1, X + Y) : i8*
+=== Parse diagnostics:
+*** Error: (24,24) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (23,24) Node: Y, Message: Name does not exist in the current context
+Binder : ForEach(*1: T, Guard(!2: *1, !3: Add(Num<i8>(!2.X), 1), Add(Num<i8>(!2.X), Unit<i8>(Error(ErrNameDoesNotExist)))))
+Reducer: ForEach(*1: T, Num<i8>(*1.X))
+###
+> GuardMap(SI)
+GuardMap(SI) : v*
+*** Error: (8,9) Node: GuardMap(SI), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : ForEach(*1: SI, Guard(!2: *1, <missing>))
+Reducer: ForEach(*1: SI, <missing>)
+###
+> GuardMap(SS)
+GuardMap(SS) : o*
+*** Error: (8,9) Node: GuardMap(SS), Message: Too few arguments for GuardMap, expected 1 additional
+Binder : ForEach(*1: SS, Guard(?2: *1, <missing>))
+Reducer: ForEach(*1: SS, null)
+###
+> GuardMap(SS, "hi" & it, )
+GuardMap(SS, "hi" & it, (<missing>)) : o*
+=== Parse diagnostics:
+*** Error: (24,25) Tok: ')', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (24,25) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: SS, Guard(?2: *1, ?3: StrConcat("hi", ?2), <missing>))
+Reducer: ForEach(*1: SS, null)
+###
+> GuardMap(s: SS, "hi" & s, )
+GuardMap(s : SS, "hi" & s, (<missing>)) : o*
+=== Parse diagnostics:
+*** Error: (26,27) Tok: ')', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (26,27) Node: (<missing>), Message: Expected an operand
+Binder : ForEach(*1: SS, Guard(?2: *1, ?3: StrConcat("hi", ?2), <missing>))
+Reducer: ForEach(*1: SS, null)
+###
+> TakeIf(
+TakeIf() : v*
+=== Parse diagnostics:
+*** Error: (7,7) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (6,7) Node: TakeIf(), Message: Too few arguments for TakeIf, expected 2 additional
+Binder : TakeIf*(*1: Unit<v*>(<missing>), Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(R
+TakeIf(R) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (6,7) Node: TakeIf(R), Message: Too few arguments for TakeIf, expected 1 additional
+*** Error: (7,8) Node: R, Message: Invalid operand type: cannot convert type '{X:i4}' to '{X:i4}*'
+Binder : TakeIf*(*1: Error(ErrBadType_Src_Dst), Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(T
+TakeIf(T) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (6,7) Node: TakeIf(T), Message: Too few arguments for TakeIf, expected 1 additional
+Binder : TakeIf*(*1: T, Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(T)
+TakeIf(T) : {X:i4}*
+*** Error: (6,7) Node: TakeIf(T), Message: Too few arguments for TakeIf, expected 1 additional
+Binder : TakeIf*(*1: T, Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(T,
+TakeIf(T, (<missing>)) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (9,9) Tok: '<eof>', Message: Expected an operand
+*** Error: (9,9) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (9,9) Node: (<missing>), Message: Expected an operand
+Binder : TakeIf*(*1: T, Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(T, X > 1
+TakeIf(T, X $> 1) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (15,15) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : TakeIf*(*1: T, Num<i8>(*1.X) @> 1)
+Reducer: Take(*1: T, [if] Num<i8>(*1.X) @> 1)
+###
+> TakeIf(T, X > 1)
+TakeIf(T, X $> 1) : {X:i4}*
+Binder : TakeIf*(*1: T, Num<i8>(*1.X) @> 1)
+Reducer: Take(*1: T, [if] Num<i8>(*1.X) @> 1)
+###
+> TakeIf(T, X > 1,
+TakeIf(T, X $> 1, (<missing>)) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (16,16) Tok: '<eof>', Message: Expected an operand
+*** Error: (16,16) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (16,16) Node: (<missing>), Message: Too many arguments for TakeIf, expected 1 fewer
+*** Error: (16,16) Node: (<missing>), Message: Expected an operand
+Binder : TakeIf*(*1: T, Num<i8>(*1.X) @> 1)
+Reducer: Take(*1: T, [if] Num<i8>(*1.X) @> 1)
+###
+> TakeIf(T, X > 1, X + Y
+TakeIf(T, X $> 1, X + Y) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (22,22) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (19,20) Node: X + Y, Message: Too many arguments for TakeIf, expected 1 fewer
+*** Error: (21,22) Node: Y, Message: Name does not exist in the current context
+Binder : TakeIf*(*1: T, Num<i8>(*1.X) @> 1)
+Reducer: Take(*1: T, [if] Num<i8>(*1.X) @> 1)
+###
+> TakeIf(SI)
+TakeIf(SI) : i4*
+*** Error: (6,7) Node: TakeIf(SI), Message: Too few arguments for TakeIf, expected 1 additional
+Binder : TakeIf*(*1: SI, Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(SS)
+TakeIf(SS) : s*
+*** Error: (6,7) Node: TakeIf(SS), Message: Too few arguments for TakeIf, expected 1 additional
+Binder : TakeIf*(*1: SS, Unit<b>(<missing>))
+Reducer: null
+###
+> TakeIf(SS, it has "hi", )
+TakeIf(SS, it has "hi", (<missing>)) : s*
+=== Parse diagnostics:
+*** Error: (24,25) Tok: ')', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (24,25) Node: (<missing>), Message: Too many arguments for TakeIf, expected 1 fewer
+*** Error: (24,25) Node: (<missing>), Message: Expected an operand
+Binder : TakeIf*(*1: SS, Has(*1, "hi"))
+Reducer: Take(*1: SS, [if] Has(*1, "hi"))
+###
+> TakeIf(s: SS, it has "hi", )
+TakeIf(s : SS, it has "hi", (<missing>)) : s*
+=== Parse diagnostics:
+*** Error: (27,28) Tok: ')', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (27,28) Node: (<missing>), Message: Too many arguments for TakeIf, expected 1 fewer
+*** Error: (27,28) Node: (<missing>), Message: Expected an operand
+Binder : TakeIf*(*1: SS, Has(*1, "hi"))
+Reducer: Take(*1: SS, [if] Has(*1, "hi"))
+###
+> GroupBy(
+GroupBy() : v**
+=== Parse diagnostics:
+*** Error: (8,8) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (7,8) Node: GroupBy(), Message: Too few arguments for GroupBy, expected 2 additional
+Binder : Error(ErrArityTooSmall_Path_Num)
+###
+> GroupBy()
+GroupBy() : v**
+*** Error: (7,8) Node: GroupBy(), Message: Too few arguments for GroupBy, expected 2 additional
+Binder : Error(ErrArityTooSmall_Path_Num)
+###
+> GroupBy(T
+GroupBy(T) : {X:i4}**
+=== Parse diagnostics:
+*** Error: (9,9) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (7,8) Node: GroupBy(T), Message: Too few arguments for GroupBy, expected 1 additional
+Binder : Error(ErrArityTooSmall_Path_Num)
+###
+> GroupBy(T)
+GroupBy(T) : {X:i4}**
+*** Error: (7,8) Node: GroupBy(T), Message: Too few arguments for GroupBy, expected 1 additional
+Binder : Error(ErrArityTooSmall_Path_Num)
+###
+> GroupBy(T,
+GroupBy(T, (<missing>)) : {X:i4}**
+=== Parse diagnostics:
+*** Error: (10,10) Tok: '<eof>', Message: Expected an operand
+*** Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+=== Bind diagnostics:
+*** Error: (10,10) Node: (<missing>), Message: Expected an operand
+*** Error: (10,10) Node: (<missing>), Message: Invalid key type for GroupBy: 'v'
+Binder : Error(ErrNotGroupableType_Type)
+###
+> GroupBy(T, X
+GroupBy(T, X) : {X:i4}*
+=== Parse diagnostics:
+*** Error: (12,12) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Binder : GroupBy(*1: T, [key] X:*1.X)
+###
+> GroupBy(T, X)
+GroupBy(T, X) : {X:i4}*
+Binder : GroupBy(*1: T, [key] X:*1.X)
+###

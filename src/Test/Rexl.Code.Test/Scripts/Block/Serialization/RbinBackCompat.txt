@@ -1,0 +1,34 @@
+﻿func Cmp(g1, g2) := (
+    g1->GetType() = g2->GetType(),
+    (g1.Home = g2.Home)->All(),
+    (g1.Away = g2.Away)->All(),
+    (g1.HScore = g2.HScore)->All(),
+    (g1.AScore = g2.AScore)->All(),
+    (g1.Week = g2.Week)->All(),
+    (g1.When = g2.When)->All(),
+);
+
+// Read old file (version 0x0105).
+finish R1 as ReadRbin(_DATA_ & "Games.0105.rbin");
+(R1$Failed, R1$ErrorMessage, R1$ResultNames);
+R1.RowCount;
+GamesOld := R1.Data;
+
+// Write new file.
+finish W as WriteRbin(GamesOld, "temp/Games.Cur.rbin", true, false);
+(W$Failed, W$ErrorMessage, W$ResultNames);
+W.Size;
+
+// Read new file.
+finish R2 as ReadRbin("temp/Games.Cur.rbin");
+(R2$Failed, R2$ErrorMessage, R2$ResultNames);
+R2.RowCount;
+GamesNew := R2.Data;
+
+// Compare old and new data.
+Cmp(GamesOld, GamesNew);
+
+// Import data from script.
+import _DATA_ & "Games.rexl";
+
+Cmp(GamesOld, Games);

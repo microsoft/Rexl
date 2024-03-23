@@ -1,0 +1,1317 @@
+>>> *** Source:
+    S := ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen" ];
+    TA := ForEach(s:S, { A: s, X: # + 1d });
+    TB := ForEach(s:S, { A: null if Mod(#, 3) = 1 else s, B: null if Mod(#, 3) = 2 else s, X: # + 1d });
+    TC := ForEach(s:S, { A: s, C: Range(#*2)->{ D: s, E: s }});
+    // Errors.
+    TA->Chain([null])->Proc.MultiDSMA();
+    S->Proc.MultiDSMA(   it)->Map(B->Text.Concat(", "));
+    TB->Proc.MultiDSMB(A: A,    B);
+    TB->Proc.Multi_SMB();
+    S->Proc.MultiDSMBab(it);
+    S->Proc.MultiDSMBb(A: it);
+    S->Proc.MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7,     "/suf");
+    "*** Simple, no mapping or merging ***";
+    finish p as Proc.MultiDSMA(TA);
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    "*** Mapping but non-merging ***";
+    finish p as Proc.MultiDSMB(S, it);
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    "*** Mapping and merging ***";
+    finish p as Proc.MultiDSMA(TA, A: A);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDSMA(TA->TakeIf(false), A: A);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    finish p as Proc.MultiDsMB(TA, { A, B: "b-" & A });
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDsMB(TA->TakeIf(false), { A, B: "b-" & A });
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    "*** Record at the top level ***";
+    finish p as Proc.MultiDSMB(S, it & "-1st", it & "-2nd");
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    finish p as Proc.MultiDSMB(S->TakeIf(false), it & "-1st", it & "-2nd");
+    p$ResultNames;
+    p.Result;
+    finish p as Proc.MultiDfMB(S->Map({ B: "b-" & it, A: "a-" & it }), S2: 7, S1: "/suf");
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    finish p as Proc.MultiDRMB({ Mis: TB, S1: "/pre", S2: 5 });
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    "*** Record at the top level with merging ***";
+    finish p as Proc.MultiDRMB(TA, A);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDRMB(TA->TakeIf(false), A);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    finish p as Proc.MultiDRMB(TB, B, A);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    "*** Record input, record output, no merge ***";
+    finish p as Proc.MultiDSMBW(TB);
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    finish p as Proc.MultiDRMBW(S, A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7);
+    p$ResultNames;
+    p.Result;
+    p.Visited;
+    "*** Record input, record output, merging ***";
+    finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    finish p as Proc.MultiDSMBW(TB, A, B);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+    finish p as Proc.MultiDRMBW(TB, B, A, "/suf", 5);
+    p$ResultNames;
+    p.Result;
+    p.PreMerge;
+    p.Visited;
+
+>>> *** Instructions:
+   0) [0] Define S <- ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen"]
+   1) [0] Define TA <- ForEach(s : S, { A : s, X : # + 1 })
+   2) [0] Define TB <- ForEach(s : S, { A : null if Mod(#, 3) @= 1 else s, B : null if Mod(#, 3) @= 2 else s, X : # + 1 })
+   3) [0] Define TC <- ForEach(s : S, { A : s, C : Range(# * 2)->{ D : s, E : s } })
+   4) [0] Expr TA->Chain([null])->Proc.MultiDSMA()
+   5) [0] Expr S->Proc.MultiDSMA(it)->Map(B->Text.Concat(", "))
+   6) [0] Expr TB->Proc.MultiDSMB(A : A, B)
+   7) [0] Expr TB->Proc.Multi_SMB()
+   8) [0] Expr S->Proc.MultiDSMBab(it)
+   9) [0] Expr S->Proc.MultiDSMBb(A : it)
+  10) [0] Expr S->Proc.MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, "/suf")
+  11) [0] Expr "*** Simple, no mapping or merging ***"
+  12) [0] TaskProc finish p as Proc.MultiDSMA(TA)
+  13) [0] Expr p$ResultNames
+  14) [0] Expr p.Result
+  15) [0] Expr p.Visited
+  16) [0] Expr "*** Mapping but non-merging ***"
+  17) [0] TaskProc finish p as Proc.MultiDSMB(S, it)
+  18) [0] Expr p$ResultNames
+  19) [0] Expr p.Result
+  20) [0] Expr p.Visited
+  21) [0] Expr "*** Mapping and merging ***"
+  22) [0] TaskProc finish p as Proc.MultiDSMA(TA, A : A)
+  23) [0] Expr p$ResultNames
+  24) [0] Expr p.Result
+  25) [0] Expr p.PreMerge
+  26) [0] Expr p.Visited
+  27) [0] TaskProc finish p as Proc.MultiDSMA(TA->TakeIf(false), A : A)
+  28) [0] Expr p$ResultNames
+  29) [0] Expr p.Result
+  30) [0] Expr p.PreMerge
+  31) [0] TaskProc finish p as Proc.MultiDsMB(TA, { A, B : "b-" & A })
+  32) [0] Expr p$ResultNames
+  33) [0] Expr p.Result
+  34) [0] Expr p.PreMerge
+  35) [0] Expr p.Visited
+  36) [0] TaskProc finish p as Proc.MultiDsMB(TA->TakeIf(false), { A, B : "b-" & A })
+  37) [0] Expr p$ResultNames
+  38) [0] Expr p.Result
+  39) [0] Expr p.PreMerge
+  40) [0] Expr "*** Record at the top level ***"
+  41) [0] TaskProc finish p as Proc.MultiDSMB(S, it & "-1st", it & "-2nd")
+  42) [0] Expr p$ResultNames
+  43) [0] Expr p.Result
+  44) [0] Expr p.Visited
+  45) [0] TaskProc finish p as Proc.MultiDSMB(S->TakeIf(false), it & "-1st", it & "-2nd")
+  46) [0] Expr p$ResultNames
+  47) [0] Expr p.Result
+  48) [0] TaskProc finish p as Proc.MultiDfMB(S->Map({ B : "b-" & it, A : "a-" & it }), S2 : 7, S1 : "/suf")
+  49) [0] Expr p$ResultNames
+  50) [0] Expr p.Result
+  51) [0] Expr p.Visited
+  52) [0] TaskProc finish p as Proc.MultiDRMB({ Mis : TB, S1 : "/pre", S2 : 5 })
+  53) [0] Expr p$ResultNames
+  54) [0] Expr p.Result
+  55) [0] Expr p.Visited
+  56) [0] Expr "*** Record at the top level with merging ***"
+  57) [0] TaskProc finish p as Proc.MultiDRMB(TA, A)
+  58) [0] Expr p$ResultNames
+  59) [0] Expr p.Result
+  60) [0] Expr p.PreMerge
+  61) [0] Expr p.Visited
+  62) [0] TaskProc finish p as Proc.MultiDRMB(TA->TakeIf(false), A)
+  63) [0] Expr p$ResultNames
+  64) [0] Expr p.Result
+  65) [0] Expr p.PreMerge
+  66) [0] TaskProc finish p as Proc.MultiDRMB(TB, B, A)
+  67) [0] Expr p$ResultNames
+  68) [0] Expr p.Result
+  69) [0] Expr p.PreMerge
+  70) [0] Expr p.Visited
+  71) [0] TaskProc finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5)
+  72) [0] Expr p$ResultNames
+  73) [0] Expr p.Result
+  74) [0] Expr p.PreMerge
+  75) [0] Expr p.Visited
+  76) [0] TaskProc finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5)
+  77) [0] Expr p$ResultNames
+  78) [0] Expr p.Result
+  79) [0] Expr p.PreMerge
+  80) [0] Expr "*** Record input, record output, no merge ***"
+  81) [0] TaskProc finish p as Proc.MultiDSMBW(TB)
+  82) [0] Expr p$ResultNames
+  83) [0] Expr p.Result
+  84) [0] Expr p.Visited
+  85) [0] TaskProc finish p as Proc.MultiDRMBW(S, A : it & "-1st", B : it & "-2nd", S1 : "/suf", S2 : 7)
+  86) [0] Expr p$ResultNames
+  87) [0] Expr p.Result
+  88) [0] Expr p.Visited
+  89) [0] Expr "*** Record input, record output, merging ***"
+  90) [0] TaskProc finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5)
+  91) [0] Expr p$ResultNames
+  92) [0] Expr p.Result
+  93) [0] Expr p.PreMerge
+  94) [0] Expr p.Visited
+  95) [0] TaskProc finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5)
+  96) [0] Expr p$ResultNames
+  97) [0] Expr p.Result
+  98) [0] Expr p.PreMerge
+  99) [0] TaskProc finish p as Proc.MultiDSMBW(TB, A, B)
+ 100) [0] Expr p$ResultNames
+ 101) [0] Expr p.Result
+ 102) [0] Expr p.PreMerge
+ 103) [0] Expr p.Visited
+ 104) [0] TaskProc finish p as Proc.MultiDRMBW(TB, B, A, "/suf", 5)
+ 105) [0] Expr p$ResultNames
+ 106) [0] Expr p.Result
+ 107) [0] Expr p.PreMerge
+ 108) [0] Expr p.Visited
+ 109) [0] End
+
+>    0) [0] Define S <- ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen"]
+Global 'S' has DType: s*, SysType: Seq<str>
+>    1) [0] Define TA <- ForEach(s : S, { A : s, X : # + 1 })
+Global 'TA' has DType: {A:s, X:r8}*, SysType: Seq<{str,r8}>
+>    2) [0] Define TB <- ForEach(s : S, { A : null if Mod(#, 3) @= 1 else s, B : null if Mod(#, 3) @= 2 else s, X : # + 1 })
+Global 'TB' has DType: {A:s, B:s, X:r8}*, SysType: Seq<{str,str,r8}>
+>    3) [0] Define TC <- ForEach(s : S, { A : s, C : Range(# * 2)->{ D : s, E : s } })
+Global 'TC' has DType: {A:s, C:{D:s, E:s}*}*, SysType: Seq<{str,Seq<{str,str}>}>
+>    4) [0] Expr TA->Chain([null])->Proc.MultiDSMA()
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (287,289) Node: TA->Chain([null]), Message: Invalid operand type: cannot convert type '{A:s, X:r8}?*' to '{A:s}*'
+>    5) [0] Expr S->Proc.MultiDSMA(it)->Map(B->Text.Concat(", "))
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (323,325) Node: S->Proc.MultiDSMA(it), Message: Procedure 'Proc.MultiDSMA' cannot be used as a function
+  [MultiFormProc.txt] Error: (323,325) Node: S->Proc.MultiDSMA(it), Message: Invalid operand type: cannot convert type 'g' to 'g*'
+  [MultiFormProc.txt] Error: (352,353) Node: B, Message: Name does not exist in the current context
+>    6) [0] Expr TB->Proc.MultiDSMB(A : A, B)
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (377,379) Node: TB->Proc.MultiDSMB(A : A, B), Message: No overload can be found matching these names and directives.
+  [MultiFormProc.txt] Error: (403,404) Node: B, Message: The argument in position 3 of 'MultiDSMB' should include a field name
+>    7) [0] Expr TB->Proc.Multi_SMB()
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (409,411) Node: TB->Proc.Multi_SMB(), Message: Too few arguments for Test.Proc.Multi_SMB, expected 1 additional
+>    8) [0] Expr S->Proc.MultiDSMBab(it)
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (430,432) Node: S->Proc.MultiDSMBab(it), Message: Too few arguments for Test.Proc.MultiDSMBab, expected 1 additional
+>    9) [0] Expr S->Proc.MultiDSMBb(A : it)
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (455,457) Node: S->Proc.MultiDSMBb(A : it), Message: No overload can be found matching these names and directives.
+  [MultiFormProc.txt] Error: (474,475) Node: A : it, Message: Missing argument: 'B'
+>   10) [0] Expr S->Proc.MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, "/suf")
+*** Bind diagnostics:
+  [MultiFormProc.txt] Error: (482,484) Node: S->Proc.MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, "/suf"), Message: No overload can be found matching these names and directives.
+  [MultiFormProc.txt] Error: (542,548) Node: "/suf", Message: The argument in position 5 of 'MultiDRMB' should include a field name
+  [MultiFormProc.txt] Error: (542,548) Node: "/suf", Message: Invalid operand type: cannot convert type 's' to 'i8'
+>   11) [0] Expr "*** Simple, no mapping or merging ***"
+*** Simple, no mapping or merging ***
+>   12) [0] TaskProc finish p as Proc.MultiDSMA(TA)
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   13) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   14) [0] Expr p.Result
+Seq<{str,Seq<str>,r8}>
+   0) { A: x, 
+        B: Seq<str>
+             0) A: [x]
+        X: 1 }
+   1) { A: xy, 
+        B: Seq<str>
+             0) A: [xy]
+        X: 2 }
+   2) { A: <null>, 
+        B: Seq<str>
+             0) A: <null>
+        X: 3 }
+   3) { A: xyz, 
+        B: Seq<str>
+             0) A: [xyz]
+        X: 4 }
+   4) { A: hi, 
+        B: Seq<str>
+             0) A: [hi]
+        X: 5 }
+   5) { A: adios, 
+        B: Seq<str>
+             0) A: [adios]
+        X: 6 }
+   6) { A: hola, 
+        B: Seq<str>
+             0) A: [hola]
+        X: 7 }
+   7) { A: guten morgen, 
+        B: Seq<str>
+             0) A: [guten morgen]
+        X: 8 }
+>   15) [0] Expr p.Visited
+true
+>   16) [0] Expr "*** Mapping but non-merging ***"
+*** Mapping but non-merging ***
+>   17) [0] TaskProc finish p as Proc.MultiDSMB(S, it)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   18) [0] Expr p$ResultNames
+(Visited, Result)
+>   19) [0] Expr p.Result
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [x]
+      }
+   1) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [xy]
+      }
+   2) { B: Seq<str>
+             0) A: [A's default]
+             1) B: <null>
+      }
+   3) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [xyz]
+      }
+   4) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [hi]
+      }
+   5) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [adios]
+      }
+   6) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [hola]
+      }
+   7) { B: Seq<str>
+             0) A: [A's default]
+             1) B: [guten morgen]
+      }
+>   20) [0] Expr p.Visited
+true
+>   21) [0] Expr "*** Mapping and merging ***"
+*** Mapping and merging ***
+>   22) [0] TaskProc finish p as Proc.MultiDSMA(TA, A : A)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   23) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   24) [0] Expr p.Result
+Seq<{str,Seq<str>,r8}>
+   0) { A: x, 
+        B: Seq<str>
+             0) A: [x]
+        X: 1 }
+   1) { A: xy, 
+        B: Seq<str>
+             0) A: [xy]
+        X: 2 }
+   2) { A: <null>, 
+        B: Seq<str>
+             0) A: <null>
+        X: 3 }
+   3) { A: xyz, 
+        B: Seq<str>
+             0) A: [xyz]
+        X: 4 }
+   4) { A: hi, 
+        B: Seq<str>
+             0) A: [hi]
+        X: 5 }
+   5) { A: adios, 
+        B: Seq<str>
+             0) A: [adios]
+        X: 6 }
+   6) { A: hola, 
+        B: Seq<str>
+             0) A: [hola]
+        X: 7 }
+   7) { A: guten morgen, 
+        B: Seq<str>
+             0) A: [guten morgen]
+        X: 8 }
+>   25) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x]
+      }
+   1) { B: Seq<str>
+             0) A: [xy]
+      }
+   2) { B: Seq<str>
+             0) A: <null>
+      }
+   3) { B: Seq<str>
+             0) A: [xyz]
+      }
+   4) { B: Seq<str>
+             0) A: [hi]
+      }
+   5) { B: Seq<str>
+             0) A: [adios]
+      }
+   6) { B: Seq<str>
+             0) A: [hola]
+      }
+   7) { B: Seq<str>
+             0) A: [guten morgen]
+      }
+>   26) [0] Expr p.Visited
+true
+>   27) [0] TaskProc finish p as Proc.MultiDSMA(TA->TakeIf(false), A : A)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   28) [0] Expr p$ResultNames
+(Result, PreMerge)
+>   29) [0] Expr p.Result
+<null>
+>   30) [0] Expr p.PreMerge
+<null>
+>   31) [0] TaskProc finish p as Proc.MultiDsMB(TA, { A, B : "b-" & A })
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   32) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   33) [0] Expr p.Result
+Seq<{str,Seq<str>,r8}>
+   0) { A: x, 
+        B: Seq<str>
+             0) A: [x]
+             1) B: [b-x]
+        X: 1 }
+   1) { A: xy, 
+        B: Seq<str>
+             0) A: [xy]
+             1) B: [b-xy]
+        X: 2 }
+   2) { A: <null>, 
+        B: Seq<str>
+             0) A: <null>
+             1) B: [b-]
+        X: 3 }
+   3) { A: xyz, 
+        B: Seq<str>
+             0) A: [xyz]
+             1) B: [b-xyz]
+        X: 4 }
+   4) { A: hi, 
+        B: Seq<str>
+             0) A: [hi]
+             1) B: [b-hi]
+        X: 5 }
+   5) { A: adios, 
+        B: Seq<str>
+             0) A: [adios]
+             1) B: [b-adios]
+        X: 6 }
+   6) { A: hola, 
+        B: Seq<str>
+             0) A: [hola]
+             1) B: [b-hola]
+        X: 7 }
+   7) { A: guten morgen, 
+        B: Seq<str>
+             0) A: [guten morgen]
+             1) B: [b-guten morgen]
+        X: 8 }
+>   34) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x]
+             1) B: [b-x]
+      }
+   1) { B: Seq<str>
+             0) A: [xy]
+             1) B: [b-xy]
+      }
+   2) { B: Seq<str>
+             0) A: <null>
+             1) B: [b-]
+      }
+   3) { B: Seq<str>
+             0) A: [xyz]
+             1) B: [b-xyz]
+      }
+   4) { B: Seq<str>
+             0) A: [hi]
+             1) B: [b-hi]
+      }
+   5) { B: Seq<str>
+             0) A: [adios]
+             1) B: [b-adios]
+      }
+   6) { B: Seq<str>
+             0) A: [hola]
+             1) B: [b-hola]
+      }
+   7) { B: Seq<str>
+             0) A: [guten morgen]
+             1) B: [b-guten morgen]
+      }
+>   35) [0] Expr p.Visited
+true
+>   36) [0] TaskProc finish p as Proc.MultiDsMB(TA->TakeIf(false), { A, B : "b-" & A })
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   37) [0] Expr p$ResultNames
+(Result, PreMerge)
+>   38) [0] Expr p.Result
+<null>
+>   39) [0] Expr p.PreMerge
+<null>
+>   40) [0] Expr "*** Record at the top level ***"
+*** Record at the top level ***
+>   41) [0] TaskProc finish p as Proc.MultiDSMB(S, it & "-1st", it & "-2nd")
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   42) [0] Expr p$ResultNames
+(Visited, Result)
+>   43) [0] Expr p.Result
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x-2nd]
+             1) B: [x-1st]
+      }
+   1) { B: Seq<str>
+             0) A: [xy-2nd]
+             1) B: [xy-1st]
+      }
+   2) { B: Seq<str>
+             0) A: [-2nd]
+             1) B: [-1st]
+      }
+   3) { B: Seq<str>
+             0) A: [xyz-2nd]
+             1) B: [xyz-1st]
+      }
+   4) { B: Seq<str>
+             0) A: [hi-2nd]
+             1) B: [hi-1st]
+      }
+   5) { B: Seq<str>
+             0) A: [adios-2nd]
+             1) B: [adios-1st]
+      }
+   6) { B: Seq<str>
+             0) A: [hola-2nd]
+             1) B: [hola-1st]
+      }
+   7) { B: Seq<str>
+             0) A: [guten morgen-2nd]
+             1) B: [guten morgen-1st]
+      }
+>   44) [0] Expr p.Visited
+true
+>   45) [0] TaskProc finish p as Proc.MultiDSMB(S->TakeIf(false), it & "-1st", it & "-2nd")
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   46) [0] Expr p$ResultNames
+(Visited, Result)
+>   47) [0] Expr p.Result
+<null>
+>   48) [0] TaskProc finish p as Proc.MultiDfMB(S->Map({ B : "b-" & it, A : "a-" & it }), S2 : 7, S1 : "/suf")
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   49) [0] Expr p$ResultNames
+(Visited, Result)
+>   50) [0] Expr p.Result
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [a-x/suf]
+             1) B: [b-x/suf]
+      }
+   1) { B: Seq<str>
+             0) A: [a-xy/suf]
+             1) B: [b-xy/suf]
+      }
+   2) { B: Seq<str>
+             0) A: [a-/suf]
+             1) B: [b-/suf]
+      }
+   3) { B: Seq<str>
+             0) A: [a-xyz/suf]
+             1) B: [b-xyz/suf]
+      }
+   4) { B: Seq<str>
+             0) A: [a-hi/suf]
+             1) B: [b-hi/suf]
+      }
+   5) { B: Seq<str>
+             0) A: [a-adios/suf]
+             1) B: [b-adios/suf]
+      }
+   6) { B: Seq<str>
+             0) A: [a-hola/suf]
+             1) B: [b-hola/suf]
+      }
+   7) { B: Seq<str>
+             0) A: [a-guten/suf]
+             1) B: [b-guten/suf]
+      }
+>   51) [0] Expr p.Visited
+true
+>   52) [0] TaskProc finish p as Proc.MultiDRMB({ Mis : TB, S1 : "/pre", S2 : 5 })
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   53) [0] Expr p$ResultNames
+(Visited, Result)
+>   54) [0] Expr p.Result
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x/pre]
+             1) B: [x/pre]
+      }
+   1) { B: Seq<str>
+             0) A: <null>/pre
+             1) B: [xy/pre]
+      }
+   2) { B: Seq<str>
+             0) A: <null>/pre
+             1) B: <null>/pre
+      }
+   3) { B: Seq<str>
+             0) A: [xyz/pre]
+             1) B: [xyz/pre]
+      }
+   4) { B: Seq<str>
+             0) A: <null>/pre
+             1) B: [hi/pre]
+      }
+   5) { B: Seq<str>
+             0) A: [adios/pre]
+             1) B: <null>/pre
+      }
+   6) { B: Seq<str>
+             0) A: [hola/pre]
+             1) B: [hola/pre]
+      }
+   7) { B: Seq<str>
+             0) A: <null>/pre
+             1) B: [guten/pre]
+      }
+>   55) [0] Expr p.Visited
+true
+>   56) [0] Expr "*** Record at the top level with merging ***"
+*** Record at the top level with merging ***
+>   57) [0] TaskProc finish p as Proc.MultiDRMB(TA, A)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   58) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   59) [0] Expr p.Result
+Seq<{str,Seq<str>,r8}>
+   0) { A: x, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [x/def]
+        X: 1 }
+   1) { A: xy, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [xy/def]
+        X: 2 }
+   2) { A: <null>, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: <null>/def
+        X: 3 }
+   3) { A: xyz, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [xyz/def]
+        X: 4 }
+   4) { A: hi, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [hi/def]
+        X: 5 }
+   5) { A: adios, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [adi/def]
+        X: 6 }
+   6) { A: hola, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [hol/def]
+        X: 7 }
+   7) { A: guten morgen, 
+        B: Seq<str>
+             0) A: [A's/def]
+             1) B: [gut/def]
+        X: 8 }
+>   60) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [x/def]
+      }
+   1) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [xy/def]
+      }
+   2) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: <null>/def
+      }
+   3) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [xyz/def]
+      }
+   4) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [hi/def]
+      }
+   5) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [adi/def]
+      }
+   6) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [hol/def]
+      }
+   7) { B: Seq<str>
+             0) A: [A's/def]
+             1) B: [gut/def]
+      }
+>   61) [0] Expr p.Visited
+true
+>   62) [0] TaskProc finish p as Proc.MultiDRMB(TA->TakeIf(false), A)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   63) [0] Expr p$ResultNames
+(Result, PreMerge)
+>   64) [0] Expr p.Result
+<null>
+>   65) [0] Expr p.PreMerge
+<null>
+>   66) [0] TaskProc finish p as Proc.MultiDRMB(TB, B, A)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   67) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   68) [0] Expr p.Result
+Seq<{str,str,Seq<str>,r8}>
+   0) { A: x, B: x, 
+        B2: Seq<str>
+             0) A: [x/def]
+             1) B: [x/def]
+        X: 1 }
+   1) { A: <null>, B: xy, 
+        B2: Seq<str>
+             0) A: <null>/def
+             1) B: [xy/def]
+        X: 2 }
+   2) { A: <null>, B: <null>, 
+        B2: Seq<str>
+             0) A: <null>/def
+             1) B: <null>/def
+        X: 3 }
+   3) { A: xyz, B: xyz, 
+        B2: Seq<str>
+             0) A: [xyz/def]
+             1) B: [xyz/def]
+        X: 4 }
+   4) { A: <null>, B: hi, 
+        B2: Seq<str>
+             0) A: <null>/def
+             1) B: [hi/def]
+        X: 5 }
+   5) { A: adios, B: <null>, 
+        B2: Seq<str>
+             0) A: [adi/def]
+             1) B: <null>/def
+        X: 6 }
+   6) { A: hola, B: hola, 
+        B2: Seq<str>
+             0) A: [hol/def]
+             1) B: [hol/def]
+        X: 7 }
+   7) { A: <null>, B: guten morgen, 
+        B2: Seq<str>
+             0) A: <null>/def
+             1) B: [gut/def]
+        X: 8 }
+>   69) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x/def]
+             1) B: [x/def]
+      }
+   1) { B: Seq<str>
+             0) A: <null>/def
+             1) B: [xy/def]
+      }
+   2) { B: Seq<str>
+             0) A: <null>/def
+             1) B: <null>/def
+      }
+   3) { B: Seq<str>
+             0) A: [xyz/def]
+             1) B: [xyz/def]
+      }
+   4) { B: Seq<str>
+             0) A: <null>/def
+             1) B: [hi/def]
+      }
+   5) { B: Seq<str>
+             0) A: [adi/def]
+             1) B: <null>/def
+      }
+   6) { B: Seq<str>
+             0) A: [hol/def]
+             1) B: [hol/def]
+      }
+   7) { B: Seq<str>
+             0) A: <null>/def
+             1) B: [gut/def]
+      }
+>   70) [0] Expr p.Visited
+true
+>   71) [0] TaskProc finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   72) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   73) [0] Expr p.Result
+Seq<{str,str,Seq<str>,r8}>
+   0) { A: x, B: x, 
+        B2: Seq<str>
+             0) A: [x/suf]
+             1) B: [x/suf]
+        X: 1 }
+   1) { A: <null>, B: xy, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [xy/suf]
+        X: 2 }
+   2) { A: <null>, B: <null>, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: <null>/suf
+        X: 3 }
+   3) { A: xyz, B: xyz, 
+        B2: Seq<str>
+             0) A: [xyz/suf]
+             1) B: [xyz/suf]
+        X: 4 }
+   4) { A: <null>, B: hi, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [hi/suf]
+        X: 5 }
+   5) { A: adios, B: <null>, 
+        B2: Seq<str>
+             0) A: [adios/suf]
+             1) B: <null>/suf
+        X: 6 }
+   6) { A: hola, B: hola, 
+        B2: Seq<str>
+             0) A: [hola/suf]
+             1) B: [hola/suf]
+        X: 7 }
+   7) { A: <null>, B: guten morgen, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [guten/suf]
+        X: 8 }
+>   74) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x/suf]
+             1) B: [x/suf]
+      }
+   1) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [xy/suf]
+      }
+   2) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: <null>/suf
+      }
+   3) { B: Seq<str>
+             0) A: [xyz/suf]
+             1) B: [xyz/suf]
+      }
+   4) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [hi/suf]
+      }
+   5) { B: Seq<str>
+             0) A: [adios/suf]
+             1) B: <null>/suf
+      }
+   6) { B: Seq<str>
+             0) A: [hola/suf]
+             1) B: [hola/suf]
+      }
+   7) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [guten/suf]
+      }
+>   75) [0] Expr p.Visited
+true
+>   76) [0] TaskProc finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   77) [0] Expr p$ResultNames
+(Result, PreMerge)
+>   78) [0] Expr p.Result
+<null>
+>   79) [0] Expr p.PreMerge
+<null>
+>   80) [0] Expr "*** Record input, record output, no merge ***"
+*** Record input, record output, no merge ***
+>   81) [0] TaskProc finish p as Proc.MultiDSMBW(TB)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   82) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   83) [0] Expr p.Result
+{ Mos: Seq<{str,str,Seq<str>,r8}>
+       0) { A: x, B: x, 
+            B2: Seq<str>
+                 0) A: [x]
+                 1) B: [x]
+            X: 1 }
+       1) { A: <null>, B: xy, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: [xy]
+            X: 2 }
+       2) { A: <null>, B: <null>, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: <null>
+            X: 3 }
+       3) { A: xyz, B: xyz, 
+            B2: Seq<str>
+                 0) A: [xyz]
+                 1) B: [xyz]
+            X: 4 }
+       4) { A: <null>, B: hi, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: [hi]
+            X: 5 }
+       5) { A: adios, B: <null>, 
+            B2: Seq<str>
+                 0) A: [adios]
+                 1) B: <null>
+            X: 6 }
+       6) { A: hola, B: hola, 
+            B2: Seq<str>
+                 0) A: [hola]
+                 1) B: [hola]
+            X: 7 }
+       7) { A: <null>, B: guten morgen, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: [guten morgen]
+            X: 8 }
+  S1: , S2: 9223372036854775807 }
+>   84) [0] Expr p.Visited
+true
+>   85) [0] TaskProc finish p as Proc.MultiDRMBW(S, A : it & "-1st", B : it & "-2nd", S1 : "/suf", S2 : 7)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   86) [0] Expr p$ResultNames
+(Visited, Result)
+>   87) [0] Expr p.Result
+{ Mos: Seq<{Seq<str>}>
+       0) { B: Seq<str>
+                 0) A: [x-1st/suf]
+                 1) B: [x-2nd/suf]
+          }
+       1) { B: Seq<str>
+                 0) A: [xy-1st/suf]
+                 1) B: [xy-2nd/suf]
+          }
+       2) { B: Seq<str>
+                 0) A: [-1st/suf]
+                 1) B: [-2nd/suf]
+          }
+       3) { B: Seq<str>
+                 0) A: [xyz-1st/suf]
+                 1) B: [xyz-2nd/suf]
+          }
+       4) { B: Seq<str>
+                 0) A: [hi-1st/suf]
+                 1) B: [hi-2nd/suf]
+          }
+       5) { B: Seq<str>
+                 0) A: [adios-1/suf]
+                 1) B: [adios-2/suf]
+          }
+       6) { B: Seq<str>
+                 0) A: [hola-1s/suf]
+                 1) B: [hola-2n/suf]
+          }
+       7) { B: Seq<str>
+                 0) A: [guten m/suf]
+                 1) B: [guten m/suf]
+          }
+  S1: /suf, S2: 7 }
+>   88) [0] Expr p.Visited
+true
+>   89) [0] Expr "*** Record input, record output, merging ***"
+*** Record input, record output, merging ***
+>   90) [0] TaskProc finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   91) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>   92) [0] Expr p.Result
+Seq<{str,str,Seq<str>,r8}>
+   0) { A: x, B: x, 
+        B2: Seq<str>
+             0) A: [x/suf]
+             1) B: [x/suf]
+        X: 1 }
+   1) { A: <null>, B: xy, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [xy/suf]
+        X: 2 }
+   2) { A: <null>, B: <null>, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: <null>/suf
+        X: 3 }
+   3) { A: xyz, B: xyz, 
+        B2: Seq<str>
+             0) A: [xyz/suf]
+             1) B: [xyz/suf]
+        X: 4 }
+   4) { A: <null>, B: hi, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [hi/suf]
+        X: 5 }
+   5) { A: adios, B: <null>, 
+        B2: Seq<str>
+             0) A: [adios/suf]
+             1) B: <null>/suf
+        X: 6 }
+   6) { A: hola, B: hola, 
+        B2: Seq<str>
+             0) A: [hola/suf]
+             1) B: [hola/suf]
+        X: 7 }
+   7) { A: <null>, B: guten morgen, 
+        B2: Seq<str>
+             0) A: <null>/suf
+             1) B: [guten/suf]
+        X: 8 }
+>   93) [0] Expr p.PreMerge
+Seq<{Seq<str>}>
+   0) { B: Seq<str>
+             0) A: [x/suf]
+             1) B: [x/suf]
+      }
+   1) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [xy/suf]
+      }
+   2) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: <null>/suf
+      }
+   3) { B: Seq<str>
+             0) A: [xyz/suf]
+             1) B: [xyz/suf]
+      }
+   4) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [hi/suf]
+      }
+   5) { B: Seq<str>
+             0) A: [adios/suf]
+             1) B: <null>/suf
+      }
+   6) { B: Seq<str>
+             0) A: [hola/suf]
+             1) B: [hola/suf]
+      }
+   7) { B: Seq<str>
+             0) A: <null>/suf
+             1) B: [guten/suf]
+      }
+>   94) [0] Expr p.Visited
+true
+>   95) [0] TaskProc finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>   96) [0] Expr p$ResultNames
+(Result, PreMerge)
+>   97) [0] Expr p.Result
+<null>
+>   98) [0] Expr p.PreMerge
+<null>
+>   99) [0] TaskProc finish p as Proc.MultiDSMBW(TB, A, B)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>  100) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>  101) [0] Expr p.Result
+{ Mos: Seq<{str,str,Seq<str>,r8}>
+       0) { A: x, B: x, 
+            B2: Seq<str>
+                 0) A: [x]
+                 1) B: [x]
+            X: 1 }
+       1) { A: <null>, B: xy, 
+            B2: Seq<str>
+                 0) A: [xy]
+                 1) B: <null>
+            X: 2 }
+       2) { A: <null>, B: <null>, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: <null>
+            X: 3 }
+       3) { A: xyz, B: xyz, 
+            B2: Seq<str>
+                 0) A: [xyz]
+                 1) B: [xyz]
+            X: 4 }
+       4) { A: <null>, B: hi, 
+            B2: Seq<str>
+                 0) A: [hi]
+                 1) B: <null>
+            X: 5 }
+       5) { A: adios, B: <null>, 
+            B2: Seq<str>
+                 0) A: <null>
+                 1) B: [adios]
+            X: 6 }
+       6) { A: hola, B: hola, 
+            B2: Seq<str>
+                 0) A: [hola]
+                 1) B: [hola]
+            X: 7 }
+       7) { A: <null>, B: guten morgen, 
+            B2: Seq<str>
+                 0) A: [guten morgen]
+                 1) B: <null>
+            X: 8 }
+  S1: , S2: 9223372036854775807 }
+>  102) [0] Expr p.PreMerge
+{ Mos: Seq<{Seq<str>}>
+       0) { B: Seq<str>
+                 0) A: [x]
+                 1) B: [x]
+          }
+       1) { B: Seq<str>
+                 0) A: [xy]
+                 1) B: <null>
+          }
+       2) { B: Seq<str>
+                 0) A: <null>
+                 1) B: <null>
+          }
+       3) { B: Seq<str>
+                 0) A: [xyz]
+                 1) B: [xyz]
+          }
+       4) { B: Seq<str>
+                 0) A: [hi]
+                 1) B: <null>
+          }
+       5) { B: Seq<str>
+                 0) A: <null>
+                 1) B: [adios]
+          }
+       6) { B: Seq<str>
+                 0) A: [hola]
+                 1) B: [hola]
+          }
+       7) { B: Seq<str>
+                 0) A: [guten morgen]
+                 1) B: <null>
+          }
+  S1: , S2: 9223372036854775807 }
+>  103) [0] Expr p.Visited
+true
+>  104) [0] TaskProc finish p as Proc.MultiDRMBW(TB, B, A, "/suf", 5)
+Overwriting task: p
+Task 'p' added
+Task 'p' now playing
+Task 'p' finished
+>  105) [0] Expr p$ResultNames
+(Visited, Result, PreMerge)
+>  106) [0] Expr p.Result
+{ Mos: Seq<{str,str,Seq<str>,r8}>
+       0) { A: x, B: x, 
+            B2: Seq<str>
+                 0) A: [x/suf]
+                 1) B: [x/suf]
+            X: 1 }
+       1) { A: <null>, B: xy, 
+            B2: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [xy/suf]
+            X: 2 }
+       2) { A: <null>, B: <null>, 
+            B2: Seq<str>
+                 0) A: <null>/suf
+                 1) B: <null>/suf
+            X: 3 }
+       3) { A: xyz, B: xyz, 
+            B2: Seq<str>
+                 0) A: [xyz/suf]
+                 1) B: [xyz/suf]
+            X: 4 }
+       4) { A: <null>, B: hi, 
+            B2: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [hi/suf]
+            X: 5 }
+       5) { A: adios, B: <null>, 
+            B2: Seq<str>
+                 0) A: [adios/suf]
+                 1) B: <null>/suf
+            X: 6 }
+       6) { A: hola, B: hola, 
+            B2: Seq<str>
+                 0) A: [hola/suf]
+                 1) B: [hola/suf]
+            X: 7 }
+       7) { A: <null>, B: guten morgen, 
+            B2: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [guten/suf]
+            X: 8 }
+  S1: /suf, S2: 5 }
+>  107) [0] Expr p.PreMerge
+{ Mos: Seq<{Seq<str>}>
+       0) { B: Seq<str>
+                 0) A: [x/suf]
+                 1) B: [x/suf]
+          }
+       1) { B: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [xy/suf]
+          }
+       2) { B: Seq<str>
+                 0) A: <null>/suf
+                 1) B: <null>/suf
+          }
+       3) { B: Seq<str>
+                 0) A: [xyz/suf]
+                 1) B: [xyz/suf]
+          }
+       4) { B: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [hi/suf]
+          }
+       5) { B: Seq<str>
+                 0) A: [adios/suf]
+                 1) B: <null>/suf
+          }
+       6) { B: Seq<str>
+                 0) A: [hola/suf]
+                 1) B: [hola/suf]
+          }
+       7) { B: Seq<str>
+                 0) A: <null>/suf
+                 1) B: [guten/suf]
+          }
+  S1: /suf, S2: 5 }
+>  108) [0] Expr p.Visited
+true
+>  109) [0] End
+

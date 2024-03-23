@@ -1,0 +1,458 @@
+**** New globals: {T:{A:i4, B:r8, C:s, X:d}*, U:{A:i4, B:r4, C:s}*, V:{A:i4, B:U<Image>}*, W:{A:i4, B:U<Image>}*, X:{A:i4?}*, Y:{A:i4}*, ss:s*}
+
+> CrossJoin(t:T, u:U, t.A  <= u.A, { t, u })
+CrossJoin(t : T, u : U, t.A $<= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @<= *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.B  <= u.B, { t, u })
+CrossJoin(t : T, u : U, t.B $<= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.B $<= Num<r8>(*2.B), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C  <= u.C, { t, u })
+CrossJoin(t : T, u : U, t.C $<= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C $<= *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A $<= u.A, { t, u })
+CrossJoin(t : T, u : U, t.A $<= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @<= *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.B $<= u.B, { t, u })
+CrossJoin(t : T, u : U, t.B $<= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.B $<= Num<r8>(*2.B), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C $<= u.C, { t, u })
+CrossJoin(t : T, u : U, t.C $<= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C $<= *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A  = u.A, { t, u })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, u.A  = t.A, { t, u })
+CrossJoin(t : T, u : U, u.A @= t.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *2.A @= *1.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A  = t.B, { t, u }) // No. REVIEW: Warning?
+CrossJoin(t : T, u : U, t.A @= t.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Num<r8>(*1.A) @= *1.B, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.B  = u.B, { t, u })
+CrossJoin(t : T, u : U, t.B @= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.B @= Num<r8>(*2.B), {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.B, Num<r8>(*2.B), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.B $= u.B, { t, u })
+CrossJoin(t : T, u : U, t.B $= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.B $= Num<r8>(*2.B), {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, *1.B, Num<r8>(*2.B), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, #t   = #u , { t, u })
+CrossJoin(t : T, u : U, #t @= #u, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*2: T, *4: U, #1 @= #3, {t:*2, u:*4})
+Reducer: KeyJoin(*2: T, *4: U, [=] #1, #3, {t:*2, u:*4})
+###
+> CrossJoin(t:T, u:U, #u   = #t , { t, u })
+CrossJoin(t : T, u : U, #u @= #t, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*2: T, *4: U, #3 @= #1, {t:*2, u:*4})
+Reducer: KeyJoin(*2: T, *4: U, [=] #1, #3, {t:*2, u:*4})
+###
+> CrossJoin(t:T, u:U, #t   = #t , { t, u })  // No. REVIEW: Warning?
+CrossJoin(t : T, u : U, #t @= #t, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*2: T, *3: U, #1 @= #1, {t:*2, u:*3})
+###
+> CrossJoin(t:T, u:U, #t  $= #u , { t, u })
+CrossJoin(t : T, u : U, #t $= #u, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*2: T, *4: U, #1 @= #3, {t:*2, u:*4})
+Reducer: KeyJoin(*2: T, *4: U, [=] #1, #3, {t:*2, u:*4})
+###
+> CrossJoin(t:T, u:U, Count(ss) = 3, { t, u })
+CrossJoin(t : T, u : U, Count(ss) @= 3, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Count(ss) @= 3, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] Count(ss), 3, {t:*1, u:*2})
+Hoister: With(!1: Count(ss), KeyJoin(*2: T, *3: U, [=] !1, 3, {t:*2, u:*3}))
+###
+> CrossJoin(t:T, u:U, t.A * u.A = u.B, { t, u }) // No.
+CrossJoin(t : T, u : U, t.A * u.A @= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Num<r4>(Mul(Num<i8>(*1.A), Num<i8>(*2.A))) @= *2.B, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A * #u  = u.B, { t, u }) // No.
+CrossJoin(t : T, u : U, t.A * #u @= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *3: U, Num<r4>(Mul(Num<i8>(*1.A), #2)) @= *3.B, {t:*1, u:*3})
+###
+> CrossJoin(t:T, u:U, u.B = t.A * u.A, { t, u }) // No.
+CrossJoin(t : T, u : U, u.B @= t.A * u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *2.B @= Num<r4>(Mul(Num<i8>(*1.A), Num<i8>(*2.A))), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, u.B = t.A * #u , { t, u }) // No.
+CrossJoin(t : T, u : U, u.B @= t.A * #u, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *3: U, *3.B @= Num<r4>(Mul(Num<i8>(*1.A), #2)), {t:*1, u:*3})
+###
+> CrossJoin(x:X, y:Y, x.A  = y.A, { x, y })
+CrossJoin(x : X, y : Y, x.A @= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4}}*
+Binder : CrossJoin(*1: X, *2: Y, *1.A @= *2.A, {x:*1, y:*2})
+Reducer: KeyJoin(*1: X, *2: Y, [=] *1.A, Opt<i4?>(*2.A), {x:*1, y:*2})
+###
+> CrossJoin(x:X, y:Y, x.A $= y.A, { x, y })
+CrossJoin(x : X, y : Y, x.A $= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4}}*
+Binder : CrossJoin(*1: X, *2: Y, *1.A @= *2.A, {x:*1, y:*2})
+Reducer: KeyJoin(*1: X, *2: Y, [=] *1.A, Opt<i4?>(*2.A), {x:*1, y:*2})
+###
+> CrossJoin(x:X, y:X, x.A $= y.A, { x, y })
+CrossJoin(x : X, y : X, x.A $= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4?}}*
+Binder : CrossJoin(*1: X, *2: X, *1.A $= *2.A, {x:*1, y:*2})
+Reducer: KeyJoin(*1: X, *2: X, *1.A, *2.A, {x:*1, y:*2})
+###
+> CrossJoin(y:Y, x:X, x.A  = y.A, { x, y })
+CrossJoin(y : Y, x : X, x.A @= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4}}*
+Binder : CrossJoin(*1: Y, *2: X, *2.A @= *1.A, {x:*2, y:*1})
+Reducer: KeyJoin(*1: Y, *2: X, [=] Opt<i4?>(*1.A), *2.A, {x:*2, y:*1})
+###
+> CrossJoin(y:Y, x:X, x.A $= y.A, { x, y })
+CrossJoin(y : Y, x : X, x.A $= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4}}*
+Binder : CrossJoin(*1: Y, *2: X, *2.A @= *1.A, {x:*2, y:*1})
+Reducer: KeyJoin(*1: Y, *2: X, [=] Opt<i4?>(*1.A), *2.A, {x:*2, y:*1})
+###
+> CrossJoin(y:X, x:X, x.A $= y.A, { x, y })
+CrossJoin(y : X, x : X, x.A $= y.A, { x, y }) : {x:{A:i4?}, y:{A:i4?}}*
+Binder : CrossJoin(*1: X, *2: X, *2.A $= *1.A, {x:*2, y:*1})
+Reducer: KeyJoin(*1: X, *2: X, *1.A, *2.A, {x:*2, y:*1})
+###
+> CrossJoin(t:T, u:U, [if] t.A = u.A, { t, u })
+CrossJoin(t : T, u : U, [if] t.A @= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, [if] *1.A @= *2.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, [while] t.A = u.A, { t, u }) // Error.
+CrossJoin(t : T, u : U, [while] t.A @= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (20,27) Node: [while] t.A @= u.A, Tok: '[while]', Message: Unexpected directive
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A = u.A, [if] { t, u }) // Error.
+CrossJoin(t : T, u : U, t.A @= u.A, [if] { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (31,35) Node: [if] { t, u }, Tok: '[if]', Message: Unexpected directive
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A   = u.B, { t, u })
+CrossJoin(t : T, u : U, t.A @= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Num<r4>(*1.A) @= *2.B, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] Num<r4>(*1.A), *2.B, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A  $= u.B, { t, u })
+CrossJoin(t : T, u : U, t.A $= u.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Num<r4>(*1.A) $= *2.B, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, Num<r4>(*1.A), *2.B, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C   = u.C, { t, u })
+CrossJoin(t : T, u : U, t.C @= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C @= *2.C, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.C, *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C  $= u.C, { t, u })
+CrossJoin(t : T, u : U, t.C $= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C $= *2.C, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, *1.C, *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C ~ = u.C, { t, u })
+CrossJoin(t : T, u : U, t.C ~@= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C ~@= *2.C, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [~=] *1.C, *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.C ~$= u.C, { t, u })
+CrossJoin(t : T, u : U, t.C ~$= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.C ~$= *2.C, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [~] *1.C, *2.C, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.X.Year = u.A, { t, u })
+CrossJoin(t : T, u : U, t.X.Year @= u.A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Date.Year(*1.X) @= *2.A, {t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] Date.Year(*1.X), *2.A, {t:*1, u:*2})
+###
+> CrossJoin(s:ss, t:T, s  = C, t->&{ M:s })
+CrossJoin(s : ss, t : T, s @= C, t+>{ M : s }) : {A:i4, B:r8, C:s, M:s, X:d}*
+Binder : CrossJoin(*1: ss, *2: T, *1 @= *2.C, SetFields(!3: *2, M : *1))
+Reducer: KeyJoin(*1: ss, *2: T, [=] *1, *2.C, SetFields(!3: *2, M : *1))
+###
+> CrossJoin(s:ss, t:T, s ~ = C, t->&{ M:s })
+CrossJoin(s : ss, t : T, s ~@= C, t+>{ M : s }) : {A:i4, B:r8, C:s, M:s, X:d}*
+Binder : CrossJoin(*1: ss, *2: T, *1 ~@= *2.C, SetFields(!3: *2, M : *1))
+Reducer: KeyJoin(*1: ss, *2: T, [~=] *1, *2.C, SetFields(!3: *2, M : *1))
+###
+> CrossJoin(s:ss, t:T, s  $= C, t->&{ M:s })
+CrossJoin(s : ss, t : T, s $= C, t+>{ M : s }) : {A:i4, B:r8, C:s, M:s, X:d}*
+Binder : CrossJoin(*1: ss, *2: T, *1 $= *2.C, SetFields(!3: *2, M : *1))
+Reducer: KeyJoin(*1: ss, *2: T, *1, *2.C, SetFields(!3: *2, M : *1))
+###
+> CrossJoin(s:ss, t:T, s ~$= C, t->&{ M:s })
+CrossJoin(s : ss, t : T, s ~$= C, t+>{ M : s }) : {A:i4, B:r8, C:s, M:s, X:d}*
+Binder : CrossJoin(*1: ss, *2: T, *1 ~$= *2.C, SetFields(!3: *2, M : *1))
+Reducer: KeyJoin(*1: ss, *2: T, [~] *1, *2.C, SetFields(!3: *2, M : *1))
+###
+> CrossJoin(t:T, u:U, t.A = u.A and t.C = u.C, { t, u })
+CrossJoin(t : T, u : U, t.A @= u.A and t.C @= u.C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, And(*1.A @= *2.A, *1.C @= *2.C), {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U, t.A = t.B, { t, u }) // REVIEW: Should this warn?
+CrossJoin(t : T, u : U, t.A @= t.B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, Num<r8>(*1.A) @= *1.B, {t:*1, u:*2})
+###
+> CrossJoin(t:T, u:U,    t.A =  u.A, {      t,    u }, {    t })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u }, { t }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+###
+> CrossJoin(  T,   U, it$1.A = it.A, { t:it$1, u:it }, { t:it })
+CrossJoin(T, U, it$1.A @= it.A, { t : it$1, u : it }, { t : it }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+###
+> CrossJoin(t:T, u:U,    t.A =  u.A, {      t,    u }, {    t }, {    u })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u }, { t }, { u }) : {t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+###
+> CrossJoin(  T,   U, it$1.A = it.A, { t:it$1, u:it }, { t:it }, { u:it })
+CrossJoin(T, U, it$1.A @= it.A, { t : it$1, u : it }, { t : it }, { u : it }) : {t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+###
+> CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t, u }) // REVIEW: Need better error.
+Corrected by binder: [CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t, U }) // REVIEW: Need better error.]
+CrossJoin(t : T, u : U, t.A $<= u.A, { t, u }, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:g}*
+*** Error: (47,48) Node: u, Message: Name does not exist in the current context, did you intend 'U'?
+Binder : CrossJoin(*1: T, *2: U, *1.A @<= *2.A, {t:*1, u:Ref<g>(*2)}, {t:*1, u:Ref<g>(u)})
+###
+> CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t }, { t, u }) // REVIEW: Need better error.
+Corrected by binder: [CrossJoin(t:T, u:U, t.A <= u.A, { t, u }, { t }, { T, u }) // REVIEW: Need better error.]
+CrossJoin(t : T, u : U, t.A $<= u.A, { t, u }, { t }, { t, u }) : {t:g, u:{A:i4, B:r4, C:s}?}*
+*** Error: (51,52) Node: t, Message: Name does not exist in the current context, did you intend 'T'?
+Binder : CrossJoin(*1: T, *2: U, *1.A @<= *2.A, {t:Ref<g>(*1), u:Ref<{A:i4, B:r4, C:s}?>(*2)}, {t:Ref<g>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {t:Ref<g>(t), u:Ref<{A:i4, B:r4, C:s}?>(*2)})
+###
+> CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: Count(T), N: 3 * Count(U) })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u, M : Count(T), N : 3 * Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, {M:Count(T), N:Mul(3, Count(U)), t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, {M:Count(T), N:Mul(Count(U), 3), t:*1, u:*2})
+Hoister: With(!1: Count(T), !2: Mul(Count(U), 3), KeyJoin(*3: T, *4: U, [=] *3.A, *4.A, {M:!1, N:!2, t:*3, u:*4}))
+###
+> CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: -1, N: -1 }, { t, M: 2 * Count(T), N: 2 * Count(U) })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u, M : -1, N : -1 }, { t, M : 2 * Count(T), N : 2 * Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:Mul(2, Count(T)), N:Mul(2, Count(U)), t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:Mul(Count(T), 2), N:Mul(Count(U), 2), t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Hoister: With(!1: Mul(Count(T), 2), !2: Mul(Count(U), 2), KeyJoin(*3: T, *4: U, [=] *3.A, *4.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*3, u:*4}), {M:!1, N:!2, t:*3[, u:null:{A:i4, B:r4, C:s}?]}))
+###
+> CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: -1, N: -1 }, { t, M: -2, N: -2 }, { u, M: 3 * Count(T), N: Count(U) })
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u, M : -1, N : -1 }, { t, M : -2, N : -2 }, { u, M : 3 * Count(T), N : Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(3, Count(T)), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(Count(T), 3), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Hoister: With(!1: Mul(Count(T), 3), !2: Count(U), KeyJoin(*3: T, *4: U, [=] *3.A, *4.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*3, u:*4}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*3)[, u:null:{A:i4, B:r4, C:s}?]}, {M:!1, N:!2, u:Ref<{A:i4, B:r4, C:s}?>(*4)[, t:null:{A:i4, B:r8, C:s, X:d}?]}))
+###
+> CrossJoin(t:T, u:U, t.A = u.A, { t, u, M: Count(T), N: 3 * Count(U) }, { t, M: 2 * Count(T), N: 2 * Count(U) }, { u, M: 3 * Count(T), N: Count(U) }) // REVIEW: Should do better.
+CrossJoin(t : T, u : U, t.A @= u.A, { t, u, M : Count(T), N : 3 * Count(U) }, { t, M : 2 * Count(T), N : 2 * Count(U) }, { u, M : 3 * Count(T), N : Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : CrossJoin(*1: T, *2: U, *1.A @= *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:Count(T), N:Mul(3, Count(U)), t:*1, u:*2}), {M:Mul(2, Count(T)), N:Mul(2, Count(U)), t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(3, Count(T)), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, [=] *1.A, *2.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:Count(T), N:Mul(Count(U), 3), t:*1, u:*2}), {M:Mul(Count(T), 2), N:Mul(Count(U), 2), t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(Count(T), 3), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Hoister: With(!1: Count(T), !2: Mul(Count(U), 3), !3: Mul(Count(T), 2), !4: Mul(Count(U), 2), !5: Mul(Count(T), 3), !6: Count(U), KeyJoin(*7: T, *8: U, [=] *7.A, *8.A, Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:!1, N:!2, t:*7, u:*8}), {M:!3, N:!4, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*7)[, u:null:{A:i4, B:r4, C:s}?]}, {M:!5, N:!6, u:Ref<{A:i4, B:r4, C:s}?>(*8)[, t:null:{A:i4, B:r8, C:s, X:d}?]}))
+###
+> KeyJoin(t:T, u:U, A, A, { t, u })
+KeyJoin(t : T, u : U, A, A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, B, B, { t, u })
+KeyJoin(t : T, u : U, B, B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, *1.B, Num<r8>(*2.B), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, A, B, { t, u })
+KeyJoin(t : T, u : U, A, B, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, Num<r4>(*1.A), *2.B, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, C, C, { t, u })
+KeyJoin(t : T, u : U, C, C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, *1.C, *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, X.Year, A, { t, u })
+KeyJoin(t : T, u : U, X.Year, A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, Date.Year(*1.X), *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, { A, C }, { A, C }, { t, u })
+KeyJoin(t : T, u : U, { A, C }, { A, C }, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, {A:*1.A, C:*1.C}, {A:*2.A, C:*2.C}, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U,    A,    A, {      t,    u }, {    t })
+KeyJoin(t : T, u : U, A, A, { t, u }, { t }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+###
+> KeyJoin(  T,   U, it.A, it.A, { t:it$1, u:it }, { t:it })
+KeyJoin(T, U, it.A, it.A, { t : it$1, u : it }, { t : it }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+###
+> KeyJoin(t:T, u:U,    A,    A, {      t,    u }, {    t }, {    u })
+KeyJoin(t : T, u : U, A, A, { t, u }, { t }, { u }) : {t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+###
+> KeyJoin(t:T, u:U, it.A, it.A, { t:it$1, u:it }, { t:it }, { u:it })
+KeyJoin(t : T, u : U, it.A, it.A, { t : it$1, u : it }, { t : it }, { u : it }) : {t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, Ref<{t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({t:*1, u:*2}), {t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+###
+> KeyJoin(t:T, u:U, A, A, { t, u }, { t, u }) // REVIEW: Need better error.
+Corrected by binder: [KeyJoin(t:T, u:U, A, A, { t, u }, { t, U }) // REVIEW: Need better error.]
+KeyJoin(t : T, u : U, A, A, { t, u }, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:g}*
+*** Error: (39,40) Node: u, Message: Name does not exist in the current context, did you intend 'U'?
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:Ref<g>(*2)}, {t:*1, u:Ref<g>(u)})
+###
+> KeyJoin(t:T, u:U, A, A, { t, u }, { t }, { t, u }) // REVIEW: Need better error.
+Corrected by binder: [KeyJoin(t:T, u:U, A, A, { t, u }, { t }, { T, u }) // REVIEW: Need better error.]
+KeyJoin(t : T, u : U, A, A, { t, u }, { t }, { t, u }) : {t:g, u:{A:i4, B:r4, C:s}?}*
+*** Error: (43,44) Node: t, Message: Name does not exist in the current context, did you intend 'T'?
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:Ref<g>(*1), u:Ref<{A:i4, B:r4, C:s}?>(*2)}, {t:Ref<g>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {t:Ref<g>(t), u:Ref<{A:i4, B:r4, C:s}?>(*2)})
+###
+> KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: Count(T), N: 3 * Count(U) })
+KeyJoin(t : T, u : U, A + Count(T), A + Count(U), { t, u, M : Count(T), N : 3 * Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), {M:Count(T), N:Mul(3, Count(U)), t:*1, u:*2})
+Reducer: KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), {M:Count(T), N:Mul(Count(U), 3), t:*1, u:*2})
+Hoister: With(!1: Count(T), !2: Count(U), !3: Mul(Count(U), 3), KeyJoin(*4: T, *5: U, Add(!1, Num<i8>(*4.A)), Add(!2, Num<i8>(*5.A)), {M:!1, N:!3, t:*4, u:*5}))
+###
+> KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: -1, N: -1 }, { t, M: 2 * Count(T), N: 2 * Count(U) })
+KeyJoin(t : T, u : U, A + Count(T), A + Count(U), { t, u, M : -1, N : -1 }, { t, M : 2 * Count(T), N : 2 * Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:Mul(2, Count(T)), N:Mul(2, Count(U)), t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Reducer: KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:Mul(Count(T), 2), N:Mul(Count(U), 2), t:*1[, u:null:{A:i4, B:r4, C:s}?]})
+Hoister: With(!1: Count(T), !2: Count(U), !3: Mul(Count(T), 2), !4: Mul(Count(U), 2), KeyJoin(*5: T, *6: U, Add(!1, Num<i8>(*5.A)), Add(!2, Num<i8>(*6.A)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*5, u:*6}), {M:!3, N:!4, t:*5[, u:null:{A:i4, B:r4, C:s}?]}))
+###
+> KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: -1, N: -1 }, { t, M: -2, N: -2 }, { u, M: 3 * Count(T), N: Count(U) })
+KeyJoin(t : T, u : U, A + Count(T), A + Count(U), { t, u, M : -1, N : -1 }, { t, M : -2, N : -2 }, { u, M : 3 * Count(T), N : Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(3, Count(T)), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*1, u:*2}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(Count(T), 3), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Hoister: With(!1: Count(T), !2: Count(U), !3: Mul(Count(T), 3), KeyJoin(*4: T, *5: U, Add(!1, Num<i8>(*4.A)), Add(!2, Num<i8>(*5.A)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:-1, N:-1, t:*4, u:*5}), {M:-2, N:-2, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*4)[, u:null:{A:i4, B:r4, C:s}?]}, {M:!3, N:!2, u:Ref<{A:i4, B:r4, C:s}?>(*5)[, t:null:{A:i4, B:r8, C:s, X:d}?]}))
+###
+> KeyJoin(t:T, u:U, A + Count(T), A + Count(U), { t, u, M: Count(T), N: 3 * Count(U) }, { t, M: 2 * Count(T), N: 2 * Count(U) }, { u, M: 3 * Count(T), N: Count(U) }) // REVIEW: Should do better.
+KeyJoin(t : T, u : U, A + Count(T), A + Count(U), { t, u, M : Count(T), N : 3 * Count(U) }, { t, M : 2 * Count(T), N : 2 * Count(U) }, { u, M : 3 * Count(T), N : Count(U) }) : {M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}*
+Binder : KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:Count(T), N:Mul(3, Count(U)), t:*1, u:*2}), {M:Mul(2, Count(T)), N:Mul(2, Count(U)), t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(3, Count(T)), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Reducer: KeyJoin(*1: T, *2: U, Add(Num<i8>(*1.A), Count(T)), Add(Num<i8>(*2.A), Count(U)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:Count(T), N:Mul(Count(U), 3), t:*1, u:*2}), {M:Mul(Count(T), 2), N:Mul(Count(U), 2), t:Ref<{A:i4, B:r8, C:s, X:d}?>(*1)[, u:null:{A:i4, B:r4, C:s}?]}, {M:Mul(Count(T), 3), N:Count(U), u:Ref<{A:i4, B:r4, C:s}?>(*2)[, t:null:{A:i4, B:r8, C:s, X:d}?]})
+Hoister: With(!1: Count(T), !2: Count(U), !3: Mul(Count(U), 3), !4: Mul(Count(T), 2), !5: Mul(Count(U), 2), !6: Mul(Count(T), 3), KeyJoin(*7: T, *8: U, Add(!1, Num<i8>(*7.A)), Add(!2, Num<i8>(*8.A)), Ref<{M:i8, N:i8, t:{A:i4, B:r8, C:s, X:d}?, u:{A:i4, B:r4, C:s}?}>({M:!1, N:!3, t:*7, u:*8}), {M:!4, N:!5, t:Ref<{A:i4, B:r8, C:s, X:d}?>(*7)[, u:null:{A:i4, B:r4, C:s}?]}, {M:!6, N:!2, u:Ref<{A:i4, B:r4, C:s}?>(*8)[, t:null:{A:i4, B:r8, C:s, X:d}?]}))
+###
+> KeyJoin(t:T, u:U, A, C, { t, u })
+KeyJoin(t : T, u : U, A, C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (21,22) Node: C, Message: Invalid operand type: cannot convert type 's' to 'i4'
+Binder : KeyJoin(*1: T, *2: U, *1.A, Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [A], [A], { t, u })
+KeyJoin(t : T, u : U, [A], [A], { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,19) Node: [A], Message: Invalid operand type: cannot convert type 'i4*' to 'i4'
+*** Error: (23,24) Node: [A], Message: Invalid operand type: cannot convert type 'i4*' to 'i4'
+Binder : KeyJoin(*1: T, *2: U, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [C], C, { t, u })
+KeyJoin(t : T, u : U, [C], C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,19) Node: [C], Message: Invalid operand type: cannot convert type 's*' to 's'
+Binder : KeyJoin(*1: T, *2: U, Error(ErrBadType_Src_Dst), *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [A,C], C, { t, u })
+KeyJoin(t : T, u : U, [A, C], C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,19) Node: [A, C], Message: Invalid operand type: cannot convert type 'g*' to 's'
+Binder : KeyJoin(*1: T, *2: U, Error(ErrBadType_Src_Dst), *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [CastGen(A),C], C, { t, u })
+KeyJoin(t : T, u : U, [CastGen(A), C], C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,19) Node: [CastGen(A), C], Message: Invalid operand type: cannot convert type 'g*' to 's'
+Binder : KeyJoin(*1: T, *2: U, Error(ErrBadType_Src_Dst), *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [key] A, [key] A, { t, u })
+KeyJoin(t : T, u : U, [key] A, [key] A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [key] *1.A, [key] *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, [map] u:U, A, A, { t, u }) // Error.
+KeyJoin(t : T, [map] u : U, A, A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (13,18) Node: [map] u : U, Tok: '[map]', Message: Unexpected directive
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, A, [item] A, { t, u }) // Error.
+KeyJoin(t : T, u : U, A, [map] A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (21,27) Node: [map] A, Tok: '[item]', Message: Unexpected directive
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, [key] u:U, A, A, { t, u }) // Error.
+KeyJoin(t : T, [key] u : U, A, A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (13,18) Node: [key] u : U, Tok: '[key]', Message: Unexpected directive
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, A, A, [key] { t, u }) // Error.
+KeyJoin(t : T, u : U, A, A, [key] { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (24,29) Node: [key] { t, u }, Tok: '[key]', Message: Unexpected directive
+Binder : KeyJoin(*1: T, *2: U, *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [=] C, C, { t, u })
+KeyJoin(t : T, u : U, [=] C, C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [=] *1.C, *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [=] C, [key] C, { t, u })
+KeyJoin(t : T, u : U, [=] C, [key] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [=] *1.C, [key] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] C, [key] C, { t, u })
+KeyJoin(t : T, u : U, [~] C, [key] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [~] *1.C, [key] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] C, [=] C, { t, u })
+KeyJoin(t : T, u : U, [~] C, [=] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [~] *1.C, [=] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, C, [~] C, { t, u })
+KeyJoin(t : T, u : U, C, [~] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, *1.C, [~] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, C, [~=] C, { t, u })
+KeyJoin(t : T, u : U, C, [~=] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, *1.C, [~=] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [=] C, [~] C, { t, u })
+KeyJoin(t : T, u : U, [=] C, [~] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [=] *1.C, [~] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [=] C, [~=] C, { t, u })
+KeyJoin(t : T, u : U, [=] C, [~=] C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+Binder : KeyJoin(*1: T, *2: U, [=] *1.C, [~=] *2.C, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] A, A, { t, u }) // Warning.
+Corrected by binder: [KeyJoin(t:T, u:U, [key] A, A, { t, u }) // Warning.]
+KeyJoin(t : T, u : U, [~] A, A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Warning: (18,21) Node: [~] A, Tok: '[~]', Message: Case insensitive comparison doesn't apply to type 'i4'
+Binder : KeyJoin(*1: T, *2: U, [~] *1.A, *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, A, [~=] A, { t, u }) // Warning.
+Corrected by binder: [KeyJoin(t:T, u:U, A, [=] A, { t, u }) // Warning.]
+KeyJoin(t : T, u : U, A, [~=] A, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Warning: (21,25) Node: [~=] A, Tok: '[~=]', Message: Case insensitive comparison doesn't apply to type 'i4'
+Binder : KeyJoin(*1: T, *2: U, *1.A, [~=] *2.A, {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] A, C, { t, u }) // Error, but no warning about [~].
+KeyJoin(t : T, u : U, [~] A, C, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (25,26) Node: C, Message: Invalid operand type: cannot convert type 's' to 'i4'
+Binder : KeyJoin(*1: T, *2: U, [~] *1.A, Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] { A, B:[A] }, { A, B:[A] }, { t, u }) // Error, but no warning about [~].
+KeyJoin(t : T, u : U, [~] { A, B : [A] }, { A, B : [A] }, { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,21) Node: [~] { A, B : [A] }, Message: Invalid key type for KeyJoin: '{A:i4, B:i4*}'
+*** Error: (36,37) Node: { A, B : [A] }, Message: Invalid key type for KeyJoin: '{A:i4, B:i4*}'
+*** Error: (22,23) Node: { A, B : [A] }, Message: Invalid operand type: cannot convert type '{A:i4, B:i4*}' to 'i8'
+*** Error: (36,37) Node: { A, B : [A] }, Message: Invalid operand type: cannot convert type '{A:i4, B:i4*}' to 'i8'
+Binder : KeyJoin(*1: T, *2: U, [~] Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] { A, B:[A] }, (A, [A]), { t, u }) // Error, but no warning about [~].
+KeyJoin(t : T, u : U, [~] { A, B : [A] }, (A, [A]), { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (18,21) Node: [~] { A, B : [A] }, Message: Invalid key type for KeyJoin: '{A:i4, B:i4*}'
+*** Error: (36,37) Node: (A, [A]), Message: Invalid key type for KeyJoin: '(i4, i4*)'
+*** Error: (22,23) Node: { A, B : [A] }, Message: Invalid operand type: cannot convert type '{A:i4, B:i4*}' to 'i8'
+*** Error: (36,37) Node: (A, [A]), Message: Invalid operand type: cannot convert type '(i4, i4*)' to 'i8'
+Binder : KeyJoin(*1: T, *2: U, [~] Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(t:T, u:U, [~] A->Range(), A->Range(), { t, u }) // Error, but no warning about [~].
+KeyJoin(t : T, u : U, [~] A->Range(), A->Range(), { t, u }) : {t:{A:i4, B:r8, C:s, X:d}, u:{A:i4, B:r4, C:s}}*
+*** Error: (23,25) Node: A->Range(), Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+*** Error: (35,37) Node: A->Range(), Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+Binder : KeyJoin(*1: T, *2: U, [~] Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), {t:*1, u:*2})
+###
+> KeyJoin(v:V, W, B, B, v)
+KeyJoin(v : V, W, B, B, v) : {A:i4, B:U<Image>}*
+Binder : KeyJoin(*1: V, *2: W, *1.B, *2.B, *1)
+###

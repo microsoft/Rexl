@@ -1,0 +1,507 @@
+**** New globals: {N:i8, Q:i8?*, X:i8*, Y:i8**}
+
+> "*** Good function uses"
+"*** Good function uses" : s
+Binder : "*** Good function uses"
+###
+> Pipe(Range(10))
+Pipe(Range(10)) : g
+Binder : Test.Pipe(Range(10))
+###
+> Pipe(X)
+Pipe(X) : g
+Binder : Test.Pipe(X)
+###
+> Pipe(Q)
+Pipe(Q) : g
+Binder : Test.Pipe(Q)
+###
+> Pipe(Y)
+Pipe(Y) : g
+Binder : Test.Pipe(Y)
+###
+> Pipe(X->ForEach(it * 2))
+Pipe(X->ForEach(it * 2)) : g
+Binder : Test.Pipe(ForEach(*1: X, Mul(*1, 2)))
+###
+> Pipe(X->ForEach([if] it mod 3 = 1, it * 2))
+Pipe(X->ForEach([if] it mod 3 @= 1, it * 2)) : g
+Binder : Test.Pipe(ForEach(*1: X, [if] IntMod(*1, 3) @= 1, Mul(*1, 2)))
+###
+> Pipe(X->ForEach([while] it mod 3 = 1, it * 2))
+Pipe(X->ForEach([while] it mod 3 @= 1, it * 2)) : g
+Binder : Test.Pipe(ForEach(*1: X, [while] IntMod(*1, 3) @= 1, Mul(*1, 2)))
+###
+> Pipe(X->ForEachIf(it mod 3 = 1, it * 2))
+Pipe(X->ForEachIf(it mod 3 @= 1, it * 2)) : g
+Binder : Test.Pipe(ForEachIf*(*1: X, IntMod(*1, 3) @= 1, Mul(*1, 2)))
+Reducer: Test.Pipe(ForEach(*1: X, [if] IntMod(*1, 3) @= 1, Mul(*1, 2)))
+###
+> Pipe(X->ForEachWhile(it mod 3 = 1, it * 2))
+Pipe(X->ForEachWhile(it mod 3 @= 1, it * 2)) : g
+Binder : Test.Pipe(ForEachWhile*(*1: X, IntMod(*1, 3) @= 1, Mul(*1, 2)))
+Reducer: Test.Pipe(ForEach(*1: X, [while] IntMod(*1, 3) @= 1, Mul(*1, 2)))
+###
+> Pipe(X->ForEach([if] it mod 3 = 1, it * 2))
+Pipe(X->ForEach([if] it mod 3 @= 1, it * 2)) : g
+Binder : Test.Pipe(ForEach(*1: X, [if] IntMod(*1, 3) @= 1, Mul(*1, 2)))
+###
+> Pipe(X->CrossJoin(as a, Y as b, a = b->Count(), (a, b)))
+Pipe(X->CrossJoin(as a, b : Y, a @= b->Count(), (a, b))) : g
+Binder : Test.Pipe(CrossJoin(*1: X, *2: Y, *1 @= Count(*2), (*1, *2)))
+Reducer: Test.Pipe(KeyJoin(*1: X, *2: Y, [=] *1, Count(*2), (*1, *2)))
+###
+> Pipe(X->KeyJoin(as a, Y as b, a, b->TakeOne(), (a, b)))
+Pipe(X->KeyJoin(as a, b : Y, a, b->TakeOne(), (a, b))) : g
+Binder : Test.Pipe(KeyJoin(*1: X, *2: Y, *1, TakeOne(*2), (*1, *2)))
+###
+> Pipe(X->Distinct())
+Pipe(X->Distinct()) : g
+Binder : Test.Pipe(Distinct(X))
+###
+> Pipe(X->Sort())
+Pipe(X->Sort()) : g
+Binder : Test.Pipe(Sort(X))
+###
+> Pipe(Y->Sort(it->Sum(), it->TakeOne()))
+Pipe(Y->Sort(it->Sum(), it->TakeOne())) : g
+Binder : Test.Pipe(Sort(*1: Y, Sum(*1), TakeOne(*1)))
+###
+> Pipe(Chain(X, X->Take([if] it mod 2 = 0), X))
+Pipe(Chain(X, X->Take([if] it mod 2 @= 0), X)) : g
+Binder : Test.Pipe(Chain*(X, Take(*1: X, [if] IntMod(*1, 2) @= 0), X))
+Reducer: Test.Pipe(SeqConcat(X, Take(*1: X, [if] IntMod(*1, 2) @= 0), X))
+###
+> Pipe(X ++ X->Take([if] it mod 2 = 0) ++ X)
+Pipe(X ++ X->Take([if] it mod 2 @= 0) ++ X) : g
+Binder : Test.Pipe(SeqConcat(X, Take(*1: X, [if] IntMod(*1, 2) @= 0), X))
+###
+> Pipe(Y->ChainMap())
+Pipe(Y->ChainMap()) : g
+Binder : Test.Pipe(ChainMap(Y))
+###
+> Pipe(X->ChainMap(Range(it)))
+Pipe(X->ChainMap(Range(it))) : g
+Binder : Test.Pipe(ChainMap(*1: X, Range(*1)))
+###
+> Pipe(X->DropOne())
+Pipe(X->DropOne()) : g
+Binder : Test.Pipe(DropOne*(X))
+Reducer: Test.Pipe(Drop(X, 1))
+###
+> Pipe(X->DropOne(it < 7))
+Pipe(X->DropOne(it $< 7)) : g
+Binder : Test.Pipe(DropOne*(*1: X, *1 @< 7))
+Reducer: Test.Pipe(Drop(*1: X, 1, *1 @< 7))
+###
+> Pipe(X->Take(5))
+Pipe(X->Take(5)) : g
+Binder : Test.Pipe(Take(X, 5))
+###
+> Pipe(Y->Take(5))
+Pipe(Y->Take(5)) : g
+Binder : Test.Pipe(Take(Y, 5))
+###
+> Pipe(X->Drop(5))
+Pipe(X->Drop(5)) : g
+Binder : Test.Pipe(Drop(X, 5))
+###
+> Pipe(Y->Drop(5))
+Pipe(Y->Drop(5)) : g
+Binder : Test.Pipe(Drop(Y, 5))
+###
+> Pipe(X->Take(5, [if] it < 7))
+Pipe(X->Take(5, [if] it $< 7)) : g
+Binder : Test.Pipe(Take(*1: X, 5, [if] *1 @< 7))
+###
+> Pipe(Y->Take(5, [if] it->Count() < 7))
+Pipe(Y->Take(5, [if] it->Count() $< 7)) : g
+Binder : Test.Pipe(Take(*1: Y, 5, [if] Count(*1) @< 7))
+###
+> Pipe(X->Drop(5, [if] it < 7))
+Pipe(X->Drop(5, [if] it $< 7)) : g
+Binder : Test.Pipe(Drop(*1: X, 5, [if] *1 @< 7))
+###
+> Pipe(Y->Drop(5, [if] it->Count() < 7))
+Pipe(Y->Drop(5, [if] it->Count() $< 7)) : g
+Binder : Test.Pipe(Drop(*1: Y, 5, [if] Count(*1) @< 7))
+###
+> Pipe(X->Take(5, [while] it < 7))
+Pipe(X->Take(5, [while] it $< 7)) : g
+Binder : Test.Pipe(Take(*1: X, 5, [while] *1 @< 7))
+###
+> Pipe(Y->Take(5, [while] it->Count() < 7))
+Pipe(Y->Take(5, [while] it->Count() $< 7)) : g
+Binder : Test.Pipe(Take(*1: Y, 5, [while] Count(*1) @< 7))
+###
+> Pipe(X->Drop(5, [while] it < 7))
+Pipe(X->Drop(5, [while] it $< 7)) : g
+Binder : Test.Pipe(Drop(*1: X, 5, [while] *1 @< 7))
+###
+> Pipe(Y->Drop(5, [while] it->Count() < 7))
+Pipe(Y->Drop(5, [while] it->Count() $< 7)) : g
+Binder : Test.Pipe(Drop(*1: Y, 5, [while] Count(*1) @< 7))
+###
+> Pipe(X->Take([if] it < 7))
+Pipe(X->Take([if] it $< 7)) : g
+Binder : Test.Pipe(Take(*1: X, [if] *1 @< 7))
+###
+> Pipe(Y->Take([if] it->Count() < 7))
+Pipe(Y->Take([if] it->Count() $< 7)) : g
+Binder : Test.Pipe(Take(*1: Y, [if] Count(*1) @< 7))
+###
+> Pipe(X->Drop([if] it < 7))
+Pipe(X->Drop([if] it $< 7)) : g
+Binder : Test.Pipe(Drop(*1: X, [if] *1 @< 7))
+###
+> Pipe(Y->Drop([if] it->Count() < 7))
+Pipe(Y->Drop([if] it->Count() $< 7)) : g
+Binder : Test.Pipe(Drop(*1: Y, [if] Count(*1) @< 7))
+###
+> Pipe(X->Take([while] it < 7))
+Pipe(X->Take([while] it $< 7)) : g
+Binder : Test.Pipe(Take(*1: X, [while] *1 @< 7))
+###
+> Pipe(Y->Take([while] it->Count() < 7))
+Pipe(Y->Take([while] it->Count() $< 7)) : g
+Binder : Test.Pipe(Take(*1: Y, [while] Count(*1) @< 7))
+###
+> Pipe(X->Drop([while] it < 7))
+Pipe(X->Drop([while] it $< 7)) : g
+Binder : Test.Pipe(Drop(*1: X, [while] *1 @< 7))
+###
+> Pipe(Y->Drop([while] it->Count() < 7))
+Pipe(Y->Drop([while] it->Count() $< 7)) : g
+Binder : Test.Pipe(Drop(*1: Y, [while] Count(*1) @< 7))
+###
+> Pipe(X->TakeIf(it < 7))
+Pipe(X->TakeIf(it $< 7)) : g
+Binder : Test.Pipe(TakeIf*(*1: X, *1 @< 7))
+Reducer: Test.Pipe(Take(*1: X, [if] *1 @< 7))
+###
+> Pipe(Y->TakeIf(it->Count() < 7))
+Pipe(Y->TakeIf(it->Count() $< 7)) : g
+Binder : Test.Pipe(TakeIf*(*1: Y, Count(*1) @< 7))
+Reducer: Test.Pipe(Take(*1: Y, [if] Count(*1) @< 7))
+###
+> Pipe(X->DropIf(it < 7))
+Pipe(X->DropIf(it $< 7)) : g
+Binder : Test.Pipe(DropIf*(*1: X, *1 @< 7))
+Reducer: Test.Pipe(Drop(*1: X, [if] *1 @< 7))
+###
+> Pipe(Y->DropIf(it->Count() < 7))
+Pipe(Y->DropIf(it->Count() $< 7)) : g
+Binder : Test.Pipe(DropIf*(*1: Y, Count(*1) @< 7))
+Reducer: Test.Pipe(Drop(*1: Y, [if] Count(*1) @< 7))
+###
+> Pipe(X->TakeWhile(it < 7))
+Pipe(X->TakeWhile(it $< 7)) : g
+Binder : Test.Pipe(TakeWhile*(*1: X, *1 @< 7))
+Reducer: Test.Pipe(Take(*1: X, [while] *1 @< 7))
+###
+> Pipe(Y->TakeWhile(it->Count() < 7))
+Pipe(Y->TakeWhile(it->Count() $< 7)) : g
+Binder : Test.Pipe(TakeWhile*(*1: Y, Count(*1) @< 7))
+Reducer: Test.Pipe(Take(*1: Y, [while] Count(*1) @< 7))
+###
+> Pipe(X->DropWhile(it < 7))
+Pipe(X->DropWhile(it $< 7)) : g
+Binder : Test.Pipe(DropWhile*(*1: X, *1 @< 7))
+Reducer: Test.Pipe(Drop(*1: X, [while] *1 @< 7))
+###
+> Pipe(Y->DropWhile(it->Count() < 7))
+Pipe(Y->DropWhile(it->Count() $< 7)) : g
+Binder : Test.Pipe(DropWhile*(*1: Y, Count(*1) @< 7))
+Reducer: Test.Pipe(Drop(*1: Y, [while] Count(*1) @< 7))
+###
+> Pipe(Repeat(X, N))
+Pipe(Repeat(X, N)) : g
+Binder : Test.Pipe(Repeat(X, N))
+###
+> Pipe(Y->ForEach(it->ForEach(it > 3)->Any()))
+Pipe(Y->ForEach(it->ForEach(it $> 3)->Any())) : g
+Binder : Test.Pipe(ForEach(*1: Y, Any(ForEach(*2: *1, *2 @> 3))))
+###
+> Pipe(Y->ForEach(it->Any(it > 3)))
+Pipe(Y->ForEach(it->Any(it $> 3))) : g
+Binder : Test.Pipe(ForEach(*1: Y, Any(*2: *1, *2 @> 3)))
+###
+> Pipe(Y->ForEach(it->ForEach(it > 3)->All()))
+Pipe(Y->ForEach(it->ForEach(it $> 3)->All())) : g
+Binder : Test.Pipe(ForEach(*1: Y, All(ForEach(*2: *1, *2 @> 3))))
+###
+> Pipe(Y->ForEach(it->All(it > 3)))
+Pipe(Y->ForEach(it->All(it $> 3))) : g
+Binder : Test.Pipe(ForEach(*1: Y, All(*2: *1, *2 @> 3)))
+###
+> Pipe(Fold(x:Range(10), s:X, s ++ [x]))
+Pipe(Fold(x : Range(10), s : X, s ++ [x])) : g
+Binder : Test.Pipe(Fold(*1: Range(10), %2: X, SeqConcat(%2, [*1])))
+###
+> Pipe(ScanZ(x:X, s:0, s + x))
+Pipe(ScanZ(x : X, s : 0, s + x)) : g
+Binder : Test.Pipe(ScanZ(*1: X, %2: 0, Add(%2, *1)))
+###
+> Pipe(ScanX(x:X, s:0, s + x))
+Pipe(ScanX(x : X, s : 0, s + x)) : g
+Binder : Test.Pipe(ScanX(*1: X, %2: 0, Add(%2, *1)))
+###
+> Pipe(Generate(n:N, X->Take(n)))
+Pipe(Generate(n : N, X->Take(n))) : g
+Binder : Test.Pipe(Generate(^1: N, Take(X, ^1)))
+###
+> Pipe(Generate(n:N, cur:X, cur ++ [n]))
+Pipe(Generate(n : N, cur : X, cur ++ [n])) : g
+Binder : Test.Pipe(Generate(^1: N, %2: X, SeqConcat(%2, [^1])))
+###
+> Pipe(With(a:X, a))
+Pipe(With(a : X, a)) : g
+Binder : Test.Pipe(With(!1: X, !1))
+Reducer: Test.Pipe(X)
+###
+> Pipe(With(a:X ++ X, b:a ++ a, c:b ++ b, c ++ c))
+Pipe(With(a : X ++ X, b : a ++ a, c : b ++ b, c ++ c)) : g
+Binder : Test.Pipe(With(!1: SeqConcat(X, X), !2: SeqConcat(!1, !1), !3: SeqConcat(!2, !2), SeqConcat(!3, !3)))
+###
+> Pipe(WithMap(a:X, a * 2))
+Pipe(WithMap(a : X, a * 2)) : g
+Binder : Test.Pipe(ForEach(*1: X, With(!2: *1, Mul(!2, 2))))
+Reducer: Test.Pipe(ForEach(*1: X, Mul(*1, 2)))
+###
+> Pipe(GuardMap(a:Q, a * 2))
+Pipe(GuardMap(a : Q, a * 2)) : g
+Binder : Test.Pipe(ForEach(*1: Q, Guard(?2: *1, Mul(?2, 2))))
+###
+> Pipe(If(N > 3, X, Q))
+Pipe(If(N $> 3, X, Q)) : g
+Binder : Test.Pipe(If*(N @> 3, ForEach(*1: X, Opt<i8?>(*1)), Q))
+Reducer: Test.Pipe(If(N @> 3, ForEach(*1: X, Opt<i8?>(*1)), Q))
+###
+> Pipe(X->{A: it}->SetFields(B: A * A))
+Pipe(X->{ A : it }->SetFields(B : A * A)) : g
+Binder : Test.Pipe(ForEach(*3: ForEach(*1: X, Guard(!2: *1, {A:!2})), SetFields(!4: *3, B : Mul(!4.A, !4.A))))
+Reducer: Test.Pipe(ForEach(*1: X, SetFields(!2: {A:*1}, B : Mul(!2.A, !2.A))))
+###
+> Pipe(X->{A: it}->AddFields(B: A * A))
+Pipe(X->{ A : it }->AddFields(B : A * A)) : g
+Binder : Test.Pipe(ForEach(*3: ForEach(*1: X, Guard(!2: *1, {A:!2})), SetFields(!4: *3, B : Mul(!4.A, !4.A))))
+Reducer: Test.Pipe(ForEach(*1: X, SetFields(!2: {A:*1}, B : Mul(!2.A, !2.A))))
+###
+> Pipe({A: X}->SetFields(B: A * A).B)
+Pipe({ A : X }->SetFields(B : A * A).B) : g
+Binder : Test.Pipe(SetFields(!1: {A:X}, B : ForEach(*2: !1.A, *3: !1.A, Mul(*2, *3))).B)
+Reducer: Test.Pipe(SetFields(!1: {A:X}, B : ForEach(*2: !1.A, Mul(*2, *2))).B)
+###
+> Pipe(X->GroupBy(it))
+Pipe(X->GroupBy(it)) : g
+Binder : Test.Pipe(GroupBy(*1: X, [key] *1))
+###
+> Pipe(X->GroupBy([key] A: it, [item] B: it*2, [group] C: group->Take(5)))
+Pipe(X->GroupBy([key] A : it, [map] B : it * 2, [agg] C : group->Take(5))) : g
+Binder : Test.Pipe(GroupBy(*1: X, [key] A:*1, [map] B:Mul(*2, 2), [agg] C:Take(!3, 5)))
+###
+> Pipe(X->GroupBy([key] A: it, [item] B: it*2, [group] C: group->Count()))
+Pipe(X->GroupBy([key] A : it, [map] B : it * 2, [agg] C : group->Count())) : g
+Binder : Test.Pipe(GroupBy(*1: X, [key] A:*1, [map] B:Mul(*2, 2), [agg] C:Count(!3)))
+###
+> Pipe(Y->ForEach(it->Sum()))
+Pipe(Y->ForEach(it->Sum())) : g
+Binder : Test.Pipe(ForEach(*1: Y, Sum(*1)))
+###
+> Pipe(X->GetType().Len->Range())
+Pipe(X->GetType().Len->Range()) : g
+Binder : Test.Pipe(Range(Text.Len(GetType*(X))))
+Reducer: Test.Pipe(Range(3))
+###
+> Pipe(X->GetBindInfo().Len->Range())
+Pipe(X->GetBindInfo().Len->Range()) : g
+Binder : Test.Pipe(Range(Text.Len(GetBindInfo*(X))))
+Reducer: Test.Pipe(Range(35))
+###
+> Pipe(X->{ A: it, B: it^2, C: it < 7 })
+Pipe(X->{ A : it, B : it^2, C : it $< 7 }) : g
+Binder : Test.Pipe(ForEach(*1: X, Guard(!2: *1, {A:!2, B:Power(!2, 2), C:!2 @< 7})))
+Reducer: Test.Pipe(ForEach(*1: X, {A:*1, B:Power(*1, 2), C:*1 @< 7}))
+###
+> Pipe({ A: X }+>{ B: A->Take(3) }.B)
+Pipe({ A : X }+>{ B : A->Take(3) }.B) : g
+Binder : Test.Pipe(SetFields(!1: {A:X}, B : Take(!1.A, 3)).B)
+###
+> Pipe(Y->ToText()->ForEach(it->Concat(",")))
+Pipe(Y->ToText()->ForEach(it->Concat(","))) : g
+Binder : Test.Pipe(ForEach(*3: ForEach(*1: Y, ForEach(*2: *1, ToText(*2))), Text.Concat(*3, ",")))
+Reducer: Test.Pipe(ForEach(*1: Y, Text.Concat(ForEach(*2: *1, ToText(*2)), ",")))
+###
+> "*** Bad function uses"
+"*** Bad function uses" : s
+Binder : "*** Bad function uses"
+###
+> Pipe(X->First() ?? 3 | Range(_))
+Pipe(X->First() ?? 3 | Range(_)) : g
+*** Error: (6,8) Node: X->First(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Coalesce(First*(X), 3)))
+Reducer: Test.Pipe(Range(Coalesce(TakeOne(X, [else] null), 3)))
+###
+> Pipe(Y->First())
+Pipe(Y->First()) : g
+*** Error: (6,8) Node: Y->First(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(First*(Y))
+Reducer: Test.Pipe(TakeOne(Y))
+###
+> Pipe(X->TakeAt(3)->Range())
+Pipe(X->TakeAt(3)->Range()) : g
+*** Error: (6,8) Node: X->TakeAt(3), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(TakeAt(X, 3)))
+###
+> Pipe(Y->TakeAt(3))
+Pipe(Y->TakeAt(3)) : g
+*** Error: (6,8) Node: Y->TakeAt(3), Message: Improper use of a streaming task result
+Binder : Test.Pipe(TakeAt(Y, 3))
+###
+> Pipe(X->TakeOne()->Range())
+Pipe(X->TakeOne()->Range()) : g
+*** Error: (6,8) Node: X->TakeOne(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(TakeOne(X)))
+###
+> Pipe(Y->TakeOne())
+Pipe(Y->TakeOne()) : g
+*** Error: (6,8) Node: Y->TakeOne(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(TakeOne(Y))
+###
+> Pipe(X->TakeOne(it < 7)->Range())
+Pipe(X->TakeOne(it $< 7)->Range()) : g
+*** Error: (6,8) Node: X->TakeOne(it $< 7), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(TakeOne(*1: X, *1 @< 7)))
+###
+> Pipe(Y->TakeOne(it->Count() < 7))
+Pipe(Y->TakeOne(it->Count() $< 7)) : g
+*** Error: (6,8) Node: Y->TakeOne(it->Count() $< 7), Message: Improper use of a streaming task result
+Binder : Test.Pipe(TakeOne(*1: Y, Count(*1) @< 7))
+###
+> Pipe(Repeat(X, X->Count()))
+Pipe(Repeat(X, X->Count())) : g
+*** Error: (16,18) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Repeat(X, Count(X)))
+###
+> Pipe(X->Count()->Range())
+Pipe(X->Count()->Range()) : g
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Count(X)))
+###
+> Pipe(X if X->ForEach(it > 3)->Any() else X ++ X)
+Pipe(X if X->ForEach(it $> 3)->Any() else X ++ X) : g
+*** Error: (28,30) Node: X->ForEach(it $> 3)->Any(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(Any(ForEach(*1: X, *1 @> 3)), X, SeqConcat(X, X)))
+###
+> Pipe(X if X->Any(it > 3) else X ++ X)
+Pipe(X if X->Any(it $> 3) else X ++ X) : g
+*** Error: (11,13) Node: X->Any(it $> 3), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(Any(*1: X, *1 @> 3), X, SeqConcat(X, X)))
+###
+> Pipe(X if X->ForEach(it > 3)->All() else X ++ X)
+Pipe(X if X->ForEach(it $> 3)->All() else X ++ X) : g
+*** Error: (28,30) Node: X->ForEach(it $> 3)->All(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(All(ForEach(*1: X, *1 @> 3)), X, SeqConcat(X, X)))
+###
+> Pipe(X if X->All(it > 3) else X ++ X)
+Pipe(X if X->All(it $> 3) else X ++ X) : g
+*** Error: (11,13) Node: X->All(it $> 3), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(All(*1: X, *1 @> 3), X, SeqConcat(X, X)))
+###
+> Pipe(X->MakePairs())
+Pipe(X->MakePairs()) : g
+*** Error: (6,8) Node: X->MakePairs(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(MakePairs(X))
+###
+> Pipe(Fold(x:X, s:0, s + x)->Range())
+Pipe(Fold(x : X, s : 0, s + x)->Range()) : g
+*** Error: (9,10) Node: Fold(x : X, s : 0, s + x), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Fold(*1: X, %2: 0, Add(%2, *1))))
+###
+> Pipe(Guard(X, Y))
+Pipe(Guard(X, Y)) : g
+*** Error: (11,12) Node: X, Message: Improper use of a streaming task result
+Binder : Test.Pipe(Guard(?1: X, Y))
+###
+> Pipe(Q if IsNull(X) else X)
+Pipe(Q if IsNull(X) else X) : g
+*** Error: (16,17) Node: IsNull(X), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(IsNull*(X), Q, ForEach(*1: X, Opt<i8?>(*1))))
+Reducer: Test.Pipe(If(IsEmpty(X), Q, ForEach(*1: X, Opt<i8?>(*1))))
+###
+> Pipe(Q if IsEmpty(X) else X)
+Pipe(Q if IsEmpty(X) else X) : g
+*** Error: (17,18) Node: IsEmpty(X), Message: Improper use of a streaming task result
+Binder : Test.Pipe(If(IsEmpty(X), Q, ForEach(*1: X, Opt<i8?>(*1))))
+###
+> Pipe(X->ToText()->Concat(",").Len->Range())
+Pipe(X->ToText()->Concat(",").Len->Range()) : g
+*** Error: (16,18) Node: X->ToText()->Concat(","), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Text.Len(Text.Concat(ForEach(*1: X, ToText(*1)), ","))))
+###
+> Pipe({A: X}->SetFields(B: A * A->Count()).B)
+Pipe({ A : X }->SetFields(B : A * A->Count()).B) : g
+*** Error: (31,33) Node: A->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(SetFields(!1: {A:X}, B : With(!2: Count(!1.A), ForEach(*3: !1.A, Mul(*3, !2)))).B)
+###
+> Pipe(X->Sum()->Range())
+Pipe(X->Sum()->Range()) : g
+*** Error: (6,8) Node: X->Sum(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Sum(X)))
+###
+> Pipe(X->Tensor.From().Shape[0]->Range())
+Pipe(X->Tensor.From().Shape[0]->Range()) : g
+*** Error: (6,8) Node: X->Tensor.From(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Tensor.Shape(Tensor.From(X)).0))
+###
+> Pipe({ A: X }+>{ B: A->Count() }.B->Range())
+Pipe({ A : X }+>{ B : A->Count() }.B->Range()) : g
+*** Error: (21,23) Node: A->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(SetFields(!1: {A:X}, B : Count(!1.A)).B))
+###
+> Pipe(X ++ X->Count()->Range())
+Pipe(X ++ X->Count()->Range()) : g
+*** Error: (11,13) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(SeqConcat(X, Range(Count(X))))
+###
+> Pipe(X->Count()->Range() ++ X)
+Pipe(X->Count()->Range() ++ X) : g
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(SeqConcat(Range(Count(X)), X))
+###
+> Pipe(X, X->Count()->Range())
+Pipe(X, X->Count()->Range()) : g
+*** Error: (9,11) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(X, Range(Count(X)))
+###
+> Pipe(X->Count()->Range(), X)
+Pipe(X->Count()->Range(), X) : g
+*** Error: (6,8) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(Range(Count(X)), X)
+###
+> "*** These could be safe but are errors"
+"*** These could be safe but are errors" : s
+Binder : "*** These could be safe but are errors"
+###
+> Pipe(Y->{ A: it }+>{ B: A->Count() })
+Pipe(Y->{ A : it }+>{ B : A->Count() }) : g
+*** Error: (24,25) Node: A, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Test.Pipe(ForEach(*4: ForEach(*1: Y, ForEach(*2: *1, Guard(!3: *2, {A:!3}))), ForEach(*5: *4, SetFields(!6: *5, B : Count(Error(ErrBadType_Src_Dst))))))
+Reducer: Test.Pipe(ForEach(*1: Y, ForEach(*2: *1, SetFields(!3: {A:*2}, B : Count(Error(ErrBadType_Src_Dst))))))
+###
+> Pipe(X->ForEach(X->Count())) // Hoisting makes this "bad"!
+Pipe(X->ForEach(X->Count())) : g
+*** Error: (17,19) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(ForEach(*1: X, Count(X)))
+Hoister: Test.Pipe(With(!1: Count(X), ForEach(*2: X, !1)))
+###
+> Pipe(With(temp: X->Count(), X->ForEach(temp))) // Result of hoisting the previous one.
+Pipe(With(temp : X->Count(), X->ForEach(temp))) : g
+*** Error: (17,19) Node: X->Count(), Message: Improper use of a streaming task result
+Binder : Test.Pipe(With(!1: Count(X), ForEach(*2: X, !1)))
+###
+> Pipe(X->ForEach(as a, X->Count(it < a)))
+Pipe(X->ForEach(as a, X->Count(it $< a))) : g
+*** Error: (23,25) Node: X->Count(it $< a), Message: Improper use of a streaming task result
+Binder : Test.Pipe(ForEach(*1: X, Count(*2: X, *2 @< *1)))
+###

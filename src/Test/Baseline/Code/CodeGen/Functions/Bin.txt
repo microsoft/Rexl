@@ -1,0 +1,512 @@
+**** New globals: {i1:i1, i2:i2, i4:i4, i8:i8, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> Bin(Wrap(3), 4)
+Bin(Wrap(3), 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(3:i8):i8), 4:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(Wrap(3), -4)
+Bin(Wrap(3), -4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(3:i8):i8), -4:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(Wrap(2), -1)
+Bin(Wrap(2), -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Test.Wrap(2:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 2
+###
+> Bin(Wrap(2), Wrap(0))
+Bin(Wrap(2), Wrap(0)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2:i8):i8), Call(∂.Test.Wrap(0:i8):i8)):i8))
+Func sig: () to i8
+Type: i8, Value: 2
+###
+> Bin(Wrap(0x3FFFFFFF), 2)
+Bin(Wrap(1073741823), 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1073741823:i8):i8), 2:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 1073741822
+###
+> Bin(Wrap(0x3FFFFFFF), 4)
+Bin(Wrap(1073741823), 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1073741823:i8):i8), 4:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 1073741820
+###
+> Bin(Wrap(0x3FFFFFFF), Wrap(0))
+Bin(Wrap(1073741823), Wrap(0)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1073741823:i8):i8), Call(∂.Test.Wrap(0:i8):i8)):i8))
+Func sig: () to i8
+Type: i8, Value: 1073741823
+###
+> Bin(Wrap(-0), 2)
+Bin(Wrap(-0), 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(0:i8):i8), 2:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(Wrap(-2), -0)
+Bin(Wrap(-2), -0) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Test.Wrap(-2:i8):i8))
+Func sig: () to i8
+Type: i8, Value: -2
+###
+> Bin(i4, 3)
+Bin(i4, 3) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Global(i4)), 3:i8):i8))
+Func sig: (i4:i4) to i8
+Type: i8, Value: 0
+###
+> Bin(3, i4)
+Bin(3, i4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(3:i8, Num<i8>(Global(i4))):i8))
+Func sig: (i4:i4) to i8
+Type: i8, Value: 3
+###
+> Bin(Wrap(0x80000000i4), -1)
+Bin(Wrap(2147483648), -1) : i8
+BndKind:CastNum, Type:i8, Bnd:(Num<i8>(Call(∂.Test.Wrap(-2147483648:i4):i4)))
+Func sig: () to i8
+Type: i8, Value: -2147483648
+###
+> Bin(i8+3,4)
+Bin(i8 + 3, 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Add(Global(i8), 3:i8), 4:i8):i8))
+Func sig: (i8:i8) to i8
+Type: i8, Value: 0
+###
+> Bin(i8+2,-1)
+Bin(i8 + 2, -1) : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Global(i8), 2:i8))
+Func sig: (i8:i8) to i8
+Type: i8, Value: 2
+###
+> Bin(Wrap(0x3FFFFFFFF), 2)
+Bin(Wrap(17179869183), 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(17179869183:i8):i8), 2:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 17179869182
+###
+> Bin(Wrap(0x3FFFFFFFF), 4)
+Bin(Wrap(17179869183), 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(17179869183:i8):i8), 4:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 17179869180
+###
+> Bin(Wrap(0x3FFFFFFFF), Wrap(0))
+Bin(Wrap(17179869183), Wrap(0)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(17179869183:i8):i8), Call(∂.Test.Wrap(0:i8):i8)):i8))
+Func sig: () to i8
+Type: i8, Value: 17179869183
+###
+> Bin(Wrap(0x8000000000000000i8), -1)
+Bin(Wrap(9223372036854775808), -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Test.Wrap(-9223372036854775808:i8):i8))
+Func sig: () to i8
+Type: i8, Value: -9223372036854775808
+###
+> Bin(u4+2u, 2)
+Bin(u4 + 2, 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Add(Num<u8>(Global(u4)), 2:u8)), 2:i8):i8))
+*** Warning: (6,7) Node: u4 + 2, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: (u4:u4) to i8
+Type: i8, Value: 2
+###
+> Bin(u4+10u, 4)
+Bin(u4 + 10, 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Add(Num<u8>(Global(u4)), 10:u8)), 4:i8):i8))
+*** Warning: (6,7) Node: u4 + 10, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: (u4:u4) to i8
+Type: i8, Value: 8
+###
+> Bin(Wrap(0x7FFFFFFFU), 2)
+Bin(Wrap(2147483647), 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2147483647:u8):u8)), 2:i8):i8))
+*** Warning: (8,9) Node: Wrap(2147483647), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to i8
+Type: i8, Value: 2147483646
+###
+> Bin(Wrap(0x7FFFFFFFU), 2U)
+Bin(Wrap(2147483647), 2) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2147483647:u8):u8), 2:u8):u8))
+Func sig: () to u8
+Type: u8, Value: 2147483646
+###
+> Bin(Wrap(0x7FFFFFFFU), Wrap(0U))
+Bin(Wrap(2147483647), Wrap(0)) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2147483647:u8):u8), Call(∂.Test.Wrap(0:u8):u8)):u8))
+Func sig: () to u8
+Type: u8, Value: 2147483647
+###
+> Bin(Wrap(0x7FFFFFFFU), 4)
+Bin(Wrap(2147483647), 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2147483647:u8):u8)), 4:i8):i8))
+*** Warning: (8,9) Node: Wrap(2147483647), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to i8
+Type: i8, Value: 2147483644
+###
+> Bin(Wrap(0x812345u4), 0x81234567u4)
+Bin(Wrap(8463173), 2166572391) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(8463173:u4):u4)), 2166572391:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(Wrap(0x80123456u4), 0x81234567u4)
+Bin(Wrap(2148676694), 2166572391) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2148676694:u4):u4)), 2166572391:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(Wrap(0x81234567u4), 0x80123456u4)
+Bin(Wrap(2166572391), 2148676694) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2166572391:u4):u4)), 2148676694:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 2148676694
+###
+> Bin(Wrap(0x81234567u4), 0x812345u4)
+Bin(Wrap(2166572391), 8463173) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2166572391:u4):u4)), 8463173:i8):i8))
+Func sig: () to i8
+Type: i8, Value: 2166572288
+###
+> Bin(Wrap(0x7FFFFFFFFFU), 2U)
+Bin(Wrap(549755813887), 2) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(549755813887:u8):u8), 2:u8):u8))
+Func sig: () to u8
+Type: u8, Value: 549755813886
+###
+> Bin(Wrap(0x7FFFFFFFFFU), Wrap(0U))
+Bin(Wrap(549755813887), Wrap(0)) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(549755813887:u8):u8), Call(∂.Test.Wrap(0:u8):u8)):u8))
+Func sig: () to u8
+Type: u8, Value: 549755813887
+###
+> Bin(Wrap(-0f), 2f)
+Bin(Wrap(-0), 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Num<r8>(Call(∂.Test.Wrap(-0:r4):r4)), 2:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -0
+###
+> Bin(Wrap(-0.0), 2.0)
+Bin(Wrap(-0), 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(-0:r8):r8), 2:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -0
+###
+> Bin(Wrap(2f), 0f)
+Bin(Wrap(2), 0) : r8
+BndKind:CastNum, Type:r8, Bnd:(Num<r8>(Call(∂.Test.Wrap(2:r4):r4)))
+Func sig: () to r8
+Type: r8, Value: 2
+###
+> Bin(Wrap(-2.0), -0.0)
+Bin(Wrap(-2), -0) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Test.Wrap(-2:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -2
+###
+> Bin(Wrap(2.0), 4.0)
+Bin(Wrap(2), 4) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2:r8):r8), 4:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 0
+###
+> Bin(Wrap(2.0), 3.0)
+Bin(Wrap(2), 3) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2:r8):r8), 3:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 0
+###
+> Bin(Wrap(1e30f), 1e-30f)
+Bin(Wrap(1E+30), 1E-30) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Num<r8>(Call(∂.Test.Wrap(1.0000000150474662E+30:r4):r4)), 1.0000000031710769E-30:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 1.0000000150474662E+30
+###
+> Bin(Wrap(1e30), -1e-30)
+Bin(Wrap(1E+30), -1E-30) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1E+30:r8):r8), -1E-30:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 1E+30
+###
+> Bin(Wrap(-1e30), 1e-30)
+Bin(Wrap(-1E+30), 1E-30) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(-1E+30:r8):r8), 1E-30:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -1E+30
+###
+> Bin(Wrap(-1e30), -1e-30)
+Bin(Wrap(-1E+30), -1E-30) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(-1E+30:r8):r8), -1E-30:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -1E+30
+###
+> Bin(r8+1.0, 2.0)
+Bin(r8 + 1, 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Add(Global(r8), 1:r8), 2:r8):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 0
+###
+> Bin(r8-2.0, 2.0)
+Bin(r8 - 2, 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Add(Global(r8), [-] 2:r8), 2:r8):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: -2
+###
+> Bin(r8-2.0, -0.0)
+Bin(r8 - 2, -0) : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Global(r8), [-] 2:r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: -2
+###
+> Bin(r8, 0f)
+Bin(r8, 0) : r8
+BndKind:Global, Type:r8, Bnd:(Global(r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 0
+###
+> Bin(r8, -0f)
+Bin(r8, -0) : r8
+BndKind:Global, Type:r8, Bnd:(Global(r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 0
+###
+> Bin(r8, 2.0)
+Bin(r8, 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Global(r8), 2:r8):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 0
+###
+> Bin(Wrap(-2e100), -0f)
+Bin(Wrap(-2E+100), -0) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Test.Wrap(-2E+100:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -2E+100
+###
+> Bin(Wrap(2e100), 2)
+Bin(Wrap(2E+100), 2) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2E+100:r8):r8), 2:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 2E+100
+###
+> Bin(Wrap(2e100), 3)
+Bin(Wrap(2E+100), 3) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(2E+100:r8):r8), 3:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 2E+100
+###
+> Bin(1.0/0, r8)
+Bin(1 / 0, r8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(∞:r8, Global(r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: ∞
+###
+> Bin(-1.0/0, r8)
+Bin(-1 / 0, r8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(-∞:r8, Global(r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: -∞
+###
+> Bin(1.0/0 * 0, r8)
+Bin(1 / 0 * 0, r8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(NaN:r8, Global(r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: NaN
+###
+> Bin(-1.0/0 * 0, r8)
+Bin(-1 / 0 * 0, r8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(NaN:r8, Global(r8)):r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: NaN
+###
+> Bin(Wrap(1e200), 1e-200)
+Bin(Wrap(1E+200), 1E-200) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1E+200:r8):r8), 1E-200:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 1E+200
+###
+> Bin(Wrap(1e200), -1e-200)
+Bin(Wrap(1E+200), -1E-200) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(1E+200:r8):r8), -1E-200:r8):r8))
+Func sig: () to r8
+Type: r8, Value: 1E+200
+###
+> Bin(Wrap(-1e200), 1e-200)
+Bin(Wrap(-1E+200), 1E-200) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(-1E+200:r8):r8), 1E-200:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -1E+200
+###
+> Bin(Wrap(-1e200), -1e-200)
+Bin(Wrap(-1E+200), -1E-200) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(-1E+200:r8):r8), -1E-200:r8):r8))
+Func sig: () to r8
+Type: r8, Value: -1E+200
+###
+> Bin(Wrap(0x7FFFFFFFFFU), 2)
+Bin(Wrap(549755813887), 2) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(549755813887:u8):u8)), 2:i8):i8))
+*** Warning: (8,9) Node: Wrap(549755813887), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to i8
+Type: i8, Value: 549755813886
+###
+> Bin(Wrap(0x7FFFFFFFFFU), 4)
+Bin(Wrap(549755813887), 4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(549755813887:u8):u8)), 4:i8):i8))
+*** Warning: (8,9) Node: Wrap(549755813887), Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Func sig: () to i8
+Type: i8, Value: 549755813884
+###
+> Bin(Wrap(0x3FFFFFFFFFFFFFFFF), 2)
+Bin(Wrap(73786976294838206463), 2) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(73786976294838206463:i):i), 2:i):i))
+Func sig: () to i
+Type: ia, Value: 73786976294838206462
+###
+> Bin(Wrap(0x3FFFFFFFFFFFFFFFF), -4)
+Bin(Wrap(73786976294838206463), -4) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(73786976294838206463:i):i), -4:i):i))
+Func sig: () to i
+Type: ia, Value: 73786976294838206460
+###
+> Bin(Wrap(0x3FFFFFFFFFFFFFFFF), Wrap(0))
+Bin(Wrap(73786976294838206463), Wrap(0)) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Bin(Call(∂.Test.Wrap(73786976294838206463:i):i), Num<i>(Call(∂.Test.Wrap(0:i8):i8))):i))
+Func sig: () to i
+Type: ia, Value: 73786976294838206463
+###
+> Bin(Wrap(3), 4) = Bin(3, 4)
+Bin(Wrap(3), 4) @= Bin(3, 4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(3:i8):i8), 4:i8):i8) @= 0:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(3i8), 4) = Bin(3i8, 4)
+Bin(Wrap(3), 4) @= Bin(3, 4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(3:i8):i8), 4:i8):i8) @= 0:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x80000000i4), -1) = Bin(0x80000000i4, -1)
+Bin(Wrap(2147483648), -1) @= Bin(2147483648, -1) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<i8>(Call(∂.Test.Wrap(-2147483648:i4):i4)) @= -2147483648:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x8000000000000000i8), -1) = Bin(0x8000000000000000i8, -1)
+Bin(Wrap(9223372036854775808), -1) @= Bin(9223372036854775808, -1) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Test.Wrap(-9223372036854775808:i8):i8) @= -9223372036854775808:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2), Wrap(0)) = Bin(2, 0)
+Bin(Wrap(2), Wrap(0)) @= Bin(2, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(2:i8):i8), Call(∂.Test.Wrap(0:i8):i8)):i8) @= 2:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2i8), Wrap(0)) = Bin(2i8, 0)
+Bin(Wrap(2), Wrap(0)) @= Bin(2, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(2:i8):i8), Call(∂.Test.Wrap(0:i8):i8)):i8) @= 2:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(3u), 4u) = Bin(3u, 4u)
+Bin(Wrap(3), 4) @= Bin(3, 4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(3:u8):u8), 4:u8):u8) @= 0:u8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(3u8), 4u) = Bin(3u8, 4u)
+Bin(Wrap(3), 4) @= Bin(3, 4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(3:u8):u8), 4:u8):u8) @= 0:u8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(3), -4) = Bin(3, -4)
+Bin(Wrap(3), -4) @= Bin(3, -4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(3:i8):i8), -4:i8):i8) @= 0:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2u), Wrap(0u)) = Bin(2u, 0u)
+Bin(Wrap(2), Wrap(0)) @= Bin(2, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(2:u8):u8), Call(∂.Test.Wrap(0:u8):u8)):u8) @= 2:u8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2u8), Wrap(0u)) = Bin(2u8, 0u)
+Bin(Wrap(2), Wrap(0)) @= Bin(2, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(2:u8):u8), Call(∂.Test.Wrap(0:u8):u8)):u8) @= 2:u8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2.0), 4.0) = Bin(2.0, 4.0)
+Bin(Wrap(2), 4) @= Bin(2, 4) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Call(∂.Test.Wrap(2:r8):r8), 4:r8):r8) @= 0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(2f), 0f) = Bin(2f, 0f)
+Bin(Wrap(2), 0) @= Bin(2, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Num<r8>(Call(∂.Test.Wrap(2:r4):r4)) @= 2:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(-2.0), -0.0) = Bin(-2.0, -0.0)
+Bin(Wrap(-2), -0) @= Bin(-2, -0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Test.Wrap(-2:r8):r8) @= -2:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0.0), 0.0) = Bin(0.0, 0.0)
+Bin(Wrap(0), 0) @= Bin(0, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Test.Wrap(0:r8):r8) @= 0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(-0.0), 0.0) = Bin(-0.0, 0.0)
+Bin(Wrap(-0), 0) @= Bin(-0, 0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Test.Wrap(-0:r8):r8) @= -0:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(r8+1.0, 2.0) = Bin(1.0r8, 2.0)
+Bin(r8 + 1, 2) @= Bin(1, 2) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Add(Global(r8), 1:r8), 2:r8):r8) @= 0:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(-2e100), -0f) = Bin(-2e100, -0f)
+Bin(Wrap(-2E+100), -0) @= Bin(-2E+100, -0) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Test.Wrap(-2E+100:r8):r8) @= -2E+100:r8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x812345u4), 0x81234567u4) = Bin(0x812345u4, 0x81234567u4)
+Bin(Wrap(8463173), 2166572391) @= Bin(8463173, 2166572391) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(8463173:u4):u4)), 2166572391:i8):i8) @= 0:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x80123456u4), 0x81234567u4) = Bin(0x80123456u4, 0x81234567u4)
+Bin(Wrap(2148676694), 2166572391) @= Bin(2148676694, 2166572391) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2148676694:u4):u4)), 2166572391:i8):i8) @= 0:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x81234567u4), 0x80123456u4) = Bin(0x81234567u4, 0x80123456u4)
+Bin(Wrap(2166572391), 2148676694) @= Bin(2166572391, 2148676694) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2166572391:u4):u4)), 2148676694:i8):i8) @= 2148676694:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> Bin(Wrap(0x81234567u4), 0x812345u4) = Bin(0x81234567u4, 0x812345u4)
+Bin(Wrap(2166572391), 8463173) @= Bin(2166572391, 8463173) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Call(∂.Bin(Num<i8>(Call(∂.Test.Wrap(2166572391:u4):u4)), 8463173:i8):i8) @= 2166572288:i8))
+Func sig: () to b
+Type: bool, Value: true 
+###

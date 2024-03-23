@@ -1,0 +1,143 @@
+> WrapCallCtx(1)
+WrapCallCtx(1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Test.WrapCallCtx(1:i8):i8))
+// (<ctx>) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallCtxFuncGen::Exec(i8, ExecCtx, i4):i8
+      5) box [i8]
+      1) ret
+  Total Size: 24
+
+Func sig: (<ctx>:x) to i8
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [0] Log(id0, msg)
+  ** [1] Log(id1, msg, args)
+Type: i8, Value: 1
+*** Ctx ping count: 6
+    [_] 4
+    [0:2](2=1+1): Test.WrapCallCtx(1)
+###
+> WrapCallCtx(3) + WrapCallCtx(5)
+WrapCallCtx(3) + WrapCallCtx(5) : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Test.WrapCallCtx(3:i8):i8), Call(∂.Test.WrapCallCtx(5:i8):i8)))
+// (<ctx>) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallCtxFuncGen::Exec(i8, ExecCtx, i4):i8
+      1) ldc.i4.5
+      1) conv.i8
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.2
+      5) call static WrapCallCtxFuncGen::Exec(i8, ExecCtx, i4):i8
+      1) add
+      5) box [i8]
+      1) ret
+  Total Size: 34
+
+Func sig: (<ctx>:x) to i8
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [0] Log(id0, msg)
+  ** [1] Log(id1, msg, args)
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [2] Log(id0, msg)
+  ** [3] Log(id1, msg, args)
+Type: i8, Value: 8
+*** Ctx ping count: 12
+    [_] 8
+    [0:2](2=1+1): Test.WrapCallCtx(3)
+    [2:4](2=1+1): Test.WrapCallCtx(5)
+###
+> Sum(Range(3), WrapCallCtx(it))
+Sum(Range(3), WrapCallCtx(it)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Call(∂.Range(3:i8):i8*), Call(∂.Test.WrapCallCtx(Scope(1)):i8)):i8))
+// (<ctx>) : i8
+Sum_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallCtxFuncGen::Exec(i8, ExecCtx, i4):i8
+      1) ret
+  Total Size: 15
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.2
+      2) ldloca.s [i8 (1)]
+      5) call static SumBaseGen::Exec(Seq<i8>, Func<i8,i8>, ExecCtx, i4, out i8):i8
+      5) box [i8]
+      1) ret
+  Total Size: 67
+
+Func sig: (<ctx>:x) to i8
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [0] Log(id0, msg)
+  ** [1] Log(id1, msg, args)
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [0] Log(id0, msg)
+  ** [1] Log(id1, msg, args)
+  ** [_] Log(msg); Ping(); Ping(x) for x in [-1, int.MinValue, int.MaxValue, id0, id1]
+  ** [_] Log(msg, args)
+  ** [_] Log(-1, msg)
+  ** [_] Log(-1, msg, args)
+  ** [0] Log(id0, msg)
+  ** [1] Log(id1, msg, args)
+Type: i8, Value: 3
+*** Ctx ping count: 22
+    [_] 12
+    [0:2](6=3+3): Test.WrapCallCtx(*1x)
+    [2](4): Sum(*1: Range(3), Test.WrapCallCtx(*1))
+###

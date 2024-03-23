@@ -1,0 +1,302 @@
+>>> *** Source:
+    T1 := Range(20_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    PC := "big.rbin";
+    finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+    "*** Wrote table to '" & WriterC.Link.Path & "' ***";
+    (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames);
+    (WriterC.Size, WriterC.Compression);
+    PU := "big-unchunked.rbin";
+    finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+    "*** Wrote table to '" & WriterU.Link.Path & "' ***";
+    (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames);
+    (WriterU.Size, WriterU.Compression);
+    finish ReaderC as ReadRbin(WriterC.Link);
+    (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames);
+    "*** Read table from '" & ReaderC.Link.Path & "' ***";
+    ReaderC.RowCount;
+    T2 := ReaderC.Data;
+    finish ReaderU as ReadRbin(WriterU.Link);
+    (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames);
+    "*** Read table from '" & ReaderU.Link.Path & "' ***";
+    ReaderU.RowCount;
+    T3 := ReaderU.Data;
+    (T1->Count(), T2->Count(), T3->Count());
+    ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);
+    // Again with a partial chunk.
+    T1 := T1->Drop(5);
+    PC := "big.rbin";
+    finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+    (WriterC.Size, WriterC.Compression);
+    PU := "big-unchunked.rbin";
+    finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+    (WriterU.Size, WriterU.Compression);
+    finish ReaderC as ReadRbin(WriterC.Link);
+    ReaderC.RowCount;
+    T2 := ReaderC.Data;
+    finish ReaderU as ReadRbin(WriterU.Link);
+    ReaderU.RowCount;
+    T3 := ReaderU.Data;
+    (T1->Count(), T2->Count(), T3->Count());
+    ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);
+    // Again with zero items.
+    T1 := T1->TakeIf(A > 1_000_000_000);
+    PC := "big.rbin";
+    finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+    (WriterC.Size, WriterC.Compression);
+    PU := "big-unchunked.rbin";
+    finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+    (WriterU.Size, WriterU.Compression);
+    finish ReaderC as ReadRbin(WriterC.Link);
+    ReaderC.RowCount;
+    T2 := ReaderC.Data;
+    finish ReaderU as ReadRbin(WriterU.Link);
+    ReaderU.RowCount;
+    T3 := ReaderU.Data;
+    (T1->Count(), T2->Count(), T3->Count());
+    ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+    ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);
+
+>>> *** Instructions:
+   0) [0] Define T1 <- Range(20000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   1) [0] Define PC <- "big.rbin"
+   2) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+   3) [0] Expr "*** Wrote table to '" & WriterC.Link.Path & "' ***"
+   4) [0] Expr (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames)
+   5) [0] Expr (WriterC.Size, WriterC.Compression)
+   6) [0] Define PU <- "big-unchunked.rbin"
+   7) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+   8) [0] Expr "*** Wrote table to '" & WriterU.Link.Path & "' ***"
+   9) [0] Expr (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames)
+  10) [0] Expr (WriterU.Size, WriterU.Compression)
+  11) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+  12) [0] Expr (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames)
+  13) [0] Expr "*** Read table from '" & ReaderC.Link.Path & "' ***"
+  14) [0] Expr ReaderC.RowCount
+  15) [0] Define T2 <- ReaderC.Data
+  16) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+  17) [0] Expr (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames)
+  18) [0] Expr "*** Read table from '" & ReaderU.Link.Path & "' ***"
+  19) [0] Expr ReaderU.RowCount
+  20) [0] Define T3 <- ReaderU.Data
+  21) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+  22) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+  23) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+  24) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+  25) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+  26) [0] Define T1 <- T1->Drop(5)
+  27) [0] Define PC <- "big.rbin"
+  28) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+  29) [0] Expr (WriterC.Size, WriterC.Compression)
+  30) [0] Define PU <- "big-unchunked.rbin"
+  31) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+  32) [0] Expr (WriterU.Size, WriterU.Compression)
+  33) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+  34) [0] Expr ReaderC.RowCount
+  35) [0] Define T2 <- ReaderC.Data
+  36) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+  37) [0] Expr ReaderU.RowCount
+  38) [0] Define T3 <- ReaderU.Data
+  39) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+  40) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+  41) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+  42) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+  43) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+  44) [0] Define T1 <- T1->TakeIf(A $> 1000000000)
+  45) [0] Define PC <- "big.rbin"
+  46) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+  47) [0] Expr (WriterC.Size, WriterC.Compression)
+  48) [0] Define PU <- "big-unchunked.rbin"
+  49) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+  50) [0] Expr (WriterU.Size, WriterU.Compression)
+  51) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+  52) [0] Expr ReaderC.RowCount
+  53) [0] Define T2 <- ReaderC.Data
+  54) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+  55) [0] Expr ReaderU.RowCount
+  56) [0] Define T3 <- ReaderU.Data
+  57) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+  58) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+  59) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+  60) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+  61) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+  62) [0] End
+
+>    0) [0] Define T1 <- Range(20000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T1' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    1) [0] Define PC <- "big.rbin"
+Global 'PC' has DType: s, SysType: str
+>    2) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+Task 'WriterC' added
+Task 'WriterC' now playing
+Task 'WriterC' finished
+>    3) [0] Expr "*** Wrote table to '" & WriterC.Link.Path & "' ***"
+*** Wrote table to 'temp/big.rbin' ***
+>    4) [0] Expr (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>    5) [0] Expr (WriterC.Size, WriterC.Compression)
+(528323, None)
+>    6) [0] Define PU <- "big-unchunked.rbin"
+Global 'PU' has DType: s, SysType: str
+>    7) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+Task 'WriterU' added
+Task 'WriterU' now playing
+Task 'WriterU' finished
+>    8) [0] Expr "*** Wrote table to '" & WriterU.Link.Path & "' ***"
+*** Wrote table to 'temp/big-unchunked.rbin' ***
+>    9) [0] Expr (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>   10) [0] Expr (WriterU.Size, WriterU.Compression)
+(527983, None)
+>   11) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+Task 'ReaderC' added
+Task 'ReaderC' now playing
+Task 'ReaderC' finished
+>   12) [0] Expr (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, SData, Data))
+>   13) [0] Expr "*** Read table from '" & ReaderC.Link.Path & "' ***"
+*** Read table from 'temp/big.rbin' ***
+>   14) [0] Expr ReaderC.RowCount
+20000
+>   15) [0] Define T2 <- ReaderC.Data
+Global 'T2' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>   16) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+Task 'ReaderU' added
+Task 'ReaderU' now playing
+Task 'ReaderU' finished
+>   17) [0] Expr (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, SData, Data))
+>   18) [0] Expr "*** Read table from '" & ReaderU.Link.Path & "' ***"
+*** Read table from 'temp/big-unchunked.rbin' ***
+>   19) [0] Expr ReaderU.RowCount
+20000
+>   20) [0] Define T3 <- ReaderU.Data
+Global 'T3' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>   21) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+(20000, 20000, 20000)
+*** Ctx ping count: 0
+>   22) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 20000
+    [0](20000): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.A @= *3.A @= *4.A, *2, *3, *4)), [if] Xor(*5.1, true))
+>   23) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 20000
+    [0](20000): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.B @= *3.B @= *4.B, *2, *3, *4)), [if] Xor(*5.1, true))
+>   24) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 20000
+    [0](20000): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.C @= *3.C @= *4.C, *2, *3, *4)), [if] Xor(*5.1, true))
+>   25) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 20000
+    [0](20000): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.D @= *3.D @= *4.D, *2, *3, *4)), [if] Xor(*5.1, true))
+>   26) [0] Define T1 <- T1->Drop(5)
+>   27) [0] Define PC <- "big.rbin"
+>   28) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+Overwriting task: WriterC
+Task 'WriterC' added
+Task 'WriterC' now playing
+Task 'WriterC' finished
+>   29) [0] Expr (WriterC.Size, WriterC.Compression)
+(528233, None)
+>   30) [0] Define PU <- "big-unchunked.rbin"
+>   31) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+Overwriting task: WriterU
+Task 'WriterU' added
+Task 'WriterU' now playing
+Task 'WriterU' finished
+>   32) [0] Expr (WriterU.Size, WriterU.Compression)
+(527893, None)
+>   33) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+Overwriting task: ReaderC
+Task 'ReaderC' added
+Task 'ReaderC' now playing
+Task 'ReaderC' finished
+>   34) [0] Expr ReaderC.RowCount
+19995
+>   35) [0] Define T2 <- ReaderC.Data
+>   36) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+Overwriting task: ReaderU
+Task 'ReaderU' added
+Task 'ReaderU' now playing
+Task 'ReaderU' finished
+>   37) [0] Expr ReaderU.RowCount
+19995
+>   38) [0] Define T3 <- ReaderU.Data
+>   39) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+(19995, 19995, 19995)
+*** Ctx ping count: 0
+>   40) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 19995
+    [0](19995): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.A @= *3.A @= *4.A, *2, *3, *4)), [if] Xor(*5.1, true))
+>   41) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 19995
+    [0](19995): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.B @= *3.B @= *4.B, *2, *3, *4)), [if] Xor(*5.1, true))
+>   42) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 19995
+    [0](19995): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.C @= *3.C @= *4.C, *2, *3, *4)), [if] Xor(*5.1, true))
+>   43) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 19995
+    [0](19995): Take(*5: ForEach(*2: T1, *3: T2, *4: T3, (#1, *2.D @= *3.D @= *4.D, *2, *3, *4)), [if] Xor(*5.1, true))
+>   44) [0] Define T1 <- T1->TakeIf(A $> 1000000000)
+>   45) [0] Define PC <- "big.rbin"
+>   46) [0] TaskProc finish WriterC as WriteRbin(T1, "temp/" & PC, true, false)
+Overwriting task: WriterC
+Task 'WriterC' added
+Task 'WriterC' now playing
+Task 'WriterC' finished
+>   47) [0] Expr (WriterC.Size, WriterC.Compression)
+(74, None)
+>   48) [0] Define PU <- "big-unchunked.rbin"
+>   49) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+Overwriting task: WriterU
+Task 'WriterU' added
+Task 'WriterU' now playing
+Task 'WriterU' finished
+>   50) [0] Expr (WriterU.Size, WriterU.Compression)
+(58, None)
+>   51) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+Overwriting task: ReaderC
+Task 'ReaderC' added
+Task 'ReaderC' now playing
+Task 'ReaderC' finished
+>   52) [0] Expr ReaderC.RowCount
+0
+>   53) [0] Define T2 <- ReaderC.Data
+>   54) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+Overwriting task: ReaderU
+Task 'ReaderU' added
+Task 'ReaderU' now playing
+Task 'ReaderU' finished
+>   55) [0] Expr ReaderU.RowCount
+0
+>   56) [0] Define T3 <- ReaderU.Data
+>   57) [0] Expr (T1->Count(), T2->Count(), T3->Count())
+(0, 0, 0)
+*** Ctx ping count: 0
+>   58) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.A @= b.A @= c.A, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 0
+>   59) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.B @= b.B @= c.B, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 0
+>   60) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.C @= b.C @= c.C, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 0
+>   61) [0] Expr ForEach(a : T1, b : T2, c : T3, (#, a.D @= b.D @= c.D, a, b, c))->TakeIf(!it[1])
+Seq<(i8,bool,{i8,i8,str,bool},{i8,i8,str,bool},{i8,i8,str,bool})>
+*** Ctx ping count: 0
+>   62) [0] End
+

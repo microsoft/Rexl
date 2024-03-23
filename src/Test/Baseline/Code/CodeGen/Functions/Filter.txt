@@ -1,0 +1,1503 @@
+**** New definitions: SS, type: s*
+**** New definitions: T, type: {A:s, B:i8}?*
+**** New definitions: T2, type: {A:s, B:i8}*
+
+> Range(10) | Filter(_, 3 < it < 7)
+Range(10) | Filter(_, 3 $< it $< 7) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(3:i8 @< Scope(1) @< 7:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 4
+ 1) 5
+ 2) 6
+*** Ctx ping count: 7
+    [0](7): Take(*1: Range(10), [if] 3 @< *1 @< 7)
+###
+> Range(10)->{A: it, B: it * it} | Filter(_, B > 5 * A)
+Range(10)->{ A : it, B : it * it } | Filter(_, B $> 5 * A) : {A:i8, B:i8}*
+BndKind:Call, Type:{A:i8, B:i8}*, Bnd:(Call(∂.Take([map:2] Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), {A:Scope(1), B:Mul(Scope(1), Scope(1))})), [if] Cmp(GetField(Scope(2), B) @> Mul(GetField(Scope(2), A), 5:i8)))))
+Func sig: (<ctx>:x) to {A:i8, B:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { A: 6, B: 36 }
+ 1) { A: 7, B: 49 }
+ 2) { A: 8, B: 64 }
+ 3) { A: 9, B: 81 }
+*** Ctx ping count: 6
+    [0](6): Take(*2: ForEach(*1: Range(10), {A:*1, B:Mul(*1, *1)}), [if] *2.B @> Mul(*2.A, 5))
+###
+> Range(3) ++ Range(1, 5) ++ Range(7, -3, -1) | Distinct(_)
+Range(3) ++ Range(1, 5) ++ Range(7, -3, -1) | Distinct(_) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct(SeqConcat(Call(∂.Range(3:i8):i8*), Call(∂.Range(1:i8, 5:i8):i8*), Call(∂.Range(7:i8, -3:i8, -1:i8):i8*))):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 7
+ 6) 6
+ 7) 5
+ 8) -1
+ 9) -2
+*** Ctx ping count: 18
+    [0](18): Distinct(SeqConcat(Range(3), Range(1, 5), Range(7, -3, -1)))
+###
+> [null, null, null]->Distinct()
+[null, null, null]->Distinct() : o*
+BndKind:Call, Type:o*, Bnd:(Call(∂.Distinct*([null, null, null]:o*):o*))
+*** Error: (0,1) Node: [null, null, null], Message: Equality comparison is not supported for items of type 'o'
+###
+> []->Distinct()
+[]->Distinct() : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.Distinct*(null:v*):v*))
+*** Error: (0,1) Node: [], Message: Equality comparison is not supported for items of type 'v'
+###
+> SS->Distinct()
+SS->Distinct() : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Distinct(Global(SS)):s*))
+Func sig: (<ctx>:x, SS:s*) to s*
+Sequence: Seq<str>
+ 0) a
+ 1) B
+ 2) <null>
+ 3) C
+ 4) b
+ 5) A
+*** Ctx ping count: 10
+    [0](10): Distinct(SS)
+###
+> Distinct([~] SS)
+Distinct([~] SS) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Distinct([~] Global(SS)):s*))
+Func sig: (<ctx>:x, SS:s*) to s*
+Sequence: Seq<str>
+ 0) a
+ 1) B
+ 2) <null>
+ 3) C
+*** Ctx ping count: 10
+    [0](10): Distinct([~] SS)
+###
+> T->Distinct(A)
+T->Distinct(A) : {A:s, B:i8}?*
+BndKind:Call, Type:{A:s, B:i8}?*, Bnd:(Call(∂.Distinct([map:1] Global(T), Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):s))))
+Func sig: (<ctx>:x, T:{A:s, B:i8}?*) to {A:s, B:i8}?*
+Sequence: Seq<{str,i8}>
+ 0) { A: a, B: 0 }
+ 1) { A: B, B: 1 }
+ 2) <null>
+ 3) { A: C, B: 3 }
+ 4) { A: b, B: 5 }
+ 5) { A: A, B: 6 }
+*** Ctx ping count: 10
+    [0](10): Distinct(*1: T, Guard(?2: *1, ?2.A))
+###
+> T->Distinct([~] A)
+T->Distinct([~] A) : {A:s, B:i8}?*
+BndKind:Call, Type:{A:s, B:i8}?*, Bnd:(Call(∂.Distinct([map:1] Global(T), [~] Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):s))))
+Func sig: (<ctx>:x, T:{A:s, B:i8}?*) to {A:s, B:i8}?*
+Sequence: Seq<{str,i8}>
+ 0) { A: a, B: 0 }
+ 1) { A: B, B: 1 }
+ 2) <null>
+ 3) { A: C, B: 3 }
+*** Ctx ping count: 10
+    [0](10): Distinct(*1: T, [~] Guard(?2: *1, ?2.A))
+###
+> T2->Distinct(A)
+T2->Distinct(A) : {A:s, B:i8}*
+BndKind:Call, Type:{A:s, B:i8}*, Bnd:(Call(∂.Distinct([map:1] Global(T2), GetField(Scope(1), A))))
+Func sig: (<ctx>:x, T2:{A:s, B:i8}*) to {A:s, B:i8}*
+Sequence: Seq<{str,i8}>
+ 0) { A: a, B: 0 }
+ 1) { A: B, B: 1 }
+ 2) { A: <null>, B: 2 }
+ 3) { A: C, B: 3 }
+ 4) { A: b, B: 5 }
+ 5) { A: A, B: 6 }
+*** Ctx ping count: 10
+    [0](10): Distinct(*1: T2, *1.A)
+###
+> T2->Distinct([~] A)
+T2->Distinct([~] A) : {A:s, B:i8}*
+BndKind:Call, Type:{A:s, B:i8}*, Bnd:(Call(∂.Distinct([map:1] Global(T2), [~] GetField(Scope(1), A))))
+Func sig: (<ctx>:x, T2:{A:s, B:i8}*) to {A:s, B:i8}*
+Sequence: Seq<{str,i8}>
+ 0) { A: a, B: 0 }
+ 1) { A: B, B: 1 }
+ 2) { A: <null>, B: 2 }
+ 3) { A: C, B: 3 }
+*** Ctx ping count: 10
+    [0](10): Distinct(*1: T2, [~] *1.A)
+###
+> Range(10)->(it mod 3, it mod 2)->Distinct()
+Range(10)->(it mod 3, it mod 2)->Distinct() : (i8, i8)*
+BndKind:Call, Type:(i8, i8)*, Bnd:(Call(∂.Distinct(Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), (IntMod(Scope(1), 3:i8), IntMod(Scope(1), 2:i8)):(i8, i8)):(i8, i8)*)):(i8, i8)*))
+Func sig: (<ctx>:x) to (i8, i8)*
+Sequence: Seq<(i8,i8)>
+ 0) (0, 0)
+ 1) (1, 1)
+ 2) (2, 0)
+ 3) (0, 1)
+ 4) (1, 0)
+ 5) (2, 1)
+*** Ctx ping count: 11
+    [0](11): Distinct(ForEach(*1: Range(10), (IntMod(*1, 3), IntMod(*1, 2))))
+###
+> Range(10)->(it mod 3, it mod 2)->ForEach(it if #it mod 4 != 0 else null)->Distinct()
+Range(10)->(it mod 3, it mod 2)->ForEach(it if #it mod 4 !@= 0 else null)->Distinct() : (i8, i8)?*
+BndKind:Call, Type:(i8, i8)?*, Bnd:(Call(∂.Distinct(Call(∂.ForEach([map:2] Call(∂.Range(10:i8):i8*), If(Cmp(IntMod(Scope(1), 4:i8) !@= 0:i8), Ref<(i8, i8)?>((IntMod(Scope(2), 3:i8), IntMod(Scope(2), 2:i8)):(i8, i8)), null:(i8, i8)?)):(i8, i8)?*)):(i8, i8)?*))
+Func sig: (<ctx>:x) to (i8, i8)?*
+Sequence: Seq<(i8,i8)>
+ 0) <null>
+ 1) (1, 1)
+ 2) (2, 0)
+ 3) (0, 1)
+ 4) (2, 1)
+ 5) (0, 0)
+*** Ctx ping count: 11
+    [0](11): Distinct(ForEach(*2: Range(10), If(IntMod(#1, 4) !@= 0, Ref<(i8, i8)?>((IntMod(*2, 3), IntMod(*2, 2))), null)))
+###
+> Range(10)->{ A: it mod 3, B: it mod 2 }->Distinct()
+Range(10)->{ A : it mod 3, B : it mod 2 }->Distinct() : {A:i8, B:i8}*
+BndKind:Call, Type:{A:i8, B:i8}*, Bnd:(Call(∂.Distinct(Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), {A:IntMod(Scope(1), 3:i8), B:IntMod(Scope(1), 2:i8)})))))
+Func sig: (<ctx>:x) to {A:i8, B:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { A: 0, B: 0 }
+ 1) { A: 1, B: 1 }
+ 2) { A: 2, B: 0 }
+ 3) { A: 0, B: 1 }
+ 4) { A: 1, B: 0 }
+ 5) { A: 2, B: 1 }
+*** Ctx ping count: 11
+    [0](11): Distinct(ForEach(*1: Range(10), {A:IntMod(*1, 3), B:IntMod(*1, 2)}))
+###
+> Range(10)->{ A: it mod 3, B: it mod 2 }->ForEach(it if #it mod 4 != 0 else null)->Distinct()
+Range(10)->{ A : it mod 3, B : it mod 2 }->ForEach(it if #it mod 4 !@= 0 else null)->Distinct() : {A:i8, B:i8}?*
+BndKind:Call, Type:{A:i8, B:i8}?*, Bnd:(Call(∂.Distinct(Call(∂.ForEach([map:2] Call(∂.Range(10:i8):i8*), If(Cmp(IntMod(Scope(1), 4:i8) !@= 0:i8), Ref<{A:i8, B:i8}?>({A:IntMod(Scope(2), 3:i8), B:IntMod(Scope(2), 2:i8)}), null:{A:i8, B:i8}?))))))
+Func sig: (<ctx>:x) to {A:i8, B:i8}?*
+Sequence: Seq<{i8,i8}>
+ 0) <null>
+ 1) { A: 1, B: 1 }
+ 2) { A: 2, B: 0 }
+ 3) { A: 0, B: 1 }
+ 4) { A: 2, B: 1 }
+ 5) { A: 0, B: 0 }
+*** Ctx ping count: 11
+    [0](11): Distinct(ForEach(*2: Range(10), If(IntMod(#1, 4) !@= 0, Ref<{A:i8, B:i8}?>({A:IntMod(*2, 3), B:IntMod(*2, 2)}), null)))
+###
+> Range(10)->Distinct(it div 3)
+Range(10)->Distinct(it div 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct([map:1] Call(∂.Range(10:i8):i8*), IntDiv(Scope(1), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 3
+ 2) 6
+ 3) 9
+*** Ctx ping count: 11
+    [0](11): Distinct(*1: Range(10), IntDiv(*1, 3))
+###
+> Range(10)->{ A: it, B: it div 3 }->Distinct([key] B)
+Range(10)->{ A : it, B : it div 3 }->Distinct([key] B) : {A:i8, B:i8}*
+BndKind:Call, Type:{A:i8, B:i8}*, Bnd:(Call(∂.Distinct([map:2] Call(∂.ForEach([map:1] Call(∂.Range(10:i8):i8*), {A:Scope(1), B:IntDiv(Scope(1), 3:i8)})), [key] GetField(Scope(2), B))))
+Func sig: (<ctx>:x) to {A:i8, B:i8}*
+Sequence: Seq<{i8,i8}>
+ 0) { A: 0, B: 0 }
+ 1) { A: 3, B: 1 }
+ 2) { A: 6, B: 2 }
+ 3) { A: 9, B: 3 }
+*** Ctx ping count: 11
+    [0](11): Distinct(*2: ForEach(*1: Range(10), {A:*1, B:IntDiv(*1, 3)}), [key] *2.B)
+###
+> Range(10)->TakeIf(it > 100)->Distinct()
+Range(10)->TakeIf(it $> 100)->Distinct() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct(Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @> 100:i8)):i8*)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 11
+    [0](10): Take(*1: Range(10), [if] *1 @> 100)
+    [1](1): Distinct(Take(*1: Range(10), [if] *1 @> 100))
+###
+> Range(10)->TakeIf(it > 100)->Distinct(it div 3)
+Range(10)->TakeIf(it $> 100)->Distinct(it div 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct([map:2] Call(∂.Take([map:1] Call(∂.Range(10:i8):i8*), [if] Cmp(Scope(1) @> 100:i8)):i8*), IntDiv(Scope(2), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+*** Ctx ping count: 11
+    [0](10): Take(*1: Range(10), [if] *1 @> 100)
+    [1](1): Distinct(*2: Take(*1: Range(10), [if] *1 @> 100), IntDiv(*2, 3))
+###
+> Wrap(Range(10)->Null())->Distinct()
+Wrap(Range(10)->Null())->Distinct() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct(Call(∂.Test.Wrap(null:i8*):i8*)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Wrap(Range(10)->Null())->Distinct(it div 3)
+Wrap(Range(10)->Null())->Distinct(it div 3) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.Distinct([map:1] Call(∂.Test.Wrap(null:i8*):i8*), IntDiv(Scope(1), 3:i8)):i8*))
+Func sig: (<ctx>:x) to i8*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> First(Range(10, 12))
+First(Range(10, 12)) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Call(∂.Range(10:i8, 12:i8):i8*), [else] null:i8?):i8?))
+Func sig: () to i8?
+Type: i8, Value: 10
+###
+> First(Range(10), it > 5)
+First(Range(10), it $> 5) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 5:i8), [else] null:i8?):i8?))
+Func sig: (<ctx>:x) to i8?
+Type: i8, Value: 6
+*** Ctx ping count: 6
+    [0](6): TakeOne(*1: Range(10), *1 @> 5, [else] null)
+###
+> First(Wrap(Range(0)))
+First(Wrap(Range(0))) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Call(∂.Test.Wrap(Call(∂.Range(0:i8):i8*)):i8*), [else] null:i8?):i8?))
+Func sig: () to i8?
+Type: <null>, Value: <null>
+###
+> First(Range(10), it > 10)
+First(Range(10), it $> 10) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 10:i8), [else] null:i8?):i8?))
+Func sig: (<ctx>:x) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 10
+    [0](10): TakeOne(*1: Range(10), *1 @> 10, [else] null)
+###
+> First(Wrap(["A", "B", "C"]))
+First(Wrap(["A", "B", "C"])) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne(Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*)):s))
+Func sig: () to s
+Type: str, Value: A
+###
+> First(["A", "B", "C"], Text.Lower(it) = "b")
+First(["A", "B", "C"], Text.Lower(it) @= "b") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(b))):s))
+Func sig: (<ctx>:x) to s
+Type: str, Value: B
+*** Ctx ping count: 1
+    [0](1): TakeOne(*1: ["A", "B", "C"], Text.Lower(*1) @= "b")
+###
+> First(["A", "B", "C"], Text.Lower(it) = "x")
+First(["A", "B", "C"], Text.Lower(it) @= "x") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):s))
+Func sig: (<ctx>:x) to s
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): TakeOne(*1: ["A", "B", "C"], Text.Lower(*1) @= "x")
+###
+> Filter(["A", "B", "C"], Text.Lower(it) = "x") | First(_)
+Filter(["A", "B", "C"], Text.Lower(it) @= "x") | First(_) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne(Call(∂.Take([map:1] [str(A), str(B), str(C)]:s*, [if] Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):s*)):s))
+Func sig: (<ctx>:x) to s
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): Take(*1: ["A", "B", "C"], [if] Text.Lower(*1) @= "x")
+###
+> TakeOne(Range(10, 12))
+TakeOne(Range(10, 12)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Call(∂.Range(10:i8, 12:i8):i8*)):i8))
+Func sig: () to i8
+Type: i8, Value: 10
+###
+> TakeOne(Range(10), it > 5)
+TakeOne(Range(10), it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 6
+*** Ctx ping count: 6
+    [0](6): TakeOne(*1: Range(10), *1 @> 5)
+###
+> TakeOne(Range(10), it > 2 and #it > 3)
+TakeOne(Range(10), it $> 2 and #it $> 3) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:2] Call(∂.Range(10:i8):i8*), And(Cmp(Scope(2) @> 2:i8), Cmp(Scope(1) @> 3:i8))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 4
+*** Ctx ping count: 4
+    [0](4): TakeOne(*2: Range(10), And(*2 @> 2, #1 @> 3))
+###
+> TakeOne(Range(10), it > 2 and #it > 3, null)
+TakeOne(Range(10), it $> 2 and #it $> 3, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:2] Call(∂.Range(10:i8):i8*), And(Cmp(Scope(2) @> 2:i8), Cmp(Scope(1) @> 3:i8)), null:i8?):i8?))
+Func sig: (<ctx>:x) to i8?
+Type: i8, Value: 4
+*** Ctx ping count: 4
+    [0](4): TakeOne(*2: Range(10), And(*2 @> 2, #1 @> 3), null)
+###
+> TakeOne(Range(10), #it > it, -1)
+TakeOne(Range(10), #it $> it, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:2] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> Scope(2)), -1:i8):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: -1
+*** Ctx ping count: 10
+    [0](10): TakeOne(*2: Range(10), #1 @> *2, -1)
+###
+> TakeOne(Range(10), #it > it, null)
+TakeOne(Range(10), #it $> it, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:2] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> Scope(2)), null:i8?):i8?))
+Func sig: (<ctx>:x) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 10
+    [0](10): TakeOne(*2: Range(10), #1 @> *2, null)
+###
+> TakeOne(Range(0))
+TakeOne(Range(0)) : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> TakeOne(Range(0), [else] -1)
+TakeOne(Range(0), [else] -1) : i8
+BndKind:Int, Type:i8, Bnd:(-1:i8)
+Func sig: () to i8
+Type: i8, Value: -1
+###
+> TakeOne(Range(10), it > 10)
+TakeOne(Range(10), it $> 10) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 10:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 10
+    [0](10): TakeOne(*1: Range(10), *1 @> 10)
+###
+> TakeOne(["A", "B", "C"], Text.Lower(it) = "b")
+TakeOne(["A", "B", "C"], Text.Lower(it) @= "b") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(b))):s))
+Func sig: (<ctx>:x) to s
+Type: str, Value: B
+*** Ctx ping count: 1
+    [0](1): TakeOne(*1: ["A", "B", "C"], Text.Lower(*1) @= "b")
+###
+> TakeOne(["A", "B", "C"], Text.Lower(it) = "x")
+TakeOne(["A", "B", "C"], Text.Lower(it) @= "x") : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):s))
+Func sig: (<ctx>:x) to s
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): TakeOne(*1: ["A", "B", "C"], Text.Lower(*1) @= "x")
+###
+> Filter(["A", "B", "C"], Text.Lower(it) = "x") | TakeOne(_)
+Filter(["A", "B", "C"], Text.Lower(it) @= "x") | TakeOne(_) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.TakeOne(Call(∂.Take([map:1] [str(A), str(B), str(C)]:s*, [if] Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):s*)):s))
+Func sig: (<ctx>:x) to s
+Type: <null>, Value: <null>
+*** Ctx ping count: 3
+    [0](3): Take(*1: ["A", "B", "C"], [if] Text.Lower(*1) @= "x")
+###
+
+**** New definitions: Reqs, type: i8*
+**** New definitions: Opts, type: i8?*
+**** New definitions: NoneReq, type: i8*
+**** New definitions: NoneOpt, type: i8?*
+**** New definitions: ZeroReq, type: i8*
+**** New definitions: ZeroOpt, type: i8?*
+
+> TakeOne(Reqs)
+TakeOne(Reqs) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(Reqs)):i8))
+Func sig: (Reqs:i8*) to i8
+Type: i8, Value: 10
+###
+> TakeOne(Reqs, [else] -1)
+TakeOne(Reqs, [else] -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(Reqs), [else] -1:i8):i8))
+Func sig: (Reqs:i8*) to i8
+Type: i8, Value: 10
+###
+> TakeOne(Reqs, [else] null)
+TakeOne(Reqs, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Reqs), [else] null:i8?):i8?))
+Func sig: (Reqs:i8*) to i8?
+Type: i8, Value: 10
+###
+> TakeOne(Opts)
+TakeOne(Opts) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Opts)):i8?))
+Func sig: (Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Opts, [else] -1)
+TakeOne(Opts, [else] -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Opts), [else] Opt<i8?>(-1:i8)):i8?))
+Func sig: (Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Opts, [else] null)
+TakeOne(Opts, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Opts), [else] null:i8?):i8?))
+Func sig: (Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(NoneReq)
+TakeOne(NoneReq) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(NoneReq)):i8))
+Func sig: (NoneReq:i8*) to i8
+Type: i8, Value: 0
+###
+> TakeOne(NoneReq, [else] -1)
+TakeOne(NoneReq, [else] -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(NoneReq), [else] -1:i8):i8))
+Func sig: (NoneReq:i8*) to i8
+Type: i8, Value: -1
+###
+> TakeOne(NoneReq, [else] null)
+TakeOne(NoneReq, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(NoneReq), [else] null:i8?):i8?))
+Func sig: (NoneReq:i8*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(NoneOpt)
+TakeOne(NoneOpt) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(NoneOpt)):i8?))
+Func sig: (NoneOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(NoneOpt, [else] -1)
+TakeOne(NoneOpt, [else] -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(NoneOpt), [else] Opt<i8?>(-1:i8)):i8?))
+Func sig: (NoneOpt:i8?*) to i8?
+Type: i8, Value: -1
+###
+> TakeOne(NoneOpt, [else] null)
+TakeOne(NoneOpt, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(NoneOpt), [else] null:i8?):i8?))
+Func sig: (NoneOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(ZeroReq)
+TakeOne(ZeroReq) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(ZeroReq)):i8))
+Func sig: (ZeroReq:i8*) to i8
+Type: i8, Value: 0
+###
+> TakeOne(ZeroReq, [else] -1)
+TakeOne(ZeroReq, [else] -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(ZeroReq), [else] -1:i8):i8))
+Func sig: (ZeroReq:i8*) to i8
+Type: i8, Value: -1
+###
+> TakeOne(ZeroReq, [else] null)
+TakeOne(ZeroReq, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(ZeroReq), [else] null:i8?):i8?))
+Func sig: (ZeroReq:i8*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(ZeroOpt)
+TakeOne(ZeroOpt) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(ZeroOpt)):i8?))
+Func sig: (ZeroOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(ZeroOpt, [else] -1)
+TakeOne(ZeroOpt, [else] -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(ZeroOpt), [else] Opt<i8?>(-1:i8)):i8?))
+Func sig: (ZeroOpt:i8?*) to i8?
+Type: i8, Value: -1
+###
+> TakeOne(ZeroOpt, [else] null)
+TakeOne(ZeroOpt, [else] null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(ZeroOpt), [else] null:i8?):i8?))
+Func sig: (ZeroOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Reqs, it > 15)
+TakeOne(Reqs, it $> 15) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 15:i8)):i8))
+Func sig: (<ctx>:x, Reqs:i8*) to i8
+Type: i8, Value: 16
+*** Ctx ping count: 6
+    [0](6): TakeOne(*1: Reqs, *1 @> 15)
+###
+> TakeOne(Reqs, true)
+TakeOne(Reqs, true) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(Reqs)):i8))
+Func sig: (Reqs:i8*) to i8
+Type: i8, Value: 10
+###
+> TakeOne(Reqs, false)
+TakeOne(Reqs, false) : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> TakeOne(Reqs, it > 15, -1)
+TakeOne(Reqs, it $> 15, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 15:i8), -1:i8):i8))
+Func sig: (<ctx>:x, Reqs:i8*) to i8
+Type: i8, Value: 16
+*** Ctx ping count: 6
+    [0](6): TakeOne(*1: Reqs, *1 @> 15, -1)
+###
+> TakeOne(Reqs, true, -1)
+TakeOne(Reqs, true, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne(Global(Reqs), [else] -1:i8):i8))
+Func sig: (Reqs:i8*) to i8
+Type: i8, Value: 10
+###
+> TakeOne(Reqs, false, -1)
+TakeOne(Reqs, false, -1) : i8
+BndKind:Int, Type:i8, Bnd:(-1:i8)
+Func sig: () to i8
+Type: i8, Value: -1
+###
+> TakeOne(Reqs, it > 15, null)
+TakeOne(Reqs, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, Reqs:i8*) to i8?
+Type: i8, Value: 16
+*** Ctx ping count: 6
+    [0](6): TakeOne(*1: Reqs, *1 @> 15, null)
+###
+> TakeOne(Reqs, false, null)
+TakeOne(Reqs, false, null) : i8?
+BndKind:Null, Type:i8?, Bnd:(null:i8?)
+Func sig: () to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Reqs, true, null)
+TakeOne(Reqs, true, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Reqs), [else] null:i8?):i8?))
+Func sig: (Reqs:i8*) to i8?
+Type: i8, Value: 10
+###
+> TakeOne(Reqs, it > 50)
+TakeOne(Reqs, it $> 50) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 50:i8)):i8))
+Func sig: (<ctx>:x, Reqs:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 10
+    [0](10): TakeOne(*1: Reqs, *1 @> 50)
+###
+> TakeOne(Reqs, it > 50, -1)
+TakeOne(Reqs, it $> 50, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 50:i8), -1:i8):i8))
+Func sig: (<ctx>:x, Reqs:i8*) to i8
+Type: i8, Value: -1
+*** Ctx ping count: 10
+    [0](10): TakeOne(*1: Reqs, *1 @> 50, -1)
+###
+> TakeOne(Reqs, it > 50, null)
+TakeOne(Reqs, it $> 50, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Reqs), Cmp(Scope(1) @> 50:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, Reqs:i8*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 10
+    [0](10): TakeOne(*1: Reqs, *1 @> 50, null)
+###
+> TakeOne(Opts, it > 15)
+TakeOne(Opts, it $> 15) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 15:i8)):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: i8, Value: 16
+*** Ctx ping count: 7
+    [0](7): TakeOne(*1: Opts, *1 $> 15)
+###
+> TakeOne(Opts, it > 15, -1)
+TakeOne(Opts, it $> 15, -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 15:i8), Opt<i8?>(-1:i8)):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: i8, Value: 16
+*** Ctx ping count: 7
+    [0](7): TakeOne(*1: Opts, *1 $> 15, Opt<i8?>(-1))
+###
+> TakeOne(Opts, false, -1)
+TakeOne(Opts, false, -1) : i8?
+BndKind:CastOpt, Type:i8?, Bnd:(Opt<i8?>(-1:i8))
+Func sig: () to i8?
+Type: i8, Value: -1
+###
+> TakeOne(Opts, it > 15, null)
+TakeOne(Opts, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: i8, Value: 16
+*** Ctx ping count: 7
+    [0](7): TakeOne(*1: Opts, *1 $> 15, null)
+###
+> TakeOne(Opts, false, null)
+TakeOne(Opts, false, null) : i8?
+BndKind:Null, Type:i8?, Bnd:(null:i8?)
+Func sig: () to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Opts, it > 50)
+TakeOne(Opts, it $> 50) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 50:i8)):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 11
+    [0](11): TakeOne(*1: Opts, *1 $> 50)
+###
+> TakeOne(Opts, it > 50, -1)
+TakeOne(Opts, it $> 50, -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 50:i8), Opt<i8?>(-1:i8)):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: i8, Value: -1
+*** Ctx ping count: 11
+    [0](11): TakeOne(*1: Opts, *1 $> 50, Opt<i8?>(-1))
+###
+> TakeOne(Opts, true, -1)
+TakeOne(Opts, true, -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Opts), [else] Opt<i8?>(-1:i8)):i8?))
+Func sig: (Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(Opts, it > 50, null)
+TakeOne(Opts, it $> 50, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(Opts), Cmp(Scope(1) $> 50:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 11
+    [0](11): TakeOne(*1: Opts, *1 $> 50, null)
+###
+> TakeOne(Opts, true, null)
+TakeOne(Opts, true, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne(Global(Opts), [else] null:i8?):i8?))
+Func sig: (Opts:i8?*) to i8?
+Type: <null>, Value: <null>
+###
+> TakeOne(NoneReq, it > 15)
+TakeOne(NoneReq, it $> 15) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(NoneReq), Cmp(Scope(1) @> 15:i8)):i8))
+Func sig: (<ctx>:x, NoneReq:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> TakeOne(NoneReq, it > 15, -1)
+TakeOne(NoneReq, it $> 15, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(NoneReq), Cmp(Scope(1) @> 15:i8), -1:i8):i8))
+Func sig: (<ctx>:x, NoneReq:i8*) to i8
+Type: i8, Value: -1
+*** Ctx ping count: 0
+###
+> TakeOne(NoneReq, it > 15, null)
+TakeOne(NoneReq, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(NoneReq), Cmp(Scope(1) @> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, NoneReq:i8*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TakeOne(NoneOpt, it > 15)
+TakeOne(NoneOpt, it $> 15) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(NoneOpt), Cmp(Scope(1) $> 15:i8)):i8?))
+Func sig: (<ctx>:x, NoneOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TakeOne(NoneOpt, it > 15, -1)
+TakeOne(NoneOpt, it $> 15, -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(NoneOpt), Cmp(Scope(1) $> 15:i8), Opt<i8?>(-1:i8)):i8?))
+Func sig: (<ctx>:x, NoneOpt:i8?*) to i8?
+Type: i8, Value: -1
+*** Ctx ping count: 0
+###
+> TakeOne(NoneOpt, it > 15, null)
+TakeOne(NoneOpt, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(NoneOpt), Cmp(Scope(1) $> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, NoneOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroReq, it > 15)
+TakeOne(ZeroReq, it $> 15) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroReq), Cmp(Scope(1) @> 15:i8)):i8))
+Func sig: (<ctx>:x, ZeroReq:i8*) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroReq, it > 15, -1)
+TakeOne(ZeroReq, it $> 15, -1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroReq), Cmp(Scope(1) @> 15:i8), -1:i8):i8))
+Func sig: (<ctx>:x, ZeroReq:i8*) to i8
+Type: i8, Value: -1
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroReq, it > 15, null)
+TakeOne(ZeroReq, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroReq), Cmp(Scope(1) @> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, ZeroReq:i8*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroOpt, it > 15)
+TakeOne(ZeroOpt, it $> 15) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroOpt), Cmp(Scope(1) $> 15:i8)):i8?))
+Func sig: (<ctx>:x, ZeroOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroOpt, it > 15, -1)
+TakeOne(ZeroOpt, it $> 15, -1) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroOpt), Cmp(Scope(1) $> 15:i8), Opt<i8?>(-1:i8)):i8?))
+Func sig: (<ctx>:x, ZeroOpt:i8?*) to i8?
+Type: i8, Value: -1
+*** Ctx ping count: 0
+###
+> TakeOne(ZeroOpt, it > 15, null)
+TakeOne(ZeroOpt, it $> 15, null) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.TakeOne([map:1] Global(ZeroOpt), Cmp(Scope(1) $> 15:i8), null:i8?):i8?))
+Func sig: (<ctx>:x, ZeroOpt:i8?*) to i8?
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> Range(10, 12)->Count()
+Range(10, 12)->Count() : i8
+BndKind:Int, Type:i8, Bnd:(2:i8)
+Func sig: () to i8
+Type: i8, Value: 2
+###
+> Range(10, 12)->Wrap()->Count()
+Range(10, 12)->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap(Call(∂.Range(10:i8, 12:i8):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 2
+*** Ctx ping count: 0
+###
+> Range(10, 12)->Distinct()->Count()
+Range(10, 12)->Distinct()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Distinct(Call(∂.Range(10:i8, 12:i8):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 2
+*** Ctx ping count: 6
+    [0](3): Distinct(Range(10, 12))
+    [1](3): Count(Distinct(Range(10, 12)))
+###
+> Range(10, 12)->Distinct()->Wrap()->Count()
+Range(10, 12)->Distinct()->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap(Call(∂.Distinct(Call(∂.Range(10:i8, 12:i8):i8*)):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 2
+*** Ctx ping count: 6
+    [0](3): Distinct(Range(10, 12))
+    [1](3): Count(Test.Wrap(Distinct(Range(10, 12))))
+###
+> Range(10)->Count(it > 5)
+Range(10)->Count(it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 4
+*** Ctx ping count: 11
+    [0](11): Count(*1: Range(10), *1 @> 5)
+###
+> Range(10)->Wrap()->Count(it > 5)
+Range(10)->Wrap()->Count(it $> 5) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.Wrap(Call(∂.Range(10:i8):i8*)):i8*), Cmp(Scope(1) @> 5:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 4
+*** Ctx ping count: 11
+    [0](11): Count(*1: Test.Wrap(Range(10)), *1 @> 5)
+###
+> Range(0)->Count()
+Range(0)->Count() : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Range(0)->Wrap()->Count()
+Range(0)->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap(Call(∂.Range(0:i8):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 0
+###
+> Range(0)->Distinct()->Count()
+Range(0)->Distinct()->Count() : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Range(0)->Wrap()->Distinct()->Count()
+Range(0)->Wrap()->Distinct()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Distinct(Call(∂.Test.Wrap(Call(∂.Range(0:i8):i8*)):i8*)):i8*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 2
+    [0](1): Distinct(Test.Wrap(Range(0)))
+    [1](1): Count(Distinct(Test.Wrap(Range(0))))
+###
+> Range(10)->Count(it > 10)
+Range(10)->Count(it $> 10) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Range(10:i8):i8*), Cmp(Scope(1) @> 10:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 11
+    [0](11): Count(*1: Range(10), *1 @> 10)
+###
+> Range(10)->Wrap()->Count(it > 10)
+Range(10)->Wrap()->Count(it $> 10) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.Wrap(Call(∂.Range(10:i8):i8*)):i8*), Cmp(Scope(1) @> 10:i8)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 11
+    [0](11): Count(*1: Test.Wrap(Range(10)), *1 @> 10)
+###
+> ["A", "B", "C"]->Count()
+["A", "B", "C"]->Count() : i8
+BndKind:Int, Type:i8, Bnd:(3:i8)
+Func sig: () to i8
+Type: i8, Value: 3
+###
+> ["A", "B", "C"]->Wrap()->Count()
+["A", "B", "C"]->Wrap()->Count() : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*)):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 3
+*** Ctx ping count: 0
+###
+> ["A", "B", "C"]->Count(Text.Lower(it) = "b")
+["A", "B", "C"]->Count(Text.Lower(it) @= "b") : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(b))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 4
+    [0](4): Count(*1: ["A", "B", "C"], Text.Lower(*1) @= "b")
+###
+> ["A", "B", "C"]->Wrap()->Count(Text.Lower(it) = "b")
+["A", "B", "C"]->Wrap()->Count(Text.Lower(it) @= "b") : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*), Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(b))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 1
+*** Ctx ping count: 4
+    [0](4): Count(*1: Test.Wrap(["A", "B", "C"]), Text.Lower(*1) @= "b")
+###
+> ["A", "B", "C"]->Count(Text.Lower(it) = "x")
+["A", "B", "C"]->Count(Text.Lower(it) @= "x") : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] [str(A), str(B), str(C)]:s*, Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 4
+    [0](4): Count(*1: ["A", "B", "C"], Text.Lower(*1) @= "x")
+###
+> ["A", "B", "C"]->Wrap()->Count(Text.Lower(it) = "x")
+["A", "B", "C"]->Wrap()->Count(Text.Lower(it) @= "x") : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count([map:1] Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*), Cmp(Call(∂.Text.Lower(Scope(1)):s) @= str(x))):i8))
+Func sig: (<ctx>:x) to i8
+Type: i8, Value: 0
+*** Ctx ping count: 4
+    [0](4): Count(*1: Test.Wrap(["A", "B", "C"]), Text.Lower(*1) @= "x")
+###
+
+**** New definitions: Recs, type: {A:i8, B:s, C:i8?}*
+**** New definitions: RecsOpt, type: {A:i8, B:s, C:i8?}?*
+**** New definitions: Inds, type: i8*
+**** New definitions: Empty, type: i8*
+
+> Range(10, 12)->TakeAt(Inds)
+Range(10, 12)->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Range(10:i8, 12:i8):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapSeq()->TakeAt(Inds)
+Range(10, 12)->WrapSeq()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapSeq(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 0
+###
+> Range(10, 12)->CantCount()->TakeAt(Inds)
+Range(10, 12)->CantCount()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.CantCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 24
+    [0](24): TakeAt(!1x, *2x)
+###
+> Range(10, 12)->LazyCount()->TakeAt(Inds)
+Range(10, 12)->LazyCount()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.LazyCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 12
+    [0](12): TakeAt(!1x, *2x)
+###
+> Range(10, 12)->WrapArr()->TakeAt(Inds)
+Range(10, 12)->WrapArr()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapArr(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapColl()->TakeAt(Inds)
+Range(10, 12)->WrapColl()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapColl(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 6
+    [0](6): TakeAt(!1x, *2x)
+###
+> Range(10, 12)->WrapList()->TakeAt(Inds)
+Range(10, 12)->WrapList()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapList(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapCurs()->TakeAt(Inds)
+Range(10, 12)->WrapCurs()->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapCurs(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) 0
+ 8) 0
+*** Ctx ping count: 15
+    [0](15): TakeAt(!1x, *2x)
+###
+> Range(10, 12)->TakeAt(Inds, -1)
+Range(10, 12)->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Range(10:i8, 12:i8):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapSeq()->TakeAt(Inds, -1)
+Range(10, 12)->WrapSeq()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapSeq(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 0
+###
+> Range(10, 12)->CantCount()->TakeAt(Inds, -1)
+Range(10, 12)->CantCount()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.CantCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 24
+    [0](24): TakeAt(!1x, *2x, -1)
+###
+> Range(10, 12)->LazyCount()->TakeAt(Inds, -1)
+Range(10, 12)->LazyCount()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.LazyCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 12
+    [0](12): TakeAt(!1x, *2x, -1)
+###
+> Range(10, 12)->WrapArr()->TakeAt(Inds, -1)
+Range(10, 12)->WrapArr()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapArr(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapColl()->TakeAt(Inds, -1)
+Range(10, 12)->WrapColl()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapColl(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 6
+    [0](6): TakeAt(!1x, *2x, -1)
+###
+> Range(10, 12)->WrapList()->TakeAt(Inds, -1)
+Range(10, 12)->WrapList()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapList(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapCurs()->TakeAt(Inds, -1)
+Range(10, 12)->WrapCurs()->TakeAt(Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapCurs(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), -1:i8):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) -1
+ 8) -1
+*** Ctx ping count: 15
+    [0](15): TakeAt(!1x, *2x, -1)
+###
+> Range(10, 12)->TakeAt(Inds, null)
+Range(10, 12)->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Range(10:i8, 12:i8):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapSeq()->TakeAt(Inds, null)
+Range(10, 12)->WrapSeq()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapSeq(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 0
+###
+> Range(10, 12)->CantCount()->TakeAt(Inds, null)
+Range(10, 12)->CantCount()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.CantCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 24
+    [0](24): TakeAt(!1x, *2x, null)
+###
+> Range(10, 12)->LazyCount()->TakeAt(Inds, null)
+Range(10, 12)->LazyCount()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.LazyCount(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 12
+    [0](12): TakeAt(!1x, *2x, null)
+###
+> Range(10, 12)->WrapArr()->TakeAt(Inds, null)
+Range(10, 12)->WrapArr()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapArr(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapColl()->TakeAt(Inds, null)
+Range(10, 12)->WrapColl()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapColl(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 6
+    [0](6): TakeAt(!1x, *2x, null)
+###
+> Range(10, 12)->WrapList()->TakeAt(Inds, null)
+Range(10, 12)->WrapList()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapList(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 0
+###
+> Range(10, 12)->WrapCurs()->TakeAt(Inds, null)
+Range(10, 12)->WrapCurs()->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapCurs(Call(∂.Range(10:i8, 12:i8):i8*)):i8*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) 10
+ 4) 11
+ 5) 10
+ 6) 11
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 15
+    [0](15): TakeAt(!1x, *2x, null)
+###
+> [4, 5, 6]->TakeAt(Inds)
+[4, 5, 6]->TakeAt(Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.With([with:1] [4:i8, 5:i8, 6:i8]:i8*, Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):i8)):i8*)):i8*))
+Func sig: (<ctx>:x, Inds:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 4
+ 6) 5
+ 7) 6
+ 8) 0
+*** Ctx ping count: 0
+###
+> [4, 5, 6]->TakeAt(Inds, null)
+[4, 5, 6]->TakeAt(Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.With([with:1] [4:i8, 5:i8, 6:i8]:i8*, Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), null:i8?):i8?)):i8?*)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) 4
+ 3) 5
+ 4) 6
+ 5) 4
+ 6) 5
+ 7) 6
+ 8) <null>
+*** Ctx ping count: 0
+###
+> []->WrapSeq()->TakeAt(Inds)
+[]->WrapSeq()->TakeAt(Inds) : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.With([with:1] Call(∂.Test.WrapSeq(null:v*):v*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):v)):v*)):v*))
+*** Unsupported Exception: 'Unsupported default value'
+###
+> []->WrapSeq()->TakeAt(Inds, null)
+[]->WrapSeq()->TakeAt(Inds, null) : o*
+BndKind:Call, Type:o*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), null):o*))
+Func sig: (Inds:i8*) to o*
+Sequence: Seq<obj>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) <null>
+ 4) <null>
+ 5) <null>
+ 6) <null>
+ 7) <null>
+ 8) <null>
+###
+> TakeAt(Empty, Inds)
+TakeAt(Empty, Inds) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(Empty), Scope(1)):i8)):i8*))
+Func sig: (<ctx>:x, Inds:i8*, Empty:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+*** Ctx ping count: 0
+###
+> TakeAt(Empty, Inds, -1)
+TakeAt(Empty, Inds, -1) : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(Empty), Scope(1), -1:i8):i8)):i8*))
+Func sig: (<ctx>:x, Inds:i8*, Empty:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -1
+ 1) -1
+ 2) -1
+ 3) -1
+ 4) -1
+ 5) -1
+ 6) -1
+ 7) -1
+ 8) -1
+*** Ctx ping count: 0
+###
+> TakeAt(Empty, Inds, null)
+TakeAt(Empty, Inds, null) : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(Empty), Scope(1), null:i8?):i8?)):i8?*))
+Func sig: (<ctx>:x, Inds:i8*, Empty:i8*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) <null>
+ 4) <null>
+ 5) <null>
+ 6) <null>
+ 7) <null>
+ 8) <null>
+*** Ctx ping count: 0
+###
+> Recs->TakeAt(Inds)
+Recs->TakeAt(Inds) : {A:i8, B:s, C:i8?}*
+BndKind:Call, Type:{A:i8, B:s, C:i8?}*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(Recs), Scope(1))))))
+Func sig: (<ctx>:x, Inds:i8*, Recs:{A:i8, B:s, C:i8?}*) to {A:i8, B:s, C:i8?}*
+Sequence: Seq<{i8,str,i8}>
+ 0) { A: 0, B: <null>, C: <null> }
+ 1) { A: 0, B: <null>, C: <null> }
+ 2) { A: 0, B: <null>, C: <null> }
+ 3) { A: 0, B: Text0, C: 0 }
+ 4) { A: 1, B: Text1, C: <null> }
+ 5) { A: 0, B: Text0, C: 0 }
+ 6) { A: 1, B: Text1, C: <null> }
+ 7) { A: 0, B: <null>, C: <null> }
+ 8) { A: 0, B: <null>, C: <null> }
+*** Ctx ping count: 0
+###
+> RecsOpt->TakeAt(Inds)
+RecsOpt->TakeAt(Inds) : {A:i8, B:s, C:i8?}?*
+BndKind:Call, Type:{A:i8, B:s, C:i8?}?*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(RecsOpt), Scope(1))))))
+Func sig: (<ctx>:x, Inds:i8*, RecsOpt:{A:i8, B:s, C:i8?}?*) to {A:i8, B:s, C:i8?}?*
+Sequence: Seq<{i8,str,i8}>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) { A: 0, B: Text0, C: 0 }
+ 4) { A: 1, B: Text1, C: <null> }
+ 5) <null>
+ 6) { A: 0, B: Text0, C: 0 }
+ 7) { A: 1, B: Text1, C: <null> }
+ 8) <null>
+*** Ctx ping count: 4
+    [0](4): TakeAt(RecsOpt, *1x)
+###
+> RecsOpt->TakeAt(Inds, null)
+RecsOpt->TakeAt(Inds, null) : {A:i8, B:s, C:i8?}?*
+BndKind:Call, Type:{A:i8, B:s, C:i8?}?*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(RecsOpt), Scope(1), null:{A:i8, B:s, C:i8?}?)))))
+Func sig: (<ctx>:x, Inds:i8*, RecsOpt:{A:i8, B:s, C:i8?}?*) to {A:i8, B:s, C:i8?}?*
+Sequence: Seq<{i8,str,i8}>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) { A: 0, B: Text0, C: 0 }
+ 4) { A: 1, B: Text1, C: <null> }
+ 5) <null>
+ 6) { A: 0, B: Text0, C: 0 }
+ 7) { A: 1, B: Text1, C: <null> }
+ 8) <null>
+*** Ctx ping count: 0
+###
+> ["A", "B", "C"]->Wrap()->TakeAt(Inds)
+["A", "B", "C"]->Wrap()->TakeAt(Inds) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2)):s)):s*)):s*))
+Func sig: (<ctx>:x, Inds:i8*) to s*
+Sequence: Seq<str>
+ 0) <null>
+ 1) <null>
+ 2) A
+ 3) B
+ 4) C
+ 5) A
+ 6) B
+ 7) C
+ 8) <null>
+*** Ctx ping count: 0
+###
+> ["A", "B", "C"]->Wrap()->TakeAt(Inds, null)
+["A", "B", "C"]->Wrap()->TakeAt(Inds, null) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), str(<null>)):s)):s*)):s*))
+Func sig: (<ctx>:x, Inds:i8*) to s*
+Sequence: Seq<str>
+ 0) <null>
+ 1) <null>
+ 2) A
+ 3) B
+ 4) C
+ 5) A
+ 6) B
+ 7) C
+ 8) <null>
+*** Ctx ping count: 0
+###
+> ["A", "B", "C"]->Wrap()->TakeAt(Inds, "N/A")
+["A", "B", "C"]->Wrap()->TakeAt(Inds, "N/A") : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.With([with:1] Call(∂.Test.Wrap([str(A), str(B), str(C)]:s*):s*), Call(∂.ForEach([map:2] Global(Inds), Call(∂.TakeAt(Scope(1), Scope(2), str(N/A)):s)):s*)):s*))
+Func sig: (<ctx>:x, Inds:i8*) to s*
+Sequence: Seq<str>
+ 0) N/A
+ 1) N/A
+ 2) A
+ 3) B
+ 4) C
+ 5) A
+ 6) B
+ 7) C
+ 8) N/A
+*** Ctx ping count: 0
+###
+
+**** New definitions: vs, type: v*
+**** New definitions: b, type: b
+
+> vs->TakeAt(Inds)
+vs->TakeAt(Inds) : v*
+BndKind:Call, Type:v*, Bnd:(Call(∂.ForEach([map:1] Global(Inds), Call(∂.TakeAt(Global(vs), Scope(1)):v)):v*))
+*** Unsupported Exception: 'Unsupported default value'
+###
+> vs->TakeOne()
+vs->TakeOne() : v
+BndKind:Call, Type:v, Bnd:(Call(∂.TakeOne(Global(vs)):v))
+*** Unsupported Exception: 'Unsupported default value'
+###
+> vs->TakeOne(b)
+vs->TakeOne(b) : v
+BndKind:Call, Type:v, Bnd:(Call(∂.TakeOne([map:1] Global(vs), Global(b)):v))
+*** Unsupported Exception: 'Unsupported default value'
+###

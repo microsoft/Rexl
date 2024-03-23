@@ -1,0 +1,83 @@
+Add: 00000001 [A], Fma: [1]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+###
+Add: 00000002 [X], Fma: [A]
+Status: 2 nodes, 2 undos, 0 redos
+  Node changes:
+    00000002 [X]: [A  tTuUB C dD  ], Base: i8
+###
+Add: 00000003 [N.A], Fma: [true]
+Status: 3 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000003 [N.A]: [A  tT  B C dD  ], Base: b
+###
+Ren: 00000002 [N.X] <= [X]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [N.X]: [ N tTuUB C dD  ], Base: b
+###
+*** Undo(1)
+Ren: 00000002 [X] <= [N.X]
+Status: 3 nodes, 3 undos, 1 redos
+  Node changes:
+    00000002 [X]: [ N tTuUB C dD  ], Base: i8
+###
+*** Undo(1)
+Del: 00000003 [N.A]
+Status: 2 nodes, 2 undos, 2 redos
+  Namespaces changed: ∂
+###
+*** Undo(1)
+Del: 00000002 [X]
+Status: 1 nodes, 1 undos, 3 redos
+###
+*** Undo(1)
+Del: 00000001 [A]
+Status: 0 nodes, 0 undos, 4 redos
+###
+*** Redo(1)
+Add: 00000001 [A], Fma: [1]
+Status: 1 nodes, 1 undos, 3 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+###
+*** Redo(1)
+Add: 00000002 [X], Fma: [A]
+Status: 2 nodes, 2 undos, 2 redos
+  Node changes:
+    00000002 [X]: [A  tTuUB C dD  ], Base: i8
+###
+*** Redo(1)
+Add: 00000003 [N.A], Fma: [true]
+Status: 3 nodes, 3 undos, 1 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000003 [N.A]: [A  tT  B C dD  ], Base: b
+###
+*** Redo(1)
+Ren: 00000002 [N.X] <= [X]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [N.X]: [ N tTuUB C dD  ], Base: b
+###
+*** UndoAll
+Del: 00000001 [A]
+Del: 00000002 [N.X]
+Del: 00000003 [N.A]
+Status: 0 nodes, 0 undos, 4 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000001 [A], Fma: [1]
+Add: 00000002 [N.X], Fma: [A]
+Add: 00000003 [N.A], Fma: [true]
+Status: 3 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂, ∂.N
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [N.X]: [A  tTuUB C dD  ], Base: b
+    00000003 [N.A]: [A  tT  B C dD  ], Base: b
+###

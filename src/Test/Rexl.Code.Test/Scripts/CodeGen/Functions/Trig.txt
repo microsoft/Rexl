@@ -1,0 +1,29 @@
+﻿`` D := Range(31)->(it * 15.0);
+`` R := Range(31)->(it * 15.0)->Radians();
+`` TwoPi := Radians(360);
+`` Ss := Range(5)->(Sqrt(it) / 2);
+`` SVals := Ss ++ -Ss;
+`` Ts := [0, 1 / Sqrt(3), 1, Sqrt(3), 1/0];
+`` TVals := Ts ++ -Ts;
+
+// The display of floating point isn't yet consistent between windows and wsl, so we display the hex instead.
+`` func Clean(v) := v.Bits.Hex;
+// For pi/4 and cousins, the result is often inconsistent between windows and wsl.
+`` func Clean(v, ind, clr) := (v.Bits band bnot (clr if ind mod 6 = 3 else 0)).Hex;
+
+D->ForEach((Clean(SinD(it), #it, 0), Clean(-SinD(-it), #it, 0), Clean(SinD(it +   360), #it, 0), Clean(SinD(it -   360), #it, 0)))
+R->ForEach((Clean(Sin (it), #it, 0), Clean(-Sin (-it), #it, 0), Clean(Sin (it + TwoPi), #it, 1), Clean(Sin (it - TwoPi), #it, 0)))
+D->ForEach((Clean(CosD(it), #it, 1), Clean( CosD(-it), #it, 1), Clean(CosD(it +   360), #it, 1), Clean(CosD(it -   360), #it, 1)))
+R->ForEach((Clean(Cos (it), #it, 1), Clean( Cos (-it), #it, 1), Clean(Cos (it + TwoPi), #it, 1), Clean(Cos (it - TwoPi), #it, 1)))
+D->ForEach((Clean(TanD(it), #it, 0), Clean(-TanD(-it), #it, 0), Clean(TanD(it +   360), #it, 0), Clean(TanD(it -   360), #it, 0)))
+R->ForEach((Clean(Tan (it), #it, 0), Clean(-Tan (-it), #it, 0), Clean(Tan (it + TwoPi), #it, 0), Clean(Tan (it - TwoPi), #it, 0)))
+D->ForEach((Clean(CscD(it), #it, 0), Clean(-CscD(-it), #it, 0), Clean(CscD(it +   360), #it, 0), Clean(CscD(it -   360), #it, 0)))
+R->ForEach((Clean(Csc (it), #it, 0), Clean(-Csc (-it), #it, 0), Clean(Csc (it + TwoPi), #it, 1), Clean(Csc (it - TwoPi), #it, 0)))
+D->ForEach((Clean(SecD(it), #it, 1), Clean( SecD(-it), #it, 1), Clean(SecD(it +   360), #it, 1), Clean(SecD(it -   360), #it, 1)))
+R->ForEach((Clean(Sec (it), #it, 1), Clean( Sec (-it), #it, 1), Clean(Sec (it + TwoPi), #it, 1), Clean(Sec (it - TwoPi), #it, 1)))
+D->ForEach((Clean(CotD(it), #it, 0), Clean(-CotD(-it), #it, 0), Clean(CotD(it +   360), #it, 0), Clean(CotD(it -   360), #it, 0)))
+R->ForEach((Clean(Cot (it), #it, 0), Clean(-Cot (-it), #it, 0), Clean(Cot (it + TwoPi), #it, 0), Clean( Cot(it - TwoPi), #it, 0)))
+
+SVals->Asin()->(it, Degrees(it))
+SVals->Acos()->(it, Degrees(it))
+TVals->Atan()->(it, Degrees(it))

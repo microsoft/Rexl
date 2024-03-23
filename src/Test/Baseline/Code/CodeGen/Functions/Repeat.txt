@@ -1,0 +1,61 @@
+**** New definitions: Zero, type: i8
+**** New definitions: NegOne, type: i8
+**** New definitions: Big, type: i8
+
+> Repeat("hi", 5)
+Repeat("hi", 5) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.Repeat(str(hi), 5:i8):s*))
+Func sig: () to s*
+Sequence: Seq<str>
+ 0) hi
+ 1) hi
+ 2) hi
+ 3) hi
+ 4) hi
+###
+> Repeat(null, 7)
+Repeat(null, 7) : o*
+BndKind:Call, Type:o*, Bnd:(Call(∂.Repeat(null, 7:i8):o*))
+Func sig: () to o*
+Sequence: Seq<obj>
+ 0) <null>
+ 1) <null>
+ 2) <null>
+ 3) <null>
+ 4) <null>
+ 5) <null>
+ 6) <null>
+###
+> Repeat((3.5, true), 4)
+Repeat((3.5, true), 4) : (r8, b)*
+BndKind:Call, Type:(r8, b)*, Bnd:(Call(∂.Repeat((3.5:r8, true:b):(r8, b), 4:i8):(r8, b)*))
+Func sig: () to (r8, b)*
+Sequence: Seq<(r8,bool)>
+ 0) (3.5, true )
+ 1) (3.5, true )
+ 2) (3.5, true )
+ 3) (3.5, true )
+###
+> Repeat({A:12, B:true}, Zero)
+Repeat({ A : 12, B : true }, Zero) : {A:i8, B:b}*
+BndKind:Call, Type:{A:i8, B:b}*, Bnd:(Call(∂.Repeat({A:12:i8, B:true:b}, Global(Zero))))
+Func sig: (Zero:i8) to {A:i8, B:b}*
+Type: <null>, Value: <null>
+###
+> Repeat({A:12, B:true}, NegOne)
+Repeat({ A : 12, B : true }, NegOne) : {A:i8, B:b}*
+BndKind:Call, Type:{A:i8, B:b}*, Bnd:(Call(∂.Repeat({A:12:i8, B:true:b}, Global(NegOne))))
+Func sig: (NegOne:i8) to {A:i8, B:b}*
+Type: <null>, Value: <null>
+###
+> Repeat({A:12, B:true}, Big)->Take(5)
+Repeat({ A : 12, B : true }, Big)->Take(5) : {A:i8, B:b}*
+BndKind:Call, Type:{A:i8, B:b}*, Bnd:(Call(∂.Take(Call(∂.Repeat({A:12:i8, B:true:b}, Global(Big))), 5:i8)))
+Func sig: (Big:i8) to {A:i8, B:b}*
+Sequence: Seq<{i8,bool}>
+ 0) { A: 12, B: true  }
+ 1) { A: 12, B: true  }
+ 2) { A: 12, B: true  }
+ 3) { A: 12, B: true  }
+ 4) { A: 12, B: true  }
+###

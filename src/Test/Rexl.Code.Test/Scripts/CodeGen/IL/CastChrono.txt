@@ -1,0 +1,74 @@
+﻿``` I_s := [ 3i , -7i , 0x7Fi , 0x80i , 0x100i , 0x7FFFi , 0x8000i , 0x10000i , 0x7FFFFFFFi , 0x80000000i , 0x100000000i , 3155378975999999999i , 3155378975999999999i  + 1i , 0x7FFFFFFFFFFFFFFFi ,-0x8000000000000000i , 0x8000000000000000i , 0x10000000000000000i ];
+``` I8s := [ 3i8, -7i8, 0x7Fi8, 0x80i8, 0x100i8, 0x7FFFi8, 0x8000i8, 0x10000i8, 0x7FFFFFFFi8, 0x80000000i8, 0x100000000i8, 3155378975999999999i8, 3155378975999999999i8 + 1i8, 0x7FFFFFFFFFFFFFFFi8, 0x8000000000000000i8 ];
+``` I4s := [ 3i4, -7i4, 0x7Fi4, 0x80i4, 0x100i4, 0x7FFFi4, 0x8000i4, 0x10000i4, 0x7FFFFFFFi4, 0x80000000i4 ];
+``` I2s := [ 3i2, -7i2, 0x7Fi2, 0x80i2, 0x100i2, 0x7FFFi2, 0x8000i2 ];
+``` I1s := [ 3i1, -7i1, 0x7Fi1, 0x80i1 ];
+``` U8s := [ 3u8,  7u8, 0x80u8, 0xFFu8, 0x100u8, 0x8000u8, 0xFFFFu8, 0x10000u8, 0x80000000u8, 0xFFFFFFFFu8, 0x100000000u8, 3155378975999999999u8, 3155378975999999999u8 + 1u8, 0x8000000000000000u8, 0xFFFFFFFFFFFFFFFFu8 ];
+``` U4s := [ 3u4,  7u4, 0x80u4, 0xFFu4, 0x100u4, 0x8000u4, 0xFFFFu4, 0x10000u4, 0x80000000u4, 0xFFFFFFFFu4 ];
+``` U2s := [ 3u2,  7u2, 0x80u2, 0xFFu2, 0x100u2, 0x8000u2, 0xFFFFu2 ];
+``` U1s := [ 3u1,  7u1, 0x80u1, 0xFFu1 ];
+``` R8s := [ 3r8, -7r8, 1e9r8, 3155378975999999743r8, 3155378975999999744r8, -2r8^63, +2r8^63, 2r8^64 + 2r8^60 ];
+``` R4s := [ 3r4, -7r4, 1e9r4, 3155378881708424959r4, 3155378881708424960r4, -2r4^63 | CastR4(_), +2r4^63 | CastR4(_), 2r4^64 + 2r4^60 | CastR4(_) ];
+
+I_s->CastDate()->CastIA()
+I_s->CastTime()->CastIA()
+I8s->CastDate()->CastIA()
+I8s->CastTime()->CastIA()
+U8s->CastDate()->CastIA()
+U8s->CastTime()->CastIA()
+I4s->CastDate()->CastIA()
+I4s->CastTime()->CastIA()
+U4s->CastDate()->CastIA()
+U4s->CastTime()->CastIA()
+I2s->CastDate()->CastIA()
+I2s->CastTime()->CastIA()
+U2s->CastDate()->CastIA()
+U2s->CastTime()->CastIA()
+I1s->CastDate()->CastIA()
+I1s->CastTime()->CastIA()
+U1s->CastDate()->CastIA()
+U1s->CastTime()->CastIA()
+R8s->CastDate()->CastIA()
+R8s->CastTime()->CastIA()
+R4s->CastDate()->CastIA()
+R4s->CastTime()->CastIA()
+
+I_s->ToDate()->CastIA()
+I_s->ToTime()->CastIA()
+I8s->ToDate()->CastIA()
+I8s->ToTime()->CastIA()
+U8s->ToDate()->CastIA()
+U8s->ToTime()->CastIA()
+I4s->ToDate()->CastIA()
+I4s->ToTime()->CastIA()
+U4s->ToDate()->CastIA()
+U4s->ToTime()->CastIA()
+I2s->ToDate()->CastIA()
+I2s->ToTime()->CastIA()
+U2s->ToDate()->CastIA()
+U2s->ToTime()->CastIA()
+I1s->ToDate()->CastIA()
+I1s->ToTime()->CastIA()
+U1s->ToDate()->CastIA()
+U1s->ToTime()->CastIA()
+R8s->ToDate()->CastIA()
+R8s->ToTime()->CastIA()
+R4s->ToDate()->CastIA()
+R4s->ToTime()->CastIA()
+
+// Construction of Time.
+Map(x: I8s, Time(x))
+Map(x: I8s, Time(x, x))
+Map(x: I8s, Time(x, x, x))
+Map(x: I8s, Time(x, x, x, x))
+Map(x: I8s, Time(x, x, x, x, x))
+Map(x: I8s, Time(x, x, x, x, x, x))
+Map(x: I8s, Time(0, x))
+Map(x: I8s, Time(0, 0, x))
+Map(x: I8s, Time(0, 0, 0, x))
+Map(x: I8s, Time(0, 0, 0, 0, x))
+Map(x: I8s, Time(0, 0, 0, 0, 0, x))
+
+// Test overflow logic.
+[ +5807, +5808, +5809, 0x7FFF_FFFF_FFFF_FFFFi8 ] | Time(+10675199, +2, +48, +5, +477, _)
+[ -5807, -5808, -5809, 0x8000_0000_0000_0000i8 ] | Time(-10675199, -2, -48, -5, -477, _)

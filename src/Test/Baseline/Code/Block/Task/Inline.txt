@@ -1,0 +1,152 @@
+>>> *** Source:
+    finish T as {
+        publish X := 3;
+        publish Y := "hi";
+    }
+    (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+    { T.X, T.Y };
+
+>>> *** Instructions:
+   0) [0] TaskBlock finish T
+   1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+   2) [0] Expr { T.X, T.Y }
+   3) [0] End
+
+>    0) [0] TaskBlock finish T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+(true, false, <null>, (X, Y))
+>    2) [0] Expr { T.X, T.Y }
+{ X: 3, Y: hi }
+>    3) [0] End
+###
+>>> *** Source:
+    finish T as {
+        publish X := 3;
+        publish Y := "hi";
+        publish X := (7, 12);
+    }
+    (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+    { T.X, T.Y };
+
+>>> *** Instructions:
+   0) [0] TaskBlock finish T
+   1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+   2) [0] Expr { T.X, T.Y }
+   3) [0] End
+
+>    0) [0] TaskBlock finish T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+(true, false, <null>, (X, Y))
+>    2) [0] Expr { T.X, T.Y }
+{ X: (7, 12), Y: hi }
+>    3) [0] End
+###
+>>> *** Source:
+    D := Range(10)->{ A: it, B: it * it, C: it mod 3 != 0 };
+    play T1 with { D } as {
+        S := SumC(D, B);
+        publish C := S.Count;
+        publish M := S.Sum / S.Count;
+    }
+    play T2 with { D } as {
+        S := SumC(D, B if C else null);
+        publish C := S.Count;
+        publish M := S.Sum / S.Count;
+    }
+    finish T1;
+    finish T2;
+    (T1$Finished, T1$Failed, T1$ErrorMessage, T1$ResultNames);
+    (T2$Finished, T2$Failed, T2$ErrorMessage, T2$ResultNames);
+    (T1.C, T1.M);
+    (T2.C, T2.M);
+
+>>> *** Instructions:
+   0) [0] Define D <- Range(10)->{ A : it, B : it * it, C : it mod 3 !@= 0 }
+   1) [0] TaskBlock play T1 with { D }
+   2) [0] TaskBlock play T2 with { D }
+   3) [0] TaskCmd finish T1
+   4) [0] TaskCmd finish T2
+   5) [0] Expr (T1$Finished, T1$Failed, T1$ErrorMessage, T1$ResultNames)
+   6) [0] Expr (T2$Finished, T2$Failed, T2$ErrorMessage, T2$ResultNames)
+   7) [0] Expr (T1.C, T1.M)
+   8) [0] Expr (T2.C, T2.M)
+   9) [0] End
+
+>    0) [0] Define D <- Range(10)->{ A : it, B : it * it, C : it mod 3 !@= 0 }
+Global 'D' has DType: {A:i8, B:i8, C:b}*, SysType: Seq<{i8,i8,bool}>
+>    1) [0] TaskBlock play T1 with { D }
+Task 'T1' added
+Task 'T1' now playing
+>    2) [0] TaskBlock play T2 with { D }
+Task 'T2' added
+Task 'T2' now playing
+>    3) [0] TaskCmd finish T1
+Task 'T1' already playing
+Task 'T1' finished
+>    4) [0] TaskCmd finish T2
+Task 'T2' already playing
+Task 'T2' finished
+>    5) [0] Expr (T1$Finished, T1$Failed, T1$ErrorMessage, T1$ResultNames)
+(true, false, <null>, (C, M))
+>    6) [0] Expr (T2$Finished, T2$Failed, T2$ErrorMessage, T2$ResultNames)
+(true, false, <null>, (C, M))
+>    7) [0] Expr (T1.C, T1.M)
+(10, 28.5)
+>    8) [0] Expr (T2.C, T2.M)
+(6, 26.5)
+>    9) [0] End
+###
+>>> *** Source:
+    finish T with { A: 5 } play {
+        publish X := A + 3;
+    }
+    (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+    T.X;
+
+>>> *** Instructions:
+   0) [0] TaskBlock finish T with { A : 5 }
+   1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+   2) [0] Expr T.X
+   3) [0] End
+
+>    0) [0] TaskBlock finish T with { A : 5 }
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+(true, false, <null>, (X,))
+>    2) [0] Expr T.X
+8
+>    3) [0] End
+###
+>>> *** Source:
+    finish T with { A: "hi" } play {
+        publish X := A + 3; //Bind error.
+    }
+    (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames);
+    T.X;
+
+>>> *** Instructions:
+   0) [0] TaskBlock finish T with { A : "hi" }
+   1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+   2) [0] Expr T.X
+   3) [0] End
+
+>    0) [0] TaskBlock finish T with { A : "hi" }
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    1) [0] Expr (T$Finished, T$Failed, T$ErrorMessage, T$ResultNames)
+(true, true, Invalid operand type: cannot convert type 's' to 'i8', ())
+>    2) [0] Expr T.X
+*** Bind diagnostics:
+  [Inline.txt] Error: (129,130) Node: T.X, Message: Namespace 'T' doesn't contain 'X'
+>    3) [0] End
+###
+

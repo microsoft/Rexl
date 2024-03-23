@@ -1,0 +1,459 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> { A:3, B:s, C:i4, D:d, E:true, F:null }
+{ A : 3, B : s, C : i4, D : d, E : true, F : null } : {A:i8, B:s, C:i4, D:d, E:b, F:o}
+BndKind:Record, Type:{A:i8, B:s, C:i4, D:d, E:b, F:o}, Bnd:({A:3:i8, B:Global(s), C:Global(i4), D:Global(d), E:true:b, F:null})
+Func sig: (s:s, i4:i4, d:d) to {A:i8, B:s, C:i4, D:d, E:b, F:o}
+Type: {i8,str,i4,Date,bool,obj}, Value: { A: 3, B: <null>, C: 0, D: DT(1, 1, 1, 0, 0, 0, 0), E: true , F: <null> }
+###
+> { A:3, B:s, C:{ A:i4, D:d, E:true, F:null }, X:r8 }
+{ A : 3, B : s, C : { A : i4, D : d, E : true, F : null }, X : r8 } : {A:i8, B:s, C:{A:i4, D:d, E:b, F:o}, X:r8}
+BndKind:Record, Type:{A:i8, B:s, C:{A:i4, D:d, E:b, F:o}, X:r8}, Bnd:({A:3:i8, B:Global(s), C:{A:Global(i4), D:Global(d), E:true:b, F:null}, X:Global(r8)})
+Func sig: (s:s, i4:i4, d:d, r8:r8) to {A:i8, B:s, C:{A:i4, D:d, E:b, F:o}, X:r8}
+Type: {i8,str,{i4,Date,bool,obj},r8}, Value: { A: 3, B: <null>, C: { A: 0, D: DT(1, 1, 1, 0, 0, 0, 0), E: true , F: <null> }, X: 0 }
+###
+> [{A:3}, {A:5}]
+[{ A : 3 }, { A : 5 }] : {A:i8}*
+BndKind:Sequence, Type:{A:i8}*, Bnd:([{A:3:i8}, {A:5:i8}]:{A:i8}*)
+Func sig: () to {A:i8}*
+Sequence: Seq<{i8}>
+ 0) { A: 3 }
+ 1) { A: 5 }
+###
+> [{A:3}, {A:5.0}]
+[{ A : 3 }, { A : 5 }] : {A:r8}*
+BndKind:Sequence, Type:{A:r8}*, Bnd:([{A:3:r8}, {A:5:r8}]:{A:r8}*)
+Func sig: () to {A:r8}*
+Sequence: Seq<{r8}>
+ 0) { A: 3 }
+ 1) { A: 5 }
+###
+> [Wrap({A:3}), Wrap({A:5.0})]
+[Wrap({ A : 3 }), Wrap({ A : 5 })] : {A:r8}*
+BndKind:Sequence, Type:{A:r8}*, Bnd:([{A:Num<r8>(GetField(Call(∂.Test.Wrap({A:3:i8})), A))}, Call(∂.Test.Wrap({A:5:r8}))]:{A:r8}*)
+Func sig: () to {A:r8}*
+Sequence: Seq<{r8}>
+ 0) { A: 3 }
+ 1) { A: 5 }
+###
+> [Wrap({A:3}), null, Wrap({A:5.0})]
+[Wrap({ A : 3 }), null, Wrap({ A : 5 })] : {A:r8}?*
+BndKind:Sequence, Type:{A:r8}?*, Bnd:([Ref<{A:r8}?>({A:Num<r8>(GetField(Call(∂.Test.Wrap({A:3:i8})), A))}), null:{A:r8}?, Ref<{A:r8}?>(Call(∂.Test.Wrap({A:5:r8})))]:{A:r8}?*)
+Func sig: () to {A:r8}?*
+Sequence: Seq<{r8}>
+ 0) { A: 3 }
+ 1) <null>
+ 2) { A: 5 }
+###
+> {A:3}.A
+{ A : 3 }.A : i8
+BndKind:Int, Type:i8, Bnd:(3:i8)
+Func sig: () to i8
+Type: i8, Value: 3
+###
+> {A:[3, 5]}.A
+{ A : [3, 5] }.A : i8*
+BndKind:Sequence, Type:i8*, Bnd:([3:i8, 5:i8]:i8*)
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 5
+###
+> [{A:3}, {A:5}].A
+[{ A : 3 }, { A : 5 }].A : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] [{A:3:i8}, {A:5:i8}]:{A:i8}*, GetField(Scope(1), A)):i8*))
+Func sig: () to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) 5
+###
+> With(x : [Wrap({A:3}), null, Wrap({A:5.0})], x.A)
+With(x : [Wrap({ A : 3 }), null, Wrap({ A : 5 })], x.A) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.ForEach([map:1] [Ref<{A:r8}?>({A:Num<r8>(GetField(Call(∂.Test.Wrap({A:3:i8})), A))}), null:{A:r8}?, Ref<{A:r8}?>(Call(∂.Test.Wrap({A:5:r8})))]:{A:r8}?*, Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):r8?)):r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 3
+ 1) <null>
+ 2) 5
+###
+> Wrap([{A:3}, null, {A:5.0}]).A
+Wrap([{ A : 3 }, null, { A : 5 }]).A : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Ref<{A:r8}?>({A:3:r8}), null:{A:r8}?, Ref<{A:r8}?>({A:5:r8})]:{A:r8}?*)), Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):r8?)):r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 3
+ 1) <null>
+ 2) 5
+###
+> [Wrap({A:3}), null, Wrap({A:5.0})].A
+[Wrap({ A : 3 }), null, Wrap({ A : 5 })].A : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.ForEach([map:1] [Ref<{A:r8}?>({A:Num<r8>(GetField(Call(∂.Test.Wrap({A:3:i8})), A))}), null:{A:r8}?, Ref<{A:r8}?>(Call(∂.Test.Wrap({A:5:r8})))]:{A:r8}?*, Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):r8?)):r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 3
+ 1) <null>
+ 2) 5
+###
+> Wrap([Wrap({A:3}), null, Wrap({A:5.0})]).A
+Wrap([Wrap({ A : 3 }), null, Wrap({ A : 5 })]).A : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap([Ref<{A:r8}?>({A:Num<r8>(GetField(Call(∂.Test.Wrap({A:3:i8})), A))}), null:{A:r8}?, Ref<{A:r8}?>(Call(∂.Test.Wrap({A:5:r8})))]:{A:r8}?*)), Call(∂.Guard([guard:2] Scope(1), GetField(Scope(2), A)):r8?)):r8?*))
+Func sig: () to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 3
+ 1) <null>
+ 2) 5
+###
+> { A:First([null, 3]), B:First([3, null]) }
+{ A : First([null, 3]), B : First([3, null]) } : {A:i8?, B:i8?}
+BndKind:Record, Type:{A:i8?, B:i8?}, Bnd:({A:null:i8?, B:Opt<i8?>(3:i8)})
+Func sig: () to {A:i8?, B:i8?}
+Type: {i8,i8}, Value: { A: <null>, B: 3 }
+###
+> { A:First([null, {X:3}]), B:First([{X:3}, null]) }
+{ A : First([null, { X : 3 }]), B : First([{ X : 3 }, null]) } : {A:{X:i8}?, B:{X:i8}?}
+BndKind:Record, Type:{A:{X:i8}?, B:{X:i8}?}, Bnd:({A:null:{X:i8}?, B:Ref<{X:i8}?>({X:3:i8})})
+Func sig: () to {A:{X:i8}?, B:{X:i8}?}
+Type: {{i8},{i8}}, Value: { A: <null>, B: { X: 3 } }
+###
+> Wrap([])->{X:it}
+Wrap([])->{ X : it } : {X:v}*
+BndKind:Call, Type:{X:v}*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Test.Wrap(null:v*):v*), {X:Scope(1)})))
+Func sig: () to {X:v}*
+Type: <null>, Value: <null>
+###
+> [ { A:17, B:"Hi" }->Wrap() ]
+[{ A : 17, B : "Hi" }->Wrap()] : {A:i8, B:s}*
+BndKind:Sequence, Type:{A:i8, B:s}*, Bnd:([Call(∂.Test.Wrap({A:17:i8, B:str(Hi)}))]:{A:i8, B:s}*)
+Func sig: () to {A:i8, B:s}*
+Sequence: Seq<{i8,str}>
+ 0) { A: 17, B: Hi }
+###
+> [ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]
+[[{ A : 17, B : "Hi" }->Wrap()]->Wrap()] : {A:i8, B:s}**
+BndKind:Sequence, Type:{A:i8, B:s}**, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.Wrap({A:17:i8, B:str(Hi)}))]:{A:i8, B:s}*))]:{A:i8, B:s}**)
+Func sig: () to {A:i8, B:s}**
+Sequence: Seq<Seq<{i8,str}>>
+ 0) Sequence: Seq<{i8,str}>
+     0) { A: 17, B: Hi }
+###
+> [ [ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]->Wrap() ]
+[[[{ A : 17, B : "Hi" }->Wrap()]->Wrap()]->Wrap()] : {A:i8, B:s}***
+BndKind:Sequence, Type:{A:i8, B:s}***, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.Wrap({A:17:i8, B:str(Hi)}))]:{A:i8, B:s}*))]:{A:i8, B:s}**))]:{A:i8, B:s}***)
+Func sig: () to {A:i8, B:s}***
+Sequence: Seq<Seq<Seq<{i8,str}>>>
+ 0) Sequence: Seq<Seq<{i8,str}>>
+     0) Sequence: Seq<{i8,str}>
+         0) { A: 17, B: Hi }
+###
+> [ [ [ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]->Wrap() ]->Wrap() ]
+[[[[{ A : 17, B : "Hi" }->Wrap()]->Wrap()]->Wrap()]->Wrap()] : {A:i8, B:s}****
+BndKind:Sequence, Type:{A:i8, B:s}****, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.Wrap({A:17:i8, B:str(Hi)}))]:{A:i8, B:s}*))]:{A:i8, B:s}**))]:{A:i8, B:s}***))]:{A:i8, B:s}****)
+Func sig: () to {A:i8, B:s}****
+Sequence: Seq<Seq<Seq<Seq<{i8,str}>>>>
+ 0) Sequence: Seq<Seq<Seq<{i8,str}>>>
+     0) Sequence: Seq<Seq<{i8,str}>>
+         0) Sequence: Seq<{i8,str}>
+             0) { A: 17, B: Hi }
+###
+> [ { A:17, B:"Hi" }->CastGen() ]
+[{ A : 17, B : "Hi" }->CastGen()] : g*
+BndKind:Sequence, Type:g*, Bnd:([Call(∂.Test.CastGen({A:17:i8, B:str(Hi)}):g)]:g*)
+Func sig: () to g*
+Sequence: Seq<obj>
+ 0) { A: 17, B: Hi }
+###
+> [ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]
+[[{ A : 17, B : "Hi" }->CastGen()]->Wrap()] : g**
+BndKind:Sequence, Type:g**, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.CastGen({A:17:i8, B:str(Hi)}):g)]:g*):g*)]:g**)
+Func sig: () to g**
+Sequence: Seq<Seq<obj>>
+ 0) Sequence: Seq<obj>
+     0) { A: 17, B: Hi }
+###
+> [ [ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]->Wrap() ]
+[[[{ A : 17, B : "Hi" }->CastGen()]->Wrap()]->Wrap()] : g***
+BndKind:Sequence, Type:g***, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.CastGen({A:17:i8, B:str(Hi)}):g)]:g*):g*)]:g**):g**)]:g***)
+Func sig: () to g***
+Sequence: Seq<Seq<Seq<obj>>>
+ 0) Sequence: Seq<Seq<obj>>
+     0) Sequence: Seq<obj>
+         0) { A: 17, B: Hi }
+###
+> [ [ [ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]->Wrap() ]->Wrap() ]
+[[[[{ A : 17, B : "Hi" }->CastGen()]->Wrap()]->Wrap()]->Wrap()] : g****
+BndKind:Sequence, Type:g****, Bnd:([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.Wrap([Call(∂.Test.CastGen({A:17:i8, B:str(Hi)}):g)]:g*):g*)]:g**):g**)]:g***):g***)]:g****)
+Func sig: () to g****
+Sequence: Seq<Seq<Seq<Seq<obj>>>>
+ 0) Sequence: Seq<Seq<Seq<obj>>>
+     0) Sequence: Seq<Seq<obj>>
+         0) Sequence: Seq<obj>
+             0) { A: 17, B: Hi }
+###
+> { A:17, B:Null("Hi") }->CastGen()
+{ A : 17, B : Null("Hi") }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:17:i8, B:str(<null>)}):g))
+Func sig: () to g
+Type: {i8,str}, Value: { A: 17, B: <null> }
+###
+> { A:Null(17), B:"Hi" }->CastGen()
+{ A : Null(17), B : "Hi" }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:null:i8?, B:str(Hi)}):g))
+Func sig: () to g
+Type: {i8,str}, Value: { A: 0, B: Hi }
+###
+> { A: Opt(17), B: Opt(3.5), C: Opt(true) }->CastGen()
+{ A : Opt(17), B : Opt(3.5), C : Opt(true) }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:Opt<i8?>(17:i8), B:Opt<r8?>(3.5:r8), C:Opt<b?>(true:b)}):g))
+Func sig: () to g
+Type: {i8,r8,bool}, Value: { A: 17, B: 3.5, C: true  }
+###
+> { A: Opt(17), B: Opt(3.5), C:Null(true) }->CastGen()
+{ A : Opt(17), B : Opt(3.5), C : Null(true) }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:Opt<i8?>(17:i8), B:Opt<r8?>(3.5:r8), C:null:b?}):g))
+Func sig: () to g
+Type: {i8,r8,bool}, Value: { A: 17, B: 3.5, C: <null> }
+###
+> { A: Opt(17), B:Null(3.5), C: Opt(true) }->CastGen()
+{ A : Opt(17), B : Null(3.5), C : Opt(true) }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:Opt<i8?>(17:i8), B:null:r8?, C:Opt<b?>(true:b)}):g))
+Func sig: () to g
+Type: {i8,r8,bool}, Value: { A: 17, B: <null>, C: true  }
+###
+> { A:Null(17), B: Opt(3.5), C: Opt(true) }->CastGen()
+{ A : Null(17), B : Opt(3.5), C : Opt(true) }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:null:i8?, B:Opt<r8?>(3.5:r8), C:Opt<b?>(true:b)}):g))
+Func sig: () to g
+Type: {i8,r8,bool}, Value: { A: <null>, B: 3.5, C: true  }
+###
+> { A:Null(17), B:Null(3.5), C:Null(true) }->CastGen()
+{ A : Null(17), B : Null(3.5), C : Null(true) }->CastGen() : g
+BndKind:Call, Type:g, Bnd:(Call(∂.Test.CastGen({A:null:i8?, B:null:r8?, C:null:b?}):g))
+Func sig: () to g
+Type: {i8,r8,bool}, Value: { A: <null>, B: <null>, C: <null> }
+###
+
+**** New definitions: GamesWeek1, type: {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+**** New definitions: <this>, type: {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+
+> GamesWeek1 | Sum(_, HScore - AScore)
+GamesWeek1 | Sum(_, HScore - AScore) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Global(GamesWeek1), Add(GetField(Scope(1), HScore), [-] GetField(Scope(1), AScore))):i8))
+Func sig: (<ctx>:x, GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to i8
+Type: i8, Value: 109
+*** Ctx ping count: 17
+    [0](17): Sum(*1: GamesWeek1, Add(*1.HScore, [-] *1.AScore))
+###
+> this       | Sum(_, HScore - AScore)
+this | Sum(_, HScore - AScore) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] <this>, Add(GetField(Scope(1), HScore), [-] GetField(Scope(1), AScore))):i8))
+Func sig: (<ctx>:x, <this>:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to i8
+Type: i8, Value: 109
+*** Ctx ping count: 17
+    [0](17): Sum(*1: <this>, Add(*1.HScore, [-] *1.AScore))
+###
+> GamesWeek1 | Filter(_, HScore - AScore > 0) | Count(_)
+GamesWeek1 | Filter(_, HScore - AScore $> 0) | Count(_) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take([map:1] Global(GamesWeek1), [if] Cmp(Add(GetField(Scope(1), HScore), [-] GetField(Scope(1), AScore)) @> 0:i8)))):i8))
+Func sig: (<ctx>:x, GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to i8
+Type: i8, Value: 12
+*** Ctx ping count: 17
+    [0](4): Take(*1: GamesWeek1, [if] Add(*1.HScore, [-] *1.AScore) @> 0)
+    [1](13): Count(Take(*1: GamesWeek1, [if] Add(*1.HScore, [-] *1.AScore) @> 0))
+###
+> this       | Filter(_, HScore - AScore > 0) | Count(_)
+this | Filter(_, HScore - AScore $> 0) | Count(_) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Count(Call(∂.Take([map:1] <this>, [if] Cmp(Add(GetField(Scope(1), HScore), [-] GetField(Scope(1), AScore)) @> 0:i8)))):i8))
+Func sig: (<ctx>:x, <this>:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to i8
+Type: i8, Value: 12
+*** Ctx ping count: 17
+    [0](4): Take(*1: <this>, [if] Add(*1.HScore, [-] *1.AScore) @> 0)
+    [1](13): Count(Take(*1: <this>, [if] Add(*1.HScore, [-] *1.AScore) @> 0))
+###
+> GamesWeek1 | Filter(_, Text.IndexOf(Away, "S") = 0 or Text.IndexOf(Home, "S") = 0)
+GamesWeek1 | Filter(_, Text.IndexOf(Away, "S") @= 0 or Text.IndexOf(Home, "S") @= 0) : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+BndKind:Call, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*, Bnd:(Call(∂.Take([map:1] Global(GamesWeek1), [if] Or(Cmp(Call(∂.Text.IndexOf(GetField(Scope(1), Away), str(S)):i8) @= 0:i8), Cmp(Call(∂.Text.IndexOf(GetField(Scope(1), Home), str(S)):i8) @= 0:i8)))))
+Func sig: (<ctx>:x, GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+Sequence: Seq<{i8,str,i8,str,i8,Date}>
+ 0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1, When: DT(2010, 9, 12, 0, 0, 0, 0) }
+ 1) { AScore: 6, Away: SF, HScore: 31, Home: SEA, Week: 1, When: DT(2010, 9, 12, 0, 0, 0, 0) }
+ 2) { AScore: 14, Away: SD, HScore: 21, Home: KC, Week: 1, When: DT(2010, 9, 13, 0, 0, 0, 0) }
+*** Ctx ping count: 13
+    [0](13): Take(*1: GamesWeek1, [if] Or(Text.IndexOf(*1.Away, "S") @= 0, Text.IndexOf(*1.Home, "S") @= 0))
+###
+> this       | Filter(_, Text.IndexOf(Away, "S") = 0 or Text.IndexOf(Home, "S") = 0)
+this | Filter(_, Text.IndexOf(Away, "S") @= 0 or Text.IndexOf(Home, "S") @= 0) : {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+BndKind:Call, Type:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*, Bnd:(Call(∂.Take([map:1] <this>, [if] Or(Cmp(Call(∂.Text.IndexOf(GetField(Scope(1), Away), str(S)):i8) @= 0:i8), Cmp(Call(∂.Text.IndexOf(GetField(Scope(1), Home), str(S)):i8) @= 0:i8)))))
+Func sig: (<ctx>:x, <this>:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to {AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*
+Sequence: Seq<{i8,str,i8,str,i8,Date}>
+ 0) { AScore: 17, Away: ARI, HScore: 13, Home: STL, Week: 1, When: DT(2010, 9, 12, 0, 0, 0, 0) }
+ 1) { AScore: 6, Away: SF, HScore: 31, Home: SEA, Week: 1, When: DT(2010, 9, 12, 0, 0, 0, 0) }
+ 2) { AScore: 14, Away: SD, HScore: 21, Home: KC, Week: 1, When: DT(2010, 9, 13, 0, 0, 0, 0) }
+*** Ctx ping count: 13
+    [0](13): Take(*1: <this>, [if] Or(Text.IndexOf(*1.Away, "S") @= 0, Text.IndexOf(*1.Home, "S") @= 0))
+###
+> GamesWeek1 | SetFields(_, Week: null, When: null)
+GamesWeek1 | SetFields(_, Week : null, When : null) : {AScore:i8, Away:s, HScore:i8, Home:s}*
+BndKind:Call, Type:{AScore:i8, Away:s, HScore:i8, Home:s}*, Bnd:(Call(∂.ForEach([map:1] Global(GamesWeek1), SetFields(Scope(1)))))
+Func sig: (GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to {AScore:i8, Away:s, HScore:i8, Home:s}*
+Sequence: Seq<{i8,str,i8,str}>
+ 0) { AScore: 9, Away: MIN, HScore: 14, Home: NO }
+ 1) { AScore: 14, Away: CLE, HScore: 17, Home: TB }
+ 2) { AScore: 15, Away: MIA, HScore: 10, Home: BUF }
+ 3) { AScore: 24, Away: CIN, HScore: 38, Home: NE }
+ 4) { AScore: 17, Away: DEN, HScore: 24, Home: JAC }
+ 5) { AScore: 18, Away: CAR, HScore: 31, Home: NYG }
+ 6) { AScore: 14, Away: DET, HScore: 19, Home: CHI }
+ 7) { AScore: 9, Away: ATL, HScore: 15, Home: PIT }
+ 8) { AScore: 13, Away: OAK, HScore: 38, Home: TEN }
+ 9) { AScore: 24, Away: IND, HScore: 34, Home: HOU }
+10) { AScore: 17, Away: ARI, HScore: 13, Home: STL }
+11) { AScore: 6, Away: SF, HScore: 31, Home: SEA }
+12) { AScore: 27, Away: GB, HScore: 20, Home: PHI }
+13) { AScore: 7, Away: DAL, HScore: 13, Home: WAS }
+14) { AScore: 10, Away: BAL, HScore: 9, Home: NYJ }
+15) { AScore: 14, Away: SD, HScore: 21, Home: KC }
+###
+> GamesWeek1+>{ Week: null, When: null }
+GamesWeek1+>{ Week : null, When : null } : {AScore:i8, Away:s, HScore:i8, Home:s}*
+BndKind:Call, Type:{AScore:i8, Away:s, HScore:i8, Home:s}*, Bnd:(Call(∂.ForEach([map:1] Global(GamesWeek1), SetFields(Scope(1)))))
+Func sig: (GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to {AScore:i8, Away:s, HScore:i8, Home:s}*
+Sequence: Seq<{i8,str,i8,str}>
+ 0) { AScore: 9, Away: MIN, HScore: 14, Home: NO }
+ 1) { AScore: 14, Away: CLE, HScore: 17, Home: TB }
+ 2) { AScore: 15, Away: MIA, HScore: 10, Home: BUF }
+ 3) { AScore: 24, Away: CIN, HScore: 38, Home: NE }
+ 4) { AScore: 17, Away: DEN, HScore: 24, Home: JAC }
+ 5) { AScore: 18, Away: CAR, HScore: 31, Home: NYG }
+ 6) { AScore: 14, Away: DET, HScore: 19, Home: CHI }
+ 7) { AScore: 9, Away: ATL, HScore: 15, Home: PIT }
+ 8) { AScore: 13, Away: OAK, HScore: 38, Home: TEN }
+ 9) { AScore: 24, Away: IND, HScore: 34, Home: HOU }
+10) { AScore: 17, Away: ARI, HScore: 13, Home: STL }
+11) { AScore: 6, Away: SF, HScore: 31, Home: SEA }
+12) { AScore: 27, Away: GB, HScore: 20, Home: PHI }
+13) { AScore: 7, Away: DAL, HScore: 13, Home: WAS }
+14) { AScore: 10, Away: BAL, HScore: 9, Home: NYJ }
+15) { AScore: 14, Away: SD, HScore: 21, Home: KC }
+###
+> GamesWeek1->{ Away, Home, AScore, HScore }
+GamesWeek1->{ Away, Home, AScore, HScore } : {AScore:i8, Away:s, HScore:i8, Home:s}*
+BndKind:Call, Type:{AScore:i8, Away:s, HScore:i8, Home:s}*, Bnd:(Call(∂.ForEach([map:1] Global(GamesWeek1), {AScore:GetField(Scope(1), AScore), Away:GetField(Scope(1), Away), HScore:GetField(Scope(1), HScore), Home:GetField(Scope(1), Home)})))
+Func sig: (GamesWeek1:{AScore:i8, Away:s, HScore:i8, Home:s, Week:i8, When:d}*) to {AScore:i8, Away:s, HScore:i8, Home:s}*
+Sequence: Seq<{i8,str,i8,str}>
+ 0) { AScore: 9, Away: MIN, HScore: 14, Home: NO }
+ 1) { AScore: 14, Away: CLE, HScore: 17, Home: TB }
+ 2) { AScore: 15, Away: MIA, HScore: 10, Home: BUF }
+ 3) { AScore: 24, Away: CIN, HScore: 38, Home: NE }
+ 4) { AScore: 17, Away: DEN, HScore: 24, Home: JAC }
+ 5) { AScore: 18, Away: CAR, HScore: 31, Home: NYG }
+ 6) { AScore: 14, Away: DET, HScore: 19, Home: CHI }
+ 7) { AScore: 9, Away: ATL, HScore: 15, Home: PIT }
+ 8) { AScore: 13, Away: OAK, HScore: 38, Home: TEN }
+ 9) { AScore: 24, Away: IND, HScore: 34, Home: HOU }
+10) { AScore: 17, Away: ARI, HScore: 13, Home: STL }
+11) { AScore: 6, Away: SF, HScore: 31, Home: SEA }
+12) { AScore: 27, Away: GB, HScore: 20, Home: PHI }
+13) { AScore: 7, Away: DAL, HScore: 13, Home: WAS }
+14) { AScore: 10, Away: BAL, HScore: 9, Home: NYJ }
+15) { AScore: 14, Away: SD, HScore: 21, Home: KC }
+###
+
+**** New definitions: X, type: {A:i8}*
+**** New definitions: Y, type: {A:i8}?*
+
+> X+>{ B:A > 0 }
+X+>{ B : A $> 0 } : {A:i8, B:b}*
+BndKind:Call, Type:{A:i8, B:b}*, Bnd:(Call(∂.ForEach([map:1] Global(X), SetFields([with:2] Scope(1), B : Cmp(GetField(Scope(2), A) @> 0:i8)))))
+Func sig: (X:{A:i8}*) to {A:i8, B:b}*
+Sequence: Seq<{i8,bool}>
+ 0) { A: 1, B: true  }
+ 1) { A: -1, B: false }
+###
+> Y+>{ B:A > 0 }
+Y+>{ B : A $> 0 } : {A:i8, B:b}?*
+BndKind:Call, Type:{A:i8, B:b}?*, Bnd:(Call(∂.ForEach([map:1] Global(Y), Call(∂.Guard([guard:2] Scope(1), SetFields([with:3] Scope(2), B : Cmp(GetField(Scope(3), A) @> 0:i8)))))))
+Func sig: (Y:{A:i8}?*) to {A:i8, B:b}?*
+Sequence: Seq<{i8,bool}>
+ 0) { A: 1, B: true  }
+ 1) { A: -1, B: false }
+ 2) <null>
+###
+
+**** New definitions: X, type: {A:i8, B:o}
+**** New definitions: Y, type: {A:i8, B:b}
+
+> [X, Y]
+[X, Y] : {A:i8, B:b?}*
+BndKind:Sequence, Type:{A:i8, B:b?}*, Bnd:([{A:GetField(Global(X), A), B:null:b?}, Ref<{A:i8, B:b?}>(Global(Y))]:{A:i8, B:b?}*)
+Func sig: (X:{A:i8, B:o}, Y:{A:i8, B:b}) to {A:i8, B:b?}*
+Sequence: Seq<{i8,bool}>
+ 0) { A: 3, B: <null> }
+ 1) { A: 5, B: true  }
+###
+
+**** New definitions: T, type: {X:i8, Y:i8}?*
+
+> T+>{ }
+T+>{  } : {X:i8, Y:i8}?*
+BndKind:Global, Type:{X:i8, Y:i8}?*, Bnd:(Global(T))
+Func sig: (T:{X:i8, Y:i8}?*) to {X:i8, Y:i8}?*
+Sequence: Seq<{i8,i8}>
+ 0) { X: 0, Y: 3 }
+ 1) { X: 1, Y: 4 }
+ 2) <null>
+ 3) { X: 3, Y: 12 }
+ 4) { X: 4, Y: 19 }
+ 5) <null>
+ 6) { X: 6, Y: 39 }
+ 7) { X: 7, Y: 52 }
+ 8) <null>
+ 9) { X: 9, Y: 84 }
+###
+> T+>{ X }
+T+>{ X } : {X:i8, Y:i8}?*
+BndKind:Global, Type:{X:i8, Y:i8}?*, Bnd:(Global(T))
+Func sig: (T:{X:i8, Y:i8}?*) to {X:i8, Y:i8}?*
+Sequence: Seq<{i8,i8}>
+ 0) { X: 0, Y: 3 }
+ 1) { X: 1, Y: 4 }
+ 2) <null>
+ 3) { X: 3, Y: 12 }
+ 4) { X: 4, Y: 19 }
+ 5) <null>
+ 6) { X: 6, Y: 39 }
+ 7) { X: 7, Y: 52 }
+ 8) <null>
+ 9) { X: 9, Y: 84 }
+###
+> T+>{ X: null }
+T+>{ X : null } : {Y:i8}?*
+BndKind:Call, Type:{Y:i8}?*, Bnd:(Call(∂.ForEach([map:1] Global(T), Call(∂.Guard([guard:2] Scope(1), SetFields(Scope(2)))))))
+Func sig: (T:{X:i8, Y:i8}?*) to {Y:i8}?*
+Sequence: Seq<{i8}>
+ 0) { Y: 3 }
+ 1) { Y: 4 }
+ 2) <null>
+ 3) { Y: 12 }
+ 4) { Y: 19 }
+ 5) <null>
+ 6) { Y: 39 }
+ 7) { Y: 52 }
+ 8) <null>
+ 9) { Y: 84 }
+###
+> T+>{ X: null, Z: X + 17 }
+T+>{ X : null, Z : X + 17 } : {Y:i8, Z:i8}?*
+BndKind:Call, Type:{Y:i8, Z:i8}?*, Bnd:(Call(∂.ForEach([map:1] Global(T), Call(∂.Guard([guard:2] Scope(1), SetFields([with:3] Scope(2), Z : Add(GetField(Scope(3), X), 17:i8)))))))
+Func sig: (T:{X:i8, Y:i8}?*) to {Y:i8, Z:i8}?*
+Sequence: Seq<{i8,i8}>
+ 0) { Y: 3, Z: 17 }
+ 1) { Y: 4, Z: 18 }
+ 2) <null>
+ 3) { Y: 12, Z: 20 }
+ 4) { Y: 19, Z: 21 }
+ 5) <null>
+ 6) { Y: 39, Z: 23 }
+ 7) { Y: 52, Z: 24 }
+ 8) <null>
+ 9) { Y: 84, Z: 26 }
+###

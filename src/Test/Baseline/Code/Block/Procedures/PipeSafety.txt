@@ -1,0 +1,142 @@
+>>> *** Source:
+    func Wait(n) := "Waited" if Range(n * 1_000_000)->Sum() > 0 else "";
+    "";
+    "*** Prime, and use improperly in another task";
+    prime T0 as Pipe(Range(1_000_000));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    "";
+    "*** These are OK";
+    task T1 as Pipe(T0.SData->TakeIf(it mod 2 = 0));
+    task T1 as Pipe(T0.SData->Drop(5));
+    task T1 as Pipe(T0.SData->ForEach(it * 2));
+    task T1 as Pipe(T0.SData->Sort());
+    "";
+    "*** Alias scopes";
+    task T1 as Pipe(With(X: T0.SData, X->TakeIf(it mod 2 = 0)));
+    task T1 as Pipe(With(X: T0.SData, X->Drop(5)));
+    task T1 as Pipe(With(X: T0.SData, X->ForEach(it * 2)));
+    task T1 as Pipe(With(X: T0.SData, Y: X->Take(17), Y->ForEach(it * 2)));
+    "";
+    "*** These are errors";
+    task T1 as Pipe(Range(T0.SData->Count()));
+    task T1 as Pipe(Range(T0.SData->Sum()));
+    task T1 as Pipe(Range(T0.SData->TakeOne()));
+    "";
+    "*** Alias scopes";
+    task T1 as Pipe(With(X: T0.SData, Range(X->Count())));
+    task T1 as Pipe(With(X: T0.SData, Y: X->Take(17), Range(Y->Sum(it * 2))));
+    "";
+    "*** These could be considered ok, but are currently errors";
+    task T1 as Pipe(Range(10)->ForEach(it * T0.SData->Count()));
+
+>>> *** Instructions:
+   0) [0] DefineFunc Wait(n) <- "Waited" if Range(n * 1000000)->Sum() $> 0 else ""
+   1) [0] Expr ""
+   2) [0] Expr "*** Prime, and use improperly in another task"
+   3) [0] TaskProc prime T0 as Pipe(Range(1000000))
+   4) [0] Expr (T0$State, T0$ResultNames)
+   5) [0] Expr T0.Count
+   6) [0] Expr ""
+   7) [0] Expr "*** These are OK"
+   8) [0] TaskProc task T1 as Pipe(T0.SData->TakeIf(it mod 2 @= 0))
+   9) [0] TaskProc task T1 as Pipe(T0.SData->Drop(5))
+  10) [0] TaskProc task T1 as Pipe(T0.SData->ForEach(it * 2))
+  11) [0] TaskProc task T1 as Pipe(T0.SData->Sort())
+  12) [0] Expr ""
+  13) [0] Expr "*** Alias scopes"
+  14) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->TakeIf(it mod 2 @= 0)))
+  15) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->Drop(5)))
+  16) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->ForEach(it * 2)))
+  17) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Y : X->Take(17), Y->ForEach(it * 2)))
+  18) [0] Expr ""
+  19) [0] Expr "*** These are errors"
+  20) [0] TaskProc task T1 as Pipe(Range(T0.SData->Count()))
+  21) [0] TaskProc task T1 as Pipe(Range(T0.SData->Sum()))
+  22) [0] TaskProc task T1 as Pipe(Range(T0.SData->TakeOne()))
+  23) [0] Expr ""
+  24) [0] Expr "*** Alias scopes"
+  25) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Range(X->Count())))
+  26) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Y : X->Take(17), Range(Y->Sum(it * 2))))
+  27) [0] Expr ""
+  28) [0] Expr "*** These could be considered ok, but are currently errors"
+  29) [0] TaskProc task T1 as Pipe(Range(10)->ForEach(it * T0.SData->Count()))
+  30) [0] End
+
+>    0) [0] DefineFunc Wait(n) <- "Waited" if Range(n * 1000000)->Sum() $> 0 else ""
+UDF 'Wait' has arity 1
+>    1) [0] Expr ""
+
+>    2) [0] Expr "*** Prime, and use improperly in another task"
+*** Prime, and use improperly in another task
+>    3) [0] TaskProc prime T0 as Pipe(Range(1000000))
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>    4) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>    5) [0] Expr T0.Count
+0
+>    6) [0] Expr ""
+
+>    7) [0] Expr "*** These are OK"
+*** These are OK
+>    8) [0] TaskProc task T1 as Pipe(T0.SData->TakeIf(it mod 2 @= 0))
+Task 'T1' added
+>    9) [0] TaskProc task T1 as Pipe(T0.SData->Drop(5))
+Overwriting task: T1
+Task 'T1' added
+>   10) [0] TaskProc task T1 as Pipe(T0.SData->ForEach(it * 2))
+Overwriting task: T1
+Task 'T1' added
+>   11) [0] TaskProc task T1 as Pipe(T0.SData->Sort())
+Overwriting task: T1
+Task 'T1' added
+>   12) [0] Expr ""
+
+>   13) [0] Expr "*** Alias scopes"
+*** Alias scopes
+>   14) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->TakeIf(it mod 2 @= 0)))
+Overwriting task: T1
+Task 'T1' added
+>   15) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->Drop(5)))
+Overwriting task: T1
+Task 'T1' added
+>   16) [0] TaskProc task T1 as Pipe(With(X : T0.SData, X->ForEach(it * 2)))
+Overwriting task: T1
+Task 'T1' added
+>   17) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Y : X->Take(17), Y->ForEach(it * 2)))
+Overwriting task: T1
+Task 'T1' added
+>   18) [0] Expr ""
+
+>   19) [0] Expr "*** These are errors"
+*** These are errors
+>   20) [0] TaskProc task T1 as Pipe(Range(T0.SData->Count()))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (707,709) Node: T0.SData->Count(), Message: Improper use of a streaming task result
+>   21) [0] TaskProc task T1 as Pipe(Range(T0.SData->Sum()))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (750,752) Node: T0.SData->Sum(), Message: Improper use of a streaming task result
+>   22) [0] TaskProc task T1 as Pipe(Range(T0.SData->TakeOne()))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (791,793) Node: T0.SData->TakeOne(), Message: Improper use of a streaming task result
+>   23) [0] Expr ""
+
+>   24) [0] Expr "*** Alias scopes"
+*** Alias scopes
+>   25) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Range(X->Count())))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (872,874) Node: X->Count(), Message: Improper use of a streaming task result
+>   26) [0] TaskProc task T1 as Pipe(With(X : T0.SData, Y : X->Take(17), Range(Y->Sum(it * 2))))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (943,945) Node: Y->Sum(it * 2), Message: Improper use of a streaming task result
+>   27) [0] Expr ""
+
+>   28) [0] Expr "*** These could be considered ok, but are currently errors"
+*** These could be considered ok, but are currently errors
+>   29) [0] TaskProc task T1 as Pipe(Range(10)->ForEach(it * T0.SData->Count()))
+*** Bind diagnostics:
+  [PipeSafety.txt] Error: (1076,1078) Node: T0.SData->Count(), Message: Improper use of a streaming task result
+>   30) [0] End
+

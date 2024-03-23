@@ -1,0 +1,44 @@
+﻿prime P1 as Pipe(Range(10_000));
+P1$ResultNames;
+
+P1.SData->Count();
+
+task T
+    with { S: P1.SData }
+    prime { publish C := 0; }
+    play {
+        publish C := 0;
+        task P2 as Pipe(S * 2);
+        play P2;
+        while (P2$State = "Playing") {
+            poll P2;
+            publish C := C + 1;
+        }
+        publish D := P2.Data;
+    }
+P1.SData->Count();
+
+prime T;
+T$ResultNames;
+T.C;
+
+__mute__;
+while (T.C = 0 and T$State = "Paused") {
+    play T;
+    pause T;
+    poll T;
+}
+__unmute__;
+T.C > 0;
+
+// Mute around `finish T` since there is a race - T might already be finished.
+__mute__;
+finish T;
+__unmute__;
+
+T$ResultNames;
+T.D->Count();
+
+// P1 should be finished.
+poll P1;
+P1.SData->Count();

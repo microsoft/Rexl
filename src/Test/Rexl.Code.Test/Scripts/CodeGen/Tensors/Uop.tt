@@ -1,0 +1,72 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+<#
+
+var rxCases = new List<string>() {
+    "Range(12)->CastR8()->Tensor.From(3, 4)",
+    "Range(12)->CastR4()->Tensor.From(3, 4)",
+    "(1/0)->Tensor.Fill(3, 4)",
+    "(-1/0)->Tensor.Fill(3, 4)",
+    "(-0)->Tensor.Fill(3, 4)",
+    "(0/0)->Tensor.Fill(3, 4)",
+    "(1/0)->CastR4()->Tensor.Fill(3, 4)",
+    "(-1/0)->CastR4()->Tensor.Fill(3, 4)",
+    "(-0)->CastR4()->Tensor.Fill(3, 4)",
+    "(0/0)->CastR4()->Tensor.Fill(3, 4)",
+};
+
+var ixCases = new List<string>() {
+    "Range(12)->CastIA()->Tensor.From(3, 4)",
+    "Range(12)->Tensor.From(3, 4)", // i8
+    "Range(12)->CastI4()->Tensor.From(3, 4)",
+    "Range(12)->CastI2()->Tensor.From(3, 4)",
+    "Range(12)->CastI1()->Tensor.From(3, 4)",
+    "Range(12)->CastU8()->Tensor.From(3, 4)",
+    "Range(12)->CastU4()->Tensor.From(3, 4)",
+    "Range(12)->CastU2()->Tensor.From(3, 4)",
+    "Range(12)->CastU1()->Tensor.From(3, 4)",
+    "Range(12)->Tensor.From(4)",
+    "Range(12)->Tensor.From(12)",
+    "-1->Tensor.Fill(3, 4)",
+    "0->Tensor.Fill(3, 4)",
+    "1->Tensor.Fill(3, 4)",
+    "3->Tensor.Fill(3, 4)",
+    "0x8000000000000000i8->Tensor.Fill(3, 4)",
+    "0x7FFFFFFFFFFFFFFFi8->Tensor.Fill(3, 4)",
+    "0x80000000i4->Tensor.Fill(3, 4)",
+    "0x7FFFFFFFi4->Tensor.Fill(3, 4)",
+    "0x8000i2->Tensor.Fill(3, 4)",
+    "0x7FFFi2->Tensor.Fill(3, 4)",
+    "0x80i1->Tensor.Fill(3, 4)",
+    "0x7Fi1->Tensor.Fill(3, 4)",
+    "0x8000000000000000u8->Tensor.Fill(3, 4)",
+    "0x7FFFFFFFFFFFFFFFu8->Tensor.Fill(3, 4)",
+    "0x80000000u4->Tensor.Fill(3, 4)",
+    "0x7FFFFFFFu4->Tensor.Fill(3, 4)",
+    "0x8000u2->Tensor.Fill(3, 4)",
+    "0x7FFFu2->Tensor.Fill(3, 4)",
+    "0x80u1->Tensor.Fill(3, 4)",
+    "0x7Fu1->Tensor.Fill(3, 4)",
+    "5"
+};
+
+foreach (var T in ixCases) {#>
+`` T := <#= T #>;
+({' T': T }, {'-T': -T }, {'~T': ~T})
+
+<#}
+
+foreach (var T in rxCases) {#>
+`` T := <#= T #>;
+({' T': T }, {'-T': -T })
+
+<#}
+
+#>

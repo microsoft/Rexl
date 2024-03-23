@@ -1,0 +1,25 @@
+﻿"*** Loop for first Fib bigger than....";
+// REVIEW: Optimize to avoid repeated binding and code gen.
+P := (0, 1);
+while (P[1] <= 1000)
+    P := (P[1], P[0] + P[1]);
+P;
+
+P := (0, 1);
+while (P[1] <= 1000) {
+    P := (P[1], P[0] + P[1]);
+}
+P;
+while (P[1] <= 1000) // Shouldn't loop at all.
+    P := (P[1], P[0] + P[1]);
+P;
+
+A := 0;
+B := 1;
+while (B <= 1000) {
+    // REVIEW: Would be nice for T to be "local".
+    T := A + B;
+    A := B;
+    B := T;
+}
+B;

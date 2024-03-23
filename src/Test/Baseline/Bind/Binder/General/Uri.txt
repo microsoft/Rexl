@@ -1,0 +1,88 @@
+**** New udf: Uri.MakeGen, arity: 1
+**** New udf: Uri.MakeFile, arity: 1
+**** New udf: Uri.MakeImage, arity: 1
+**** New udf: Uri.MakeJpeg, arity: 1
+**** New udf: Uri.MakeXray, arity: 1
+**** New udf: Uri.MakePdf, arity: 1
+
+> Uri.MakeGen("gen.txt")
+Uri.MakeGen("gen.txt") : U<>
+Binder : With(!1: "gen.txt", Link.Local("", StrConcat("/", !1)))
+Reducer: Link.Local("", "/gen.txt")
+###
+> Uri.MakeImage("puppy.bmp")
+Uri.MakeImage("puppy.bmp") : U<Image>
+Binder : With(!1: "puppy.bmp", Link.Local("Image", StrConcat("Image/", !1)))
+Reducer: Link.Local("Image", "Image/puppy.bmp")
+###
+> Uri.MakeJpeg("sunset.jpg")
+Uri.MakeJpeg("sunset.jpg") : U<Image.Jpeg>
+Binder : With(!1: "sunset.jpg", Link.Local("Image.Jpeg", StrConcat("Image.Jpeg/", !1)))
+Reducer: Link.Local("Image.Jpeg", "Image.Jpeg/sunset.jpg")
+###
+> Uri.MakePdf("FermatsLastThm.pdf")
+Uri.MakePdf("FermatsLastThm.pdf") : U<Pdf>
+Binder : With(!1: "FermatsLastThm.pdf", Link.Local("Pdf", StrConcat("Pdf/", !1)))
+Reducer: Link.Local("Pdf", "Pdf/FermatsLastThm.pdf")
+###
+> [ Uri.MakeImage("puppy.bmp")->Opt(), Uri.MakePdf("FermatsLastThm.pdf") ]
+[Uri.MakeImage("puppy.bmp")->Opt(), Uri.MakePdf("FermatsLastThm.pdf")] : U<>*
+*** Warning: (15,16) Node: Uri.MakeImage("puppy.bmp"), Message: The type is already optional: 'U<Image>'
+Binder : [Ref<U<>>(Opt*(With(!1: "puppy.bmp", Link.Local("Image", StrConcat("Image/", !1))))), Ref<U<>>(With(!2: "FermatsLastThm.pdf", Link.Local("Pdf", StrConcat("Pdf/", !2))))]
+Reducer: [Ref<U<>>(Link.Local("Image", "Image/puppy.bmp")), Ref<U<>>(Link.Local("Pdf", "Pdf/FermatsLastThm.pdf"))]
+###
+
+**** New globals: {blob:U<>, file:U<file>, image:U<Image>, other:U<Other.Huh>, xray:U<Image.Jpeg.Xray>}
+
+> blob
+blob : U<>
+Binder : blob
+###
+> file
+file : U<file>
+Binder : file
+###
+> image
+image : U<Image>
+Binder : image
+###
+> xray
+xray : U<Image.Jpeg.Xray>
+Binder : xray
+###
+> other
+other : U<Other.Huh>
+Binder : other
+###
+> Link.Path(blob)
+Link.Path(blob) : s
+Binder : Link.Path(blob)
+###
+> Link.Path(file)
+Link.Path(file) : s
+Binder : Link.Path(file)
+###
+> Link.Path(image)
+Link.Path(image) : s
+Binder : Link.Path(image)
+###
+> Link.Path(xray)
+Link.Path(xray) : s
+Binder : Link.Path(xray)
+###
+> Link.Path(other)
+Link.Path(other) : s
+Binder : Link.Path(other)
+###
+> blob.Path
+blob.Path : s
+Binder : Link.Path(blob)
+###
+> [ blob, file, image, xray, other, null ].Path
+[blob, file, image, xray, other, null].Path : s*
+Binder : ForEach(*1: [blob, Ref<U<>>(file), Ref<U<>>(image), Ref<U<>>(xray), Ref<U<>>(other), null], Link.Path(*1))
+###
+> [ blob, file, image, xray, other, null ]->Path()
+[blob, file, image, xray, other, null]->Path() : s*
+Binder : ForEach(*1: [blob, Ref<U<>>(file), Ref<U<>>(image), Ref<U<>>(xray), Ref<U<>>(other), null], Link.Path(*1))
+###

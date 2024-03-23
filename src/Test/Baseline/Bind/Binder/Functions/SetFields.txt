@@ -1,0 +1,413 @@
+**** New globals: {R:{A:r8}, S:{A:r8}?, T:{A:r8}*, U:{A:r8}?*, V:{A:r8}**, X:{A:r8, B:{A:r8, C:s}*}*, n:r8, o:o, s:s}
+
+> AddFields(R, B : A)
+AddFields(R, B : A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> SetFields(R, B : A)
+SetFields(R, B : A) : {B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> AddFields(R, B : A + 1)
+AddFields(R, B : A + 1) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : Add(!1.A, 1))
+###
+> SetFields(R, B : A + 1)
+SetFields(R, B : A + 1) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : Add(!1.A, 1))
+###
+> AddFields(t: R, B : t.A)
+AddFields(t : R, B : t.A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> SetFields(t: R, B : t.A)
+SetFields(t : R, B : t.A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> AddFields(S, B : A)
+AddFields(S, B : A) : {A:r8, B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : !2.A))
+###
+> SetFields(S, B : A)
+SetFields(S, B : A) : {B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : !2.A))
+###
+> AddFields(S, B : A + 1)
+AddFields(S, B : A + 1) : {A:r8, B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : Add(!2.A, 1)))
+###
+> SetFields(S, B : A + 1)
+SetFields(S, B : A + 1) : {A:r8, B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : Add(!2.A, 1)))
+###
+> AddFields(t: S, B : t.A)
+AddFields(t : S, B : t.A) : {A:r8, B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : !2.A))
+###
+> SetFields(t: S, B : t.A)
+SetFields(t : S, B : t.A) : {A:r8, B:r8}?
+Binder : Guard(?1: S, SetFields(!2: ?1, B : !2.A))
+###
+> AddFields(T, B : A)
+AddFields(T, B : A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(T, B : A)
+SetFields(T, B : A) : {B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> AddFields(T, B : A + 1)
+AddFields(T, B : A + 1) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Add(!2.A, 1)))
+###
+> SetFields(T, B : A + 1)
+SetFields(T, B : A + 1) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Add(!2.A, 1)))
+###
+> AddFields(t: T, B : t.A)
+AddFields(t : T, B : t.A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(t: T, B : t.A)
+SetFields(t : T, B : t.A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> AddFields(U, B : A)
+AddFields(U, B : A) : {A:r8, B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : !3.A)))
+###
+> SetFields(U, B : A)
+SetFields(U, B : A) : {B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : !3.A)))
+###
+> AddFields(U, B : A + 1)
+AddFields(U, B : A + 1) : {A:r8, B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : Add(!3.A, 1))))
+###
+> SetFields(U, B : A + 1)
+SetFields(U, B : A + 1) : {A:r8, B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : Add(!3.A, 1))))
+###
+> AddFields(t: U, B : t.A)
+AddFields(t : U, B : t.A) : {A:r8, B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : !3.A)))
+###
+> SetFields(t: U, B : t.A)
+SetFields(t : U, B : t.A) : {A:r8, B:r8}?*
+Binder : ForEach(*1: U, Guard(?2: *1, SetFields(!3: ?2, B : !3.A)))
+###
+> AddFields(V, B : A)
+AddFields(V, B : A) : {A:r8, B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : !3.A)))
+###
+> SetFields(V, B : A)
+SetFields(V, B : A) : {B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : !3.A)))
+###
+> AddFields(V, B : A + 1)
+AddFields(V, B : A + 1) : {A:r8, B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : Add(!3.A, 1))))
+###
+> SetFields(V, B : A + 1)
+SetFields(V, B : A + 1) : {A:r8, B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : Add(!3.A, 1))))
+###
+> AddFields(t: V, B : t.A)
+AddFields(t : V, B : t.A) : {A:r8, B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : !3.A)))
+###
+> SetFields(t: V, B : t.A)
+SetFields(t : V, B : t.A) : {A:r8, B:r8}**
+Binder : ForEach(*1: V, ForEach(*2: *1, SetFields(!3: *2, B : !3.A)))
+###
+> AddFields(T, B : 1 * A)
+AddFields(T, B : 1 * A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Mul(1, !2.A)))
+Reducer: ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(T, B : 1 * A)
+SetFields(T, B : 1 * A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Mul(1, !2.A)))
+Reducer: ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> AddFields(T, B : --A)
+AddFields(T, B : --A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(T, B : --A)
+SetFields(T, B : --A) : {A:r8, B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(T, B : A * A, A : null)
+SetFields(T, B : A * A, A : null) : {B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Mul(!2.A, !2.A)))
+###
+> SetFields(T, A : null, B : A * A)
+SetFields(T, A : null, B : A * A) : {B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : Mul(!2.A, !2.A)))
+###
+> SetFields(T, B : A, A : null)
+SetFields(T, B : A, A : null) : {B:r8}*
+Binder : ForEach(*1: T, SetFields(!2: *1, B : !2.A))
+###
+> SetFields(T, A : A * A, A : null) // Redefine and drop is an error.
+SetFields(T, A : A * A, A : null) : {A:r8}*
+*** Error: (24,25) Node: A : null, Tok: 'A', Message: Duplicate field name: 'A'
+Binder : ForEach(*1: T, SetFields(!2: *1, A : Mul(!2.A, !2.A)))
+###
+> SetFields(T, A : A * A, B : null) // Drop a non-existing field is an error.
+SetFields(T, A : A * A, B : null) : {A:r8}*
+*** Error: (24,25) Node: B : null, Tok: 'B', Message: Unknown field name can't be dropped
+Binder : ForEach(*1: T, SetFields(!2: *1, A : Mul(!2.A, !2.A)))
+###
+> SetFields(T, C : A * A, C : null) // And and drop a new field.
+SetFields(T, C : A * A, C : null) : {A:r8, C:r8}*
+*** Error: (24,25) Node: C : null, Tok: 'C', Message: Duplicate field name: 'C'
+Binder : ForEach(*1: T, SetFields(!2: *1, C : Mul(!2.A, !2.A)))
+###
+> SetFields(s, B : A)
+SetFields(s, B : A) : {B:v}
+*** Error: (10,11) Node: s, Message: Invalid operand type: cannot convert type 's' to '{}'
+*** Error: (17,18) Node: A, Message: Name does not exist in the current context
+Binder : SetFields(!1: Error(ErrBadType_Src_Dst), B : Error(ErrNameDoesNotExist))
+###
+> SetFields(n, B : A)
+SetFields(n, B : A) : {B:v}
+*** Error: (10,11) Node: n, Message: Invalid operand type: cannot convert type 'r8' to '{}'
+*** Error: (17,18) Node: A, Message: Name does not exist in the current context
+Binder : SetFields(!1: Error(ErrBadType_Src_Dst), B : Error(ErrNameDoesNotExist))
+###
+> SetFields(X, B : SetFields(B, D : A))
+SetFields(X, B : SetFields(B, D : A)) : {A:r8, B:{C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, D : !4.A))))
+###
+> SetFields(X, B : SetFields(B, A : A * A, D : A))
+SetFields(X, B : SetFields(B, A : A * A, D : A)) : {A:r8, B:{A:r8, C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, A : Mul(!4.A, !4.A), D : !4.A))))
+###
+> SetFields(X, B : SetFields(B, A : 3, D : A))
+SetFields(X, B : SetFields(B, A : 3, D : A)) : {A:r8, B:{A:i8, C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, A : 3, D : !4.A))))
+###
+> SetFields(   X, B : SetFields(B, D: it$1.A))
+SetFields(X, B : SetFields(B, D : it$1.A)) : {A:r8, B:{A:r8, C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, D : *3.A))))
+###
+> SetFields(   X, B : SetFields(B, D: it$2.A))
+SetFields(X, B : SetFields(B, D : it$2.A)) : {A:r8, B:{A:r8, C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, D : !2.A))))
+###
+> SetFields(x: X, B : SetFields(B, D:    x.A))
+SetFields(x : X, B : SetFields(B, D : x.A)) : {A:r8, B:{A:r8, C:s, D:r8}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : ForEach(*3: !2.B, SetFields(!4: *3, D : !2.A))))
+###
+> SetFields(X, "hi")
+SetFields(X, "hi") : {A:r8, B:{A:r8, C:s}*}*
+*** Error: (13,17) Node: "hi", Message: The argument in position 2 of 'SetFields' should include a name ('name: value')
+Binder : ForEach(*1: X, *1)
+Reducer: X
+###
+> R->AddFields(B : A)
+R->AddFields(B : A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> R->AddFields(B : A + 1)
+R->AddFields(B : A + 1) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : Add(!1.A, 1))
+###
+> R->AddFields(B : it.A)
+R->AddFields(B : it.A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> R->SetFields(B : A)
+R->SetFields(B : A) : {B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> R->SetFields(B : A + 1)
+R->SetFields(B : A + 1) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : Add(!1.A, 1))
+###
+> R->SetFields(B : it.A)
+R->SetFields(B : it.A) : {A:r8, B:r8}
+Binder : SetFields(!1: R, B : !1.A)
+###
+> R->AddFields(B: A + 1, T) // Simple name.
+R->AddFields(B : A + 1, T) : {A:r8, B:r8, T:{A:r8}*}
+Binder : SetFields(!1: R, B : Add(!1.A, 1), T : T)
+###
+> X->AddFields(B: null) // Drop a field.
+X->AddFields(B : null) : {A:r8}*
+Binder : ForEach(*1: X, SetFields(*1))
+###
+> X->AddFields(B: null, B : 3) // Drop and re-add a field is ok.
+X->AddFields(B : null, B : 3) : {A:r8, B:i8}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : 3))
+###
+> X->AddFields(B: null, B : B) // Drop and re-add a field is ok.
+X->AddFields(B : null, B : B) : {A:r8, B:{A:r8, C:s}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : !2.B))
+Reducer: X
+###
+> X->AddFields(B: null, B) // Drop and re-add a field is ok.
+X->AddFields(B : null, B) : {A:r8, B:{A:r8, C:s}*}*
+Binder : ForEach(*1: X, SetFields(!2: *1, B : !2.B))
+Reducer: X
+###
+> X->AddFields(B: o, B: 3) // Duplicate name error. This is not dropping since the value isn't the null literal.
+X->AddFields(B : o, B : 3) : {A:r8, B:o}*
+*** Error: (19,20) Node: B : 3, Tok: 'B', Message: Duplicate field name: 'B'
+Binder : ForEach(*1: X, SetFields(!2: *1, B : o))
+###
+> SetFields([up] R, B : A)
+SetFields([<] R, B : A) : {B:r8}
+*** Error: (10,14) Node: [<] R, Tok: '[up]', Message: Unexpected directive
+Binder : SetFields(!1: R, B : !1.A)
+###
+> SetFields(R, [up] B : A)
+SetFields(R, [<] B : A) : {B:r8}
+*** Error: (13,17) Node: [<] B : A, Tok: '[up]', Message: Unexpected directive
+Binder : SetFields(!1: R, B : !1.A)
+###
+
+**** New globals: {QT:v[*,*]?, S:v*, SQT:v[*,*]?*, ST:v[*,*]*, STQ:o[*,*]*, STS:v*[*,*]*, T:v[*,*], TQ:o[*,*], TS:v*[*,*]}
+
+> S->AddFields(X: 3)
+S->AddFields(X : 3) : {X:i8}*
+Binder : ForEach(*1: S, SetFields(!2: Unit<{}>(*1), X : 3))
+Reducer: ForEach(*1: S, SetFields(!2: dflt<{}>, X : 3))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), ForEach(*3: S, !2))
+###
+> T->AddFields(X: 3)
+T->AddFields(X : 3) : {X:i8}[*,*]
+Binder : Tensor.ForEach(@1: T, SetFields(!2: Unit<{}>(@1), X : 3))
+Reducer: Tensor.ForEach(@1: T, SetFields(!2: dflt<{}>, X : 3))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), Tensor.ForEach(@3: T, !2))
+###
+> TQ->AddFields(X: 3)
+TQ->AddFields(X : 3) : {X:i8}?[*,*]
+Binder : Tensor.ForEach(@1: TQ, Guard(?2: @1, SetFields(!3: Unit<{}>(?2), X : 3)))
+Reducer: Tensor.ForEach(@1: TQ, null)
+###
+> TS->AddFields(X: 3)
+TS->AddFields(X : 3) : {X:i8}*[*,*]
+Binder : Tensor.ForEach(@1: TS, ForEach(*2: @1, SetFields(!3: Unit<{}>(*2), X : 3)))
+Reducer: Tensor.ForEach(@1: TS, ForEach(*2: @1, SetFields(!3: dflt<{}>, X : 3)))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), Tensor.ForEach(@3: TS, ForEach(*4: @3, !2)))
+###
+> QT->AddFields(X: 3)
+QT->AddFields(X : 3) : {X:i8}[*,*]?
+Binder : Guard(?1: QT, Tensor.ForEach(@2: ?1, SetFields(!3: Unit<{}>(@2), X : 3)))
+Reducer: Guard(?1: QT, Tensor.ForEach(@2: ?1, SetFields(!3: dflt<{}>, X : 3)))
+Hoister: Guard(?1: QT, With(!3: SetFields(!2: dflt<{}>, X : 3), Tensor.ForEach(@4: ?1, !3)))
+Reducer: Guard(?1: QT, !3: SetFields(!2: dflt<{}>, X : 3), Tensor.ForEach(@4: ?1, !3))
+###
+> ST->AddFields(X: 3)
+ST->AddFields(X : 3) : {X:i8}[*,*]*
+Binder : ForEach(*1: ST, Tensor.ForEach(@2: *1, SetFields(!3: Unit<{}>(@2), X : 3)))
+Reducer: ForEach(*1: ST, Tensor.ForEach(@2: *1, SetFields(!3: dflt<{}>, X : 3)))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), ForEach(*3: ST, Tensor.ForEach(@4: *3, !2)))
+###
+> STQ->AddFields(X: 3)
+STQ->AddFields(X : 3) : {X:i8}?[*,*]*
+Binder : ForEach(*1: STQ, Tensor.ForEach(@2: *1, Guard(?3: @2, SetFields(!4: Unit<{}>(?3), X : 3))))
+Reducer: ForEach(*1: STQ, Tensor.ForEach(@2: *1, null))
+###
+> STS->AddFields(X: 3)
+STS->AddFields(X : 3) : {X:i8}*[*,*]*
+Binder : ForEach(*1: STS, Tensor.ForEach(@2: *1, ForEach(*3: @2, SetFields(!4: Unit<{}>(*3), X : 3))))
+Reducer: ForEach(*1: STS, Tensor.ForEach(@2: *1, ForEach(*3: @2, SetFields(!4: dflt<{}>, X : 3))))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), ForEach(*3: STS, Tensor.ForEach(@4: *3, ForEach(*5: @4, !2))))
+###
+> SQT->AddFields(X: 3)
+SQT->AddFields(X : 3) : {X:i8}[*,*]?*
+Binder : ForEach(*1: SQT, Guard(?2: *1, Tensor.ForEach(@3: ?2, SetFields(!4: Unit<{}>(@3), X : 3))))
+Reducer: ForEach(*1: SQT, Guard(?2: *1, Tensor.ForEach(@3: ?2, SetFields(!4: dflt<{}>, X : 3))))
+Hoister: With(!2: SetFields(!1: dflt<{}>, X : 3), ForEach(*3: SQT, Guard(?4: *3, Tensor.ForEach(@5: ?4, !2))))
+###
+
+**** New globals: {QT:{A:i8}[*,*]?, S:{A:i8}*, SQT:{A:i8}[*,*]?*, ST:{A:i8}[*,*]*, STQ:{A:i8}?[*,*]*, STS:{A:i8}*[*,*]*, T:{A:i8}[*,*], TQ:{A:i8}?[*,*], TS:{A:i8}*[*,*]}
+
+> S->AddFields(X: 3)
+S->AddFields(X : 3) : {A:i8, X:i8}*
+Binder : ForEach(*1: S, SetFields(!2: *1, X : 3))
+###
+> T->AddFields(X: 3)
+T->AddFields(X : 3) : {A:i8, X:i8}[*,*]
+Binder : Tensor.ForEach(@1: T, SetFields(!2: @1, X : 3))
+###
+> TQ->AddFields(X: 3)
+TQ->AddFields(X : 3) : {A:i8, X:i8}?[*,*]
+Binder : Tensor.ForEach(@1: TQ, Guard(?2: @1, SetFields(!3: ?2, X : 3)))
+###
+> TS->AddFields(X: 3)
+TS->AddFields(X : 3) : {A:i8, X:i8}*[*,*]
+Binder : Tensor.ForEach(@1: TS, ForEach(*2: @1, SetFields(!3: *2, X : 3)))
+###
+> QT->AddFields(X: 3)
+QT->AddFields(X : 3) : {A:i8, X:i8}[*,*]?
+Binder : Guard(?1: QT, Tensor.ForEach(@2: ?1, SetFields(!3: @2, X : 3)))
+###
+> ST->AddFields(X: 3)
+ST->AddFields(X : 3) : {A:i8, X:i8}[*,*]*
+Binder : ForEach(*1: ST, Tensor.ForEach(@2: *1, SetFields(!3: @2, X : 3)))
+###
+> STQ->AddFields(X: 3)
+STQ->AddFields(X : 3) : {A:i8, X:i8}?[*,*]*
+Binder : ForEach(*1: STQ, Tensor.ForEach(@2: *1, Guard(?3: @2, SetFields(!4: ?3, X : 3))))
+###
+> STS->AddFields(X: 3)
+STS->AddFields(X : 3) : {A:i8, X:i8}*[*,*]*
+Binder : ForEach(*1: STS, Tensor.ForEach(@2: *1, ForEach(*3: @2, SetFields(!4: *3, X : 3))))
+###
+> SQT->AddFields(X: 3)
+SQT->AddFields(X : 3) : {A:i8, X:i8}[*,*]?*
+Binder : ForEach(*1: SQT, Guard(?2: *1, Tensor.ForEach(@3: ?2, SetFields(!4: @3, X : 3))))
+###
+
+**** New globals: {QT:i8[*,*]?, S:i8*, SQT:i8[*,*]?*, ST:i8[*,*]*, STQ:i8?[*,*]*, STS:i8*[*,*]*, T:i8[*,*], TQ:i8?[*,*], TS:i8*[*,*]}
+
+> S->AddFields(X: 3)
+S->AddFields(X : 3) : {X:i8}*
+*** Error: (0,1) Node: S, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : ForEach(*1: S, SetFields(!2: Error(ErrBadType_Src_Dst), X : 3))
+###
+> T->AddFields(X: 3)
+T->AddFields(X : 3) : {X:i8}[*,*]
+*** Error: (0,1) Node: T, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : Tensor.ForEach(@1: T, SetFields(!2: Error(ErrBadType_Src_Dst), X : 3))
+###
+> TQ->AddFields(X: 3)
+TQ->AddFields(X : 3) : {X:i8}?[*,*]
+*** Error: (0,2) Node: TQ, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : Tensor.ForEach(@1: TQ, Guard(?2: @1, SetFields(!3: Error(ErrBadType_Src_Dst), X : 3)))
+###
+> TS->AddFields(X: 3)
+TS->AddFields(X : 3) : {X:i8}*[*,*]
+*** Error: (0,2) Node: TS, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : Tensor.ForEach(@1: TS, ForEach(*2: @1, SetFields(!3: Error(ErrBadType_Src_Dst), X : 3)))
+###
+> QT->AddFields(X: 3)
+QT->AddFields(X : 3) : {X:i8}[*,*]?
+*** Error: (0,2) Node: QT, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : Guard(?1: QT, Tensor.ForEach(@2: ?1, SetFields(!3: Error(ErrBadType_Src_Dst), X : 3)))
+###
+> ST->AddFields(X: 3)
+ST->AddFields(X : 3) : {X:i8}[*,*]*
+*** Error: (0,2) Node: ST, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : ForEach(*1: ST, Tensor.ForEach(@2: *1, SetFields(!3: Error(ErrBadType_Src_Dst), X : 3)))
+###
+> STQ->AddFields(X: 3)
+STQ->AddFields(X : 3) : {X:i8}?[*,*]*
+*** Error: (0,3) Node: STQ, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : ForEach(*1: STQ, Tensor.ForEach(@2: *1, Guard(?3: @2, SetFields(!4: Error(ErrBadType_Src_Dst), X : 3))))
+###
+> STS->AddFields(X: 3)
+STS->AddFields(X : 3) : {X:i8}*[*,*]*
+*** Error: (0,3) Node: STS, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : ForEach(*1: STS, Tensor.ForEach(@2: *1, ForEach(*3: @2, SetFields(!4: Error(ErrBadType_Src_Dst), X : 3))))
+###
+> SQT->AddFields(X: 3)
+SQT->AddFields(X : 3) : {X:i8}[*,*]?*
+*** Error: (0,3) Node: SQT, Message: Invalid operand type: cannot convert type 'i8' to '{}'
+Binder : ForEach(*1: SQT, Guard(?2: *1, Tensor.ForEach(@3: ?2, SetFields(!4: Error(ErrBadType_Src_Dst), X : 3))))
+###

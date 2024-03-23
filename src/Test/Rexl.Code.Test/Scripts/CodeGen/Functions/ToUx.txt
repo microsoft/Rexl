@@ -1,0 +1,246 @@
+﻿// Invocation variations
+
+3    = ToU4(Wrap(3.14))
+null = ToU4(Wrap(1/0))
+3    = ToU4(Wrap(3.14), null)
+null = ToU4(Wrap(1/0),  null)
+3    = ToU4(Wrap(3.14), Null(5u2))
+3    = ToU4(Wrap(3.14), Opt (5u2))
+null = ToU4(Wrap(1/0),  Null(5u2))
+5    = ToU4(Wrap(1/0),  Opt (5u2))
+3    = ToU4(Wrap(3.14), 5u2)
+5    = ToU4(Wrap(1/0),  5u2)
+
+null = ToU4(Wrap(Null(3.14)))
+3    = ToU4(Wrap(Opt (3.14)))
+null = ToU4(Wrap(Opt (1/0 )))
+null = ToU4(Wrap(Null(3.14)), null)
+3    = ToU4(Wrap(Opt (3.14)), null)
+null = ToU4(Wrap(Opt (1/0 )), null)
+null = ToU4(Wrap(Null(3.14)), Null(5u2))
+null = ToU4(Wrap(Null(3.14)), Opt (5u2))
+3    = ToU4(Wrap(Opt (3.14)), Null(5u2))
+3    = ToU4(Wrap(Opt (3.14)), Opt (5u2))
+null = ToU4(Wrap(Opt (1/0 )), Null(5u2))
+5    = ToU4(Wrap(Opt (1/0 )), Opt (5u2))
+null = ToU4(Wrap(Null(3.14)), 5u2)
+3    = ToU4(Wrap(Opt (3.14)), 5u2)
+5    = ToU4(Wrap(Opt (1/0 )), 5u2)
+
+3    = To(Wrap(3.14), Null(5u4))
+3    = To(Wrap(3.14), Opt (5u4))
+null = To(Wrap(1/0),  Null(5u4))
+5    = To(Wrap(1/0),  Opt (5u4))
+3    = To(Wrap(3.14), 5u4)
+5    = To(Wrap(1/0),  5u4)
+
+null = To(Wrap(Null(3.14)), Null(5u4))
+null = To(Wrap(Null(3.14)), Opt (5u4))
+3    = To(Wrap(Opt (3.14)), Null(5u4))
+3    = To(Wrap(Opt (3.14)), Opt (5u4))
+null = To(Wrap(Opt (1/0 )), Null(5u4))
+5    = To(Wrap(Opt (1/0 )), Opt (5u4))
+null = To(Wrap(Null(3.14)), 5u4)
+3    = To(Wrap(Opt (3.14)), 5u4)
+5    = To(Wrap(Opt (1/0 )), 5u4)
+
+// Lifting
+
+ToU8(["", "0"])
+ToU1([Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)])
+ToU1([      Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)])
+ToU8([0r8, CastR8(0/0)])
+ToU8([0r4, CastR4(0/0)])
+ToU8([0ia, -1ia])
+ToU8([0i8, -1i8])
+ToU4([0i4, -1i4])
+ToU2([0i2, -1i2])
+ToU1([0i1, -1i1])
+ToU4([0u8, (1u8 shl 32)])
+ToU2([0u4, (1u4 shl 16)])
+ToU1([0u2, (1u2 shl 8)])
+
+ToU1([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)])
+ToU1([null,       Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)])
+ToU8([null, 0r8, CastR8(0/0)])
+ToU8([null, 0r4, CastR4(0/0)])
+ToU8([null, 0ia, -1ia])
+ToU8([null, 0i8, -1i8])
+ToU4([null, 0i4, -1i4])
+ToU2([null, 0i2, -1i2])
+ToU1([null, 0i1, -1i1])
+ToU4([null, 0u8, (1u8 shl 32)])
+ToU2([null, 0u4, (1u4 shl 16)])
+ToU1([null, 0u2, (1u2 shl 8)])
+
+To([null, "", "0"], 5u1)
+To([null, Date(1, 1, 1, 0, 0, 0, 0, 127), Date(1, 1, 1, 0, 0, 0, 1, 0)], 5u1)
+To([null,       Time(0, 0, 0, 0, 0, 127),       Time(0, 0, 0, 0, 1, 0)], 5u1)
+ToU8([null, 0r8, CastR8(0/0)], 5u1)
+ToU8([null, 0r4, CastR4(0/0)], 5u1)
+ToU8([null, 0ia, -1ia], 5u1)
+ToU8([null, 0i8, -1i8], 5u1)
+ToU4([null, 0i4, -1i4], 5u1)
+ToU2([null, 0i2, -1i2], 5u1)
+To([null, 0i1, -1i1], 5u1)
+ToU4([null, 0u8, (1u8 shl 32)], 5u1)
+ToU2([null, 0u4, (1u4 shl 16)], 5u1)
+ToU1([null, 0u2, (1u2 shl 8)], 5u1)
+
+// Integer
+
+null = ToU4(Wrap(-1i8))
+null = ToU8(Wrap(-1i4))
+null = ToU4(Wrap(-1i4))
+
+(1i8 shl 32) - 1 = ToU4(Wrap((1i8 shl 32) - 1))
+(1u4 shl 31) - 1 = ToU8(Wrap(CastI4((1u4 shl 31) - 1)))
+(1u4 shl 31) - 1 = ToU4(Wrap(CastI4((1u4 shl 31) - 1)))
+(1u8 shl 32) - 1 = ToU4(Wrap((1u8 shl 32) - 1))
+
+null = ToU4(Wrap(1i8 shl 32))
+null = ToU4(Wrap(1u8 shl 32))
+
+// Integer boundaries
+
+0 = ToU1(Wrap(false))
+1 = ToU1(Wrap(true))
+
+null = ToU1(Wrap(-1))
+0    = ToU1(Wrap(0))
+255  = ToU1(Wrap(255))
+null = ToU1(Wrap(256))
+5 = To(Wrap(-1), 5u1)
+
+null = ToU2(Wrap(-1))
+0    = ToU2(Wrap(0))
+65535 = ToU2(Wrap(65535))
+null  = ToU2(Wrap(65536))
+0 = To(Wrap(0), 5u2)
+
+null = ToU4(Wrap(-1i8))
+0    = ToU4(Wrap(0i8))
+4294967295 = ToU4(Wrap(4294967295i8))
+null       = ToU4(Wrap(4294967296i8))
+4294967295 = To(Wrap(4294967295i8), 5u4)
+
+null = ToU8(Wrap(-1ia))
+0    = ToU8(Wrap(0ia))
+18446744073709551615 = ToU8(Wrap(18446744073709551615ia))
+null                 = ToU8(Wrap(18446744073709551616ia))
+5 = To(Wrap(18446744073709551616), 5u8)
+
+// Floating point
+
+null = ToU4(-1/0)
+null = ToU4(1/0)
+null = ToU4(0/0)
+5 = To(-1/0, 5u4)
+5 = To(1/0, 5u4)
+5 = ToU4(0/0, 5u4)
+
+// Floating-point boundaries
+
+null = ToU1(Wrap(-0x10000000000000 * 2r ^ -52))
+0    = ToU1(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0    = ToU1(Wrap(-ToR4(0x7FFFFF    * 2r ^ -23)))
+ToU1(ToR4(0xFFFFFF    * 2r ^ -16)) = ToU1(Wrap(ToR4(0xFFFFFF    * 2r ^ -16)))
+ToU1(0x1FFFFFFFFFFFFF * 2r ^ -45)  = ToU1(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -45))
+null = ToU1(Wrap(0x10000000000000 * 2r ^ -44))
+
+null = ToU2(Wrap(-0x10000000000000 * 2r ^ -52))
+0    = ToU2(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0    = ToU2(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+ToU2(ToR4(0xFFFFFF    * 2r ^ -8)) = ToU2(Wrap(ToR4(0xFFFFFF    * 2r ^ -8)))
+ToU2(0x1FFFFFFFFFFFFF * 2r ^ -37) = ToU2(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -37))
+null = ToU2(Wrap(0x10000000000000 * 2r ^ -36))
+
+null = ToU4(Wrap(-0x10000000000000 * 2r ^ -52))
+0    = ToU4(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0    = ToU4(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+ToU4(ToR4(0xFFFFFF    * 2r ^ 8))  = ToU4(Wrap(ToR4(0xFFFFFF    * 2r ^ 8)))
+ToU4(0x1FFFFFFFFFFFFF * 2r ^ -21) = ToU4(Wrap(0x1FFFFFFFFFFFFF * 2r ^ -21))
+null = ToU4(Wrap(0x10000000000000 * 2r ^ -20))
+
+null = ToU8(Wrap(-0x10000000000000 * 2r ^ -52))
+0    = ToU8(Wrap(-0x1FFFFFFFFFFFFF * 2r ^ -53))
+0    = ToU8(Wrap(-ToR4(0x7FFFFF * 2r ^ -23)))
+ToU8(ToR4(0xFFFFFF    * 2r ^ 40)) = ToU8(Wrap(ToR4(0xFFFFFF    * 2r ^ 40)))
+ToU8(0x1FFFFFFFFFFFFF * 2r ^ 11)  = ToU8(Wrap(0x1FFFFFFFFFFFFF * 2r ^ 11))
+null = ToU8(Wrap(0x10000000000000 * 2r ^ 12))
+
+
+// String
+
+null = ToU4(Wrap(""))
+null = ToU4(Wrap(" "))
+5 = To(Wrap(""), 5u2)
+5 = ToU4(Wrap(" "), 5u2)
+
+null = ToU4(Wrap("false"))
+null = ToU4(Wrap("true"))
+5 = To(Wrap("false"), 5u2)
+5 = ToU4(Wrap("true"), 5u2)
+
+null = ToU4(Wrap("-0.0"))
+null = ToU4(Wrap("12 34"))
+null = ToU4(Wrap("2e20"))
+null = ToU4(Wrap("∞"))
+null = ToU4(Wrap("Infinity"))
+null = ToU4(Wrap("NaN"))
+5 = To(Wrap("-0.0"), 5u4)
+5 = To(Wrap("12 34"), 5u4)
+5 = To(Wrap("2e20"), 5u4)
+5 = ToU4(Wrap("∞"), 5u2)
+5 = ToU4(Wrap("Infinity"), 5u2)
+5 = ToU4(Wrap("NaN"), 5u2)
+
+// String boundaries
+
+null = ToU1(Wrap("-1 "))
+0    = ToU1(Wrap("(0)"))
+255  = ToU1(Wrap("255"))
+null = ToU1(Wrap("256"))
+5 = To(Wrap("-1"), 5u1)
+
+null = ToU2(Wrap("(1)"))
+0    = ToU2(Wrap("-0 "))
+65535 = ToU2(Wrap("65535"))
+null  = ToU2(Wrap("65536"))
+0 = To(Wrap("0"), 5u2)
+
+null = ToU4(Wrap("-1 "))
+0    = ToU4(Wrap("(0)"))
+(1ia shl 32) - 1 = ToU4(Wrap("4,294,967,295"))
+null            = ToU4(Wrap("4,294,967,296"))
+4294967295 = To(Wrap("4294967295"), 5u4)
+
+null = ToU8(Wrap("(1)"))
+0    = ToU8(Wrap(" 0 "))
+(1ia shl 64) - 1 = ToU8(Wrap("18,446,744,073,709,551,615"))
+null            = ToU8(Wrap("18,446,744,073,709,551,616"))
+5 = To(Wrap("18,446,744,073,709,551,616"), 5u8)
+
+// Fractional strings
+
+null = ToU4(Wrap("-0.0"))
+null = ToU4(Wrap("12.34"))
+null = ToU4(Wrap("2e20"))
+null = ToU4(Wrap("∞"))
+null = ToU4(Wrap("Infinity"))
+null = ToU4(Wrap("NaN"))
+5 = To(Wrap("-0.0"), 5u4)
+5 = To(Wrap("12.34"), 5u4)
+5 = To(Wrap("2e20"), 5u4)
+5 = ToU4(Wrap("∞"), 5u2)
+5 = ToU4(Wrap("Infinity"), 5u2)
+5 = ToU4(Wrap("NaN"), 5u2)
+
+// Date and Time
+
+255  = ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 255)))
+null = ToU1(Wrap(Date(1, 1, 1, 0, 0, 0, 0, 256)))
+
+ToU4(Time( 0,  0, 59)) = ToU4(Wrap(Time( 0,  0, 59)))
+null                   = ToU4(Wrap(Time(23, 59, 59)))
+ToU8(Time(23, 59, 59)) = ToU8(Wrap(Time(23, 59, 59)))

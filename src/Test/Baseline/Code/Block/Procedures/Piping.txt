@@ -1,0 +1,830 @@
+>>> *** Source:
+    func Wait(n) := "Waited" if Range(n * 1_000_000)->Sum() > 0 else "";
+    "";
+    "*** Prime, use in expression should take a snapshot";
+    prime T0 as Pipe(Range(5));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    // Takes a snapshot.
+    A := T0.SData;
+    A;
+    play T0;
+    Wait(1);
+    pause T0;
+    // Takes a snapshot.
+    B := T0.SData;
+    B;
+    poll T0;
+    (T0$State, T0$ResultNames);
+    T0.Data;
+    "";
+    "*** Play, prime, poke, pause, finish";
+    task T0 as StepPipe(Range(5), 3);
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    play T0;
+    prime T0;
+    poke T0;
+    poke T0;
+    Wait(1);
+    pause T0;
+    T0.Count;
+    poke T0;
+    finish T0;
+    T0.Count;
+    T0.Data;
+    "";
+    "*** Prime, play, poke, pause, finish";
+    prime T0 as StepPipe(Range(5));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    play T0;
+    Wait(1);
+    poke T0;
+    poke T0;
+    poke T0;
+    pause T0;
+    T0.Count;
+    finish T0;
+    T0.Count;
+    T0.Data;
+    "";
+    "*** Two tasks: Prime, play, poke, pause, finish";
+    prime T0 as StepPipe(Range(5));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    task T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    play T1;
+    poke T0;
+    poke T0;
+    Wait(1);
+    pause T1;
+    // Not stable: (T0.Count, T1.Count);
+    "";
+    "*** Two tasks: Create second while first is playing";
+    prime T0 as StepPipe(Range(5));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    play T0;
+    poke T0;
+    poke T0;
+    task T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    play T1;
+    Wait(1);
+    pause T1;
+    // Not stable: (T0.Count, T1.Count);
+    "";
+    "*** Two tasks: Allow play, control at end";
+    prime T0 as StepPipe(Range(5), 1);
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    task T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    play T1;
+    pause T1;
+    // Not stable: T1.Count;
+    poke T0;
+    finish T1;
+    T1.Count;
+    "";
+    "*** Three sequential tasks: Allow play, control at end";
+    prime T0 as StepPipe(Range(5), 1);
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    prime T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    prime T2 as Pipe(T1.SData);
+    (T2$State, T2$ResultNames);
+    T2.Count;
+    play T2;
+    pause T2;
+    // Not stable: (T0.Count, T1.Count, T2.Count);
+    poke T0;
+    finish T2;
+    T2.Count;
+    "";
+    "*** Parallel tasks: Allow play, control at ends";
+    prime T0 as StepPipe(Range(5), 2);
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    task T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    task T2 as Pipe(T0.SData);
+    (T2$State, T2$ResultNames);
+    T2.Count;
+    play T2;
+    pause T2;
+    // Not stable: (T0.Count, T1.Count, T2.Count);
+    poke T0;
+    play T1;
+    pause T1;
+    // Not stable: (T0.Count, T1.Count, T2.Count);
+    poke T0;
+    finish T2;
+    T2.Count;
+    finish T1;
+    T1.Count;
+    "";
+    "*** Diamond";
+    prime T0 as StepPipe(Range(1, 6), 2);
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    prime T1 as Pipe(T0.SData);
+    (T1$State, T1$ResultNames);
+    T1.Count;
+    prime T2 as Pipe(-T0.SData);
+    (T2$State, T2$ResultNames);
+    T2.Count;
+    task T3 as Pipe(T1.SData, T2.SData);
+    (T3$State, T3$ResultNames);
+    T3.Count;
+    (T0.Count, T1.Count, T2.Count, T3.Count);
+    poke T0;
+    play T3;
+    pause T3;
+    // Not stable: (T0.Count, T1.Count, T2.Count, T3.Count);
+    poke T0;
+    play T1;
+    pause T1;
+    // Not stable: (T0.Count, T1.Count, T2.Count, T3.Count);
+    finish T3;
+    T3.Count;
+    (T0.Count, T1.Count, T2.Count, T3.Count);
+    poll T0;
+    poll T1;
+    poll T2;
+    T0.Data;
+    T1.Data;
+    T2.Data;
+    T3.Data;
+    "";
+    "*** Non-stable result not available while playing";
+    prime T0 as Pipe(Range(1, 6));
+    (T0$State, T0$ResultNames);
+    T0.Count;
+    T0.SData; // Should take a snapshot.
+    play T0;
+    (T0$State, T0$ResultNames);
+    Wait(1);
+    T0.Count; // Error. Non-stable not available.
+    T0.SData; // Should take a snapshot, even while playing.
+    poll T0; // Should be finished (because of the wait).
+    T0.Count;
+
+>>> *** Instructions:
+   0) [0] DefineFunc Wait(n) <- "Waited" if Range(n * 1000000)->Sum() $> 0 else ""
+   1) [0] Expr ""
+   2) [0] Expr "*** Prime, use in expression should take a snapshot"
+   3) [0] TaskProc prime T0 as Pipe(Range(5))
+   4) [0] Expr (T0$State, T0$ResultNames)
+   5) [0] Expr T0.Count
+   6) [0] Define A <- T0.SData
+   7) [0] Expr A
+   8) [0] TaskCmd play T0
+   9) [0] Expr Wait(1)
+  10) [0] TaskCmd pause T0
+  11) [0] Define B <- T0.SData
+  12) [0] Expr B
+  13) [0] TaskCmd poll T0
+  14) [0] Expr (T0$State, T0$ResultNames)
+  15) [0] Expr T0.Data
+  16) [0] Expr ""
+  17) [0] Expr "*** Play, prime, poke, pause, finish"
+  18) [0] TaskProc task T0 as StepPipe(Range(5), 3)
+  19) [0] Expr (T0$State, T0$ResultNames)
+  20) [0] Expr T0.Count
+  21) [0] TaskCmd play T0
+  22) [0] TaskCmd prime T0
+  23) [0] TaskCmd poke T0
+  24) [0] TaskCmd poke T0
+  25) [0] Expr Wait(1)
+  26) [0] TaskCmd pause T0
+  27) [0] Expr T0.Count
+  28) [0] TaskCmd poke T0
+  29) [0] TaskCmd finish T0
+  30) [0] Expr T0.Count
+  31) [0] Expr T0.Data
+  32) [0] Expr ""
+  33) [0] Expr "*** Prime, play, poke, pause, finish"
+  34) [0] TaskProc prime T0 as StepPipe(Range(5))
+  35) [0] Expr (T0$State, T0$ResultNames)
+  36) [0] Expr T0.Count
+  37) [0] TaskCmd play T0
+  38) [0] Expr Wait(1)
+  39) [0] TaskCmd poke T0
+  40) [0] TaskCmd poke T0
+  41) [0] TaskCmd poke T0
+  42) [0] TaskCmd pause T0
+  43) [0] Expr T0.Count
+  44) [0] TaskCmd finish T0
+  45) [0] Expr T0.Count
+  46) [0] Expr T0.Data
+  47) [0] Expr ""
+  48) [0] Expr "*** Two tasks: Prime, play, poke, pause, finish"
+  49) [0] TaskProc prime T0 as StepPipe(Range(5))
+  50) [0] Expr (T0$State, T0$ResultNames)
+  51) [0] Expr T0.Count
+  52) [0] TaskProc task T1 as Pipe(T0.SData)
+  53) [0] Expr (T1$State, T1$ResultNames)
+  54) [0] Expr T1.Count
+  55) [0] TaskCmd play T1
+  56) [0] TaskCmd poke T0
+  57) [0] TaskCmd poke T0
+  58) [0] Expr Wait(1)
+  59) [0] TaskCmd pause T1
+  60) [0] Expr ""
+  61) [0] Expr "*** Two tasks: Create second while first is playing"
+  62) [0] TaskProc prime T0 as StepPipe(Range(5))
+  63) [0] Expr (T0$State, T0$ResultNames)
+  64) [0] Expr T0.Count
+  65) [0] TaskCmd play T0
+  66) [0] TaskCmd poke T0
+  67) [0] TaskCmd poke T0
+  68) [0] TaskProc task T1 as Pipe(T0.SData)
+  69) [0] Expr (T1$State, T1$ResultNames)
+  70) [0] Expr T1.Count
+  71) [0] TaskCmd play T1
+  72) [0] Expr Wait(1)
+  73) [0] TaskCmd pause T1
+  74) [0] Expr ""
+  75) [0] Expr "*** Two tasks: Allow play, control at end"
+  76) [0] TaskProc prime T0 as StepPipe(Range(5), 1)
+  77) [0] Expr (T0$State, T0$ResultNames)
+  78) [0] Expr T0.Count
+  79) [0] TaskProc task T1 as Pipe(T0.SData)
+  80) [0] Expr (T1$State, T1$ResultNames)
+  81) [0] Expr T1.Count
+  82) [0] TaskCmd play T1
+  83) [0] TaskCmd pause T1
+  84) [0] TaskCmd poke T0
+  85) [0] TaskCmd finish T1
+  86) [0] Expr T1.Count
+  87) [0] Expr ""
+  88) [0] Expr "*** Three sequential tasks: Allow play, control at end"
+  89) [0] TaskProc prime T0 as StepPipe(Range(5), 1)
+  90) [0] Expr (T0$State, T0$ResultNames)
+  91) [0] Expr T0.Count
+  92) [0] TaskProc prime T1 as Pipe(T0.SData)
+  93) [0] Expr (T1$State, T1$ResultNames)
+  94) [0] Expr T1.Count
+  95) [0] TaskProc prime T2 as Pipe(T1.SData)
+  96) [0] Expr (T2$State, T2$ResultNames)
+  97) [0] Expr T2.Count
+  98) [0] TaskCmd play T2
+  99) [0] TaskCmd pause T2
+ 100) [0] TaskCmd poke T0
+ 101) [0] TaskCmd finish T2
+ 102) [0] Expr T2.Count
+ 103) [0] Expr ""
+ 104) [0] Expr "*** Parallel tasks: Allow play, control at ends"
+ 105) [0] TaskProc prime T0 as StepPipe(Range(5), 2)
+ 106) [0] Expr (T0$State, T0$ResultNames)
+ 107) [0] Expr T0.Count
+ 108) [0] TaskProc task T1 as Pipe(T0.SData)
+ 109) [0] Expr (T1$State, T1$ResultNames)
+ 110) [0] Expr T1.Count
+ 111) [0] TaskProc task T2 as Pipe(T0.SData)
+ 112) [0] Expr (T2$State, T2$ResultNames)
+ 113) [0] Expr T2.Count
+ 114) [0] TaskCmd play T2
+ 115) [0] TaskCmd pause T2
+ 116) [0] TaskCmd poke T0
+ 117) [0] TaskCmd play T1
+ 118) [0] TaskCmd pause T1
+ 119) [0] TaskCmd poke T0
+ 120) [0] TaskCmd finish T2
+ 121) [0] Expr T2.Count
+ 122) [0] TaskCmd finish T1
+ 123) [0] Expr T1.Count
+ 124) [0] Expr ""
+ 125) [0] Expr "*** Diamond"
+ 126) [0] TaskProc prime T0 as StepPipe(Range(1, 6), 2)
+ 127) [0] Expr (T0$State, T0$ResultNames)
+ 128) [0] Expr T0.Count
+ 129) [0] TaskProc prime T1 as Pipe(T0.SData)
+ 130) [0] Expr (T1$State, T1$ResultNames)
+ 131) [0] Expr T1.Count
+ 132) [0] TaskProc prime T2 as Pipe(-T0.SData)
+ 133) [0] Expr (T2$State, T2$ResultNames)
+ 134) [0] Expr T2.Count
+ 135) [0] TaskProc task T3 as Pipe(T1.SData, T2.SData)
+ 136) [0] Expr (T3$State, T3$ResultNames)
+ 137) [0] Expr T3.Count
+ 138) [0] Expr (T0.Count, T1.Count, T2.Count, T3.Count)
+ 139) [0] TaskCmd poke T0
+ 140) [0] TaskCmd play T3
+ 141) [0] TaskCmd pause T3
+ 142) [0] TaskCmd poke T0
+ 143) [0] TaskCmd play T1
+ 144) [0] TaskCmd pause T1
+ 145) [0] TaskCmd finish T3
+ 146) [0] Expr T3.Count
+ 147) [0] Expr (T0.Count, T1.Count, T2.Count, T3.Count)
+ 148) [0] TaskCmd poll T0
+ 149) [0] TaskCmd poll T1
+ 150) [0] TaskCmd poll T2
+ 151) [0] Expr T0.Data
+ 152) [0] Expr T1.Data
+ 153) [0] Expr T2.Data
+ 154) [0] Expr T3.Data
+ 155) [0] Expr ""
+ 156) [0] Expr "*** Non-stable result not available while playing"
+ 157) [0] TaskProc prime T0 as Pipe(Range(1, 6))
+ 158) [0] Expr (T0$State, T0$ResultNames)
+ 159) [0] Expr T0.Count
+ 160) [0] Expr T0.SData
+ 161) [0] TaskCmd play T0
+ 162) [0] Expr (T0$State, T0$ResultNames)
+ 163) [0] Expr Wait(1)
+ 164) [0] Expr T0.Count
+ 165) [0] Expr T0.SData
+ 166) [0] TaskCmd poll T0
+ 167) [0] Expr T0.Count
+ 168) [0] End
+
+>    0) [0] DefineFunc Wait(n) <- "Waited" if Range(n * 1000000)->Sum() $> 0 else ""
+UDF 'Wait' has arity 1
+>    1) [0] Expr ""
+
+>    2) [0] Expr "*** Prime, use in expression should take a snapshot"
+*** Prime, use in expression should take a snapshot
+>    3) [0] TaskProc prime T0 as Pipe(Range(5))
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>    4) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>    5) [0] Expr T0.Count
+0
+>    6) [0] Define A <- T0.SData
+Global 'A' has DType: i8*, SysType: <null>
+>    7) [0] Expr A
+<null>
+>    8) [0] TaskCmd play T0
+Task 'T0' now playing
+>    9) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   10) [0] TaskCmd pause T0
+Task 'T0' now paused
+>   11) [0] Define B <- T0.SData
+Global 'B' has DType: i8*, SysType: Seq<i8>
+>   12) [0] Expr B
+Seq<i8>
+   0) 0
+   1) 1
+   2) 2
+   3) 3
+   4) 4
+>   13) [0] TaskCmd poll T0
+Task 'T0' finished
+>   14) [0] Expr (T0$State, T0$ResultNames)
+(Finished, (Count, SData, Data))
+>   15) [0] Expr T0.Data
+Seq<i8>
+   0) 0
+   1) 1
+   2) 2
+   3) 3
+   4) 4
+>   16) [0] Expr ""
+
+>   17) [0] Expr "*** Play, prime, poke, pause, finish"
+*** Play, prime, poke, pause, finish
+>   18) [0] TaskProc task T0 as StepPipe(Range(5), 3)
+Overwriting task: T0
+Task 'T0' added
+>   19) [0] Expr (T0$State, T0$ResultNames)
+(Created, (Count,))
+>   20) [0] Expr T0.Count
+0
+>   21) [0] TaskCmd play T0
+Task 'T0' now playing
+>   22) [0] TaskCmd prime T0
+>   23) [0] TaskCmd poke T0
+>   24) [0] TaskCmd poke T0
+>   25) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   26) [0] TaskCmd pause T0
+Task 'T0' now paused
+>   27) [0] Expr T0.Count
+2
+>   28) [0] TaskCmd poke T0
+>   29) [0] TaskCmd finish T0
+Task 'T0' now playing
+Task 'T0' finished
+>   30) [0] Expr T0.Count
+5
+>   31) [0] Expr T0.Data
+Seq<i8>
+   0) 0
+   1) 1
+   2) 2
+   3) 3
+   4) 4
+>   32) [0] Expr ""
+
+>   33) [0] Expr "*** Prime, play, poke, pause, finish"
+*** Prime, play, poke, pause, finish
+>   34) [0] TaskProc prime T0 as StepPipe(Range(5))
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>   35) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>   36) [0] Expr T0.Count
+0
+>   37) [0] TaskCmd play T0
+Task 'T0' now playing
+>   38) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   39) [0] TaskCmd poke T0
+>   40) [0] TaskCmd poke T0
+>   41) [0] TaskCmd poke T0
+>   42) [0] TaskCmd pause T0
+Task 'T0' now paused
+>   43) [0] Expr T0.Count
+3
+>   44) [0] TaskCmd finish T0
+Task 'T0' now playing
+Task 'T0' finished
+>   45) [0] Expr T0.Count
+5
+>   46) [0] Expr T0.Data
+Seq<i8>
+   0) 0
+   1) 1
+   2) 2
+   3) 3
+   4) 4
+>   47) [0] Expr ""
+
+>   48) [0] Expr "*** Two tasks: Prime, play, poke, pause, finish"
+*** Two tasks: Prime, play, poke, pause, finish
+>   49) [0] TaskProc prime T0 as StepPipe(Range(5))
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>   50) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>   51) [0] Expr T0.Count
+0
+>   52) [0] TaskProc task T1 as Pipe(T0.SData)
+Task 'T1' added
+>   53) [0] Expr (T1$State, T1$ResultNames)
+(Created, (Count,))
+>   54) [0] Expr T1.Count
+0
+>   55) [0] TaskCmd play T1
+Task 'T0' forced playing
+Task 'T1' now playing
+>   56) [0] TaskCmd poke T0
+>   57) [0] TaskCmd poke T0
+>   58) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   59) [0] TaskCmd pause T1
+Task 'T1' now paused
+Task 'T0' now paused
+>   60) [0] Expr ""
+
+>   61) [0] Expr "*** Two tasks: Create second while first is playing"
+*** Two tasks: Create second while first is playing
+>   62) [0] TaskProc prime T0 as StepPipe(Range(5))
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>   63) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>   64) [0] Expr T0.Count
+0
+>   65) [0] TaskCmd play T0
+Task 'T0' now playing
+>   66) [0] TaskCmd poke T0
+>   67) [0] TaskCmd poke T0
+>   68) [0] TaskProc task T1 as Pipe(T0.SData)
+Overwriting task: T1
+Task 'T1' added
+>   69) [0] Expr (T1$State, T1$ResultNames)
+(Created, (Count,))
+>   70) [0] Expr T1.Count
+0
+>   71) [0] TaskCmd play T1
+Task 'T1' now playing
+>   72) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>   73) [0] TaskCmd pause T1
+Task 'T1' now paused
+>   74) [0] Expr ""
+
+>   75) [0] Expr "*** Two tasks: Allow play, control at end"
+*** Two tasks: Allow play, control at end
+>   76) [0] TaskProc prime T0 as StepPipe(Range(5), 1)
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>   77) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>   78) [0] Expr T0.Count
+0
+>   79) [0] TaskProc task T1 as Pipe(T0.SData)
+Overwriting task: T1
+Task 'T1' added
+>   80) [0] Expr (T1$State, T1$ResultNames)
+(Created, (Count,))
+>   81) [0] Expr T1.Count
+0
+>   82) [0] TaskCmd play T1
+Task 'T0' forced playing
+Task 'T1' now playing
+>   83) [0] TaskCmd pause T1
+Task 'T1' now paused
+Task 'T0' now paused
+>   84) [0] TaskCmd poke T0
+>   85) [0] TaskCmd finish T1
+Task 'T0' forced playing
+Task 'T1' now playing
+Task 'T1' finished
+Task 'T0' now paused
+>   86) [0] Expr T1.Count
+5
+>   87) [0] Expr ""
+
+>   88) [0] Expr "*** Three sequential tasks: Allow play, control at end"
+*** Three sequential tasks: Allow play, control at end
+>   89) [0] TaskProc prime T0 as StepPipe(Range(5), 1)
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>   90) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>   91) [0] Expr T0.Count
+0
+>   92) [0] TaskProc prime T1 as Pipe(T0.SData)
+Overwriting task: T1
+Task 'T1' added
+Task 'T0' forced playing
+Task 'T1' now playing
+Task 'T1' now paused
+Task 'T0' now paused
+>   93) [0] Expr (T1$State, T1$ResultNames)
+(Paused, (Count, SData))
+>   94) [0] Expr T1.Count
+0
+>   95) [0] TaskProc prime T2 as Pipe(T1.SData)
+Task 'T2' added
+Task 'T0' forced playing
+Task 'T1' forced playing
+Task 'T2' now playing
+Task 'T2' now paused
+Task 'T1' now paused
+Task 'T0' now paused
+>   96) [0] Expr (T2$State, T2$ResultNames)
+(Paused, (Count, SData))
+>   97) [0] Expr T2.Count
+0
+>   98) [0] TaskCmd play T2
+Task 'T0' forced playing
+Task 'T1' forced playing
+Task 'T2' now playing
+>   99) [0] TaskCmd pause T2
+Task 'T2' now paused
+Task 'T1' now paused
+Task 'T0' now paused
+>  100) [0] TaskCmd poke T0
+>  101) [0] TaskCmd finish T2
+Task 'T0' forced playing
+Task 'T1' forced playing
+Task 'T2' now playing
+Task 'T2' finished
+Task 'T1' now paused
+Task 'T0' now paused
+>  102) [0] Expr T2.Count
+5
+>  103) [0] Expr ""
+
+>  104) [0] Expr "*** Parallel tasks: Allow play, control at ends"
+*** Parallel tasks: Allow play, control at ends
+>  105) [0] TaskProc prime T0 as StepPipe(Range(5), 2)
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>  106) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>  107) [0] Expr T0.Count
+0
+>  108) [0] TaskProc task T1 as Pipe(T0.SData)
+Overwriting task: T1
+Task 'T1' added
+>  109) [0] Expr (T1$State, T1$ResultNames)
+(Created, (Count,))
+>  110) [0] Expr T1.Count
+0
+>  111) [0] TaskProc task T2 as Pipe(T0.SData)
+Overwriting task: T2
+Task 'T2' added
+>  112) [0] Expr (T2$State, T2$ResultNames)
+(Created, (Count,))
+>  113) [0] Expr T2.Count
+0
+>  114) [0] TaskCmd play T2
+Task 'T0' forced playing
+Task 'T2' now playing
+>  115) [0] TaskCmd pause T2
+Task 'T2' now paused
+Task 'T0' now paused
+>  116) [0] TaskCmd poke T0
+>  117) [0] TaskCmd play T1
+Task 'T0' forced playing
+Task 'T1' now playing
+>  118) [0] TaskCmd pause T1
+Task 'T1' now paused
+Task 'T0' now paused
+>  119) [0] TaskCmd poke T0
+>  120) [0] TaskCmd finish T2
+Task 'T0' forced playing
+Task 'T2' now playing
+Task 'T2' finished
+Task 'T0' now paused
+>  121) [0] Expr T2.Count
+5
+>  122) [0] TaskCmd finish T1
+Task 'T0' forced playing
+Task 'T1' now playing
+Task 'T1' finished
+Task 'T0' now paused
+>  123) [0] Expr T1.Count
+5
+>  124) [0] Expr ""
+
+>  125) [0] Expr "*** Diamond"
+*** Diamond
+>  126) [0] TaskProc prime T0 as StepPipe(Range(1, 6), 2)
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>  127) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>  128) [0] Expr T0.Count
+0
+>  129) [0] TaskProc prime T1 as Pipe(T0.SData)
+Overwriting task: T1
+Task 'T1' added
+Task 'T0' forced playing
+Task 'T1' now playing
+Task 'T1' now paused
+Task 'T0' now paused
+>  130) [0] Expr (T1$State, T1$ResultNames)
+(Paused, (Count, SData))
+>  131) [0] Expr T1.Count
+0
+>  132) [0] TaskProc prime T2 as Pipe(-T0.SData)
+Overwriting task: T2
+Task 'T2' added
+Task 'T0' forced playing
+Task 'T2' now playing
+Task 'T2' now paused
+Task 'T0' now paused
+>  133) [0] Expr (T2$State, T2$ResultNames)
+(Paused, (Count, SData))
+>  134) [0] Expr T2.Count
+0
+>  135) [0] TaskProc task T3 as Pipe(T1.SData, T2.SData)
+Task 'T3' added
+>  136) [0] Expr (T3$State, T3$ResultNames)
+(Created, (Count,))
+>  137) [0] Expr T3.Count
+0
+>  138) [0] Expr (T0.Count, T1.Count, T2.Count, T3.Count)
+(0, 0, 0, 0)
+>  139) [0] TaskCmd poke T0
+>  140) [0] TaskCmd play T3
+Task 'T0' forced playing
+Task 'T1' forced playing
+Task 'T2' forced playing
+Task 'T3' now playing
+>  141) [0] TaskCmd pause T3
+Task 'T3' now paused
+Task 'T2' now paused
+Task 'T1' now paused
+Task 'T0' now paused
+>  142) [0] TaskCmd poke T0
+>  143) [0] TaskCmd play T1
+Task 'T0' forced playing
+Task 'T1' now playing
+>  144) [0] TaskCmd pause T1
+Task 'T1' now paused
+Task 'T0' now paused
+>  145) [0] TaskCmd finish T3
+Task 'T0' forced playing
+Task 'T1' forced playing
+Task 'T2' forced playing
+Task 'T3' now playing
+Task 'T3' finished
+Task 'T2' now paused
+Task 'T1' now paused
+Task 'T0' now paused
+>  146) [0] Expr T3.Count
+10
+>  147) [0] Expr (T0.Count, T1.Count, T2.Count, T3.Count)
+(5, 5, 5, 10)
+>  148) [0] TaskCmd poll T0
+Task 'T0' finished
+>  149) [0] TaskCmd poll T1
+Task 'T1' finished
+>  150) [0] TaskCmd poll T2
+Task 'T2' finished
+>  151) [0] Expr T0.Data
+Seq<i8>
+   0) 1
+   1) 2
+   2) 3
+   3) 4
+   4) 5
+>  152) [0] Expr T1.Data
+Seq<i8>
+   0) 1
+   1) 2
+   2) 3
+   3) 4
+   4) 5
+>  153) [0] Expr T2.Data
+Seq<i8>
+   0) -1
+   1) -2
+   2) -3
+   3) -4
+   4) -5
+>  154) [0] Expr T3.Data
+Seq<i8>
+   0) 1
+   1) -1
+   2) 2
+   3) -2
+   4) 3
+   5) -3
+   6) 4
+   7) -4
+   8) 5
+   9) -5
+>  155) [0] Expr ""
+
+>  156) [0] Expr "*** Non-stable result not available while playing"
+*** Non-stable result not available while playing
+>  157) [0] TaskProc prime T0 as Pipe(Range(1, 6))
+Overwriting task: T0
+Task 'T0' added
+Task 'T0' now playing
+Task 'T0' now paused
+>  158) [0] Expr (T0$State, T0$ResultNames)
+(Paused, (Count, SData))
+>  159) [0] Expr T0.Count
+0
+>  160) [0] Expr T0.SData
+<null>
+>  161) [0] TaskCmd play T0
+Task 'T0' now playing
+>  162) [0] Expr (T0$State, T0$ResultNames)
+(Playing, (SData,))
+>  163) [0] Expr Wait(1)
+Waited
+*** Ctx ping count: 1000001
+    [0](1000001): Sum(Range(1000000))
+>  164) [0] Expr T0.Count
+*** Bind diagnostics:
+  [Piping.txt] Error: (3297,3298) Node: T0.Count, Message: Namespace 'T0' doesn't contain 'Count'
+>  165) [0] Expr T0.SData
+Seq<i8>
+   0) 1
+   1) 2
+   2) 3
+   3) 4
+   4) 5
+>  166) [0] TaskCmd poll T0
+Task 'T0' finished
+>  167) [0] Expr T0.Count
+5
+>  168) [0] End
+

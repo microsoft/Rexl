@@ -1,0 +1,138 @@
+**** New globals: {i8:i8, r8:r8, seq:i8*}
+**** New udf: F, arity: 2
+**** New udf: F, arity: 1
+
+> F(i8, i8)
+F(i8, i8) : i8
+Binder : With(!1: i8, !2: i8, Power(!1, !2))
+Reducer: Power(i8, i8)
+###
+> F(i8, 2)
+F(i8, 2) : i8
+Binder : With(!1: i8, !2: 2, Power(!1, !2))
+Reducer: Power(i8, 2)
+###
+> F(3, 2)
+F(3, 2) : i8
+Binder : With(!1: 3, !2: 2, Power(!1, !2))
+Reducer: 9
+###
+> F(3, 3)
+F(3, 3) : i8
+Binder : With(!1: 3, !2: 3, Power(!1, !2))
+Reducer: 27
+###
+> F(3)
+F(3) : i8
+Binder : With(!1: 3, With(!2: !1, !3: 3, Power(!2, !3)))
+Reducer: 27
+###
+> F(i8, r8)
+F(i8, r8) : r8
+Binder : With(!1: i8, !2: r8, Power(Num<r8>(!1), !2))
+Reducer: Power(Num<r8>(i8), r8)
+###
+> F(r8, i8)
+F(r8, i8) : r8
+Binder : With(!1: r8, !2: i8, Power(!1, Num<r8>(!2)))
+Reducer: Power(r8, Num<r8>(i8))
+###
+> F(r8, r8)
+F(r8, r8) : r8
+Binder : With(!1: r8, !2: r8, Power(!1, !2))
+Reducer: Power(r8, r8)
+###
+> F(r8, 4.0)
+F(r8, 4) : r8
+Binder : With(!1: r8, !2: 4, Power(!1, !2))
+Reducer: Power(r8, 4)
+###
+> F(3.0, 4.0)
+F(3, 4) : r8
+Binder : With(!1: 3, !2: 4, Power(!1, !2))
+Reducer: 81
+###
+> F(3.0)
+F(3) : r8
+Binder : With(!1: 3, With(!2: !1, !3: 3, Power(!2, Num<r8>(!3))))
+Reducer: 27
+###
+
+**** New udf: Fold, arity: 1
+**** New udf: Fold, arity: 3
+**** New udf: Fold, arity: 4
+**** New udf: Fold, arity: 6
+**** New udf: Text.IndexOf, arity: 1
+**** New udf: Text.IndexOf, arity: 6
+
+> Fold(seq) // Udf.
+Fold(seq) : i8*
+Binder : With(!1: seq, !1)
+Reducer: seq
+###
+> Fold(seq, i8) // Core with arity error.
+Fold(seq, i8) : i8
+*** Error: (4,5) Node: Fold(seq, i8), Message: Too few arguments for Fold, expected 1 additional
+Binder : Fold(*1: seq, %2: i8, Unit<i8>(<missing>))
+Reducer: Fold(*1: seq, %2: i8, 0)
+###
+> Fold(seq, i8, i8) // Core.
+Fold(seq, i8, i8) : i8
+Binder : Fold(*1: seq, %2: i8, i8)
+###
+> Fold(seq, i8, i8, i8) // Core.
+Fold(seq, i8, i8, i8) : i8
+Binder : Fold(*1: seq, %2: i8, i8, i8)
+###
+> Fold(seq, i8, i8, i8, i8) // Udf with arity error.
+Fold(seq, i8, i8, i8, i8) : (i8*, i8, i8, i8, i8, v)
+*** Error: (4,5) Node: Fold(seq, i8, i8, i8, i8), Message: Too few arguments for Fold, expected 1 additional
+Binder : With(!1: seq, !2: i8, !3: i8, !4: i8, !5: i8, !6: <missing>, (!1, !2, !3, !4, !5, !6))
+Reducer: (seq, i8, i8, i8, i8, <missing>)
+###
+> Fold(seq, i8, i8, i8, i8, i8) // Udf.
+Fold(seq, i8, i8, i8, i8, i8) : (i8*, i8, i8, i8, i8, i8)
+Binder : With(!1: seq, !2: i8, !3: i8, !4: i8, !5: i8, !6: i8, (!1, !2, !3, !4, !5, !6))
+Reducer: (seq, i8, i8, i8, i8, i8)
+###
+> Fold(seq, i8, i8, i8, i8, i8, i8) // Udf with arity error.
+Fold(seq, i8, i8, i8, i8, i8, i8) : (i8*, i8, i8, i8, i8, i8)
+*** Error: (30,32) Node: i8, Message: Too many arguments for Fold, expected 1 fewer
+Binder : With(!1: seq, !2: i8, !3: i8, !4: i8, !5: i8, !6: i8, (!1, !2, !3, !4, !5, !6))
+Reducer: (seq, i8, i8, i8, i8, i8)
+###
+> "abc"->IndexOf() // Udf.
+"abc"->IndexOf() : s
+Binder : With(!1: "abc", !1)
+Reducer: "abc"
+###
+> "abc"->IndexOf("a") // Core.
+"abc"->IndexOf("a") : i8
+Binder : Text.IndexOf("abc", "a")
+Reducer: 0
+###
+> "abc"->IndexOf("a", i8) // Core.
+"abc"->IndexOf("a", i8) : i8
+Binder : Text.IndexOf("abc", "a", i8)
+###
+> "abc"->IndexOf("a", i8, i8) // Core.
+"abc"->IndexOf("a", i8, i8) : i8
+Binder : Text.IndexOf("abc", "a", i8, i8)
+###
+> "abc"->IndexOf("a", i8, i8, i8) // Udf with arity error.
+"abc"->IndexOf("a", i8, i8, i8) : (s, s, i8, i8, i8, v)
+*** Error: (5,7) Node: "abc"->IndexOf("a", i8, i8, i8), Message: Too few arguments for Text.IndexOf, expected 1 additional
+Binder : With(!1: "abc", !2: "a", !3: i8, !4: i8, !5: i8, !6: <missing>, (!1, !2, !3, !4, !5, !6))
+Reducer: ("abc", "a", i8, i8, i8, <missing>)
+###
+> "abc"->IndexOf("a", i8, i8, i8, i8)
+"abc"->IndexOf("a", i8, i8, i8, i8) : (s, s, i8, i8, i8, i8)
+Binder : With(!1: "abc", !2: "a", !3: i8, !4: i8, !5: i8, !6: i8, (!1, !2, !3, !4, !5, !6))
+Reducer: ("abc", "a", i8, i8, i8, i8)
+###
+> "abc"->IndexOf("a", i8, i8, i8, i8, i8) // Udf with arity error.
+"abc"->IndexOf("a", i8, i8, i8, i8, i8) : (s, s, i8, i8, i8, i8)
+*** Error: (36,38) Node: i8, Message: Too many arguments for Text.IndexOf, expected 1 fewer
+Binder : With(!1: "abc", !2: "a", !3: i8, !4: i8, !5: i8, !6: i8, (!1, !2, !3, !4, !5, !6))
+Reducer: ("abc", "a", i8, i8, i8, i8)
+###

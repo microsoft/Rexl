@@ -1,0 +1,32 @@
+﻿`` T := [{K:0r, V:"Zero"}, {K:0/0, V:"NaN"}, {K:1/0, V:"+Inf"}, {K:-1/0, V:"-Inf"}, {K:null, V:"Null"}, {K:1r, V:"+One"}, {K:-1r, V:"-One"}];
+`` S := [3.5, 0r, -0r, 1/0r, null, 1r, 1/-0r, 0/0, 7.5, -1r];
+
+S->KeyJoin(as a, t:T, a, K, (a, V), (a, "General"))
+S->KeyJoin(as a, t:T, [=] a, K, (a, V), (a, "General"))
+
+`` A := [ null, "A", "b", null, "B", "a", "", null ]->ForEach({ Id:#, V:it });
+`` B := A+>{ Id: null };
+`` C := [null] ++ B ++ [null];
+
+// Key is a text field.
+KeyJoin(x:A, y:A,     V,      V, (x, y), (x, null))
+KeyJoin(x:A, y:A, [~] V,      V, (x, y), (x, null))
+KeyJoin(x:A, y:A, [=] V,      V, (x, y), (x, null))
+KeyJoin(x:A, y:A, [=] V, [~]  V, (x, y), (x, null))
+
+// Key is whole record, which is opt.
+KeyJoin(x:C, y:C,     x,      y, (x, y))
+KeyJoin(x:C, y:C, [~] x,      y, (x, y))
+KeyJoin(x:C, y:C, [=] x,      y, (x, y))
+KeyJoin(x:C, y:C,     x, [~=] y, (x, y))
+
+// With indices.
+KeyJoin(x:A, y:A,     V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:A, y:A, [~] V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:A, y:A, [=] V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:A, y:A, [=] V, [~]  V, (x, y, #x, #y), (x, null, #x, -1))
+
+KeyJoin(x:C, y:C,     x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:C, y:C, [~] x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:C, y:C, [=] x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x:C, y:C,     x, [~=] y, (x, y, #x, #y), (x, null, #x, -1))

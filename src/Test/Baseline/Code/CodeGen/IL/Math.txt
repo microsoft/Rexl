@@ -1,0 +1,1735 @@
+**** New globals: {xi:i, xi4:i4, xi8:i8, xn:r8, xr4:r4, xr8:r8, xu4:u4, xu8:u8, yi:i, yi4:i4, yi8:i8, yn:r8, yr4:r4, yr8:r8, yu4:u4, yu8:u8}
+**** New definitions: x, type: r8
+**** New definitions: y, type: r4
+**** New definitions: pz, type: r8
+**** New definitions: nz, type: r8
+
+> [ pz, -nz, pz+pz, pz-pz, nz-nz, nz+pz, pz+nz, pz-nz, pz+0d, 0d+pz, nz+0d, 0d+nz, 0d-pz, pz-0d, pz+-0d, -0d+pz ] // Should all be +0.
+[pz, -nz, pz + pz, pz - pz, nz - nz, nz + pz, pz + nz, pz - nz, pz + 0, 0 + pz, nz + 0, 0 + nz, 0 - pz, pz - 0, pz + -0, -0 + pz] : r8*
+BndKind:Sequence, Type:r8*, Bnd:([Global(pz), Add([-] Global(nz)), Add(Global(pz), Global(pz)), Add(Global(pz), [-] Global(pz)), Add(Global(nz), [-] Global(nz)), Add(Global(nz), Global(pz)), Add(Global(pz), Global(nz)), Add(Global(pz), [-] Global(nz)), Add(Global(pz), 0:r8), Add(0:r8, Global(pz)), Add(Global(nz), 0:r8), Add(0:r8, Global(nz)), Add(0:r8, [-] Global(pz)), Add(Global(pz), [-] 0:r8), Add(Global(pz), -0:r8), Add(-0:r8, Global(pz))]:r8*)
+// (∂.pz:r8, ∂.nz:r8) : r8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      2) ldc.i4.s [16]
+      5) newarr [r8]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [r8]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [r8]
+      1) neg
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.0 [r8]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.3
+      1) ldloc.0 [r8]
+      1) ldloc.0 [r8]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.4
+      1) ldloc.1 [r8]
+      1) ldloc.1 [r8]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.5
+      1) ldloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.6
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.7
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.8
+      1) ldloc.0 [r8]
+      9) ldc.r8 [0]
+      1) add
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [9]
+      9) ldc.r8 [0]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [10]
+      1) ldloc.1 [r8]
+      9) ldc.r8 [0]
+      1) add
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [11]
+      9) ldc.r8 [0]
+      1) ldloc.1 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [12]
+      9) ldc.r8 [0]
+      1) ldloc.0 [r8]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [13]
+      1) ldloc.0 [r8]
+      9) ldc.r8 [0]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [14]
+      1) ldloc.0 [r8]
+      9) ldc.r8 [-0]
+      1) add
+      5) stelem [r8]
+      1) dup
+      2) ldc.i4.s [15]
+      9) ldc.r8 [-0]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) ret
+  Total Size: 254
+
+Func sig: (pz:r8, nz:r8) to r8*
+Sequence: Seq<r8>
+ 0) 0
+ 1) 0
+ 2) 0
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+###
+> [ nz, -pz, nz+nz,                             nz-pz,                                    nz-0d, nz+-0d, -0d+nz ] // Should all be -0.
+[nz, -pz, nz + nz, nz - pz, nz - 0, nz + -0, -0 + nz] : r8*
+BndKind:Sequence, Type:r8*, Bnd:([Global(nz), Add([-] Global(pz)), Add(Global(nz), Global(nz)), Add(Global(nz), [-] Global(pz)), Add(Global(nz), [-] 0:r8), Add(Global(nz), -0:r8), Add(-0:r8, Global(nz))]:r8*)
+// (∂.nz:r8, ∂.pz:r8) : r8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldc.i4.7
+      5) newarr [r8]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [r8]
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [r8]
+      1) neg
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.0 [r8]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.3
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.4
+      1) ldloc.0 [r8]
+      9) ldc.r8 [0]
+      1) sub
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.5
+      1) ldloc.0 [r8]
+      9) ldc.r8 [-0]
+      1) add
+      5) stelem [r8]
+      1) dup
+      1) ldc.i4.6
+      9) ldc.r8 [-0]
+      1) ldloc.0 [r8]
+      1) add
+      5) stelem [r8]
+      1) ret
+  Total Size: 116
+
+Func sig: (nz:r8, pz:r8) to r8*
+Sequence: Seq<r8>
+ 0) -0
+ 1) -0
+ 2) -0
+ 3) -0
+ 4) -0
+ 5) -0
+ 6) -0
+###
+> Div(xi4, yi4)
+Div(xi4, yi4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Div(Num<i8>(Global(xi4)), Num<i8>(Global(yi4))):i8))
+// (∂.xi4:i4, ∂.yi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldloc.1 [i4]
+      1) conv.i8
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [2]
+      1) pop
+      1) neg
+      5) br [1]
+  Label [2]:
+      1) div
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 59
+
+Func sig: (xi4:i4, yi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 div yi4
+xi4 div yi4 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntDiv(Num<i8>(Global(xi4)), Num<i8>(Global(yi4))))
+// (∂.xi4:i4, ∂.yi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.1 [i4]
+      1) conv.i8
+      1) dup
+      1) stloc.2 [i8]
+      5) brfalse [0]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldloc.2 [i8]
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [1]
+      1) pop
+      1) neg
+      5) br [2]
+  Label [1]:
+      1) div
+      5) br [2]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [2]:
+      5) box [i8]
+      1) ret
+  Total Size: 59
+
+Func sig: (xi4:i4, yi4:i4) to i8
+Type: i8, Value: 0
+###
+> Div(xi8, yi8)
+Div(xi8, yi8) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Div(Global(xi8), Global(yi8)):i8))
+// (∂.xi8:i8, ∂.yi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [i8]
+      1) ldloc.1 [i8]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [2]
+      1) pop
+      1) neg
+      5) br [1]
+  Label [2]:
+      1) div
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 57
+
+Func sig: (xi8:i8, yi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 div yi8
+xi8 div yi8 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntDiv(Global(xi8), Global(yi8)))
+// (∂.xi8:i8, ∂.yi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      5) brfalse [0]
+      1) ldloc.0 [i8]
+      1) ldloc.1 [i8]
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [1]
+      1) pop
+      1) neg
+      5) br [2]
+  Label [1]:
+      1) div
+      5) br [2]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [2]:
+      5) box [i8]
+      1) ret
+  Total Size: 55
+
+Func sig: (xi8:i8, yi8:i8) to i8
+Type: i8, Value: 0
+###
+> Div(xu4, yu4)
+Div(xu4, yu4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Div(Num<i8>(Global(xu4)), Num<i8>(Global(yu4))):i8))
+// (∂.xu4:u4, ∂.yu4:u4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.0 [u4]
+      1) conv.u8
+      1) ldloc.1 [u4]
+      1) conv.u8
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [2]
+      1) pop
+      1) neg
+      5) br [1]
+  Label [2]:
+      1) div
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 59
+
+Func sig: (xu4:u4, yu4:u4) to i8
+Type: i8, Value: 0
+###
+> xu4 div yu4
+xu4 div yu4 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntDiv(Num<i8>(Global(xu4)), Num<i8>(Global(yu4))))
+// (∂.xu4:u4, ∂.yu4:u4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.1 [u4]
+      1) conv.u8
+      1) dup
+      1) stloc.2 [i8]
+      5) brfalse [0]
+      1) ldloc.0 [u4]
+      1) conv.u8
+      1) ldloc.2 [i8]
+      1) dup
+      1) ldc.i4.m1
+      1) conv.i8
+      5) bne.un [1]
+      1) pop
+      1) neg
+      5) br [2]
+  Label [1]:
+      1) div
+      5) br [2]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [2]:
+      5) box [i8]
+      1) ret
+  Total Size: 59
+
+Func sig: (xu4:u4, yu4:u4) to i8
+Type: i8, Value: 0
+###
+> Div(xu8, yu8)
+Div(xu8, yu8) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Div(Global(xu8), Global(yu8)):u8))
+// (∂.xu8:u8, ∂.yu8:u8) : u8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.0 [u8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.0 [u8]
+      1) ldloc.1 [u8]
+      1) dup
+      5) brtrue [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) div.un
+  Label [1]:
+      5) box [u8]
+      1) ret
+  Total Size: 42
+
+Func sig: (xu8:u8, yu8:u8) to u8
+Type: u8, Value: 0
+###
+> xu8 div yu8
+xu8 div yu8 : u8
+BndKind:BinaryOp, Type:u8, Bnd:(IntDiv(Global(xu8), Global(yu8)))
+// (∂.xu8:u8, ∂.yu8:u8) : u8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.0 [u8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.1 [u8]
+      5) brfalse [0]
+      1) ldloc.0 [u8]
+      1) ldloc.1 [u8]
+      1) div.un
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.u8
+  Label [1]:
+      5) box [u8]
+      1) ret
+  Total Size: 40
+
+Func sig: (xu8:u8, yu8:u8) to u8
+Type: u8, Value: 0
+###
+> Div(xi, yi)
+Div(xi, yi) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Div(Global(xi), Global(yi)):i))
+// (∂.xi:i, ∂.yi:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static DivFunc::Exec(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi:i, yi:i) to i
+Type: ia, Value: 0
+###
+> xi  div yi
+xi div yi : i
+BndKind:BinaryOp, Type:i, Bnd:(IntDiv(Global(xi), Global(yi)))
+// (∂.xi:i, ∂.yi:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static DivFunc::Exec(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi:i, yi:i) to i
+Type: ia, Value: 0
+###
+> Div(xr4, yr4)
+Div(xr4, yr4) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Div(Num<r8>(Global(xr4)), Num<r8>(Global(yr4))):r8))
+// (∂.xr4:r4, ∂.yr4:r4) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.0 [r4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      1) ldloc.0 [r4]
+      1) conv.r8
+      1) ldloc.1 [r4]
+      1) conv.r8
+      1) div
+      5) call static Math::Truncate(r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 34
+
+Func sig: (xr4:r4, yr4:r4) to r8
+Type: r8, Value: NaN
+###
+> Div(xr8, yr8)
+Div(xr8, yr8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Div(Global(xr8), Global(yr8)):r8))
+// (∂.xr8:r8, ∂.yr8:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) div
+      5) call static Math::Truncate(r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 32
+
+Func sig: (xr8:r8, yr8:r8) to r8
+Type: r8, Value: NaN
+###
+> Div(xn, yn)
+Div(xn, yn) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Div(Global(xn), Global(yn)):r8))
+// (∂.xn:r8, ∂.yn:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) div
+      5) call static Math::Truncate(r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 32
+
+Func sig: (xn:r8, yn:r8) to r8
+Type: r8, Value: NaN
+###
+> xi4 div 2
+xi4 div 2 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntDiv(Num<i8>(Global(xi4)), 2:i8))
+// (∂.xi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) div
+      5) box [i8]
+      1) ret
+  Total Size: 20
+
+Func sig: (xi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 div -1
+xi4 div -1 : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add([-] Num<i8>(Global(xi4))))
+// (∂.xi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) neg
+      5) box [i8]
+      1) ret
+  Total Size: 18
+
+Func sig: (xi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 div 1
+xi4 div 1 : i8
+BndKind:CastNum, Type:i8, Bnd:(Num<i8>(Global(xi4)))
+// (∂.xi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 17
+
+Func sig: (xi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 div 0
+xi4 div 0 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+*** Warning: (4,7) Node: xi4 div 0, Message: Integer division by zero
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi8 div 2
+xi8 div 2 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntDiv(Global(xi8), 2:i8))
+// (∂.xi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) ldc.i4.2
+      1) conv.i8
+      1) div
+      5) box [i8]
+      1) ret
+  Total Size: 19
+
+Func sig: (xi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 div -1
+xi8 div -1 : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add([-] Global(xi8)))
+// (∂.xi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) neg
+      5) box [i8]
+      1) ret
+  Total Size: 17
+
+Func sig: (xi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 div 1
+xi8 div 1 : i8
+BndKind:Global, Type:i8, Bnd:(Global(xi8))
+// (∂.xi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      5) box [i8]
+      1) ret
+  Total Size: 16
+
+Func sig: (xi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 div 0
+xi8 div 0 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+*** Warning: (4,7) Node: xi8 div 0, Message: Integer division by zero
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Mod(xi4, yi4)
+Mod(xi4, yi4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Mod(Num<i8>(Global(xi4)), Num<i8>(Global(yi4))):i8))
+// (∂.xi4:i4, ∂.yi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldloc.1 [i4]
+      1) conv.i8
+      1) dup
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) bgt.un [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) rem
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 49
+
+Func sig: (xi4:i4, yi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 mod yi4
+xi4 mod yi4 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntMod(Num<i8>(Global(xi4)), Num<i8>(Global(yi4))))
+// (∂.xi4:i4, ∂.yi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.1 [i4]
+      1) conv.i8
+      1) dup
+      1) stloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) ble.un [0]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldloc.2 [i8]
+      1) rem
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 49
+
+Func sig: (xi4:i4, yi4:i4) to i8
+Type: i8, Value: 0
+###
+> Mod(xi8, yi8)
+Mod(xi8, yi8) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Mod(Global(xi8), Global(yi8)):i8))
+// (∂.xi8:i8, ∂.yi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [i8]
+      1) ldloc.1 [i8]
+      1) dup
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) bgt.un [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) rem
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 47
+
+Func sig: (xi8:i8, yi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 mod yi8
+xi8 mod yi8 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntMod(Global(xi8), Global(yi8)))
+// (∂.xi8:i8, ∂.yi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) ble.un [0]
+      1) ldloc.0 [i8]
+      1) ldloc.1 [i8]
+      1) rem
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 45
+
+Func sig: (xi8:i8, yi8:i8) to i8
+Type: i8, Value: 0
+###
+> Mod(xu4, yu4)
+Mod(xu4, yu4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Mod(Num<i8>(Global(xu4)), Num<i8>(Global(yu4))):i8))
+// (∂.xu4:u4, ∂.yu4:u4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.0 [u4]
+      1) conv.u8
+      1) ldloc.1 [u4]
+      1) conv.u8
+      1) dup
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) bgt.un [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) rem
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 49
+
+Func sig: (xu4:u4, yu4:u4) to i8
+Type: i8, Value: 0
+###
+> xu4 mod yu4
+xu4 mod yu4 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntMod(Num<i8>(Global(xu4)), Num<i8>(Global(yu4))))
+// (∂.xu4:u4, ∂.yu4:u4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.1 [u4]
+      1) conv.u8
+      1) dup
+      1) stloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      1) ldc.i4.2
+      1) conv.i8
+      5) ble.un [0]
+      1) ldloc.0 [u4]
+      1) conv.u8
+      1) ldloc.2 [i8]
+      1) rem
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 49
+
+Func sig: (xu4:u4, yu4:u4) to i8
+Type: i8, Value: 0
+###
+> Mod(xu8, yu8)
+Mod(xu8, yu8) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Mod(Global(xu8), Global(yu8)):u8))
+// (∂.xu8:u8, ∂.yu8:u8) : u8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.0 [u8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.0 [u8]
+      1) ldloc.1 [u8]
+      1) dup
+      1) ldc.i4.1
+      1) conv.i8
+      5) bgt.un [0]
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) rem.un
+  Label [1]:
+      5) box [u8]
+      1) ret
+  Total Size: 44
+
+Func sig: (xu8:u8, yu8:u8) to u8
+Type: u8, Value: 0
+###
+> xu8 mod yu8
+xu8 mod yu8 : u8
+BndKind:BinaryOp, Type:u8, Bnd:(IntMod(Global(xu8), Global(yu8)))
+// (∂.xu8:u8, ∂.yu8:u8) : u8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.0 [u8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.1 [u8]
+      1) ldc.i4.1
+      1) conv.u8
+      5) ble.un [0]
+      1) ldloc.0 [u8]
+      1) ldloc.1 [u8]
+      1) rem.un
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+      1) conv.u8
+  Label [1]:
+      5) box [u8]
+      1) ret
+  Total Size: 42
+
+Func sig: (xu8:u8, yu8:u8) to u8
+Type: u8, Value: 0
+###
+> Mod(xi, yi)
+Mod(xi, yi) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Mod(Global(xi), Global(yi)):i))
+// (∂.xi:i, ∂.yi:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ModFunc::Exec(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi:i, yi:i) to i
+Type: ia, Value: 0
+###
+> xi  mod yi
+xi mod yi : i
+BndKind:BinaryOp, Type:i, Bnd:(IntMod(Global(xi), Global(yi)))
+// (∂.xi:i, ∂.yi:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ModFunc::Exec(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi:i, yi:i) to i
+Type: ia, Value: 0
+###
+> Mod(xr4, yr4)
+Mod(xr4, yr4) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Mod(Num<r8>(Global(xr4)), Num<r8>(Global(yr4))):r8))
+// (∂.xr4:r4, ∂.yr4:r4) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.0 [r4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      1) ldloc.0 [r4]
+      1) conv.r8
+      1) ldloc.1 [r4]
+      1) conv.r8
+      1) dup
+      9) ldc.r8 [0]
+      5) bne.un [0]
+      1) pop
+      1) dup
+      9) ldc.r8 [0]
+      5) ble.un [1]
+      1) pop
+      9) ldc.r8 [0]
+      5) br [2]
+  Label [1]:
+      1) dup
+      9) ldc.r8 [0]
+      5) bge.un [3]
+      1) pop
+      9) ldc.r8 [-0]
+      5) br [2]
+  Label [3]:
+      9) ldc.r8 [0]
+      1) mul
+      5) br [2]
+  Label [0]:
+      1) rem
+  Label [2]:
+      5) box [r8]
+      1) ret
+  Total Size: 120
+
+Func sig: (xr4:r4, yr4:r4) to r8
+Type: r8, Value: 0
+###
+> Mod(xr8, yr8)
+Mod(xr8, yr8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Mod(Global(xr8), Global(yr8)):r8))
+// (∂.xr8:r8, ∂.yr8:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) dup
+      9) ldc.r8 [0]
+      5) bne.un [0]
+      1) pop
+      1) dup
+      9) ldc.r8 [0]
+      5) ble.un [1]
+      1) pop
+      9) ldc.r8 [0]
+      5) br [2]
+  Label [1]:
+      1) dup
+      9) ldc.r8 [0]
+      5) bge.un [3]
+      1) pop
+      9) ldc.r8 [-0]
+      5) br [2]
+  Label [3]:
+      9) ldc.r8 [0]
+      1) mul
+      5) br [2]
+  Label [0]:
+      1) rem
+  Label [2]:
+      5) box [r8]
+      1) ret
+  Total Size: 118
+
+Func sig: (xr8:r8, yr8:r8) to r8
+Type: r8, Value: 0
+###
+> Mod(xn, yn)
+Mod(xn, yn) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Mod(Global(xn), Global(yn)):r8))
+// (∂.xn:r8, ∂.yn:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      1) dup
+      9) ldc.r8 [0]
+      5) bne.un [0]
+      1) pop
+      1) dup
+      9) ldc.r8 [0]
+      5) ble.un [1]
+      1) pop
+      9) ldc.r8 [0]
+      5) br [2]
+  Label [1]:
+      1) dup
+      9) ldc.r8 [0]
+      5) bge.un [3]
+      1) pop
+      9) ldc.r8 [-0]
+      5) br [2]
+  Label [3]:
+      9) ldc.r8 [0]
+      1) mul
+      5) br [2]
+  Label [0]:
+      1) rem
+  Label [2]:
+      5) box [r8]
+      1) ret
+  Total Size: 118
+
+Func sig: (xn:r8, yn:r8) to r8
+Type: r8, Value: 0
+###
+> xi4 mod 2
+xi4 mod 2 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntMod(Num<i8>(Global(xi4)), 2:i8))
+// (∂.xi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) rem
+      5) box [i8]
+      1) ret
+  Total Size: 20
+
+Func sig: (xi4:i4) to i8
+Type: i8, Value: 0
+###
+> xi4 mod -1
+xi4 mod -1 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi4 mod 1
+xi4 mod 1 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi4 mod 0
+xi4 mod 0 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+*** Warning: (4,7) Node: xi4 mod 0, Message: Integer division by zero
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi8 mod 2
+xi8 mod 2 : i8
+BndKind:BinaryOp, Type:i8, Bnd:(IntMod(Global(xi8), 2:i8))
+// (∂.xi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldloc.0 [i8]
+      1) ldc.i4.2
+      1) conv.i8
+      1) rem
+      5) box [i8]
+      1) ret
+  Total Size: 19
+
+Func sig: (xi8:i8) to i8
+Type: i8, Value: 0
+###
+> xi8 mod -1
+xi8 mod -1 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi8 mod 1
+xi8 mod 1 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> xi8 mod 0
+xi8 mod 0 : i8
+BndKind:Int, Type:i8, Bnd:(0:i8)
+*** Warning: (4,7) Node: xi8 mod 0, Message: Integer division by zero
+// () : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldc.i4.0
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 8
+
+Func sig: () to i8
+Type: i8, Value: 0
+###
+> Bin(xi4, yi4)
+Bin(xi4, yi4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Global(xi4)), Num<i8>(Global(yi4))):i8))
+// (∂.xi4:i4, ∂.yi4:i4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldloc.1 [i4]
+      1) conv.i8
+      1) stloc.2 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      5) bgt [0]
+      1) ldloc.2 [i8]
+      1) ldc.i4.m1
+      1) conv.i8
+      5) blt [0]
+      5) br [1]
+  Label [0]:
+      1) ldloc.2 [i8]
+      1) div
+      1) ldloc.2 [i8]
+      1) mul
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 54
+
+Func sig: (xi4:i4, yi4:i4) to i8
+Type: i8, Value: 0
+###
+> Bin(xi8, yi8)
+Bin(xi8, yi8) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Global(xi8), Global(yi8)):i8))
+// (∂.xi8:i8, ∂.yi8:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.0 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [i8]
+      1) ldloc.1 [i8]
+      1) stloc.2 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      5) bgt [0]
+      1) ldloc.2 [i8]
+      1) ldc.i4.m1
+      1) conv.i8
+      5) blt [0]
+      5) br [1]
+  Label [0]:
+      1) ldloc.2 [i8]
+      1) div
+      1) ldloc.2 [i8]
+      1) mul
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 52
+
+Func sig: (xi8:i8, yi8:i8) to i8
+Type: i8, Value: 0
+###
+> Bin(xu4, yu4)
+Bin(xu4, yu4) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Bin(Num<i8>(Global(xu4)), Num<i8>(Global(yu4))):i8))
+// (∂.xu4:u4, ∂.yu4:u4) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.0 [u4]
+      1) conv.u8
+      1) ldloc.1 [u4]
+      1) conv.u8
+      1) stloc.2 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      5) bgt [0]
+      1) ldloc.2 [i8]
+      1) ldc.i4.m1
+      1) conv.i8
+      5) blt [0]
+      5) br [1]
+  Label [0]:
+      1) ldloc.2 [i8]
+      1) div
+      1) ldloc.2 [i8]
+      1) mul
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 54
+
+Func sig: (xu4:u4, yu4:u4) to i8
+Type: i8, Value: 0
+###
+> Bin(xu8, yu8)
+Bin(xu8, yu8) : u8
+BndKind:Call, Type:u8, Bnd:(Call(∂.Bin(Global(xu8), Global(yu8)):u8))
+// (∂.xu8:u8, ∂.yu8:u8) : u8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.0 [u8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.0 [u8]
+      1) ldloc.1 [u8]
+      1) stloc.2 [u8]
+      1) ldloc.2 [u8]
+      1) ldc.i4.1
+      1) conv.i8
+      5) bgt.un [0]
+      5) br [1]
+  Label [0]:
+      1) ldloc.2 [u8]
+      1) div.un
+      1) ldloc.2 [u8]
+      1) mul
+  Label [1]:
+      5) box [u8]
+      1) ret
+  Total Size: 44
+
+Func sig: (xu8:u8, yu8:u8) to u8
+Type: u8, Value: 0
+###
+> Bin(xr4, yr4)
+Bin(xr4, yr4) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Num<r8>(Global(xr4)), Num<r8>(Global(yr4))):r8))
+// (∂.xr4:r4, ∂.yr4:r4) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.0 [r4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      1) ldloc.0 [r4]
+      1) conv.r8
+      1) ldloc.1 [r4]
+      1) conv.r8
+      5) call static BinFunc::Exec(r8, r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 33
+
+Func sig: (xr4:r4, yr4:r4) to r8
+Type: r8, Value: 0
+###
+> Bin(xr8, yr8)
+Bin(xr8, yr8) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Global(xr8), Global(yr8)):r8))
+// (∂.xr8:r8, ∂.yr8:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      5) call static BinFunc::Exec(r8, r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 31
+
+Func sig: (xr8:r8, yr8:r8) to r8
+Type: r8, Value: 0
+###
+> Bin(xi, yi)
+Bin(xi, yi) : i
+BndKind:Call, Type:i, Bnd:(Call(∂.Bin(Global(xi), Global(yi)):i))
+// (∂.xi:i, ∂.yi:i) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static BinFunc::Exec(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi:i, yi:i) to i
+Type: ia, Value: 0
+###
+> Bin(xn, yn)
+Bin(xn, yn) : r8
+BndKind:Call, Type:r8, Bnd:(Call(∂.Bin(Global(xn), Global(yn)):r8))
+// (∂.xn:r8, ∂.yn:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      5) call static BinFunc::Exec(r8, r8):r8
+      5) box [r8]
+      1) ret
+  Total Size: 31
+
+Func sig: (xn:r8, yn:r8) to r8
+Type: r8, Value: 0
+###
+> 1 / x * y
+1 / x * y : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Mul([/] Global(x), Num<r8>(Global(y))))
+// (∂.x:r8, ∂.y:r4) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      9) ldc.r8 [1]
+      1) ldloc.0 [r8]
+      1) div
+      1) ldloc.1 [r4]
+      1) conv.r8
+      1) mul
+      5) box [r8]
+      1) ret
+  Total Size: 38
+
+Func sig: (x:r8, y:r4) to r8
+Type: r8, Value: 3
+###

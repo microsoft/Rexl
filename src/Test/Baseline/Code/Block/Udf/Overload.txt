@@ -1,0 +1,111 @@
+>>> *** Source:
+    i8 := 3i8;
+    r8 := 7.5r8;
+    func F(x, y) := x^y;
+    func F(x) := F(x, 3);
+    F(i8, i8);
+    F(i8, 2);
+    F(3, 2);
+    F(3, 3);
+    F(3);
+    F(r8, i8);
+    F(r8, 4.0);
+    F(3.0, 4.0);
+    F(3.0);
+    func Arity(a, b, c, d) := "Udf4";
+    with N17, N26 {
+        Arity();
+        Arity(1);
+        Arity(1, 2);
+        Arity(1, 2, 3);
+        Arity(1, 2, 3, 4);
+        Arity(1, 2, 3, 4, 5);
+        Arity(1, 2, 3, 4, 5, 6);
+        Arity(1, 2, 3, 4, 5, 6, 7);
+        Arity(1, 2, 3, 4, 5, 6, 7, 8);
+    }
+
+>>> *** Instructions:
+   0) [0] Define i8 <- 3
+   1) [0] Define r8 <- 7.5
+   2) [0] DefineFunc F(x, y) <- x^y
+   3) [0] DefineFunc F(x) <- F(x, 3)
+   4) [0] Expr F(i8, i8)
+   5) [0] Expr F(i8, 2)
+   6) [0] Expr F(3, 2)
+   7) [0] Expr F(3, 3)
+   8) [0] Expr F(3)
+   9) [0] Expr F(r8, i8)
+  10) [0] Expr F(r8, 4)
+  11) [0] Expr F(3, 4)
+  12) [0] Expr F(3)
+  13) [0] DefineFunc Arity(a, b, c, d) <- "Udf4"
+  14) [0] Enter (0=>1)
+  15) [1] With N17, N26
+  16) [1] Expr Arity()
+  17) [1] Expr Arity(1)
+  18) [1] Expr Arity(1, 2)
+  19) [1] Expr Arity(1, 2, 3)
+  20) [1] Expr Arity(1, 2, 3, 4)
+  21) [1] Expr Arity(1, 2, 3, 4, 5)
+  22) [1] Expr Arity(1, 2, 3, 4, 5, 6)
+  23) [1] Expr Arity(1, 2, 3, 4, 5, 6, 7)
+  24) [1] Expr Arity(1, 2, 3, 4, 5, 6, 7, 8)
+  25) [1] Leave (1=>0)
+  26) [0] End
+
+>    0) [0] Define i8 <- 3
+Global 'i8' has DType: i8, SysType: i8
+>    1) [0] Define r8 <- 7.5
+Global 'r8' has DType: r8, SysType: r8
+>    2) [0] DefineFunc F(x, y) <- x^y
+UDF 'F' has arity 2
+>    3) [0] DefineFunc F(x) <- F(x, 3)
+UDF 'F' has arity 1
+>    4) [0] Expr F(i8, i8)
+27
+>    5) [0] Expr F(i8, 2)
+9
+>    6) [0] Expr F(3, 2)
+9
+>    7) [0] Expr F(3, 3)
+27
+>    8) [0] Expr F(3)
+27
+>    9) [0] Expr F(r8, i8)
+421.875
+>   10) [0] Expr F(r8, 4)
+3164.0625
+>   11) [0] Expr F(3, 4)
+81
+>   12) [0] Expr F(3)
+27
+>   13) [0] DefineFunc Arity(a, b, c, d) <- "Udf4"
+UDF 'Arity' has arity 4
+>   14) [0] Enter (0=>1)
+>   15) [1] With N17, N26
+>   16) [1] Expr Arity()
+*** Bind diagnostics:
+  [Overload.txt] Error: (261,262) Node: Arity(), Message: Too few arguments for N17.Arity, expected 1 additional
+>   17) [1] Expr Arity(1)
+N17.Arity
+>   18) [1] Expr Arity(1, 2)
+N26.Arity
+>   19) [1] Expr Arity(1, 2, 3)
+*** Bind diagnostics:
+  [Overload.txt] Error: (305,306) Node: Arity(1, 2, 3), Message: Too few arguments for Arity, expected 1 additional
+>   20) [1] Expr Arity(1, 2, 3, 4)
+Udf4
+>   21) [1] Expr Arity(1, 2, 3, 4, 5)
+*** Bind diagnostics:
+  [Overload.txt] Error: (348,349) Node: Arity(1, 2, 3, 4, 5), Message: Too few arguments for N26.Arity, expected 1 additional
+>   22) [1] Expr Arity(1, 2, 3, 4, 5, 6)
+N26.Arity
+>   23) [1] Expr Arity(1, 2, 3, 4, 5, 6, 7)
+N17.Arity
+>   24) [1] Expr Arity(1, 2, 3, 4, 5, 6, 7, 8)
+*** Bind diagnostics:
+  [Overload.txt] Error: (457,458) Node: 8, Message: Too many arguments for N17.Arity, expected 1 fewer
+>   25) [1] Leave (1=>0)
+>   26) [0] End
+

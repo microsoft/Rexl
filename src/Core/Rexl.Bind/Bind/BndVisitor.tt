@@ -1,0 +1,240 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using Microsoft.Rexl.Private;
+
+<#
+var _kinds = new (NodeFlags flags, string name, string comment)[] {
+    (NodeFlags.Leaf, "Error", null),
+    (NodeFlags.Leaf, "MissingValue", null),
+    (NodeFlags.Leaf, "Namespace", @"
+    /// <summary>
+    /// Indicates a bound namespace. Except in error cases, this is temporary, only
+    /// occurring during binding. When the containing DottedNameNode is bound, this
+    /// is replaced by the child, either another Namespace or a Global.
+    /// </summary>"),
+    (NodeFlags.Leaf, "Null", @"
+    // Constants."),
+    (NodeFlags.Leaf, "Default", null),
+    (NodeFlags.Leaf, "Int", null),
+    (NodeFlags.Leaf, "Flt", null),
+    (NodeFlags.Leaf, "Str", null),
+    (NodeFlags.Leaf, "CmpConst", @"
+    /// <summary>
+    /// Compound structured constant, eg, a sequence, record, tensor, etc.
+    /// This is never produced directly by the binder, only by further
+    /// tree reduction, in particular by partial evaluation of a module.
+    /// The node class is abstract, since the actual node typically
+    /// has a dependence on a type manager and/or code generator, which
+    /// are not bind-level concepts.
+    /// </summary>"),
+    (NodeFlags.Leaf, "This", ""),
+    (NodeFlags.Leaf, "Global", null),
+    (NodeFlags.Leaf, "FreeVar", null),
+    (NodeFlags.Leaf | NodeFlags.Scoped | NodeFlags.Class, "ScopeRef", null),
+    (NodeFlags.Kind, "ArgScopeRef", null),
+    (NodeFlags.Kind, "IndScopeRef", null),
+
+    (NodeFlags.None, "GetField", null),
+    (NodeFlags.None, "GetSlot", null),
+    (NodeFlags.None, "IdxText", null),
+    (NodeFlags.None, "IdxTensor", null),
+    (NodeFlags.None, "IdxHomTup", null),
+    (NodeFlags.None, "TextSlice", null),
+    (NodeFlags.None, "TensorSlice", null),
+    (NodeFlags.None, "TupleSlice", null),
+    (NodeFlags.None, "CastNum", @"
+    // Casts."),
+    (NodeFlags.None, "CastRef", null),
+    (NodeFlags.None, "CastBox", null),
+    (NodeFlags.None, "CastOpt", null),
+    (NodeFlags.None, "CastVac", null),
+    (NodeFlags.None, "BinaryOp", ""),
+    (NodeFlags.None, "VariadicOp", null),
+    (NodeFlags.None, "Compare", null),
+    (NodeFlags.None, "If", null),
+    (NodeFlags.None, "Sequence", null),
+    (NodeFlags.None, "Tensor", null),
+    (NodeFlags.None, "Tuple", null),
+    (NodeFlags.None, "Record", null),
+    (NodeFlags.None, "Module", null),
+    (NodeFlags.None, "ModToRec", null),
+
+    (NodeFlags.Scoped | NodeFlags.Class, "Call", null),
+    (NodeFlags.Kind, "Call", @"
+    /// <summary>
+    /// A pure invocation of a function. Note that a function may support both pure and
+    /// volatile invocations.
+    /// REVIEW: Change to CallPure in a separate PR.
+    /// </summary>"),
+    (NodeFlags.Kind, "CallVolatile", @"
+    /// <summary>
+    /// A volatile invocation of a function. The result from a volatile invocation may depend on
+    /// external state that is not contained in the arguments. For example, the current date/time
+    /// or the current temperature at a particular zip code. As with all function invocations,
+    /// there are no side effects.
+    /// </summary>"),
+    (NodeFlags.Kind, "CallProcedure", @"
+    /// <summary>
+    /// An invocation of a procedure. A procedure may be non-repeatable and/or have side effects.
+    /// Also, they can produce any number of ""results"".
+    /// </summary>"),
+    (NodeFlags.Scoped, "GroupBy", ""),
+    (NodeFlags.Scoped, "SetFields", null),
+    (NodeFlags.Scoped, "ModuleProjection", null),
+};
+
+var _leafClasses = _kinds.Where(t => (t.flags & (NodeFlags.Leaf | NodeFlags.Kind)) == NodeFlags.Leaf).ToArray();
+var _leafClassesNon = _kinds.Where(t => (t.flags & (NodeFlags.Leaf | NodeFlags.Kind | NodeFlags.Scoped)) == NodeFlags.Leaf).ToArray();
+var _parentClasses = _kinds.Where(t => (t.flags & (NodeFlags.Leaf | NodeFlags.Kind)) == 0).ToArray();
+
+#>
+namespace Microsoft.Rexl.Bind;
+
+/// <summary>
+/// Bound node kind. Note that these are also used as bit positions, so should be kept small
+/// (all less than 64).
+/// </summary>
+public enum BndNodeKind
+{
+    /// <summary>
+    /// No node should ever have this as its kind.
+    /// </summary>
+    Invalid,
+
+<#  foreach (var tup in _kinds.Where(t => (t.flags & NodeFlags.Class) == 0)) {#>
+<#      if (tup.comment != null) WriteLine(tup.comment);#>
+    <#=tup.name#>,
+<#  }#>
+
+    // This isn't a valid kind. It reserves a slot in the mask for whether the node owns any scopes.
+    _ScopeOwner,
+}
+
+[Flags]
+public enum BndNodeKindMask : ulong
+{
+<#  foreach (var tup in _kinds.Where(t => (t.flags & NodeFlags.Class) == 0)) {#>
+    <#=tup.name#> = 1UL << BndNodeKind.<#=tup.name#>,
+<#  }#>
+
+    // Whether any scopes are owned.
+    ScopeOwner = 1UL << BndNodeKind._ScopeOwner,
+}
+
+<#  foreach (var t in _leafClasses) {#>
+partial class Bnd<#=t.name#>Node
+{
+<#      if ((t.flags & NodeFlags.Class) == 0) {#>
+    public override BndNodeKind Kind => BndNodeKind.<#=t.name#>;
+
+<#  }#>
+    public sealed override int Accept(BoundTreeVisitor visitor, int idx)
+    {
+        Validation.BugCheckValue(visitor, nameof(visitor));
+        visitor.Visit(this, idx);
+        return idx + 1;
+    }
+}
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+partial class Bnd<#=t.name#>Node
+{
+<#      if ((t.flags & NodeFlags.Class) == 0) {#>
+    public override BndNodeKind Kind => BndNodeKind.<#=t.name#>;
+
+<#  }#>
+    public sealed override int Accept(BoundTreeVisitor visitor, int idx)
+    {
+        Validation.BugCheckValue(visitor, nameof(visitor));
+        if (visitor.PreVisit(this, idx))
+        {
+            int cur = AcceptChildren(visitor, idx + 1);
+            Validation.Assert(cur == idx + NodeCount);
+            visitor.PostVisit(this, idx);
+        }
+        return idx + NodeCount;
+    }
+}
+<#  }#>
+
+partial class BoundTreeVisitor
+{
+    // Visit methods for leaf node types.
+<#  foreach (var t in _leafClasses) {#>
+    public void Visit(Bnd<#=t.name#>Node bnd, int idx) { if (Enter(bnd, idx)) { VisitImpl(bnd, idx); Leave(bnd, idx); } }
+<#  }#>
+
+<#  foreach (var t in _leafClasses) {#>
+    protected abstract void VisitImpl(Bnd<#=t.name#>Node bnd, int idx);
+<#  }#>
+
+    // Visit methods for non-leaf node types.
+    // If PreVisit returns true, the children are visited and PostVisit is called.
+<#  foreach (var t in _parentClasses) {#>
+    public bool PreVisit(Bnd<#=t.name#>Node bnd, int idx) { if (!Enter(bnd, idx)) return false; bool res = PreVisitImpl(bnd, idx); if (!res) Leave(bnd, idx); return res; }
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+    protected virtual bool PreVisitImpl(Bnd<#=t.name#>Node bnd, int idx) => PreVisitCore(bnd, idx);
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+    public void PostVisit(Bnd<#=t.name#>Node bnd, int idx) { PostVisitImpl(bnd, idx); Leave(bnd, idx); }
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+    protected abstract void PostVisitImpl(Bnd<#=t.name#>Node bnd, int idx);
+<#  }#>
+}
+
+partial class NoopBoundTreeVisitor
+{
+<#  foreach (var t in _leafClasses) {#>
+    protected override void VisitImpl(Bnd<#=t.name#>Node bnd, int idx) => VisitCore(bnd, idx);
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+    protected override void PostVisitImpl(Bnd<#=t.name#>Node bnd, int idx) => PostVisitCore(bnd, idx);
+<#  }#>
+}
+
+partial class NoopScopedBoundTreeVisitor
+{
+<#  foreach (var t in _leafClassesNon) {#>
+    protected override void VisitImpl(Bnd<#=t.name#>Node bnd, int idx) => VisitCore(bnd, idx);
+<#  }#>
+
+<#  foreach (var t in _parentClasses) {#>
+    protected override void PostVisitImpl(Bnd<#=t.name#>Node bnd, int idx) => PostVisitCore(bnd, idx);
+<#  }#>
+}
+<#+
+enum NodeFlags
+{
+    None = 0x00,
+
+    // Indicates a leaf node kind, which cannot have children.
+    Leaf = 0x01,
+
+    // Scoped means that the handling is special cased by scoped visitors, typically with
+    // sealed overrides for some of the visit methods.
+    Scoped = 0x02,
+
+    // Indicates that this is a class but not a kind.
+    Class = 0x04,
+
+    // Indicates that this is a kind but not a class.
+    Kind = 0x08,
+}
+#>

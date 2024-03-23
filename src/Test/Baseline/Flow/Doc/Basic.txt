@@ -1,0 +1,293 @@
+Add: 00000001 [SomeName], Fma: [[1, 3i8, 8, -2, 0]]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i8*
+###
+Ren: 00000001 [NewName] <= [SomeName]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [ N     B       ], Base: i8*
+###
+*** Undo(1)
+Ren: 00000001 [SomeName] <= [NewName]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [ N     B       ], Base: i8*
+###
+*** Redo(1)
+Ren: 00000001 [NewName] <= [SomeName]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [ N     B       ], Base: i8*
+###
+*** Undo(1)
+Ren: 00000001 [SomeName] <= [NewName]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [ N     B       ], Base: i8*
+###
+*** Undo(1)
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** Redo(1)
+Add: 00000001 [SomeName], Fma: [[1, 3i8, 8, -2, 0]]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i8*
+###
+*** Undo(1)
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** Redo(1)
+Add: 00000001 [SomeName], Fma: [[1, 3i8, 8, -2, 0]]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i8*
+###
+*** Redo(1)
+Ren: 00000001 [NewName] <= [SomeName]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [ N     B       ], Base: i8*
+###
+Add: 00000002 [Derived], Fma: [NewName->Filter(it mod 2 = 0)]
+Status: 2 nodes, 3 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [A  tTuUB C dD  ], Base: i8*
+###
+Fma: 00000002 [Derived]
+  New 0: [0:this->Count()]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Count()]
+  New 0: [0:this->Sum()]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [       Bb c D  ], Base: i8*, Extra[0]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Sum()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [0:this->Sum()]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+*** Undo(3)
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [0:this->Sum()]
+Status: 2 nodes, 3 undos, 3 redos
+  Node changes:
+    00000002 [Derived]: [  F T  B    D  ], Base: i8*
+###
+Fma: 00000002 [Derived]
+  New 0: [0:this->Filter(it >= 0)]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [0:this->Count()]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [0:this->Count()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [0:this->Sum()]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [       Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+*** Undo(3)
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [0:this->Sum()]
+Status: 2 nodes, 3 undos, 3 redos
+  Node changes:
+    00000002 [Derived]: [  F T  B    D  ], Base: i8*
+###
+Fma: 00000002 [Derived]
+  New 0: [0:this->Filter(it >= 0)]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Count()]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [7:this->Count()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Sum()]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [       Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+*** Undo(3)
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [7:this->Sum()]
+Status: 2 nodes, 3 undos, 3 redos
+  Node changes:
+    00000002 [Derived]: [  F T  B    D  ], Base: i8*
+###
+Fma: 00000002 [Derived]
+  New 0: [7:this->Count()]
+Status: 2 nodes, 4 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [7:this->Count()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Count()]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [7:this->Count()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Sum()]
+Status: 2 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [       Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [7:this->Sum()]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Sum()]
+  New 2: [7:this + 5]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8, Extra[2]: i8
+###
+*** Undo(1)
+Fma: 00000002 [Derived]
+  Old 0: [0:this->Filter(it >= 0)]
+  Old 1: [7:this->Sum()]
+  Old 2: [7:this + 5]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Sum()]
+Status: 2 nodes, 6 undos, 1 redos
+  Node changes:
+    00000002 [Derived]: [  F    Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+*** Rename twice, back to original
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [       B       ], Base: i8*
+###
+*** Undo(1)
+Status: 2 nodes, 6 undos, 1 redos
+  Node changes:
+    00000001 [NewName]: [       B       ], Base: i8*
+###
+*** Rename twice, to different
+Ren: 00000001 [X] <= [NewName]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [X]: [ N     B       ], Base: i8*
+    00000002 [Derived]: [   tTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,7) Node: NewName, Message: Name does not exist in the current context
+###
+*** Undo(1)
+Ren: 00000001 [NewName] <= [X]
+Status: 2 nodes, 6 undos, 1 redos
+  Node changes:
+    00000001 [NewName]: [ N     B       ], Base: i8*
+    00000002 [Derived]: [   tTuUBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Del: 00000001 [NewName]
+Status: 1 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [   tTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,7) Node: NewName, Message: Name does not exist in the current context
+###
+Add: 00000003 [NewName], Fma: [Range(-5, 100)]
+Status: 2 nodes, 8 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [   tTuUBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+    00000003 [NewName]: [A  tT  B C dD  ], Base: i8*
+###
+*** Undo(8)
+Del: 00000002 [Derived]
+Del: 00000003 [NewName]
+Status: 0 nodes, 0 undos, 8 redos
+###
+*** Redo(3)
+Add: 00000001 [NewName], Fma: [[1, 3i8, 8, -2, 0]]
+Add: 00000002 [Derived], Fma: [NewName->Filter(it mod 2 = 0)]
+Status: 2 nodes, 3 undos, 5 redos
+  Node changes:
+    00000001 [NewName]: [A  tT  B C dD  ], Base: i8*
+    00000002 [Derived]: [A  tTuUB C dD  ], Base: i8*
+###
+*** Redo(4)
+Del: 00000001 [NewName]
+Fma: 00000002 [Derived]
+  New 0: [0:this->Filter(it >= 0)]
+  New 1: [7:this->Sum()]
+Status: 1 nodes, 7 undos, 1 redos
+  Node changes:
+    00000002 [Derived]: [  FtTuUBbCcdDE ], Base: v*, Extra[0]: v*, Extra[1]: r8
+      *) Error: (0,7) Node: NewName, Message: Name does not exist in the current context
+###
+*** Undo(7)
+Del: 00000002 [Derived]
+Status: 0 nodes, 0 undos, 8 redos
+###
+*** Redo(8)
+Add: 00000002 [Derived], Fma: [NewName->Filter(it mod 2 = 0)], Extra: { [this->Filter(it >= 0)], [this->Sum()] }
+Add: 00000003 [NewName], Fma: [Range(-5, 100)]
+Status: 2 nodes, 8 undos, 0 redos
+  Node changes:
+    00000002 [Derived]: [A FtTuUBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+    00000003 [NewName]: [A  tT  B C dD  ], Base: i8*
+###
+*** Undo(2)
+Del: 00000003 [NewName]
+Add: 00000001 [NewName], Fma: [[1, 3i8, 8, -2, 0]]
+Status: 2 nodes, 6 undos, 2 redos
+  Node changes:
+    00000001 [NewName]: [A  tT  B C dD  ], Base: i8*
+    00000002 [Derived]: [     uUBb  dD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+Fma: 00000001 [NewName], Main: [[1, 3i8, 8, -2, 0]] => [Range(10)]
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [       B C dD  ], Base: i8*
+    00000002 [Derived]: [           dD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###
+*** UndoAll
+Del: 00000001 [NewName]
+Del: 00000002 [Derived]
+Status: 0 nodes, 0 undos, 7 redos
+###
+*** RedoAll
+Add: 00000001 [NewName], Fma: [Range(10)]
+Add: 00000002 [Derived], Fma: [NewName->Filter(it mod 2 = 0)], Extra: { [this->Filter(it >= 0)], [this->Sum()] }
+Status: 2 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [NewName]: [A  tT  B C dD  ], Base: i8*
+    00000002 [Derived]: [A FtTuUBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8
+###

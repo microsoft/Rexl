@@ -1,0 +1,35 @@
+﻿``` Ss := [null, "", "18446744073709551615", "18446744073709551616"];
+ToU8(Ss)
+ToU8(Ss, 3u)
+ToU8(Ss, Opt(3u))
+
+ToU2([null, "", "65535", "65536"])
+
+``` R8s := [0/0, -1, 3.14, 1/0];
+ToU8(R8s)
+ToU8(R8s, 3u)
+ToU8(R8s, Opt(3u))
+
+``` QR8s := [null, 0/0, -1, 3.14, 1/0];
+ToU8(QR8s)
+ToU8(QR8s, 3u)
+ToU8(QR8s, Opt(3u))
+
+ToU1([0/0, -1, 0, 255, 256, 1/0])
+
+ToU8([-1ia, 0, (1ia shl 64) - 1, 1ia shl 64])
+
+ToU1([-1ia, 0ia, 255ia, 256ia])
+
+ToU4([-1i8, 0i8, (1i8 shl 32) - 1            , 1i8 shl 32]) // Single boundary test
+ToU2([-1i4, 0i4, (1i4 shl 16) - 1 | CastI4(_), 1i4 shl 16]) // Single boundary test
+
+ToU8([-1i4, 0i4, 0x7FFFFFFFi4]) // Comparing in the narrow type
+
+ToU4([-1i4, 0i4, 0x7FFFFFFFi4])         // Single boundary test
+ToU4([(1u8 shl 32) - 1u8, 1u8 shl 32])  // Single boundary test
+
+ToU2([Date(1, 1, 1, 0, 0, 0, 0, 256), Date(1, 1, 1, 0, 0, 0, 0, 256)]) // Single boundary test
+
+ToU8([Time(0, 0, 0, 0, 0, -2), Time(0, 0, 0, 0, 0, 2)])    // Single boundary test
+ToU1([Time(0, 0, 0, 0, 0, 255), Time(0, 0, 0, 0, 0, 256)]) // Single boundary test

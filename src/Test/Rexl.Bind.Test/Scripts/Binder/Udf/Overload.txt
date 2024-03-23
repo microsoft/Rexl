@@ -1,0 +1,45 @@
+﻿// Tests optional args via overloads. That is the higher arity overload just
+// invokes the lower arity one providing defaults for the extra args. Of course,
+// this is not considered recursion (so recursion detection needs to consider arity,
+// not just the names).
+
+:: { i8:i8, r8:r8, seq:i8* }
+`` func F(x, y) := x^y;
+`` func F(x) := F(x, 3);
+
+F(i8, i8)
+F(i8, 2)
+F(3, 2)
+F(3, 3)
+F(3)
+
+F(i8, r8)
+F(r8, i8)
+F(r8, r8)
+F(r8, 4.0)
+F(3.0, 4.0)
+F(3.0)
+
+// Mixing core functions and udfs.
+`` func Fold(a) := a;
+`` func Fold(a, b, c) := (a, b, c); // Never hit.
+`` func Fold(a, b, c, d) := (a, b, c, d); // Never hit.
+`` func Fold(a, b, c, d, e, f) := (a, b, c, d, e, f);
+`` func Text.IndexOf(a) := a;
+`` func Text.IndexOf(a, b, c, d, e, f) := (a, b, c, d, e, f);
+
+Fold(seq) // Udf.
+Fold(seq, i8) // Core with arity error.
+Fold(seq, i8, i8) // Core.
+Fold(seq, i8, i8, i8) // Core.
+Fold(seq, i8, i8, i8, i8) // Udf with arity error.
+Fold(seq, i8, i8, i8, i8, i8) // Udf.
+Fold(seq, i8, i8, i8, i8, i8, i8) // Udf with arity error.
+
+"abc"->IndexOf() // Udf.
+"abc"->IndexOf("a") // Core.
+"abc"->IndexOf("a", i8) // Core.
+"abc"->IndexOf("a", i8, i8) // Core.
+"abc"->IndexOf("a", i8, i8, i8) // Udf with arity error.
+"abc"->IndexOf("a", i8, i8, i8, i8)
+"abc"->IndexOf("a", i8, i8, i8, i8, i8) // Udf with arity error.

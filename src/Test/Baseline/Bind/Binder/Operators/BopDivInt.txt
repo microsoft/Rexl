@@ -1,0 +1,1005 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 8 div 3
+8 div 3 : i8
+Binder : IntDiv(8, 3)
+Reducer: 2
+###
+> 8 div 1
+8 div 1 : i8
+Binder : IntDiv(8, 1)
+Reducer: 8
+###
+> i1 div 1
+i1 div 1 : i8
+Binder : IntDiv(Num<i8>(i1), 1)
+Reducer: Num<i8>(i1)
+###
+> i4 div 1
+i4 div 1 : i8
+Binder : IntDiv(Num<i8>(i4), 1)
+Reducer: Num<i8>(i4)
+###
+> u1 div 1
+u1 div 1 : i8
+Binder : IntDiv(Num<i8>(u1), 1)
+Reducer: Num<i8>(u1)
+###
+> u4 div 1
+u4 div 1 : i8
+Binder : IntDiv(Num<i8>(u4), 1)
+Reducer: Num<i8>(u4)
+###
+> u4 div 1u
+u4 div 1 : u8
+Binder : IntDiv(Num<u8>(u4), 1)
+Reducer: Num<u8>(u4)
+###
+> 53 div 4
+53 div 4 : i8
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53 div 4u
+53 div 4 : i8
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53 div 4ia
+53 div 4 : i
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53u div 4
+53 div 4 : i8
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53u div 4u
+53 div 4 : u8
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53u div 4ia
+53 div 4 : i
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53ia div 4
+53 div 4 : i
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53ia div 4u
+53 div 4 : i
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 53ia div 4ia
+53 div 4 : i
+Binder : IntDiv(53, 4)
+Reducer: 13
+###
+> 2 div  1
+2 div 1 : i8
+Binder : IntDiv(2, 1)
+Reducer: 2
+###
+> 2 div -1
+2 div -1 : i8
+Binder : IntDiv(2, -1)
+Reducer: -2
+###
+> -2 div  1
+-2 div 1 : i8
+Binder : IntDiv(-2, 1)
+Reducer: -2
+###
+> -2 div -1
+-2 div -1 : i8
+Binder : IntDiv(-2, -1)
+Reducer: 2
+###
+> 2 div 0
+2 div 0 : i8
+Binder : IntDiv(2, 0)
+*** Warning: Node: IntDiv(2, 0), Message: Integer division by zero
+Reducer: 0
+###
+> -2 div 0
+-2 div 0 : i8
+Binder : IntDiv(-2, 0)
+*** Warning: Node: IntDiv(-2, 0), Message: Integer division by zero
+Reducer: 0
+###
+> (i4 * i4 * -1) div -1
+i4 * i4 * -1 div -1 : i8
+Binder : IntDiv(Mul(Num<i8>(i4), Num<i8>(i4), -1), -1)
+Reducer: Mul(Num<i8>(i4), Num<i8>(i4))
+###
+> 0x3FFFFFFF div 2
+1073741823 div 2 : i8
+Binder : IntDiv(1073741823, 2)
+Reducer: 536870911
+###
+> 0x3FFFFFFF div 4
+1073741823 div 4 : i8
+Binder : IntDiv(1073741823, 4)
+Reducer: 268435455
+###
+> 0x7FFFFFFFU div 2
+2147483647 div 2 : i8
+Binder : IntDiv(2147483647, 2)
+Reducer: 1073741823
+###
+> 0x7FFFFFFFU div 2U
+2147483647 div 2 : u8
+Binder : IntDiv(2147483647, 2)
+Reducer: 1073741823
+###
+> 0x7FFFFFFFU div 4
+2147483647 div 4 : i8
+Binder : IntDiv(2147483647, 4)
+Reducer: 536870911
+###
+> 0x8000_0000_0000_0000i8 div -1i8
+9223372036854775808 div -1 : i8
+Binder : IntDiv(-9223372036854775808, -1)
+*** Warning: Node: IntDiv(-9223372036854775808, -1), Message: Constant integer overflow
+Reducer: -9223372036854775808
+###
+> 0x8000_0000_0000_0000u8 div -1i8
+9223372036854775808 div -1 : i8
+*** Warning: (0,23) Node: 9223372036854775808, Message: Unsigned int literal overflow as signed
+Binder : IntDiv(-9223372036854775808, -1)
+*** Warning: Node: IntDiv(-9223372036854775808, -1), Message: Constant integer overflow
+Reducer: -9223372036854775808
+###
+> -0x8000_0000_0000_0000i8 div -1i8
+-9223372036854775808 div -1 : i8
+*** Warning: (0,1) Node: -9223372036854775808, Message: Constant integer overflow
+Binder : IntDiv(-9223372036854775808, -1)
+*** Warning: Node: IntDiv(-9223372036854775808, -1), Message: Constant integer overflow
+Reducer: -9223372036854775808
+###
+> -0x8000_0000_0000_0000u8 div -1i8
+-9223372036854775808 div -1 : i8
+Binder : IntDiv(-9223372036854775808, -1)
+*** Warning: Node: IntDiv(-9223372036854775808, -1), Message: Constant integer overflow
+Reducer: -9223372036854775808
+###
+> 3 div null
+3 div null : i8?
+Binder : Guard(?1: null, IntDiv(3, Unit<i8>(?1)))
+*** Warning: Node: IntDiv(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null div 3
+null div 3 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), 3))
+Reducer: null
+###
+> 0 div null
+0 div null : i8?
+Binder : Guard(?1: null, IntDiv(0, Unit<i8>(?1)))
+Reducer: null
+###
+> null div 0
+null div 0 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), 0))
+Reducer: null
+###
+> i4 div 3
+i4 div 3 : i8
+Binder : IntDiv(Num<i8>(i4), 3)
+###
+> 3 div i4
+3 div i4 : i8
+Binder : IntDiv(3, Num<i8>(i4))
+###
+> i4 div null
+i4 div null : i8?
+Binder : Guard(?1: null, IntDiv(Num<i8>(i4), Unit<i8>(?1)))
+*** Warning: Node: IntDiv(Num<i8>(i4), Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null div i4
+null div i4 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> i4 div 2 div null
+i4 div 2 div null : i8?
+Binder : Guard(?1: null, IntDiv(IntDiv(Num<i8>(i4), 2), Unit<i8>(?1)))
+*** Warning: Node: IntDiv(IntDiv(Num<i8>(i4), 2), Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null div i4 div 2
+null div i4 div 2 : i8?
+Binder : Guard(?2: Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(i4))), IntDiv(?2, 2))
+Reducer: null
+###
+> i1 div i2 div i2
+i1 div i2 div i2 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), Num<i8>(i2)), Num<i8>(i2))
+###
+> i1 div i2 div i4
+i1 div i2 div i4 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), Num<i8>(i2)), Num<i8>(i4))
+###
+> i4 div i2 div i1
+i4 div i2 div i1 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i4), Num<i8>(i2)), Num<i8>(i1))
+###
+> (i1 div 3) div (i2 div 2)
+i1 div 3 div (i2 div 2) : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), 3), IntDiv(Num<i8>(i2), 2))
+###
+> (i1 div 3i1) div (i2 div i4)
+i1 div 3 div (i2 div i4) : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), 3), IntDiv(Num<i8>(i2), Num<i8>(i4)))
+###
+> i1 div 3i1 div 2i1
+i1 div 3 div 2 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), 3), 2)
+###
+> i1 div -1i1 div -1i1
+i1 div -1 div -1 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), -1), -1)
+Reducer: Num<i8>(i1)
+###
+> i1 div 3i1 div -1i1
+i1 div 3 div -1 : i8
+Binder : IntDiv(IntDiv(Num<i8>(i1), 3), -1)
+Reducer: Add([-] IntDiv(Num<i8>(i1), 3))
+###
+> i2 div qi2 div i1
+i2 div qi2 div i1 : i8?
+Binder : Guard(?2: Guard(?1: qi2, IntDiv(Num<i8>(i2), Num<i8>(?1))), IntDiv(?2, Num<i8>(i1)))
+Reducer: Guard(?1: qi2, IntDiv(IntDiv(Num<i8>(i2), Num<i8>(?1)), Num<i8>(i1)))
+###
+> i4 div qi2 div i1
+i4 div qi2 div i1 : i8?
+Binder : Guard(?2: Guard(?1: qi2, IntDiv(Num<i8>(i4), Num<i8>(?1))), IntDiv(?2, Num<i8>(i1)))
+Reducer: Guard(?1: qi2, IntDiv(IntDiv(Num<i8>(i4), Num<i8>(?1)), Num<i8>(i1)))
+###
+> 3 div true
+3 div true : i8
+Binder : IntDiv(3, 1)
+Reducer: 3
+###
+> true div 3
+true div 3 : i8
+Binder : IntDiv(1, 3)
+Reducer: 0
+###
+> false div true
+false div true : i8
+Binder : IntDiv(0, 1)
+Reducer: 0
+###
+> true div false
+true div false : i8
+Binder : IntDiv(1, 0)
+*** Warning: Node: IntDiv(1, 0), Message: Integer division by zero
+Reducer: 0
+###
+> "3" div true
+"3" div true : i8
+*** Error: (0,3) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntDiv(Error(ErrBadType_Src_Dst), 1)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> 3 div "true"
+3 div "true" : i8
+*** Error: (6,12) Node: "true", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> "3" div "true"
+"3" div "true" : i8
+*** Error: (0,3) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (8,14) Node: "true", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntDiv(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> 2.0f div 4.0f
+2 div 4 : i8
+*** Error: (0,4) Node: 2, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+*** Error: (9,13) Node: 4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : IntDiv(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> 2.0d div 4.0d
+2 div 4 : i8
+*** Error: (0,4) Node: 2, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (9,13) Node: 4, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntDiv(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> i4 div (3 + 2)
+i4 div (3 + 2) : i8
+Binder : IntDiv(Num<i8>(i4), Add(3, 2))
+Reducer: IntDiv(Num<i8>(i4), 5)
+###
+> i4 div (3 - 2)
+i4 div (3 - 2) : i8
+Binder : IntDiv(Num<i8>(i4), Add(3, [-] 2))
+Reducer: Num<i8>(i4)
+###
+> i4 div (2 - 3)
+i4 div (2 - 3) : i8
+Binder : IntDiv(Num<i8>(i4), Add(2, [-] 3))
+Reducer: Add([-] Num<i8>(i4))
+###
+> i4 div (3 - 3)
+i4 div (3 - 3) : i8
+Binder : IntDiv(Num<i8>(i4), Add(3, [-] 3))
+*** Warning: Node: IntDiv(Num<i8>(i4), Add(3, [-] 3)), Message: Integer division by zero
+Reducer: 0
+###
+> (3 + 2) div i4
+(3 + 2) div i4 : i8
+Binder : IntDiv(Add(3, 2), Num<i8>(i4))
+Reducer: IntDiv(5, Num<i8>(i4))
+###
+> (3 - 2) div i4
+(3 - 2) div i4 : i8
+Binder : IntDiv(Add(3, [-] 2), Num<i8>(i4))
+Reducer: IntDiv(1, Num<i8>(i4))
+###
+> (2 - 3) div i4
+(2 - 3) div i4 : i8
+Binder : IntDiv(Add(2, [-] 3), Num<i8>(i4))
+Reducer: IntDiv(-1, Num<i8>(i4))
+###
+> (3 - 3) div i4
+(3 - 3) div i4 : i8
+Binder : IntDiv(Add(3, [-] 3), Num<i8>(i4))
+Reducer: 0
+###
+> 3 div g
+3 div g : i8
+*** Error: (6,7) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3 div o
+3 div o : i8?
+Binder : Guard(?1: o, IntDiv(3, Unit<i8>(?1)))
+*** Warning: Node: IntDiv(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> 3 div s
+3 div s : i8
+*** Error: (6,7) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3 div b
+3 div b : i8
+Binder : IntDiv(3, Num<i8>(b))
+###
+> 3 div n
+3 div n : i8
+*** Error: (6,7) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3 div r8
+3 div r8 : i8
+*** Error: (6,8) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3 div r4
+3 div r4 : i8
+*** Error: (6,8) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3 div i
+3 div i : i
+Binder : IntDiv(3, i)
+###
+> 3 div i8
+3 div i8 : i8
+Binder : IntDiv(3, i8)
+###
+> 3 div i4
+3 div i4 : i8
+Binder : IntDiv(3, Num<i8>(i4))
+###
+> 3 div i2
+3 div i2 : i8
+Binder : IntDiv(3, Num<i8>(i2))
+###
+> 3 div i1
+3 div i1 : i8
+Binder : IntDiv(3, Num<i8>(i1))
+###
+> 3 div u8
+3 div u8 : i8
+*** Warning: (6,8) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : IntDiv(3, Num<i8>(u8))
+###
+> 3 div u4
+3 div u4 : i8
+Binder : IntDiv(3, Num<i8>(u4))
+###
+> 3 div u2
+3 div u2 : i8
+Binder : IntDiv(3, Num<i8>(u2))
+###
+> 3 div u1
+3 div u1 : i8
+Binder : IntDiv(3, Num<i8>(u1))
+###
+> 3u div g
+3 div g : u8
+*** Error: (7,8) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'u8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3u div o
+3 div o : u8?
+Binder : Guard(?1: o, IntDiv(3, Unit<u8>(?1)))
+*** Warning: Node: IntDiv(3, Unit<u8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> 3u div s
+3 div s : u8
+*** Error: (7,8) Node: s, Message: Invalid operand type: cannot convert type 's' to 'u8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3u div b
+3 div b : u8
+Binder : IntDiv(3, Num<u8>(b))
+###
+> 3u div n
+3 div n : u8
+*** Error: (7,8) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3u div r8
+3 div r8 : u8
+*** Error: (7,9) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3u div r4
+3 div r4 : u8
+*** Error: (7,9) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'u8'
+Binder : IntDiv(3, Error(ErrBadType_Src_Dst))
+###
+> 3u div i
+3 div i : i
+Binder : IntDiv(3, i)
+###
+> 3u div i8
+3 div i8 : i8
+Binder : IntDiv(3, i8)
+###
+> 3u div i4
+3 div i4 : i8
+Binder : IntDiv(3, Num<i8>(i4))
+###
+> 3u div i2
+3 div i2 : i8
+Binder : IntDiv(3, Num<i8>(i2))
+###
+> 3u div i1
+3 div i1 : i8
+Binder : IntDiv(3, Num<i8>(i1))
+###
+> 3u div u8
+3 div u8 : u8
+Binder : IntDiv(3, u8)
+###
+> 3u div u4
+3 div u4 : u8
+Binder : IntDiv(3, Num<u8>(u4))
+###
+> 3u div u2
+3 div u2 : u8
+Binder : IntDiv(3, Num<u8>(u2))
+###
+> 3u div u1
+3 div u1 : u8
+Binder : IntDiv(3, Num<u8>(u1))
+###
+> null div g
+null div g : i8?
+*** Error: (9,10) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div o
+null div o : i8?
+Binder : Guard(?1: null, ?2: o, IntDiv(Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> null div s
+null div s : i8?
+*** Error: (9,10) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div b
+null div b : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(b)))
+Reducer: null
+###
+> null div n
+null div n : i8?
+*** Error: (9,10) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div r8
+null div r8 : i8?
+*** Error: (9,11) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div r4
+null div r4 : i8?
+*** Error: (9,11) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div i
+null div i : i?
+Binder : Guard(?1: null, IntDiv(Unit<i>(?1), i))
+Reducer: null
+###
+> null div i8
+null div i8 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), i8))
+Reducer: null
+###
+> null div i4
+null div i4 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> null div i2
+null div i2 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(i2)))
+Reducer: null
+###
+> null div i1
+null div i1 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(i1)))
+Reducer: null
+###
+> null div u8
+null div u8 : u8?
+Binder : Guard(?1: null, IntDiv(Unit<u8>(?1), u8))
+Reducer: null
+###
+> null div u4
+null div u4 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(u4)))
+Reducer: null
+###
+> null div u2
+null div u2 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(u2)))
+Reducer: null
+###
+> null div u1
+null div u1 : i8?
+Binder : Guard(?1: null, IntDiv(Unit<i8>(?1), Num<i8>(u1)))
+Reducer: null
+###
+> 3 div qb
+3 div qb : i8?
+Binder : Guard(?1: qb, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qn
+3 div qn : i8?
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: qn, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div qr8
+3 div qr8 : i8?
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: qr8, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div qr4
+3 div qr4 : i8?
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: qr4, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div qi
+3 div qi : i?
+Binder : Guard(?1: qi, IntDiv(3, ?1))
+###
+> 3 div qi8
+3 div qi8 : i8?
+Binder : Guard(?1: qi8, IntDiv(3, ?1))
+###
+> 3 div qi4
+3 div qi4 : i8?
+Binder : Guard(?1: qi4, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qi2
+3 div qi2 : i8?
+Binder : Guard(?1: qi2, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qi1
+3 div qi1 : i8?
+Binder : Guard(?1: qi1, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qu8
+3 div qu8 : i8?
+*** Warning: (6,9) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qu4
+3 div qu4 : i8?
+Binder : Guard(?1: qu4, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qu2
+3 div qu2 : i8?
+Binder : Guard(?1: qu2, IntDiv(3, Num<i8>(?1)))
+###
+> 3 div qu1
+3 div qu1 : i8?
+Binder : Guard(?1: qu1, IntDiv(3, Num<i8>(?1)))
+###
+> 3u div qb
+3 div qb : u8?
+Binder : Guard(?1: qb, IntDiv(3, Num<u8>(?1)))
+###
+> 3u div qn
+3 div qn : u8?
+*** Error: (7,9) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : Guard(?1: qn, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u div qr8
+3 div qr8 : u8?
+*** Error: (7,10) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : Guard(?1: qr8, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u div qr4
+3 div qr4 : u8?
+*** Error: (7,10) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'u8'
+Binder : Guard(?1: qr4, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u div qi
+3 div qi : i?
+Binder : Guard(?1: qi, IntDiv(3, ?1))
+###
+> 3u div qi8
+3 div qi8 : i8?
+Binder : Guard(?1: qi8, IntDiv(3, ?1))
+###
+> 3u div qi4
+3 div qi4 : i8?
+Binder : Guard(?1: qi4, IntDiv(3, Num<i8>(?1)))
+###
+> 3u div qi2
+3 div qi2 : i8?
+Binder : Guard(?1: qi2, IntDiv(3, Num<i8>(?1)))
+###
+> 3u div qi1
+3 div qi1 : i8?
+Binder : Guard(?1: qi1, IntDiv(3, Num<i8>(?1)))
+###
+> 3u div qu8
+3 div qu8 : u8?
+Binder : Guard(?1: qu8, IntDiv(3, ?1))
+###
+> 3u div qu4
+3 div qu4 : u8?
+Binder : Guard(?1: qu4, IntDiv(3, Num<u8>(?1)))
+###
+> 3u div qu2
+3 div qu2 : u8?
+Binder : Guard(?1: qu2, IntDiv(3, Num<u8>(?1)))
+###
+> 3u div qu1
+3 div qu1 : u8?
+Binder : Guard(?1: qu1, IntDiv(3, Num<u8>(?1)))
+###
+> null div qb
+null div qb : i8?
+Binder : Guard(?1: null, ?2: qb, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qn
+null div qn : i8?
+*** Error: (9,11) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, ?2: qn, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div qr8
+null div qr8 : i8?
+*** Error: (9,12) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, ?2: qr8, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div qr4
+null div qr4 : i8?
+*** Error: (9,12) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: null, ?2: qr4, IntDiv(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null div qi
+null div qi : i?
+Binder : Guard(?1: null, ?2: qi, IntDiv(Unit<i>(?1), ?2))
+Reducer: null
+###
+> null div qi8
+null div qi8 : i8?
+Binder : Guard(?1: null, ?2: qi8, IntDiv(Unit<i8>(?1), ?2))
+Reducer: null
+###
+> null div qi4
+null div qi4 : i8?
+Binder : Guard(?1: null, ?2: qi4, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qi2
+null div qi2 : i8?
+Binder : Guard(?1: null, ?2: qi2, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qi1
+null div qi1 : i8?
+Binder : Guard(?1: null, ?2: qi1, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qu8
+null div qu8 : u8?
+Binder : Guard(?1: null, ?2: qu8, IntDiv(Unit<u8>(?1), ?2))
+Reducer: null
+###
+> null div qu4
+null div qu4 : i8?
+Binder : Guard(?1: null, ?2: qu4, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qu2
+null div qu2 : i8?
+Binder : Guard(?1: null, ?2: qu2, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null div qu1
+null div qu1 : i8?
+Binder : Guard(?1: null, ?2: qu1, IntDiv(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> i div qb
+i div qb : i?
+Binder : Guard(?1: qb, IntDiv(i, Num<i>(?1)))
+###
+> i div qn
+i div qn : i?
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qn, IntDiv(i, Error(ErrBadType_Src_Dst)))
+###
+> i div qr8
+i div qr8 : i?
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qr8, IntDiv(i, Error(ErrBadType_Src_Dst)))
+###
+> i div qr4
+i div qr4 : i?
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i'
+Binder : Guard(?1: qr4, IntDiv(i, Error(ErrBadType_Src_Dst)))
+###
+> i div qi
+i div qi : i?
+Binder : Guard(?1: qi, IntDiv(i, ?1))
+###
+> i div qi8
+i div qi8 : i?
+Binder : Guard(?1: qi8, IntDiv(i, Num<i>(?1)))
+###
+> i div qi4
+i div qi4 : i?
+Binder : Guard(?1: qi4, IntDiv(i, Num<i>(?1)))
+###
+> i div qi2
+i div qi2 : i?
+Binder : Guard(?1: qi2, IntDiv(i, Num<i>(?1)))
+###
+> i div qi1
+i div qi1 : i?
+Binder : Guard(?1: qi1, IntDiv(i, Num<i>(?1)))
+###
+> i div qu8
+i div qu8 : i?
+Binder : Guard(?1: qu8, IntDiv(i, Num<i>(?1)))
+###
+> i div qu4
+i div qu4 : i?
+Binder : Guard(?1: qu4, IntDiv(i, Num<i>(?1)))
+###
+> i div qu2
+i div qu2 : i?
+Binder : Guard(?1: qu2, IntDiv(i, Num<i>(?1)))
+###
+> i div qu1
+i div qu1 : i?
+Binder : Guard(?1: qu1, IntDiv(i, Num<i>(?1)))
+###
+> qi div qb
+qi div qb : i?
+Binder : Guard(?1: qi, ?2: qb, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qn
+qi div qn : i?
+*** Error: (7,9) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qi, ?2: qn, IntDiv(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi div qr8
+qi div qr8 : i?
+*** Error: (7,10) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qi, ?2: qr8, IntDiv(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi div qr4
+qi div qr4 : i?
+*** Error: (7,10) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i'
+Binder : Guard(?1: qi, ?2: qr4, IntDiv(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi div qi
+qi div qi : i?
+Binder : Guard(?1: qi, ?2: qi, IntDiv(?1, ?2))
+Reducer: Guard(?1: qi, IntDiv(?1, ?1))
+###
+> qi div qi8
+qi div qi8 : i?
+Binder : Guard(?1: qi, ?2: qi8, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qi4
+qi div qi4 : i?
+Binder : Guard(?1: qi, ?2: qi4, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qi2
+qi div qi2 : i?
+Binder : Guard(?1: qi, ?2: qi2, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qi1
+qi div qi1 : i?
+Binder : Guard(?1: qi, ?2: qi1, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qu8
+qi div qu8 : i?
+Binder : Guard(?1: qi, ?2: qu8, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qu4
+qi div qu4 : i?
+Binder : Guard(?1: qi, ?2: qu4, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qu2
+qi div qu2 : i?
+Binder : Guard(?1: qi, ?2: qu2, IntDiv(?1, Num<i>(?2)))
+###
+> qi div qu1
+qi div qu1 : i?
+Binder : Guard(?1: qi, ?2: qu1, IntDiv(?1, Num<i>(?2)))
+###
+
+**** New globals: {b:b*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> 3 div g
+3 div g : i8*
+*** Error: (6,7) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div o
+3 div o : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, IntDiv(3, Unit<i8>(?2))))
+*** Warning: Node: IntDiv(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: ForEach(*1: o, null)
+###
+> 3 div s
+3 div s : i8*
+*** Error: (6,7) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div b
+3 div b : i8*
+Binder : ForEach(*1: b, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div n
+3 div n : i8*
+*** Error: (6,7) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: n, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div r8
+3 div r8 : i8*
+*** Error: (6,8) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: r8, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div r4
+3 div r4 : i8*
+*** Error: (6,8) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*1: r4, IntDiv(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 div i
+3 div i : i*
+Binder : ForEach(*1: i, IntDiv(3, *1))
+###
+> 3 div i8
+3 div i8 : i8*
+Binder : ForEach(*1: i8, IntDiv(3, *1))
+###
+> 3 div i4
+3 div i4 : i8*
+Binder : ForEach(*1: i4, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div i2
+3 div i2 : i8*
+Binder : ForEach(*1: i2, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div i1
+3 div i1 : i8*
+Binder : ForEach(*1: i1, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div u8
+3 div u8 : i8*
+*** Warning: (6,8) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: u8, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div u4
+3 div u4 : i8*
+Binder : ForEach(*1: u4, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div u2
+3 div u2 : i8*
+Binder : ForEach(*1: u2, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div u1
+3 div u1 : i8*
+Binder : ForEach(*1: u1, IntDiv(3, Num<i8>(*1)))
+###
+> 3 div qb
+3 div qb : i8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qn
+3 div qn : i8?*
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: qn, Guard(?2: *1, IntDiv(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 div qr8
+3 div qr8 : i8?*
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: qr8, Guard(?2: *1, IntDiv(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 div qr4
+3 div qr4 : i8?*
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*1: qr4, Guard(?2: *1, IntDiv(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 div qi
+3 div qi : i?*
+Binder : ForEach(*1: qi, Guard(?2: *1, IntDiv(3, ?2)))
+###
+> 3 div qi8
+3 div qi8 : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, IntDiv(3, ?2)))
+###
+> 3 div qi4
+3 div qi4 : i8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qi2
+3 div qi2 : i8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qi1
+3 div qi1 : i8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qu8
+3 div qu8 : i8?*
+*** Warning: (6,9) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: qu8, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qu4
+3 div qu4 : i8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qu2
+3 div qu2 : i8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###
+> 3 div qu1
+3 div qu1 : i8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, IntDiv(3, Num<i8>(?2))))
+###

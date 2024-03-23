@@ -1,0 +1,119 @@
+**** New udf: Uri.MakeGen, arity: 1
+**** New udf: Uri.MakeFile, arity: 1
+**** New udf: Uri.MakeImage, arity: 1
+**** New udf: Uri.MakeJpeg, arity: 1
+**** New udf: Uri.MakeXray, arity: 1
+**** New udf: Uri.MakePdf, arity: 1
+
+> Uri.MakeGen("blob")
+Uri.MakeGen("blob") : U<>
+BndKind:Call, Type:U<>, Bnd:(Call(∂.Link.Local(str(), str(/blob)):U<>))
+Func sig: () to U<>
+Type: Link, Value: Link<Generic>(<null>, /blob)
+###
+> Uri.MakeFile("file")
+Uri.MakeFile("file") : U<File>
+BndKind:Call, Type:U<File>, Bnd:(Call(∂.Link.Local(str(File), str(File/file)):U<File>))
+Func sig: () to U<File>
+Type: Link, Value: Link<Generic>(<null>, File/file)
+###
+> Uri.MakeImage("image")
+Uri.MakeImage("image") : U<Image>
+BndKind:Call, Type:U<Image>, Bnd:(Call(∂.Link.Local(str(Image), str(Image/image)):U<Image>))
+Func sig: () to U<Image>
+Type: Link, Value: Link<Generic>(<null>, Image/image)
+###
+> Uri.MakeJpeg("jpeg")
+Uri.MakeJpeg("jpeg") : U<Image.Jpeg>
+BndKind:Call, Type:U<Image.Jpeg>, Bnd:(Call(∂.Link.Local(str(Image.Jpeg), str(Image.Jpeg/jpeg)):U<Image.Jpeg>))
+Func sig: () to U<Image.Jpeg>
+Type: Link, Value: Link<Generic>(<null>, Image.Jpeg/jpeg)
+###
+> Uri.MakeXray("xray")
+Uri.MakeXray("xray") : U<Image.Jpeg.Xray>
+BndKind:Call, Type:U<Image.Jpeg.Xray>, Bnd:(Call(∂.Link.Local(str(Image.Jpeg.Xray), str(Image.Jpeg.Xray/xray)):U<Image.Jpeg.Xray>))
+Func sig: () to U<Image.Jpeg.Xray>
+Type: Link, Value: Link<Generic>(<null>, Image.Jpeg.Xray/xray)
+###
+> Uri.MakePdf("pdf")
+Uri.MakePdf("pdf") : U<Pdf>
+BndKind:Call, Type:U<Pdf>, Bnd:(Call(∂.Link.Local(str(Pdf), str(Pdf/pdf)):U<Pdf>))
+Func sig: () to U<Pdf>
+Type: Link, Value: Link<Generic>(<null>, Pdf/pdf)
+###
+
+**** New definitions: blob, type: U<>
+**** New definitions: file, type: U<File>
+**** New definitions: image, type: U<Image>
+**** New definitions: jpeg, type: U<Image.Jpeg>
+**** New definitions: xray, type: U<Image.Jpeg.Xray>
+**** New definitions: pdf, type: U<Pdf>
+
+> Link.Path(blob)
+Link.Path(blob) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(blob)):s))
+Func sig: (blob:U<>) to s
+Type: str, Value: /blob
+###
+> Link.Path(file)
+Link.Path(file) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(file)):s))
+Func sig: (file:U<File>) to s
+Type: str, Value: File/file
+###
+> Link.Path(image)
+Link.Path(image) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(image)):s))
+Func sig: (image:U<Image>) to s
+Type: str, Value: Image/image
+###
+> Link.Path(jpeg)
+Link.Path(jpeg) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(jpeg)):s))
+Func sig: (jpeg:U<Image.Jpeg>) to s
+Type: str, Value: Image.Jpeg/jpeg
+###
+> Link.Path(xray)
+Link.Path(xray) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(xray)):s))
+Func sig: (xray:U<Image.Jpeg.Xray>) to s
+Type: str, Value: Image.Jpeg.Xray/xray
+###
+> Link.Path(pdf)
+Link.Path(pdf) : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(pdf)):s))
+Func sig: (pdf:U<Pdf>) to s
+Type: str, Value: Pdf/pdf
+###
+> blob.Path
+blob.Path : s
+BndKind:Call, Type:s, Bnd:(Call(∂.Link.Path(Global(blob)):s))
+Func sig: (blob:U<>) to s
+Type: str, Value: /blob
+###
+> [ blob, file, image, jpeg, xray, pdf, null ].Path
+[blob, file, image, jpeg, xray, pdf, null].Path : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] [Global(blob), Ref<U<>>(Global(file)), Ref<U<>>(Global(image)), Ref<U<>>(Global(jpeg)), Ref<U<>>(Global(xray)), Ref<U<>>(Global(pdf)), null:U<>]:U<>*, Call(∂.Link.Path(Scope(1)):s)):s*))
+Func sig: (blob:U<>, file:U<File>, image:U<Image>, jpeg:U<Image.Jpeg>, xray:U<Image.Jpeg.Xray>, pdf:U<Pdf>) to s*
+Sequence: Seq<str>
+ 0) /blob
+ 1) File/file
+ 2) Image/image
+ 3) Image.Jpeg/jpeg
+ 4) Image.Jpeg.Xray/xray
+ 5) Pdf/pdf
+ 6) <null>
+###
+> [ blob, file, image, jpeg, xray, pdf, null ]->Path()
+[blob, file, image, jpeg, xray, pdf, null]->Path() : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:1] [Global(blob), Ref<U<>>(Global(file)), Ref<U<>>(Global(image)), Ref<U<>>(Global(jpeg)), Ref<U<>>(Global(xray)), Ref<U<>>(Global(pdf)), null:U<>]:U<>*, Call(∂.Link.Path(Scope(1)):s)):s*))
+Func sig: (blob:U<>, file:U<File>, image:U<Image>, jpeg:U<Image.Jpeg>, xray:U<Image.Jpeg.Xray>, pdf:U<Pdf>) to s*
+Sequence: Seq<str>
+ 0) /blob
+ 1) File/file
+ 2) Image/image
+ 3) Image.Jpeg/jpeg
+ 4) Image.Jpeg.Xray/xray
+ 5) Pdf/pdf
+ 6) <null>
+###

@@ -1,0 +1,3170 @@
+**** New definitions: T, type: i8[*]
+**** New definitions: r1, type: i8
+**** New definitions: r3, type: i8
+**** New definitions: q1, type: i8?
+**** New definitions: q3, type: i8?
+**** New definitions: trrn, type: (i8, i8, i8?)
+**** New definitions: trr1, type: (i8, i8, i8)
+**** New definitions: trq1, type: (i8, i8?, i8)
+**** New definitions: tqr1, type: (i8?, i8, i8)
+**** New definitions: tqq1, type: (i8?, i8?, i8)
+**** New definitions: trrfn, type: (i8, b, i8, b, i8?)
+**** New definitions: trrf1, type: (i8, b, i8, b, i8)
+**** New definitions: trrtn, type: (i8, b, i8, b, i8?)
+**** New definitions: trrt1, type: (i8, b, i8, b, i8)
+
+> Range(-7, 7)->(it, T[it], T[&it], T[%it], T[^it], T[^&it], T[^%it])
+Range(-7, 7)->(it, T[it], T[&it], T[%it], T[^it], T[^&it], T[^%it]) : (i8, i8, i8, i8, i8, i8, i8)*
+BndKind:Call, Type:(i8, i8, i8, i8, i8, i8, i8)*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(-7:i8, 7:i8):i8*), (Scope(1), IdxTen(Global(T), Scope(1)):i8, IdxTen(Global(T), Index(Scope(1), Clip)):i8, IdxTen(Global(T), Index(Scope(1), Wrap)):i8, IdxTen(Global(T), Index(Scope(1), Back)):i8, IdxTen(Global(T), Index(Scope(1), BackClip)):i8, IdxTen(Global(T), Index(Scope(1), BackWrap)):i8):(i8, i8, i8, i8, i8, i8, i8)):(i8, i8, i8, i8, i8, i8, i8)*))
+// (∂.T:i8[*]) : (i8, i8, i8, i8, i8, i8, i8)*
+ForEach_1(Arr<obj>, i8):(i8,i8,i8,i8,i8,i8,i8)
+      5) newobj (i8,i8,i8,i8,i8,i8,i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F0:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) dup
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      5) bge.un [0]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F1:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) cgt
+      1) neg
+      1) and
+      1) dup
+      1) ldloc.1 [i8]
+      5) blt [2]
+      1) pop
+      1) ldloc.1 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      1) sub
+  Label [2]:
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [3]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [4]
+  Label [3]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [4]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F2:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) add
+      1) rem
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) clt
+      1) neg
+      1) ldloc.1 [i8]
+      1) and
+      1) add
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [5]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [6]
+  Label [5]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [6]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F3:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) neg
+      1) ldloc.1 [i8]
+      1) add
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [7]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [8]
+  Label [7]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [8]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F4:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) neg
+      1) ldloc.1 [i8]
+      1) add
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) cgt
+      1) neg
+      1) and
+      1) dup
+      1) ldloc.1 [i8]
+      5) blt [9]
+      1) pop
+      1) ldloc.1 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      1) sub
+  Label [9]:
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [10]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [11]
+  Label [10]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [11]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F5:i8
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) neg
+      1) ldloc.1 [i8]
+      1) add
+      1) ldloc.1 [i8]
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) ceq
+      1) add
+      1) rem
+      1) dup
+      1) ldc.i4.0
+      1) conv.i8
+      2) clt
+      1) neg
+      1) ldloc.1 [i8]
+      1) and
+      1) add
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [12]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [13]
+  Label [12]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [13]:
+      5) stfld (i8,i8,i8,i8,i8,i8,i8)::_F6:i8
+      1) ret
+  Total Size: 386
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      2) ldc.i4.s [-7]
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      5) call static RangeGen::Exec(i8, i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,(i8,i8,i8,i8,i8,i8,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,(i8,i8,i8,i8,i8,i8,i8)>):Seq<(i8,i8,i8,i8,i8,i8,i8)>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<(i8,i8,i8,i8,i8,i8,i8)>):Seq<(i8,i8,i8,i8,i8,i8,i8)>
+      1) ret
+  Total Size: 79
+
+Func sig: (T:i8[*]) to (i8, i8, i8, i8, i8, i8, i8)*
+Sequence: Seq<(i8,i8,i8,i8,i8,i8,i8)>
+ 0) (-7, 0, 1, 4, 0, 5, 3)
+ 1) (-6, 0, 1, 5, 0, 5, 2)
+ 2) (-5, 0, 1, 1, 0, 5, 1)
+ 3) (-4, 0, 1, 2, 0, 5, 5)
+ 4) (-3, 0, 1, 3, 0, 5, 4)
+ 5) (-2, 0, 1, 4, 0, 5, 3)
+ 6) (-1, 0, 1, 5, 0, 5, 2)
+ 7) (0, 1, 1, 1, 0, 5, 1)
+ 8) (1, 2, 2, 2, 5, 5, 5)
+ 9) (2, 3, 3, 3, 4, 4, 4)
+10) (3, 4, 4, 4, 3, 3, 3)
+11) (4, 5, 5, 5, 2, 2, 2)
+12) (5, 0, 5, 1, 1, 1, 1)
+13) (6, 0, 5, 2, 0, 1, 5)
+###
+> T[r1:r3]
+T[r1:r3] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(r1):Global(r3):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[r1:q3]
+T[r1:q3] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(r1):Global(q3):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.q3:i8?) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.2 [Opt<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [Opt<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRO(i8, Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, q3:i8?) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[q1:r3]
+T[q1:r3] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(q1):Global(r3):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.q1:i8?, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [Opt<i8>]
+      1) ldloc.2 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateOR(Opt<i8>, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], q1:i8?, r3:i8) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[q1:q3]
+T[q1:q3] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(q1):Global(q3):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.q1:i8?, ∂.q3:i8?) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.2 [Opt<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [Opt<i8>]
+      1) ldloc.2 [Opt<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateOO(Opt<i8>, Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], q1:i8?, q3:i8?) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[trrn]
+T[trrn] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trrn))):i8[*])
+// (∂.T:i8[*], ∂.trrn:(i8, i8, i8?)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,Opt<i8>)
+      1) stloc.1 [(i8,i8,Opt<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,i8,Opt<i8>)]
+      5) ldfld (i8,i8,Opt<i8>)::_F0:i8
+      1) ldloc.1 [(i8,i8,Opt<i8>)]
+      5) ldfld (i8,i8,Opt<i8>)::_F1:i8
+      1) ldloc.1 [(i8,i8,Opt<i8>)]
+      5) ldfld (i8,i8,Opt<i8>)::_F2:Opt<i8>
+      1) stloc.2 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (2)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 60
+
+Func sig: (T:i8[*], trrn:(i8, i8, i8?)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[trrfn]
+T[trrfn] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trrfn))):i8[*])
+// (∂.T:i8[*], ∂.trrfn:(i8, b, i8, b, i8?)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,bool,i8,bool,Opt<i8>)
+      1) stloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F0:i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F2:i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F4:Opt<i8>
+      1) stloc.2 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (2)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      2) ldc.i4.s [120]
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F1:bool
+      1) or
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F3:bool
+      1) ldc.i4.1
+      1) shl
+      1) or
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*], trrfn:(i8, b, i8, b, i8?)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[r1:r3:1]
+T[r1:r3:1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(r1):Global(r3):1:i8)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[trr1]
+T[trr1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trr1))):i8[*])
+// (∂.T:i8[*], ∂.trr1:(i8, i8, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,i8)
+      1) stloc.1 [(i8,i8,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,i8,i8)]
+      5) ldfld (i8,i8,i8)::_F0:i8
+      1) ldloc.1 [(i8,i8,i8)]
+      5) ldfld (i8,i8,i8)::_F1:i8
+      1) ldloc.1 [(i8,i8,i8)]
+      5) ldfld (i8,i8,i8)::_F2:i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 52
+
+Func sig: (T:i8[*], trr1:(i8, i8, i8)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[trq1]
+T[trq1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trq1))):i8[*])
+// (∂.T:i8[*], ∂.trq1:(i8, i8?, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,Opt<i8>,i8)
+      1) stloc.1 [(i8,Opt<i8>,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,Opt<i8>,i8)]
+      5) ldfld (i8,Opt<i8>,i8)::_F0:i8
+      1) ldloc.1 [(i8,Opt<i8>,i8)]
+      5) ldfld (i8,Opt<i8>,i8)::_F1:Opt<i8>
+      1) ldloc.1 [(i8,Opt<i8>,i8)]
+      5) ldfld (i8,Opt<i8>,i8)::_F2:i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRO(i8, Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 52
+
+Func sig: (T:i8[*], trq1:(i8, i8?, i8)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[tqr1]
+T[tqr1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(tqr1))):i8[*])
+// (∂.T:i8[*], ∂.tqr1:(i8?, i8, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(Opt<i8>,i8,i8)
+      1) stloc.1 [(Opt<i8>,i8,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(Opt<i8>,i8,i8)]
+      5) ldfld (Opt<i8>,i8,i8)::_F0:Opt<i8>
+      1) ldloc.1 [(Opt<i8>,i8,i8)]
+      5) ldfld (Opt<i8>,i8,i8)::_F1:i8
+      1) ldloc.1 [(Opt<i8>,i8,i8)]
+      5) ldfld (Opt<i8>,i8,i8)::_F2:i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateOR(Opt<i8>, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 52
+
+Func sig: (T:i8[*], tqr1:(i8?, i8, i8)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[tqq1]
+T[tqq1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(tqq1))):i8[*])
+// (∂.T:i8[*], ∂.tqq1:(i8?, i8?, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(Opt<i8>,Opt<i8>,i8)
+      1) stloc.1 [(Opt<i8>,Opt<i8>,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(Opt<i8>,Opt<i8>,i8)]
+      5) ldfld (Opt<i8>,Opt<i8>,i8)::_F0:Opt<i8>
+      1) ldloc.1 [(Opt<i8>,Opt<i8>,i8)]
+      5) ldfld (Opt<i8>,Opt<i8>,i8)::_F1:Opt<i8>
+      1) ldloc.1 [(Opt<i8>,Opt<i8>,i8)]
+      5) ldfld (Opt<i8>,Opt<i8>,i8)::_F2:i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateOO(Opt<i8>, Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 52
+
+Func sig: (T:i8[*], tqq1:(i8?, i8?, i8)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[trrf1]
+T[trrf1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trrf1))):i8[*])
+// (∂.T:i8[*], ∂.trrf1:(i8, b, i8, b, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,bool,i8,bool,i8)
+      1) stloc.1 [(i8,bool,i8,bool,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F0:i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F2:i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F4:i8
+      2) ldc.i4.s [120]
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F1:bool
+      1) or
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F3:bool
+      1) ldc.i4.1
+      1) shl
+      1) or
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 68
+
+Func sig: (T:i8[*], trrf1:(i8, b, i8, b, i8)) to i8[*]
+Ten<i8>(2)<1> [2, 3]
+###
+> T[^r1:^r3]
+T[^r1:^r3] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(^(Global(r1)):^(Global(r3)):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [123]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(2)<-1> [5, 4]
+###
+> T[^r1:^r3:]
+T[^r1:^r3:] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(^(Global(r1)):^(Global(r3)):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [123]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(2)<-1> [5, 4]
+###
+> T[trrtn]
+T[trrtn] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trrtn))):i8[*])
+// (∂.T:i8[*], ∂.trrtn:(i8, b, i8, b, i8?)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,bool,i8,bool,Opt<i8>)
+      1) stloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F0:i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F2:i8
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F4:Opt<i8>
+      1) stloc.2 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (2)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      2) ldc.i4.s [120]
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F1:bool
+      1) or
+      1) ldloc.1 [(i8,bool,i8,bool,Opt<i8>)]
+      5) ldfld (i8,bool,i8,bool,Opt<i8>)::_F3:bool
+      1) ldc.i4.1
+      1) shl
+      1) or
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*], trrtn:(i8, b, i8, b, i8?)) to i8[*]
+Ten<i8>(2)<-1> [5, 4]
+###
+> T[^r1:^r3:1]
+T[^r1:^r3:1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(^(Global(r1)):^(Global(r3)):1:i8)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [123]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(0)<0> []
+###
+> T[trrt1]
+T[trrt1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(trrt1))):i8[*])
+// (∂.T:i8[*], ∂.trrt1:(i8, b, i8, b, i8)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,bool,i8,bool,i8)
+      1) stloc.1 [(i8,bool,i8,bool,i8)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F0:i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F2:i8
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F4:i8
+      2) ldc.i4.s [120]
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F1:bool
+      1) or
+      1) ldloc.1 [(i8,bool,i8,bool,i8)]
+      5) ldfld (i8,bool,i8,bool,i8)::_F3:bool
+      1) ldc.i4.1
+      1) shl
+      1) or
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 68
+
+Func sig: (T:i8[*], trrt1:(i8, b, i8, b, i8)) to i8[*]
+Ten<i8>(0)<0> []
+###
+> T[^r1:^r3:-1]
+T[^r1:^r3:-1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(^(Global(r1)):^(Global(r3)):-1:i8)):i8[*])
+// (∂.T:i8[*], ∂.r1:i8, ∂.r3:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldloc.2 [i8]
+      1) ldc.i4.m1
+      1) conv.i8
+      2) ldc.i4.s [123]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 47
+
+Func sig: (T:i8[*], r1:i8, r3:i8) to i8[*]
+Ten<i8>(2)<-1> [5, 4]
+###
+> T[Range(4):3]
+T[Range(4):3] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Slice(Scope(1):3:i8:null:i8?)):i8[*]):i8[*]*))
+// (∂.T:i8[*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 32
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(3)<1> [1, 2, 3]
+ 1) Ten<i8>(2)<1> [2, 3]
+ 2) Ten<i8>(1)<0> [3]
+ 3) Ten<i8>(0)<0> []
+###
+> T[:Range(4)]
+T[:Range(4)] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Slice(null:i8?:Scope(1):null:i8?)):i8[*]):i8[*]*))
+// (∂.T:i8[*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [112]
+      5) call static SliceItem::Create_R(i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 30
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(0)<0> []
+ 1) Ten<i8>(1)<0> [1]
+ 2) Ten<i8>(2)<1> [1, 2]
+ 3) Ten<i8>(3)<1> [1, 2, 3]
+###
+> T[::Range(4)]
+T[::Range(4)] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Slice(null:i8?:null:i8?:Scope(1))):i8[*]):i8[*]*))
+// (∂.T:i8[*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      5) call static SliceItem::Create__(i8):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 26
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(5)<1> [1, 2, 3, 4, 5]
+ 1) Ten<i8>(5)<1> [1, 2, 3, 4, 5]
+ 2) Ten<i8>(3)<2> [1, 3, 5]
+ 3) Ten<i8>(2)<3> [1, 4]
+###
+> T[10:]
+T[10:] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(10:i8:null:i8?:null:i8?)):i8[*])
+// (∂.T:i8[*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [10]
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 30
+
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(0)<0> []
+###
+> T[:-1]
+T[:-1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(null:i8?:-1:i8:null:i8?)):i8[*])
+// (∂.T:i8[*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.m1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [112]
+      5) call static SliceItem::Create_R(i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 29
+
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(0)<0> []
+###
+
+**** New definitions: T, type: i8[*]
+**** New definitions: n, type: i8?
+**** New definitions: t, type: (i8, i8, o)
+**** New definitions: one, type: i8
+
+> T[1]
+T[1] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T), 1:i8):i8)
+// (∂.T:i8[*]) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.1
+      1) conv.i8
+      1) dup
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      5) bge.un [0]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 44
+
+Func sig: (T:i8[*]) to i8
+Type: i8, Value: 1
+###
+> T[one]
+T[one] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T), Global(one)):i8)
+// (∂.T:i8[*], ∂.one:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldloc.1 [i8]
+      1) dup
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      5) bge.un [0]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 52
+
+Func sig: (T:i8[*], one:i8) to i8
+Type: i8, Value: 1
+###
+> T[^1]
+T[^1] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T), Index(1:i8, Back)):i8)
+// (∂.T:i8[*]) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetCountStatic(Tensor):i8
+      1) stloc.1 [i8]
+      1) neg
+      1) ldloc.1 [i8]
+      1) add
+      1) dup
+      1) ldloc.1 [i8]
+      5) bge.un [0]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8):i8
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 49
+
+Func sig: (T:i8[*]) to i8
+Type: i8, Value: 11
+###
+> T[3:7:1]
+T[3:7:1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(3:i8:7:i8:1:i8)):i8[*])
+// (∂.T:i8[*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 31
+
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(4)<1> [3, 4, 5, 6]
+###
+> T[(3,7,1)]
+T[(3, 7, 1)] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(3:i8:7:i8:1:i8)):i8[*])
+// (∂.T:i8[*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 31
+
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(4)<1> [3, 4, 5, 6]
+###
+> T[3:7:n]
+T[3:7:n] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(3:i8:7:i8:Global(n))):i8[*])
+// (∂.T:i8[*], ∂.n:i8?) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 45
+
+Func sig: (T:i8[*], n:i8?) to i8[*]
+Ten<i8>(4)<1> [3, 4, 5, 6]
+###
+> T[(3,7,n)]
+T[(3, 7, n)] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(3:i8:7:i8:Global(n))):i8[*])
+// (∂.T:i8[*], ∂.n:i8?) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.1 [Opt<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      2) ldloca.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 45
+
+Func sig: (T:i8[*], n:i8?) to i8[*]
+Ten<i8>(4)<1> [3, 4, 5, 6]
+###
+> T[one:7:null]
+T[one:7:null] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(Global(one):7:i8:null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.one:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 39
+
+Func sig: (T:i8[*], one:i8) to i8[*]
+Ten<i8>(6)<1> [1, 2, 3, 4, 5, 6]
+###
+> T[3:7:one]
+T[3:7:one] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(3:i8:7:i8:Global(one))):i8[*])
+// (∂.T:i8[*], ∂.one:i8) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldloc.1 [i8]
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 39
+
+Func sig: (T:i8[*], one:i8) to i8[*]
+Ten<i8>(4)<1> [3, 4, 5, 6]
+###
+> T[t]
+T[t] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*])
+// (∂.T:i8[*], ∂.t:(i8, i8, o)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 48
+
+Func sig: (T:i8[*], t:(i8, i8, o)) to i8[*]
+Ten<i8>(6)<1> [4, 5, 6, 7, 8, 9]
+###
+
+**** New definitions: T, type: i8[]
+
+> T[]
+T[] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T)):i8)
+// (∂.T:i8[]) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      5) call static Tensor::_GetFirstStatic(Ten<i8>):i8
+      5) box [i8]
+      1) ret
+  Total Size: 21
+
+Func sig: (T:i8[]) to i8
+Type: i8, Value: 0
+###
+
+**** New definitions: T, type: i8[*,*]
+
+> T[1:3:1, t]
+T[1:3:1, t] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:3:i8:1:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*])
+// (∂.T:i8[*,*], ∂.t:(i8, i8, o)) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 61
+
+Func sig: (T:i8[*,*], t:(i8, i8, o)) to i8[*,*]
+Ten<i8>(2,3)<7,1>
+  [[11, 12, 13]
+   [18, 19, 20]]
+###
+> T[1:^1:1, t]
+T[1:^1:1, t] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:^(1:i8):1:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*])
+// (∂.T:i8[*,*], ∂.t:(i8, i8, o)) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [122]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 61
+
+Func sig: (T:i8[*,*], t:(i8, i8, o)) to i8[*,*]
+Ten<i8>(1,3)<0,1>
+  [[11, 12, 13]]
+###
+> T[1:^0:1, t]
+T[1:^0:1, t] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:^(0:i8):1:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*])
+// (∂.T:i8[*,*], ∂.t:(i8, i8, o)) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [122]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 61
+
+Func sig: (T:i8[*,*], t:(i8, i8, o)) to i8[*,*]
+Ten<i8>(2,3)<7,1>
+  [[11, 12, 13]
+   [18, 19, 20]]
+###
+> T[1:^-1:1, t]
+T[1:^-1:1, t] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:^(-1:i8):1:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*])
+// (∂.T:i8[*,*], ∂.t:(i8, i8, o)) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.m1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [122]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 61
+
+Func sig: (T:i8[*,*], t:(i8, i8, o)) to i8[*,*]
+Ten<i8>(2,3)<7,1>
+  [[11, 12, 13]
+   [18, 19, 20]]
+###
+> T[^5:^1:1, t]
+T[^5:^1:1, t] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(^(5:i8):^(1:i8):1:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*])
+// (∂.T:i8[*,*], ∂.t:(i8, i8, o)) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.5
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [123]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 61
+
+Func sig: (T:i8[*,*], t:(i8, i8, o)) to i8[*,*]
+Ten<i8>(2,3)<7,1>
+  [[4, 5, 6]
+   [11, 12, 13]]
+###
+> T[one, ^3]
+T[one, ^3] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T), Global(one), Index(3:i8, Back)):i8)
+// (∂.T:i8[*,*], ∂.one:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) dup
+      5) call static Tensor::_GetShapeStatic(Tensor):Shape
+      1) stloc.2 [Shape]
+      1) ldloc.1 [i8]
+      1) dup
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.0
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [0]
+      1) ldc.i4.3
+      1) conv.i8
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.1
+      5) call Shape::get_Item(i4):i8
+      1) stloc.3 [i8]
+      1) neg
+      1) ldloc.3 [i8]
+      1) add
+      1) dup
+      1) ldloc.3 [i8]
+      5) bge.un [1]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8, i8):i8
+      5) br [2]
+  Label [1]:
+      1) pop
+  Label [0]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [2]:
+      5) box [i8]
+      1) ret
+  Total Size: 83
+
+Func sig: (T:i8[*,*], one:i8) to i8
+Type: i8, Value: 11
+###
+> T[one, t]
+T[one, t] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Index(Global(one), None), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*])
+// (∂.T:i8[*,*], ∂.one:i8, ∂.t:(i8, i8, o)) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.2 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 64
+
+Func sig: (T:i8[*,*], one:i8, t:(i8, i8, o)) to i8[*]
+Ten<i8>(3)<1> [11, 12, 13]
+###
+
+**** New definitions: T, type: i8[*,*,*]
+
+> T[1:3:1, 3:7:2, one]
+T[1:3:1, 3:7:2, one] : i8[*,*]
+BndKind:TensorSlice, Type:i8[*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:3:i8:1:i8), Slice(3:i8:7:i8:2:i8), Index(Global(one), None)):i8[*,*])
+// (∂.T:i8[*,*,*], ∂.one:i8) : i8[*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 60
+
+Func sig: (T:i8[*,*,*], one:i8) to i8[*,*]
+Ten<i8>(2,1)<12,0>
+  [[22]
+   [34]]
+###
+
+**** New definitions: T, type: i8[*,*,*,*]
+
+> T[t, 1:2, one, 3:7:2]
+T[t, 1:2, one, 3:7:2] : i8[*,*,*]
+BndKind:TensorSlice, Type:i8[*,*,*], Bnd:(GetSlice(Global(T), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?), Slice(1:i8:2:i8:null:i8?), Index(Global(one), None), Slice(3:i8:7:i8:2:i8)):i8[*,*,*])
+// (∂.T:i8[*,*,*,*], ∂.t:(i8, i8, o), ∂.one:i8) : i8[*,*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.1 [(i8,i8,obj)]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.2 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.1 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.2 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 90
+
+Func sig: (T:i8[*,*,*,*], t:(i8, i8, o), one:i8) to i8[*,*,*]
+Ten<i8>(0,1,0)<0,0,0> []
+###
+
+**** New definitions: T, type: i8[*,*,*,*,*]
+
+> T[1:2, 2:3, one, 3:7:2, t]
+T[1:2, 2:3, one, 3:7:2, t] : i8[*,*,*,*]
+BndKind:TensorSlice, Type:i8[*,*,*,*], Bnd:(GetSlice(Global(T), Slice(1:i8:2:i8:null:i8?), Slice(2:i8:3:i8:null:i8?), Index(Global(one), None), Slice(3:i8:7:i8:2:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*,*,*])
+// (∂.T:i8[*,*,*,*,*], ∂.one:i8, ∂.t:(i8, i8, o)) : i8[*,*,*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.2 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem, SliceItem, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 103
+
+Func sig: (T:i8[*,*,*,*,*], one:i8, t:(i8, i8, o)) to i8[*,*,*,*]
+Ten<i8>(1,1,1,0)<0,0,0,0> []
+###
+
+**** New definitions: T, type: i8[*,*,*,*,*,*]
+
+> T[one, 1:2, 2:3, t, 3:7:2, t]
+T[one, 1:2, 2:3, t, 3:7:2, t] : i8[*,*,*,*,*]
+BndKind:TensorSlice, Type:i8[*,*,*,*,*], Bnd:(GetSlice(Global(T), Index(Global(one), None), Slice(1:i8:2:i8:null:i8?), Slice(2:i8:3:i8:null:i8?), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?), Slice(3:i8:7:i8:2:i8), Slice(GetSlot(Global(t), 0):GetSlot(Global(t), 1):null:i8?)):i8[*,*,*,*,*])
+// (∂.T:i8[*,*,*,*,*,*], ∂.one:i8, ∂.t:(i8, i8, o)) : i8[*,*,*,*,*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.2
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):(i8,i8,obj)
+      1) stloc.2 [(i8,i8,obj)]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.6
+      5) newarr [SliceItem]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) stelem [SliceItem]
+      1) dup
+      1) ldc.i4.1
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) stelem [SliceItem]
+      1) dup
+      1) ldc.i4.2
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) stelem [SliceItem]
+      1) dup
+      1) ldc.i4.3
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) stelem [SliceItem]
+      1) dup
+      1) ldc.i4.4
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.7
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) stelem [SliceItem]
+      1) dup
+      1) ldc.i4.5
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F0:i8
+      1) ldloc.2 [(i8,i8,obj)]
+      5) ldfld (i8,i8,obj)::_F1:i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) stelem [SliceItem]
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, Arr<SliceItem>):Ten<i8>
+      1) ret
+  Total Size: 172
+
+Func sig: (T:i8[*,*,*,*,*,*], one:i8, t:(i8, i8, o)) to i8[*,*,*,*,*]
+Ten<i8>(1,1,0,1,0)<0,0,0,0,0> []
+###
+> T[0,one,2,3,^1,^1]
+T[0, one, 2, 3, ^1, ^1] : i8
+BndKind:IdxTensor, Type:i8, Bnd:(IdxTen(Global(T), 0:i8, Global(one), 2:i8, 3:i8, Index(1:i8, Back), Index(1:i8, Back)):i8)
+// (∂.T:i8[*,*,*,*,*,*], ∂.one:i8) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [Ten<i8>]
+      1) dup
+      5) call static Tensor::_GetShapeStatic(Tensor):Shape
+      1) stloc.2 [Shape]
+      1) ldc.i4.6
+      5) newarr [i8]
+      1) dup
+      1) ldc.i4.0
+      1) ldc.i4.0
+      1) conv.i8
+      1) dup
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.0
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [0]
+      1) stelem.i8
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [i8]
+      1) dup
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.1
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [0]
+      1) stelem.i8
+      1) dup
+      1) ldc.i4.2
+      1) ldc.i4.2
+      1) conv.i8
+      1) dup
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.2
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [0]
+      1) stelem.i8
+      1) dup
+      1) ldc.i4.3
+      1) ldc.i4.3
+      1) conv.i8
+      1) dup
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.3
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [0]
+      1) stelem.i8
+      1) dup
+      1) ldc.i4.4
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.4
+      5) call Shape::get_Item(i4):i8
+      1) stloc.3 [i8]
+      1) neg
+      1) ldloc.3 [i8]
+      1) add
+      1) dup
+      1) ldloc.3 [i8]
+      5) bge.un [0]
+      1) stelem.i8
+      1) dup
+      1) ldc.i4.5
+      1) ldc.i4.1
+      1) conv.i8
+      2) ldloca.s [Shape (2)]
+      1) ldc.i4.5
+      5) call Shape::get_Item(i4):i8
+      1) stloc.3 [i8]
+      1) neg
+      1) ldloc.3 [i8]
+      1) add
+      1) dup
+      1) ldloc.3 [i8]
+      5) bge.un [0]
+      1) stelem.i8
+      5) call static Tensor::_GetAtStatic(Ten<i8>, Arr<i8>):i8
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+      1) pop
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [1]:
+      5) box [i8]
+      1) ret
+  Total Size: 178
+
+Func sig: (T:i8[*,*,*,*,*,*], one:i8) to i8
+Type: i8, Value: 447
+###
+
+**** New definitions: T, type: i8[*,*]
+
+> T[1::, ^1]
+T[1::, ^1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(1:i8, Back)):i8[*])
+// (∂.T:i8[*,*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 37
+
+Func sig: (T:i8[*,*]) to i8[*]
+Ten<i8>(3)<4> [7, 11, 15]
+###
+> T[1::, %-1]
+T[1::, %-1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(-1:i8, Wrap)):i8[*])
+// (∂.T:i8[*,*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.m1
+      1) conv.i8
+      1) ldc.i4.2
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 37
+
+Func sig: (T:i8[*,*]) to i8[*]
+Ten<i8>(3)<4> [7, 11, 15]
+###
+> T[1::, ^0]
+T[1::, ^0] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(0:i8, Back)):i8[*])
+// (∂.T:i8[*,*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 37
+
+Func sig: (T:i8[*,*]) to i8[*]
+Ten<i8>(3)<0> [0, 0, 0]
+###
+> T[1::, ^-1]
+T[1::, ^-1] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(-1:i8, Back)):i8[*])
+// (∂.T:i8[*,*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.m1
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 37
+
+Func sig: (T:i8[*,*]) to i8[*]
+Ten<i8>(3)<0> [0, 0, 0]
+###
+> T[1::, ^100]
+T[1::, ^100] : i8[*]
+BndKind:TensorSlice, Type:i8[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(100:i8, Back)):i8[*])
+// (∂.T:i8[*,*]) : i8[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      1) ldloc.0 [Ten<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 38
+
+Func sig: (T:i8[*,*]) to i8[*]
+Ten<i8>(3)<0> [0, 0, 0]
+###
+
+**** New definitions: T, type: {A:i8}[*,*]
+
+> T[1::, ^1]
+T[1::, ^1] : {A:i8}[*]
+BndKind:TensorSlice, Type:{A:i8}[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(1:i8, Back)):{A:i8}[*])
+// (∂.T:{A:i8}[*,*]) : {A:i8}[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<{i8}>
+      1) stloc.0 [Ten<{i8}>]
+      1) ldloc.0 [Ten<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8}]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<{i8}>, {i8}, SliceItem, SliceItem):Ten<{i8}>
+      1) ret
+  Total Size: 42
+
+Func sig: (T:{A:i8}[*,*]) to {A:i8}[*]
+Ten<{i8}>(3)<4> [{ A: 7 }, { A: 11 }, { A: 15 }]
+###
+> T[1::, ^100]
+T[1::, ^100] : {A:i8}[*]
+BndKind:TensorSlice, Type:{A:i8}[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(100:i8, Back)):{A:i8}[*])
+// (∂.T:{A:i8}[*,*]) : {A:i8}[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<{i8}>
+      1) stloc.0 [Ten<{i8}>]
+      1) ldloc.0 [Ten<{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [{i8}]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<{i8}>, {i8}, SliceItem, SliceItem):Ten<{i8}>
+      1) ret
+  Total Size: 43
+
+Func sig: (T:{A:i8}[*,*]) to {A:i8}[*]
+Ten<{i8}>(3)<0> [{ A: 0 }, { A: 0 }, { A: 0 }]
+###
+
+**** New definitions: T, type: (i8)[*,*]
+
+> T[1::, ^1]
+T[1::, ^1] : (i8)[*]
+BndKind:TensorSlice, Type:(i8)[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(1:i8, Back)):(i8)[*])
+// (∂.T:(i8)[*,*]) : (i8)[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<(i8)>
+      1) stloc.0 [Ten<(i8)>]
+      1) ldloc.0 [Ten<(i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [(i8)]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<(i8)>, (i8), SliceItem, SliceItem):Ten<(i8)>
+      1) ret
+  Total Size: 42
+
+Func sig: (T:(i8)[*,*]) to (i8)[*]
+Ten<(i8)>(3)<4> [(7,), (11,), (15,)]
+###
+> T[1::, ^100]
+T[1::, ^100] : (i8)[*]
+BndKind:TensorSlice, Type:(i8)[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(100:i8, Back)):(i8)[*])
+// (∂.T:(i8)[*,*]) : (i8)[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<(i8)>
+      1) stloc.0 [Ten<(i8)>]
+      1) ldloc.0 [Ten<(i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [(i8)]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<(i8)>, (i8), SliceItem, SliceItem):Ten<(i8)>
+      1) ret
+  Total Size: 43
+
+Func sig: (T:(i8)[*,*]) to (i8)[*]
+Ten<(i8)>(3)<0> [(0,), (0,), (0,)]
+###
+
+**** New definitions: T, type: s[*,*]
+
+> T[1::, ^1]
+T[1::, ^1] : s[*]
+BndKind:TensorSlice, Type:s[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(1:i8, Back)):s[*])
+// (∂.T:s[*,*]) : s[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<str>
+      1) stloc.0 [Ten<str>]
+      1) ldloc.0 [Ten<str>]
+      1) ldnull
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<str>, str, SliceItem, SliceItem):Ten<str>
+      1) ret
+  Total Size: 36
+
+Func sig: (T:s[*,*]) to s[*]
+Ten<str>(3)<4> [7, 11, 15]
+###
+> T[1::, ^100]
+T[1::, ^100] : s[*]
+BndKind:TensorSlice, Type:s[*], Bnd:(GetSlice(Global(T), Slice(1:i8:null:i8?:null:i8?), Index(100:i8, Back)):s[*])
+// (∂.T:s[*,*]) : s[*]
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<str>
+      1) stloc.0 [Ten<str>]
+      1) ldloc.0 [Ten<str>]
+      1) ldnull
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateR_(i8, i8, SliceItemFlags):SliceItem
+      2) ldc.i4.s [100]
+      1) conv.i8
+      1) ldc.i4.1
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<str>, str, SliceItem, SliceItem):Ten<str>
+      1) ret
+  Total Size: 37
+
+Func sig: (T:s[*,*]) to s[*]
+Ten<str>(3)<0> [<null>, <null>, <null>]
+###
+
+**** New definitions: T, type: i8[*,*]
+**** New definitions: I, type: i8?*
+
+> T[2, Range(4):3]
+T[2, Range(4):3] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Index(2:i8, None), Slice(Scope(1):3:i8:null:i8?)):i8[*]):i8[*]*))
+// (∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldarg.1 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 40
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(3)<1> [8, 9, 10]
+ 1) Ten<i8>(2)<1> [9, 10]
+ 2) Ten<i8>(1)<0> [10]
+ 3) Ten<i8>(0)<0> []
+###
+> T[I, 3]
+T[I, 3] : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:1] Global(I), Call(∂.Guard([guard:2] Scope(1), IdxTen(Global(T), Scope(2), 3:i8):i8):i8?)):i8?*))
+// (∂.I:i8?*, ∂.T:i8[*,*]) : i8?*
+ForEach_1(Arr<obj>, Opt<i8>):Opt<i8>
+      2) ldarga.s [Opt<i8> (1)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldarga.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.0 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) dup
+      5) call static Tensor::_GetShapeStatic(Tensor):Shape
+      1) stloc.1 [Shape]
+      1) ldloc.0 [i8]
+      1) dup
+      2) ldloca.s [Shape (1)]
+      1) ldc.i4.0
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [1]
+      1) ldc.i4.3
+      1) conv.i8
+      1) dup
+      2) ldloca.s [Shape (1)]
+      1) ldc.i4.1
+      5) call Shape::get_Item(i4):i8
+      5) bge.un [2]
+      5) call static Tensor::_GetAtStatic(Ten<i8>, i8, i8):i8
+      5) br [3]
+  Label [2]:
+      1) pop
+  Label [1]:
+      1) pop
+      1) pop
+      1) ldc.i4.0
+      1) conv.i8
+  Label [3]:
+      5) newobj Opt<i8>(i8)
+      5) br [4]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [4]:
+      1) ret
+  Total Size: 101
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.1 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.2 [(Ten<i8>)]
+      1) ldloc.2 [(Ten<i8>)]
+      1) ldloc.1 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Opt<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Opt<i8>>):Seq<Opt<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<i8>>):Seq<Opt<i8>>
+      1) ret
+  Total Size: 79
+
+Func sig: (I:i8?*, T:i8[*,*]) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 7
+ 1) 11
+ 2) <null>
+ 3) 15
+###
+> T[I, Range(4):3]
+T[I, Range(4):3] : i8[*]?*
+BndKind:Call, Type:i8[*]?*, Bnd:(Call(∂.ForEach([map:1] Global(I), [map:2] Call(∂.Range(4:i8):i8*), Call(∂.Guard([guard:3] Scope(1), GetSlice(Global(T), Index(Scope(3), None), Slice(Scope(2):3:i8:null:i8?)):i8[*]):i8[*]?)):i8[*]?*))
+// (∂.I:i8?*, ∂.T:i8[*,*]) : i8[*]?*
+ForEach_2(Arr<obj>, Opt<i8>, i8):Ten<i8>
+      2) ldarga.s [Opt<i8> (1)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldarga.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.0 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldloc.0 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldarg.2 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      5) br [1]
+  Label [0]:
+      1) ldnull
+  Label [1]:
+      1) ret
+  Total Size: 65
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.1 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.2 [(Ten<i8>)]
+      1) ldloc.2 [(Ten<i8>)]
+      1) ldloc.1 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Seq<i8>, Func<Opt<i8>,i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 86
+
+Func sig: (I:i8?*, T:i8[*,*]) to i8[*]?*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(3)<1> [4, 5, 6]
+ 1) Ten<i8>(2)<1> [9, 10]
+ 2) <null>
+ 3) Ten<i8>(0)<0> []
+###
+> T[Range(4), Range(4):3]
+T[Range(4), Range(4):3] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Index(Scope(1), None), Slice(Scope(1):3:i8:null:i8?)):i8[*]):i8[*]*))
+// (∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldarg.1 [i8]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [120]
+      5) call static SliceItem::CreateRR(i8, i8, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 39
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(3)<1> [0, 1, 2]
+ 1) Ten<i8>(2)<1> [5, 6]
+ 2) Ten<i8>(1)<0> [10]
+ 3) Ten<i8>(0)<0> []
+###
+> T[:Range(4), Range(4)]
+T[:Range(4), Range(4)] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Slice(null:i8?:Scope(1):null:i8?), Index(Scope(1), None)):i8[*]):i8[*]*))
+// (∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [112]
+      5) call static SliceItem::Create_R(i8, i8, SliceItemFlags):SliceItem
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 37
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(0)<0> []
+ 1) Ten<i8>(1)<0> [1]
+ 2) Ten<i8>(2)<4> [2, 6]
+ 3) Ten<i8>(3)<4> [3, 7, 11]
+###
+> T[::Range(4), Range(4)]
+T[::Range(4), Range(4)] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Call(∂.Range(4:i8):i8*), GetSlice(Global(T), Slice(null:i8?:null:i8?:Scope(1)), Index(Scope(1), None)):i8[*]):i8[*]*))
+// (∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, i8):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldarg.1 [i8]
+      5) call static SliceItem::Create__(i8):SliceItem
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 33
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.0 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.1 [(Ten<i8>)]
+      1) ldloc.1 [(Ten<i8>)]
+      1) ldloc.0 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.4
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 76
+
+Func sig: (T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(4)<4> [0, 4, 8, 12]
+ 1) Ten<i8>(4)<4> [1, 5, 9, 13]
+ 2) Ten<i8>(2)<8> [2, 10]
+ 3) Ten<i8>(2)<12> [3, 15]
+###
+> T[0, I:]
+T[0, I:] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Global(I), GetSlice(Global(T), Index(0:i8, None), Slice(Scope(1):null:i8?:null:i8?)):i8[*]):i8[*]*))
+// (∂.I:i8?*, ∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, Opt<i8>):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldarg.1 [Opt<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [104]
+      5) call static SliceItem::CreateO_(Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 38
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.1 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.2 [(Ten<i8>)]
+      1) ldloc.2 [(Ten<i8>)]
+      1) ldloc.1 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 79
+
+Func sig: (I:i8?*, T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(3)<1> [1, 2, 3]
+ 1) Ten<i8>(2)<1> [2, 3]
+ 2) Ten<i8>(4)<1> [0, 1, 2, 3]
+ 3) Ten<i8>(1)<0> [3]
+###
+> T[0, :I]
+T[0, :I] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Global(I), GetSlice(Global(T), Index(0:i8, None), Slice(null:i8?:Scope(1):null:i8?)):i8[*]):i8[*]*))
+// (∂.I:i8?*, ∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, Opt<i8>):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      1) ldarg.1 [Opt<i8>]
+      1) ldc.i4.0
+      1) conv.i8
+      2) ldc.i4.s [112]
+      5) call static SliceItem::Create_O(Opt<i8>, i8, SliceItemFlags):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 38
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.1 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.2 [(Ten<i8>)]
+      1) ldloc.2 [(Ten<i8>)]
+      1) ldloc.1 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 79
+
+Func sig: (I:i8?*, T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(1)<0> [0]
+ 1) Ten<i8>(2)<1> [0, 1]
+ 2) Ten<i8>(4)<1> [0, 1, 2, 3]
+ 3) Ten<i8>(3)<1> [0, 1, 2]
+###
+> T[0, ::I]
+T[0, ::I] : i8[*]*
+BndKind:Call, Type:i8[*]*, Bnd:(Call(∂.ForEach([map:1] Global(I), GetSlice(Global(T), Index(0:i8, None), Slice(null:i8?:null:i8?:Scope(1))):i8[*]):i8[*]*))
+// (∂.I:i8?*, ∂.T:i8[*,*]) : i8[*]*
+ForEach_1(Arr<obj>, Opt<i8>):Ten<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Ten<i8>)]
+      5) ldfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      1) conv.i8
+      1) ldc.i4.0
+      5) call static SliceItem::CreateIndex(i8, IndexFlags):SliceItem
+      2) ldarga.s [Opt<i8> (1)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      5) call static SliceItem::Create__(i8):SliceItem
+      5) call static Tensor::_GetSliceStatic(Ten<i8>, i8, SliceItem, SliceItem):Ten<i8>
+      1) ret
+  Total Size: 40
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Opt<i8>>
+      1) stloc.0 [Seq<Opt<i8>>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Ten<i8>
+      1) stloc.1 [Ten<i8>]
+      5) newobj (Ten<i8>)()
+      1) stloc.2 [(Ten<i8>)]
+      1) ldloc.2 [(Ten<i8>)]
+      1) ldloc.1 [Ten<i8>]
+      5) stfld (Ten<i8>)::_F0:Ten<i8>
+      1) ldloc.0 [Seq<Opt<i8>>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Opt<i8>,Ten<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Ten<i8>)]
+      5) stelem [(Ten<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<Opt<i8>>, Func<Opt<i8>,Ten<i8>>):Seq<Ten<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Ten<i8>>):Seq<Ten<i8>>
+      1) ret
+  Total Size: 79
+
+Func sig: (I:i8?*, T:i8[*,*]) to i8[*]*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(4)<1> [0, 1, 2, 3]
+ 1) Ten<i8>(2)<2> [0, 2]
+ 2) Ten<i8>(4)<1> [0, 1, 2, 3]
+ 3) Ten<i8>(2)<3> [0, 3]
+###

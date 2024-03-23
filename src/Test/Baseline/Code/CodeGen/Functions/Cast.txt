@@ -1,0 +1,195 @@
+**** New globals: {b:b, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, r4:r4, r8:r8, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> CastI1(b)
+CastI1(b) : i1
+BndKind:CastNum, Type:i1, Bnd:(Num<i1>(Global(b)))
+Func sig: (b:b) to i1
+Type: i1, Value: 0
+###
+> CastI1(n)
+CastI1(n) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(n)):i1))
+Func sig: (n:r8) to i1
+Type: i1, Value: 0
+###
+> CastI1(r8)
+CastI1(r8) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(r8)):i1))
+Func sig: (r8:r8) to i1
+Type: i1, Value: 0
+###
+> CastI1(r4)
+CastI1(r4) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(r4)):i1))
+Func sig: (r4:r4) to i1
+Type: i1, Value: 0
+###
+> CastI1(i8)
+CastI1(i8) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(i8)):i1))
+Func sig: (i8:i8) to i1
+Type: i1, Value: 0
+###
+> CastI1(i4)
+CastI1(i4) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(i4)):i1))
+Func sig: (i4:i4) to i1
+Type: i1, Value: 0
+###
+> CastI1(i2)
+CastI1(i2) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(i2)):i1))
+Func sig: (i2:i2) to i1
+Type: i1, Value: 0
+###
+> CastI1(i1)
+CastI1(i1) : i1
+BndKind:Global, Type:i1, Bnd:(Global(i1))
+Func sig: (i1:i1) to i1
+Type: i1, Value: 0
+###
+> CastI1(i)
+CastI1(i) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(i)):i1))
+Func sig: (i:i) to i1
+Type: i1, Value: 0
+###
+> CastI1(u8)
+CastI1(u8) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(u8)):i1))
+Func sig: (u8:u8) to i1
+Type: i1, Value: 0
+###
+> CastI1(u4)
+CastI1(u4) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(u4)):i1))
+Func sig: (u4:u4) to i1
+Type: i1, Value: 0
+###
+> CastI1(u2)
+CastI1(u2) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(u2)):i1))
+Func sig: (u2:u2) to i1
+Type: i1, Value: 0
+###
+> CastI1(u1)
+CastI1(u1) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Global(u1)):i1))
+Func sig: (u1:u1) to i1
+Type: i1, Value: 0
+###
+> CastI1([0x80i1, null])
+CastI1([128, null]) : i1?*
+BndKind:Sequence, Type:i1?*, Bnd:([Opt<i1?>(-128:i1), null:i1?]:i1?*)
+Func sig: () to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) -128
+ 1) <null>
+###
+> CastU1([0x80, null])
+CastU1([128, null]) : u1?*
+BndKind:Call, Type:u1?*, Bnd:(Call(∂.ForEach([map:1] [Opt<i8?>(128:i8), null:i8?]:i8?*, Call(∂.Guard([guard:2] Scope(1), Call(∂.CastU1(Scope(2)):u1)):u1?)):u1?*))
+Func sig: () to u1?*
+Sequence: Seq<Opt<u1>>
+ 0) 128
+ 1) <null>
+###
+> CastR4([4e30])
+CastR4([4E+30]) : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.ForEach([map:1] [4E+30:r8]:r8*, Call(∂.CastR4(Scope(1)):r4)):r4*))
+Func sig: () to r4*
+Sequence: Seq<r4>
+ 0) 4E+30
+###
+> CastI1([true, null])
+CastI1([true, null]) : i1?*
+BndKind:Call, Type:i1?*, Bnd:(Call(∂.ForEach([map:1] [Opt<b?>(true:b), null:b?]:b?*, Call(∂.Guard([guard:2] Scope(1), Num<i1>(Scope(2))):i1?)):i1?*))
+Func sig: () to i1?*
+Sequence: Seq<Opt<i1>>
+ 0) 1
+ 1) <null>
+###
+> CastI1(0xFFFFi2) = CastI1(Wrap(0xFFFFi2))
+CastI1(65535) @= CastI1(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i1 @= Call(∂.CastI1(Call(∂.Test.Wrap(-1:i2):i2)):i1)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastI2(0xFFFFi4) = CastI2(Wrap(0xFFFFi4))
+CastI2(65535) @= CastI2(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i2 @= Call(∂.CastI2(Call(∂.Test.Wrap(65535:i4):i4)):i2)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastI4(0xFFFFi2) = CastI4(Wrap(0xFFFFi2))
+CastI4(65535) @= CastI4(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i4 @= Num<i4>(Call(∂.Test.Wrap(-1:i2):i2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastI8(0xFFFFi2) = CastI8(Wrap(0xFFFFi2))
+CastI8(65535) @= CastI8(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i8 @= Num<i8>(Call(∂.Test.Wrap(-1:i2):i2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastU1(0xFFFFU2) = CastU1(Wrap(0xFFFFU2))
+CastU1(65535) @= CastU1(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(255:u1 @= Call(∂.CastU1(Call(∂.Test.Wrap(65535:u2):u2)):u1)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastU2(0xFFFFU4) = CastU2(Wrap(0xFFFFU4))
+CastU2(65535) @= CastU2(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:u2 @= Call(∂.CastU2(Call(∂.Test.Wrap(65535:u4):u4)):u2)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastU4(0xFFFFU2) = CastU4(Wrap(0xFFFFU2))
+CastU4(65535) @= CastU4(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:u4 @= Num<u4>(Call(∂.Test.Wrap(65535:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastU8(0xFFFFU2) = CastU8(Wrap(0xFFFFU2))
+CastU8(65535) @= CastU8(Wrap(65535)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(65535:u8 @= Num<u8>(Call(∂.Test.Wrap(65535:u2):u2))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastR4(-2e300) = CastR4(Wrap(-2e300))
+CastR4(-2E+300) @= CastR4(Wrap(-2E+300)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-∞:r4 @= Call(∂.CastR4(Call(∂.Test.Wrap(-2E+300:r8):r8)):r4)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastR8(2) = CastR8(Wrap(2))
+CastR8(2) @= CastR8(Wrap(2)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(2:r8 @= Num<r8>(Call(∂.Test.Wrap(2:i8):i8))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastR4(-2e-310) = CastR4(Wrap(-2e-310))
+CastR4(-2E-310) @= CastR4(Wrap(-2E-310)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-0:r4 @= Call(∂.CastR4(Call(∂.Test.Wrap(-2E-310:r8):r8)):r4)))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastR8(true) = CastR8(Wrap(true))
+CastR8(true) @= CastR8(Wrap(true)) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(1:r8 @= Num<r8>(Call(∂.Test.Wrap(true:b):b))))
+Func sig: () to b
+Type: bool, Value: true 
+###
+> CastTime(-Time(1).TotalTicks)
+CastTime(-Time(1).TotalTicks) : t
+BndKind:Call, Type:t, Bnd:(Call(∂.CastTime(Add([-] Call(∂.Time.TotalTicks(Call(∂.Time(1:i8):t)):i8))):t))
+Func sig: () to t
+Type: Time, Value: -1.00:00:00
+###
+> CastTime(-Time(0, 1).TotalTicks)
+CastTime(-Time(0, 1).TotalTicks) : t
+BndKind:Call, Type:t, Bnd:(Call(∂.CastTime(Add([-] Call(∂.Time.TotalTicks(Call(∂.Time(0:i8, 1:i8):t)):i8))):t))
+Func sig: () to t
+Type: Time, Value: -01:00:00
+###

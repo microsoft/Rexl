@@ -1,0 +1,142 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+using Microsoft.Rexl.Private;
+
+<#
+// System.Func only takes up to 16 arguments, and ChainMap takes one as a selector,
+// so we can have at most 16 sequences (in the non-indexed case).
+const int lim = 17; #>
+namespace Microsoft.Rexl.Code;
+
+// REVIEW: How can we implement the general case?
+partial class ChainMapGen
+{
+    private Immutable.Array<MethodInfo> GetExecs()
+    {
+        const string name = nameof(Execs.Exec);
+
+        // Number of extra arguments besides the sequences.
+        // This also handles the single sequence, no selector case.
+        const int extra = 3;
+
+        var ret = Immutable.Array<MethodInfo>.CreateBuilder(<#= lim #>, init: true);
+        foreach (var meth in typeof(Execs).GetMethods())
+        {
+            if (meth.Name != name)
+                continue;
+            var prms = meth.GetParameters();
+            Validation.AssertIndex(prms.Length - extra, ret.Count);
+            ret[prms.Length - extra] = meth;
+        }
+        return ret.ToImmutable();
+    }
+
+    private Immutable.Array<MethodInfo> GetExecInds()
+    {
+        const string name = nameof(ExecInds.ExecInd);
+        const int extra = 3; // Number of extra arguments besides the sequences.
+
+        var ret = Immutable.Array<MethodInfo>.CreateBuilder(<#= lim #>, init: true);
+        foreach (var meth in typeof(ExecInds).GetMethods())
+        {
+            if (meth.Name != name)
+                continue;
+            var prms = meth.GetParameters();
+            Validation.AssertIndex(prms.Length - extra, ret.Count);
+            ret[prms.Length - extra] = meth;
+        }
+        return ret.ToImmutable();
+    }
+
+    private static partial class Execs
+    {
+<# for (int num = 1; num < lim; num++) {
+   var strT = string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"));
+#>
+        public static IEnumerable<TDst> Exec<<#= strT #>, TDst>(
+            <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+            Func<<#= strT #>, IEnumerable<TDst>> fn,
+            ExecCtx ctx, int id)
+        {
+<# for (int i = 0; i < num; i++) {#>
+            Validation.AssertValueOrNull(s<#= i #>);
+<#}#>
+            Validation.AssertValue(fn);
+            Validation.AssertValue(ctx);
+
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null")) #>)
+                yield break;
+
+<# for (int i = 0; i < num; i++) {#>
+            using var e<#= i #> = s<#= i #>.GetEnumerator();
+<#}#>
+            for (; ; )
+            {
+<# for (int i = 0; i < num; i++) {#>
+                ctx.Ping(id); if (!e<#= i #>.MoveNext()) yield break;
+<#}#>
+                var seq = fn(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"e{i}.Current"))#>);
+                if (seq == null)
+                    continue;
+                foreach (var item in seq)
+                    yield return item;
+            }
+        }
+
+<#}#>
+    }
+
+    private static class ExecInds
+    {
+<#
+// In the indexed case, the selector takes the index along with an item from each sequence.
+// This means we can have up to 15 sequences for selector input when accounting for System.Func's max arity of 16.
+for (int num = 1; num < lim - 1; num++) {
+   var strT = string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"));
+#>
+        public static IEnumerable<TDst> ExecInd<<#= strT #>, TDst>(
+            <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+            Func<long, <#= strT #>, IEnumerable<TDst>> fn,
+            ExecCtx ctx, int id)
+        {
+<# for (int i = 0; i < num; i++) {#>
+            Validation.AssertValueOrNull(s<#= i #>);
+<#}#>
+            Validation.AssertValue(fn);
+            Validation.AssertValue(ctx);
+
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null")) #>)
+                yield break;
+
+<# for (int i = 0; i < num; i++) {#>
+            using var e<#= i #> = s<#= i #>.GetEnumerator();
+<#}#>
+            for (long idx = 0; ; idx++)
+            {
+<# for (int i = 0; i < num; i++) {#>
+                ctx.Ping(id); if (!e<#= i #>.MoveNext()) yield break;
+<#}#>
+                var seq = fn(idx, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"e{i}.Current"))#>);
+                if (seq == null)
+                    continue;
+                foreach (var item in seq)
+                    yield return item;
+            }
+        }
+
+<#}#>
+    }
+}

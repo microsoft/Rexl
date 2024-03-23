@@ -1,0 +1,129 @@
+Add: 00000001 [N.X.A], Fma: [1]
+Add: 00000002 [N.X.B], Fma: [2]
+Add: 00000003 [N.X.C], Fma: [A + B]
+Status: 3 nodes, 1 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.X
+  Node changes:
+    00000001 [N.X.A]: [A  tT  B C dD  ], Base: i8
+    00000002 [N.X.B]: [A  tT  B C dD  ], Base: i8
+    00000003 [N.X.C]: [A  tTuUB C dD  ], Base: i8
+###
+Ren: 00000001 [N.P.A] <= [N.X.A]
+Fma: 00000003 [N.X.C], Main: [A + B] => [P.A + B]
+Status: 3 nodes, 2 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.P, ∂.N.X
+  Node changes:
+    00000001 [N.P.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [       B       ], Base: i8
+###
+Ren: 00000003 [N.P.C] <= [N.X.C]
+Fma: 00000003 [N.P.C], Main: [P.A + B] => [A + X.B]
+Status: 3 nodes, 3 undos, 0 redos
+  Node changes:
+    00000003 [N.P.C]: [ N     B       ], Base: i8
+###
+*** Undo(2)
+Ren: 00000001 [N.X.A] <= [N.P.A]
+Ren: 00000003 [N.X.C] <= [N.P.C]
+Fma: 00000003 [N.X.C], Main: [A + X.B] => [A + B]
+Status: 3 nodes, 1 undos, 2 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.X
+  Node changes:
+    00000001 [N.X.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [ N     B       ], Base: i8
+###
+Fma: 00000003 [N.X.C], Main: [A + B] => [Map(X: Range(5), A + B)]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000003 [N.X.C]: [   tT  B C dD  ], Base: i8*
+###
+Ren: 00000001 [N.P.A] <= [N.X.A]
+Fma: 00000003 [N.X.C], Main: [Map(X: Range(5), A + B)] => [Map(X: Range(5), P.A + B)]
+Status: 3 nodes, 3 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.P, ∂.N.X
+  Node changes:
+    00000001 [N.P.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [       B       ], Base: i8*
+###
+Ren: 00000003 [N.P.C] <= [N.X.C]
+Fma: 00000003 [N.P.C], Main: [Map(X: Range(5), P.A + B)] => [Map(X: Range(5), A + N.X.B)]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000003 [N.P.C]: [ N     B       ], Base: i8*
+###
+*** Undo(2)
+Ren: 00000001 [N.X.A] <= [N.P.A]
+Ren: 00000003 [N.X.C] <= [N.P.C]
+Fma: 00000003 [N.X.C], Main: [Map(X: Range(5), A + N.X.B)] => [Map(X: Range(5), A + B)]
+Status: 3 nodes, 2 undos, 2 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.X
+  Node changes:
+    00000001 [N.X.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [ N     B       ], Base: i8*
+###
+Add: 00000004 [W], Fma: [X]
+Status: 4 nodes, 3 undos, 0 redos
+  Node changes:
+    00000004 [W]: [A  tT  B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+Ren: 00000001 [N.P.A] <= [N.X.A]
+Fma: 00000003 [N.X.C], Main: [Map(X: Range(5), A + B)] => [Map(X: Range(5), P.A + B)]
+Status: 4 nodes, 4 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.P, ∂.N.X
+  Node changes:
+    00000001 [N.P.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [       B       ], Base: i8*
+    00000004 [W]: [       B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+Ren: 00000003 [N.P.C] <= [N.X.C]
+Fma: 00000003 [N.P.C], Main: [Map(X: Range(5), P.A + B)] => [Map(X: Range(5), A + N.X.B)]
+Status: 4 nodes, 5 undos, 0 redos
+  Node changes:
+    00000003 [N.P.C]: [ N     B       ], Base: i8*
+    00000004 [W]: [       B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+*** Undo(2)
+Ren: 00000001 [N.X.A] <= [N.P.A]
+Ren: 00000003 [N.X.C] <= [N.P.C]
+Fma: 00000003 [N.X.C], Main: [Map(X: Range(5), A + N.X.B)] => [Map(X: Range(5), A + B)]
+Status: 4 nodes, 3 undos, 2 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.X
+  Node changes:
+    00000001 [N.X.A]: [ N     B       ], Base: i8
+    00000003 [N.X.C]: [ N     B       ], Base: i8*
+    00000004 [W]: [       B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+Del: 00000001 [N.X.A]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000003 [N.X.C]: [     uUB C dDE ], Base: i8*
+      *) Error: (17,18) Node: A, Message: Name does not exist in the current context
+    00000004 [W]: [       B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+Del: 00000003 [N.X.C]
+Status: 2 nodes, 5 undos, 0 redos
+  Node changes:
+    00000004 [W]: [       B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###
+*** UndoAll
+Del: 00000002 [N.X.B]
+Del: 00000004 [W]
+Status: 0 nodes, 0 undos, 5 redos
+  Namespaces changed: ∂
+###
+*** RedoAll
+Add: 00000002 [N.X.B], Fma: [2]
+Add: 00000004 [W], Fma: [X]
+Status: 2 nodes, 5 undos, 0 redos
+  Namespaces changed: ∂, ∂.N, ∂.N.X
+  Node changes:
+    00000002 [N.X.B]: [A  tT  B C dD  ], Base: i8
+    00000004 [W]: [A  tT  B C dDE ], Base: v
+      *) Error: (0,1) Node: X, Message: Name does not exist in the current context
+###

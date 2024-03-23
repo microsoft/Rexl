@@ -1,0 +1,1240 @@
+**** New globals: {b:b, i:i, i1:i1, i2:i2, i4:i4, i8:i8, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> i8 << i8
+i8 shl i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,5) Tok: '<<', Message: The binary operator '<<' is deprecated, use 'shl' instead
+Binder : Shl(i8, i8)
+=== Corrected by parser: [i8 shl i8]
+i8 shl i8 : i8
+Binder : Shl(i8, i8)
+###
+> i8 >> i8
+i8 shr i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,5) Tok: '>>', Message: The binary operator '>>' is deprecated, use 'shr' instead
+Binder : Shri(i8, i8)
+=== Corrected by parser: [i8 shr i8]
+i8 shr i8 : i8
+Binder : Shri(i8, i8)
+###
+> i8 >>> i8
+i8 shru i8 : i8
+=== Parse diagnostics:
+*** Warning: (3,6) Tok: '>>>', Message: The binary operator '>>>' is deprecated, use 'shru' instead
+Binder : Shru(i8, i8)
+=== Corrected by parser: [i8 shru i8]
+i8 shru i8 : i8
+Binder : Shru(i8, i8)
+###
+> false shl i8
+false shl i8 : b
+Binder : Shl(false, i8)
+Reducer: false
+###
+> 0i1 shl i8
+0 shl i8 : i1
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0i2 shl i8
+0 shl i8 : i2
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0i4 shl i8
+0 shl i8 : i4
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0i8 shl i8
+0 shl i8 : i8
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0ia shl i8
+0 shl i8 : i
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0u1 shl i8
+0 shl i8 : u1
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0u2 shl i8
+0 shl i8 : u2
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0u4 shl i8
+0 shl i8 : u4
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> 0u8 shl i8
+0 shl i8 : u8
+Binder : Shl(0, i8)
+Reducer: 0
+###
+> true shl -3
+true shl -3 : b
+Binder : Shl(true, -3)
+Reducer: true
+###
+> true shl 0
+true shl 0 : b
+Binder : Shl(true, 0)
+Reducer: true
+###
+> true shl 1
+true shl 1 : b
+Binder : Shl(true, 1)
+Reducer: false
+###
+> true shl 2
+true shl 2 : b
+Binder : Shl(true, 2)
+Reducer: false
+###
+> true shl 4
+true shl 4 : b
+Binder : Shl(true, 4)
+Reducer: false
+###
+> true shl 7
+true shl 7 : b
+Binder : Shl(true, 7)
+Reducer: false
+###
+> true shl 8
+true shl 8 : b
+Binder : Shl(true, 8)
+Reducer: false
+###
+> true shl 1000
+true shl 1000 : b
+Binder : Shl(true, 1000)
+Reducer: false
+###
+> 1i1 shl -3
+1 shl -3 : i1
+Binder : Shl(1, -3)
+Reducer: 1
+###
+> 1i1 shl 0
+1 shl 0 : i1
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1i1 shl 1
+1 shl 1 : i1
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1i1 shl 2
+1 shl 2 : i1
+Binder : Shl(1, 2)
+Reducer: 4
+###
+> 1i1 shl 4
+1 shl 4 : i1
+Binder : Shl(1, 4)
+Reducer: 16
+###
+> 1i1 shl 7
+1 shl 7 : i1
+Binder : Shl(1, 7)
+Reducer: -128
+###
+> 1i1 shl 8
+1 shl 8 : i1
+Binder : Shl(1, 8)
+Reducer: 0
+###
+> 1i1 shl 1000
+1 shl 1000 : i1
+Binder : Shl(1, 1000)
+Reducer: 0
+###
+> 1i2 shl -3
+1 shl -3 : i2
+Binder : Shl(1, -3)
+Reducer: 1
+###
+> 1i2 shl 0
+1 shl 0 : i2
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1i2 shl 1
+1 shl 1 : i2
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1i2 shl 15
+1 shl 15 : i2
+Binder : Shl(1, 15)
+Reducer: -32768
+###
+> 1i2 shl 16
+1 shl 16 : i2
+Binder : Shl(1, 16)
+Reducer: 0
+###
+> 1i2 shl 1000
+1 shl 1000 : i2
+Binder : Shl(1, 1000)
+Reducer: 0
+###
+> 1i4 shl 0
+1 shl 0 : i4
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1i4 shl 1
+1 shl 1 : i4
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1i4 shl 31
+1 shl 31 : i4
+Binder : Shl(1, 31)
+Reducer: -2147483648
+###
+> 1i4 shl 32
+1 shl 32 : i4
+Binder : Shl(1, 32)
+Reducer: 0
+###
+> 1i8 shl 0
+1 shl 0 : i8
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1i8 shl 1
+1 shl 1 : i8
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1i8 shl 63
+1 shl 63 : i8
+Binder : Shl(1, 63)
+Reducer: -9223372036854775808
+###
+> 1i8 shl 64
+1 shl 64 : i8
+Binder : Shl(1, 64)
+Reducer: 0
+###
+> 1u1 shl -3
+1 shl -3 : u1
+Binder : Shl(1, -3)
+Reducer: 1
+###
+> 1u1 shl 0
+1 shl 0 : u1
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1u1 shl 1
+1 shl 1 : u1
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1u1 shl 7
+1 shl 7 : u1
+Binder : Shl(1, 7)
+Reducer: 128
+###
+> 1u1 shl 8
+1 shl 8 : u1
+Binder : Shl(1, 8)
+Reducer: 0
+###
+> 1u1 shl 1000
+1 shl 1000 : u1
+Binder : Shl(1, 1000)
+Reducer: 0
+###
+> 1u2 shl 0
+1 shl 0 : u2
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1u2 shl 1
+1 shl 1 : u2
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1u2 shl 15
+1 shl 15 : u2
+Binder : Shl(1, 15)
+Reducer: 32768
+###
+> 1u2 shl 16
+1 shl 16 : u2
+Binder : Shl(1, 16)
+Reducer: 0
+###
+> 1u4 shl 0
+1 shl 0 : u4
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1u4 shl 1
+1 shl 1 : u4
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1u4 shl 31
+1 shl 31 : u4
+Binder : Shl(1, 31)
+Reducer: 2147483648
+###
+> 1u4 shl 32
+1 shl 32 : u4
+Binder : Shl(1, 32)
+Reducer: 0
+###
+> 1u8 shl 0
+1 shl 0 : u8
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1u8 shl 1
+1 shl 1 : u8
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1u8 shl 63
+1 shl 63 : u8
+Binder : Shl(1, 63)
+Reducer: 9223372036854775808
+###
+> 1u8 shl 64
+1 shl 64 : u8
+Binder : Shl(1, 64)
+Reducer: 0
+###
+> 1ia shl -3
+1 shl -3 : i
+Binder : Shl(1, -3)
+Reducer: 1
+###
+> 1ia shl 0
+1 shl 0 : i
+Binder : Shl(1, 0)
+Reducer: 1
+###
+> 1ia shl 1
+1 shl 1 : i
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> 1ia shl 2
+1 shl 2 : i
+Binder : Shl(1, 2)
+Reducer: 4
+###
+> 1ia shl 16
+1 shl 16 : i
+Binder : Shl(1, 16)
+Reducer: 65536
+###
+> 1ia shl 32
+1 shl 32 : i
+Binder : Shl(1, 32)
+Reducer: 4294967296
+###
+> 1ia shl 64
+1 shl 64 : i
+Binder : Shl(1, 64)
+Reducer: 18446744073709551616
+###
+> 1ia shl 1000
+1 shl 1000 : i
+Binder : Shl(1, 1000)
+Reducer: 10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686542167660429831652624386837205668069376
+###
+> 1 shl true
+1 shl true : i8
+Binder : Shl(1, 1)
+Reducer: 2
+###
+> null shl 1
+null shl 1 : i8?
+Binder : Guard(?1: null, Shl(Unit<i8>(?1), 1))
+Reducer: null
+###
+> 1 shl null
+1 shl null : i8?
+Binder : Guard(?1: null, Shl(1, Unit<i8>(?1)))
+Reducer: null
+###
+> 0x80i1 shr  1
+128 shr 1 : i1
+Binder : Shri(-128, 1)
+Reducer: -64
+###
+> 0x80i1 shri 1
+128 shri 1 : i1
+Binder : Shri(-128, 1)
+Reducer: -64
+###
+> 0x80i1 shru 1
+128 shru 1 : i1
+Binder : Shru(-128, 1)
+Reducer: 64
+###
+> 0xFFi1 shr  1
+255 shr 1 : i1
+Binder : Shri(-1, 1)
+Reducer: -1
+###
+> 0xFFi1 shri 1
+255 shri 1 : i1
+Binder : Shri(-1, 1)
+Reducer: -1
+###
+> 0xFFi1 shru 1
+255 shru 1 : i1
+Binder : Shru(-1, 1)
+Reducer: 127
+###
+> 0xFFi1 shr  8
+255 shr 8 : i1
+Binder : Shri(-1, 8)
+Reducer: -1
+###
+> 0xFFi1 shri 8
+255 shri 8 : i1
+Binder : Shri(-1, 8)
+Reducer: -1
+###
+> 0xFFi1 shru 8
+255 shru 8 : i1
+Binder : Shru(-1, 8)
+Reducer: 0
+###
+> 0xAAi1 shr  8
+170 shr 8 : i1
+Binder : Shri(-86, 8)
+Reducer: -1
+###
+> 0xAAi1 shri 8
+170 shri 8 : i1
+Binder : Shri(-86, 8)
+Reducer: -1
+###
+> 0xAAi1 shru 8
+170 shru 8 : i1
+Binder : Shru(-86, 8)
+Reducer: 0
+###
+> 0x55i1 shr  8
+85 shr 8 : i1
+Binder : Shri(85, 8)
+Reducer: 0
+###
+> 0x55i1 shri 8
+85 shri 8 : i1
+Binder : Shri(85, 8)
+Reducer: 0
+###
+> 0x55i1 shru 8
+85 shru 8 : i1
+Binder : Shru(85, 8)
+Reducer: 0
+###
+> 0x80u1 shr  1
+128 shr 1 : u1
+Binder : Shru(128, 1)
+Reducer: 64
+###
+> 0x80u1 shri 1
+128 shri 1 : u1
+Binder : Shri(128, 1)
+Reducer: 192
+###
+> 0x80u1 shru 1
+128 shru 1 : u1
+Binder : Shru(128, 1)
+Reducer: 64
+###
+> 0xFFu1 shr  1
+255 shr 1 : u1
+Binder : Shru(255, 1)
+Reducer: 127
+###
+> 0xFFu1 shri 1
+255 shri 1 : u1
+Binder : Shri(255, 1)
+Reducer: 255
+###
+> 0xFFu1 shru 1
+255 shru 1 : u1
+Binder : Shru(255, 1)
+Reducer: 127
+###
+> 0xFFu1 shr  8
+255 shr 8 : u1
+Binder : Shru(255, 8)
+Reducer: 0
+###
+> 0xFFu1 shri 8
+255 shri 8 : u1
+Binder : Shri(255, 8)
+Reducer: 255
+###
+> 0xFFu1 shru 8
+255 shru 8 : u1
+Binder : Shru(255, 8)
+Reducer: 0
+###
+> 0xAAu1 shr  8
+170 shr 8 : u1
+Binder : Shru(170, 8)
+Reducer: 0
+###
+> 0xAAu1 shri 8
+170 shri 8 : u1
+Binder : Shri(170, 8)
+Reducer: 255
+###
+> 0xAAu1 shru 8
+170 shru 8 : u1
+Binder : Shru(170, 8)
+Reducer: 0
+###
+> 0x55u1 shr  8
+85 shr 8 : u1
+Binder : Shru(85, 8)
+Reducer: 0
+###
+> 0x55u1 shri 8
+85 shri 8 : u1
+Binder : Shri(85, 8)
+Reducer: 0
+###
+> 0x55u1 shru 8
+85 shru 8 : u1
+Binder : Shru(85, 8)
+Reducer: 0
+###
+> i1 shl  0
+i1 shl 0 : i1
+Binder : Shl(i1, 0)
+Reducer: i1
+###
+> i1 shr  0
+i1 shr 0 : i1
+Binder : Shri(i1, 0)
+Reducer: i1
+###
+> i1 shri 0
+i1 shri 0 : i1
+Binder : Shri(i1, 0)
+Reducer: i1
+###
+> i1 shru 0
+i1 shru 0 : i1
+Binder : Shru(i1, 0)
+Reducer: i1
+###
+> i1 shl  7
+i1 shl 7 : i1
+Binder : Shl(i1, 7)
+###
+> i1 shr  7
+i1 shr 7 : i1
+Binder : Shri(i1, 7)
+###
+> i1 shri 7
+i1 shri 7 : i1
+Binder : Shri(i1, 7)
+###
+> i1 shru 7
+i1 shru 7 : i1
+Binder : Shru(i1, 7)
+###
+> i1 shl  8
+i1 shl 8 : i1
+Binder : Shl(i1, 8)
+Reducer: 0
+###
+> i1 shr  8
+i1 shr 8 : i1
+Binder : Shri(i1, 8)
+Reducer: Shri(i1, 7)
+###
+> i1 shri 8
+i1 shri 8 : i1
+Binder : Shri(i1, 8)
+Reducer: Shri(i1, 7)
+###
+> i1 shru 8
+i1 shru 8 : i1
+Binder : Shru(i1, 8)
+Reducer: 0
+###
+> i1 shl  1000
+i1 shl 1000 : i1
+Binder : Shl(i1, 1000)
+Reducer: 0
+###
+> i1 shr  1000
+i1 shr 1000 : i1
+Binder : Shri(i1, 1000)
+Reducer: Shri(i1, 7)
+###
+> i1 shri 1000
+i1 shri 1000 : i1
+Binder : Shri(i1, 1000)
+Reducer: Shri(i1, 7)
+###
+> i1 shru 1000
+i1 shru 1000 : i1
+Binder : Shru(i1, 1000)
+Reducer: 0
+###
+> i2 shl  0
+i2 shl 0 : i2
+Binder : Shl(i2, 0)
+Reducer: i2
+###
+> i2 shr  0
+i2 shr 0 : i2
+Binder : Shri(i2, 0)
+Reducer: i2
+###
+> i2 shri 0
+i2 shri 0 : i2
+Binder : Shri(i2, 0)
+Reducer: i2
+###
+> i2 shru 0
+i2 shru 0 : i2
+Binder : Shru(i2, 0)
+Reducer: i2
+###
+> i2 shl  15
+i2 shl 15 : i2
+Binder : Shl(i2, 15)
+###
+> i2 shr  15
+i2 shr 15 : i2
+Binder : Shri(i2, 15)
+###
+> i2 shri 15
+i2 shri 15 : i2
+Binder : Shri(i2, 15)
+###
+> i2 shru 15
+i2 shru 15 : i2
+Binder : Shru(i2, 15)
+###
+> i2 shl  16
+i2 shl 16 : i2
+Binder : Shl(i2, 16)
+Reducer: 0
+###
+> i2 shr  16
+i2 shr 16 : i2
+Binder : Shri(i2, 16)
+Reducer: Shri(i2, 15)
+###
+> i2 shri 16
+i2 shri 16 : i2
+Binder : Shri(i2, 16)
+Reducer: Shri(i2, 15)
+###
+> i2 shru 16
+i2 shru 16 : i2
+Binder : Shru(i2, 16)
+Reducer: 0
+###
+> i2 shl  1000
+i2 shl 1000 : i2
+Binder : Shl(i2, 1000)
+Reducer: 0
+###
+> i2 shr  1000
+i2 shr 1000 : i2
+Binder : Shri(i2, 1000)
+Reducer: Shri(i2, 15)
+###
+> i2 shri 1000
+i2 shri 1000 : i2
+Binder : Shri(i2, 1000)
+Reducer: Shri(i2, 15)
+###
+> i2 shru 1000
+i2 shru 1000 : i2
+Binder : Shru(i2, 1000)
+Reducer: 0
+###
+> i4 shl  0
+i4 shl 0 : i4
+Binder : Shl(i4, 0)
+Reducer: i4
+###
+> i4 shr  0
+i4 shr 0 : i4
+Binder : Shri(i4, 0)
+Reducer: i4
+###
+> i4 shri 0
+i4 shri 0 : i4
+Binder : Shri(i4, 0)
+Reducer: i4
+###
+> i4 shru 0
+i4 shru 0 : i4
+Binder : Shru(i4, 0)
+Reducer: i4
+###
+> i4 shl  31
+i4 shl 31 : i4
+Binder : Shl(i4, 31)
+###
+> i4 shr  31
+i4 shr 31 : i4
+Binder : Shri(i4, 31)
+###
+> i4 shri 31
+i4 shri 31 : i4
+Binder : Shri(i4, 31)
+###
+> i4 shru 31
+i4 shru 31 : i4
+Binder : Shru(i4, 31)
+###
+> i4 shl  32
+i4 shl 32 : i4
+Binder : Shl(i4, 32)
+Reducer: 0
+###
+> i4 shr  32
+i4 shr 32 : i4
+Binder : Shri(i4, 32)
+Reducer: Shri(i4, 31)
+###
+> i4 shri 32
+i4 shri 32 : i4
+Binder : Shri(i4, 32)
+Reducer: Shri(i4, 31)
+###
+> i4 shru 32
+i4 shru 32 : i4
+Binder : Shru(i4, 32)
+Reducer: 0
+###
+> i4 shl  1000
+i4 shl 1000 : i4
+Binder : Shl(i4, 1000)
+Reducer: 0
+###
+> i4 shr  1000
+i4 shr 1000 : i4
+Binder : Shri(i4, 1000)
+Reducer: Shri(i4, 31)
+###
+> i4 shri 1000
+i4 shri 1000 : i4
+Binder : Shri(i4, 1000)
+Reducer: Shri(i4, 31)
+###
+> i4 shru 1000
+i4 shru 1000 : i4
+Binder : Shru(i4, 1000)
+Reducer: 0
+###
+> i8 shl  0
+i8 shl 0 : i8
+Binder : Shl(i8, 0)
+Reducer: i8
+###
+> i8 shr  0
+i8 shr 0 : i8
+Binder : Shri(i8, 0)
+Reducer: i8
+###
+> i8 shri 0
+i8 shri 0 : i8
+Binder : Shri(i8, 0)
+Reducer: i8
+###
+> i8 shru 0
+i8 shru 0 : i8
+Binder : Shru(i8, 0)
+Reducer: i8
+###
+> i8 shl  63
+i8 shl 63 : i8
+Binder : Shl(i8, 63)
+###
+> i8 shr  63
+i8 shr 63 : i8
+Binder : Shri(i8, 63)
+###
+> i8 shri 63
+i8 shri 63 : i8
+Binder : Shri(i8, 63)
+###
+> i8 shru 63
+i8 shru 63 : i8
+Binder : Shru(i8, 63)
+###
+> i8 shl  64
+i8 shl 64 : i8
+Binder : Shl(i8, 64)
+Reducer: 0
+###
+> i8 shr  64
+i8 shr 64 : i8
+Binder : Shri(i8, 64)
+Reducer: Shri(i8, 63)
+###
+> i8 shri 64
+i8 shri 64 : i8
+Binder : Shri(i8, 64)
+Reducer: Shri(i8, 63)
+###
+> i8 shru 64
+i8 shru 64 : i8
+Binder : Shru(i8, 64)
+Reducer: 0
+###
+> i8 shl  1000
+i8 shl 1000 : i8
+Binder : Shl(i8, 1000)
+Reducer: 0
+###
+> i8 shr  1000
+i8 shr 1000 : i8
+Binder : Shri(i8, 1000)
+Reducer: Shri(i8, 63)
+###
+> i8 shri 1000
+i8 shri 1000 : i8
+Binder : Shri(i8, 1000)
+Reducer: Shri(i8, 63)
+###
+> i8 shru 1000
+i8 shru 1000 : i8
+Binder : Shru(i8, 1000)
+Reducer: 0
+###
+> i  shr  128
+i shr 128 : i
+Binder : Shri(i, 128)
+###
+> i  shri 128
+i shri 128 : i
+Binder : Shri(i, 128)
+###
+> i  shru 128
+Corrected by binder: [i  shr 128]
+i shru 128 : i
+*** Warning: (3,7) Node: i shru 128, Message: Shift right unsigned operator ('shru') on type 'i' interpreted as signed ('shri')
+Binder : Shri(i, 128)
+###
+> i  shr  1000
+i shr 1000 : i
+Binder : Shri(i, 1000)
+###
+> i  shri 1000
+i shri 1000 : i
+Binder : Shri(i, 1000)
+###
+> i  shru 1000
+Corrected by binder: [i  shr 1000]
+i shru 1000 : i
+*** Warning: (3,7) Node: i shru 1000, Message: Shift right unsigned operator ('shru') on type 'i' interpreted as signed ('shri')
+Binder : Shri(i, 1000)
+###
+> b shl 0
+b shl 0 : b
+Binder : Shl(b, 0)
+Reducer: b
+###
+> b shr 0
+b shr 0 : b
+Binder : Shru(b, 0)
+Reducer: b
+###
+> b shri 0
+b shri 0 : b
+Binder : Shri(b, 0)
+Reducer: b
+###
+> b shru 0
+b shru 0 : b
+Binder : Shru(b, 0)
+Reducer: b
+###
+> b shl 1
+b shl 1 : b
+Binder : Shl(b, 1)
+Reducer: false
+###
+> b shr 1
+b shr 1 : b
+Binder : Shru(b, 1)
+Reducer: false
+###
+> b shri 1
+b shri 1 : b
+Binder : Shri(b, 1)
+Reducer: b
+###
+> b shru 1
+b shru 1 : b
+Binder : Shru(b, 1)
+Reducer: false
+###
+> b shl 1000
+b shl 1000 : b
+Binder : Shl(b, 1000)
+Reducer: false
+###
+> b shr 1000
+b shr 1000 : b
+Binder : Shru(b, 1000)
+Reducer: false
+###
+> b shri 1000
+b shri 1000 : b
+Binder : Shri(b, 1000)
+Reducer: b
+###
+> b shru 1000
+b shru 1000 : b
+Binder : Shru(b, 1000)
+Reducer: false
+###
+> u1 shl  0
+u1 shl 0 : u1
+Binder : Shl(u1, 0)
+Reducer: u1
+###
+> u1 shr  0
+u1 shr 0 : u1
+Binder : Shru(u1, 0)
+Reducer: u1
+###
+> u1 shri 0
+u1 shri 0 : u1
+Binder : Shri(u1, 0)
+Reducer: u1
+###
+> u1 shru 0
+u1 shru 0 : u1
+Binder : Shru(u1, 0)
+Reducer: u1
+###
+> u1 shl  7
+u1 shl 7 : u1
+Binder : Shl(u1, 7)
+###
+> u1 shr  7
+u1 shr 7 : u1
+Binder : Shru(u1, 7)
+###
+> u1 shri 7
+u1 shri 7 : u1
+Binder : Shri(u1, 7)
+###
+> u1 shru 7
+u1 shru 7 : u1
+Binder : Shru(u1, 7)
+###
+> u1 shl  8
+u1 shl 8 : u1
+Binder : Shl(u1, 8)
+Reducer: 0
+###
+> u1 shr  8
+u1 shr 8 : u1
+Binder : Shru(u1, 8)
+Reducer: 0
+###
+> u1 shri 8
+u1 shri 8 : u1
+Binder : Shri(u1, 8)
+Reducer: Shri(u1, 7)
+###
+> u1 shru 8
+u1 shru 8 : u1
+Binder : Shru(u1, 8)
+Reducer: 0
+###
+> u1 shl  1000
+u1 shl 1000 : u1
+Binder : Shl(u1, 1000)
+Reducer: 0
+###
+> u1 shr  1000
+u1 shr 1000 : u1
+Binder : Shru(u1, 1000)
+Reducer: 0
+###
+> u1 shri 1000
+u1 shri 1000 : u1
+Binder : Shri(u1, 1000)
+Reducer: Shri(u1, 7)
+###
+> u1 shru 1000
+u1 shru 1000 : u1
+Binder : Shru(u1, 1000)
+Reducer: 0
+###
+> u2 shl  0
+u2 shl 0 : u2
+Binder : Shl(u2, 0)
+Reducer: u2
+###
+> u2 shr  0
+u2 shr 0 : u2
+Binder : Shru(u2, 0)
+Reducer: u2
+###
+> u2 shri 0
+u2 shri 0 : u2
+Binder : Shri(u2, 0)
+Reducer: u2
+###
+> u2 shru 0
+u2 shru 0 : u2
+Binder : Shru(u2, 0)
+Reducer: u2
+###
+> u2 shl  15
+u2 shl 15 : u2
+Binder : Shl(u2, 15)
+###
+> u2 shr  15
+u2 shr 15 : u2
+Binder : Shru(u2, 15)
+###
+> u2 shri 15
+u2 shri 15 : u2
+Binder : Shri(u2, 15)
+###
+> u2 shru 15
+u2 shru 15 : u2
+Binder : Shru(u2, 15)
+###
+> u2 shl  16
+u2 shl 16 : u2
+Binder : Shl(u2, 16)
+Reducer: 0
+###
+> u2 shr  16
+u2 shr 16 : u2
+Binder : Shru(u2, 16)
+Reducer: 0
+###
+> u2 shri 16
+u2 shri 16 : u2
+Binder : Shri(u2, 16)
+Reducer: Shri(u2, 15)
+###
+> u2 shru 16
+u2 shru 16 : u2
+Binder : Shru(u2, 16)
+Reducer: 0
+###
+> u2 shl  1000
+u2 shl 1000 : u2
+Binder : Shl(u2, 1000)
+Reducer: 0
+###
+> u2 shr  1000
+u2 shr 1000 : u2
+Binder : Shru(u2, 1000)
+Reducer: 0
+###
+> u2 shri 1000
+u2 shri 1000 : u2
+Binder : Shri(u2, 1000)
+Reducer: Shri(u2, 15)
+###
+> u2 shru 1000
+u2 shru 1000 : u2
+Binder : Shru(u2, 1000)
+Reducer: 0
+###
+> u4 shl  0
+u4 shl 0 : u4
+Binder : Shl(u4, 0)
+Reducer: u4
+###
+> u4 shr  0
+u4 shr 0 : u4
+Binder : Shru(u4, 0)
+Reducer: u4
+###
+> u4 shri 0
+u4 shri 0 : u4
+Binder : Shri(u4, 0)
+Reducer: u4
+###
+> u4 shru 0
+u4 shru 0 : u4
+Binder : Shru(u4, 0)
+Reducer: u4
+###
+> u4 shl  31
+u4 shl 31 : u4
+Binder : Shl(u4, 31)
+###
+> u4 shr  31
+u4 shr 31 : u4
+Binder : Shru(u4, 31)
+###
+> u4 shri 31
+u4 shri 31 : u4
+Binder : Shri(u4, 31)
+###
+> u4 shru 31
+u4 shru 31 : u4
+Binder : Shru(u4, 31)
+###
+> u4 shl  32
+u4 shl 32 : u4
+Binder : Shl(u4, 32)
+Reducer: 0
+###
+> u4 shr  32
+u4 shr 32 : u4
+Binder : Shru(u4, 32)
+Reducer: 0
+###
+> u4 shri 32
+u4 shri 32 : u4
+Binder : Shri(u4, 32)
+Reducer: Shri(u4, 31)
+###
+> u4 shru 32
+u4 shru 32 : u4
+Binder : Shru(u4, 32)
+Reducer: 0
+###
+> u4 shl  1000
+u4 shl 1000 : u4
+Binder : Shl(u4, 1000)
+Reducer: 0
+###
+> u4 shr  1000
+u4 shr 1000 : u4
+Binder : Shru(u4, 1000)
+Reducer: 0
+###
+> u4 shri 1000
+u4 shri 1000 : u4
+Binder : Shri(u4, 1000)
+Reducer: Shri(u4, 31)
+###
+> u4 shru 1000
+u4 shru 1000 : u4
+Binder : Shru(u4, 1000)
+Reducer: 0
+###
+> u8 shl  0
+u8 shl 0 : u8
+Binder : Shl(u8, 0)
+Reducer: u8
+###
+> u8 shr  0
+u8 shr 0 : u8
+Binder : Shru(u8, 0)
+Reducer: u8
+###
+> u8 shri 0
+u8 shri 0 : u8
+Binder : Shri(u8, 0)
+Reducer: u8
+###
+> u8 shru 0
+u8 shru 0 : u8
+Binder : Shru(u8, 0)
+Reducer: u8
+###
+> u8 shl  63
+u8 shl 63 : u8
+Binder : Shl(u8, 63)
+###
+> u8 shr  63
+u8 shr 63 : u8
+Binder : Shru(u8, 63)
+###
+> u8 shri 63
+u8 shri 63 : u8
+Binder : Shri(u8, 63)
+###
+> u8 shru 63
+u8 shru 63 : u8
+Binder : Shru(u8, 63)
+###
+> u8 shl  64
+u8 shl 64 : u8
+Binder : Shl(u8, 64)
+Reducer: 0
+###
+> u8 shr  64
+u8 shr 64 : u8
+Binder : Shru(u8, 64)
+Reducer: 0
+###
+> u8 shri 64
+u8 shri 64 : u8
+Binder : Shri(u8, 64)
+Reducer: Shri(u8, 63)
+###
+> u8 shru 64
+u8 shru 64 : u8
+Binder : Shru(u8, 64)
+Reducer: 0
+###
+> u8 shl  1000
+u8 shl 1000 : u8
+Binder : Shl(u8, 1000)
+Reducer: 0
+###
+> u8 shr  1000
+u8 shr 1000 : u8
+Binder : Shru(u8, 1000)
+Reducer: 0
+###
+> u8 shri 1000
+u8 shri 1000 : u8
+Binder : Shri(u8, 1000)
+Reducer: Shri(u8, 63)
+###
+> u8 shru 1000
+u8 shru 1000 : u8
+Binder : Shru(u8, 1000)
+Reducer: 0
+###
+> i4 shl 3 + 5
+i4 shl 3 + 5 : i4
+Binder : Shl(i4, Add(3, 5))
+Reducer: Shl(i4, 8)
+###
+> 3 + 5 shl i8
+3 + 5 shl i8 : i8
+Binder : Shl(Add(3, 5), i8)
+Reducer: Shl(8, i8)
+###
+> 77777777777777777777 shri 777
+77777777777777777777 shri 777 : i
+Binder : Shri(77777777777777777777, 777)
+Reducer: 0
+###
+> -77777777777777777777 shri 777
+-77777777777777777777 shri 777 : i
+Binder : Shri(-77777777777777777777, 777)
+Reducer: -1
+###

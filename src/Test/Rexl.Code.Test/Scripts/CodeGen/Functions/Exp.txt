@@ -1,0 +1,18 @@
+﻿`` Xs := Range(-5, 6)->CastR8();
+
+// The display of floating point isn't yet consistent between windows and wsl, so we display the hex instead.
+`` func Clean(v) := v.Bits.Hex;
+// Some low bits aren't consistent between windows and wsl, so clear them.
+`` func Clean(v, clr) := (v.Bits band bnot clr).Hex;
+
+Xs
+Xs->Exp()->Clean()
+Xs->Ln()
+Xs->Log10()
+
+Xs->Sinh()->Clean(0x3F)
+Xs->Cosh()
+Xs->Tanh()
+Xs->Csch()->Clean(0x3)
+Xs->Sech()
+Xs->Coth()

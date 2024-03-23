@@ -1,0 +1,217 @@
+﻿:: {c1:i8, c2:i8, c3:i8, c4:i8, c5:i8, s1:i8*, s2:i8*, s3:i8*, s4:i8*, si1:i*, sr:{A:i8,B:s}*, t1:s, t2:s, st:s*, f1:r8, f2:r8, sf1:r8*, sf2:r8*, b1:b, b2:b, qb:b?, sb:b*, sqb:b?*, qi1:i4?, sv:v*, T:i8[*,*], tup:(i8,i8,i8), stup:(i8,i8,i8)*, qtup:(i8,i8,i8)?}
+
+Filter(s2, it > Count(s1))
+Filter(si1, it > Count(s1))
+Filter(s2, Count(s1) >= Count(s1))
+Filter(s2, Count(Filter(s3, it > Count(s1))) >= Count(s4))
+Filter(s2, Count(Filter(s3, it > Count(s1))) >= it)
+Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count(s1))
+Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count([v2]->Wrap()))
+Filter(v2:s2, Count(Filter(s3++s3, it > Count([v2]->Wrap()))) >= Count(Filter(s1++s1, it < Count([v2]->Wrap()))))
+
+Zip(v1:s1, v2:s2, v1 + Count(s1) + v2)
+Zip(v1:s1, v2:s2, v1 + Count(s1))
+Zip(v1:s1, v2:s2, v1 - Count(s1))
+Zip(v1:s1, v2:s2, Count(Map(v3:s3, v1 > Count(s4))))
+Filter(v3:s3, Count(Zip(v1:s1++s1, v2:s2++s2, v1 + v2 + Count(s3))) > Count(s4))
+Filter(v3:s3, Count(Zip(v1:s1++s1, v2:s2++s2, v1 + v2 + Count(s3))) + v3 > Count(Zip(v1:s1, v2:s2, v1 * v2 * Count(s4))) * v3)
+
+With(x1:c1, Map(x2: s2, x2+x1))
+Guard(g:s1++s1, Map(m:g, m+Count(s1)))
+Map(m:s1++s1, With(w:m, w+Count(s1)))
+With(w1:Count(s1), Map(m:s1++s1, With(w2:m, Count(s2)+w1)))
+
+Map(m1:s1, Map(m2: s2++s2, With(w3: s3, Range(m1))))
+Map(m1:s1, Map(m2:[Count(Range(m1)) + Count(s2)], m2+1))
+Map(m1:s1, With(w2: Map(m3:[Count(Range(m1)) + Count(s2)]->Wrap(), m3+1), Count(w2)))
+
+With(w1: Count(s1), w2: Count(s2), Map(m3: s3++s3, Count([w1]->Wrap())))
+With(w1: Count(s1), w2: w1 + Count(s2), Map(m3: s3++s3, Count([w1]->Wrap()) + Count(s4) + Count([w2]->Wrap()) + m3))
+
+DblMap(s1, it + c1, s2, it + c2)
+DblMap(s1, s1++s1, s2, s2++s2)
+DblMap(x1:s1++s1, Map(x3:s3++s3, Range(c3) + Range(x1)), x2:s2++s2, Map(x4:s4++s4, Range(c4) + Range(x2)))
+DblMap(x1:Range(c1), Map(x3:s3++s3, Range(c3) + Range(x1)), x2:Range(c2), Map(x4:s4++s4, Range(c4) + Range(x2)))
+DblMap(x1:s1++s1, Map(x3:s3++s3, Range(c1) ++ Range(x1)), x2:s2++s2, Map(x4:s4++s4, Range(c2) ++ Range(x2)))
+Map(x1:s1++s1, Map(x2: s2++s2, DblMap(x3:s3++s3, Range(c1), x4:s4++s4, Range(x1))))
+Map(x1:s1++s1, Map(x2: s2++s2, DblMap(x3:s3++s3, Range(c1) ++ Range(x2), x4:s4++s4, Range(x1) ++ Range(x4))))
+
+{ A: Filter(s2, it > Count(s1)), B: s2 }
+Map(x1:s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 })
+Map(x1:s1, { A: Filter(x2:s2++s2, 2 > Count([x1]->Wrap())), B: s2++s2 })
+{ A: Map(x1:s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 }), B: Map(x1:s1++s1, { A: Filter(x2:s2++s2, x2 > Count([x1]->Wrap())), B: s2++s2 }) }
+
+(First(Map(x1:s1, { A: 1, B: 2}))).A
+(TakeOne(Map(x1:s1, { A: 1, B: 2}))).A
+(First(Map(x1:s1, { A: x1, B: s2}))).A
+(TakeOne(Map(x1:s1, { A: x1, B: s2}))).A
+Map(x1:s1, {A: x1, B:s2++s2}->&{ D:B}.D)
+Map(x1:s1, {A: Map(x2:s2, Range(x1)), B:s2++s2}->&{D:B}.D)
+Map(s1, "str"->{ A: it }->&{A: it })
+
+not First(Map(x1:s1++s1, Count(s2) > 0))
+Map(x1:s1, Map(x2:s2++s2, not First(Map(x3:[x2], Count([x1]->Wrap()) > 0))))
+
+Map(x1:s1, Range(c1)) if First(Map(x2:s2++s2, Count(s2) > 0)) ?? true else Map(x3:s3++s3, Range(c3))
+Map(x4:s4, Map(x1:s1++s1, Range(c1)) if First(Map(x2:s2++s2, Count([x4]->Wrap()) > 0)) ?? true else Map(x3:s3++s3, Range(c3)))
+s1 if b1 else Map(x1:s1, Count(s2))
+qi1 ?? Count(s1, it > Count(s2))
+Sum(x1:s1, x1 if Count(s2) > c1 else 0r)
+
+Sum(x1:s1, x2:s2, x3:s3, c2 if x1 = c1 else c3)
+Map(x1:s1, x1 + Count(s2) + Count(s3))
+Map(x1:s1, Count(s2) + x1 + Count(s3))
+
+Map(x1:s1, c1 + c2)
+Map(x1:s1, Map(x2:s2, x1 + x1 - x2))
+Map(x1:s1, Map(x2:s2, c1 - x1 + c2))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, it + Count(s1++s1) + it + Count([x1]->Wrap()) + it + Count([x2]->Wrap()))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, Count(s1++s1) + Count([x1]->Wrap()) + Count([x2]->Wrap()) + Count([x3]->Wrap()) + Count([x4]->Wrap())))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, it - Count(s1++s1) - it - Count([x1]->Wrap()) - it - Count([x2]->Wrap()))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, Count(s1++s1) - Count([x1]->Wrap()) - Count([x2]->Wrap()) - Count([x3]->Wrap()) - Count([x4]->Wrap())))))
+Map(x1:sr, Map(x2:s1, x1.A + c1 - x2))
+Map(x1:sr, Map(x2:s1, x2 - x1.A))
+Map(x1:sr, Map(x2:s1, x1.A - x1.A + x2))
+Map(x1:sr, With(x2:x1.A, Map(x3:sr, x3.A * x2 * c1)))
+Map(x1:sr, With(x2:x1.A, x3:x1.A+1, Map(x4:sr, x4.A * x2 * x3)))
+Map(x1:sr, With(x2:x1.A, Map(x3:sr, x3.A * x2 * x1.A)))
+-c1 + Count(s1, it > Count(s3)) - Count(s2, it > Count(s4))
+-Count(s1, it > Count(s3))
+~Count(s1, it > Count(s3))
+
+Map(x1:s1, ToText(c1) & ToText(c2) & ToText(c3))
+Map(x1:s1, ToText(x1) & ToText(c2) & ToText(c3))
+Map(x1:s1, ToText(c2) & ToText(x1) & ToText(c3))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, ToText(c1) & ToText(x1) & ToText(x2) & ToText(x3) & ToText(x4)))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, ToText(x3) & ToText(c1) & ToText(c2) & ToText(x1) & ToText(x4) & ToText(x2)))))
+Map(x1:st, Map(x2: st, t1 & x1 & x2))
+Map(x1:st, Map(x2: st, x1 & t1 & x2))
+Map(x1:st, Map(x2: st, x2 & x1 & t1))
+Map(x1:st, Map(x2: st, x2 & t1 & x1 & t1))
+Map(x1:st, Map(x2: st, x2 & t1 & t2 & x1))
+Map(x1:st, Map(x2: st, x2 & x1 & t1 & t2))
+Map(x1:st, Map(x2: st, t1 & t2 & x1 & x2 & x1 & t1 & t2))
+t1 & ToText(Count(s1, it > Count(s3))) & ToText(Count(s2, it > Count(s4)))
+
+Map(x1:s1, -CastR8(c1))
+Map(x1:s1, CastR8(c1) - c1 + c1)
+Map(x1:s1, CastR8(c1) - c1 + x1 + c1)
+Map(x1:s1, x1 + CastR8(Count(s2)) + Count(s3))
+Map(x1:s1, CastR8(Count(s2)) + x1 + Count(s3))
+Map(x1:s1, Map(x2:s2, CastR8(c1) + CastR8(Wrap(x1))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(c1) + CastR8(Wrap(x1)) + CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x4))))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(Wrap(x4)) + CastR8(Wrap(x3)) + CastR8(Wrap(x2)) + CastR8(Wrap(x1)) + CastR8(c1)))))
+Map(x1:s1, Map(x2:s2, Map(x3:s3, Map(x4:s4, CastR8(Wrap(x2)) + CastR8(Wrap(x3)) + CastR8(Wrap(x1)) + CastR8(Wrap(x4)) + CastR8(Wrap(x2))))))
+Map(x1:sf1, Map(x2:sf2, f1 + x1 - x2))
+Map(x1:sf1, Map(x2:sf2, -x1 + f1 + x2))
+Map(x1:sf1, Map(x2:sf2, x2 + x1 - f1))
+Map(x1:sf1, Map(x2:sf2, -f1 + x1 - f1 + x2))
+Map(x1:sf1, Map(x2:sf2, f1 + f1 + x1 - x2))
+-f1 + Count(s1, it > Count(s3)) - Count(s2, it > Count(s4))
+f1 + ~Count(s1, it > Count(s3))
+
+Map(x1:sr, Map(x2:sr, t1 has t2))
+Map(x1:sr, Map(x2:sr, x1.B has x2.B))
+
+Map(x1:sb, Wrap(b1) and x1)
+Map(x1:sb, Wrap(qb) and x1)
+Map(x1:sb, Map(x2:sb, x1 and b2 and qb))
+Map(x1:sqb, Map(x2:sb, x1 and b1 and b2))
+Map(x1:sb, Map(x2:sqb, x1 and b1 and b2 and x2))
+qb and Any(x1:s1, x1 > Count(s3))
+qb and not Any(x1:s1, x1 > Count(s3))
+
+[qi1, Count(x1:s1, x1 > Count(s3))]
+[c1, Map(x1:s1, x1 + Count(s3))]
+Map(x1:s1, [c1, Map(x2:s2, x2 + Count(s4) + x1), Count(x3:s3, it > Count(s4))])
+
+Map(x1:s1, T[Count(s1), Count(s2)])
+Map(x1:s1, T[x1, Count(s2)])
+Map(x1:s1, T[Count(s1), tup])
+Map(x1:s1, T[x1, tup])
+Map(x1:s1, T[Count(s1), Count(s2):Count(s3):Count(s4)])
+Map(x1:s1, T[Count(s1), (Count(s2), Count(s3), Count(s4))])
+Map(x1:s1, T[Count(s1), Count(s2):Count(s3):x1])
+Map(x1:s1, T[Count(s1), (Count(s2), Count(s3), x1)])
+Map(x1:s1, Tensor.Fill(Count(s1), 1)[x1:Count(s2)])
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, b^2:c^2:d^2]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & (c^2,d^2)]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, tup[:2] & (d^2,)]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & tup[1:]]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, tup[:1] & (c^2,d^2)]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,) & tup[1:2] & (d^2,)]))))
+Generate(a:c1, Generate(b:c2, Generate(c:c3, Generate(d:c4, T[a^2, (b^2,c^2) & tup[2:]]))))
+
+Map(x1:s1, x2:stup, x2[Count(s1)])
+Map(x1:s1, (c1, Count(s1))[x1])
+Map(x1:s1, x2:stup[Count(s1)], (x2,x2,x2))
+
+// Errors.
+Map(x1:s1, Map(x2:s2, A + x1))
+Map(x1:s1, Map(x2:s2, x1 + A))
+Map(x1:s1, Map(x2:s2, x1 + Count(s1) + x2 + x1 + A))
+
+Map(x1:s1, Map(x2:s2, A & ToText(x1)))
+Map(x1:s1, Map(x2:s2, ToText(x1) & A))
+Map(x1:s1, Map(x2:s2, ToText(x1) & ToText(c1) & ToText(x2) & ToText(x1) & A))
+
+Map(x1:sf1, Map(x2:sf2, A + x1))
+Map(x1:sf1, Map(x2:sf2, x1 + A))
+Map(x1:sf1, Map(x2:sf2, CastR8(c1) + x1 + A))
+Map(x1:sf1, Map(x2:sf2, x1 + CastR8(c1) + x2 + x1 + A))
+
+Generate(c1, { A: Range(c2), B: Range(c3) })
+Generate(x1:c1, s1:{ A: Range(c2), B: Range(c3) }, it, Generate(x2:c2, (x2, { A: Range(c2), B: Range(c3) })))
+
+// Box casting.
+Map(x: s1, (("a" ~in []) > "b") ?? "c") // Found by fuzzer, errors.
+
+// Testing the types of intermediate hoisted expressions in associative but not commutative operators.
+ForEach(x:[s2], si1 ++ si1 ++ x)
+
+// Hoisting sliced tuple
+ForEach(x:stup, tup[1:] & x)[2:]
+ForEach(x:stup, qtup[1:] & x)[2:] // REVIEW: This should hoist (WI#46544).
+
+// Avoid hoisting tuple and record concatenation.
+ForEach(x:stup, tup & tup & x)
+ForEach(x:stup, qtup & qtup & x)
+ForEach(x:stup, tup & tup & tup)
+:: {a:{A:i8}, qa:{A:i8}?, b:{B:i8}, qb:{B:i8}?, c:{C:i8}*}
+ForEach(x:c, a & b & x)
+ForEach(x:c, qa & qb & x)
+ForEach(x:c, a & b & a)
+
+// Found from fuzz testing
+:: { b:b, bs:b*, bss:b** }
+b and bss and null and bs
+
+::: {Games:{Week:i4, Away:s, Home:s, AScore:i4, HScore:i4}*, c1:i4, c2:i4, c3:i4, c4:i4, c5:i4, s1:i4*, s2:i4*, s3:i4*, s4:i4*, si1:i*}
+GroupBy(Games, Home, XGames)
+GroupBy(Games, [auto] XGames, [key] K:Home)
+GroupBy(Games, Home, M:Range(c1))
+GroupBy(Games, [map] M:Range(c1), [key] K:Home)
+GroupBy(Games, Home, [agg] A:Range(c1))
+GroupBy(Games, Home, [agg] A:Map(it, Range(c1)))
+GroupBy(Games, Count(Range(c1)), [agg] A:Map(it, Range(c1)))
+GroupBy(Games, Home: Count(Range(c1)), [agg] A:Map(it, Range(c1)))
+GroupBy([{A: Range(c2), B: Range(c3)}], [key] Count(Range(c4)), [map] M:Range(c5), [agg] A:Range(6))
+GroupBy(Map(Range(c1), {A: Range(c2), B: Range(c3)}), [key] Count(Range(c4)), [map] M:Range(c5), [agg] A:Map(it, Range(6)))
+Map(x1:Range(c1), GroupBy(Range(x1), [key] Count(Range(x1)), [map] M:Range(x1) ++ s1++s1, [agg] A:Range(x1) ++ s2++s2))
+Map(x1:Range(c1), GroupBy(s1, [key] Count(s2)))
+Map(x1:Range(c1), GroupBy(Games, [key] K:Home))
+Map(x1:Range(c1), GroupBy(s1, [key] K:Count(s2)))
+Map(x1:Range(c1), GroupBy(Games, [key] K:Home, [map] M:HScore))
+Map(x1:Range(c1), GroupBy(s1, [key]it, [map] M:Count(s2)))
+Map(x1:Range(c1), GroupBy(Games, [key] K:Home, [agg] A:Count(it)))
+Map(x1:Range(c1), GroupBy(s1, [key]it, [agg] A:Count(s2)))
+
+(Map(Games, Count(s1)), Map(Games, Count(s2)))
+(Map(Games, Count(s1)), Map(Games, Count(s2)), Map(Games, Count(s1))) // CSE should improve this.
+(Map(Games, Count(s1)), Map(Games, Count(s2)), Count(s1)) // CSE should improve this.
+Map(g:Games, (Home, HScore, Count(s1)))
+Map(g:Games, (Home, HScore, Count(s1)) if HScore > AScore else (Away, AScore, -1))[2]
+
+Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), z * it[1] * n)))
+Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), 1.0 * z * it[1] * n)))
+Map(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(Range(n), 1.0 * z * n * it[1])))

@@ -1,0 +1,879 @@
+**** New definitions: A, type: G
+**** New definitions: B, type: G
+**** New definitions: S0, type: G*
+**** New definitions: S1, type: G*
+
+> Zip(x:S0, y:S1, x  =  y)
+Zip(x : S0, y : S1, x @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) false
+###
+> Zip(x:S0, y:S1, x  <  y)
+Zip(x : S0, y : S1, x $< y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @< Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) clt
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x  <= y)
+Zip(x : S0, y : S1, x $<= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @<= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) cgt
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x  >  y)
+Zip(x : S0, y : S1, x $> y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @> Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) cgt
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x  >= y)
+Zip(x : S0, y : S1, x $>= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @>= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !=  y)
+Zip(x : S0, y : S1, x !@= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) !@= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !<  y)
+Zip(x : S0, y : S1, x !$< y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @>= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !<= y)
+Zip(x : S0, y : S1, x !$<= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @> Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) cgt
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !>  y)
+Zip(x : S0, y : S1, x !$> y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @<= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) cgt
+      1) ldc.i4.0
+      2) ceq
+      1) ret
+  Total Size: 14
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x !>= y)
+Zip(x : S0, y : S1, x !$>= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @< Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      2) clt
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x  =  y = y)
+Zip(x : S0, y : S1, x @= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) brfalse [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 26
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) false
+###
+> Zip(x:S0, y:S1, x  <  y = y)
+Zip(x : S0, y : S1, x $< y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @< Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) bge [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x  <= y = y)
+Zip(x : S0, y : S1, x $<= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @<= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) bgt [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x  >  y = y)
+Zip(x : S0, y : S1, x $> y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @> Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) ble [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x  >= y = y)
+Zip(x : S0, y : S1, x $>= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @>= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) blt [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !=  y = y)
+Zip(x : S0, y : S1, x !@= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) !@= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) brtrue [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 26
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !<  y = y)
+Zip(x : S0, y : S1, x !$< y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @>= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) blt [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !<= y = y)
+Zip(x : S0, y : S1, x !$<= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @> Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) ble [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) false
+ 2) true 
+###
+> Zip(x:S0, y:S1, x !>  y = y)
+Zip(x : S0, y : S1, x !$> y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @<= Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) bgt [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) true 
+ 1) true 
+ 2) false
+###
+> Zip(x:S0, y:S1, x !>= y = y)
+Zip(x : S0, y : S1, x !$>= y @= y) : b*
+BndKind:Call, Type:b*, Bnd:(Call(∂.ForEach([map:1] Global(S0), [map:2] Global(S1), Cmp(Scope(1) @< Scope(2) @= Scope(2))):b*))
+// (∂.S0:G*, ∂.S1:G*) : b*
+ForEach_2(Arr<obj>, Guid, Guid):bool
+      1) ldarg.1 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::CmpVal(Guid, Guid):i4
+      1) ldc.i4.0
+      5) bge [0]
+      1) ldarg.2 [Guid]
+      1) ldarg.2 [Guid]
+      5) call static CodeGenUtil::EqVal(Guid, Guid):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      1) ret
+  Total Size: 27
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.0 [Seq<Guid>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<Guid>
+      1) stloc.1 [Seq<Guid>]
+      1) ldloc.0 [Seq<Guid>]
+      1) ldloc.1 [Seq<Guid>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Guid,Guid,bool>]
+      5) call static ForEachGen::Exec(Seq<Guid>, Seq<Guid>, Func<Guid,Guid,bool>):Seq<bool>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<bool>):Seq<bool>
+      1) ret
+  Total Size: 38
+
+Func sig: (S0:G*, S1:G*) to b*
+Sequence: Seq<bool>
+ 0) false
+ 1) true 
+ 2) false
+###

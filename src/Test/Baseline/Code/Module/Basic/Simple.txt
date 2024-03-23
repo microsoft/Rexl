@@ -1,0 +1,216 @@
+>>> *** Source:
+    plan { var X from 7; };
+    plan { var X to   7; };
+    plan { var X def  7; };
+    plan { var X from 7 req; };
+    plan { var X to   7 req; };
+    plan { var X def  7 req; };
+    plan { var X from 7 opt; };
+    plan { var X to   7 opt; };
+    plan { var X def  7 opt; };
+    plan { var X from 3 to  7; };
+    plan { var X from 3 def 7; };
+    plan { var X def  3 to  7; };
+    module { var X from (Opt (3)) req; }; // Warning: unexpected req.
+    module { var X from (Opt (3)) opt; };
+    module { var X from (Null(3)) opt; };
+    P := plan {
+        param A := 3;
+        const B := A * A;
+        var X from A to B def 2 * A;
+    };
+    P;
+    P with { };
+    P2 := P => { A: 3 }; P2;
+    P := plan {
+        param A := 3;
+        const B := A * A;
+        var X from A to B def 2 * A;
+        var Y from X; // Error.
+    };
+    P := plan {
+        param A := 3;
+        con C := A + 2; // Error.
+    };
+    P := plan {
+        param A := 3;
+        var X from A to A * A def 2 * A opt;
+    };
+    P;
+    P with { X: null };
+    P with { X: null + P.A };
+    plan { var X to 7 opt; };
+    plan { var X def 7 opt; };
+    plan { var X from 3 to  7.5; };
+    plan { var X from 3 def 7.5; };
+    plan { var X to   3 def 7.5; };
+    plan{ var X from "hello"; };
+    plan { var X from 3 to  "hello"; }; // Error.
+    plan { var X from 3 def "hello"; }; // Error.
+    plan { var X from 0 to 1; var X from -3 to 5; }; // Error.
+    plan { var X from U; }; // Error.
+    plan { param A := 3; var X from a; };
+
+>>> *** Instructions:
+   0) [0] Expr module { var X from 7 }
+   1) [0] Expr module { var X to 7 }
+   2) [0] Expr module { var X def 7 }
+   3) [0] Expr module { var X from 7 req }
+   4) [0] Expr module { var X to 7 req }
+   5) [0] Expr module { var X def 7 req }
+   6) [0] Expr module { var X from 7 opt }
+   7) [0] Expr module { var X to 7 opt }
+   8) [0] Expr module { var X def 7 opt }
+   9) [0] Expr module { var X from 3 to 7 }
+  10) [0] Expr module { var X from 3 def 7 }
+  11) [0] Expr module { var X to 7 def 3 }
+  12) [0] Expr module { var X from Opt(3) req }
+  13) [0] Expr module { var X from Opt(3) opt }
+  14) [0] Expr module { var X from Null(3) opt }
+  15) [0] Define P <- module { param A := 3; const B := A * A; var X from A to B def 2 * A }
+  16) [0] Expr P
+  17) [0] Expr P=>{  }
+  18) [0] Define P2 <- P=>{ A : 3 }
+  19) [0] Expr P2
+  20) [0] Define P <- module { param A := 3; const B := A * A; var X from A to B def 2 * A; var Y from X }
+  21) [0] Define P <- module { param A := 3; con C := A + 2 }
+  22) [0] Define P <- module { param A := 3; var X from A to A * A def 2 * A opt }
+  23) [0] Expr P
+  24) [0] Expr P=>{ X : null }
+  25) [0] Expr P=>{ X : null + P.A }
+  26) [0] Expr module { var X to 7 opt }
+  27) [0] Expr module { var X def 7 opt }
+  28) [0] Expr module { var X from 3 to 7.5 }
+  29) [0] Expr module { var X from 3 def 7.5 }
+  30) [0] Expr module { var X to 3 def 7.5 }
+  31) [0] Expr module { var X from "hello" }
+  32) [0] Expr module { var X from 3 to "hello" }
+  33) [0] Expr module { var X from 3 def "hello" }
+  34) [0] Expr module { var X from 0 to 1; var X from -3 to 5 }
+  35) [0] Expr module { var X from U }
+  36) [0] Expr module { param A := 3; var X from a }
+  37) [0] End
+
+>    0) [0] Expr module { var X from 7 }
+module symbols:
+  var X: 7
+>    1) [0] Expr module { var X to 7 }
+module symbols:
+  var X: 7
+>    2) [0] Expr module { var X def 7 }
+module symbols:
+  var X: 7
+>    3) [0] Expr module { var X from 7 req }
+module symbols:
+  var X: 7
+>    4) [0] Expr module { var X to 7 req }
+module symbols:
+  var X: 7
+>    5) [0] Expr module { var X def 7 req }
+module symbols:
+  var X: 7
+>    6) [0] Expr module { var X from 7 opt }
+module symbols:
+  var X: 7
+>    7) [0] Expr module { var X to 7 opt }
+module symbols:
+  var X: 7
+>    8) [0] Expr module { var X def 7 opt }
+module symbols:
+  var X: 7
+>    9) [0] Expr module { var X from 3 to 7 }
+module symbols:
+  var X: 3
+>   10) [0] Expr module { var X from 3 def 7 }
+module symbols:
+  var X: 7
+>   11) [0] Expr module { var X to 7 def 3 }
+module symbols:
+  var X: 3
+>   12) [0] Expr module { var X from Opt(3) req }
+*** Bind diagnostics:
+  [Simple.txt] Warning: (362,365) Node: var X from Opt(3) req, Tok: 'req', Message: Ignoring unexpected 'req'
+module symbols:
+  var X: 3
+>   13) [0] Expr module { var X from Opt(3) opt }
+module symbols:
+  var X: 3
+>   14) [0] Expr module { var X from Null(3) opt }
+module symbols:
+  var X: <null>
+>   15) [0] Define P <- module { param A := 3; const B := A * A; var X from A to B def 2 * A }
+Global 'P' has DType: M{param A:i8, const B:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,i8},(i8,i8,i8,i8,i8)>
+>   16) [0] Expr P
+module symbols:
+  param A: 3
+  const B: 9
+  var X: 6
+>   17) [0] Expr P=>{  }
+module symbols:
+  param A: 3
+  const B: 9
+  var X: 6
+>   18) [0] Define P2 <- P=>{ A : 3 }
+Global 'P2' has DType: M{param A:i8, const B:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,i8},(i8,i8,i8,i8,i8)>
+>   19) [0] Expr P2
+module symbols:
+  param A: 3
+  const B: 9
+  var X: 6
+>   20) [0] Define P <- module { param A := 3; const B := A * A; var X from A to B def 2 * A; var Y from X }
+*** Bind diagnostics:
+  [Simple.txt] Error: (705,706) Node: X, Message: A domain expression for a module free variable can't reference a variable
+>   21) [0] Define P <- module { param A := 3; con C := A + 2 }
+*** Bind diagnostics:
+  [Simple.txt] Error: (762,764) Node: con C := A + 2, Message: A module constraint must be of boolean type, not: 'i8'
+>   22) [0] Define P <- module { param A := 3; var X from A to A * A def 2 * A opt }
+Global 'P' has (modified) DType: M{param A:i8, var X:i8?}, SysType: RuntimeModule<{i8,i8},(i8,Opt<i8>,Opt<i8>,Opt<i8>)>
+>   23) [0] Expr P
+module symbols:
+  param A: 3
+  var X: 6
+>   24) [0] Expr P=>{ X : null }
+module symbols:
+  param A: 3
+  var X: <null>
+>   25) [0] Expr P=>{ X : null + P.A }
+module symbols:
+  param A: 3
+  var X: <null>
+>   26) [0] Expr module { var X to 7 opt }
+module symbols:
+  var X: 7
+>   27) [0] Expr module { var X def 7 opt }
+module symbols:
+  var X: 7
+>   28) [0] Expr module { var X from 3 to 7.5 }
+module symbols:
+  var X: 3
+>   29) [0] Expr module { var X from 3 def 7.5 }
+module symbols:
+  var X: 7.5
+>   30) [0] Expr module { var X to 3 def 7.5 }
+module symbols:
+  var X: 7.5
+>   31) [0] Expr module { var X from "hello" }
+module symbols:
+  var X: hello
+>   32) [0] Expr module { var X from 3 to "hello" }
+*** Bind diagnostics:
+  [Simple.txt] Error: (1115,1122) Node: "hello", Message: The given types are incompatible: 'i8' and 's'
+  [Simple.txt] Error: (1115,1122) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+>   33) [0] Expr module { var X from 3 def "hello" }
+*** Bind diagnostics:
+  [Simple.txt] Error: (1161,1168) Node: "hello", Message: The given types are incompatible: 'i8' and 's'
+  [Simple.txt] Error: (1161,1168) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8'
+>   34) [0] Expr module { var X from 0 to 1; var X from -3 to 5 }
+*** Bind diagnostics:
+  [Simple.txt] Error: (1214,1215) Node: var X from -3 to 5, Tok: 'X', Message: Duplicate module symbol name: 'X'
+>   35) [0] Expr module { var X from U }
+*** Bind diagnostics:
+  [Simple.txt] Error: (1262,1263) Node: U, Message: Name does not exist in the current context
+>   36) [0] Expr module { param A := 3; var X from a }
+*** Bind diagnostics:
+  [Simple.txt] Error: (1310,1311) Node: a, Message: Name does not exist in the current context, did you intend 'A'?
+>   37) [0] End
+

@@ -1,0 +1,290 @@
+>>> *** Source:
+    proc P() play { publish X := 17; }
+    finish T as P();
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.X;
+
+>>> *** Instructions:
+   0) [0] DefineProc P() play { ... }
+   1) [0] TaskProc finish T as P()
+   2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   3) [0] Expr T.X
+   4) [0] End
+
+>    0) [0] DefineProc P() play { ... }
+UDP 'P' has arity 0
+>    1) [0] TaskProc finish T as P()
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (X,))
+>    3) [0] Expr T.X
+17
+>    4) [0] End
+###
+>>> *** Source:
+    proc P(a) play {
+        publish X := a;
+        publish Y := a * a;
+        primary Both := { X, Y };
+    }
+    finish T as P(3);
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    { T.X, T.Y };
+    T.Both;
+    finish T as P(-17);
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Both;
+    finish T as P("Blah");
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Both;
+    P(7);
+
+>>> *** Instructions:
+   0) [0] DefineProc P(a) play { ... }
+   1) [0] TaskProc finish T as P(3)
+   2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   3) [0] Expr { T.X, T.Y }
+   4) [0] Expr T.Both
+   5) [0] TaskProc finish T as P(-17)
+   6) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   7) [0] Expr T.Both
+   8) [0] TaskProc finish T as P("Blah")
+   9) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+  10) [0] Expr T.Both
+  11) [0] Expr P(7)
+  12) [0] End
+
+>    0) [0] DefineProc P(a) play { ... }
+UDP 'P' has arity 1
+>    1) [0] TaskProc finish T as P(3)
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (X, Y, Both))
+>    3) [0] Expr { T.X, T.Y }
+{ X: 3, Y: 9 }
+>    4) [0] Expr T.Both
+{ X: 3, Y: 9 }
+>    5) [0] TaskProc finish T as P(-17)
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    6) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (X, Y, Both))
+>    7) [0] Expr T.Both
+{ X: -17, Y: 289 }
+>    8) [0] TaskProc finish T as P("Blah")
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    9) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(true, Invalid operand type: cannot convert type 's' to 'i8', (X,))
+>   10) [0] Expr T.Both
+*** Bind diagnostics:
+  [User.txt] Error: (317,318) Node: T.Both, Message: Namespace 'T' doesn't contain 'Both'
+>   11) [0] Expr P(7)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ X: 7, Y: 49 }
+>   12) [0] End
+###
+>>> *** Source:
+    proc P(b, c, a) play {
+        publish Res := (a, b, c);
+    }
+    finish T as P("hi", Opt(3), true);
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Res;
+    finish T as P(Opt(Time(3, 2)), Null(3), true);
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.Res;
+
+>>> *** Instructions:
+   0) [0] DefineProc P(b, c, a) play { ... }
+   1) [0] TaskProc finish T as P("hi", Opt(3), true)
+   2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   3) [0] Expr T.Res
+   4) [0] TaskProc finish T as P(Opt(Time(3, 2)), Null(3), true)
+   5) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   6) [0] Expr T.Res
+   7) [0] End
+
+>    0) [0] DefineProc P(b, c, a) play { ... }
+UDP 'P' has arity 3
+>    1) [0] TaskProc finish T as P("hi", Opt(3), true)
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Res,))
+>    3) [0] Expr T.Res
+(true, hi, 3)
+>    4) [0] TaskProc finish T as P(Opt(Time(3, 2)), Null(3), true)
+Overwriting task: T
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    5) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (Res,))
+>    6) [0] Expr T.Res
+(true, 3.02:00:00, <null>)
+>    7) [0] End
+###
+>>> *** Source:
+    proc P(x, y) play {
+        publish X := x;
+        publish Y := y;
+        primary Both := { X, Y };
+    }
+    finish T as P(3, "hi");
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    { T.X, T.Y };
+    P("Blah", 42.5);
+
+>>> *** Instructions:
+   0) [0] DefineProc P(x, y) play { ... }
+   1) [0] TaskProc finish T as P(3, "hi")
+   2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   3) [0] Expr { T.X, T.Y }
+   4) [0] Expr P("Blah", 42.5)
+   5) [0] End
+
+>    0) [0] DefineProc P(x, y) play { ... }
+UDP 'P' has arity 2
+>    1) [0] TaskProc finish T as P(3, "hi")
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (X, Y, Both))
+>    3) [0] Expr { T.X, T.Y }
+{ X: 3, Y: hi }
+>    4) [0] Expr P("Blah", 42.5)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ X: Blah, Y: 42.5 }
+>    5) [0] End
+###
+*** Parse diagnostics:
+  [User.txt] Error: (26,27) Tok: 'x', Message: Duplicate parameter name: 'x'
+###
+>>> *** Source:
+    proc P(x) play { stream XS := x; publish X := x; }
+    finish T as P(Range(10));
+    (T$Failed, T$ErrorMessage, T$ResultNames);
+    T.X->GetType();
+
+>>> *** Instructions:
+   0) [0] DefineProc P(x) play { ... }
+   1) [0] TaskProc finish T as P(Range(10))
+   2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+   3) [0] Expr T.X->GetType()
+   4) [0] End
+
+>    0) [0] DefineProc P(x) play { ... }
+UDP 'P' has arity 1
+>    1) [0] TaskProc finish T as P(Range(10))
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    2) [0] Expr (T$Failed, T$ErrorMessage, T$ResultNames)
+(false, <null>, (X,))
+>    3) [0] Expr T.X->GetType()
+i8*
+>    4) [0] End
+###
+>>> *** Source:
+    proc P(z, y, x) play {
+        publish X := x;
+        publish Y := y;
+        publish Z := z;
+        primary All := { X, Y, Z };
+    }
+    P(1, 3, 5);
+    P(2, "hi", true);
+
+>>> *** Instructions:
+   0) [0] DefineProc P(z, y, x) play { ... }
+   1) [0] Expr P(1, 3, 5)
+   2) [0] Expr P(2, "hi", true)
+   3) [0] End
+
+>    0) [0] DefineProc P(z, y, x) play { ... }
+UDP 'P' has arity 3
+>    1) [0] Expr P(1, 3, 5)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ X: 5, Y: 3, Z: 1 }
+>    2) [0] Expr P(2, "hi", true)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ X: true, Y: hi, Z: 2 }
+>    3) [0] End
+###
+>>> *** Source:
+    proc P(z, y, x, w, v) play {
+        publish V := v;
+        publish W := w;
+        publish X := x;
+        publish Y := y;
+        publish Z := z;
+        primary All := { V, W, X, Y, Z };
+    }
+    P(1, 3, 5, 7, 9);
+    P(2, "hi", true, (3,4), Time(1,2,3));
+
+>>> *** Instructions:
+   0) [0] DefineProc P(z, y, x, w, v) play { ... }
+   1) [0] Expr P(1, 3, 5, 7, 9)
+   2) [0] Expr P(2, "hi", true, (3, 4), Time(1, 2, 3))
+   3) [0] End
+
+>    0) [0] DefineProc P(z, y, x, w, v) play { ... }
+UDP 'P' has arity 5
+>    1) [0] Expr P(1, 3, 5, 7, 9)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ V: 9, W: 7, X: 5, Y: 3, Z: 1 }
+>    2) [0] Expr P(2, "hi", true, (3, 4), Time(1, 2, 3))
+<Anonymous task> now playing
+<Anonymous task> finished
+{ V: 1.02:03:00, W: (3, 4), X: true, Y: hi, Z: 2 }
+>    3) [0] End
+###
+>>> *** Source:
+    proc P(z, y, x, w, v, u) play {
+        publish U := u;
+        publish V := v;
+        publish W := w;
+        publish X := x;
+        publish Y := y;
+        publish Z := z;
+        primary All := { U, V, W, X, Y, Z };
+    }
+    P(1, 3, 5, 7, 9, 11);
+    P(2, "hi", true, (3,4), Time(1,2,3), Date(2023, 3, 15));
+
+>>> *** Instructions:
+   0) [0] DefineProc P(z, y, x, w, v, u) play { ... }
+   1) [0] Expr P(1, 3, 5, 7, 9, 11)
+   2) [0] Expr P(2, "hi", true, (3, 4), Time(1, 2, 3), Date(2023, 3, 15))
+   3) [0] End
+
+>    0) [0] DefineProc P(z, y, x, w, v, u) play { ... }
+UDP 'P' has arity 6
+>    1) [0] Expr P(1, 3, 5, 7, 9, 11)
+<Anonymous task> now playing
+<Anonymous task> finished
+{ U: 11, V: 9, W: 7, X: 5, Y: 3, Z: 1 }
+>    2) [0] Expr P(2, "hi", true, (3, 4), Time(1, 2, 3), Date(2023, 3, 15))
+<Anonymous task> now playing
+<Anonymous task> finished
+{ U: 2023/03/15, V: 1.02:03:00, W: (3, 4), X: true, Y: hi, Z: 2 }
+>    3) [0] End
+###
+

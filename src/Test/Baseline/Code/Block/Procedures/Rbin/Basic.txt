@@ -1,0 +1,1736 @@
+>>> *** Source:
+    T1 := Range(10)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    T1;
+    PC := "mytable1.rbin";
+    finish WriterC as WriteRbin(T1, Link.LocalData("temp/" & PC), true, false);
+    "*** Wrote table to '" & WriterC.Link.Path & "' ***";
+    (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames);
+    (WriterC.Size, WriterC.Compression);
+    PU := "mytable1-unchunked.rbin";
+    finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+    "*** Wrote table to '" & WriterU.Link.Path & "' ***";
+    (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames);
+    (WriterU.Size, WriterU.Compression);
+    finish ReaderC as ReadRbin(WriterC.Link);
+    (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames);
+    "*** Read table from '" & ReaderC.Link.Path & "' ***";
+    (ReaderC.FullLink.Path.Len > ReaderC.Link.Path.Len, ReaderC.FullLink.Path->IndexOf(PC) >= 0, ReaderC.Link.Path->IndexOf(PC) >= 0);
+    ReaderC.RowCount;
+    ReaderC.Data;
+    finish ReaderU as ReadRbin(WriterU.Link);
+    (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames);
+    "*** Read table from '" & ReaderU.Link.Path & "' ***";
+    (ReaderU.FullLink.Path.Len > ReaderU.Link.Path.Len, ReaderU.FullLink.Path->IndexOf(PU) >= 0, ReaderU.Link.Path->IndexOf(PU) >= 0);
+    ReaderU.RowCount;
+    ReaderU.Data;
+    "*** Write/read non-opt primitive types. ***";
+    T2 := [
+        (1ia shl 7) - 1,
+        (1ia shl 7),
+        (1ia shl 8) - 1,
+        (1ia shl 8),
+        (1ia shl 15) - 1,
+        (1ia shl 15),
+        (1ia shl 16) - 1,
+        (1ia shl 16),
+        (1ia shl 31) - 1,
+        (1ia shl 31),
+        (1ia shl 32) - 1,
+        (1ia shl 32),
+        (1ia shl 63) - 1,
+        (1ia shl 63),
+        (1ia shl 64) - 1,
+        (1ia shl 64),
+    ]
+    ->{
+        IA: CastIA(it),
+        I8: CastI8(it), I4: CastI4(it), I2: CastI2(it), I1: CastI1(it),
+        U8: CastU8(it), U4: CastU4(it), U2: CastU2(it), U1: CastU1(it),
+        R8: CastR8(it / 4), R4: CastR4(it / 4),
+        B:  it band 1 != 0,
+        S: ToText(it),
+        D1: CastDate(it), // Ticks.
+        T1: CastTime(it),
+        D2: CastDate(it * 10_000_000), // Seconds.
+        T2: CastTime(it * 10_000_000),
+        D3: CastDate(it * (10_000_000 * 60)), // Minutes.
+        T3: CastTime(it * (10_000_000 * 60)),
+    };
+    T2;
+    T2.IA;
+    T2.I8;
+    T2.I4;
+    T2.I2;
+    T2.I1;
+    T2.U8;
+    T2.U4;
+    T2.U2;
+    T2.U1;
+    T2.R8;
+    T2.R4;
+    T2.B;
+    T2.S;
+    T2.D1;
+    T2.D2;
+    T2.D3;
+    T2.T1;
+    T2.T2;
+    T2.T3;
+    P := "mytable2.rbin";
+    finish Writer as WriteRbin(T2, "temp/" & P, true, false);
+    (Writer.Size, Writer.Compression);
+    finish Reader as ReadRbin(Writer.FullLink);
+    (Reader.FullLink.Path.Len = Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) >= 0, Reader.Link.Path->IndexOf(P) >= 0);
+    Reader.RowCount;
+    RT2 := Reader.Data;
+    RT2;
+    RT2.IA;
+    RT2.I8;
+    RT2.I4;
+    RT2.I2;
+    RT2.I1;
+    RT2.U8;
+    RT2.U4;
+    RT2.U2;
+    RT2.U1;
+    RT2.R8;
+    RT2.R4;
+    RT2.B;
+    RT2.S;
+    RT2.D1;
+    RT2.D2;
+    RT2.D3;
+    RT2.T1;
+    RT2.T2;
+    RT2.T3;
+    ForEach(a:T2, b:RT2, (
+        "_" if a.I8 = b.I8 else "X",
+        "_" if a.I4 = b.I4 else "X",
+        "_" if a.I2 = b.I2 else "X",
+        "_" if a.I1 = b.I1 else "X",
+        "_" if a.U8 = b.U8 else "X",
+        "_" if a.U4 = b.U4 else "X",
+        "_" if a.U2 = b.U2 else "X",
+        "_" if a.U1 = b.U1 else "X",
+        "_" if a.R8 = b.R8 else "X",
+        "_" if a.R4 = b.R4 else "X",
+        "_" if a.B  = b.B  else "X",
+        "_" if a.S  = b.S  else "X",
+        "_" if a.D1 = b.D1 else "X",
+        "_" if a.D2 = b.D2 else "X",
+        "_" if a.D3 = b.D3 else "X",
+        "_" if a.T1 = b.T1 else "X",
+        "_" if a.T2 = b.T2 else "X",
+        "_" if a.T3 = b.T3 else "X",
+    ));
+    "*** Write/read opt primitive types. ***";
+    T3 := T2 ++ [{}];
+    T3;
+    finish Writer as WriteRbin(T3, "temp/mytable3.rbin", true, false);
+    RT3 := ReadRbin(Writer.FullLink);
+    RT3;
+    RT3.IA;
+    RT3.I8;
+    RT3.I4;
+    RT3.I2;
+    RT3.I1;
+    RT3.U8;
+    RT3.U4;
+    RT3.U2;
+    RT3.U1;
+    RT3.R8;
+    RT3.R4;
+    RT3.B;
+    RT3.S;
+    RT3.D1;
+    RT3.D2;
+    RT3.D3;
+    RT3.T1;
+    RT3.T2;
+    RT3.T3;
+    ForEach(a:T3, b:RT3, (
+        "_" if a.I8 = b.I8 else "X",
+        "_" if a.I4 = b.I4 else "X",
+        "_" if a.I2 = b.I2 else "X",
+        "_" if a.I1 = b.I1 else "X",
+        "_" if a.U8 = b.U8 else "X",
+        "_" if a.U4 = b.U4 else "X",
+        "_" if a.U2 = b.U2 else "X",
+        "_" if a.U1 = b.U1 else "X",
+        "_" if a.R8 = b.R8 else "X",
+        "_" if a.R4 = b.R4 else "X",
+        "_" if a.B  = b.B  else "X",
+        "_" if a.S  = b.S  else "X",
+        "_" if a.D1 = b.D1 else "X",
+        "_" if a.D2 = b.D2 else "X",
+        "_" if a.D3 = b.D3 else "X",
+        "_" if a.T1 = b.T1 else "X",
+        "_" if a.T2 = b.T2 else "X",
+        "_" if a.T3 = b.T3 else "X",
+    ));
+    "*** Write/read opt records. ***";
+    finish Writer as WriteRbin(T3 ++ [null], "temp/mytable3-opt.rbin", true, false);
+    RT3N := ReadRbin(Writer.FullLink);
+    RT3N;
+    ForEach(a:T3 ++ [null], b:RT3N, (
+        "_" if a.I8 = b.I8 else "X",
+        "_" if a.I4 = b.I4 else "X",
+        "_" if a.I2 = b.I2 else "X",
+        "_" if a.I1 = b.I1 else "X",
+        "_" if a.U8 = b.U8 else "X",
+        "_" if a.U4 = b.U4 else "X",
+        "_" if a.U2 = b.U2 else "X",
+        "_" if a.U1 = b.U1 else "X",
+        "_" if a.R8 = b.R8 else "X",
+        "_" if a.R4 = b.R4 else "X",
+        "_" if a.B  = b.B  else "X",
+        "_" if a.S  = b.S  else "X",
+        "_" if a.D1 = b.D1 else "X",
+        "_" if a.D2 = b.D2 else "X",
+        "_" if a.D3 = b.D3 else "X",
+        "_" if a.T1 = b.T1 else "X",
+        "_" if a.T2 = b.T2 else "X",
+        "_" if a.T3 = b.T3 else "X",
+    ));
+    "*** Write/read zero rows. ***";
+    T4 := T2->TakeIf(I8 = 1);
+    T4;
+    finish Writer as WriteRbin(T4, "temp/mytable4.rbin", true, false);
+    RT4 := ReadRbin(Writer.FullLink);
+    RT4;
+    "*** Write/read zero columns (throws). ***";
+    T5 := Range(10)->{ };
+    T5;
+    finish Writer as WriteRbin(T5, "temp/mytable5.rbin", true, false); // Throws.
+    (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames);
+    RT5 := ReadRbin(Writer.FullLink); // Writer.FullLink invalid.
+    RT5;
+    "*** Write type with g (bind error). ***";
+    T6 := Range(2)->CastGenLift() ++ Range(2)->{A:it};
+    T6;
+    finish Writer as WriteRbin(T6, "temp/mytable6.rbin", true, false);
+
+>>> *** Instructions:
+   0) [0] Define T1 <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   1) [0] Expr T1
+   2) [0] Define PC <- "mytable1.rbin"
+   3) [0] TaskProc finish WriterC as WriteRbin(T1, Link.LocalData("temp/" & PC), true, false)
+   4) [0] Expr "*** Wrote table to '" & WriterC.Link.Path & "' ***"
+   5) [0] Expr (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames)
+   6) [0] Expr (WriterC.Size, WriterC.Compression)
+   7) [0] Define PU <- "mytable1-unchunked.rbin"
+   8) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+   9) [0] Expr "*** Wrote table to '" & WriterU.Link.Path & "' ***"
+  10) [0] Expr (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames)
+  11) [0] Expr (WriterU.Size, WriterU.Compression)
+  12) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+  13) [0] Expr (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames)
+  14) [0] Expr "*** Read table from '" & ReaderC.Link.Path & "' ***"
+  15) [0] Expr (ReaderC.FullLink.Path.Len $> ReaderC.Link.Path.Len, ReaderC.FullLink.Path->IndexOf(PC) $>= 0, ReaderC.Link.Path->IndexOf(PC) $>= 0)
+  16) [0] Expr ReaderC.RowCount
+  17) [0] Expr ReaderC.Data
+  18) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+  19) [0] Expr (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames)
+  20) [0] Expr "*** Read table from '" & ReaderU.Link.Path & "' ***"
+  21) [0] Expr (ReaderU.FullLink.Path.Len $> ReaderU.Link.Path.Len, ReaderU.FullLink.Path->IndexOf(PU) $>= 0, ReaderU.Link.Path->IndexOf(PU) $>= 0)
+  22) [0] Expr ReaderU.RowCount
+  23) [0] Expr ReaderU.Data
+  24) [0] Expr "*** Write/read non-opt primitive types. ***"
+  25) [0] Define T2 <- [(1 shl 7) - 1, 1 shl 7, (1 shl 8) - 1, 1 shl 8, (1 shl 15) - 1, 1 shl 15, (1 shl 16) - 1, 1 shl 16, (1 shl 31) - 1, 1 shl 31, (1 shl 32) - 1, 1 shl 32, (1 shl 63) - 1, 1 shl 63, (1 shl 64) - 1, 1 shl 64]->{ IA : CastIA(it), I8 : CastI8(it), I4 : CastI4(it), I2 : CastI2(it), I1 : CastI1(it), U8 : CastU8(it), U4 : CastU4(it), U2 : CastU2(it), U1 : CastU1(it), R8 : CastR8(it / 4), R4 : CastR4(it / 4), B : it band 1 !@= 0, S : ToText(it), D1 : CastDate(it), T1 : CastTime(it), D2 : CastDate(it * 10000000), T2 : CastTime(it * 10000000), D3 : CastDate(it * (10000000 * 60)), T3 : CastTime(it * (10000000 * 60)) }
+  26) [0] Expr T2
+  27) [0] Expr T2.IA
+  28) [0] Expr T2.I8
+  29) [0] Expr T2.I4
+  30) [0] Expr T2.I2
+  31) [0] Expr T2.I1
+  32) [0] Expr T2.U8
+  33) [0] Expr T2.U4
+  34) [0] Expr T2.U2
+  35) [0] Expr T2.U1
+  36) [0] Expr T2.R8
+  37) [0] Expr T2.R4
+  38) [0] Expr T2.B
+  39) [0] Expr T2.S
+  40) [0] Expr T2.D1
+  41) [0] Expr T2.D2
+  42) [0] Expr T2.D3
+  43) [0] Expr T2.T1
+  44) [0] Expr T2.T2
+  45) [0] Expr T2.T3
+  46) [0] Define P <- "mytable2.rbin"
+  47) [0] TaskProc finish Writer as WriteRbin(T2, "temp/" & P, true, false)
+  48) [0] Expr (Writer.Size, Writer.Compression)
+  49) [0] TaskProc finish Reader as ReadRbin(Writer.FullLink)
+  50) [0] Expr (Reader.FullLink.Path.Len @= Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) $>= 0, Reader.Link.Path->IndexOf(P) $>= 0)
+  51) [0] Expr Reader.RowCount
+  52) [0] Define RT2 <- Reader.Data
+  53) [0] Expr RT2
+  54) [0] Expr RT2.IA
+  55) [0] Expr RT2.I8
+  56) [0] Expr RT2.I4
+  57) [0] Expr RT2.I2
+  58) [0] Expr RT2.I1
+  59) [0] Expr RT2.U8
+  60) [0] Expr RT2.U4
+  61) [0] Expr RT2.U2
+  62) [0] Expr RT2.U1
+  63) [0] Expr RT2.R8
+  64) [0] Expr RT2.R4
+  65) [0] Expr RT2.B
+  66) [0] Expr RT2.S
+  67) [0] Expr RT2.D1
+  68) [0] Expr RT2.D2
+  69) [0] Expr RT2.D3
+  70) [0] Expr RT2.T1
+  71) [0] Expr RT2.T2
+  72) [0] Expr RT2.T3
+  73) [0] Expr ForEach(a : T2, b : RT2, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+  74) [0] Expr "*** Write/read opt primitive types. ***"
+  75) [0] Define T3 <- T2 ++ [{  }]
+  76) [0] Expr T3
+  77) [0] TaskProc finish Writer as WriteRbin(T3, "temp/mytable3.rbin", true, false)
+  78) [0] Define RT3 <- ReadRbin(Writer.FullLink)
+  79) [0] Expr RT3
+  80) [0] Expr RT3.IA
+  81) [0] Expr RT3.I8
+  82) [0] Expr RT3.I4
+  83) [0] Expr RT3.I2
+  84) [0] Expr RT3.I1
+  85) [0] Expr RT3.U8
+  86) [0] Expr RT3.U4
+  87) [0] Expr RT3.U2
+  88) [0] Expr RT3.U1
+  89) [0] Expr RT3.R8
+  90) [0] Expr RT3.R4
+  91) [0] Expr RT3.B
+  92) [0] Expr RT3.S
+  93) [0] Expr RT3.D1
+  94) [0] Expr RT3.D2
+  95) [0] Expr RT3.D3
+  96) [0] Expr RT3.T1
+  97) [0] Expr RT3.T2
+  98) [0] Expr RT3.T3
+  99) [0] Expr ForEach(a : T3, b : RT3, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+ 100) [0] Expr "*** Write/read opt records. ***"
+ 101) [0] TaskProc finish Writer as WriteRbin(T3 ++ [null], "temp/mytable3-opt.rbin", true, false)
+ 102) [0] Define RT3N <- ReadRbin(Writer.FullLink)
+ 103) [0] Expr RT3N
+ 104) [0] Expr ForEach(a : T3 ++ [null], b : RT3N, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+ 105) [0] Expr "*** Write/read zero rows. ***"
+ 106) [0] Define T4 <- T2->TakeIf(I8 @= 1)
+ 107) [0] Expr T4
+ 108) [0] TaskProc finish Writer as WriteRbin(T4, "temp/mytable4.rbin", true, false)
+ 109) [0] Define RT4 <- ReadRbin(Writer.FullLink)
+ 110) [0] Expr RT4
+ 111) [0] Expr "*** Write/read zero columns (throws). ***"
+ 112) [0] Define T5 <- Range(10)->{  }
+ 113) [0] Expr T5
+ 114) [0] TaskProc finish Writer as WriteRbin(T5, "temp/mytable5.rbin", true, false)
+ 115) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+ 116) [0] Define RT5 <- ReadRbin(Writer.FullLink)
+ 117) [0] Expr RT5
+ 118) [0] Expr "*** Write type with g (bind error). ***"
+ 119) [0] Define T6 <- Range(2)->CastGenLift() ++ Range(2)->{ A : it }
+ 120) [0] Expr T6
+ 121) [0] TaskProc finish Writer as WriteRbin(T6, "temp/mytable6.rbin", true, false)
+ 122) [0] End
+
+>    0) [0] Define T1 <- Range(10)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T1' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    1) [0] Expr T1
+Seq<{i8,i8,str,bool}>
+   0) { A: 0, B: 0, C: Blah_0, D: true }
+   1) { A: 1, B: 1, C: Blah_1, D: false }
+   2) { A: 2, B: 4, C: Blah_2, D: false }
+   3) { A: 3, B: 9, C: Blah_3, D: true }
+   4) { A: 4, B: 16, C: Blah_4, D: false }
+   5) { A: 5, B: 25, C: Blah_5, D: false }
+   6) { A: 6, B: 36, C: Blah_6, D: true }
+   7) { A: 7, B: 49, C: Blah_7, D: false }
+   8) { A: 8, B: 64, C: Blah_8, D: false }
+   9) { A: 9, B: 81, C: Blah_9, D: true }
+>    2) [0] Define PC <- "mytable1.rbin"
+Global 'PC' has DType: s, SysType: str
+>    3) [0] TaskProc finish WriterC as WriteRbin(T1, Link.LocalData("temp/" & PC), true, false)
+Task 'WriterC' added
+Task 'WriterC' now playing
+Task 'WriterC' finished
+>    4) [0] Expr "*** Wrote table to '" & WriterC.Link.Path & "' ***"
+*** Wrote table to 'temp/mytable1.rbin' ***
+>    5) [0] Expr (WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>    6) [0] Expr (WriterC.Size, WriterC.Compression)
+(292, None)
+>    7) [0] Define PU <- "mytable1-unchunked.rbin"
+Global 'PU' has DType: s, SysType: str
+>    8) [0] TaskProc finish WriterU as WriteRbin(T1, "temp/" & PU, false, false)
+Task 'WriterU' added
+Task 'WriterU' now playing
+Task 'WriterU' finished
+>    9) [0] Expr "*** Wrote table to '" & WriterU.Link.Path & "' ***"
+*** Wrote table to 'temp/mytable1-unchunked.rbin' ***
+>   10) [0] Expr (WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames)
+(Finished, true, false, (Link, Compression, FullLink, Size))
+>   11) [0] Expr (WriterU.Size, WriterU.Compression)
+(240, None)
+>   12) [0] TaskProc finish ReaderC as ReadRbin(WriterC.Link)
+Task 'ReaderC' added
+Task 'ReaderC' now playing
+Task 'ReaderC' finished
+>   13) [0] Expr (ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, SData, Data))
+>   14) [0] Expr "*** Read table from '" & ReaderC.Link.Path & "' ***"
+*** Read table from 'temp/mytable1.rbin' ***
+>   15) [0] Expr (ReaderC.FullLink.Path.Len $> ReaderC.Link.Path.Len, ReaderC.FullLink.Path->IndexOf(PC) $>= 0, ReaderC.Link.Path->IndexOf(PC) $>= 0)
+(true, true, true)
+>   16) [0] Expr ReaderC.RowCount
+10
+>   17) [0] Expr ReaderC.Data
+Seq<{i8,i8,str,bool}>
+   0) { A: 0, B: 0, C: Blah_0, D: true }
+   1) { A: 1, B: 1, C: Blah_1, D: false }
+   2) { A: 2, B: 4, C: Blah_2, D: false }
+   3) { A: 3, B: 9, C: Blah_3, D: true }
+   4) { A: 4, B: 16, C: Blah_4, D: false }
+   5) { A: 5, B: 25, C: Blah_5, D: false }
+   6) { A: 6, B: 36, C: Blah_6, D: true }
+   7) { A: 7, B: 49, C: Blah_7, D: false }
+   8) { A: 8, B: 64, C: Blah_8, D: false }
+   9) { A: 9, B: 81, C: Blah_9, D: true }
+>   18) [0] TaskProc finish ReaderU as ReadRbin(WriterU.Link)
+Task 'ReaderU' added
+Task 'ReaderU' now playing
+Task 'ReaderU' finished
+>   19) [0] Expr (ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames)
+(Finished, true, false, (Link, FullLink, RowCount, SData, Data))
+>   20) [0] Expr "*** Read table from '" & ReaderU.Link.Path & "' ***"
+*** Read table from 'temp/mytable1-unchunked.rbin' ***
+>   21) [0] Expr (ReaderU.FullLink.Path.Len $> ReaderU.Link.Path.Len, ReaderU.FullLink.Path->IndexOf(PU) $>= 0, ReaderU.Link.Path->IndexOf(PU) $>= 0)
+(true, true, true)
+>   22) [0] Expr ReaderU.RowCount
+10
+>   23) [0] Expr ReaderU.Data
+Seq<{i8,i8,str,bool}>
+   0) { A: 0, B: 0, C: Blah_0, D: true }
+   1) { A: 1, B: 1, C: Blah_1, D: false }
+   2) { A: 2, B: 4, C: Blah_2, D: false }
+   3) { A: 3, B: 9, C: Blah_3, D: true }
+   4) { A: 4, B: 16, C: Blah_4, D: false }
+   5) { A: 5, B: 25, C: Blah_5, D: false }
+   6) { A: 6, B: 36, C: Blah_6, D: true }
+   7) { A: 7, B: 49, C: Blah_7, D: false }
+   8) { A: 8, B: 64, C: Blah_8, D: false }
+   9) { A: 9, B: 81, C: Blah_9, D: true }
+>   24) [0] Expr "*** Write/read non-opt primitive types. ***"
+*** Write/read non-opt primitive types. ***
+>   25) [0] Define T2 <- [(1 shl 7) - 1, 1 shl 7, (1 shl 8) - 1, 1 shl 8, (1 shl 15) - 1, 1 shl 15, (1 shl 16) - 1, 1 shl 16, (1 shl 31) - 1, 1 shl 31, (1 shl 32) - 1, 1 shl 32, (1 shl 63) - 1, 1 shl 63, (1 shl 64) - 1, 1 shl 64]->{ IA : CastIA(it), I8 : CastI8(it), I4 : CastI4(it), I2 : CastI2(it), I1 : CastI1(it), U8 : CastU8(it), U4 : CastU4(it), U2 : CastU2(it), U1 : CastU1(it), R8 : CastR8(it / 4), R4 : CastR4(it / 4), B : it band 1 !@= 0, S : ToText(it), D1 : CastDate(it), T1 : CastTime(it), D2 : CastDate(it * 10000000), T2 : CastTime(it * 10000000), D3 : CastDate(it * (10000000 * 60)), T3 : CastTime(it * (10000000 * 60)) }
+Global 'T2' has DType: {B:b, D1:d, D2:d, D3:d, I1:i1, I2:i2, I4:i4, I8:i8, IA:i, R4:r4, R8:r8, S:s, T1:t, T2:t, T3:t, U1:u1, U2:u2, U4:u4, U8:u8}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>   26) [0] Expr T2
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+   0) { B: true, D1: 0001/01/01 00:00:00.0000127, D2: 0001/01/01 00:02:07.0000000, D3: 0001/01/01 02:07:00.0000000, I1: 127, I2: 127, I4: 127, I8: 127, IA: 127, R4: 31.75, R8: 31.75, S: 127, T1: 00:00:00.0000127, T2: 00:02:07, T3: 02:07:00, U1: 127, U2: 127, U4: 127, U8: 127 }
+   1) { B: false, D1: 0001/01/01 00:00:00.0000128, D2: 0001/01/01 00:02:08.0000000, D3: 0001/01/01 02:08:00.0000000, I1: -128, I2: 128, I4: 128, I8: 128, IA: 128, R4: 32, R8: 32, S: 128, T1: 00:00:00.0000128, T2: 00:02:08, T3: 02:08:00, U1: 128, U2: 128, U4: 128, U8: 128 }
+   2) { B: true, D1: 0001/01/01 00:00:00.0000255, D2: 0001/01/01 00:04:15.0000000, D3: 0001/01/01 04:15:00.0000000, I1: -1, I2: 255, I4: 255, I8: 255, IA: 255, R4: 63.75, R8: 63.75, S: 255, T1: 00:00:00.0000255, T2: 00:04:15, T3: 04:15:00, U1: 255, U2: 255, U4: 255, U8: 255 }
+   3) { B: false, D1: 0001/01/01 00:00:00.0000256, D2: 0001/01/01 00:04:16.0000000, D3: 0001/01/01 04:16:00.0000000, I1: 0, I2: 256, I4: 256, I8: 256, IA: 256, R4: 64, R8: 64, S: 256, T1: 00:00:00.0000256, T2: 00:04:16, T3: 04:16:00, U1: 0, U2: 256, U4: 256, U8: 256 }
+   4) { B: true, D1: 0001/01/01 00:00:00.0032767, D2: 0001/01/01 09:06:07.0000000, D3: 0001/01/23 18:07:00.0000000, I1: -1, I2: 32767, I4: 32767, I8: 32767, IA: 32767, R4: 8191.75, R8: 8191.75, S: 32767, T1: 00:00:00.0032767, T2: 09:06:07, T3: 22.18:07:00, U1: 255, U2: 32767, U4: 32767, U8: 32767 }
+   5) { B: false, D1: 0001/01/01 00:00:00.0032768, D2: 0001/01/01 09:06:08.0000000, D3: 0001/01/23 18:08:00.0000000, I1: 0, I2: -32768, I4: 32768, I8: 32768, IA: 32768, R4: 8192, R8: 8192, S: 32768, T1: 00:00:00.0032768, T2: 09:06:08, T3: 22.18:08:00, U1: 0, U2: 32768, U4: 32768, U8: 32768 }
+   6) { B: true, D1: 0001/01/01 00:00:00.0065535, D2: 0001/01/01 18:12:15.0000000, D3: 0001/02/15 12:15:00.0000000, I1: -1, I2: -1, I4: 65535, I8: 65535, IA: 65535, R4: 16383.75, R8: 16383.75, S: 65535, T1: 00:00:00.0065535, T2: 18:12:15, T3: 45.12:15:00, U1: 255, U2: 65535, U4: 65535, U8: 65535 }
+   7) { B: false, D1: 0001/01/01 00:00:00.0065536, D2: 0001/01/01 18:12:16.0000000, D3: 0001/02/15 12:16:00.0000000, I1: 0, I2: 0, I4: 65536, I8: 65536, IA: 65536, R4: 16384, R8: 16384, S: 65536, T1: 00:00:00.0065536, T2: 18:12:16, T3: 45.12:16:00, U1: 0, U2: 0, U4: 65536, U8: 65536 }
+   8) { B: true, D1: 0001/01/01 00:03:34.7483647, D2: 0069/01/19 03:14:07.0000000, D3: 4084/01/24 02:07:00.0000000, I1: -1, I2: -1, I4: 2147483647, I8: 2147483647, IA: 2147483647, R4: 536870900, R8: 536870911.75, S: 2147483647, T1: 00:03:34.7483647, T2: 24855.03:14:07, T3: 1491308.02:07:00, U1: 255, U2: 65535, U4: 2147483647, U8: 2147483647 }
+   9) { B: false, D1: 0001/01/01 00:03:34.7483648, D2: 0069/01/19 03:14:08.0000000, D3: 4084/01/24 02:08:00.0000000, I1: 0, I2: 0, I4: -2147483648, I8: 2147483648, IA: 2147483648, R4: 536870900, R8: 536870912, S: 2147483648, T1: 00:03:34.7483648, T2: 24855.03:14:08, T3: 1491308.02:08:00, U1: 0, U2: 0, U4: 2147483648, U8: 2147483648 }
+  10) { B: true, D1: 0001/01/01 00:07:09.4967295, D2: 0137/02/07 06:28:15.0000000, D3: 8167/02/16 04:15:00.0000000, I1: -1, I2: -1, I4: -1, I8: 4294967295, IA: 4294967295, R4: 1.0737418E+09, R8: 1073741823.75, S: 4294967295, T1: 00:07:09.4967295, T2: 49710.06:28:15, T3: 2982616.04:15:00, U1: 255, U2: 65535, U4: 4294967295, U8: 4294967295 }
+  11) { B: false, D1: 0001/01/01 00:07:09.4967296, D2: 0137/02/07 06:28:16.0000000, D3: 8167/02/16 04:16:00.0000000, I1: 0, I2: 0, I4: 0, I8: 4294967296, IA: 4294967296, R4: 1.0737418E+09, R8: 1073741824, S: 4294967296, T1: 00:07:09.4967296, T2: 49710.06:28:16, T3: 2982616.04:16:00, U1: 0, U2: 0, U4: 0, U8: 4294967296 }
+  12) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: 9223372036854775807, IA: 9223372036854775807, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775807, T1: 10675199.02:48:05.4775807, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 9223372036854775807 }
+  13) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: -9223372036854775808, IA: 9223372036854775808, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775808, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 9223372036854775808 }
+  14) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: -1, IA: 18446744073709551615, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551615, T1: 0, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 18446744073709551615 }
+  15) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: 0, IA: 18446744073709551616, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551616, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 0 }
+>   27) [0] Expr T2.IA
+Seq<ia>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+>   28) [0] Expr T2.I8
+Seq<i8>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) -9223372036854775808
+  14) -1
+  15) 0
+>   29) [0] Expr T2.I4
+Seq<i4>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) -2147483648
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   30) [0] Expr T2.I2
+Seq<i2>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) -32768
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   31) [0] Expr T2.I1
+Seq<i1>
+   0) 127
+   1) -128
+   2) -1
+   3) 0
+   4) -1
+   5) 0
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   32) [0] Expr T2.U8
+Seq<u8>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 0
+>   33) [0] Expr T2.U4
+Seq<u4>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 0
+  12) 4294967295
+  13) 0
+  14) 4294967295
+  15) 0
+>   34) [0] Expr T2.U2
+Seq<u2>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 0
+   8) 65535
+   9) 0
+  10) 65535
+  11) 0
+  12) 65535
+  13) 0
+  14) 65535
+  15) 0
+>   35) [0] Expr T2.U1
+Seq<u1>
+   0) 127
+   1) 128
+   2) 255
+   3) 0
+   4) 255
+   5) 0
+   6) 255
+   7) 0
+   8) 255
+   9) 0
+  10) 255
+  11) 0
+  12) 255
+  13) 0
+  14) 255
+  15) 0
+>   36) [0] Expr T2.R8
+Seq<r8>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870911.75
+   9) 536870912
+  10) 1073741823.75
+  11) 1073741824
+  12) 2.305843009213694E+18
+  13) 2.305843009213694E+18
+  14) 4.611686018427388E+18
+  15) 4.611686018427388E+18
+>   37) [0] Expr T2.R4
+Seq<r4>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870900
+   9) 536870900
+  10) 1.0737418E+09
+  11) 1.0737418E+09
+  12) 2.305843E+18
+  13) 2.305843E+18
+  14) 4.611686E+18
+  15) 4.611686E+18
+>   38) [0] Expr T2.B
+Seq<bool>
+   0) true
+   1) false
+   2) true
+   3) false
+   4) true
+   5) false
+   6) true
+   7) false
+   8) true
+   9) false
+  10) true
+  11) false
+  12) true
+  13) false
+  14) true
+  15) false
+>   39) [0] Expr T2.S
+Seq<str>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+>   40) [0] Expr T2.D1
+Seq<Date>
+   0) 0001/01/01 00:00:00.0000127
+   1) 0001/01/01 00:00:00.0000128
+   2) 0001/01/01 00:00:00.0000255
+   3) 0001/01/01 00:00:00.0000256
+   4) 0001/01/01 00:00:00.0032767
+   5) 0001/01/01 00:00:00.0032768
+   6) 0001/01/01 00:00:00.0065535
+   7) 0001/01/01 00:00:00.0065536
+   8) 0001/01/01 00:03:34.7483647
+   9) 0001/01/01 00:03:34.7483648
+  10) 0001/01/01 00:07:09.4967295
+  11) 0001/01/01 00:07:09.4967296
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   41) [0] Expr T2.D2
+Seq<Date>
+   0) 0001/01/01 00:02:07.0000000
+   1) 0001/01/01 00:02:08.0000000
+   2) 0001/01/01 00:04:15.0000000
+   3) 0001/01/01 00:04:16.0000000
+   4) 0001/01/01 09:06:07.0000000
+   5) 0001/01/01 09:06:08.0000000
+   6) 0001/01/01 18:12:15.0000000
+   7) 0001/01/01 18:12:16.0000000
+   8) 0069/01/19 03:14:07.0000000
+   9) 0069/01/19 03:14:08.0000000
+  10) 0137/02/07 06:28:15.0000000
+  11) 0137/02/07 06:28:16.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   42) [0] Expr T2.D3
+Seq<Date>
+   0) 0001/01/01 02:07:00.0000000
+   1) 0001/01/01 02:08:00.0000000
+   2) 0001/01/01 04:15:00.0000000
+   3) 0001/01/01 04:16:00.0000000
+   4) 0001/01/23 18:07:00.0000000
+   5) 0001/01/23 18:08:00.0000000
+   6) 0001/02/15 12:15:00.0000000
+   7) 0001/02/15 12:16:00.0000000
+   8) 4084/01/24 02:07:00.0000000
+   9) 4084/01/24 02:08:00.0000000
+  10) 8167/02/16 04:15:00.0000000
+  11) 8167/02/16 04:16:00.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   43) [0] Expr T2.T1
+Seq<Time>
+   0) 00:00:00.0000127
+   1) 00:00:00.0000128
+   2) 00:00:00.0000255
+   3) 00:00:00.0000256
+   4) 00:00:00.0032767
+   5) 00:00:00.0032768
+   6) 00:00:00.0065535
+   7) 00:00:00.0065536
+   8) 00:03:34.7483647
+   9) 00:03:34.7483648
+  10) 00:07:09.4967295
+  11) 00:07:09.4967296
+  12) 10675199.02:48:05.4775807
+  13) 0
+  14) 0
+  15) 0
+>   44) [0] Expr T2.T2
+Seq<Time>
+   0) 00:02:07
+   1) 00:02:08
+   2) 00:04:15
+   3) 00:04:16
+   4) 09:06:07
+   5) 09:06:08
+   6) 18:12:15
+   7) 18:12:16
+   8) 24855.03:14:07
+   9) 24855.03:14:08
+  10) 49710.06:28:15
+  11) 49710.06:28:16
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+>   45) [0] Expr T2.T3
+Seq<Time>
+   0) 02:07:00
+   1) 02:08:00
+   2) 04:15:00
+   3) 04:16:00
+   4) 22.18:07:00
+   5) 22.18:08:00
+   6) 45.12:15:00
+   7) 45.12:16:00
+   8) 1491308.02:07:00
+   9) 1491308.02:08:00
+  10) 2982616.04:15:00
+  11) 2982616.04:16:00
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+>   46) [0] Define P <- "mytable2.rbin"
+Global 'P' has DType: s, SysType: str
+>   47) [0] TaskProc finish Writer as WriteRbin(T2, "temp/" & P, true, false)
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>   48) [0] Expr (Writer.Size, Writer.Compression)
+(1970, None)
+>   49) [0] TaskProc finish Reader as ReadRbin(Writer.FullLink)
+Task 'Reader' added
+Task 'Reader' now playing
+Task 'Reader' finished
+>   50) [0] Expr (Reader.FullLink.Path.Len @= Reader.Link.Path.Len, Reader.FullLink.Path->IndexOf(P) $>= 0, Reader.Link.Path->IndexOf(P) $>= 0)
+(true, true, true)
+>   51) [0] Expr Reader.RowCount
+16
+>   52) [0] Define RT2 <- Reader.Data
+Global 'RT2' has DType: {B:b, D1:d, D2:d, D3:d, I1:i1, I2:i2, I4:i4, I8:i8, IA:i, R4:r4, R8:r8, S:s, T1:t, T2:t, T3:t, U1:u1, U2:u2, U4:u4, U8:u8}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>   53) [0] Expr RT2
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+   0) { B: true, D1: 0001/01/01 00:00:00.0000127, D2: 0001/01/01 00:02:07.0000000, D3: 0001/01/01 02:07:00.0000000, I1: 127, I2: 127, I4: 127, I8: 127, IA: 127, R4: 31.75, R8: 31.75, S: 127, T1: 00:00:00.0000127, T2: 00:02:07, T3: 02:07:00, U1: 127, U2: 127, U4: 127, U8: 127 }
+   1) { B: false, D1: 0001/01/01 00:00:00.0000128, D2: 0001/01/01 00:02:08.0000000, D3: 0001/01/01 02:08:00.0000000, I1: -128, I2: 128, I4: 128, I8: 128, IA: 128, R4: 32, R8: 32, S: 128, T1: 00:00:00.0000128, T2: 00:02:08, T3: 02:08:00, U1: 128, U2: 128, U4: 128, U8: 128 }
+   2) { B: true, D1: 0001/01/01 00:00:00.0000255, D2: 0001/01/01 00:04:15.0000000, D3: 0001/01/01 04:15:00.0000000, I1: -1, I2: 255, I4: 255, I8: 255, IA: 255, R4: 63.75, R8: 63.75, S: 255, T1: 00:00:00.0000255, T2: 00:04:15, T3: 04:15:00, U1: 255, U2: 255, U4: 255, U8: 255 }
+   3) { B: false, D1: 0001/01/01 00:00:00.0000256, D2: 0001/01/01 00:04:16.0000000, D3: 0001/01/01 04:16:00.0000000, I1: 0, I2: 256, I4: 256, I8: 256, IA: 256, R4: 64, R8: 64, S: 256, T1: 00:00:00.0000256, T2: 00:04:16, T3: 04:16:00, U1: 0, U2: 256, U4: 256, U8: 256 }
+   4) { B: true, D1: 0001/01/01 00:00:00.0032767, D2: 0001/01/01 09:06:07.0000000, D3: 0001/01/23 18:07:00.0000000, I1: -1, I2: 32767, I4: 32767, I8: 32767, IA: 32767, R4: 8191.75, R8: 8191.75, S: 32767, T1: 00:00:00.0032767, T2: 09:06:07, T3: 22.18:07:00, U1: 255, U2: 32767, U4: 32767, U8: 32767 }
+   5) { B: false, D1: 0001/01/01 00:00:00.0032768, D2: 0001/01/01 09:06:08.0000000, D3: 0001/01/23 18:08:00.0000000, I1: 0, I2: -32768, I4: 32768, I8: 32768, IA: 32768, R4: 8192, R8: 8192, S: 32768, T1: 00:00:00.0032768, T2: 09:06:08, T3: 22.18:08:00, U1: 0, U2: 32768, U4: 32768, U8: 32768 }
+   6) { B: true, D1: 0001/01/01 00:00:00.0065535, D2: 0001/01/01 18:12:15.0000000, D3: 0001/02/15 12:15:00.0000000, I1: -1, I2: -1, I4: 65535, I8: 65535, IA: 65535, R4: 16383.75, R8: 16383.75, S: 65535, T1: 00:00:00.0065535, T2: 18:12:15, T3: 45.12:15:00, U1: 255, U2: 65535, U4: 65535, U8: 65535 }
+   7) { B: false, D1: 0001/01/01 00:00:00.0065536, D2: 0001/01/01 18:12:16.0000000, D3: 0001/02/15 12:16:00.0000000, I1: 0, I2: 0, I4: 65536, I8: 65536, IA: 65536, R4: 16384, R8: 16384, S: 65536, T1: 00:00:00.0065536, T2: 18:12:16, T3: 45.12:16:00, U1: 0, U2: 0, U4: 65536, U8: 65536 }
+   8) { B: true, D1: 0001/01/01 00:03:34.7483647, D2: 0069/01/19 03:14:07.0000000, D3: 4084/01/24 02:07:00.0000000, I1: -1, I2: -1, I4: 2147483647, I8: 2147483647, IA: 2147483647, R4: 536870900, R8: 536870911.75, S: 2147483647, T1: 00:03:34.7483647, T2: 24855.03:14:07, T3: 1491308.02:07:00, U1: 255, U2: 65535, U4: 2147483647, U8: 2147483647 }
+   9) { B: false, D1: 0001/01/01 00:03:34.7483648, D2: 0069/01/19 03:14:08.0000000, D3: 4084/01/24 02:08:00.0000000, I1: 0, I2: 0, I4: -2147483648, I8: 2147483648, IA: 2147483648, R4: 536870900, R8: 536870912, S: 2147483648, T1: 00:03:34.7483648, T2: 24855.03:14:08, T3: 1491308.02:08:00, U1: 0, U2: 0, U4: 2147483648, U8: 2147483648 }
+  10) { B: true, D1: 0001/01/01 00:07:09.4967295, D2: 0137/02/07 06:28:15.0000000, D3: 8167/02/16 04:15:00.0000000, I1: -1, I2: -1, I4: -1, I8: 4294967295, IA: 4294967295, R4: 1.0737418E+09, R8: 1073741823.75, S: 4294967295, T1: 00:07:09.4967295, T2: 49710.06:28:15, T3: 2982616.04:15:00, U1: 255, U2: 65535, U4: 4294967295, U8: 4294967295 }
+  11) { B: false, D1: 0001/01/01 00:07:09.4967296, D2: 0137/02/07 06:28:16.0000000, D3: 8167/02/16 04:16:00.0000000, I1: 0, I2: 0, I4: 0, I8: 4294967296, IA: 4294967296, R4: 1.0737418E+09, R8: 1073741824, S: 4294967296, T1: 00:07:09.4967296, T2: 49710.06:28:16, T3: 2982616.04:16:00, U1: 0, U2: 0, U4: 0, U8: 4294967296 }
+  12) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: 9223372036854775807, IA: 9223372036854775807, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775807, T1: 10675199.02:48:05.4775807, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 9223372036854775807 }
+  13) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: -9223372036854775808, IA: 9223372036854775808, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775808, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 9223372036854775808 }
+  14) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: -1, IA: 18446744073709551615, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551615, T1: 0, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 18446744073709551615 }
+  15) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: 0, IA: 18446744073709551616, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551616, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 0 }
+>   54) [0] Expr RT2.IA
+Seq<ia>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+>   55) [0] Expr RT2.I8
+Seq<i8>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) -9223372036854775808
+  14) -1
+  15) 0
+>   56) [0] Expr RT2.I4
+Seq<i4>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) -2147483648
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   57) [0] Expr RT2.I2
+Seq<i2>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) -32768
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   58) [0] Expr RT2.I1
+Seq<i1>
+   0) 127
+   1) -128
+   2) -1
+   3) 0
+   4) -1
+   5) 0
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+>   59) [0] Expr RT2.U8
+Seq<u8>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 0
+>   60) [0] Expr RT2.U4
+Seq<u4>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 0
+  12) 4294967295
+  13) 0
+  14) 4294967295
+  15) 0
+>   61) [0] Expr RT2.U2
+Seq<u2>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 0
+   8) 65535
+   9) 0
+  10) 65535
+  11) 0
+  12) 65535
+  13) 0
+  14) 65535
+  15) 0
+>   62) [0] Expr RT2.U1
+Seq<u1>
+   0) 127
+   1) 128
+   2) 255
+   3) 0
+   4) 255
+   5) 0
+   6) 255
+   7) 0
+   8) 255
+   9) 0
+  10) 255
+  11) 0
+  12) 255
+  13) 0
+  14) 255
+  15) 0
+>   63) [0] Expr RT2.R8
+Seq<r8>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870911.75
+   9) 536870912
+  10) 1073741823.75
+  11) 1073741824
+  12) 2.305843009213694E+18
+  13) 2.305843009213694E+18
+  14) 4.611686018427388E+18
+  15) 4.611686018427388E+18
+>   64) [0] Expr RT2.R4
+Seq<r4>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870900
+   9) 536870900
+  10) 1.0737418E+09
+  11) 1.0737418E+09
+  12) 2.305843E+18
+  13) 2.305843E+18
+  14) 4.611686E+18
+  15) 4.611686E+18
+>   65) [0] Expr RT2.B
+Seq<bool>
+   0) true
+   1) false
+   2) true
+   3) false
+   4) true
+   5) false
+   6) true
+   7) false
+   8) true
+   9) false
+  10) true
+  11) false
+  12) true
+  13) false
+  14) true
+  15) false
+>   66) [0] Expr RT2.S
+Seq<str>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+>   67) [0] Expr RT2.D1
+Seq<Date>
+   0) 0001/01/01 00:00:00.0000127
+   1) 0001/01/01 00:00:00.0000128
+   2) 0001/01/01 00:00:00.0000255
+   3) 0001/01/01 00:00:00.0000256
+   4) 0001/01/01 00:00:00.0032767
+   5) 0001/01/01 00:00:00.0032768
+   6) 0001/01/01 00:00:00.0065535
+   7) 0001/01/01 00:00:00.0065536
+   8) 0001/01/01 00:03:34.7483647
+   9) 0001/01/01 00:03:34.7483648
+  10) 0001/01/01 00:07:09.4967295
+  11) 0001/01/01 00:07:09.4967296
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   68) [0] Expr RT2.D2
+Seq<Date>
+   0) 0001/01/01 00:02:07.0000000
+   1) 0001/01/01 00:02:08.0000000
+   2) 0001/01/01 00:04:15.0000000
+   3) 0001/01/01 00:04:16.0000000
+   4) 0001/01/01 09:06:07.0000000
+   5) 0001/01/01 09:06:08.0000000
+   6) 0001/01/01 18:12:15.0000000
+   7) 0001/01/01 18:12:16.0000000
+   8) 0069/01/19 03:14:07.0000000
+   9) 0069/01/19 03:14:08.0000000
+  10) 0137/02/07 06:28:15.0000000
+  11) 0137/02/07 06:28:16.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   69) [0] Expr RT2.D3
+Seq<Date>
+   0) 0001/01/01 02:07:00.0000000
+   1) 0001/01/01 02:08:00.0000000
+   2) 0001/01/01 04:15:00.0000000
+   3) 0001/01/01 04:16:00.0000000
+   4) 0001/01/23 18:07:00.0000000
+   5) 0001/01/23 18:08:00.0000000
+   6) 0001/02/15 12:15:00.0000000
+   7) 0001/02/15 12:16:00.0000000
+   8) 4084/01/24 02:07:00.0000000
+   9) 4084/01/24 02:08:00.0000000
+  10) 8167/02/16 04:15:00.0000000
+  11) 8167/02/16 04:16:00.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+>   70) [0] Expr RT2.T1
+Seq<Time>
+   0) 00:00:00.0000127
+   1) 00:00:00.0000128
+   2) 00:00:00.0000255
+   3) 00:00:00.0000256
+   4) 00:00:00.0032767
+   5) 00:00:00.0032768
+   6) 00:00:00.0065535
+   7) 00:00:00.0065536
+   8) 00:03:34.7483647
+   9) 00:03:34.7483648
+  10) 00:07:09.4967295
+  11) 00:07:09.4967296
+  12) 10675199.02:48:05.4775807
+  13) 0
+  14) 0
+  15) 0
+>   71) [0] Expr RT2.T2
+Seq<Time>
+   0) 00:02:07
+   1) 00:02:08
+   2) 00:04:15
+   3) 00:04:16
+   4) 09:06:07
+   5) 09:06:08
+   6) 18:12:15
+   7) 18:12:16
+   8) 24855.03:14:07
+   9) 24855.03:14:08
+  10) 49710.06:28:15
+  11) 49710.06:28:16
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+>   72) [0] Expr RT2.T3
+Seq<Time>
+   0) 02:07:00
+   1) 02:08:00
+   2) 04:15:00
+   3) 04:16:00
+   4) 22.18:07:00
+   5) 22.18:08:00
+   6) 45.12:15:00
+   7) 45.12:16:00
+   8) 1491308.02:07:00
+   9) 1491308.02:08:00
+  10) 2982616.04:15:00
+  11) 2982616.04:16:00
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+>   73) [0] Expr ForEach(a : T2, b : RT2, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+Seq<(str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str)>
+   0) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   1) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   2) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   3) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   4) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   5) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   6) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   7) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   8) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   9) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  10) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  11) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  12) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  13) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  14) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  15) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+>   74) [0] Expr "*** Write/read opt primitive types. ***"
+*** Write/read opt primitive types. ***
+>   75) [0] Define T3 <- T2 ++ [{  }]
+Global 'T3' has DType: {B:b?, D1:d?, D2:d?, D3:d?, I1:i1?, I2:i2?, I4:i4?, I8:i8?, IA:i?, R4:r4?, R8:r8?, S:s, T1:t?, T2:t?, T3:t?, U1:u1?, U2:u2?, U4:u4?, U8:u8?}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>   76) [0] Expr T3
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+   0) { B: true, D1: 0001/01/01 00:00:00.0000127, D2: 0001/01/01 00:02:07.0000000, D3: 0001/01/01 02:07:00.0000000, I1: 127, I2: 127, I4: 127, I8: 127, IA: 127, R4: 31.75, R8: 31.75, S: 127, T1: 00:00:00.0000127, T2: 00:02:07, T3: 02:07:00, U1: 127, U2: 127, U4: 127, U8: 127 }
+   1) { B: false, D1: 0001/01/01 00:00:00.0000128, D2: 0001/01/01 00:02:08.0000000, D3: 0001/01/01 02:08:00.0000000, I1: -128, I2: 128, I4: 128, I8: 128, IA: 128, R4: 32, R8: 32, S: 128, T1: 00:00:00.0000128, T2: 00:02:08, T3: 02:08:00, U1: 128, U2: 128, U4: 128, U8: 128 }
+   2) { B: true, D1: 0001/01/01 00:00:00.0000255, D2: 0001/01/01 00:04:15.0000000, D3: 0001/01/01 04:15:00.0000000, I1: -1, I2: 255, I4: 255, I8: 255, IA: 255, R4: 63.75, R8: 63.75, S: 255, T1: 00:00:00.0000255, T2: 00:04:15, T3: 04:15:00, U1: 255, U2: 255, U4: 255, U8: 255 }
+   3) { B: false, D1: 0001/01/01 00:00:00.0000256, D2: 0001/01/01 00:04:16.0000000, D3: 0001/01/01 04:16:00.0000000, I1: 0, I2: 256, I4: 256, I8: 256, IA: 256, R4: 64, R8: 64, S: 256, T1: 00:00:00.0000256, T2: 00:04:16, T3: 04:16:00, U1: 0, U2: 256, U4: 256, U8: 256 }
+   4) { B: true, D1: 0001/01/01 00:00:00.0032767, D2: 0001/01/01 09:06:07.0000000, D3: 0001/01/23 18:07:00.0000000, I1: -1, I2: 32767, I4: 32767, I8: 32767, IA: 32767, R4: 8191.75, R8: 8191.75, S: 32767, T1: 00:00:00.0032767, T2: 09:06:07, T3: 22.18:07:00, U1: 255, U2: 32767, U4: 32767, U8: 32767 }
+   5) { B: false, D1: 0001/01/01 00:00:00.0032768, D2: 0001/01/01 09:06:08.0000000, D3: 0001/01/23 18:08:00.0000000, I1: 0, I2: -32768, I4: 32768, I8: 32768, IA: 32768, R4: 8192, R8: 8192, S: 32768, T1: 00:00:00.0032768, T2: 09:06:08, T3: 22.18:08:00, U1: 0, U2: 32768, U4: 32768, U8: 32768 }
+   6) { B: true, D1: 0001/01/01 00:00:00.0065535, D2: 0001/01/01 18:12:15.0000000, D3: 0001/02/15 12:15:00.0000000, I1: -1, I2: -1, I4: 65535, I8: 65535, IA: 65535, R4: 16383.75, R8: 16383.75, S: 65535, T1: 00:00:00.0065535, T2: 18:12:15, T3: 45.12:15:00, U1: 255, U2: 65535, U4: 65535, U8: 65535 }
+   7) { B: false, D1: 0001/01/01 00:00:00.0065536, D2: 0001/01/01 18:12:16.0000000, D3: 0001/02/15 12:16:00.0000000, I1: 0, I2: 0, I4: 65536, I8: 65536, IA: 65536, R4: 16384, R8: 16384, S: 65536, T1: 00:00:00.0065536, T2: 18:12:16, T3: 45.12:16:00, U1: 0, U2: 0, U4: 65536, U8: 65536 }
+   8) { B: true, D1: 0001/01/01 00:03:34.7483647, D2: 0069/01/19 03:14:07.0000000, D3: 4084/01/24 02:07:00.0000000, I1: -1, I2: -1, I4: 2147483647, I8: 2147483647, IA: 2147483647, R4: 536870900, R8: 536870911.75, S: 2147483647, T1: 00:03:34.7483647, T2: 24855.03:14:07, T3: 1491308.02:07:00, U1: 255, U2: 65535, U4: 2147483647, U8: 2147483647 }
+   9) { B: false, D1: 0001/01/01 00:03:34.7483648, D2: 0069/01/19 03:14:08.0000000, D3: 4084/01/24 02:08:00.0000000, I1: 0, I2: 0, I4: -2147483648, I8: 2147483648, IA: 2147483648, R4: 536870900, R8: 536870912, S: 2147483648, T1: 00:03:34.7483648, T2: 24855.03:14:08, T3: 1491308.02:08:00, U1: 0, U2: 0, U4: 2147483648, U8: 2147483648 }
+  10) { B: true, D1: 0001/01/01 00:07:09.4967295, D2: 0137/02/07 06:28:15.0000000, D3: 8167/02/16 04:15:00.0000000, I1: -1, I2: -1, I4: -1, I8: 4294967295, IA: 4294967295, R4: 1.0737418E+09, R8: 1073741823.75, S: 4294967295, T1: 00:07:09.4967295, T2: 49710.06:28:15, T3: 2982616.04:15:00, U1: 255, U2: 65535, U4: 4294967295, U8: 4294967295 }
+  11) { B: false, D1: 0001/01/01 00:07:09.4967296, D2: 0137/02/07 06:28:16.0000000, D3: 8167/02/16 04:16:00.0000000, I1: 0, I2: 0, I4: 0, I8: 4294967296, IA: 4294967296, R4: 1.0737418E+09, R8: 1073741824, S: 4294967296, T1: 00:07:09.4967296, T2: 49710.06:28:16, T3: 2982616.04:16:00, U1: 0, U2: 0, U4: 0, U8: 4294967296 }
+  12) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: 9223372036854775807, IA: 9223372036854775807, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775807, T1: 10675199.02:48:05.4775807, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 9223372036854775807 }
+  13) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: -9223372036854775808, IA: 9223372036854775808, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775808, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 9223372036854775808 }
+  14) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: -1, IA: 18446744073709551615, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551615, T1: 0, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 18446744073709551615 }
+  15) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: 0, IA: 18446744073709551616, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551616, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 0 }
+  16) { B: <null>, D1: <null>, D2: <null>, D3: <null>, I1: <null>, I2: <null>, I4: <null>, I8: <null>, IA: <null>, R4: <null>, R8: <null>, S: <null>, T1: <null>, T2: <null>, T3: <null>, U1: <null>, U2: <null>, U4: <null>, U8: <null> }
+>   77) [0] TaskProc finish Writer as WriteRbin(T3, "temp/mytable3.rbin", true, false)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>   78) [0] Define RT3 <- ReadRbin(Writer.FullLink)
+Global 'RT3' has DType: {B:b?, D1:d?, D2:d?, D3:d?, I1:i1?, I2:i2?, I4:i4?, I8:i8?, IA:i?, R4:r4?, R8:r8?, S:s, T1:t?, T2:t?, T3:t?, U1:u1?, U2:u2?, U4:u4?, U8:u8?}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+<Anonymous task> now playing
+<Anonymous task> finished
+>   79) [0] Expr RT3
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+   0) { B: true, D1: 0001/01/01 00:00:00.0000127, D2: 0001/01/01 00:02:07.0000000, D3: 0001/01/01 02:07:00.0000000, I1: 127, I2: 127, I4: 127, I8: 127, IA: 127, R4: 31.75, R8: 31.75, S: 127, T1: 00:00:00.0000127, T2: 00:02:07, T3: 02:07:00, U1: 127, U2: 127, U4: 127, U8: 127 }
+   1) { B: false, D1: 0001/01/01 00:00:00.0000128, D2: 0001/01/01 00:02:08.0000000, D3: 0001/01/01 02:08:00.0000000, I1: -128, I2: 128, I4: 128, I8: 128, IA: 128, R4: 32, R8: 32, S: 128, T1: 00:00:00.0000128, T2: 00:02:08, T3: 02:08:00, U1: 128, U2: 128, U4: 128, U8: 128 }
+   2) { B: true, D1: 0001/01/01 00:00:00.0000255, D2: 0001/01/01 00:04:15.0000000, D3: 0001/01/01 04:15:00.0000000, I1: -1, I2: 255, I4: 255, I8: 255, IA: 255, R4: 63.75, R8: 63.75, S: 255, T1: 00:00:00.0000255, T2: 00:04:15, T3: 04:15:00, U1: 255, U2: 255, U4: 255, U8: 255 }
+   3) { B: false, D1: 0001/01/01 00:00:00.0000256, D2: 0001/01/01 00:04:16.0000000, D3: 0001/01/01 04:16:00.0000000, I1: 0, I2: 256, I4: 256, I8: 256, IA: 256, R4: 64, R8: 64, S: 256, T1: 00:00:00.0000256, T2: 00:04:16, T3: 04:16:00, U1: 0, U2: 256, U4: 256, U8: 256 }
+   4) { B: true, D1: 0001/01/01 00:00:00.0032767, D2: 0001/01/01 09:06:07.0000000, D3: 0001/01/23 18:07:00.0000000, I1: -1, I2: 32767, I4: 32767, I8: 32767, IA: 32767, R4: 8191.75, R8: 8191.75, S: 32767, T1: 00:00:00.0032767, T2: 09:06:07, T3: 22.18:07:00, U1: 255, U2: 32767, U4: 32767, U8: 32767 }
+   5) { B: false, D1: 0001/01/01 00:00:00.0032768, D2: 0001/01/01 09:06:08.0000000, D3: 0001/01/23 18:08:00.0000000, I1: 0, I2: -32768, I4: 32768, I8: 32768, IA: 32768, R4: 8192, R8: 8192, S: 32768, T1: 00:00:00.0032768, T2: 09:06:08, T3: 22.18:08:00, U1: 0, U2: 32768, U4: 32768, U8: 32768 }
+   6) { B: true, D1: 0001/01/01 00:00:00.0065535, D2: 0001/01/01 18:12:15.0000000, D3: 0001/02/15 12:15:00.0000000, I1: -1, I2: -1, I4: 65535, I8: 65535, IA: 65535, R4: 16383.75, R8: 16383.75, S: 65535, T1: 00:00:00.0065535, T2: 18:12:15, T3: 45.12:15:00, U1: 255, U2: 65535, U4: 65535, U8: 65535 }
+   7) { B: false, D1: 0001/01/01 00:00:00.0065536, D2: 0001/01/01 18:12:16.0000000, D3: 0001/02/15 12:16:00.0000000, I1: 0, I2: 0, I4: 65536, I8: 65536, IA: 65536, R4: 16384, R8: 16384, S: 65536, T1: 00:00:00.0065536, T2: 18:12:16, T3: 45.12:16:00, U1: 0, U2: 0, U4: 65536, U8: 65536 }
+   8) { B: true, D1: 0001/01/01 00:03:34.7483647, D2: 0069/01/19 03:14:07.0000000, D3: 4084/01/24 02:07:00.0000000, I1: -1, I2: -1, I4: 2147483647, I8: 2147483647, IA: 2147483647, R4: 536870900, R8: 536870911.75, S: 2147483647, T1: 00:03:34.7483647, T2: 24855.03:14:07, T3: 1491308.02:07:00, U1: 255, U2: 65535, U4: 2147483647, U8: 2147483647 }
+   9) { B: false, D1: 0001/01/01 00:03:34.7483648, D2: 0069/01/19 03:14:08.0000000, D3: 4084/01/24 02:08:00.0000000, I1: 0, I2: 0, I4: -2147483648, I8: 2147483648, IA: 2147483648, R4: 536870900, R8: 536870912, S: 2147483648, T1: 00:03:34.7483648, T2: 24855.03:14:08, T3: 1491308.02:08:00, U1: 0, U2: 0, U4: 2147483648, U8: 2147483648 }
+  10) { B: true, D1: 0001/01/01 00:07:09.4967295, D2: 0137/02/07 06:28:15.0000000, D3: 8167/02/16 04:15:00.0000000, I1: -1, I2: -1, I4: -1, I8: 4294967295, IA: 4294967295, R4: 1.0737418E+09, R8: 1073741823.75, S: 4294967295, T1: 00:07:09.4967295, T2: 49710.06:28:15, T3: 2982616.04:15:00, U1: 255, U2: 65535, U4: 4294967295, U8: 4294967295 }
+  11) { B: false, D1: 0001/01/01 00:07:09.4967296, D2: 0137/02/07 06:28:16.0000000, D3: 8167/02/16 04:16:00.0000000, I1: 0, I2: 0, I4: 0, I8: 4294967296, IA: 4294967296, R4: 1.0737418E+09, R8: 1073741824, S: 4294967296, T1: 00:07:09.4967296, T2: 49710.06:28:16, T3: 2982616.04:16:00, U1: 0, U2: 0, U4: 0, U8: 4294967296 }
+  12) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: 9223372036854775807, IA: 9223372036854775807, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775807, T1: 10675199.02:48:05.4775807, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 9223372036854775807 }
+  13) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: -9223372036854775808, IA: 9223372036854775808, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775808, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 9223372036854775808 }
+  14) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: -1, IA: 18446744073709551615, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551615, T1: 0, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 18446744073709551615 }
+  15) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: 0, IA: 18446744073709551616, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551616, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 0 }
+  16) { B: <null>, D1: <null>, D2: <null>, D3: <null>, I1: <null>, I2: <null>, I4: <null>, I8: <null>, IA: <null>, R4: <null>, R8: <null>, S: <null>, T1: <null>, T2: <null>, T3: <null>, U1: <null>, U2: <null>, U4: <null>, U8: <null> }
+>   80) [0] Expr RT3.IA
+Seq<Opt<ia>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+  16) <null>
+>   81) [0] Expr RT3.I8
+Seq<Opt<i8>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) -9223372036854775808
+  14) -1
+  15) 0
+  16) <null>
+>   82) [0] Expr RT3.I4
+Seq<Opt<i4>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) -2147483648
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+  16) <null>
+>   83) [0] Expr RT3.I2
+Seq<Opt<i2>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) -32768
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+  16) <null>
+>   84) [0] Expr RT3.I1
+Seq<Opt<i1>>
+   0) 127
+   1) -128
+   2) -1
+   3) 0
+   4) -1
+   5) 0
+   6) -1
+   7) 0
+   8) -1
+   9) 0
+  10) -1
+  11) 0
+  12) -1
+  13) 0
+  14) -1
+  15) 0
+  16) <null>
+>   85) [0] Expr RT3.U8
+Seq<Opt<u8>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 0
+  16) <null>
+>   86) [0] Expr RT3.U4
+Seq<Opt<u4>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 0
+  12) 4294967295
+  13) 0
+  14) 4294967295
+  15) 0
+  16) <null>
+>   87) [0] Expr RT3.U2
+Seq<Opt<u2>>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 0
+   8) 65535
+   9) 0
+  10) 65535
+  11) 0
+  12) 65535
+  13) 0
+  14) 65535
+  15) 0
+  16) <null>
+>   88) [0] Expr RT3.U1
+Seq<Opt<u1>>
+   0) 127
+   1) 128
+   2) 255
+   3) 0
+   4) 255
+   5) 0
+   6) 255
+   7) 0
+   8) 255
+   9) 0
+  10) 255
+  11) 0
+  12) 255
+  13) 0
+  14) 255
+  15) 0
+  16) <null>
+>   89) [0] Expr RT3.R8
+Seq<Opt<r8>>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870911.75
+   9) 536870912
+  10) 1073741823.75
+  11) 1073741824
+  12) 2.305843009213694E+18
+  13) 2.305843009213694E+18
+  14) 4.611686018427388E+18
+  15) 4.611686018427388E+18
+  16) <null>
+>   90) [0] Expr RT3.R4
+Seq<Opt<r4>>
+   0) 31.75
+   1) 32
+   2) 63.75
+   3) 64
+   4) 8191.75
+   5) 8192
+   6) 16383.75
+   7) 16384
+   8) 536870900
+   9) 536870900
+  10) 1.0737418E+09
+  11) 1.0737418E+09
+  12) 2.305843E+18
+  13) 2.305843E+18
+  14) 4.611686E+18
+  15) 4.611686E+18
+  16) <null>
+>   91) [0] Expr RT3.B
+Seq<Opt<bool>>
+   0) true
+   1) false
+   2) true
+   3) false
+   4) true
+   5) false
+   6) true
+   7) false
+   8) true
+   9) false
+  10) true
+  11) false
+  12) true
+  13) false
+  14) true
+  15) false
+  16) <null>
+>   92) [0] Expr RT3.S
+Seq<str>
+   0) 127
+   1) 128
+   2) 255
+   3) 256
+   4) 32767
+   5) 32768
+   6) 65535
+   7) 65536
+   8) 2147483647
+   9) 2147483648
+  10) 4294967295
+  11) 4294967296
+  12) 9223372036854775807
+  13) 9223372036854775808
+  14) 18446744073709551615
+  15) 18446744073709551616
+  16) <null>
+>   93) [0] Expr RT3.D1
+Seq<Opt<Date>>
+   0) 0001/01/01 00:00:00.0000127
+   1) 0001/01/01 00:00:00.0000128
+   2) 0001/01/01 00:00:00.0000255
+   3) 0001/01/01 00:00:00.0000256
+   4) 0001/01/01 00:00:00.0032767
+   5) 0001/01/01 00:00:00.0032768
+   6) 0001/01/01 00:00:00.0065535
+   7) 0001/01/01 00:00:00.0065536
+   8) 0001/01/01 00:03:34.7483647
+   9) 0001/01/01 00:03:34.7483648
+  10) 0001/01/01 00:07:09.4967295
+  11) 0001/01/01 00:07:09.4967296
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+  16) <null>
+>   94) [0] Expr RT3.D2
+Seq<Opt<Date>>
+   0) 0001/01/01 00:02:07.0000000
+   1) 0001/01/01 00:02:08.0000000
+   2) 0001/01/01 00:04:15.0000000
+   3) 0001/01/01 00:04:16.0000000
+   4) 0001/01/01 09:06:07.0000000
+   5) 0001/01/01 09:06:08.0000000
+   6) 0001/01/01 18:12:15.0000000
+   7) 0001/01/01 18:12:16.0000000
+   8) 0069/01/19 03:14:07.0000000
+   9) 0069/01/19 03:14:08.0000000
+  10) 0137/02/07 06:28:15.0000000
+  11) 0137/02/07 06:28:16.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+  16) <null>
+>   95) [0] Expr RT3.D3
+Seq<Opt<Date>>
+   0) 0001/01/01 02:07:00.0000000
+   1) 0001/01/01 02:08:00.0000000
+   2) 0001/01/01 04:15:00.0000000
+   3) 0001/01/01 04:16:00.0000000
+   4) 0001/01/23 18:07:00.0000000
+   5) 0001/01/23 18:08:00.0000000
+   6) 0001/02/15 12:15:00.0000000
+   7) 0001/02/15 12:16:00.0000000
+   8) 4084/01/24 02:07:00.0000000
+   9) 4084/01/24 02:08:00.0000000
+  10) 8167/02/16 04:15:00.0000000
+  11) 8167/02/16 04:16:00.0000000
+  12) 0001/01/01
+  13) 0001/01/01
+  14) 0001/01/01
+  15) 0001/01/01
+  16) <null>
+>   96) [0] Expr RT3.T1
+Seq<Opt<Time>>
+   0) 00:00:00.0000127
+   1) 00:00:00.0000128
+   2) 00:00:00.0000255
+   3) 00:00:00.0000256
+   4) 00:00:00.0032767
+   5) 00:00:00.0032768
+   6) 00:00:00.0065535
+   7) 00:00:00.0065536
+   8) 00:03:34.7483647
+   9) 00:03:34.7483648
+  10) 00:07:09.4967295
+  11) 00:07:09.4967296
+  12) 10675199.02:48:05.4775807
+  13) 0
+  14) 0
+  15) 0
+  16) <null>
+>   97) [0] Expr RT3.T2
+Seq<Opt<Time>>
+   0) 00:02:07
+   1) 00:02:08
+   2) 00:04:15
+   3) 00:04:16
+   4) 09:06:07
+   5) 09:06:08
+   6) 18:12:15
+   7) 18:12:16
+   8) 24855.03:14:07
+   9) 24855.03:14:08
+  10) 49710.06:28:15
+  11) 49710.06:28:16
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+  16) <null>
+>   98) [0] Expr RT3.T3
+Seq<Opt<Time>>
+   0) 02:07:00
+   1) 02:08:00
+   2) 04:15:00
+   3) 04:16:00
+   4) 22.18:07:00
+   5) 22.18:08:00
+   6) 45.12:15:00
+   7) 45.12:16:00
+   8) 1491308.02:07:00
+   9) 1491308.02:08:00
+  10) 2982616.04:15:00
+  11) 2982616.04:16:00
+  12) 0
+  13) 0
+  14) 0
+  15) 0
+  16) <null>
+>   99) [0] Expr ForEach(a : T3, b : RT3, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+Seq<(str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str)>
+   0) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   1) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   2) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   3) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   4) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   5) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   6) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   7) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   8) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   9) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  10) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  11) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  12) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  13) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  14) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  15) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  16) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+>  100) [0] Expr "*** Write/read opt records. ***"
+*** Write/read opt records. ***
+>  101) [0] TaskProc finish Writer as WriteRbin(T3 ++ [null], "temp/mytable3-opt.rbin", true, false)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>  102) [0] Define RT3N <- ReadRbin(Writer.FullLink)
+Global 'RT3N' has DType: {B:b?, D1:d?, D2:d?, D3:d?, I1:i1?, I2:i2?, I4:i4?, I8:i8?, IA:i?, R4:r4?, R8:r8?, S:s, T1:t?, T2:t?, T3:t?, U1:u1?, U2:u2?, U4:u4?, U8:u8?}?*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+<Anonymous task> now playing
+<Anonymous task> finished
+>  103) [0] Expr RT3N
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+   0) { B: true, D1: 0001/01/01 00:00:00.0000127, D2: 0001/01/01 00:02:07.0000000, D3: 0001/01/01 02:07:00.0000000, I1: 127, I2: 127, I4: 127, I8: 127, IA: 127, R4: 31.75, R8: 31.75, S: 127, T1: 00:00:00.0000127, T2: 00:02:07, T3: 02:07:00, U1: 127, U2: 127, U4: 127, U8: 127 }
+   1) { B: false, D1: 0001/01/01 00:00:00.0000128, D2: 0001/01/01 00:02:08.0000000, D3: 0001/01/01 02:08:00.0000000, I1: -128, I2: 128, I4: 128, I8: 128, IA: 128, R4: 32, R8: 32, S: 128, T1: 00:00:00.0000128, T2: 00:02:08, T3: 02:08:00, U1: 128, U2: 128, U4: 128, U8: 128 }
+   2) { B: true, D1: 0001/01/01 00:00:00.0000255, D2: 0001/01/01 00:04:15.0000000, D3: 0001/01/01 04:15:00.0000000, I1: -1, I2: 255, I4: 255, I8: 255, IA: 255, R4: 63.75, R8: 63.75, S: 255, T1: 00:00:00.0000255, T2: 00:04:15, T3: 04:15:00, U1: 255, U2: 255, U4: 255, U8: 255 }
+   3) { B: false, D1: 0001/01/01 00:00:00.0000256, D2: 0001/01/01 00:04:16.0000000, D3: 0001/01/01 04:16:00.0000000, I1: 0, I2: 256, I4: 256, I8: 256, IA: 256, R4: 64, R8: 64, S: 256, T1: 00:00:00.0000256, T2: 00:04:16, T3: 04:16:00, U1: 0, U2: 256, U4: 256, U8: 256 }
+   4) { B: true, D1: 0001/01/01 00:00:00.0032767, D2: 0001/01/01 09:06:07.0000000, D3: 0001/01/23 18:07:00.0000000, I1: -1, I2: 32767, I4: 32767, I8: 32767, IA: 32767, R4: 8191.75, R8: 8191.75, S: 32767, T1: 00:00:00.0032767, T2: 09:06:07, T3: 22.18:07:00, U1: 255, U2: 32767, U4: 32767, U8: 32767 }
+   5) { B: false, D1: 0001/01/01 00:00:00.0032768, D2: 0001/01/01 09:06:08.0000000, D3: 0001/01/23 18:08:00.0000000, I1: 0, I2: -32768, I4: 32768, I8: 32768, IA: 32768, R4: 8192, R8: 8192, S: 32768, T1: 00:00:00.0032768, T2: 09:06:08, T3: 22.18:08:00, U1: 0, U2: 32768, U4: 32768, U8: 32768 }
+   6) { B: true, D1: 0001/01/01 00:00:00.0065535, D2: 0001/01/01 18:12:15.0000000, D3: 0001/02/15 12:15:00.0000000, I1: -1, I2: -1, I4: 65535, I8: 65535, IA: 65535, R4: 16383.75, R8: 16383.75, S: 65535, T1: 00:00:00.0065535, T2: 18:12:15, T3: 45.12:15:00, U1: 255, U2: 65535, U4: 65535, U8: 65535 }
+   7) { B: false, D1: 0001/01/01 00:00:00.0065536, D2: 0001/01/01 18:12:16.0000000, D3: 0001/02/15 12:16:00.0000000, I1: 0, I2: 0, I4: 65536, I8: 65536, IA: 65536, R4: 16384, R8: 16384, S: 65536, T1: 00:00:00.0065536, T2: 18:12:16, T3: 45.12:16:00, U1: 0, U2: 0, U4: 65536, U8: 65536 }
+   8) { B: true, D1: 0001/01/01 00:03:34.7483647, D2: 0069/01/19 03:14:07.0000000, D3: 4084/01/24 02:07:00.0000000, I1: -1, I2: -1, I4: 2147483647, I8: 2147483647, IA: 2147483647, R4: 536870900, R8: 536870911.75, S: 2147483647, T1: 00:03:34.7483647, T2: 24855.03:14:07, T3: 1491308.02:07:00, U1: 255, U2: 65535, U4: 2147483647, U8: 2147483647 }
+   9) { B: false, D1: 0001/01/01 00:03:34.7483648, D2: 0069/01/19 03:14:08.0000000, D3: 4084/01/24 02:08:00.0000000, I1: 0, I2: 0, I4: -2147483648, I8: 2147483648, IA: 2147483648, R4: 536870900, R8: 536870912, S: 2147483648, T1: 00:03:34.7483648, T2: 24855.03:14:08, T3: 1491308.02:08:00, U1: 0, U2: 0, U4: 2147483648, U8: 2147483648 }
+  10) { B: true, D1: 0001/01/01 00:07:09.4967295, D2: 0137/02/07 06:28:15.0000000, D3: 8167/02/16 04:15:00.0000000, I1: -1, I2: -1, I4: -1, I8: 4294967295, IA: 4294967295, R4: 1.0737418E+09, R8: 1073741823.75, S: 4294967295, T1: 00:07:09.4967295, T2: 49710.06:28:15, T3: 2982616.04:15:00, U1: 255, U2: 65535, U4: 4294967295, U8: 4294967295 }
+  11) { B: false, D1: 0001/01/01 00:07:09.4967296, D2: 0137/02/07 06:28:16.0000000, D3: 8167/02/16 04:16:00.0000000, I1: 0, I2: 0, I4: 0, I8: 4294967296, IA: 4294967296, R4: 1.0737418E+09, R8: 1073741824, S: 4294967296, T1: 00:07:09.4967296, T2: 49710.06:28:16, T3: 2982616.04:16:00, U1: 0, U2: 0, U4: 0, U8: 4294967296 }
+  12) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: 9223372036854775807, IA: 9223372036854775807, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775807, T1: 10675199.02:48:05.4775807, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 9223372036854775807 }
+  13) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: -9223372036854775808, IA: 9223372036854775808, R4: 2.305843E+18, R8: 2.305843009213694E+18, S: 9223372036854775808, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 9223372036854775808 }
+  14) { B: true, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: -1, I2: -1, I4: -1, I8: -1, IA: 18446744073709551615, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551615, T1: 0, T2: 0, T3: 0, U1: 255, U2: 65535, U4: 4294967295, U8: 18446744073709551615 }
+  15) { B: false, D1: 0001/01/01, D2: 0001/01/01, D3: 0001/01/01, I1: 0, I2: 0, I4: 0, I8: 0, IA: 18446744073709551616, R4: 4.611686E+18, R8: 4.611686018427388E+18, S: 18446744073709551616, T1: 0, T2: 0, T3: 0, U1: 0, U2: 0, U4: 0, U8: 0 }
+  16) { B: <null>, D1: <null>, D2: <null>, D3: <null>, I1: <null>, I2: <null>, I4: <null>, I8: <null>, IA: <null>, R4: <null>, R8: <null>, S: <null>, T1: <null>, T2: <null>, T3: <null>, U1: <null>, U2: <null>, U4: <null>, U8: <null> }
+  17) <null>
+>  104) [0] Expr ForEach(a : T3 ++ [null], b : RT3N, ("_" if a.I8 @= b.I8 else "X", "_" if a.I4 @= b.I4 else "X", "_" if a.I2 @= b.I2 else "X", "_" if a.I1 @= b.I1 else "X", "_" if a.U8 @= b.U8 else "X", "_" if a.U4 @= b.U4 else "X", "_" if a.U2 @= b.U2 else "X", "_" if a.U1 @= b.U1 else "X", "_" if a.R8 @= b.R8 else "X", "_" if a.R4 @= b.R4 else "X", "_" if a.B @= b.B else "X", "_" if a.S @= b.S else "X", "_" if a.D1 @= b.D1 else "X", "_" if a.D2 @= b.D2 else "X", "_" if a.D3 @= b.D3 else "X", "_" if a.T1 @= b.T1 else "X", "_" if a.T2 @= b.T2 else "X", "_" if a.T3 @= b.T3 else "X"))
+Seq<(str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str)>
+   0) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   1) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   2) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   3) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   4) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   5) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   6) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   7) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   8) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+   9) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  10) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  11) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  12) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  13) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  14) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  15) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  16) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+  17) (_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)
+>  105) [0] Expr "*** Write/read zero rows. ***"
+*** Write/read zero rows. ***
+>  106) [0] Define T4 <- T2->TakeIf(I8 @= 1)
+Global 'T4' has DType: {B:b, D1:d, D2:d, D3:d, I1:i1, I2:i2, I4:i4, I8:i8, IA:i, R4:r4, R8:r8, S:s, T1:t, T2:t, T3:t, U1:u1, U2:u2, U4:u4, U8:u8}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>  107) [0] Expr T4
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>  108) [0] TaskProc finish Writer as WriteRbin(T4, "temp/mytable4.rbin", true, false)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>  109) [0] Define RT4 <- ReadRbin(Writer.FullLink)
+Global 'RT4' has DType: {B:b, D1:d, D2:d, D3:d, I1:i1, I2:i2, I4:i4, I8:i8, IA:i, R4:r4, R8:r8, S:s, T1:t, T2:t, T3:t, U1:u1, U2:u2, U4:u4, U8:u8}*, SysType: Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+<Anonymous task> now playing
+<Anonymous task> finished
+>  110) [0] Expr RT4
+Seq<{bool,Date,Date,Date,i1,i2,i4,i8,ia,r4,r8,str,Time,Time,Time,u1,u2,u4,u8}>
+>  111) [0] Expr "*** Write/read zero columns (throws). ***"
+*** Write/read zero columns (throws). ***
+>  112) [0] Define T5 <- Range(10)->{  }
+Global 'T5' has DType: {}*, SysType: Seq<{}>
+>  113) [0] Expr T5
+Seq<{}>
+   0) {  }
+   1) {  }
+   2) {  }
+   3) {  }
+   4) {  }
+   5) {  }
+   6) {  }
+   7) {  }
+   8) {  }
+   9) {  }
+>  114) [0] TaskProc finish Writer as WriteRbin(T5, "temp/mytable5.rbin", true, false)
+Overwriting task: Writer
+Task 'Writer' added
+Task 'Writer' now playing
+Task 'Writer' finished
+>  115) [0] Expr (Writer$State, Writer$Finished, Writer$Failed, Writer$ErrorMessage, Writer$ResultNames)
+(Finished, true, false, <null>, (Link, Compression, FullLink, Size))
+>  116) [0] Define RT5 <- ReadRbin(Writer.FullLink)
+Global 'RT5' has DType: {}*, SysType: Seq<{}>
+<Anonymous task> now playing
+<Anonymous task> finished
+>  117) [0] Expr RT5
+Seq<{}>
+   0) {  }
+   1) {  }
+   2) {  }
+   3) {  }
+   4) {  }
+   5) {  }
+   6) {  }
+   7) {  }
+   8) {  }
+   9) {  }
+>  118) [0] Expr "*** Write type with g (bind error). ***"
+*** Write type with g (bind error). ***
+>  119) [0] Define T6 <- Range(2)->CastGenLift() ++ Range(2)->{ A : it }
+Global 'T6' has DType: g*, SysType: Seq<obj>
+>  120) [0] Expr T6
+Seq<obj>
+   0) 0
+   1) 1
+   2) { A: 0 }
+   3) { A: 1 }
+>  121) [0] TaskProc finish Writer as WriteRbin(T6, "temp/mytable6.rbin", true, false)
+*** Bind diagnostics:
+  [Basic.txt] Error: (5698,5700) Node: T6, Message: Cannot serialize types containing the general type
+>  122) [0] End
+

@@ -1,0 +1,98 @@
+﻿::: {g:g, o:o, s:s, b:b, qb:b?, d:d, qd:d?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?}
+
+{ A:3, B:s, C:i4, D:d, E:true, F:null }
+
+{ A:3, B:s, C:{ A:i4, D:d, E:true, F:null }, X:r8 }
+
+[{A:3}, {A:5}]
+
+[{A:3}, {A:5.0}]
+[Wrap({A:3}), Wrap({A:5.0})]
+[Wrap({A:3}), null, Wrap({A:5.0})]
+
+{A:3}.A
+{A:[3, 5]}.A
+
+[{A:3}, {A:5}].A
+
+With(x : [Wrap({A:3}), null, Wrap({A:5.0})], x.A)
+Wrap([{A:3}, null, {A:5.0}]).A
+[Wrap({A:3}), null, Wrap({A:5.0})].A
+Wrap([Wrap({A:3}), null, Wrap({A:5.0})]).A
+
+// Records with null field values.
+{ A:First([null, 3]), B:First([3, null]) }
+{ A:First([null, {X:3}]), B:First([{X:3}, null]) }
+
+// Record with Vac field.
+Wrap([])->{X:it}
+
+// Serialization of nested sequences of records.
+[ { A:17, B:"Hi" }->Wrap() ]
+[ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]
+[ [ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]->Wrap() ]
+[ [ [ [ { A:17, B:"Hi" }->Wrap() ]->Wrap() ]->Wrap() ]->Wrap() ]
+
+// Display of records typed as general.
+[ { A:17, B:"Hi" }->CastGen() ]
+[ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]
+[ [ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]->Wrap() ]
+[ [ [ [ { A:17, B:"Hi" }->CastGen() ]->Wrap() ]->Wrap() ]->Wrap() ]
+
+{ A:17, B:Null("Hi") }->CastGen()
+{ A:Null(17), B:"Hi" }->CastGen()
+{ A: Opt(17), B: Opt(3.5), C: Opt(true) }->CastGen()
+{ A: Opt(17), B: Opt(3.5), C:Null(true) }->CastGen()
+{ A: Opt(17), B:Null(3.5), C: Opt(true) }->CastGen()
+{ A:Null(17), B: Opt(3.5), C: Opt(true) }->CastGen()
+{ A:Null(17), B:Null(3.5), C:Null(true) }->CastGen()
+
+``` GamesWeek1 := [
+```    { Week:1, When:Date(2010, 9, 9), Away:"MIN", Home:"NO", AScore:9, HScore:14 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"CLE", Home:"TB", AScore:14, HScore:17 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"MIA", Home:"BUF", AScore:15, HScore:10 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"CIN", Home:"NE", AScore:24, HScore:38 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"DEN", Home:"JAC", AScore:17, HScore:24 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"CAR", Home:"NYG", AScore:18, HScore:31 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"DET", Home:"CHI", AScore:14, HScore:19 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"ATL", Home:"PIT", AScore:9, HScore:15 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"OAK", Home:"TEN", AScore:13, HScore:38 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"IND", Home:"HOU", AScore:24, HScore:34 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"ARI", Home:"STL", AScore:17, HScore:13 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"SF", Home:"SEA", AScore:6, HScore:31 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"GB", Home:"PHI", AScore:27, HScore:20 },
+```    { Week:1, When:Date(2010, 9, 12), Away:"DAL", Home:"WAS", AScore:7, HScore:13 },
+```    { Week:1, When:Date(2010, 9, 13), Away:"BAL", Home:"NYJ", AScore:10, HScore:9 },
+```    { Week:1, When:Date(2010, 9, 13), Away:"SD", Home:"KC", AScore:14, HScore:21 }
+``` ];
+```
+``` this := GamesWeek1;
+
+GamesWeek1 | Sum(_, HScore - AScore)
+this       | Sum(_, HScore - AScore)
+GamesWeek1 | Filter(_, HScore - AScore > 0) | Count(_)
+this       | Filter(_, HScore - AScore > 0) | Count(_)
+GamesWeek1 | Filter(_, Text.IndexOf(Away, "S") = 0 or Text.IndexOf(Home, "S") = 0)
+this       | Filter(_, Text.IndexOf(Away, "S") = 0 or Text.IndexOf(Home, "S") = 0)
+
+// Just drop some fields.
+GamesWeek1 | SetFields(_, Week: null, When: null)
+GamesWeek1+>{ Week: null, When: null }
+GamesWeek1->{ Away, Home, AScore, HScore }
+
+``` X := [{A:1}, {A:-1}];
+``` Y := [{A:1}, {A:-1}, null];
+
+X+>{ B:A > 0 }
+Y+>{ B:A > 0 }
+
+``` X := {A:3, B:null};
+``` Y := {A:5, B:true};
+
+[X, Y]
+
+``` T := ForEach(Range(10), { X: it, Y: it * it + 3 } if Mod(it, 3) != 2 else null);
+T+>{ }
+T+>{ X }
+T+>{ X: null }
+T+>{ X: null, Z: X + 17 }

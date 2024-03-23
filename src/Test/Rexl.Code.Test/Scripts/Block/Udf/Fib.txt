@@ -1,0 +1,46 @@
+﻿// Implement Fibonacci sequence computation in several ways using UDFs within a namespace.
+
+namespace Fib;
+
+    // Compute the sequence from 0 through n.
+    func Seq(n) := Range(n)->ScanX(cur: (0ia, 1ia), (cur[1], cur[0] + cur[1]), cur[1]);
+
+    // Compute the nth item using iteration in linear time.
+    func One(n) := Range(n)->Fold(cur: (0ia, 1ia), (cur[1], cur[0] + cur[1]), cur[1]);
+
+    // Given non-negative integer n, produce the sequence of true/false bits from low to high.
+    func Private.Bits(n) :=
+        Range(64)
+            ->ScanX(cur: n max 0, cur shru 1)
+            ->TakeWhile(it > 0)
+            ->ForEach(it band 1 != 0);
+
+    // Compute the nth item using matrix multiplication in logarithmic time.
+    func Fast(n) :=
+        Private.Bits(n)->Fold(as bit,
+            cur: (Tensor.From([1ia, 0, 0, 1], 2, 2), Tensor.From([0ia, 1, 1, 1], 2, 2), false),
+            With(M: cur[1]->Dot(cur[1]) if cur[2] else cur[1], (cur[0]->Dot(M) if bit else cur[0], M, true)),
+            cur[0][1, 1]
+        );
+
+    Seq(0);
+    One(0);
+    Fast(0);
+
+    Seq(1);
+    One(1);
+    Fast(1);
+
+    Seq(5);
+    One(5);
+    Fast(5);
+
+namespace;
+
+N := 20;
+Fib.Seq(N);
+Fib.One(N);
+Fib.Fast(N);
+
+Fib.One(1000);
+Fib.Fast(1000);

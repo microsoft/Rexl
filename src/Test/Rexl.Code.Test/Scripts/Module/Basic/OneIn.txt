@@ -1,0 +1,44 @@
+﻿P := plan {
+    param Set := Range(10);
+    param Def := 7;
+    var One in Set def Def;
+};
+P;
+P with { Set: Range(5) };
+P with { Set: Range(0) };
+P with { Def: -3 };
+P with { Def: 17 };
+P with { Def: 99 };
+
+P := plan {
+    param Set := Range(10);
+    param Def := 7;
+    var One in Set def Def opt;
+};
+P;
+
+// No default.
+P := plan { var One in Range(3, 10); };
+P;
+
+P := plan { var V in 7; }; // Error.
+
+// Opt.
+// REVIEW: Should the default be null rather than the first item?
+P := plan { var One in Range(3, 10) opt; };
+P;
+P with { One: null };
+P with { One: P.One + null };
+
+P := plan { var One in Range(3, 10) req; };
+P;
+P with { One: null }; // Error.
+P with { One: P.One + null }; // Error.
+
+// Specialization of an "in" variable.
+P := plan {
+    param S := Range(4);
+    var X in S;
+};
+P;
+P with { S: [ 3, 5, 8 ], }; // New value for X should be 3!

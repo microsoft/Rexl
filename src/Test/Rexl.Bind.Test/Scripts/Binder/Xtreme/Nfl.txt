@@ -1,0 +1,144 @@
+﻿::: { Games:{Week:i1, When:d, Away:s, Home:s, AScore:i1, HScore:i1}* }
+
+// From Demos/Nfl/A.txt.
+Games
+Count(Games)
+Count(Games, true)
+Sum(Games, 1)
+Count(Games.Away) // REVIEW: Optimize this (strip out the Map)!
+
+Sum(Games, HScore)
+Sum(Games.HScore)
+Sum(g : Games, g.HScore)
+Sum(Games, AScore)
+Sum(Games, HScore + AScore)
+Sum(Games.HScore + Games.AScore)
+(Sum(Games, HScore)) / (Sum(Games, HScore + AScore)) * 100
+
+Count(Games, HScore > AScore)
+Count(Games, HScore > AScore) / Count(Games) * 100
+Count(Games, HScore = AScore)
+Count(Games, HScore + AScore >= 70)
+
+Count(Games, HScore = 0 or AScore = 0)
+Count(Games, HScore * AScore = 0)
+Count(Games, HScore = 0) + Count(Games, AScore = 0)
+Filter(Games, HScore = 0 or AScore = 0)
+
+// From Demos/Nfl/B.txt.
+Distinct(Games.Home)
+Distinct(Games, Home)
+Count(Distinct(Games.Home)) // REVIEW: Optimize this!
+GroupBy(Games, Home, XGames)
+Count(GroupBy(Games, Home, XGames))
+
+Count(Distinct(Games.Away))
+GroupBy(Games, Away, XGames)
+Count(GroupBy(Games, Away, XGames))
+
+Map(GroupBy(Games, Home, XGames), { Team: Home, Count: Count(XGames) }) // REVIEW: Once GroupBy is general, optimize this!
+Map(GroupBy(Games, Away, XGames), { Team: Away, Count: Count(XGames) })
+
+::+ { GameCounts:{Home:s, Count:i4}* }
+
+Count(GameCounts, Count = 8)
+Count(GameCounts, Count != 8) = 0
+
+// From Demos/Nfl/C.txt.
+SetFields(Games, Team: Home, Against: Away, Pts: HScore, PtsAgainst: AScore, IsHome: true)
+SetFields(Games, Team: Away, Against: Home, Pts: AScore, PtsAgainst: HScore, IsHome: false)
+
+::+ { TeamGames:{Team:s, Against:s, Pts:i1, PtsAgainst:i1, IsHome:b, Week:i1, When:d}* }
+TeamGames
+
+Count(TeamGames)
+
+TeamGames ++ TeamGames
+SortUp(TeamGames, When)
+
+GroupBy(TeamGames, Team, XGames)
+
+::+ { Teams:{Team:s, XGames:{Against:s, Pts:i1, PtsAgainst:i1, IsHome:b, Week:i1, When:d}*}* }
+Teams
+Count(Teams)
+
+Map(Teams, {Team: Team, Wins: Count(XGames, Pts > PtsAgainst), Pts: Sum(XGames.Pts), PtsAgainst: Sum(XGames.PtsAgainst), PtsDiff: Sum(XGames, Pts - PtsAgainst)})
+Map(Teams, {Team: Team, Wins: Count(XGames, Pts > PtsAgainst), Pts: Sum(XGames.Pts), PtsAgainst: Sum(XGames.PtsAgainst), PtsDiff: Sum(XGames.Pts - XGames.PtsAgainst)})
+
+::+ { TeamStats:{Team:s, Wins:i4, Pts:i4, PtsAgainst:i4, PtsDiff:i4}* }
+TeamStats
+
+Sum(TeamStats, PtsDiff)
+SortUp(TeamStats, Team)
+SortDown(TeamStats, Wins)
+SortDown(TeamStats, PtsDiff)
+SortDown(TeamStats, Wins, PtsDiff)
+SortDown(TeamStats, Wins, Team)
+SortUp(TeamStats, -Wins, Team)
+Sort(TeamStats, [>] Wins, Team)
+
+// From Demos/Nfl/D.txt.
+SetFields(Games, Away: Away if Text.Len(Away) = 3 else Away & "_", Home: Home if Text.Len(Home) = 3 else Home & "_")
+SetFields(Games, Away: First(Filter(x : [Away, Away & "_"], Text.Len(x) = 3)), Home: First(Filter(x : [Home, Home & "_"], Text.Len(x) = 3)))
+
+Chain(SetFields(Games, Team : Home, Against : Away, Pts : HScore, PtsAgainst : AScore, IsHome : true), SetFields(Games, Team : Away, Against : Home, Pts : AScore, PtsAgainst : HScore, IsHome : false))
+TeamGames
+
+SetFields(GroupBy(Sort(TeamGames, Team, When), Team, XGames), Wins: Count(XGames, Pts > PtsAgainst), HomeWins: Count(XGames, IsHome and Pts > PtsAgainst))
+// TeamGames => Sort(_, Team, When) => GroupBy(_, Team, XGames) => SetFields(_, Wins: Count(XGames, Pts > PtsAgainst), HomeWins: Count(XGames, IsHome and Pts > PtsAgainst)
+
+::+ { Teams:{Team:s, Wins:i4, HomeWins:i4, XGames:{Against:s, Pts:i1, PtsAgainst:i1, IsHome:b, Week:i1, When:d}*}* }
+Teams
+Teams.Team
+First(Teams)
+TakeOne(Teams)
+
+Map(Filter(Teams, Team = "SEA" or Team = "ARI"), { Team: Team, RivalGames: GroupBy(XGames, Against, G) })
+// Teams => Filter(_, Team = "SEA" or Team = "ARI") => Map(_, { Team: Team, RivalGames: XGames => GroupBy(_, Against, G) }) // REVIEW: Alternate syntax
+Map(Teams, { Team: Team, RivalGames: GroupBy(XGames, Against, G) })
+// Teams => Map(_, { Team: Team, RivalGames: XGames => GroupBy(_, Against, G) }) // REVIEW: Alternate syntax
+Map(Teams, { Team: Team, RivalGames: Filter(GroupBy(XGames, Against, G), Count(G) > 1) })
+// Teams => Map(_, { Team: Team, RivalGames: XGames => GroupBy(_, Against, G) => Filter(_, Count(G) > 1) }) // REVIEW: Alternate syntax
+Map(Teams, { Team: Team, Rivals: Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) > 1).Against, [Team])) })
+// Teams => Map(_, { Team: Team, Rivals: XGames => GroupBy(_, Against, G) => Filter(_, Count(G) > 1) => Map(_, Against) => Chain(_, [Team]) => Sort(_) }) // REVIEW: Alternate syntax
+Map(Teams, { Team: Team, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) > 1).Against, [Team])), "|") })
+// Teams => Map(_, { Team: Team, Rivals: XGames => GroupBy(_, Against, G) => Filter(_, Count(G) > 1) => Map(_, Against) => Chain(_, [Team]) => Sort(_) => Text.Concat(_, "|") }) // REVIEW: Alternate syntax
+
+::+ { Rivals:{Team:s, Division:s}*, Copies:i4 }
+
+Rivals
+GroupBy(Rivals, Division, Teams)
+Map(GroupBy(Rivals, Division, Teams), { Div: Division, Size: Count(Teams) })
+
+
+// REVIEW: Ideally the below could do the following, which bypasses copying the fields of each record twice!
+// GroupBy(Teams, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) > 1).Against, [Team])), "|"), Teams)
+
+SetFields(Teams, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) > 1).Against, [Team])), "|"))
+SetFields(Teams, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) > Copies).Against, [Team])), "|")) // Curried global.
+
+::+ { TeamsWithDiv:{Team:s, Division:s, Wins:i4, HomeWins:i4, XGames:{Against:s, Pts:i1, PtsAgainst:i1, IsHome:b, Week:i1, When:d}*}* }
+TeamsWithDiv
+First(TeamsWithDiv)
+TakeOne(TeamsWithDiv)
+
+GroupBy(TeamsWithDiv, Division, Teams)
+
+::+ { Divisions:{Division:s, Teams:{Team:s, Wins:i4, HomeWins:i4, XGames:{Against:s, Pts:i1, PtsAgainst:i1, IsHome:b, Week:i1, When:d}*}*}* }
+
+Divisions
+First(Divisions)
+TakeOne(Divisions)
+Divisions.Teams.Wins
+
+Map(Divisions, { Division: Division, Wins: Sum(Teams.Wins), WinsExt: Sum(Teams.Wins) - 12, Wpts: Sum(Teams, Sum(XGames.Pts)), WptsAgainst: Sum(Teams, Sum(XGames.PtsAgainst)), WptsDiff: Sum(Teams, Sum(XGames.Pts - XGames.PtsAgainst)) })
+
+::+ { DivisionStats:{Division:s, Wins: i4, WinsExt: i4, Wpts: i4, WptsAgainst: i4, WptsDiff: i4}* }
+
+SortDown(DivisionStats, Wins, Wpts)
+SortDown(DivisionStats, Wpts)
+SortDown(DivisionStats, WptsDiff)
+
+// From Demos/Nfl/E.txt.
+SetFields(TeamsWithDiv,                GamesExt: Filter(      XGames, not (  Division has   Against)))
+Map(r : TeamsWithDiv, SetFields(s : r, GamesExt: Filter(g : s.XGames, not (s.Division has g.Against))))

@@ -1,0 +1,279 @@
+>>> *** Source:
+    func Same(T0, T1) := 
+        T0->Count() = T1->Count() and
+        ForEach(a:T0, b:T1, (#, a.A = b.A))->All(it[1]) and
+        ForEach(a:T0, b:T1, (#, a.B = b.B))->All(it[1]) and
+        ForEach(a:T0, b:T1, (#, a.C = b.C))->All(it[1]) and
+        ForEach(a:T0, b:T1, (#, a.D = b.D))->All(it[1]);
+    // The size for Deflate changed when upgrading to VS 17.8.0. It's not clear why. Also, the sizes
+    // are different under WSL.
+    // This udf displays "Expected" if the value is any of the expected values. This is to avoid test
+    // failures when machines are on different versions. We still want to track when the size
+    // changes so don't just ignore the size.
+    func OneOf(x, xs) := "Expected" if x in xs else "Bad: " & ToText(x) & " not in [" & xs->ToText()->Concat(",") & "]";
+    T := Range(22_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+    P := "temp/codec-test.rbin";
+    Chunked := true;
+    LTop:
+    // *** Brotli ***
+    finish W as WriteRbin(T, P, Chunked, "brotli");
+    (W.Size, W.Compression);
+    finish R as ReadRbin(W.Link);
+    Same(T, R.Data);
+    Brotli := W.Size;
+    // *** Deflate ***
+    finish W as WriteRbin(T, P, Chunked, "deflate");
+    W.Compression;
+    finish R as ReadRbin(W.Link);
+    Same(T, R.Data);
+    Deflate := W.Size;
+    // *** Snappy ***
+    finish W as WriteRbin(T, P, Chunked, "snappy");
+    (W.Size, W.Compression);
+    finish R as ReadRbin(W.Link);
+    Same(T, R.Data);
+    Snappy := W.Size;
+    // *** None ***
+    finish W as WriteRbin(T, P, Chunked, "none");
+    (W.Size, W.Compression);
+    finish R as ReadRbin(W.Link);
+    Same(T, R.Data);
+    None := W.Size;
+    // *** Summary ***
+    if (Chunked)
+        ChunkedSummary := { Snappy, Brotli, Deflate: OneOf(Deflate, [215299, 218127, 186947]), None };
+    else
+        UnchunkedSummary := { Snappy, Brotli, Deflate: OneOf(Deflate, [216794, 218683, 187152]), None };
+    if (Chunked) { Chunked := false; goto LTop; }
+    ChunkedSummary;
+    UnchunkedSummary;
+
+>>> *** Instructions:
+   0) [0] DefineFunc Same(T0, T1) <- T0->Count() @= T1->Count() and ForEach(a : T0, b : T1, (#, a.A @= b.A))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.B @= b.B))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.C @= b.C))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.D @= b.D))->All(it[1])
+   1) [0] DefineFunc OneOf(x, xs) <- "Expected" if x in xs else "Bad: " & ToText(x) & " not in [" & xs->ToText()->Concat(",") & "]"
+   2) [0] Define T <- Range(22000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+   3) [0] Define P <- "temp/codec-test.rbin"
+   4) [0] Define Chunked <- true
+   5) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "brotli")
+   6) [0] Expr (W.Size, W.Compression)
+   7) [0] TaskProc finish R as ReadRbin(W.Link)
+   8) [0] Expr Same(T, R.Data)
+   9) [0] Define Brotli <- W.Size
+  10) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "deflate")
+  11) [0] Expr W.Compression
+  12) [0] TaskProc finish R as ReadRbin(W.Link)
+  13) [0] Expr Same(T, R.Data)
+  14) [0] Define Deflate <- W.Size
+  15) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "snappy")
+  16) [0] Expr (W.Size, W.Compression)
+  17) [0] TaskProc finish R as ReadRbin(W.Link)
+  18) [0] Expr Same(T, R.Data)
+  19) [0] Define Snappy <- W.Size
+  20) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "none")
+  21) [0] Expr (W.Size, W.Compression)
+  22) [0] TaskProc finish R as ReadRbin(W.Link)
+  23) [0] Expr Same(T, R.Data)
+  24) [0] Define None <- W.Size
+  25) [0] JumpIfNot 28 (0=>0) Chunked
+  26) [0] Define ChunkedSummary <- { Snappy, Brotli, Deflate : OneOf(Deflate, [215299, 218127, 186947]), None }
+  27) [0] Jump 29 (0=>0)
+  28) [0] Define UnchunkedSummary <- { Snappy, Brotli, Deflate : OneOf(Deflate, [216794, 218683, 187152]), None }
+  29) [0] JumpIfNot 34 (0=>0) Chunked
+  30) [0] Enter (0=>1)
+  31) [1] Define Chunked <- false
+  32) [1] Jump 5 (1=>0)
+  33) [1] Leave (1=>0)
+  34) [0] Expr ChunkedSummary
+  35) [0] Expr UnchunkedSummary
+  36) [0] End
+
+>    0) [0] DefineFunc Same(T0, T1) <- T0->Count() @= T1->Count() and ForEach(a : T0, b : T1, (#, a.A @= b.A))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.B @= b.B))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.C @= b.C))->All(it[1]) and ForEach(a : T0, b : T1, (#, a.D @= b.D))->All(it[1])
+UDF 'Same' has arity 2
+>    1) [0] DefineFunc OneOf(x, xs) <- "Expected" if x in xs else "Bad: " & ToText(x) & " not in [" & xs->ToText()->Concat(",") & "]"
+UDF 'OneOf' has arity 2
+>    2) [0] Define T <- Range(22000)->{ A : it, B : it * it, C : "Blah_" & ToText(it), D : it mod 3 @= 0 }
+Global 'T' has DType: {A:i8, B:i8, C:s, D:b}*, SysType: Seq<{i8,i8,str,bool}>
+>    3) [0] Define P <- "temp/codec-test.rbin"
+Global 'P' has DType: s, SysType: str
+>    4) [0] Define Chunked <- true
+Global 'Chunked' has DType: b, SysType: bool
+>    5) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "brotli")
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>    6) [0] Expr (W.Size, W.Compression)
+(190035, Brotli)
+>    7) [0] TaskProc finish R as ReadRbin(W.Link)
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>    8) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>    9) [0] Define Brotli <- W.Size
+Global 'Brotli' has DType: i8, SysType: i8
+>   10) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "deflate")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   11) [0] Expr W.Compression
+Deflate
+>   12) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   13) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   14) [0] Define Deflate <- W.Size
+Global 'Deflate' has DType: i8, SysType: i8
+>   15) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "snappy")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   16) [0] Expr (W.Size, W.Compression)
+(306084, Snappy)
+>   17) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   18) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   19) [0] Define Snappy <- W.Size
+Global 'Snappy' has DType: i8, SysType: i8
+>   20) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "none")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   21) [0] Expr (W.Size, W.Compression)
+(584359, None)
+>   22) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   23) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   24) [0] Define None <- W.Size
+Global 'None' has DType: i8, SysType: i8
+>   25) [0] JumpIfNot 28 (0=>0) Chunked
+>   26) [0] Define ChunkedSummary <- { Snappy, Brotli, Deflate : OneOf(Deflate, [215299, 218127, 186947]), None }
+Global 'ChunkedSummary' has DType: {Brotli:i8, Deflate:s, None:i8, Snappy:i8}, SysType: {i8,str,i8,i8}
+>   27) [0] Jump 29 (0=>0)
+>   29) [0] JumpIfNot 34 (0=>0) Chunked
+>   30) [0] Enter (0=>1)
+>   31) [1] Define Chunked <- false
+>   32) [1] Jump 5 (1=>0)
+>    5) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "brotli")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>    6) [0] Expr (W.Size, W.Compression)
+(189588, Brotli)
+>    7) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>    8) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>    9) [0] Define Brotli <- W.Size
+>   10) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "deflate")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   11) [0] Expr W.Compression
+Deflate
+>   12) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   13) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   14) [0] Define Deflate <- W.Size
+>   15) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "snappy")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   16) [0] Expr (W.Size, W.Compression)
+(305857, Snappy)
+>   17) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   18) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   19) [0] Define Snappy <- W.Size
+>   20) [0] TaskProc finish W as WriteRbin(T, P, Chunked, "none")
+Overwriting task: W
+Task 'W' added
+Task 'W' now playing
+Task 'W' finished
+>   21) [0] Expr (W.Size, W.Compression)
+(583983, None)
+>   22) [0] TaskProc finish R as ReadRbin(W.Link)
+Overwriting task: R
+Task 'R' added
+Task 'R' now playing
+Task 'R' finished
+>   23) [0] Expr Same(T, R.Data)
+true
+*** Ctx ping count: 88004
+    [2](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.A @= *3.A)), *4.1)
+    [3](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.B @= *3.B)), *4.1)
+    [4](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.C @= *3.C)), *4.1)
+    [5](22001): All(*4: ForEach(*2: T, *3: R.Data, (#1, *2.D @= *3.D)), *4.1)
+>   24) [0] Define None <- W.Size
+>   25) [0] JumpIfNot 28 (0=>0) Chunked
+>   28) [0] Define UnchunkedSummary <- { Snappy, Brotli, Deflate : OneOf(Deflate, [216794, 218683, 187152]), None }
+Global 'UnchunkedSummary' has DType: {Brotli:i8, Deflate:s, None:i8, Snappy:i8}, SysType: {i8,str,i8,i8}
+>   29) [0] JumpIfNot 34 (0=>0) Chunked
+>   34) [0] Expr ChunkedSummary
+{ Brotli: 190035, Deflate: Expected, None: 584359, Snappy: 306084 }
+>   35) [0] Expr UnchunkedSummary
+{ Brotli: 189588, Deflate: Expected, None: 583983, Snappy: 305857 }
+>   36) [0] End
+

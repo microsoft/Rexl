@@ -1,0 +1,16 @@
+﻿`` PInf := CastR4(1/0);
+`` NInf := CastR4(-1/0);
+`` NaN := CastR4(0/0);
+
+Range(3)->CastR4()->Tensor.From()->SoftMax()
+Tensor.SoftMax(Null(Tensor.Fill(0f, 5)))
+Tensor.From([PInf, 1f, 100f, PInf, -10f, PInf, NInf, PInf])->SoftMax()
+Tensor.From([PInf, PInf, PInf, PInf])->SoftMax()
+Tensor.From([1f, 5f, NaN, -1f])->SoftMax()
+Tensor.From([1f, 5f, NInf, -1f])->SoftMax()
+Tensor.Fill(1f, 0)->SoftMax()
+
+With(v:-3f , (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v:PInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v:NInf, (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))
+With(v:NaN , (Tensor.Fill(v, 4)->SoftMax(), Tensor.From([v, v, v, v])->SoftMax()))

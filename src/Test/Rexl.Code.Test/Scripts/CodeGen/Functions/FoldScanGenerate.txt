@@ -1,0 +1,114 @@
+﻿`` C := 10;
+`` D := 2000;
+`` R := Range(10);
+`` S := Range(1, 11);
+`` T := S->{ N:it, V:it->CastR8() };
+`` Sn := S->Null();
+`` Tn := T->Null();
+
+// Product (factorial).
+Fold(x:S, y:1i8, x * y)
+ScanX(x:S, y:1i8, x * y)
+Generate(x: C + 1, y:1i8, (x max 1) * y)
+ScanZ(x:R, y:1i8, (x + 1) * y)
+Generate(x:C, y:1i8, (x + 1) * y)
+Fold(x:S, y:1ia, x * y)
+ScanX(x:S, y:1ia, x * y)
+Generate(x: C + 1, y:1ia, (x max 1) * y)
+ScanZ(x:R, y:1ia, (x + 1) * y)
+Generate(x:C, y:1ia, (x + 1) * y)
+Fold(x:S, y:1r8, x * y)
+ScanX(x:S, y:1r8, x * y)
+Generate(x: C + 1, y:1r8, (x max 1) * y)
+ScanZ(x:R, y:1r8, (x + 1) * y)
+Generate(x:C, y:1r8, (x + 1) * y)
+
+// Fibonacci
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Fold(S, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+ScanX(S, y:(-1, 0ia, 1ia), (#, y[2], y[1] + y[2]))
+ScanZ(R, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+ScanZ(x:R, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))
+Generate(C, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))
+
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Fold(S, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))[2]
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+ScanX(S, y:(-1, 0ia, 1ia), (#, y[2], y[1] + y[2]))[2]
+ScanZ(R, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+ScanZ(x:R, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))[2]
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]))[1]
+Generate(C, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]))[2]
+
+Fold(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Fold(Range(1, 11), y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]), (y[0], y[2]))
+ScanX(S, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanX(S, y:(-1, 0ia, 1ia), (#, y[2], y[1] + y[2]), (y[0], y[2]))
+ScanZ(R, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanZ(x:R, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]), (y[0], y[2]))
+ScanZ(x:R, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]), (y[0], #, y[2]))
+Generate(C, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+Generate(C, y:(0, 0ia, 1ia), (#, y[2], y[1] + y[2]), (y[0], #, y[2]))
+
+// Degree 3 linear recurrence
+Fold(S, y:(0i8, 0i8, 1i8), (y[1], y[2], 3 * y[0] + 2 * y[1] + 1 * y[2]))
+
+// Reverse
+Fold(x:S, y:[], [x] ++ y)
+
+// ScanX via Fold
+ScanX(x:S, y:0i8, x + y)
+Fold(x:S, y:(0i8, []), (x + y[0], y[1] ++ [y[0]]))
+Fold(x:S, y:(0i8, []), (x + y[0], y[1] ++ [y[0]]), y[1] ++ [y[0]])
+
+// Running aggregation.
+ScanZ(x:T, y:{ NS:0i8, VS:0r8, NP:1ia }, { NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N })
+ScanZ(x:T, y:{ NS:0i8, VS:0r8, NP:1ia }, { NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N }, x & y)
+
+// Stateless Generate. Should be equivalent to ForEach over Range.
+ForEach(x:R, x * x)
+Generate(x:C, x * x)
+Generate(x:C, x * #)
+ForEach(x:R, x * (x + 1) / 2)
+Generate(x:C, x * (x + 1) / 2)
+Generate(x:C, x * (# + 1) / 2)
+
+// Null sequence handling
+Fold(x:Sn, y:1i8, x * y)
+Fold(x:Sn, y:1i8, # * x * y)
+Fold(x:Sn, y:1i8, # * x * y, 1000 + y)
+ScanX(x:Sn, y:1i8, x * y)
+Fold(Sn, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanX(Sn, y:(0ia, 1ia), (y[1], y[0] + y[1]), y[1])
+ScanZ(x:Tn, y:{ NS:0i8, VS:0r8, NP:1ia }, { NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N })
+ScanZ(x:Tn, y:{ NS:0i8, VS:0r8, NP:1ia }, { NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N }, x & y)
+ScanZ(x:Tn, y:{ NS:0i8, VS:0r8, NP:1ia }, { I: #, NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N })
+ScanZ(x:Tn, y:{ NS:0i8, VS:0r8, NP:1ia }, { I: #, NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N }, (x & y))
+ScanZ(x:Tn, y:{ NS:0i8, VS:0r8, NP:1ia }, { I: #, NS: y.NS + x.N, VS: y.VS + x.V, NP: y.NP * x.N }, (#, x & y))
+Generate(x:Wrap(0), x * x)
+Generate(x:Wrap(0), x * #)
+Generate(x:Wrap(0), y:1i8, x * y)
+Generate(x:Wrap(0), y:1i8, # * y)
+Generate(x:Wrap(0), y:1i8, x * y, it + 1)
+Generate(x:Wrap(0), y:1i8, # * y, it + 1)
+Generate(x:Wrap(0), y:1i8, # * y, (#, it + 1))
+Generate(x:Wrap(-1), x * x)
+Generate(x:Wrap(-1), x * #)
+Generate(x:Wrap(-1), y:1i8, x * y)
+Generate(x:Wrap(-1), y:1i8, # * y)
+Generate(x:Wrap(-1), y:1i8, x * y, it + 1)
+Generate(x:Wrap(-1), y:1i8, # * y, it + 1)
+Generate(x:Wrap(-1), y:1i8, # * y, (#, it + 1))
+
+// Indexed.
+Generate(x:C, (x, #))
+Fold(x:S, y:0, y + #)
+ScanX(x:S, y:0, y + #)
+ScanZ(x:S, y:0, y + #)
+Generate(x:C, y:0, y + #)
+ScanZ(x:S, y:0, y + #, (#, y))
+Generate(x:C, y:0, y + #, (#, y))
+
+Generate(5, it + (C if it mod 2 = 0 else D)) // Root range scope curries globals.

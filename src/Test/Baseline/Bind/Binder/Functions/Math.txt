@@ -1,0 +1,451 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> abs(r8)
+Corrected by binder: [Abs(r8)]
+abs(r8) : r8
+*** Error: (3,4) Node: abs(r8), Message: Invocation of unknown function, did you intend 'Abs'?
+Binder : Abs(r8)
+###
+> ABS(r8)
+Corrected by binder: [Abs(r8)]
+ABS(r8) : r8
+*** Error: (3,4) Node: ABS(r8), Message: Invocation of unknown function, did you intend 'Abs'?
+Binder : Abs(r8)
+###
+> aBs(r8)
+Corrected by binder: [Abs(r8)]
+aBs(r8) : r8
+*** Error: (3,4) Node: aBs(r8), Message: Invocation of unknown function, did you intend 'Abs'?
+Binder : Abs(r8)
+###
+> Abs(3)
+Abs(3) : i8
+Binder : Abs(3)
+Reducer: 3
+###
+> Abs(-3)
+Abs(-3) : i8
+Binder : Abs(-3)
+Reducer: 3
+###
+> Abs(3ia)
+Abs(3) : i
+Binder : Abs(3)
+Reducer: 3
+###
+> Abs(-3ia)
+Abs(-3) : i
+Binder : Abs(-3)
+Reducer: 3
+###
+> Abs(3.0)
+Abs(3) : r8
+Binder : Abs(3)
+Reducer: 3
+###
+> Abs(-3.0)
+Abs(-3) : r8
+Binder : Abs(-3)
+Reducer: 3
+###
+> Abs(null)
+Abs(null) : i8?
+Binder : Guard(?1: null, Abs(Unit<i8>(?1)))
+Reducer: null
+###
+> Abs(null+1)
+Abs(null + 1) : i8?
+Binder : Guard(?2: Guard(?1: null, Add(Unit<i8>(?1), 1)), Abs(?2))
+Reducer: null
+###
+> Abs(g)
+Abs(g) : i8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Abs(Error(ErrBadType_Src_Dst))
+###
+> Abs(o)
+Abs(o) : i8?
+Binder : Guard(?1: o, Abs(Unit<i8>(?1)))
+Reducer: null
+###
+> Abs(s)
+Abs(s) : i8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Abs(Error(ErrBadType_Src_Dst))
+###
+> Abs(b)
+Abs(b) : b
+Binder : Abs(b)
+Reducer: b
+###
+> Abs(d)
+Abs(d) : i8
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Abs(Error(ErrBadType_Src_Dst))
+###
+> Abs(n)
+Abs(n) : r8
+Binder : Abs(n)
+###
+> Abs(r8)
+Abs(r8) : r8
+Binder : Abs(r8)
+###
+> Abs(r4)
+Abs(r4) : r4
+Binder : Abs(r4)
+###
+> Abs(i)
+Abs(i) : i
+Binder : Abs(i)
+###
+> Abs(i8)
+Abs(i8) : i8
+Binder : Abs(i8)
+###
+> Abs(i4)
+Abs(i4) : i4
+Binder : Abs(i4)
+###
+> Abs(i2)
+Abs(i2) : i2
+Binder : Abs(i2)
+###
+> Abs(i1)
+Abs(i1) : i1
+Binder : Abs(i1)
+###
+> Abs(u8)
+Abs(u8) : u8
+Binder : Abs(u8)
+Reducer: u8
+###
+> Abs(u4)
+Abs(u4) : u4
+Binder : Abs(u4)
+Reducer: u4
+###
+> Abs(u2)
+Abs(u2) : u2
+Binder : Abs(u2)
+Reducer: u2
+###
+> Abs(u1)
+Abs(u1) : u1
+Binder : Abs(u1)
+Reducer: u1
+###
+> Abs(qb)
+Abs(qb) : b?
+Binder : Guard(?1: qb, Abs(?1))
+Reducer: qb
+###
+> Abs(qd)
+Abs(qd) : i8?
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Guard(?1: qd, Abs(Error(ErrBadType_Src_Dst)))
+###
+> Abs(qn)
+Abs(qn) : r8?
+Binder : Guard(?1: qn, Abs(?1))
+###
+> Abs(qr8)
+Abs(qr8) : r8?
+Binder : Guard(?1: qr8, Abs(?1))
+###
+> Abs(qr4)
+Abs(qr4) : r4?
+Binder : Guard(?1: qr4, Abs(?1))
+###
+> Abs(qi)
+Abs(qi) : i?
+Binder : Guard(?1: qi, Abs(?1))
+###
+> Abs(qi8)
+Abs(qi8) : i8?
+Binder : Guard(?1: qi8, Abs(?1))
+###
+> Abs(qi4)
+Abs(qi4) : i4?
+Binder : Guard(?1: qi4, Abs(?1))
+###
+> Abs(qi2)
+Abs(qi2) : i2?
+Binder : Guard(?1: qi2, Abs(?1))
+###
+> Abs(qi1)
+Abs(qi1) : i1?
+Binder : Guard(?1: qi1, Abs(?1))
+###
+> Abs(qu8)
+Abs(qu8) : u8?
+Binder : Guard(?1: qu8, Abs(?1))
+Reducer: qu8
+###
+> Abs(qu4)
+Abs(qu4) : u4?
+Binder : Guard(?1: qu4, Abs(?1))
+Reducer: qu4
+###
+> Abs(qu2)
+Abs(qu2) : u2?
+Binder : Guard(?1: qu2, Abs(?1))
+Reducer: qu2
+###
+> Abs(qu1)
+Abs(qu1) : u1?
+Binder : Guard(?1: qu1, Abs(?1))
+Reducer: qu1
+###
+> Abs(0x80i1)
+Abs(128) : i1
+Binder : Abs(-128)
+Reducer: -128
+###
+> Abs(0x8000i2)
+Abs(32768) : i2
+Binder : Abs(-32768)
+Reducer: -32768
+###
+> Abs(0x80000000i4)
+Abs(2147483648) : i4
+Binder : Abs(-2147483648)
+Reducer: -2147483648
+###
+> Abs(0x8000000000000000i8)
+Abs(9223372036854775808) : i8
+Binder : Abs(-9223372036854775808)
+Reducer: -9223372036854775808
+###
+> Abs(0.0r4)
+Abs(0) : r4
+Binder : Abs(0)
+Reducer: 0
+###
+> Abs(-0.0r4)
+Abs(-0) : r4
+Binder : Abs(-0)
+Reducer: 0
+###
+> Abs(0.0r8)
+Abs(0) : r8
+Binder : Abs(0)
+Reducer: 0
+###
+> Abs(-0.0r8)
+Abs(-0) : r8
+Binder : Abs(-0)
+Reducer: 0
+###
+
+**** New globals: {b:b*, d:d*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qd:d?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> Abs(g)
+Abs(g) : i8*
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, Abs(Error(ErrBadType_Src_Dst)))
+###
+> Abs(o)
+Abs(o) : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, Abs(Unit<i8>(?2))))
+Reducer: ForEach(*1: o, null)
+###
+> Abs(s)
+Abs(s) : i8*
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, Abs(Error(ErrBadType_Src_Dst)))
+###
+> Abs(b)
+Abs(b) : b*
+Binder : ForEach(*1: b, Abs(*1))
+Reducer: b
+###
+> Abs(d)
+Abs(d) : i8*
+*** Error: (4,5) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : ForEach(*1: d, Abs(Error(ErrBadType_Src_Dst)))
+###
+> Abs(n)
+Abs(n) : r8*
+Binder : ForEach(*1: n, Abs(*1))
+###
+> Abs(r8)
+Abs(r8) : r8*
+Binder : ForEach(*1: r8, Abs(*1))
+###
+> Abs(r4)
+Abs(r4) : r4*
+Binder : ForEach(*1: r4, Abs(*1))
+###
+> Abs(i)
+Abs(i) : i*
+Binder : ForEach(*1: i, Abs(*1))
+###
+> Abs(i8)
+Abs(i8) : i8*
+Binder : ForEach(*1: i8, Abs(*1))
+###
+> Abs(i4)
+Abs(i4) : i4*
+Binder : ForEach(*1: i4, Abs(*1))
+###
+> Abs(i2)
+Abs(i2) : i2*
+Binder : ForEach(*1: i2, Abs(*1))
+###
+> Abs(i1)
+Abs(i1) : i1*
+Binder : ForEach(*1: i1, Abs(*1))
+###
+> Abs(u8)
+Abs(u8) : u8*
+Binder : ForEach(*1: u8, Abs(*1))
+Reducer: u8
+###
+> Abs(u4)
+Abs(u4) : u4*
+Binder : ForEach(*1: u4, Abs(*1))
+Reducer: u4
+###
+> Abs(u2)
+Abs(u2) : u2*
+Binder : ForEach(*1: u2, Abs(*1))
+Reducer: u2
+###
+> Abs(u1)
+Abs(u1) : u1*
+Binder : ForEach(*1: u1, Abs(*1))
+Reducer: u1
+###
+> Abs(qb)
+Abs(qb) : b?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Abs(?2)))
+Reducer: qb
+###
+> Abs(qd)
+Abs(qd) : i8?*
+*** Error: (4,6) Node: qd, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : ForEach(*1: qd, Guard(?2: *1, Abs(Error(ErrBadType_Src_Dst))))
+###
+> Abs(qn)
+Abs(qn) : r8?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qr8)
+Abs(qr8) : r8?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qr4)
+Abs(qr4) : r4?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qi)
+Abs(qi) : i?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qi8)
+Abs(qi8) : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qi4)
+Abs(qi4) : i4?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qi2)
+Abs(qi2) : i2?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qi1)
+Abs(qi1) : i1?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Abs(?2)))
+###
+> Abs(qu8)
+Abs(qu8) : u8?*
+Binder : ForEach(*1: qu8, Guard(?2: *1, Abs(?2)))
+Reducer: qu8
+###
+> Abs(qu4)
+Abs(qu4) : u4?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Abs(?2)))
+Reducer: qu4
+###
+> Abs(qu2)
+Abs(qu2) : u2?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Abs(?2)))
+Reducer: qu2
+###
+> Abs(qu1)
+Abs(qu1) : u1?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Abs(?2)))
+Reducer: qu1
+###
+
+**** New globals: {t0:i4[*,*], t1:i4?[*,*], t2:i4[*,*]?, t3:i4?[*,*]?, ts0:i4[*,*]*, ts1:i4?[*,*]*, ts2:i4[*,*]?*, ts3:i4?[*,*]?*}
+
+> Abs(t0)
+Abs(t0) : i4[*,*]
+Binder : Tensor.ForEach(@1: t0, Abs(@1))
+###
+> Abs(t1)
+Abs(t1) : i4?[*,*]
+Binder : Tensor.ForEach(@1: t1, Guard(?2: @1, Abs(?2)))
+###
+> Abs(t2)
+Abs(t2) : i4[*,*]?
+Binder : Guard(?1: t2, Tensor.ForEach(@2: ?1, Abs(@2)))
+###
+> Abs(t3)
+Abs(t3) : i4?[*,*]?
+Binder : Guard(?1: t3, Tensor.ForEach(@2: ?1, Guard(?3: @2, Abs(?3))))
+###
+> Abs(ts0)
+Abs(ts0) : i4[*,*]*
+Binder : ForEach(*1: ts0, Tensor.ForEach(@2: *1, Abs(@2)))
+###
+> Abs(ts1)
+Abs(ts1) : i4?[*,*]*
+Binder : ForEach(*1: ts1, Tensor.ForEach(@2: *1, Guard(?3: @2, Abs(?3))))
+###
+> Abs(ts2)
+Abs(ts2) : i4[*,*]?*
+Binder : ForEach(*1: ts2, Guard(?2: *1, Tensor.ForEach(@3: ?2, Abs(@3))))
+###
+> Abs(ts3)
+Abs(ts3) : i4?[*,*]?*
+Binder : ForEach(*1: ts3, Guard(?2: *1, Tensor.ForEach(@3: ?2, Guard(?4: @3, Abs(?4)))))
+###
+
+**** New globals: {t0:i4*[*,*], t1:i4?*[*,*], t2:i4*[*,*]?, t3:i4?*[*,*]?, ts0:i4*[*,*]*, ts1:i4?*[*,*]*, ts2:i4*[*,*]?*, ts3:i4?*[*,*]?*}
+
+> Abs(t0)
+Abs(t0) : i4*[*,*]
+Binder : Tensor.ForEach(@1: t0, ForEach(*2: @1, Abs(*2)))
+###
+> Abs(t1)
+Abs(t1) : i4?*[*,*]
+Binder : Tensor.ForEach(@1: t1, ForEach(*2: @1, Guard(?3: *2, Abs(?3))))
+###
+> Abs(t2)
+Abs(t2) : i4*[*,*]?
+Binder : Guard(?1: t2, Tensor.ForEach(@2: ?1, ForEach(*3: @2, Abs(*3))))
+###
+> Abs(t3)
+Abs(t3) : i4?*[*,*]?
+Binder : Guard(?1: t3, Tensor.ForEach(@2: ?1, ForEach(*3: @2, Guard(?4: *3, Abs(?4)))))
+###
+> Abs(ts0)
+Abs(ts0) : i4*[*,*]*
+Binder : ForEach(*1: ts0, Tensor.ForEach(@2: *1, ForEach(*3: @2, Abs(*3))))
+###
+> Abs(ts1)
+Abs(ts1) : i4?*[*,*]*
+Binder : ForEach(*1: ts1, Tensor.ForEach(@2: *1, ForEach(*3: @2, Guard(?4: *3, Abs(?4)))))
+###
+> Abs(ts2)
+Abs(ts2) : i4*[*,*]?*
+Binder : ForEach(*1: ts2, Guard(?2: *1, Tensor.ForEach(@3: ?2, ForEach(*4: @3, Abs(*4)))))
+###
+> Abs(ts3)
+Abs(ts3) : i4?*[*,*]?*
+Binder : ForEach(*1: ts3, Guard(?2: *1, Tensor.ForEach(@3: ?2, ForEach(*4: @3, Guard(?5: *4, Abs(?5))))))
+###

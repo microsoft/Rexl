@@ -1,0 +1,1177 @@
+> -3
+Node: [-3]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:Sub, rng:(0,1) [-], full:(0,2) [-3], extra=[Negate]], count=1
+  01   Node[id:0, kind:NumLit, depth:1, tok:3, rng:(1,2) [3], full:(1,2) [3], extra=[3]]
+###
+> +3
+Node: [+3]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:Add, rng:(0,1) [+], full:(0,2) [+3], extra=[Posate]], count=1
+  01   Node[id:0, kind:NumLit, depth:1, tok:3, rng:(1,2) [3], full:(1,2) [3], extra=[3]]
+###
+> ! foo
+Node: [!foo]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(0,1) [!], full:(0,5) [! foo], extra=[Not]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:foo, rng:(2,5) [foo], full:(2,5) [foo], extra=[foo]]
+###
+> not foo
+Node: [not foo]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,7) [not foo], extra=[Not]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:foo, rng:(4,7) [foo], full:(4,7) [foo], extra=[foo]]
+###
+> -!foo
+Node: [-!foo]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,5) [-!foo], extra=[Negate]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(1,2) [!], full:(1,5) [!foo], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:foo, rng:(2,5) [foo], full:(2,5) [foo], extra=[foo]]
+###
+> - not foo
+Node: [-(not foo)]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,9) [- not foo], extra=[Negate]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(2,5) [not], full:(2,9) [not foo], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:foo, rng:(6,9) [foo], full:(6,9) [foo], extra=[foo]]
+Error: (2,5) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> not foo
+Node: [not foo]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,7) [not foo], extra=[Not]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:foo, rng:(4,7) [foo], full:(4,7) [foo], extra=[foo]]
+###
+> Not foo
+Node: [((Not) <error> (foo))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:foo, rng:(4,7) [foo], full:(0,7) [Not foo], extra=[Error]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:Not, rng:(0,3) [Not], full:(0,3) [Not], extra=[Not]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:foo, rng:(4,7) [foo], full:(4,7) [foo], extra=[foo]]
+Error: (4,7) Tok: 'foo', Message: Expected an operator
+###
+> 10 % * 3
+Node: [10% * 3]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:Mul, rng:(5,6) [*], full:(0,8) [10 % * 3], extra=[Mul]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Per, rng:(3,4) [%], full:(0,4) [10 %], extra=[Percent]], count=1
+  02     Node[id:0, kind:NumLit, depth:1, tok:10, rng:(0,2) [10], full:(0,2) [10], extra=[10]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+###
+> A.B
+Node: [A.B]
+Dump:
+  00 Node[id:1, kind:DottedName, depth:2, tok:Dot, rng:(1,2) [.], full:(0,3) [A.B], extra=[B]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+###
+> (A+B).C
+Node: [(A + B).C]
+Dump:
+  00 Node[id:5, kind:DottedName, depth:4, tok:Dot, rng:(5,6) [.], full:(0,7) [(A+B).C], extra=[C]], count=1
+  01   Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,5) [(A+B)]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(1,4) [A+B], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(3,4) [B], full:(3,4) [B], extra=[B]]
+###
+> A^B^C
+Node: [A^B^C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Car, rng:(1,2) [^], full:(0,5) [A^B^C], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Car, rng:(3,4) [^], full:(2,5) [B^C], extra=[Power]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> A^B^C
+Node: [A^B^C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Car, rng:(1,2) [^], full:(0,5) [A^B^C], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Car, rng:(3,4) [^], full:(2,5) [B^C], extra=[Power]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> A^B^C
+Node: [A^B^C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Car, rng:(1,2) [^], full:(0,5) [A^B^C], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Car, rng:(3,4) [^], full:(2,5) [B^C], extra=[Power]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(4,5) [C], full:(4,5) [C], extra=[C]]
+###
+> -A^-B^!C
+Node: [-A^-B^!C]
+Dump:
+  00 Node[id:7, kind:UnaryOp, depth:6, tok:Sub, rng:(0,1) [-], full:(0,8) [-A^-B^!C], extra=[Negate]], count=1
+  01   Node[id:6, kind:BinaryOp, depth:5, tok:Car, rng:(2,3) [^], full:(1,8) [A^-B^!C], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  02     Node[id:5, kind:UnaryOp, depth:4, tok:Sub, rng:(3,4) [-], full:(3,8) [-B^!C], extra=[Negate]], count=1
+  03       Node[id:4, kind:BinaryOp, depth:3, tok:Car, rng:(5,6) [^], full:(4,8) [B^!C], extra=[Power]], count=2
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  04         Node[id:3, kind:UnaryOp, depth:2, tok:Bng, rng:(6,7) [!], full:(6,8) [!C], extra=[Not]], count=1
+  05           Node[id:2, kind:FirstName, depth:1, tok:C, rng:(7,8) [C], full:(7,8) [C], extra=[C]]
+###
+> -A^-B^ not C
+Node: [-A^-B^(not C)]
+Dump:
+  00 Node[id:7, kind:UnaryOp, depth:6, tok:Sub, rng:(0,1) [-], full:(0,12) [-A^-B^ not C], extra=[Negate]], count=1
+  01   Node[id:6, kind:BinaryOp, depth:5, tok:Car, rng:(2,3) [^], full:(1,12) [A^-B^ not C], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  02     Node[id:5, kind:UnaryOp, depth:4, tok:Sub, rng:(3,4) [-], full:(3,12) [-B^ not C], extra=[Negate]], count=1
+  03       Node[id:4, kind:BinaryOp, depth:3, tok:Car, rng:(5,6) [^], full:(4,12) [B^ not C], extra=[Power]], count=2
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  04         Node[id:3, kind:UnaryOp, depth:2, tok:KwdNot, rng:(7,10) [not], full:(7,12) [not C], extra=[Not]], count=1
+  05           Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (7,10) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> -A^-B^ (not C)
+Node: [-A^-B^(not C)]
+Dump:
+  00 Node[id:9, kind:UnaryOp, depth:7, tok:Sub, rng:(0,1) [-], full:(0,14) [-A^-B^ (not C)], extra=[Negate]], count=1
+  01   Node[id:8, kind:BinaryOp, depth:6, tok:Car, rng:(2,3) [^], full:(1,14) [A^-B^ (not C)], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  02     Node[id:7, kind:UnaryOp, depth:5, tok:Sub, rng:(3,4) [-], full:(3,14) [-B^ (not C)], extra=[Negate]], count=1
+  03       Node[id:6, kind:BinaryOp, depth:4, tok:Car, rng:(5,6) [^], full:(4,14) [B^ (not C)], extra=[Power]], count=2
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  04         Node[id:5, kind:Paren, depth:3, tok:ParenOpen, rng:(7,8) [(], full:(7,14) [(not C)]], count=1
+  05           Node[id:3, kind:UnaryOp, depth:2, tok:KwdNot, rng:(8,11) [not], full:(8,13) [not C], extra=[Not]], count=1
+  06             Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> // Note that "B %" binds strongest.
+> A ^ - ! B %
+Node: [A^-!B%]
+Dump:
+  00 Node[id:5, kind:BinaryOp, depth:5, tok:Car, rng:(38,39) [^], full:(36,47) [A ^ - ! B %], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(36,37) [A], full:(36,37) [A], extra=[A]]
+  01   Node[id:4, kind:UnaryOp, depth:4, tok:Sub, rng:(40,41) [-], full:(40,47) [- ! B %], extra=[Negate]], count=1
+  02     Node[id:3, kind:UnaryOp, depth:3, tok:Bng, rng:(42,43) [!], full:(42,47) [! B %], extra=[Not]], count=1
+  03       Node[id:2, kind:UnaryOp, depth:2, tok:Per, rng:(46,47) [%], full:(44,47) [B %], extra=[Percent]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(44,45) [B], full:(44,45) [B], extra=[B]]
+Comment: Range=(0,35), Tid=CommentLine, Text=[// Note that "B %" binds strongest.]
+###
+> A ^ - not B %
+Node: [A^-(not B%)]
+Dump:
+  00 Node[id:5, kind:BinaryOp, depth:5, tok:Car, rng:(2,3) [^], full:(0,13) [A ^ - not B %], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:UnaryOp, depth:4, tok:Sub, rng:(4,5) [-], full:(4,13) [- not B %], extra=[Negate]], count=1
+  02     Node[id:3, kind:UnaryOp, depth:3, tok:KwdNot, rng:(6,9) [not], full:(6,13) [not B %], extra=[Not]], count=1
+  03       Node[id:2, kind:UnaryOp, depth:2, tok:Per, rng:(12,13) [%], full:(10,13) [B %], extra=[Percent]], count=1
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(10,11) [B], full:(10,11) [B], extra=[B]]
+Error: (6,9) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> A ^ - (not B %)
+Node: [A^-(not B%)]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:6, tok:Car, rng:(2,3) [^], full:(0,15) [A ^ - (not B %)], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:UnaryOp, depth:5, tok:Sub, rng:(4,5) [-], full:(4,15) [- (not B %)], extra=[Negate]], count=1
+  02     Node[id:5, kind:Paren, depth:4, tok:ParenOpen, rng:(6,7) [(], full:(6,15) [(not B %)]], count=1
+  03       Node[id:3, kind:UnaryOp, depth:3, tok:KwdNot, rng:(7,10) [not], full:(7,14) [not B %], extra=[Not]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Per, rng:(13,14) [%], full:(11,14) [B %], extra=[Percent]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:B, rng:(11,12) [B], full:(11,12) [B], extra=[B]]
+###
+> A ^ ( - ! B ) %
+Node: [A^(-!B)%]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:6, tok:Car, rng:(2,3) [^], full:(0,15) [A ^ ( - ! B ) %], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:UnaryOp, depth:5, tok:Per, rng:(14,15) [%], full:(4,15) [( - ! B ) %], extra=[Percent]], count=1
+  02     Node[id:5, kind:Paren, depth:4, tok:ParenOpen, rng:(4,5) [(], full:(4,13) [( - ! B )]], count=1
+  03       Node[id:3, kind:UnaryOp, depth:3, tok:Sub, rng:(6,7) [-], full:(6,11) [- ! B], extra=[Negate]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:Bng, rng:(8,9) [!], full:(8,11) [! B], extra=[Not]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:B, rng:(10,11) [B], full:(10,11) [B], extra=[B]]
+###
+> A ^ ( - not B ) %
+Node: [A^(-(not B))%]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:6, tok:Car, rng:(2,3) [^], full:(0,17) [A ^ ( - not B ) %], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:6, kind:UnaryOp, depth:5, tok:Per, rng:(16,17) [%], full:(4,17) [( - not B ) %], extra=[Percent]], count=1
+  02     Node[id:5, kind:Paren, depth:4, tok:ParenOpen, rng:(4,5) [(], full:(4,15) [( - not B )]], count=1
+  03       Node[id:3, kind:UnaryOp, depth:3, tok:Sub, rng:(6,7) [-], full:(6,13) [- not B], extra=[Negate]], count=1
+  04         Node[id:2, kind:UnaryOp, depth:2, tok:KwdNot, rng:(8,11) [not], full:(8,13) [not B], extra=[Not]], count=1
+  05           Node[id:1, kind:FirstName, depth:1, tok:B, rng:(12,13) [B], full:(12,13) [B], extra=[B]]
+Error: (8,11) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> A ^ ( - (not B) ) %
+Node: [A^(-(not B))%]
+Dump:
+  00 Node[id:9, kind:BinaryOp, depth:7, tok:Car, rng:(2,3) [^], full:(0,19) [A ^ ( - (not B) ) %], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:8, kind:UnaryOp, depth:6, tok:Per, rng:(18,19) [%], full:(4,19) [( - (not B) ) %], extra=[Percent]], count=1
+  02     Node[id:7, kind:Paren, depth:5, tok:ParenOpen, rng:(4,5) [(], full:(4,17) [( - (not B) )]], count=1
+  03       Node[id:5, kind:UnaryOp, depth:4, tok:Sub, rng:(6,7) [-], full:(6,15) [- (not B)], extra=[Negate]], count=1
+  04         Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(8,9) [(], full:(8,15) [(not B)]], count=1
+  05           Node[id:2, kind:UnaryOp, depth:2, tok:KwdNot, rng:(9,12) [not], full:(9,14) [not B], extra=[Not]], count=1
+  06             Node[id:1, kind:FirstName, depth:1, tok:B, rng:(13,14) [B], full:(13,14) [B], extra=[B]]
+###
+> A * B ^ C
+Node: [A * B^C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Mul, rng:(2,3) [*], full:(0,9) [A * B ^ C], extra=[Mul]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Car, rng:(6,7) [^], full:(4,9) [B ^ C], extra=[Power]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A ^ B * C
+Node: [A^B * C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Mul, rng:(6,7) [*], full:(0,9) [A ^ B * C], extra=[Mul]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Car, rng:(2,3) [^], full:(0,5) [A ^ B], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A / B ^ C
+Node: [A / B^C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Div, rng:(2,3) [/], full:(0,9) [A / B ^ C], extra=[Div]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Car, rng:(6,7) [^], full:(4,9) [B ^ C], extra=[Power]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A ^ B / C
+Node: [A^B / C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Div, rng:(6,7) [/], full:(0,9) [A ^ B / C], extra=[Div]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Car, rng:(2,3) [^], full:(0,5) [A ^ B], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A * B / C
+Node: [A * B / C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Div, rng:(6,7) [/], full:(0,9) [A * B / C], extra=[Div]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(2,3) [*], full:(0,5) [A * B], extra=[Mul]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A / B * C
+Node: [A / B * C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Mul, rng:(6,7) [*], full:(0,9) [A / B * C], extra=[Mul]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Div, rng:(2,3) [/], full:(0,5) [A / B], extra=[Div]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A + B / C
+Node: [A + B / C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Add, rng:(2,3) [+], full:(0,9) [A + B / C], extra=[Add]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Div, rng:(6,7) [/], full:(4,9) [B / C], extra=[Div]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A * B + C
+Node: [A * B + C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Add, rng:(6,7) [+], full:(0,9) [A * B + C], extra=[Add]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(2,3) [*], full:(0,5) [A * B], extra=[Mul]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A - B * C
+Node: [A - B * C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Sub, rng:(2,3) [-], full:(0,9) [A - B * C], extra=[Sub]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Mul, rng:(6,7) [*], full:(4,9) [B * C], extra=[Mul]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A / B - C
+Node: [A / B - C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Sub, rng:(6,7) [-], full:(0,9) [A / B - C], extra=[Sub]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Div, rng:(2,3) [/], full:(0,5) [A / B], extra=[Div]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A + B - C
+Node: [A + B - C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Sub, rng:(6,7) [-], full:(0,9) [A + B - C], extra=[Sub]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A - B + C
+Node: [A - B + C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Add, rng:(6,7) [+], full:(0,9) [A - B + C], extra=[Add]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Sub, rng:(2,3) [-], full:(0,5) [A - B], extra=[Sub]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A + B & C
+Node: [A + B & C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Amp, rng:(6,7) [&], full:(0,9) [A + B & C], extra=[GenConcat]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A & B + C
+Node: [A & B + C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:Amp, rng:(2,3) [&], full:(0,9) [A & B + C], extra=[GenConcat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Add, rng:(6,7) [+], full:(4,9) [B + C], extra=[Add]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A > B & C
+Node: [A $> B & C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(2,3) [>], full:(0,9) [A > B & C]], count=2
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Amp, rng:(6,7) [&], full:(4,9) [B & C], extra=[GenConcat]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A & B > C
+Node: [A & B $> C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(6,7) [>], full:(0,9) [A & B > C]], count=2
+  01   Op:StrictGreater
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A @> B & C
+Node: [A @> B & C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(3,4) [>], full:(0,10) [A @> B & C]], count=2
+  01   Op:Greater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Amp, rng:(7,8) [&], full:(5,10) [B & C], extra=[GenConcat]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A & B @> C
+Node: [A & B @> C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(7,8) [>], full:(0,10) [A & B @> C]], count=2
+  01   Op:Greater
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A > B >= C
+Node: [A $> B $>= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,10) [A > B >= C]], count=3
+  01   Op:StrictGreater
+  01   Op:StrictGreaterEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A >= B > C
+Node: [A $>= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:GrtEqu, rng:(2,4) [>=], full:(0,10) [A >= B > C]], count=3
+  01   Op:StrictGreaterEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A > B < C
+Node: [A $> B $< C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,9) [A > B < C]], count=3
+  01   Op:StrictGreater
+  01   Op:StrictLess
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A < B > C
+Node: [A $< B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Lss, rng:(2,3) [<], full:(0,9) [A < B > C]], count=3
+  01   Op:StrictLess
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A > B <= C
+Node: [A $> B $<= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,10) [A > B <= C]], count=3
+  01   Op:StrictGreater
+  01   Op:StrictLessEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A <= B > C
+Node: [A $<= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:LssEqu, rng:(2,4) [<=], full:(0,10) [A <= B > C]], count=3
+  01   Op:StrictLessEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A > B = C
+Node: [A $> B @= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,9) [A > B = C]], count=3
+  01   Op:StrictGreater
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A = B > C
+Node: [A @= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Equ, rng:(2,3) [=], full:(0,9) [A = B > C]], count=3
+  01   Op:Equal
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+###
+> A > B != C
+Node: [A $> B !@= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,10) [A > B != C]], count=3
+  01   Op:StrictGreater
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A > B ! = C
+Node: [A $> B !@= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,11) [A > B ! = C]], count=3
+  01   Op:StrictGreater
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A > B not = C
+Node: [A $> B !@= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,13) [A > B not = C]], count=3
+  01   Op:StrictGreater
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A > B not= C
+Node: [A $> B !@= C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Grt, rng:(2,3) [>], full:(0,12) [A > B not= C]], count=3
+  01   Op:StrictGreater
+  01   Op:NotEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A != B > C
+Node: [A !@= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,10) [A != B > C]], count=3
+  01   Op:NotEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A ! = B > C
+Node: [A !@= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Equ, rng:(4,5) [=], full:(0,11) [A ! = B > C]], count=3
+  01   Op:NotEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A not = B > C
+Node: [A !@= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Equ, rng:(6,7) [=], full:(0,13) [A not = B > C]], count=3
+  01   Op:NotEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(8,9) [B], full:(8,9) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A not= B > C
+Node: [A !@= B $> C]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Equ, rng:(5,6) [=], full:(0,12) [A not= B > C]], count=3
+  01   Op:NotEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A < B <
+Node: [A $< B $< (<missing>)]
+Dump:
+  00 Node[id:3, kind:Compare, depth:2, tok:Lss, rng:(2,3) [<], full:(0,7) [A < B <]], count=3
+  01   Op:StrictLess
+  01   Op:StrictLess
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A in B > C
+Node: [A in B $> C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(7,8) [>], full:(0,10) [A in B > C]], count=2
+  01   Op:StrictGreater
+  01   Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(2,4) [in], full:(0,6) [A in B], extra=[In]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A > B in C
+Node: [A $> B in C]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(2,3) [>], full:(0,10) [A > B in C]], count=2
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:InHas, depth:2, tok:KwdIn, rng:(6,8) [in], full:(4,10) [B in C], extra=[In]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A in B and C
+Node: [A in B and C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:KtxAnd, rng:(7,10) [and], full:(0,12) [A in B and C], extra=[And]], count=2
+  01   Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(2,4) [in], full:(0,6) [A in B], extra=[In]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A + B 17
+Node: [((A + B) <error> (17))]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:17, rng:(6,8) [17], full:(0,8) [A + B 17], extra=[Error]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:NumLit, depth:1, tok:17, rng:(6,8) [17], full:(6,8) [17], extra=[17]]
+Error: (6,8) Tok: '17', Message: Expected an operator
+###
+> // Leaves tokens after expr.
+> A ; B
+Node: [A]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:A, rng:(29,30) [A], full:(29,30) [A], extra=[A]]
+Error: (31,32) Tok: ';', Message: Unexpected token
+Comment: Range=(0,28), Tid=CommentLine, Text=[// Leaves tokens after expr.]
+###
+> // Extra close paren. REVIEW: What should we do?
+> (A + B)) * C
+Node: [A + B]
+Dump:
+  00 Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(49,50) [(], full:(49,56) [(A + B)]], count=1
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(52,53) [+], full:(50,55) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(50,51) [A], full:(50,51) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(54,55) [B], full:(54,55) [B], extra=[B]]
+Error: (56,57) Tok: ')', Message: Unexpected token
+Comment: Range=(0,48), Tid=CommentLine, Text=[// Extra close paren. REVIEW: What should we do?]
+###
+> x%->{a, b}
+Node: [(x%)->{ a, b }]
+Dump:
+  00 Node[id:6, kind:RecordProjection, depth:4, tok:SubGrt, rng:(2,4) [->], full:(0,10) [x%->{a, b}]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Per, rng:(1,2) [%], full:(0,2) [x%], extra=[Percent]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(0,1) [x], full:(0,1) [x], extra=[x]]
+  01   Node[id:5, kind:Record, depth:3, tok:CurlyOpen, rng:(4,5) [{], full:(4,10) [{a, b}]], count=1
+  02     Node[id:4, kind:ExprList, depth:2, tok:Comma, rng:(6,7) [,], full:(5,9) [a, b]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:a, rng:(5,6) [a], full:(5,6) [a], extra=[a]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:b, rng:(8,9) [b], full:(8,9) [b], extra=[b]]
+###
+> x%->{a: 3, b: it}
+Node: [(x%)->{ a : 3, b : it }]
+Dump:
+  00 Node[id:8, kind:RecordProjection, depth:5, tok:SubGrt, rng:(2,4) [->], full:(0,17) [x%->{a: 3, b: it}]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Per, rng:(1,2) [%], full:(0,2) [x%], extra=[Percent]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(0,1) [x], full:(0,1) [x], extra=[x]]
+  01   Node[id:7, kind:Record, depth:4, tok:CurlyOpen, rng:(4,5) [{], full:(4,17) [{a: 3, b: it}]], count=1
+  02     Node[id:6, kind:ExprList, depth:3, tok:Comma, rng:(9,10) [,], full:(5,16) [a: 3, b: it]], count=2
+  03       Node[id:3, kind:VariableDecl, depth:2, tok:Colon, rng:(6,7) [:], full:(5,9) [a: 3], extra=[var:a]], count=1
+  04         Node[id:2, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+  03       Node[id:5, kind:VariableDecl, depth:2, tok:Colon, rng:(12,13) [:], full:(11,16) [b: it], extra=[var:b]], count=1
+  04         Node[id:4, kind:ItName, depth:1, tok:KwdIt, rng:(14,16) [it], full:(14,16) [it], extra=[slot=0]]
+###
+> x^y->{a, b}
+Node: [x^y->{ a, b }]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:5, tok:Car, rng:(1,2) [^], full:(0,11) [x^y->{a, b}], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:x, rng:(0,1) [x], full:(0,1) [x], extra=[x]]
+  01   Node[id:6, kind:RecordProjection, depth:4, tok:SubGrt, rng:(3,5) [->], full:(2,11) [y->{a, b}]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:y, rng:(2,3) [y], full:(2,3) [y], extra=[y]]
+  02     Node[id:5, kind:Record, depth:3, tok:CurlyOpen, rng:(5,6) [{], full:(5,11) [{a, b}]], count=1
+  03       Node[id:4, kind:ExprList, depth:2, tok:Comma, rng:(7,8) [,], full:(6,10) [a, b]], count=2
+  04         Node[id:2, kind:FirstName, depth:1, tok:a, rng:(6,7) [a], full:(6,7) [a], extra=[a]]
+  04         Node[id:3, kind:FirstName, depth:1, tok:b, rng:(9,10) [b], full:(9,10) [b], extra=[b]]
+###
+> x^y%->{a, b}
+Node: [x^(y%)->{ a, b }]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:Car, rng:(1,2) [^], full:(0,12) [x^y%->{a, b}], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:x, rng:(0,1) [x], full:(0,1) [x], extra=[x]]
+  01   Node[id:7, kind:RecordProjection, depth:4, tok:SubGrt, rng:(4,6) [->], full:(2,12) [y%->{a, b}]], count=2
+  02     Node[id:2, kind:UnaryOp, depth:2, tok:Per, rng:(3,4) [%], full:(2,4) [y%], extra=[Percent]], count=1
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(2,3) [y], full:(2,3) [y], extra=[y]]
+  02     Node[id:6, kind:Record, depth:3, tok:CurlyOpen, rng:(6,7) [{], full:(6,12) [{a, b}]], count=1
+  03       Node[id:5, kind:ExprList, depth:2, tok:Comma, rng:(8,9) [,], full:(7,11) [a, b]], count=2
+  04         Node[id:3, kind:FirstName, depth:1, tok:a, rng:(7,8) [a], full:(7,8) [a], extra=[a]]
+  04         Node[id:4, kind:FirstName, depth:1, tok:b, rng:(10,11) [b], full:(10,11) [b], extra=[b]]
+###
+> A ?? B ?? C
+Node: [A ?? B ?? C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:QueQue, rng:(2,4) [??], full:(0,11) [A ?? B ?? C], extra=[Coalesce]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:QueQue, rng:(7,9) [??], full:(5,11) [B ?? C], extra=[Coalesce]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> (A ?? B) ?? C
+Node: [(A ?? B) ?? C]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:QueQue, rng:(9,11) [??], full:(0,13) [(A ?? B) ?? C], extra=[Coalesce]], count=2
+  01   Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,8) [(A ?? B)]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:QueQue, rng:(3,5) [??], full:(1,7) [A ?? B], extra=[Coalesce]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A + B ?? C
+Node: [A + B ?? C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:QueQue, rng:(6,8) [??], full:(0,10) [A + B ?? C], extra=[Coalesce]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A ++ B
+Node: [A ++ B]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:AddAdd, rng:(2,4) [++], full:(0,6) [A ++ B], extra=[SeqConcat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+###
+> A ^ B
+Node: [A^B]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:Car, rng:(2,3) [^], full:(0,5) [A ^ B], extra=[Power]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+###
+> A |  _
+Node: [A | _]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:Bar, rng:(2,3) [|], full:(0,6) [A |  _], extra=[Pipe]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:Box, depth:1, tok:Box, rng:(5,6) [_], full:(5,6) [_]]
+###
+> A |  F(3, _)
+Node: [A | F(3, _)]
+Dump:
+  00 Node[id:5, kind:BinaryOp, depth:4, tok:Bar, rng:(2,3) [|], full:(0,12) [A |  F(3, _)], extra=[Pipe]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:4, kind:Call, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(5,12) [F(3, _)], extra=[F]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:Comma, rng:(8,9) [,], full:(7,11) [3, _]], count=2
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  03       Node[id:2, kind:Box, depth:1, tok:Box, rng:(10,11) [_], full:(10,11) [_]]
+###
+> A |  F(3)
+Node: [A | F(3)]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:4, tok:Bar, rng:(2,3) [|], full:(0,9) [A |  F(3)], extra=[Pipe]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:Call, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(5,9) [F(3)], extra=[F]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:3, rng:(7,8) [3], full:(7,8) [3]], count=1
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+###
+> A |  F(3, _, 5, _).X
+Node: [A | F(3, _, 5, _).X]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:Bar, rng:(2,3) [|], full:(0,20) [A |  F(3, _, 5, _).X], extra=[Pipe]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:DottedName, depth:4, tok:Dot, rng:(18,19) [.], full:(5,20) [F(3, _, 5, _).X], extra=[X]], count=1
+  02     Node[id:6, kind:Call, depth:3, tok:ParenOpen, rng:(6,7) [(], full:(5,18) [F(3, _, 5, _)], extra=[F]], count=1
+  03       Node[id:5, kind:ExprList, depth:2, tok:Comma, rng:(8,9) [,], full:(7,17) [3, _, 5, _]], count=4
+  04         Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  04         Node[id:2, kind:Box, depth:1, tok:Box, rng:(10,11) [_], full:(10,11) [_]]
+  04         Node[id:3, kind:NumLit, depth:1, tok:5, rng:(13,14) [5], full:(13,14) [5], extra=[5]]
+  04         Node[id:4, kind:Box, depth:1, tok:Box, rng:(16,17) [_], full:(16,17) [_]]
+###
+> _
+Node: [_]
+Dump:
+  00 Node[id:0, kind:Box, depth:1, tok:Box, rng:(0,1) [_], full:(0,1) [_]]
+###
+> -A^B |  F(_)
+Node: [-A^B | F(_)]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:4, tok:Bar, rng:(5,6) [|], full:(0,12) [-A^B |  F(_)], extra=[Pipe]], count=2
+  01   Node[id:3, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,4) [-A^B], extra=[Negate]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Car, rng:(2,3) [^], full:(1,4) [A^B], extra=[Power]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(3,4) [B], full:(3,4) [B], extra=[B]]
+  01   Node[id:6, kind:Call, depth:3, tok:ParenOpen, rng:(9,10) [(], full:(8,12) [F(_)], extra=[F]], count=1
+  02     Node[id:5, kind:ExprList, depth:2, tok:Box, rng:(10,11) [_], full:(10,11) [_]], count=1
+  03       Node[id:4, kind:Box, depth:1, tok:Box, rng:(10,11) [_], full:(10,11) [_]]
+###
+> A+B |  F(_)
+Node: [A + B | F(_)]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:Bar, rng:(4,5) [|], full:(0,11) [A+B |  F(_)], extra=[Pipe]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(1,2) [+], full:(0,3) [A+B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(2,3) [B], full:(2,3) [B], extra=[B]]
+  01   Node[id:5, kind:Call, depth:3, tok:ParenOpen, rng:(8,9) [(], full:(7,11) [F(_)], extra=[F]], count=1
+  02     Node[id:4, kind:ExprList, depth:2, tok:Box, rng:(9,10) [_], full:(9,10) [_]], count=1
+  03       Node[id:3, kind:Box, depth:1, tok:Box, rng:(9,10) [_], full:(9,10) [_]]
+###
+> A |  B if C |  D else E |  F
+Node: [A | B if C | D else E | F]
+Dump:
+  00 Node[id:9, kind:BinaryOp, depth:5, tok:Bar, rng:(24,25) [|], full:(0,28) [A |  B if C |  D else E |  F], extra=[Pipe]], count=2
+  01   Node[id:7, kind:BinaryOp, depth:4, tok:Bar, rng:(2,3) [|], full:(0,23) [A |  B if C |  D else E], extra=[Pipe]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:6, kind:If, depth:3, tok:KwdIf, rng:(7,9) [if], full:(5,23) [B if C |  D else E]], count=3
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  03       Node[id:4, kind:BinaryOp, depth:2, tok:Bar, rng:(12,13) [|], full:(10,16) [C |  D], extra=[Pipe]], count=2
+  04         Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  04         Node[id:3, kind:FirstName, depth:1, tok:D, rng:(15,16) [D], full:(15,16) [D], extra=[D]]
+  03       Node[id:5, kind:FirstName, depth:1, tok:E, rng:(22,23) [E], full:(22,23) [E], extra=[E]]
+  01   Node[id:8, kind:FirstName, depth:1, tok:F, rng:(27,28) [F], full:(27,28) [F], extra=[F]]
+###
+> A -> F()
+Node: [A->F()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,8) [A -> F()], extra=[F]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:ParenClose, rng:(7,8) [)], full:(0,8) [A -> F()]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+###
+> A -> F(3)
+Node: [A->F(3)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,9) [A -> F(3)], extra=[F]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:3, rng:(7,8) [3], full:(0,8) [A -> F(3]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+###
+> A -> F.G.H(3)
+Node: [A->F.G.H(3)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,13) [A -> F.G.H(3)], extra=[F.G.H]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:3, rng:(11,12) [3], full:(0,12) [A -> F.G.H(3]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:NumLit, depth:1, tok:3, rng:(11,12) [3], full:(11,12) [3], extra=[3]]
+###
+> A -> F(3)%
+Node: [A->F(3)%]
+Dump:
+  00 Node[id:4, kind:UnaryOp, depth:4, tok:Per, rng:(9,10) [%], full:(0,10) [A -> F(3)%], extra=[Percent]], count=1
+  01   Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,9) [A -> F(3)], extra=[F]], count=1
+  02     Node[id:2, kind:ExprList, depth:2, tok:3, rng:(7,8) [3], full:(0,8) [A -> F(3]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+###
+> A% -> F(3)
+Node: [A%->F(3)]
+Dump:
+  00 Node[id:4, kind:Call, depth:4, tok:SubGrt, rng:(3,5) [->], full:(0,10) [A% -> F(3)], extra=[F]], count=1
+  01   Node[id:3, kind:ExprList, depth:3, tok:3, rng:(8,9) [3], full:(0,9) [A% -> F(3]], count=2
+  02     Node[id:1, kind:UnaryOp, depth:2, tok:Per, rng:(1,2) [%], full:(0,2) [A%], extra=[Percent]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:2, kind:NumLit, depth:1, tok:3, rng:(8,9) [3], full:(8,9) [3], extra=[3]]
+###
+> A -> F(3, 5).X
+Node: [A->F(3, 5).X]
+Dump:
+  00 Node[id:5, kind:DottedName, depth:4, tok:Dot, rng:(12,13) [.], full:(0,14) [A -> F(3, 5).X], extra=[X]], count=1
+  01   Node[id:4, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,12) [A -> F(3, 5)], extra=[F]], count=1
+  02     Node[id:3, kind:ExprList, depth:2, tok:3, rng:(7,8) [3], full:(0,11) [A -> F(3, 5]], count=3
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  03       Node[id:2, kind:NumLit, depth:1, tok:5, rng:(10,11) [5], full:(10,11) [5], extra=[5]]
+###
+> A -> 1
+Node: [A->''(1)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,6) [A -> 1], extra=[_X]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:1, rng:(5,6) [1], full:(0,6) [A -> 1]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:NumLit, depth:1, tok:1, rng:(5,6) [1], full:(5,6) [1], extra=[1]]
+Error: (5,6) Tok: '1', Message: Expected: '<identifier>', Found: '1'
+Error: (5,6) Tok: '1', Message: Expected: '(', Found: '1'
+Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A -> F
+Node: [A->F()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,6) [A -> F], extra=[F]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:Eof, rng:(6,6) [], full:(0,6) [A -> F]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Error: (6,6) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (6,6) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A -> F.G.H
+Node: [A->F.G.H()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,10) [A -> F.G.H], extra=[F.G.H]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:Eof, rng:(10,10) [], full:(0,10) [A -> F.G.H]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+Error: (10,10) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (10,10) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> A -> -(B -> -(F() * G()))
+Node: [A->''(-B->''(-(F() * G())))]
+Dump:
+  00 Node[id:16, kind:Call, depth:11, tok:SubGrt, rng:(2,4) [->], full:(0,25) [A -> -(B -> -(F() * G()))], extra=[_X]], count=1
+  01   Node[id:15, kind:ExprList, depth:10, tok:Sub, rng:(5,6) [-], full:(0,25) [A -> -(B -> -(F() * G()))]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:14, kind:UnaryOp, depth:9, tok:Sub, rng:(5,6) [-], full:(5,25) [-(B -> -(F() * G()))], extra=[Negate]], count=1
+  03       Node[id:13, kind:Paren, depth:8, tok:ParenOpen, rng:(6,7) [(], full:(6,25) [(B -> -(F() * G()))]], count=1
+  04         Node[id:11, kind:Call, depth:7, tok:SubGrt, rng:(9,11) [->], full:(7,25) [B -> -(F() * G()))], extra=[_X]], count=1
+  05           Node[id:10, kind:ExprList, depth:6, tok:Sub, rng:(12,13) [-], full:(7,24) [B -> -(F() * G())]], count=2
+  06             Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  06             Node[id:9, kind:UnaryOp, depth:5, tok:Sub, rng:(12,13) [-], full:(12,24) [-(F() * G())], extra=[Negate]], count=1
+  07               Node[id:8, kind:Paren, depth:4, tok:ParenOpen, rng:(13,14) [(], full:(13,24) [(F() * G())]], count=1
+  08                 Node[id:6, kind:BinaryOp, depth:3, tok:Mul, rng:(18,19) [*], full:(14,23) [F() * G()], extra=[Mul]], count=2
+  09                   Node[id:3, kind:Call, depth:2, tok:ParenOpen, rng:(15,16) [(], full:(14,17) [F()], extra=[F]], count=1
+  10                     Node[id:2, kind:ExprList, depth:1, tok:ParenClose, rng:(16,17) [)], full:(16,17) [)]], count=0
+  09                   Node[id:5, kind:Call, depth:2, tok:ParenOpen, rng:(21,22) [(], full:(20,23) [G()], extra=[G]], count=1
+  10                     Node[id:4, kind:ExprList, depth:1, tok:ParenClose, rng:(22,23) [)], full:(22,23) [)]], count=0
+Error: (5,6) Tok: '-', Message: Expected: '<identifier>', Found: '-'
+Error: (5,6) Tok: '-', Message: Expected: '(', Found: '-'
+Error: (12,13) Tok: '-', Message: Expected: '<identifier>', Found: '-'
+Error: (12,13) Tok: '-', Message: Expected: '(', Found: '-'
+Error: (25,25) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (25,25) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> // This is now value projection.
+> A -> (B -> (F() * G()))
+Node: [A->(B->(F() * G()))]
+Dump:
+  00 Node[id:12, kind:ValueProjection, depth:7, tok:SubGrt, rng:(35,37) [->], full:(33,56) [A -> (B -> (F() * G()))]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(33,34) [A], full:(33,34) [A], extra=[A]]
+  01   Node[id:11, kind:Paren, depth:6, tok:ParenOpen, rng:(38,39) [(], full:(38,56) [(B -> (F() * G()))]], count=1
+  02     Node[id:9, kind:ValueProjection, depth:5, tok:SubGrt, rng:(41,43) [->], full:(39,55) [B -> (F() * G())]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(39,40) [B], full:(39,40) [B], extra=[B]]
+  03       Node[id:8, kind:Paren, depth:4, tok:ParenOpen, rng:(44,45) [(], full:(44,55) [(F() * G())]], count=1
+  04         Node[id:6, kind:BinaryOp, depth:3, tok:Mul, rng:(49,50) [*], full:(45,54) [F() * G()], extra=[Mul]], count=2
+  05           Node[id:3, kind:Call, depth:2, tok:ParenOpen, rng:(46,47) [(], full:(45,48) [F()], extra=[F]], count=1
+  06             Node[id:2, kind:ExprList, depth:1, tok:ParenClose, rng:(47,48) [)], full:(47,48) [)]], count=0
+  05           Node[id:5, kind:Call, depth:2, tok:ParenOpen, rng:(52,53) [(], full:(51,54) [G()], extra=[G]], count=1
+  06             Node[id:4, kind:ExprList, depth:1, tok:ParenClose, rng:(53,54) [)], full:(53,54) [)]], count=0
+Comment: Range=(0,32), Tid=CommentLine, Text=[// This is now value projection.]
+###
+> 1->2 + 3->4 + 5->F.G() + 6->a.b
+Node: [1->''(2 + 3->''(4 + 5->F.G() + 6->a.b()))]
+Dump:
+  00 Node[id:16, kind:Call, depth:10, tok:SubGrt, rng:(1,3) [->], full:(0,31) [1->2 + 3->4 + 5->F.G() + 6->a.b], extra=[_X]], count=1
+  01   Node[id:15, kind:ExprList, depth:9, tok:2, rng:(3,4) [2], full:(0,31) [1->2 + 3->4 + 5->F.G() + 6->a.b]], count=2
+  02     Node[id:0, kind:NumLit, depth:1, tok:1, rng:(0,1) [1], full:(0,1) [1], extra=[1]]
+  02     Node[id:14, kind:BinaryOp, depth:8, tok:Add, rng:(5,6) [+], full:(3,31) [2 + 3->4 + 5->F.G() + 6->a.b], extra=[Add]], count=2
+  03       Node[id:1, kind:NumLit, depth:1, tok:2, rng:(3,4) [2], full:(3,4) [2], extra=[2]]
+  03       Node[id:13, kind:Call, depth:7, tok:SubGrt, rng:(8,10) [->], full:(7,31) [3->4 + 5->F.G() + 6->a.b], extra=[_X]], count=1
+  04         Node[id:12, kind:ExprList, depth:6, tok:4, rng:(10,11) [4], full:(7,31) [3->4 + 5->F.G() + 6->a.b]], count=2
+  05           Node[id:2, kind:NumLit, depth:1, tok:3, rng:(7,8) [3], full:(7,8) [3], extra=[3]]
+  05           Node[id:11, kind:BinaryOp, depth:5, tok:Add, rng:(23,24) [+], full:(10,31) [4 + 5->F.G() + 6->a.b], extra=[Add]], count=2
+  06             Node[id:7, kind:BinaryOp, depth:4, tok:Add, rng:(12,13) [+], full:(10,22) [4 + 5->F.G()], extra=[Add]], count=2
+  07               Node[id:3, kind:NumLit, depth:1, tok:4, rng:(10,11) [4], full:(10,11) [4], extra=[4]]
+  07               Node[id:6, kind:Call, depth:3, tok:SubGrt, rng:(15,17) [->], full:(14,22) [5->F.G()], extra=[F.G]], count=1
+  08                 Node[id:5, kind:ExprList, depth:2, tok:ParenClose, rng:(21,22) [)], full:(14,22) [5->F.G()]], count=1
+  09                   Node[id:4, kind:NumLit, depth:1, tok:5, rng:(14,15) [5], full:(14,15) [5], extra=[5]]
+  06             Node[id:10, kind:Call, depth:3, tok:SubGrt, rng:(26,28) [->], full:(25,31) [6->a.b], extra=[a.b]], count=1
+  07               Node[id:9, kind:ExprList, depth:2, tok:Eof, rng:(31,31) [], full:(25,31) [6->a.b]], count=1
+  08                 Node[id:8, kind:NumLit, depth:1, tok:6, rng:(25,26) [6], full:(25,26) [6], extra=[6]]
+Error: (3,4) Tok: '2', Message: Expected: '<identifier>', Found: '2'
+Error: (3,4) Tok: '2', Message: Expected: '(', Found: '2'
+Error: (10,11) Tok: '4', Message: Expected: '<identifier>', Found: '4'
+Error: (10,11) Tok: '4', Message: Expected: '(', Found: '4'
+Error: (31,31) Tok: '<eof>', Message: Expected: '(', Found: '<eof>'
+Error: (31,31) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (31,31) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+Error: (31,31) Tok: '<eof>', Message: Expected: ')', Found: '<eof>'
+###
+> -x ^ y -> F(17)
+Node: [-x^y->F(17)]
+Dump:
+  00 Node[id:6, kind:UnaryOp, depth:5, tok:Sub, rng:(0,1) [-], full:(0,15) [-x ^ y -> F(17)], extra=[Negate]], count=1
+  01   Node[id:5, kind:BinaryOp, depth:4, tok:Car, rng:(3,4) [^], full:(1,15) [x ^ y -> F(17)], extra=[Power]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:x, rng:(1,2) [x], full:(1,2) [x], extra=[x]]
+  02     Node[id:4, kind:Call, depth:3, tok:SubGrt, rng:(7,9) [->], full:(5,15) [y -> F(17)], extra=[F]], count=1
+  03       Node[id:3, kind:ExprList, depth:2, tok:17, rng:(12,14) [17], full:(5,14) [y -> F(17]], count=2
+  04         Node[id:1, kind:FirstName, depth:1, tok:y, rng:(5,6) [y], full:(5,6) [y], extra=[y]]
+  04         Node[id:2, kind:NumLit, depth:1, tok:17, rng:(12,14) [17], full:(12,14) [17], extra=[17]]
+###
+> -x ^ y |  F(_, 17)
+Node: [-x^y | F(_, 17)]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:4, tok:Bar, rng:(7,8) [|], full:(0,18) [-x ^ y |  F(_, 17)], extra=[Pipe]], count=2
+  01   Node[id:3, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,6) [-x ^ y], extra=[Negate]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Car, rng:(3,4) [^], full:(1,6) [x ^ y], extra=[Power]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:x, rng:(1,2) [x], full:(1,2) [x], extra=[x]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:y, rng:(5,6) [y], full:(5,6) [y], extra=[y]]
+  01   Node[id:7, kind:Call, depth:3, tok:ParenOpen, rng:(11,12) [(], full:(10,18) [F(_, 17)], extra=[F]], count=1
+  02     Node[id:6, kind:ExprList, depth:2, tok:Comma, rng:(13,14) [,], full:(12,17) [_, 17]], count=2
+  03       Node[id:4, kind:Box, depth:1, tok:Box, rng:(12,13) [_], full:(12,13) [_]]
+  03       Node[id:5, kind:NumLit, depth:1, tok:17, rng:(15,17) [17], full:(15,17) [17], extra=[17]]
+###
+> A -> @F()
+Node: [A->@F()]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:SubGrt, rng:(2,4) [->], full:(0,9) [A -> @F()], extra=[@F]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:ParenClose, rng:(8,9) [)], full:(0,9) [A -> @F()]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+###
+> X + [>] Y
+Node: [X + Y]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,9) [X + [>] Y], extra=[Add]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:X, rng:(0,1) [X], full:(0,1) [X], extra=[X]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(8,9) [Y], full:(8,9) [Y], extra=[Y]]
+Error: (4,7) Tok: '[>]', Message: Unexpected directive
+###
+> X * * F([>] Y)
+Node: [X * (<missing>) * F([>] Y)]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:5, tok:Mul, rng:(4,5) [*], full:(0,14) [X * * F([>] Y)], extra=[Mul]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(2,3) [*], full:(0,5) [X * *], extra=[Mul]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:X, rng:(0,1) [X], full:(0,1) [X], extra=[X]]
+  02     Node[id:1, kind:MissingValue, depth:1, tok:Mul, rng:(4,5) [*], full:(4,5) [*], extra=[<missing>]]
+  01   Node[id:6, kind:Call, depth:4, tok:ParenOpen, rng:(7,8) [(], full:(6,14) [F([>] Y)], extra=[F]], count=1
+  02     Node[id:5, kind:ExprList, depth:3, tok:DirDown, rng:(8,11) [[>]], full:(8,13) [[>] Y]], count=1
+  03       Node[id:4, kind:Directive, depth:2, tok:DirDown, rng:(8,11) [[>]], full:(8,13) [[>] Y], extra=[dir:Down]], count=1
+  04         Node[id:3, kind:FirstName, depth:1, tok:Y, rng:(12,13) [Y], full:(12,13) [Y], extra=[Y]]
+Error: (4,5) Tok: '*', Message: Expected an operand
+###
+> A->B.(3)
+Node: [A->B.''(3)]
+Dump:
+  00 Node[id:3, kind:Call, depth:3, tok:SubGrt, rng:(1,3) [->], full:(0,8) [A->B.(3)], extra=[B._X]], count=1
+  01   Node[id:2, kind:ExprList, depth:2, tok:3, rng:(6,7) [3], full:(0,7) [A->B.(3]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:NumLit, depth:1, tok:3, rng:(6,7) [3], full:(6,7) [3], extra=[3]]
+Error: (5,6) Tok: '(', Message: Expected: '<identifier>', Found: '('
+###
+> A->F(as x, x * 2)
+Node: [A->F(as x, x * 2)]
+Dump:
+  00 Node[id:6, kind:Call, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,17) [A->F(as x, x * 2)], extra=[F]], count=1
+  01   Node[id:5, kind:ExprList, depth:3, tok:x, rng:(11,12) [x], full:(0,16) [A->F(as x, x * 2]], count=2
+  02     Node[id:1, kind:VariableDecl, depth:2, tok:KwdAs, rng:(5,7) [as], full:(0,9) [A->F(as x], extra=[var:x]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:Mul, rng:(13,14) [*], full:(11,16) [x * 2], extra=[Mul]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:x, rng:(11,12) [x], full:(11,12) [x], extra=[x]]
+  03       Node[id:3, kind:NumLit, depth:1, tok:2, rng:(15,16) [2], full:(15,16) [2], extra=[2]]
+###
+> A->F(as _, it * 2)
+Node: [A->F(as _, it * 2)]
+Dump:
+  00 Node[id:6, kind:Call, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,18) [A->F(as _, it * 2)], extra=[F]], count=1
+  01   Node[id:5, kind:ExprList, depth:3, tok:KwdIt, rng:(11,13) [it], full:(0,17) [A->F(as _, it * 2]], count=2
+  02     Node[id:1, kind:VariableDecl, depth:2, tok:KwdAs, rng:(5,7) [as], full:(0,9) [A->F(as _], extra=[_]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:Mul, rng:(14,15) [*], full:(11,17) [it * 2], extra=[Mul]], count=2
+  03       Node[id:2, kind:ItName, depth:1, tok:KwdIt, rng:(11,13) [it], full:(11,13) [it], extra=[slot=0]]
+  03       Node[id:3, kind:NumLit, depth:1, tok:2, rng:(16,17) [2], full:(16,17) [2], extra=[2]]
+###
+> A->F(as x)
+Node: [A->F(as x, (<missing>))]
+Dump:
+  00 Node[id:4, kind:Call, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,10) [A->F(as x)], extra=[F]], count=1
+  01   Node[id:3, kind:ExprList, depth:3, tok:ParenClose, rng:(9,10) [)], full:(0,10) [A->F(as x)]], count=2
+  02     Node[id:1, kind:VariableDecl, depth:2, tok:KwdAs, rng:(5,7) [as], full:(0,9) [A->F(as x], extra=[var:x]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:2, kind:MissingValue, depth:1, tok:ParenClose, rng:(9,10) [)], full:(9,10) [)], extra=[<missing>]]
+Error: (9,10) Tok: ')', Message: Expected: ',', Found: ')'
+Error: (9,10) Tok: ')', Message: Expected an operand
+###
+> A->F(as, it * 2)
+Node: [A->F(as '', it * 2)]
+Dump:
+  00 Node[id:6, kind:Call, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,16) [A->F(as, it * 2)], extra=[F]], count=1
+  01   Node[id:5, kind:ExprList, depth:3, tok:KwdIt, rng:(9,11) [it], full:(0,15) [A->F(as, it * 2]], count=2
+  02     Node[id:1, kind:VariableDecl, depth:2, tok:KwdAs, rng:(5,7) [as], full:(0,7) [A->F(as], extra=[var:_X]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:Mul, rng:(12,13) [*], full:(9,15) [it * 2], extra=[Mul]], count=2
+  03       Node[id:2, kind:ItName, depth:1, tok:KwdIt, rng:(9,11) [it], full:(9,11) [it], extra=[slot=0]]
+  03       Node[id:3, kind:NumLit, depth:1, tok:2, rng:(14,15) [2], full:(14,15) [2], extra=[2]]
+Error: (7,8) Tok: ',', Message: Expected: '<identifier>', Found: ','
+###
+> A->F(as)
+Node: [A->F(as '', (<missing>))]
+Dump:
+  00 Node[id:4, kind:Call, depth:4, tok:SubGrt, rng:(1,3) [->], full:(0,8) [A->F(as)], extra=[F]], count=1
+  01   Node[id:3, kind:ExprList, depth:3, tok:ParenClose, rng:(7,8) [)], full:(0,8) [A->F(as)]], count=2
+  02     Node[id:1, kind:VariableDecl, depth:2, tok:KwdAs, rng:(5,7) [as], full:(0,7) [A->F(as], extra=[var:_X]], count=1
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:2, kind:MissingValue, depth:1, tok:ParenClose, rng:(7,8) [)], full:(7,8) [)], extra=[<missing>]]
+Error: (7,8) Tok: ')', Message: Expected: '<identifier>', Found: ')'
+Error: (7,8) Tok: ')', Message: Expected: ',', Found: ')'
+Error: (7,8) Tok: ')', Message: Expected an operand
+###
+> X ! ~ Y
+Node: [X !~@= Y]
+Corrected: [X ! ~= Y]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Bng, rng:(2,3) [!], full:(0,7) [X ! ~ Y]], count=2
+  01   Op:NotEqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:X, rng:(0,1) [X], full:(0,1) [X], extra=[X]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(6,7) [Y], full:(6,7) [Y], extra=[Y]]
+Error: (6,7) Tok: 'Y', Message: Expected a comparison operator
+###
+> X + Y ! = Z
+Node: [X + Y !@= Z]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Equ, rng:(8,9) [=], full:(0,11) [X + Y ! = Z]], count=2
+  01   Op:NotEqual
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [X + Y], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:X, rng:(0,1) [X], full:(0,1) [X], extra=[X]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(4,5) [Y], full:(4,5) [Y], extra=[Y]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:Z, rng:(10,11) [Z], full:(10,11) [Z], extra=[Z]]
+###
+> X & Y ! ~ = Z
+Node: [X & Y !~@= Z]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Equ, rng:(10,11) [=], full:(0,13) [X & Y ! ~ = Z]], count=2
+  01   Op:NotEqualCi
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [X & Y], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:X, rng:(0,1) [X], full:(0,1) [X], extra=[X]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Y, rng:(4,5) [Y], full:(4,5) [Y], extra=[Y]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:Z, rng:(12,13) [Z], full:(12,13) [Z], extra=[Z]]
+###
+> and
+Node: [and]
+Dump:
+  00 Node[id:0, kind:FirstName, depth:1, tok:and, rng:(0,3) [and], full:(0,3) [and], extra=[and]]
+###
+> and or
+Node: [and or (<missing>)]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(4,6) [or], full:(0,6) [and or], extra=[Or]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:and, rng:(0,3) [and], full:(0,3) [and], extra=[and]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(6,6) [], full:(6,6) [], extra=[<missing>]]
+Error: (6,6) Tok: '<eof>', Message: Expected an operand
+###
+> and div or
+Node: [and div or]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxDiv, rng:(4,7) [div], full:(0,10) [and div or], extra=[IntDiv]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:and, rng:(0,3) [and], full:(0,3) [and], extra=[and]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:or, rng:(8,10) [or], full:(8,10) [or], extra=[or]]
+###
+> and and and
+Node: [and and and]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(4,7) [and], full:(0,11) [and and and], extra=[And]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:and, rng:(0,3) [and], full:(0,3) [and], extra=[and]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:and, rng:(8,11) [and], full:(8,11) [and], extra=[and]]
+###
+> and and
+Node: [and and (<missing>)]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(4,7) [and], full:(0,7) [and and], extra=[And]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:and, rng:(0,3) [and], full:(0,3) [and], extra=[and]]
+  01   Node[id:1, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> and (or)
+Node: [and(or)]
+Dump:
+  00 Node[id:2, kind:Call, depth:3, tok:ParenOpen, rng:(4,5) [(], full:(0,8) [and (or)], extra=[and]], count=1
+  01   Node[id:1, kind:ExprList, depth:2, tok:or, rng:(5,7) [or], full:(5,7) [or]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:or, rng:(5,7) [or], full:(5,7) [or], extra=[or]]
+###
+> and (or mod div)
+Node: [and(or mod div)]
+Dump:
+  00 Node[id:4, kind:Call, depth:4, tok:ParenOpen, rng:(4,5) [(], full:(0,16) [and (or mod div)], extra=[and]], count=1
+  01   Node[id:3, kind:ExprList, depth:3, tok:or, rng:(5,7) [or], full:(5,15) [or mod div]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxMod, rng:(8,11) [mod], full:(5,15) [or mod div], extra=[IntMod]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:or, rng:(5,7) [or], full:(5,7) [or], extra=[or]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:div, rng:(12,15) [div], full:(12,15) [div], extra=[div]]
+###
+> (bor or band) xor (xor shri min)
+Node: [(bor or band) xor xor shri min]
+Dump:
+  00 Node[id:10, kind:BinaryOp, depth:4, tok:KtxXor, rng:(14,17) [xor], full:(0,32) [(bor or band) xor (xor shri min)], extra=[Xor]], count=2
+  01   Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,13) [(bor or band)]], count=1
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(5,7) [or], full:(1,12) [bor or band], extra=[Or]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:bor, rng:(1,4) [bor], full:(1,4) [bor], extra=[bor]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:band, rng:(8,12) [band], full:(8,12) [band], extra=[band]]
+  01   Node[id:9, kind:Paren, depth:3, tok:ParenOpen, rng:(18,19) [(], full:(18,32) [(xor shri min)]], count=1
+  02     Node[id:7, kind:BinaryOp, depth:2, tok:KtxShri, rng:(23,27) [shri], full:(19,31) [xor shri min], extra=[Shri]], count=2
+  03       Node[id:5, kind:FirstName, depth:1, tok:xor, rng:(19,22) [xor], full:(19,22) [xor], extra=[xor]]
+  03       Node[id:6, kind:FirstName, depth:1, tok:min, rng:(28,31) [min], full:(28,31) [min], extra=[min]]
+###
+> (min or max) has in
+Node: [(min or max) has (<missing>) in (<missing>)]
+Dump:
+  00 Node[id:8, kind:InHas, depth:5, tok:KwdIn, rng:(17,19) [in], full:(0,19) [(min or max) has in], extra=[In]], count=2
+  01   Node[id:6, kind:InHas, depth:4, tok:KwdHas, rng:(13,16) [has], full:(0,19) [(min or max) has in], extra=[Has]], count=2
+  02     Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(0,1) [(], full:(0,12) [(min or max)]], count=1
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxOr, rng:(5,7) [or], full:(1,11) [min or max], extra=[Or]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:min, rng:(1,4) [min], full:(1,4) [min], extra=[min]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:max, rng:(8,11) [max], full:(8,11) [max], extra=[max]]
+  02     Node[id:5, kind:MissingValue, depth:1, tok:KwdIn, rng:(17,19) [in], full:(17,19) [in], extra=[<missing>]]
+  01   Node[id:7, kind:MissingValue, depth:1, tok:Eof, rng:(19,19) [], full:(19,19) [], extra=[<missing>]]
+Error: (17,19) Tok: 'in', Message: Expected an operand
+Error: (19,19) Tok: '<eof>', Message: Expected an operand
+###
+> 3 X 5
+Node: [(((3) <error> (X)) <error> (5))]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:5, rng:(4,5) [5], full:(0,5) [3 X 5], extra=[Error]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:X, rng:(2,3) [X], full:(0,3) [3 X], extra=[Error]], count=2
+  02     Node[id:0, kind:NumLit, depth:1, tok:3, rng:(0,1) [3], full:(0,1) [3], extra=[3]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:X, rng:(2,3) [X], full:(2,3) [X], extra=[X]]
+  01   Node[id:3, kind:NumLit, depth:1, tok:5, rng:(4,5) [5], full:(4,5) [5], extra=[5]]
+Error: (2,3) Tok: 'X', Message: Expected an operator
+Error: (4,5) Tok: '5', Message: Expected an operator
+###
+> 3 to 5
+Node: [3]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:3, rng:(0,1) [3], full:(0,1) [3], extra=[3]]
+Error: (2,4) Tok: 'to', Message: Unexpected token
+###
+> 3 TO 5
+Node: [3]
+Dump:
+  00 Node[id:0, kind:NumLit, depth:1, tok:3, rng:(0,1) [3], full:(0,1) [3], extra=[3]]
+Error: (2,4) Tok: 'TO', Message: Unexpected token
+###

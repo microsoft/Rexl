@@ -1,0 +1,36 @@
+﻿func Wait(n) := "Waited" if Range(n * 1_000_000)->Sum() > 0 else "";
+
+"";
+"*** Prime, and use improperly in another task";
+prime T0 as Pipe(Range(1_000_000));
+(T0$State, T0$ResultNames);
+T0.Count;
+
+"";
+"*** These are OK";
+task T1 as Pipe(T0.SData->TakeIf(it mod 2 = 0));
+task T1 as Pipe(T0.SData->Drop(5));
+task T1 as Pipe(T0.SData->ForEach(it * 2));
+task T1 as Pipe(T0.SData->Sort());
+
+"";
+"*** Alias scopes";
+task T1 as Pipe(With(X: T0.SData, X->TakeIf(it mod 2 = 0)));
+task T1 as Pipe(With(X: T0.SData, X->Drop(5)));
+task T1 as Pipe(With(X: T0.SData, X->ForEach(it * 2)));
+task T1 as Pipe(With(X: T0.SData, Y: X->Take(17), Y->ForEach(it * 2)));
+
+"";
+"*** These are errors";
+task T1 as Pipe(Range(T0.SData->Count()));
+task T1 as Pipe(Range(T0.SData->Sum()));
+task T1 as Pipe(Range(T0.SData->TakeOne()));
+
+"";
+"*** Alias scopes";
+task T1 as Pipe(With(X: T0.SData, Range(X->Count())));
+task T1 as Pipe(With(X: T0.SData, Y: X->Take(17), Range(Y->Sum(it * 2))));
+
+"";
+"*** These could be considered ok, but are currently errors";
+task T1 as Pipe(Range(10)->ForEach(it * T0.SData->Count()));

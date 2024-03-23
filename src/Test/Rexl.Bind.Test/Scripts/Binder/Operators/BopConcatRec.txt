@@ -1,0 +1,182 @@
+﻿:: { re:{}, ra:{A:s}, rb:{B:s}, rx:{X:s}, r:{A:i4, B:b, C:s}, qr:{A:i4, B:b, C:s}?, sr:{A:i4, B:b, C:s}*, sqr:{A:i4, B:b, C:s}?* }
+
+{} & {}
+{} & re
+{} & { A: 3 }
+{} & { A: 3, B: true }
+{} & { A: 3, B: true }
+{} & r
+{} & qr
+{} & sr
+{} & sqr
+
+re & {}
+re & re
+re & { A: 3 }
+re & { A: 3, B: true }
+re & r
+re & qr
+re & sr
+re & sqr
+
+{ X: "hi" } & {}
+{ X: "hi" } & re
+{ X: "hi" } & { A: 3 }
+{ X: "hi" } & { A: 3, B: true }
+{ X: "hi" } & r
+{ X: "hi" } & qr
+{ X: "hi" } & sr
+{ X: "hi" } & sqr
+
+rx & {}
+rx & re
+rx & { A: 3 }
+rx & { A: 3, B: true }
+rx & r
+rx & qr
+rx & sr
+rx & sqr
+
+{ A: "hi" } & {}
+{ A: "hi" } & re
+{ A: "hi" } & { A: 3 }
+{ A: "hi" } & { A: 3, B: true }
+{ A: "hi" } & r
+{ A: "hi" } & qr
+{ A: "hi" } & sr
+{ A: "hi" } & sqr
+
+ra & {}
+ra & re
+ra & { A: 3 }
+ra & { A: 3, B: true }
+ra & r
+ra & qr
+ra & sr
+ra & sqr
+
+{ B: "hi" } & {}
+{ B: "hi" } & re
+{ B: "hi" } & { A: 3 }
+{ B: "hi" } & { A: 3, B: true }
+{ B: "hi" } & r
+{ B: "hi" } & qr
+{ B: "hi" } & sr
+{ B: "hi" } & sqr
+
+rb & {}
+rb & re
+rb & { A: 3 }
+rb & { A: 3, B: true }
+rb & r
+rb & qr
+rb & sr
+rb & sqr
+
+// Swap left and right.
+
+{} & {}
+re & {}
+{ A: 3 } & {}
+{ A: 3, B: true } & {}
+{ A: 3, B: true } & {}
+r & {}
+qr & {}
+sr & {}
+sqr & {}
+
+{} & re
+re & re
+{ A: 3 } & re
+{ A: 3, B: true } & re
+r & re
+qr & re
+sr & re
+sqr & re
+
+{} & { X: "hi" }
+re & { X: "hi" }
+{ A: 3 } & { X: "hi" }
+{ A: 3, B: true } & { X: "hi" }
+r & { X: "hi" }
+qr & { X: "hi" }
+sr & { X: "hi" }
+sqr & { X: "hi" }
+
+{} & rx
+re & rx
+{ A: 3 } & rx
+{ A: 3, B: true } & rx
+r & rx
+qr & rx
+sr & rx
+sqr & rx
+
+{} & { A: "hi" }
+re & { A: "hi" }
+{ A: 3 } & { A: "hi" }
+{ A: 3, B: true } & { A: "hi" }
+r & { A: "hi" }
+qr & { A: "hi" }
+sr & { A: "hi" }
+sqr & { A: "hi" }
+
+{} & ra
+re & ra
+{ A: 3 } & ra
+{ A: 3, B: true } & ra
+r & ra
+qr & ra
+sr & ra
+sqr & ra
+
+{} & { B: "hi" }
+re & { B: "hi" }
+{ A: 3 } & { B: "hi" }
+{ A: 3, B: true } & { B: "hi" }
+r & { B: "hi" }
+qr & { B: "hi" }
+sr & { B: "hi" }
+sqr & { B: "hi" }
+
+{} & rb
+re & rb
+{ A: 3 } & rb
+{ A: 3, B: true } & rb
+r & rb
+qr & rb
+sr & rb
+sqr & rb
+
+// Other patterns.
+
+{ A: "hi" } & { A: 3 if false else 7, B: true }
+{ C: "hi" } & { A: 3 if false else 7, B: true }
+{ C: "hi", A: 1.5 } & { A: 3 if false else 7, B: true }
+{ C: "hi", A: 1.5 } & { A: 3 if false else 7, B: true } & rx
+
+({ A: "hi" } if true else { B: 5 }) & { C: true } // Note the B field is not in BndRecordNode.Items
+({ D: 2.5, A: "hi" } if true else { B: 5 }) & { C: true }
+
+r & { B: 3 * 5 }
+
+r & { E:"hi" } & { D:3 }
+{ E:"hi" } & r & { D:3 }
+{ E:"hi" } & { D:3 } & r
+
+{ E:"hi" } & { D:3 } & { B:5 }
+
+r & { E:"hi" } & { E:3 }
+{ E:"hi" } & r & { E:3 }
+{ E:"hi" } & { E:3 } & r
+
+{ E:"hi" } & { E:3 } & { E:5 }
+
+// Error cases.
+
+r & null
+null & r
+r & "hi"
+"hi" & r
+r & true
+true & r

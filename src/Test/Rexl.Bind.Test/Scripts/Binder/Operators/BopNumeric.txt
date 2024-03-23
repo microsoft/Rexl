@@ -1,0 +1,346 @@
+:: { N:n, n:n?, B:(b,b), b:(b,b)?, s:s, o:o, g:g, X:i2, Y:i2, Z:i2, I8:i8, R:r8 }
+
+-0d // Should be -0.
+0d - 0d // Should be +0.
+-(0d + 0d) // Should be -0.
+
+-0d + R // Leading constant should be -0.
+0d - 0d + R // Leading constant should +0.
+-(0d + 0d) + R // Leading constant should -0.
+
+// *** Precedence of numeric binary operators
+
+X + Y
+X - Y
+X * Y
+X / Y
+X ^ Y
+X ^ R
+R ^ Y
+X + Y + Z
+X + Y - Z
+X + Y * Z
+X + Y / Z
+X + Y ^ Z
+X - Y + Z
+X - Y - Z
+X - Y * Z
+X - Y / Z
+X - Y ^ Z
+X * Y + Z
+X * Y - Z
+X * Y * Z
+X * Y / Z
+X * Y ^ Z
+X / Y + Z
+X / Y - Z
+X / Y * Z
+X / Y / Z
+X / Y ^ Z
+X ^ Y + Z
+X ^ Y - Z
+X ^ Y * Z
+X ^ Y / Z
+X ^ Y ^ Z
+
+// *** Constant folding of numeric binary operators.
+
+5 + 4
+5 - 4
+5 * 4
+5 / 4
+5 ^ 4
+5 + 4 + 2
+5 + 4 - 2
+5 + 4 * 2
+5 + 4 / 2
+5 + 4 ^ 2
+5 - 4 + 2
+5 - 4 - 2
+5 - 4 * 2
+5 - 4 / 2
+5 - 4 ^ 2
+5 * 4 + 2
+5 * 4 - 2
+5 * 4 * 2
+5 * 4 / 2
+5 * 4 ^ 2
+5 / 4 + 2
+5 / 4 - 2
+5 / 4 * 2
+5 / 4 / 2
+5 / 4 ^ 2
+5 ^ 4 + 2
+5 ^ 4 - 2
+5 ^ 4 * 2
+5 ^ 4 / 2
+5 ^ 4 ^ 2
+
+5d ^ 4
+5 ^ 4d
+5 ^ -4
+X ^  0
+X ^ +1
+X ^ -1
+R ^  0
+R ^ +1
+R ^ -1
+
+null + 4
+null - 4
+null * 4
+null / 4
+null ^ 4
+null + 4 + 2
+null + 4 - 2
+null + 4 * 2
+null + 4 / 2
+null + 4 ^ 2
+null - 4 + 2
+null - 4 - 2
+null - 4 * 2
+null - 4 / 2
+null - 4 ^ 2
+null * 4 + 2
+null * 4 - 2
+null * 4 * 2
+null * 4 / 2
+null * 4 ^ 2
+null / 4 + 2
+null / 4 - 2
+null / 4 * 2
+null / 4 / 2
+null / 4 ^ 2
+null ^ 4 + 2
+null ^ 4 - 2
+null ^ 4 * 2
+null ^ 4 / 2
+null ^ 4 ^ 2
+
+5 + null
+5 - null
+5 * null
+5 / null
+5 ^ null
+5 + null + 2
+5 + null - 2
+5 + null * 2
+5 + null / 2
+5 + null ^ 2
+5 - null + 2
+5 - null - 2
+5 - null * 2
+5 - null / 2
+5 - null ^ 2
+5 * null + 2
+5 * null - 2
+5 * null * 2
+5 * null / 2
+5 * null ^ 2
+5 / null + 2
+5 / null - 2
+5 / null * 2
+5 / null / 2
+5 / null ^ 2
+5 ^ null + 2
+5 ^ null - 2
+5 ^ null * 2
+5 ^ null / 2
+5 ^ null ^ 2
+
+5 + 4
+5 - 4
+5 * 4
+5 / 4
+5 ^ 4
+5 + 4 + null
+5 + 4 - null
+5 + 4 * null
+5 + 4 / null
+5 + 4 ^ null
+5 - 4 + null
+5 - 4 - null
+5 - 4 * null
+5 - 4 / null
+5 - 4 ^ null
+5 * 4 + null
+5 * 4 - null
+5 * 4 * null
+5 * 4 / null
+5 * 4 ^ null
+5 / 4 + null
+5 / 4 - null
+5 / 4 * null
+5 / 4 / null
+5 / 4 ^ null
+5 ^ 4 + null
+5 ^ 4 - null
+5 ^ 4 * null
+5 ^ 4 / null
+5 ^ 4 ^ null
+
+// *** Partial constant folding.
+
+5 + 4
+5 - 4
+5 * 4
+5 / 4
+5 ^ 4
+5 + 4 + Z
+5 + 4 - Z
+5 + 4 * Z
+5 + 4 / Z
+5 + 4 ^ Z
+5 - 4 + Z
+5 - 4 - Z
+5 - 4 * Z
+5 - 4 / Z
+5 - 4 ^ Z
+5 * 4 + Z
+5 * 4 - Z
+5 * 4 * Z
+5 * 4 / Z
+5 * 4 ^ Z
+5 / 4 + Z
+5 / 4 - Z
+5 / 4 * Z
+5 / 4 / Z
+5 / 4 ^ Z
+5 ^ 4 + Z
+5 ^ 4 - Z
+5 ^ 4 * Z
+5 ^ 4 / Z
+5 ^ 4 ^ Z
+
+5 + Y
+5 - Y
+5 * Y
+5 / Y
+5 ^ Y
+5 + Y + 2
+5 + Y - 2
+5 + Y * 2
+5 + Y / 2
+5 + Y ^ 2
+5 - Y + 2
+5 - Y - 2
+5 - Y * 2
+5 - Y / 2
+5 - Y ^ 2
+5 * Y + 2
+5 * Y - 2
+5 * Y * 2
+5 * Y / 2
+5 * Y ^ 2
+5 / Y + 2
+5 / Y - 2
+5 / Y * 2
+5 / Y / 2
+5 / Y ^ 2
+5 ^ Y + 2
+5 ^ Y - 2
+5 ^ Y * 2
+5 ^ Y / 2
+5 ^ Y ^ 2
+
+X + 4
+X - 4
+X * 4
+X / 4
+X ^ 4
+X + 4 + 2
+X + 4 - 2
+X + 4 * 2
+X + 4 / 2
+X + 4 ^ 2
+X - 4 + 2
+X - 4 - 2
+X - 4 * 2
+X - 4 / 2
+X - 4 ^ 2
+X * 4 + 2
+X * 4 - 2
+X * 4 * 2
+X * 4 / 2
+X * 4 ^ 2
+X / 4 + 2
+X / 4 - 2
+X / 4 * 2
+X / 4 / 2
+X / 4 ^ 2
+X ^ 4 + 2
+X ^ 4 - 2
+X ^ 4 * 2
+X ^ 4 / 2
+X ^ 4 ^ 2
+
+// ^ * Identity folding.
+
+0 + X // Reduced to X.
+0 - X // Reduced to Add([-] X).
+X + 0 // Reduced to X.
+X - 0 // Reduced to X.
+0 + B // Reduced to Cast<n>(B) + error.
+0 - B // Reduced to Add([-] Cast<n>(B)) + error.
+B + 0 // Reduced to Cast<n>(B) + error.
+B - 0 // Reduced to Cast<n>(B) + error.
+
+1 * X // Reduced to X.
+X * 1 // Reduced to X.
+X / 1 // Reduced to X.
+1 * B // Reduced to Cast<n>(B) + error.
+B * 1 // Reduced to Cast<n>(B) + error.
+B / 1 // Reduced to Cast<n>(B) + error.
+
+// *** Null folding, reduced to null of the appropriate type.
+
+null + X // Reduced to null:n?.
+null - X // Reduced to null:n?.
+X + null // Reduced to null:n?.
+X - null // Reduced to null:n?.
+null + B // Reduced to null:n? + error.
+null - B // Reduced to null:n? + error.
+B + null // Reduced to null:n? + error.
+B - null // Reduced to null:n? + error.
+
+null * X // Reduced to null:n?.
+null / X // Reduced to null:n?.
+X * null // Reduced to null:n?.
+X / null // Reduced to null:n?.
+null * B // Reduced to null:n? + error.
+null / B // Reduced to null:n? + error.
+B * null // Reduced to null:n? + error.
+B / null // Reduced to null:n? + error.
+
+// *** Other reductions.
+-(X * 3)
+-(-X * 3)
+-(X * -3)
+-(X * -1)
+-X * 3
+ X * -X * 0x8000_0000_0000_0000i8 // Warning.
+-X * -X * 0x8000_0000_0000_0000i8 // No warning.
+-X * -Y
+-X / -Y
+-X / -Y * -Z
+-(-X / -Y * -Z)
+-(-X / -Y) * -Z
+
+// *** With lifting.
+:: {A:i4*, B:i4?*, X:i4, R:{X:i4, Y:i2, S:{X:i4}*}*}
+
+-(A * A)
+
+A * B
+A * B * A
+-A * B * A
+-(A * B) * A
+-(A * B * A)
+
+R.X * R.X
+R.X * R.Y
+R.X * R.Y * R.S.X
+
+A * R.X
+
+With(x : R, x.X) * With(y : R, y.X)

@@ -1,0 +1,120 @@
+**** New definitions: Ss, type: s*
+
+> ToR4(Ss)
+ToR4(Ss) : r4?*
+BndKind:Call, Type:r4?*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToR4(Scope(1)):r4?)):r4?*))
+// (∂.Ss:s*) : r4?*
+ForEach_1(Arr<obj>, str):Opt<r4>
+      1) ldarg.1 [str]
+      2) ldloca.s [r8 (0)]
+      5) call static CastUtil::TryParseR8(str, out r8):bool
+      5) brfalse [0]
+      1) ldloc.0 [r8]
+      1) conv.r4
+      5) newobj Opt<r4>(r4)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<r4>
+  Label [1]:
+      1) ret
+  Total Size: 31
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,Opt<r4>>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,Opt<r4>>):Seq<Opt<r4>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<r4>>):Seq<Opt<r4>>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to r4?*
+Sequence: Seq<Opt<r4>>
+ 0) <null>
+ 1) <null>
+ 2) 3.14
+###
+> ToR8(Ss, 2.72)
+ToR8(Ss, 2.72) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToR8(Scope(1), 2.72:r8):r8)):r8*))
+// (∂.Ss:s*) : r8*
+ForEach_1(Arr<obj>, str):r8
+      1) ldarg.1 [str]
+      2) ldloca.s [r8 (0)]
+      5) call static CastUtil::TryParseR8(str, out r8):bool
+      5) brfalse [0]
+      1) ldloc.0 [r8]
+      5) br [1]
+  Label [0]:
+      9) ldc.r8 [2.72]
+  Label [1]:
+      1) ret
+  Total Size: 29
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,r8>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to r8*
+Sequence: Seq<r8>
+ 0) 2.72
+ 1) 2.72
+ 2) 3.14
+###
+> ToR8(Ss, Opt(2.72))
+ToR8(Ss, Opt(2.72)) : r8?*
+BndKind:Call, Type:r8?*, Bnd:(Call(∂.ForEach([map:1] Global(Ss), Call(∂.ToR8(Scope(1), Opt<r8?>(2.72:r8)):r8?)):r8?*))
+// (∂.Ss:s*) : r8?*
+ForEach_1(Arr<obj>, str):Opt<r8>
+      1) ldarg.1 [str]
+      2) ldloca.s [r8 (0)]
+      5) call static CastUtil::TryParseR8(str, out r8):bool
+      5) brfalse [0]
+      1) ldloc.0 [r8]
+      5) newobj Opt<r8>(r8)
+      5) br [1]
+  Label [0]:
+      9) ldc.r8 [2.72]
+      5) newobj Opt<r8>(r8)
+  Label [1]:
+      1) ret
+  Total Size: 39
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.0 [Seq<str>]
+      1) ldloc.0 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,Opt<r8>>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,Opt<r8>>):Seq<Opt<r8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<r8>>):Seq<Opt<r8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (Ss:s*) to r8?*
+Sequence: Seq<Opt<r8>>
+ 0) 2.72
+ 1) 2.72
+ 2) 3.14
+###

@@ -1,0 +1,43 @@
+          i4 inc i4
+!!False!! i8 inc i4
+          g inc i4
+          g inc i4*
+          g* inc i4*
+!!False!! g* inc i4
+          g* inc i4**
+          g** inc i4**
+!!False!! g** inc i4*
+          g inc (s, i4)[*,*]
+!!False!! g[*] inc i4
+          g[*] inc i4[*]
+!!False!! g[*] inc i4[*,*]
+          g[*,*] inc i4[*,*]
+          (g, i4)[*,*] inc (s, i4)[*,*]
+          g inc (i4*, s, b)
+          (g) inc (i4)
+          (g)* inc (i4)*
+!!False!! (g) inc (i4)*
+!!False!! (g)* inc (i4)
+!!False!! (i8) inc (i4)
+!!False!! (g) inc (i4, s)
+!!False!! (g, i8) inc ({A:s})
+          (g, i8) inc ({A:s}, i8)
+!!False!! (g, i8) inc ({A:s}, i4)
+          g inc {A:s, B:i4}
+!!False!! {A:g} inc i4
+          {A:g} inc {A:i4}
+          {A:g}*** inc {A:i4}***
+!!False!! {A:g}** inc {A:i4}***
+!!False!! {A:g}*** inc {A:i4}**
+!!False!! {A:g} inc {B:i4}
+!!False!! {A:g} inc {A:i4, B:i4}
+!!False!! {A:g, B:i4} inc {B:i4}
+          {A:g, B:i4} inc {A:s, B:i4}
+!!False!! {A:g, B:i8} inc {A:s, B:i4}
+          g inc {A:i4}?
+          {A:g}? inc {A:i4}?
+          {A:g}?** inc {A:i4}?**
+!!False!! {A:g}? inc {A:i4}
+!!False!! {A:g} inc {A:i4}?
+          (g)? inc ({A:i4}?)?
+!!False!! (g)? inc ({A:i4}?)

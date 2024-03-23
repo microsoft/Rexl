@@ -1,0 +1,227 @@
+﻿::: {A:i8*, B:i8?*, X:i8, R:{X:i8, Y:i2, S:{X:i8, Z:r8}*}*, Q:{X:i8, Y:i2, S:{X:i8, Z:r8}?*}?*, S:i8**, b:b }
+
+ForEach(  A, (#it, it))
+ForEach(a:A, (#a, it))
+ForEach(a:A, (#it, a))
+ForEach(a:A, (#a, a))
+ForEach(  A, (#, it))
+ForEach(  A, (#0, it))
+
+// The entire selector will be reduced to `{A:##1}`, testing
+// the replacement of an arg scope with an index scope.
+ForEach(  A, #it->{A:it})
+
+ForEach(x: ForEach(A, it * #it), x + 3)
+ForEach(x: ForEach(A, it * #it), x + #x)
+ForEach(x: ForEach(A, it * #), x + #)
+
+ForEachIf(A, #it < it, (#it, it))
+ForEach(A, [if] #it < it, (#it, it))
+ForEachIf(A, #it < it, it)
+ForEach(A, [if] #it < it, it)
+ForEachIf(A, #it < it, X)
+ForEach(A, [if] #it < it, X)
+ForEachIf(A, X < it, X)
+ForEach(A, [if] X < it, X)
+ForEachIf(A, #it < X, it)
+ForEach(A, [if] #it < X, it)
+ForEachIf(A, #it < X, X)
+ForEach(A, [if] #it < X, X)
+
+ForEachWhile(A, #it < it, (#it, it))
+ForEach(A, [while] #it < it, (#it, it))
+ForEachWhile(A, #it < it, it)
+ForEach(A, [while] #it < it, it)
+ForEachWhile(A, #it < it, X)
+ForEach(A, [while] #it < it, X)
+ForEachWhile(A, X < it, X)
+ForEach(A, [while] X < it, X)
+ForEachWhile(A, #it < X, it)
+ForEach(A, [while] #it < X, it)
+ForEachWhile(A, #it < X, X)
+ForEach(A, [while] #it < X, X)
+
+Sum(A, #it * it)
+Sum(A, #it$0 * it$0)
+Sum(A, #it$1 * it$0) // Error, bad scope.
+Sum(a:A, #a * a)
+Sum(a:A, #b * a) // Error, bad scope.
+
+ForEach(n:Range(5), Sum(A, #it$1 * it))
+ForEach(n:Range(5), Sum(A, #it$1 * #it * n * it))
+ForEach(n:Range(5), Sum(A, #n * #it * n * it))
+ForEach(n:Range(5), Sum(A, #1 * # * n * it))
+ForEach(n:Range(5), Sum(A, #0000001 * #00000 * n * it))
+
+ForEach(n:Range(5), Sum(A, #2 * # * n * it)) // Error.
+
+ForEach(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(A, z * #1 * #0 * n * it)))
+ForEach(n:Range(5), With(x:n*n, y:x*x, z:y*y, Sum(A, z * #2 * #0 * n * it))) // Error.
+
+ForEach(n:[Count(A), Count(B)], Sum(A, #it$1))
+ForEachIf(n:[Count(A), Count(B)], true, Sum(A, #it$1))
+ForEachWhile(n:[Count(A), Count(B)], true, Sum(A, #it$1))
+ForEach(n:[Count(A), Count(B)], [if] true, Sum(A, #it$1))
+ForEach(n:[Count(A), Count(B)], [while] true, Sum(A, #it$1))
+ForEachIf(Range(10), Range(20), b, #it)
+ForEachWhile(Range(10), Range(20), b, #it)
+ForEach(Range(10), Range(20), [if] b, #it)
+ForEach(Range(10), Range(20), [while] b, #it)
+
+Min(A, #it * it)
+Max(A, #it * it)
+
+Take(A, 5, it > #it)
+Drop(A, 5, it > #it)
+TakeIf(A, it > #it)
+DropIf(A, it > #it)
+TakeWhile(A, it > #it)
+DropWhile(A, it > #it)
+
+Sort(A, it * #it)
+SortUp(A, it * #it)
+SortDown(A, it * #it)
+
+TakeOne(A, #it < it)
+TakeOne(A, #it < it, null)
+TakeOne(A, [if] #it < it, null)
+TakeOne(A, #it < it, [else] null)
+TakeOne(A, [if] #it < it, [else] null)
+TakeOne([], #it < it, null)
+
+DropOne(A, #it < it)
+DropOne(A, [if] #it < it)
+DropOne([], #it < it)
+
+Count(A, it > #it)
+Count(A, it > #0)
+Count(a:A, a > #a)
+Count(A, [if] it > #)
+Count(A, [while] it > #)
+
+First(A, it > #it)
+
+Any(A, it > #it)
+Any(B, it > #it)
+All(A, it > #it)
+All(B, it > #it)
+
+KeyJoin(A, B, #, #, #1 + #0, #, #)
+KeyJoin(a:A, b:B, #a, #b, #1 + #0, #, #)
+KeyJoin(a:A, b:B, #b, #a, 1, #b, #a) // Error, not in scope.
+CrossJoin(A, B, (#1 + #0) mod 2 = 0, #1 + #0, #, #)
+CrossJoin(a:A, b:B, (#a + #b) mod 2 = 0, #1 + #0, #, #)
+CrossJoin(a:A, b:B, true, 1, #b, #a) // Error, not in scope.
+
+ChainMap(x: A->GroupBy(it mod 5), x * #)
+ChainMap(x: A->GroupBy(it mod 5), x * #x)
+ChainMap(x: Range(10), y: Range(1, 10), [#0, #1, x, y]) // Error, #1 slot too big.
+
+GroupBy(a:A, [key] Key: #0 + #a + a)
+GroupBy(a:A, [key] Key0: #0, [key] Key1: #a, [key] Key2: a, [item] Item: (#0, #a, a))
+GroupBy(a:A, [key] Key: #1) // Error, slot too big.
+
+Map(k:A, Range(k)->GroupBy(as a, [key] Key: #0 + #a + a + #1 + #k + k))
+Map(k:A, Range(k)->GroupBy(as a, [key] Key0: #0 + #1, [key] Key1: #a + #k, [key] Key2: a + k, [item] Item: (#0, #a, a, #1, #k, k)))
+Map(k:A, Range(k)->GroupBy(as a, [key] Key: #2)) // Error, slot too big.
+
+GroupBy(a:A, [key] Key: a mod 5, [item] Vals: item * 3) // REVIEW: Perhaps both "item" and "a" should work?
+GroupBy(a:A, [key] Key: a mod 5, [item] Vals: a * 3)
+GroupBy(a:A, [key] Key: a mod 5, [item] Items: (#a, #0, a))
+GroupBy(a:A, [key] Key: a mod 5, [item] Pairs: (a, #a))
+GroupBy(a:A, [key] Key: a mod 5, [item] Pairs: (a, #1)) // Error, #1 slot too big.
+GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * 3))
+GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * #))
+GroupBy(a:A, [key] Key: a mod 5, [item] Sums: Sum(i:Range(a), i * #1))
+GroupBy(a:A, [key] Key: a mod 5, [item] Items: Sum(i:Range(a), i * (#0 + #i + i + #1 + #a + a)))
+
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #k)))
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #0)))
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #)))
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #it$1)))
+ForEach(k:A, Range(k)->GroupBy(as i, [key] Key: #0 + #i + i + #1 + #k + k))
+ForEach(k:A, Range(k)->GroupBy(as i, [key] Key0: #0 + #1, [key] Key1: #i + #k, [key] Key2: i + k, [item] Item: (#0, #i, i, #1, #k, k)))
+
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #K))) // Fuzzy.
+ForEach(k:A, Range(k)->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #I))) // Fuzzy, but no index.
+ForEach('k''k':A, Range('k''k')->GroupBy(as i, Key: i mod 5, [item] Pairs: (i, #'k''K'))) // Fuzzy.
+
+#it
+ForEach(a: Range(10), #a mod 2)
+ForEach(a: Range(10), # a mod 2)
+ForEach(a: Range(10), # mod 2)
+ForEach(a: Range(10), #mod 2) // Error.
+ForEach(mod: Range(10), # mod 2)
+ForEach(mod: Range(10), #mod 2) // Error.
+With(div: 5, ForEach(mod: Range(10), # mod div))
+With(div: 5, ForEach(mod: Range(10), #mod div div))
+With(div: 5, ForEach(mod: Range(10), #mod div)) // Error.
+
+TTest.Paired(R, X, Y + #)
+TTest.Paired(R, X + #, Y)
+TTest.Paired(R, X + #, Y + #)
+TTest.Paired(x: R, X + #x, Y + #x)
+TTest.Paired(R, X + #1, Y) // Error.
+TTest.Paired(R, X, Y + #1) // Error.
+
+:: { Orders: { Quantity: i8, Price: i8 }* }
+ForEach(order: Orders, index: Range(Count(Orders)), order+>{ Index: index })
+ForEach(order: Orders, Range(Count(Orders)), order+>{ Index: it }) // Wrong - it refers to the left operand of +>
+ForEach(order: Orders, Range(Count(Orders)), order+>{ Index: it$1 }) // Correct
+ForEach(Orders, Range(Count(Orders)), it$1+>{ Index: it$1 })
+ForEach(order: Orders, order+>{ Index: #order })
+ForEach(Orders, it+>{ Index: #it }) // Error.
+ForEach(Orders, it+>{ Index: #it$1 })
+ForEach(Orders, it+>{ Index: # })
+
+Orders+>{ Index: #it } // Error.
+Orders+>{ Index: #it$1 }
+Orders+>{ Index: #0 }
+Orders+>{ Index: # }
+
+SetFields(Orders, Index: #it) // Error.
+SetFields(Orders, Index: #it$1)
+SetFields(Orders, Index: #0)
+SetFields(Orders, Index: #)
+
+Orders->{ Quantity, Price, Index: #it } // Error.
+Orders->{ Quantity, Price, Index: #it$1 }
+Orders->{ Quantity, Price, Index: #0 }
+Orders->{ Quantity, Price, Index: # }
+
+WithMap(Orders, { Quantity, Price, Index: #it })
+WithMap(Orders, { Quantity, Price, Index: #it$1 })
+WithMap(Orders, { Quantity, Price, Index: #0 })
+WithMap(Orders, { Quantity, Price, Index: # })
+
+::: { A: i8* }
+
+Fold(a:A, s:0, # + #a)
+Fold(a:A, s:0, #s) // Error.
+Fold(a:A, s:0, #1) // Error.
+Fold(a:A, s:0, s, #) // Error.
+
+ScanX(a:A, s:0, # + #a)
+ScanX(a:A, s:0, #s) // Error.
+ScanX(a:A, s:0, #1) // Error.
+ScanX(a:A, s:0, s, #) // Error.
+
+ScanZ(a:A, s:0, # + #a)
+ScanZ(a:A, s:0, s, # + #a)
+ScanZ(a:A, s:0, #s) // Error.
+ScanZ(a:A, s:0, #1) // Error.
+ScanZ(a:A, s:0, s, #1) // Error.
+
+// `c` and its index should resolve to same scope.
+Generate(c:5, c + # + #c)
+Generate(c:5, #1) // Error.
+Generate(c:5, s:0, c + # + #c)
+Generate(c:5, s:0, #s) // Error.
+Generate(c:5, s:0, #1) // Error.
+Generate(c:5, s:0, s, c + # + #c)
+Generate(c:5, s:0, s, #s) // Error.
+Generate(c:5, s:0, s, #1) // Error.
+
+// Test range + seq index lookups together.
+RngSeq(c0: 3, s: ["A", "B", "C"], c1: 3, (#c0, #2, c0, #s, #1, s, #c1, #0, c1))
+Map(s1:Range(1, 4), Generate(c1:3, With(w:"foo", Map(s2:Range(4, 7), Generate(c2:5, ((#s1, #3, s1), (#c1, #2, c1), w, (#s2, #1, s2), (#c2, #0, c2)))))))

@@ -1,0 +1,122 @@
+﻿`` T := Tensor.From(Range(1, 6));
+`` r1 := 1;
+`` r3 := 3;
+`` q1 := Opt(1);
+`` q3 := Opt(3);
+`` trrn := (r1, r3, null->ToI8());
+`` trr1 := (r1, r3, 1);
+`` trq1 := (r1, q3, 1);
+`` tqr1 := (q1, r3, 1);
+`` tqq1 := (q1, q3, 1);
+`` trrfn := (r1, false, r3, false, null->ToI8());
+`` trrf1 := (r1, false, r3, false, 1);
+`` trrtn := (r1, true, r3, true, null->ToI8());
+`` trrt1 := (r1, true, r3, true, 1);
+
+Range(-7, 7)->(it, T[it], T[&it], T[%it], T[^it], T[^&it], T[^%it])
+
+T[r1:r3]
+T[r1:q3]
+T[q1:r3]
+T[q1:q3]
+T[trrn]
+T[trrfn]
+
+T[r1:r3:1]
+T[trr1]
+T[trq1]
+T[tqr1]
+T[tqq1]
+T[trrf1]
+
+T[^r1:^r3]
+T[^r1:^r3:]
+T[trrtn]
+
+T[^r1:^r3:1]
+T[trrt1]
+
+T[^r1:^r3:-1]
+
+// Lifting cases.
+T[Range(4):3]
+T[:Range(4)]
+T[::Range(4)]
+
+T[10:]
+T[:-1]
+
+`` T := Tensor.From(Range(12));
+`` n := Null(0i8);
+`` t := (4,10,null);
+`` one := 1;
+
+T[1]
+T[one]
+T[^1]
+
+T[3:7:1]
+T[(3,7,1)]
+T[3:7:n]
+T[(3,7,n)]
+T[one:7:null]
+T[3:7:one]
+T[t]
+
+`` T := Tensor.Fill(0)
+T[]
+
+`` T := Tensor.From(Range(3*7), 3, 7);
+T[1:3:1, t]
+T[1:^1:1, t]
+T[1:^0:1, t]
+T[1:^-1:1, t]
+T[^5:^1:1, t]
+T[one, ^3]
+T[one, t]
+
+`` T := Tensor.From(Range(3*4*3), 3, 4, 3);
+T[1:3:1, 3:7:2, one]
+
+`` T := Tensor.From(Range(2*2*4*3), 2, 2, 4, 3)
+T[t, 1:2, one, 3:7:2]
+
+`` T := Tensor.From(Range(4*4*4*4*4), 4, 4, 4, 4, 4)
+T[1:2, 2:3, one, 3:7:2, t]
+
+`` T := Tensor.From(Range(4*4*4*4*4*4), 4, 4, 4, 4, 4, 4)
+T[one, 1:2, 2:3, t, 3:7:2, t]
+T[0,one,2,3,^1,^1]
+
+// Default values.
+`` T := Tensor.From(Range(4*4), 4, 4)
+T[1::, ^1]
+T[1::, %-1]
+T[1::, ^0]
+T[1::, ^-1]
+T[1::, ^100]
+
+`` T := Tensor.From(Range(4*4)->{A:it}, 4, 4)
+T[1::, ^1]
+T[1::, ^100]
+
+`` T := Tensor.From(Range(4*4)->(it,), 4, 4)
+T[1::, ^1]
+T[1::, ^100]
+
+`` T := Tensor.From(Range(4*4)->ToText(), 4, 4)
+T[1::, ^1]
+T[1::, ^100]
+
+// Lifting cases.
+`` T := Tensor.From(Range(4*4), 4, 4);
+`` I := [ 1, 2, null, 3 ];
+T[2, Range(4):3]
+T[I, 3]
+T[I, Range(4):3]
+T[Range(4), Range(4):3]
+T[:Range(4), Range(4)]
+T[::Range(4), Range(4)]
+T[0, I:]
+T[0, :I]
+T[0, ::I]

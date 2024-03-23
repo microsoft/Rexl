@@ -1,0 +1,102 @@
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i4*
+###
+*** Undo(1)
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 1 redos
+###
+*** Redo(1)
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i4*
+###
+Fma: 00000001 [SomeName]
+  New 0: [0:this->Sum()]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [  F T  Bb c D  ], Base: i4*, Extra[0]: i8
+###
+*** Undo(1)
+Fma: 00000001 [SomeName]
+  Old 0: [0:this->Sum()]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [  F T  B    D  ], Base: i4*
+###
+*** Undo(1)
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 2 redos
+###
+*** Redo(1)
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 1 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i4*
+###
+*** Redo(1)
+Fma: 00000001 [SomeName]
+  New 0: [0:this->Sum()]
+Status: 1 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [  F T  Bb c D  ], Base: i4*, Extra[0]: i8
+###
+Fma: 00000001 [SomeName]
+  Old 0: [0:this->Sum()]
+  New 0: [0:this->Sort()]
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [    T  Bb c D  ], Base: i4*, Extra[0]: i4*
+###
+*** Undo(1)
+Fma: 00000001 [SomeName]
+  Old 0: [0:this->Sort()]
+  New 0: [0:this->Sum()]
+Status: 1 nodes, 2 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [    T  Bb c D  ], Base: i4*, Extra[0]: i8
+###
+*** Undo(1)
+Fma: 00000001 [SomeName]
+  Old 0: [0:this->Sum()]
+Status: 1 nodes, 1 undos, 2 redos
+  Node changes:
+    00000001 [SomeName]: [  F T  B    D  ], Base: i4*
+###
+*** Undo(1)
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 3 redos
+###
+*** Redo(1)
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]]
+Status: 1 nodes, 1 undos, 2 redos
+  Node changes:
+    00000001 [SomeName]: [A  tT  B C dD  ], Base: i4*
+###
+*** Redo(1)
+Fma: 00000001 [SomeName]
+  New 0: [0:this->Sum()]
+Status: 1 nodes, 2 undos, 1 redos
+  Node changes:
+    00000001 [SomeName]: [  F T  Bb c D  ], Base: i4*, Extra[0]: i8
+###
+*** Redo(1)
+Fma: 00000001 [SomeName]
+  Old 0: [0:this->Sum()]
+  New 0: [0:this->Sort()]
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [    T  Bb c D  ], Base: i4*, Extra[0]: i4*
+###
+*** UndoAll
+Del: 00000001 [SomeName]
+Status: 0 nodes, 0 undos, 3 redos
+###
+*** RedoAll
+Add: 00000001 [SomeName], Fma: [[1i4, 3i4, 8i4, -2i4, 0i4]], Extra: { [this->Sort()] }
+Status: 1 nodes, 3 undos, 0 redos
+  Node changes:
+    00000001 [SomeName]: [A FtT  BbCcdD  ], Base: i4*, Extra[0]: i4*
+###

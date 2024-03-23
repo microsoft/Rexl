@@ -1,0 +1,126 @@
+> WrapCallSvcFromHost(1)
+WrapCallSvcFromHost(1) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Test.WrapCallSvcFromHost(1:i8):i8))
+// (<ctx>) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.1
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [IService]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallSvcFromHostFuncGen::Exec(i8, IService, ExecCtx, i4):i8
+      5) box [i8]
+      1) ret
+  Total Size: 31
+
+Func sig: (<ctx>:x) to i8
+  ** [0] Called service from code gen host with value: 1
+Type: i8, Value: 1
+*** Ctx ping count: 0
+###
+> WrapCallSvcFromHost(3) + WrapCallSvcFromHost(5)
+WrapCallSvcFromHost(3) + WrapCallSvcFromHost(5) : i8
+BndKind:VariadicOp, Type:i8, Bnd:(Add(Call(∂.Test.WrapCallSvcFromHost(3:i8):i8), Call(∂.Test.WrapCallSvcFromHost(5:i8):i8)))
+// (<ctx>) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [IService]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallSvcFromHostFuncGen::Exec(i8, IService, ExecCtx, i4):i8
+      1) ldc.i4.5
+      1) conv.i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [IService]
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      5) call static WrapCallSvcFromHostFuncGen::Exec(i8, IService, ExecCtx, i4):i8
+      1) add
+      5) box [i8]
+      1) ret
+  Total Size: 48
+
+Func sig: (<ctx>:x) to i8
+  ** [0] Called service from code gen host with value: 3
+  ** [1] Called service from code gen host with value: 5
+Type: i8, Value: 8
+*** Ctx ping count: 0
+###
+> Sum(Range(3), WrapCallSvcFromHost(it))
+Sum(Range(3), WrapCallSvcFromHost(it)) : i8
+BndKind:Call, Type:i8, Bnd:(Call(∂.Sum([map:1] Call(∂.Range(3:i8):i8*), Call(∂.Test.WrapCallSvcFromHost(Scope(1)):i8)):i8))
+// (<ctx>) : i8
+Sum_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [IService]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static WrapCallSvcFromHostFuncGen::Exec(i8, IService, ExecCtx, i4):i8
+      1) ret
+  Total Size: 28
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldc.i4.3
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) ldloc.0 [ExecCtx]
+      1) ldc.i4.1
+      2) ldloca.s [i8 (1)]
+      5) call static SumBaseGen::Exec(Seq<i8>, Func<i8,i8>, ExecCtx, i4, out i8):i8
+      5) box [i8]
+      1) ret
+  Total Size: 81
+
+Func sig: (<ctx>:x) to i8
+  ** [0] Called service from code gen host with value: 0
+  ** [0] Called service from code gen host with value: 1
+  ** [0] Called service from code gen host with value: 2
+Type: i8, Value: 3
+*** Ctx ping count: 4
+    [1](4): Sum(*1: Range(3), Test.WrapCallSvcFromHost(*1))
+###

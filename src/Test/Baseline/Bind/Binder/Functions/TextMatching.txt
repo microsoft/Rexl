@@ -1,0 +1,1918 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> s.IndexOf // Bad
+s.IndexOf : v
+*** Error: (1,2) Node: s.IndexOf, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> s->Text.IndexOf(s) // Good
+s->Text.IndexOf(s) : i8
+Binder : Text.IndexOf(s, s)
+###
+> s->IndexOf(s) // Good
+s->IndexOf(s) : i8
+Binder : Text.IndexOf(s, s)
+###
+> Text.IndexOf("hello", "h")
+Text.IndexOf("hello", "h") : i8
+Binder : Text.IndexOf("hello", "h")
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "h")
+Text.LastIndexOf("hello", "h") : i8
+Binder : Text.LastIndexOf("hello", "h")
+Reducer: 0
+###
+> Text.IndexOf("Hello", "h")
+Text.IndexOf("Hello", "h") : i8
+Binder : Text.IndexOf("Hello", "h")
+Reducer: -1
+###
+> Text.LastIndexOf("Hello", "h")
+Text.LastIndexOf("Hello", "h") : i8
+Binder : Text.LastIndexOf("Hello", "h")
+Reducer: -1
+###
+> Text.IndexOf("Hello", [~] "h")
+Text.IndexOf("Hello", [~] "h") : i8
+Binder : Text.IndexOf("Hello", [~] "h")
+Reducer: 0
+###
+> Text.LastIndexOf("Hello", [~] "h")
+Text.LastIndexOf("Hello", [~] "h") : i8
+Binder : Text.LastIndexOf("Hello", [~] "h")
+Reducer: 0
+###
+> Text.IndexOf("", "")
+Text.IndexOf("", "") : i8
+Binder : Text.IndexOf("", "")
+Reducer: 0
+###
+> Text.LastIndexOf("", "")
+Text.LastIndexOf("", "") : i8
+Binder : Text.LastIndexOf("", "")
+Reducer: 0
+###
+> Text.IndexOf(null, null)
+Text.IndexOf(null, null) : i8
+Binder : Text.IndexOf(str(<null>), str(<null>))
+Reducer: 0
+###
+> Text.LastIndexOf(null, null)
+Text.LastIndexOf(null, null) : i8
+Binder : Text.LastIndexOf(str(<null>), str(<null>))
+Reducer: 0
+###
+> Text.IndexOf(null, "")
+Text.IndexOf(null, "") : i8
+Binder : Text.IndexOf(str(<null>), "")
+Reducer: 0
+###
+> Text.LastIndexOf(null, "")
+Text.LastIndexOf(null, "") : i8
+Binder : Text.LastIndexOf(str(<null>), "")
+Reducer: 0
+###
+> Text.IndexOf("", null)
+Text.IndexOf("", null) : i8
+Binder : Text.IndexOf("", str(<null>))
+Reducer: 0
+###
+> Text.LastIndexOf("", null)
+Text.LastIndexOf("", null) : i8
+Binder : Text.LastIndexOf("", str(<null>))
+Reducer: 0
+###
+> Text.IndexOf(null, "h")
+Text.IndexOf(null, "h") : i8
+Binder : Text.IndexOf(str(<null>), "h")
+Reducer: -1
+###
+> Text.LastIndexOf(null, "h")
+Text.LastIndexOf(null, "h") : i8
+Binder : Text.LastIndexOf(str(<null>), "h")
+Reducer: -1
+###
+> Text.IndexOf(s, null)
+Text.IndexOf(s, null) : i8
+Binder : Text.IndexOf(s, str(<null>))
+Reducer: 0
+###
+> Text.LastIndexOf(s, null)
+Text.LastIndexOf(s, null) : i8
+Binder : Text.LastIndexOf(s, str(<null>))
+Reducer: Text.Len(s)
+###
+> Text.IndexOf(s, [~] null)
+Text.IndexOf(s, [~] null) : i8
+Binder : Text.IndexOf(s, [~] str(<null>))
+Reducer: 0
+###
+> Text.LastIndexOf(s, [~] null)
+Text.LastIndexOf(s, [~] null) : i8
+Binder : Text.LastIndexOf(s, [~] str(<null>))
+Reducer: Text.Len(s)
+###
+> Text.IndexOf(s, "")
+Text.IndexOf(s, "") : i8
+Binder : Text.IndexOf(s, "")
+Reducer: 0
+###
+> Text.LastIndexOf(s, "")
+Text.LastIndexOf(s, "") : i8
+Binder : Text.LastIndexOf(s, "")
+Reducer: Text.Len(s)
+###
+> Text.IndexOf(s, [~] "")
+Text.IndexOf(s, [~] "") : i8
+Binder : Text.IndexOf(s, [~] "")
+Reducer: 0
+###
+> Text.LastIndexOf(s, [~] "")
+Text.LastIndexOf(s, [~] "") : i8
+Binder : Text.LastIndexOf(s, [~] "")
+Reducer: Text.Len(s)
+###
+> Text.IndexOf("Hello",null)
+Text.IndexOf("Hello", null) : i8
+Binder : Text.IndexOf("Hello", str(<null>))
+Reducer: 0
+###
+> Text.LastIndexOf("Hello",null)
+Text.LastIndexOf("Hello", null) : i8
+Binder : Text.LastIndexOf("Hello", str(<null>))
+Reducer: 5
+###
+> Text.IndexOf("animal", "ani\u00ADmal")
+Text.IndexOf("animal", "ani\xADmal") : i8
+Binder : Text.IndexOf("animal", "ani­mal")
+Reducer: -1
+###
+> Text.LastIndexOf("animal", "ani\u00ADmal")
+Text.LastIndexOf("animal", "ani\xADmal") : i8
+Binder : Text.LastIndexOf("animal", "ani­mal")
+Reducer: -1
+###
+> Text.IndexOf("heissen", "hei\u00DFen")
+Text.IndexOf("heissen", "heißen") : i8
+Binder : Text.IndexOf("heissen", "heißen")
+Reducer: -1
+###
+> Text.LastIndexOf("heissen", "hei\u00DFen")
+Text.LastIndexOf("heissen", "heißen") : i8
+Binder : Text.LastIndexOf("heissen", "heißen")
+Reducer: -1
+###
+> Text.IndexOf("heiSSen", [~] "hei\u00DFen")
+Text.IndexOf("heiSSen", [~] "heißen") : i8
+Binder : Text.IndexOf("heiSSen", [~] "heißen")
+Reducer: -1
+###
+> Text.LastIndexOf("heiSSen", [~] "hei\u00DFen")
+Text.LastIndexOf("heiSSen", [~] "heißen") : i8
+Binder : Text.LastIndexOf("heiSSen", [~] "heißen")
+Reducer: -1
+###
+> Text.IndexOf("AERO", "\u00C6RO")
+Text.IndexOf("AERO", "ÆRO") : i8
+Binder : Text.IndexOf("AERO", "ÆRO")
+Reducer: -1
+###
+> Text.LastIndexOf("AERO", "\u00C6RO")
+Text.LastIndexOf("AERO", "ÆRO") : i8
+Binder : Text.LastIndexOf("AERO", "ÆRO")
+Reducer: -1
+###
+> Text.IndexOf("aeRO", [~] "\u00C6RO")
+Text.IndexOf("aeRO", [~] "ÆRO") : i8
+Binder : Text.IndexOf("aeRO", [~] "ÆRO")
+Reducer: -1
+###
+> Text.LastIndexOf("aeRO", [~]"\u00C6RO")
+Text.LastIndexOf("aeRO", [~] "ÆRO") : i8
+Binder : Text.LastIndexOf("aeRO", [~] "ÆRO")
+Reducer: -1
+###
+> Text.IndexOf("aero", "\u00E6ro")
+Text.IndexOf("aero", "æro") : i8
+Binder : Text.IndexOf("aero", "æro")
+Reducer: -1
+###
+> Text.LastIndexOf("aero", "\u00E6ro")
+Text.LastIndexOf("aero", "æro") : i8
+Binder : Text.LastIndexOf("aero", "æro")
+Reducer: -1
+###
+> Text.IndexOf("AEro", [~] "\u00E6ro")
+Text.IndexOf("AEro", [~] "æro") : i8
+Binder : Text.IndexOf("AEro", [~] "æro")
+Reducer: -1
+###
+> Text.LastIndexOf("AEro", [~] "\u00E6ro")
+Text.LastIndexOf("AEro", [~] "æro") : i8
+Binder : Text.LastIndexOf("AEro", [~] "æro")
+Reducer: -1
+###
+> Text.IndexOf("good", "g\uA74Fd")
+Text.IndexOf("good", "gꝏd") : i8
+Binder : Text.IndexOf("good", "gꝏd")
+Reducer: -1
+###
+> Text.LastIndexOf("good", "g\uA74Fd")
+Text.LastIndexOf("good", "gꝏd") : i8
+Binder : Text.LastIndexOf("good", "gꝏd")
+Reducer: -1
+###
+> Text.IndexOf("gOOd", [~] "g\uA74Fd")
+Text.IndexOf("gOOd", [~] "gꝏd") : i8
+Binder : Text.IndexOf("gOOd", [~] "gꝏd")
+Reducer: -1
+###
+> Text.LastIndexOf("gOOd", [~] "g\uA74Fd")
+Text.LastIndexOf("gOOd", [~] "gꝏd") : i8
+Binder : Text.LastIndexOf("gOOd", [~] "gꝏd")
+Reducer: -1
+###
+> Text.IndexOf("street", "\uFB06reet")
+Text.IndexOf("street", "ﬆreet") : i8
+Binder : Text.IndexOf("street", "ﬆreet")
+Reducer: -1
+###
+> Text.LastIndexOf("street", "\uFB06reet")
+Text.LastIndexOf("street", "ﬆreet") : i8
+Binder : Text.LastIndexOf("street", "ﬆreet")
+Reducer: -1
+###
+> Text.IndexOf("Street", [~] "\uFB06reet")
+Text.IndexOf("Street", [~] "ﬆreet") : i8
+Binder : Text.IndexOf("Street", [~] "ﬆreet")
+Reducer: -1
+###
+> Text.LastIndexOf("Street", [~] "\uFB06reet")
+Text.LastIndexOf("Street", [~] "ﬆreet") : i8
+Binder : Text.LastIndexOf("Street", [~] "ﬆreet")
+Reducer: -1
+###
+> Text.IndexOf("effort", "e\uFB00ort")
+Text.IndexOf("effort", "eﬀort") : i8
+Binder : Text.IndexOf("effort", "eﬀort")
+Reducer: -1
+###
+> Text.LastIndexOf("effort", "e\uFB00ort")
+Text.LastIndexOf("effort", "eﬀort") : i8
+Binder : Text.LastIndexOf("effort", "eﬀort")
+Reducer: -1
+###
+> Text.IndexOf("eFfort", [~] "e\uFB00ort")
+Text.IndexOf("eFfort", [~] "eﬀort") : i8
+Binder : Text.IndexOf("eFfort", [~] "eﬀort")
+Reducer: -1
+###
+> Text.LastIndexOf("eFfort", [~] "e\uFB00ort")
+Text.LastIndexOf("eFfort", [~] "eﬀort") : i8
+Binder : Text.LastIndexOf("eFfort", [~] "eﬀort")
+Reducer: -1
+###
+> Text.IndexOf("fix", "\uFB01x")
+Text.IndexOf("fix", "ﬁx") : i8
+Binder : Text.IndexOf("fix", "ﬁx")
+Reducer: -1
+###
+> Text.LastIndexOf("fix", "\uFB01x")
+Text.LastIndexOf("fix", "ﬁx") : i8
+Binder : Text.LastIndexOf("fix", "ﬁx")
+Reducer: -1
+###
+> Text.IndexOf("Fix", [~] "\uFB01x")
+Text.IndexOf("Fix", [~] "ﬁx") : i8
+Binder : Text.IndexOf("Fix", [~] "ﬁx")
+Reducer: -1
+###
+> Text.LastIndexOf("Fix", [~] "\uFB01x")
+Text.LastIndexOf("Fix", [~] "ﬁx") : i8
+Binder : Text.LastIndexOf("Fix", [~] "ﬁx")
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 3)
+Text.IndexOf("hello", "h", 3) : i8
+Binder : Text.IndexOf("hello", "h", 3)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 3)
+Text.LastIndexOf("hello", "h", 3) : i8
+Binder : Text.LastIndexOf("hello", "h", 3)
+Reducer: 0
+###
+> Text.IndexOf("hello", [~] "h", 3)
+Text.IndexOf("hello", [~] "h", 3) : i8
+Binder : Text.IndexOf("hello", [~] "h", 3)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", [~] "h", 3)
+Text.LastIndexOf("hello", [~] "h", 3) : i8
+Binder : Text.LastIndexOf("hello", [~] "h", 3)
+Reducer: 0
+###
+> Text.IndexOf("Hello", [~] "h", 3)
+Text.IndexOf("Hello", [~] "h", 3) : i8
+Binder : Text.IndexOf("Hello", [~] "h", 3)
+Reducer: -1
+###
+> Text.LastIndexOf("Hello", [~] "h", 3)
+Text.LastIndexOf("Hello", [~] "h", 3) : i8
+Binder : Text.LastIndexOf("Hello", [~] "h", 3)
+Reducer: 0
+###
+> Text.IndexOf("Hello", [~] "E",-2,-6)
+Text.IndexOf("Hello", [~] "E", -2, -6) : i8
+Binder : Text.IndexOf("Hello", [~] "E", -2, -6)
+Reducer: -1
+###
+> Text.LastIndexOf("Hello", [~] "E",-6,-2)
+Text.LastIndexOf("Hello", [~] "E", -6, -2) : i8
+Binder : Text.LastIndexOf("Hello", [~] "E", -6, -2)
+Reducer: 1
+###
+> Text.IndexOf("", "", 3)
+Text.IndexOf("", "", 3) : i8
+Binder : Text.IndexOf("", "", 3)
+Reducer: -1
+###
+> Text.LastIndexOf("", "", 3)
+Text.LastIndexOf("", "", 3) : i8
+Binder : Text.LastIndexOf("", "", 3)
+Reducer: 0
+###
+> Text.IndexOf("", [~] "", 3)
+Text.IndexOf("", [~] "", 3) : i8
+Binder : Text.IndexOf("", [~] "", 3)
+Reducer: -1
+###
+> Text.LastIndexOf("", [~] "", 3)
+Text.LastIndexOf("", [~] "", 3) : i8
+Binder : Text.LastIndexOf("", [~] "", 3)
+Reducer: 0
+###
+> Text.IndexOf(null, null, 3)
+Text.IndexOf(null, null, 3) : i8
+Binder : Text.IndexOf(str(<null>), str(<null>), 3)
+Reducer: -1
+###
+> Text.LastIndexOf(null, null, 3)
+Text.LastIndexOf(null, null, 3) : i8
+Binder : Text.LastIndexOf(str(<null>), str(<null>), 3)
+Reducer: 0
+###
+> Text.IndexOf(null, "", 3)
+Text.IndexOf(null, "", 3) : i8
+Binder : Text.IndexOf(str(<null>), "", 3)
+Reducer: -1
+###
+> Text.LastIndexOf(null, "", 3)
+Text.LastIndexOf(null, "", 3) : i8
+Binder : Text.LastIndexOf(str(<null>), "", 3)
+Reducer: 0
+###
+> Text.IndexOf("", null, 3)
+Text.IndexOf("", null, 3) : i8
+Binder : Text.IndexOf("", str(<null>), 3)
+Reducer: -1
+###
+> Text.LastIndexOf("", null, 3)
+Text.LastIndexOf("", null, 3) : i8
+Binder : Text.LastIndexOf("", str(<null>), 3)
+Reducer: 0
+###
+> Text.IndexOf(null, null, null)
+Text.IndexOf(null, null, null) : i8?
+Binder : Guard(?1: null, Text.IndexOf(str(<null>), str(<null>), Unit<i8>(?1)))
+Reducer: null
+###
+> Text.LastIndexOf(null, null, null)
+Text.LastIndexOf(null, null, null) : i8?
+Binder : Guard(?1: null, Text.LastIndexOf(str(<null>), str(<null>), Unit<i8>(?1)))
+Reducer: null
+###
+> Text.IndexOf("hello", "h", 0x80000000)
+Text.IndexOf("hello", "h", 2147483648) : i8
+Binder : Text.IndexOf("hello", "h", 2147483648)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", -0x80000001)
+Text.LastIndexOf("hello", "h", -2147483649) : i8
+Binder : Text.LastIndexOf("hello", "h", -2147483649)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 0x100u2)
+Text.IndexOf("hello", "h", 256) : i8
+Binder : Text.IndexOf("hello", "h", 256)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 0x100u2)
+Text.LastIndexOf("hello", "h", 256) : i8
+Binder : Text.LastIndexOf("hello", "h", 256)
+Reducer: 0
+###
+> Text.IndexOf("hello", "h", 0x10000u)
+Text.IndexOf("hello", "h", 65536) : i8
+Binder : Text.IndexOf("hello", "h", 65536)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 0x10000u)
+Text.LastIndexOf("hello", "h", 65536) : i8
+Binder : Text.LastIndexOf("hello", "h", 65536)
+Reducer: 0
+###
+> Text.IndexOf("hello", "h", 0x10000u8)
+Text.IndexOf("hello", "h", 65536) : i8
+Binder : Text.IndexOf("hello", "h", 65536)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 0x10000u8)
+Text.LastIndexOf("hello", "h", 65536) : i8
+Binder : Text.LastIndexOf("hello", "h", 65536)
+Reducer: 0
+###
+> Text.IndexOf("hello", "h", 0x10000ia) // Error.
+Text.IndexOf("hello", "h", 65536) : i8
+*** Error: (27,36) Node: 65536, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.IndexOf("hello", "h", Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf("hello", "h", 0x10000ia) // Error.
+Text.LastIndexOf("hello", "h", 65536) : i8
+*** Error: (31,40) Node: 65536, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.LastIndexOf("hello", "h", Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf("hello", "l", -1)
+Text.IndexOf("hello", "l", -1) : i8
+Binder : Text.IndexOf("hello", "l", -1)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "l", -1)
+Text.LastIndexOf("hello", "l", -1) : i8
+Binder : Text.LastIndexOf("hello", "l", -1)
+Reducer: 3
+###
+> Text.IndexOf("hello", [~] "L", -1)
+Text.IndexOf("hello", [~] "L", -1) : i8
+Binder : Text.IndexOf("hello", [~] "L", -1)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", [~] "L", -1)
+Text.LastIndexOf("hello", [~] "L", -1) : i8
+Binder : Text.LastIndexOf("hello", [~] "L", -1)
+Reducer: 3
+###
+> Text.IndexOf("hello", "l", -2)
+Text.IndexOf("hello", "l", -2) : i8
+Binder : Text.IndexOf("hello", "l", -2)
+Reducer: 3
+###
+> Text.LastIndexOf("hello", "l", -2)
+Text.LastIndexOf("hello", "l", -2) : i8
+Binder : Text.LastIndexOf("hello", "l", -2)
+Reducer: 2
+###
+> Text.IndexOf("helLo", [~] "l", -2)
+Text.IndexOf("helLo", [~] "l", -2) : i8
+Binder : Text.IndexOf("helLo", [~] "l", -2)
+Reducer: 3
+###
+> Text.LastIndexOf("heLlo", [~] "l", -2)
+Text.LastIndexOf("heLlo", [~] "l", -2) : i8
+Binder : Text.LastIndexOf("heLlo", [~] "l", -2)
+Reducer: 2
+###
+> Text.IndexOf("hello", "l", -3)
+Text.IndexOf("hello", "l", -3) : i8
+Binder : Text.IndexOf("hello", "l", -3)
+Reducer: 2
+###
+> Text.LastIndexOf("hello", "l", -3)
+Text.LastIndexOf("hello", "l", -3) : i8
+Binder : Text.LastIndexOf("hello", "l", -3)
+Reducer: -1
+###
+> Text.IndexOf("hello", "e", -5)
+Text.IndexOf("hello", "e", -5) : i8
+Binder : Text.IndexOf("hello", "e", -5)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", "e", -5)
+Text.LastIndexOf("hello", "e", -5) : i8
+Binder : Text.LastIndexOf("hello", "e", -5)
+Reducer: -1
+###
+> Text.IndexOf("hello", "e", -6)
+Text.IndexOf("hello", "e", -6) : i8
+Binder : Text.IndexOf("hello", "e", -6)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", "e", -6)
+Text.LastIndexOf("hello", "e", -6) : i8
+Binder : Text.LastIndexOf("hello", "e", -6)
+Reducer: -1
+###
+> Text.IndexOf("hEllo", "e", -5)
+Text.IndexOf("hEllo", "e", -5) : i8
+Binder : Text.IndexOf("hEllo", "e", -5)
+Reducer: -1
+###
+> Text.LastIndexOf("hEllo", "e", -5)
+Text.LastIndexOf("hEllo", "e", -5) : i8
+Binder : Text.LastIndexOf("hEllo", "e", -5)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "E", -6)
+Text.IndexOf("hello", [~] "E", -6) : i8
+Binder : Text.IndexOf("hello", [~] "E", -6)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", [~] "E", -6)
+Text.LastIndexOf("hello", [~] "E", -6) : i8
+Binder : Text.LastIndexOf("hello", [~] "E", -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", "", -5)
+Text.IndexOf("hello", "", -5) : i8
+Binder : Text.IndexOf("hello", "", -5)
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "", -5)
+Text.LastIndexOf("hello", "", -5) : i8
+Binder : Text.LastIndexOf("hello", "", -5)
+Reducer: 0
+###
+> Text.IndexOf("", "", -1)
+Text.IndexOf("", "", -1) : i8
+Binder : Text.IndexOf("", "", -1)
+Reducer: 0
+###
+> Text.LastIndexOf("", "", -1)
+Text.LastIndexOf("", "", -1) : i8
+Binder : Text.LastIndexOf("", "", -1)
+Reducer: -1
+###
+> Text.IndexOf(null, null, -1)
+Text.IndexOf(null, null, -1) : i8
+Binder : Text.IndexOf(str(<null>), str(<null>), -1)
+Reducer: 0
+###
+> Text.LastIndexOf(null, null, -1)
+Text.LastIndexOf(null, null, -1) : i8
+Binder : Text.LastIndexOf(str(<null>), str(<null>), -1)
+Reducer: -1
+###
+> Text.IndexOf(null, "", -1)
+Text.IndexOf(null, "", -1) : i8
+Binder : Text.IndexOf(str(<null>), "", -1)
+Reducer: 0
+###
+> Text.LastIndexOf(null, "", -1)
+Text.LastIndexOf(null, "", -1) : i8
+Binder : Text.LastIndexOf(str(<null>), "", -1)
+Reducer: -1
+###
+> Text.IndexOf("", null, -1)
+Text.IndexOf("", null, -1) : i8
+Binder : Text.IndexOf("", str(<null>), -1)
+Reducer: 0
+###
+> Text.LastIndexOf("", null, -1)
+Text.LastIndexOf("", null, -1) : i8
+Binder : Text.LastIndexOf("", str(<null>), -1)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 3, 6)
+Text.IndexOf("hello", "h", 3, 6) : i8
+Binder : Text.IndexOf("hello", "h", 3, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 3, 0)
+Text.LastIndexOf("hello", "h", 3, 0) : i8
+Binder : Text.LastIndexOf("hello", "h", 3, 0)
+Reducer: -1
+###
+> Text.IndexOf("hello", "H", 3, 6)
+Text.IndexOf("hello", "H", 3, 6) : i8
+Binder : Text.IndexOf("hello", "H", 3, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "H", 3, 0)
+Text.LastIndexOf("hello", "H", 3, 0) : i8
+Binder : Text.LastIndexOf("hello", "H", 3, 0)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "H", 3, 6)
+Text.IndexOf("hello", [~] "H", 3, 6) : i8
+Binder : Text.IndexOf("hello", [~] "H", 3, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", [~] "H", 3, 0)
+Text.LastIndexOf("hello", [~] "H", 3, 0) : i8
+Binder : Text.LastIndexOf("hello", [~] "H", 3, 0)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "H", 3, 0)
+Text.IndexOf("hello", [~] "H", 3, 0) : i8
+Binder : Text.IndexOf("hello", [~] "H", 3, 0)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", [~] "H", 0, 3)
+Text.LastIndexOf("hello", [~] "H", 0, 3) : i8
+Binder : Text.LastIndexOf("hello", [~] "H", 0, 3)
+Reducer: 0
+###
+> Text.IndexOf("", "", 3, 0)
+Text.IndexOf("", "", 3, 0) : i8
+Binder : Text.IndexOf("", "", 3, 0)
+Reducer: -1
+###
+> Text.LastIndexOf("", "", 3, 0)
+Text.LastIndexOf("", "", 3, 0) : i8
+Binder : Text.LastIndexOf("", "", 3, 0)
+Reducer: -1
+###
+> Text.IndexOf(null, null, 3, 0)
+Text.IndexOf(null, null, 3, 0) : i8
+Binder : Text.IndexOf(str(<null>), str(<null>), 3, 0)
+Reducer: -1
+###
+> Text.LastIndexOf(null, null, 3, 0)
+Text.LastIndexOf(null, null, 3, 0) : i8
+Binder : Text.LastIndexOf(str(<null>), str(<null>), 3, 0)
+Reducer: -1
+###
+> Text.IndexOf(null, "", 3, 0)
+Text.IndexOf(null, "", 3, 0) : i8
+Binder : Text.IndexOf(str(<null>), "", 3, 0)
+Reducer: -1
+###
+> Text.LastIndexOf(null, "", 3, 0)
+Text.LastIndexOf(null, "", 3, 0) : i8
+Binder : Text.LastIndexOf(str(<null>), "", 3, 0)
+Reducer: -1
+###
+> Text.IndexOf(null, "", -3, -1)
+Text.IndexOf(null, "", -3, -1) : i8
+Binder : Text.IndexOf(str(<null>), "", -3, -1)
+Reducer: -1
+###
+> Text.LastIndexOf(null, "", -3, -1)
+Text.LastIndexOf(null, "", -3, -1) : i8
+Binder : Text.LastIndexOf(str(<null>), "", -3, -1)
+Reducer: -1
+###
+> Text.IndexOf("", null, 3, 0)
+Text.IndexOf("", null, 3, 0) : i8
+Binder : Text.IndexOf("", str(<null>), 3, 0)
+Reducer: -1
+###
+> Text.LastIndexOf("", null, 3, 0)
+Text.LastIndexOf("", null, 3, 0) : i8
+Binder : Text.LastIndexOf("", str(<null>), 3, 0)
+Reducer: -1
+###
+> Text.IndexOf("", null, -3, -1)
+Text.IndexOf("", null, -3, -1) : i8
+Binder : Text.IndexOf("", str(<null>), -3, -1)
+Reducer: -1
+###
+> Text.LastIndexOf("", null, -3, -1)
+Text.LastIndexOf("", null, -3, -1) : i8
+Binder : Text.LastIndexOf("", str(<null>), -3, -1)
+Reducer: -1
+###
+> Text.IndexOf(null, null, null, null)
+Text.IndexOf(null, null, null, null) : i8?
+Binder : Guard(?1: null, ?2: null, Text.IndexOf(str(<null>), str(<null>), Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Text.LastIndexOf(null, null, null, null)
+Text.LastIndexOf(null, null, null, null) : i8?
+Binder : Guard(?1: null, ?2: null, Text.LastIndexOf(str(<null>), str(<null>), Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Text.IndexOf("hello", "h", 5, -0x80000001)
+Text.IndexOf("hello", "h", 5, -2147483649) : i8
+Binder : Text.IndexOf("hello", "h", 5, -2147483649)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 5, 0x80000000)
+Text.LastIndexOf("hello", "h", 5, 2147483648) : i8
+Binder : Text.LastIndexOf("hello", "h", 5, 2147483648)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 0x100u2)
+Text.IndexOf("hello", "h", 256) : i8
+Binder : Text.IndexOf("hello", "h", 256)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "h", 0x100u2)
+Text.LastIndexOf("hello", "h", 256) : i8
+Binder : Text.LastIndexOf("hello", "h", 256)
+Reducer: 0
+###
+> Text.IndexOf("hello", "h", 0, 0x100u2)
+Text.IndexOf("hello", "h", 0, 256) : i8
+Binder : Text.IndexOf("hello", "h", 0, 256)
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "h", 5, 0x100u2)
+Text.LastIndexOf("hello", "h", 5, 256) : i8
+Binder : Text.LastIndexOf("hello", "h", 5, 256)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 0, 0x10000u)
+Text.IndexOf("hello", "h", 0, 65536) : i8
+Binder : Text.IndexOf("hello", "h", 0, 65536)
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "h", 5, 0x10000u)
+Text.LastIndexOf("hello", "h", 5, 65536) : i8
+Binder : Text.LastIndexOf("hello", "h", 5, 65536)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 0, 0x10000u8)
+Text.IndexOf("hello", "h", 0, 65536) : i8
+Binder : Text.IndexOf("hello", "h", 0, 65536)
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "h", 5, 0x10000u8)
+Text.LastIndexOf("hello", "h", 5, 65536) : i8
+Binder : Text.LastIndexOf("hello", "h", 5, 65536)
+Reducer: -1
+###
+> Text.IndexOf("hello", "h", 0, 0x10000ia) // Error.
+Text.IndexOf("hello", "h", 0, 65536) : i8
+*** Error: (30,39) Node: 65536, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.IndexOf("hello", "h", 0, Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf("hello", "h", 6, 0x10000ia) // Error.
+Text.LastIndexOf("hello", "h", 6, 65536) : i8
+*** Error: (34,43) Node: 65536, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.LastIndexOf("hello", "h", 6, Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf("hello", "l", -1, 6)
+Text.IndexOf("hello", "l", -1, 6) : i8
+Binder : Text.IndexOf("hello", "l", -1, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "l", 6, -1)
+Text.LastIndexOf("hello", "l", 6, -1) : i8
+Binder : Text.LastIndexOf("hello", "l", 6, -1)
+Reducer: -1
+###
+> Text.IndexOf("hello", "l", -20, -10)
+Text.IndexOf("hello", "l", -20, -10) : i8
+Binder : Text.IndexOf("hello", "l", -20, -10)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "l", -20, -10)
+Text.LastIndexOf("hello", "l", -20, -10) : i8
+Binder : Text.LastIndexOf("hello", "l", -20, -10)
+Reducer: -1
+###
+> Text.IndexOf("hello", "L", -1, 6)
+Text.IndexOf("hello", "L", -1, 6) : i8
+Binder : Text.IndexOf("hello", "L", -1, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", "L", 6, -1)
+Text.LastIndexOf("hello", "L", 6, -1) : i8
+Binder : Text.LastIndexOf("hello", "L", 6, -1)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "L", -1, 6)
+Text.IndexOf("hello", [~] "L", -1, 6) : i8
+Binder : Text.IndexOf("hello", [~] "L", -1, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hello", [~] "L", 6, -1)
+Text.LastIndexOf("hello", [~] "L", 6, -1) : i8
+Binder : Text.LastIndexOf("hello", [~] "L", 6, -1)
+Reducer: -1
+###
+> Text.IndexOf("hello", "l", -2, 6)
+Text.IndexOf("hello", "l", -2, 6) : i8
+Binder : Text.IndexOf("hello", "l", -2, 6)
+Reducer: 3
+###
+> Text.LastIndexOf("hello", "l", -2, -6)
+Text.LastIndexOf("hello", "l", -2, -6) : i8
+Binder : Text.LastIndexOf("hello", "l", -2, -6)
+Reducer: -1
+###
+> Text.IndexOf("helLo", "l", -2, 6)
+Text.IndexOf("helLo", "l", -2, 6) : i8
+Binder : Text.IndexOf("helLo", "l", -2, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("heLlo", "l", -2, -6)
+Text.LastIndexOf("heLlo", "l", -2, -6) : i8
+Binder : Text.LastIndexOf("heLlo", "l", -2, -6)
+Reducer: -1
+###
+> Text.IndexOf("helLo", [~] "l", -2, 6)
+Text.IndexOf("helLo", [~] "l", -2, 6) : i8
+Binder : Text.IndexOf("helLo", [~] "l", -2, 6)
+Reducer: 3
+###
+> Text.LastIndexOf("heLlo", [~] "l", -2, -6)
+Text.LastIndexOf("heLlo", [~] "l", -2, -6) : i8
+Binder : Text.LastIndexOf("heLlo", [~] "l", -2, -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", "l", -3, 6)
+Text.IndexOf("hello", "l", -3, 6) : i8
+Binder : Text.IndexOf("hello", "l", -3, 6)
+Reducer: 2
+###
+> Text.LastIndexOf("hello", "l", -3, -6)
+Text.LastIndexOf("hello", "l", -3, -6) : i8
+Binder : Text.LastIndexOf("hello", "l", -3, -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "L", -3, 6)
+Text.IndexOf("hello", [~] "L", -3, 6) : i8
+Binder : Text.IndexOf("hello", [~] "L", -3, 6)
+Reducer: 2
+###
+> Text.LastIndexOf("hello", [~] "L", -3, -6)
+Text.LastIndexOf("hello", [~] "L", -3, -6) : i8
+Binder : Text.LastIndexOf("hello", [~] "L", -3, -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", "e", -5, 6)
+Text.IndexOf("hello", "e", -5, 6) : i8
+Binder : Text.IndexOf("hello", "e", -5, 6)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", "e", -5, -6)
+Text.LastIndexOf("hello", "e", -5, -6) : i8
+Binder : Text.LastIndexOf("hello", "e", -5, -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", [~] "E", -5, 6)
+Text.IndexOf("hello", [~] "E", -5, 6) : i8
+Binder : Text.IndexOf("hello", [~] "E", -5, 6)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", [~] "E", -5, -6)
+Text.LastIndexOf("hello", [~] "E", -5, -6) : i8
+Binder : Text.LastIndexOf("hello", [~] "E", -5, -6)
+Reducer: -1
+###
+> Text.IndexOf("hEllo", "e", -5, 6)
+Text.IndexOf("hEllo", "e", -5, 6) : i8
+Binder : Text.IndexOf("hEllo", "e", -5, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hEllo", "e", -5, -6)
+Text.LastIndexOf("hEllo", "e", -5, -6) : i8
+Binder : Text.LastIndexOf("hEllo", "e", -5, -6)
+Reducer: -1
+###
+> Text.IndexOf("hello", "e", -6, 6)
+Text.IndexOf("hello", "e", -6, 6) : i8
+Binder : Text.IndexOf("hello", "e", -6, 6)
+Reducer: 1
+###
+> Text.LastIndexOf("hello", "e", -6, 6)
+Text.LastIndexOf("hello", "e", -6, 6) : i8
+Binder : Text.LastIndexOf("hello", "e", -6, 6)
+Reducer: 1
+###
+> Text.IndexOf("hEllo", [~] "e", -6, 6)
+Text.IndexOf("hEllo", [~] "e", -6, 6) : i8
+Binder : Text.IndexOf("hEllo", [~] "e", -6, 6)
+Reducer: 1
+###
+> Text.LastIndexOf("hEllo", [~] "e", -6, 6)
+Text.LastIndexOf("hEllo", [~] "e", -6, 6) : i8
+Binder : Text.LastIndexOf("hEllo", [~] "e", -6, 6)
+Reducer: 1
+###
+> Text.IndexOf("hEllo", "e", -6, 6)
+Text.IndexOf("hEllo", "e", -6, 6) : i8
+Binder : Text.IndexOf("hEllo", "e", -6, 6)
+Reducer: -1
+###
+> Text.LastIndexOf("hEllo", "e", -6, 6)
+Text.LastIndexOf("hEllo", "e", -6, 6) : i8
+Binder : Text.LastIndexOf("hEllo", "e", -6, 6)
+Reducer: -1
+###
+> Text.IndexOf("hello", "", -5, 6)
+Text.IndexOf("hello", "", -5, 6) : i8
+Binder : Text.IndexOf("hello", "", -5, 6)
+Reducer: 0
+###
+> Text.LastIndexOf("hello", "", -5, 6)
+Text.LastIndexOf("hello", "", -5, 6) : i8
+Binder : Text.LastIndexOf("hello", "", -5, 6)
+Reducer: 5
+###
+> Text.IndexOf("", "", -1, 0)
+Text.IndexOf("", "", -1, 0) : i8
+Binder : Text.IndexOf("", "", -1, 0)
+Reducer: 0
+###
+> Text.LastIndexOf("", "", -1, 0)
+Text.LastIndexOf("", "", -1, 0) : i8
+Binder : Text.LastIndexOf("", "", -1, 0)
+Reducer: 0
+###
+> Text.IndexOf(null, null, -1, 1)
+Text.IndexOf(null, null, -1, 1) : i8
+Binder : Text.IndexOf(str(<null>), str(<null>), -1, 1)
+Reducer: 0
+###
+> Text.LastIndexOf(null, null, 1, -1)
+Text.LastIndexOf(null, null, 1, -1) : i8
+Binder : Text.LastIndexOf(str(<null>), str(<null>), 1, -1)
+Reducer: -1
+###
+> Text.IndexOf(null, "", -1, 1)
+Text.IndexOf(null, "", -1, 1) : i8
+Binder : Text.IndexOf(str(<null>), "", -1, 1)
+Reducer: 0
+###
+> Text.LastIndexOf(null, "", 1, -1)
+Text.LastIndexOf(null, "", 1, -1) : i8
+Binder : Text.LastIndexOf(str(<null>), "", 1, -1)
+Reducer: -1
+###
+> Text.IndexOf("", null, -1, 0)
+Text.IndexOf("", null, -1, 0) : i8
+Binder : Text.IndexOf("", str(<null>), -1, 0)
+Reducer: 0
+###
+> Text.LastIndexOf("", null, 0, -1)
+Text.LastIndexOf("", null, 0, -1) : i8
+Binder : Text.LastIndexOf("", str(<null>), 0, -1)
+Reducer: -1
+###
+> Text.IndexOf(s, s, i4)
+Text.IndexOf(s, s, i4) : i8
+Binder : Text.IndexOf(s, s, Num<i8>(i4))
+###
+> Text.LastIndexOf(s, s, i4)
+Text.LastIndexOf(s, s, i4) : i8
+Binder : Text.LastIndexOf(s, s, Num<i8>(i4))
+###
+> Text.IndexOf(s, s, i4, i4)
+Text.IndexOf(s, s, i4, i4) : i8
+Binder : Text.IndexOf(s, s, Num<i8>(i4), Num<i8>(i4))
+###
+> Text.LastIndexOf(s, s, i4, i4)
+Text.LastIndexOf(s, s, i4, i4) : i8
+Binder : Text.LastIndexOf(s, s, Num<i8>(i4), Num<i8>(i4))
+###
+> Text.IndexOf("hello", s, i4)
+Text.IndexOf("hello", s, i4) : i8
+Binder : Text.IndexOf("hello", s, Num<i8>(i4))
+###
+> Text.LastIndexOf("hello", s, i4)
+Text.LastIndexOf("hello", s, i4) : i8
+Binder : Text.LastIndexOf("hello", s, Num<i8>(i4))
+###
+> Text.IndexOf("hello", s, i4, i4)
+Text.IndexOf("hello", s, i4, i4) : i8
+Binder : Text.IndexOf("hello", s, Num<i8>(i4), Num<i8>(i4))
+###
+> Text.LastIndexOf("hello", s, i4, i4)
+Text.LastIndexOf("hello", s, i4, i4) : i8
+Binder : Text.LastIndexOf("hello", s, Num<i8>(i4), Num<i8>(i4))
+###
+> Text.IndexOf(s, "hello", i4)
+Text.IndexOf(s, "hello", i4) : i8
+Binder : Text.IndexOf(s, "hello", Num<i8>(i4))
+###
+> Text.LastIndexOf(s, "hello", i4)
+Text.LastIndexOf(s, "hello", i4) : i8
+Binder : Text.LastIndexOf(s, "hello", Num<i8>(i4))
+###
+> Text.IndexOf(s, "hello", i4, i4)
+Text.IndexOf(s, "hello", i4, i4) : i8
+Binder : Text.IndexOf(s, "hello", Num<i8>(i4), Num<i8>(i4))
+###
+> Text.LastIndexOf(s, "hello", i4, i4)
+Text.LastIndexOf(s, "hello", i4, i4) : i8
+Binder : Text.LastIndexOf(s, "hello", Num<i8>(i4), Num<i8>(i4))
+###
+> Text.IndexOf(s, s, 0)
+Text.IndexOf(s, s, 0) : i8
+Binder : Text.IndexOf(s, s, 0)
+###
+> Text.LastIndexOf(s, s, 0)
+Text.LastIndexOf(s, s, 0) : i8
+Binder : Text.LastIndexOf(s, s, 0)
+###
+> Text.IndexOf(s, s, 0, -1)
+Text.IndexOf(s, s, 0, -1) : i8
+Binder : Text.IndexOf(s, s, 0, -1)
+###
+> Text.LastIndexOf(s, s, -1, 0)
+Text.LastIndexOf(s, s, -1, 0) : i8
+Binder : Text.LastIndexOf(s, s, -1, 0)
+###
+> Text.IndexOf(g, g, g, g)
+Text.IndexOf(g, g, g, g) : i8
+*** Error: (13,14) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (16,17) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (19,20) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+*** Error: (22,23) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(g, g, g, g)
+Text.LastIndexOf(g, g, g, g) : i8
+*** Error: (17,18) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (20,21) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (23,24) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+*** Error: (26,27) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(o, o, o, o)
+Text.IndexOf(o, o, o, o) : i8?
+Binder : Guard(?1: o, ?2: o, Text.IndexOf(str(<null>), str(<null>), Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Text.LastIndexOf(o, o, o, o)
+Text.LastIndexOf(o, o, o, o) : i8?
+Binder : Guard(?1: o, ?2: o, Text.LastIndexOf(str(<null>), str(<null>), Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> Text.IndexOf(s, s, s, s)
+Text.IndexOf(s, s, s, s) : i8
+*** Error: (19,20) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (22,23) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Text.IndexOf(s, s, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(s, s, s, s)
+Text.LastIndexOf(s, s, s, s) : i8
+*** Error: (23,24) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (26,27) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Text.LastIndexOf(s, s, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(b, b, b, b)
+Text.IndexOf(b, b, b, b) : i8
+*** Error: (13,14) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+*** Error: (16,17) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(b), Num<i8>(b))
+###
+> Text.LastIndexOf(b, b, b, b)
+Text.LastIndexOf(b, b, b, b) : i8
+*** Error: (17,18) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+*** Error: (20,21) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(b), Num<i8>(b))
+###
+> Text.IndexOf(d, d, d, d)
+Text.IndexOf(d, d, d, d) : i8
+*** Error: (13,14) Node: d, Message: Invalid operand type: cannot convert type 'd' to 's'
+*** Error: (16,17) Node: d, Message: Invalid operand type: cannot convert type 'd' to 's'
+*** Error: (19,20) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+*** Error: (22,23) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(d, d, d, d)
+Text.LastIndexOf(d, d, d, d) : i8
+*** Error: (17,18) Node: d, Message: Invalid operand type: cannot convert type 'd' to 's'
+*** Error: (20,21) Node: d, Message: Invalid operand type: cannot convert type 'd' to 's'
+*** Error: (23,24) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+*** Error: (26,27) Node: d, Message: Invalid operand type: cannot convert type 'd' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(n, n, n, n)
+Text.IndexOf(n, n, n, n) : i8
+*** Error: (13,14) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (16,17) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (19,20) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (22,23) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(n, n, n, n)
+Text.LastIndexOf(n, n, n, n) : i8
+*** Error: (17,18) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (20,21) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (23,24) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (26,27) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(r8, r8, r8, r8)
+Text.IndexOf(r8, r8, r8, r8) : i8
+*** Error: (13,15) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (17,19) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (21,23) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (25,27) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(r8, r8, r8, r8)
+Text.LastIndexOf(r8, r8, r8, r8) : i8
+*** Error: (17,19) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (21,23) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (25,27) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (29,31) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(r4, r4, r4, r4)
+Text.IndexOf(r4, r4, r4, r4) : i8
+*** Error: (13,15) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 's'
+*** Error: (17,19) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 's'
+*** Error: (21,23) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+*** Error: (25,27) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(r4, r4, r4, r4)
+Text.LastIndexOf(r4, r4, r4, r4) : i8
+*** Error: (17,19) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 's'
+*** Error: (21,23) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 's'
+*** Error: (25,27) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+*** Error: (29,31) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(i, i, i, i)
+Text.IndexOf(i, i, i, i) : i8
+*** Error: (13,14) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (16,17) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (19,20) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (22,23) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.LastIndexOf(i, i, i, i)
+Text.LastIndexOf(i, i, i, i) : i8
+*** Error: (17,18) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (20,21) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (23,24) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (26,27) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> Text.IndexOf(i8, i8, i8, i8)
+Text.IndexOf(i8, i8, i8, i8) : i8
+*** Error: (13,15) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (17,19) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), i8, i8)
+###
+> Text.LastIndexOf(i8, i8, i8, i8)
+Text.LastIndexOf(i8, i8, i8, i8) : i8
+*** Error: (17,19) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (21,23) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), i8, i8)
+###
+> Text.IndexOf(i4, i4, i4, i4)
+Text.IndexOf(i4, i4, i4, i4) : i8
+*** Error: (13,15) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 's'
+*** Error: (17,19) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i4), Num<i8>(i4))
+###
+> Text.LastIndexOf(i4, i4, i4, i4)
+Text.LastIndexOf(i4, i4, i4, i4) : i8
+*** Error: (17,19) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 's'
+*** Error: (21,23) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i4), Num<i8>(i4))
+###
+> Text.IndexOf(i2, i2, i2, i2)
+Text.IndexOf(i2, i2, i2, i2) : i8
+*** Error: (13,15) Node: i2, Message: Invalid operand type: cannot convert type 'i2' to 's'
+*** Error: (17,19) Node: i2, Message: Invalid operand type: cannot convert type 'i2' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i2), Num<i8>(i2))
+###
+> Text.LastIndexOf(i2, i2, i2, i2)
+Text.LastIndexOf(i2, i2, i2, i2) : i8
+*** Error: (17,19) Node: i2, Message: Invalid operand type: cannot convert type 'i2' to 's'
+*** Error: (21,23) Node: i2, Message: Invalid operand type: cannot convert type 'i2' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i2), Num<i8>(i2))
+###
+> Text.IndexOf(i1, i1, i1, i1)
+Text.IndexOf(i1, i1, i1, i1) : i8
+*** Error: (13,15) Node: i1, Message: Invalid operand type: cannot convert type 'i1' to 's'
+*** Error: (17,19) Node: i1, Message: Invalid operand type: cannot convert type 'i1' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i1), Num<i8>(i1))
+###
+> Text.LastIndexOf(i1, i1, i1, i1)
+Text.LastIndexOf(i1, i1, i1, i1) : i8
+*** Error: (17,19) Node: i1, Message: Invalid operand type: cannot convert type 'i1' to 's'
+*** Error: (21,23) Node: i1, Message: Invalid operand type: cannot convert type 'i1' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(i1), Num<i8>(i1))
+###
+> Text.IndexOf(u8, u8, u8, u8)
+Text.IndexOf(u8, u8, u8, u8) : i8
+*** Error: (13,15) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Error: (17,19) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Warning: (21,23) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+*** Warning: (25,27) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u8), Num<i8>(u8))
+###
+> Text.LastIndexOf(u8, u8, u8, u8)
+Text.LastIndexOf(u8, u8, u8, u8) : i8
+*** Error: (17,19) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Error: (21,23) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Warning: (25,27) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+*** Warning: (29,31) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u8), Num<i8>(u8))
+###
+> Text.IndexOf(u4, u4, u4, u4)
+Text.IndexOf(u4, u4, u4, u4) : i8
+*** Error: (13,15) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+*** Error: (17,19) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u4), Num<i8>(u4))
+###
+> Text.LastIndexOf(u4, u4, u4, u4)
+Text.LastIndexOf(u4, u4, u4, u4) : i8
+*** Error: (17,19) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+*** Error: (21,23) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u4), Num<i8>(u4))
+###
+> Text.IndexOf(u2, u2, u2, u2)
+Text.IndexOf(u2, u2, u2, u2) : i8
+*** Error: (13,15) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+*** Error: (17,19) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u2), Num<i8>(u2))
+###
+> Text.LastIndexOf(u2, u2, u2, u2)
+Text.LastIndexOf(u2, u2, u2, u2) : i8
+*** Error: (17,19) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+*** Error: (21,23) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u2), Num<i8>(u2))
+###
+> Text.IndexOf(u1, u1, u1, u1)
+Text.IndexOf(u1, u1, u1, u1) : i8
+*** Error: (13,15) Node: u1, Message: Invalid operand type: cannot convert type 'u1' to 's'
+*** Error: (17,19) Node: u1, Message: Invalid operand type: cannot convert type 'u1' to 's'
+Binder : Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u1), Num<i8>(u1))
+###
+> Text.LastIndexOf(u1, u1, u1, u1)
+Text.LastIndexOf(u1, u1, u1, u1) : i8
+*** Error: (17,19) Node: u1, Message: Invalid operand type: cannot convert type 'u1' to 's'
+*** Error: (21,23) Node: u1, Message: Invalid operand type: cannot convert type 'u1' to 's'
+Binder : Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(u1), Num<i8>(u1))
+###
+> Text.StartsWith(s, "h")
+Text.StartsWith(s, "h") : b
+Binder : Text.StartsWith(s, "h")
+###
+> Text.EndsWith(s, "h")
+Text.EndsWith(s, "h") : b
+Binder : Text.EndsWith(s, "h")
+###
+> Text.StartsWith(s, [~] "h")
+Text.StartsWith(s, [~] "h") : b
+Binder : Text.StartsWith(s, [~] "h")
+###
+> Text.EndsWith(s, [~] "h")
+Text.EndsWith(s, [~] "h") : b
+Binder : Text.EndsWith(s, [~] "h")
+###
+> Text.StartsWith(s, "")
+Text.StartsWith(s, "") : b
+Binder : Text.StartsWith(s, "")
+Reducer: true
+###
+> Text.EndsWith(s, "")
+Text.EndsWith(s, "") : b
+Binder : Text.EndsWith(s, "")
+Reducer: true
+###
+> Text.StartsWith(s, [~] "")
+Text.StartsWith(s, [~] "") : b
+Binder : Text.StartsWith(s, [~] "")
+Reducer: true
+###
+> Text.EndsWith(s, [~] "")
+Text.EndsWith(s, [~] "") : b
+Binder : Text.EndsWith(s, [~] "")
+Reducer: true
+###
+> Text.StartsWith(s, null)
+Text.StartsWith(s, null) : b
+Binder : Text.StartsWith(s, str(<null>))
+Reducer: true
+###
+> Text.EndsWith(s, null)
+Text.EndsWith(s, null) : b
+Binder : Text.EndsWith(s, str(<null>))
+Reducer: true
+###
+> Text.StartsWith(s, [~] null)
+Text.StartsWith(s, [~] null) : b
+Binder : Text.StartsWith(s, [~] str(<null>))
+Reducer: true
+###
+> Text.EndsWith(s, [~] null)
+Text.EndsWith(s, [~] null) : b
+Binder : Text.EndsWith(s, [~] str(<null>))
+Reducer: true
+###
+> Text.StartsWith("hello", "h")
+Text.StartsWith("hello", "h") : b
+Binder : Text.StartsWith("hello", "h")
+Reducer: true
+###
+> Text.EndsWith("hello", "o")
+Text.EndsWith("hello", "o") : b
+Binder : Text.EndsWith("hello", "o")
+Reducer: true
+###
+> Text.StartsWith("hello", "H")
+Text.StartsWith("hello", "H") : b
+Binder : Text.StartsWith("hello", "H")
+Reducer: false
+###
+> Text.EndsWith("hello", "O")
+Text.EndsWith("hello", "O") : b
+Binder : Text.EndsWith("hello", "O")
+Reducer: false
+###
+> Text.StartsWith("hello", [~] "H")
+Text.StartsWith("hello", [~] "H") : b
+Binder : Text.StartsWith("hello", [~] "H")
+Reducer: true
+###
+> Text.EndsWith("hello", [~] "O")
+Text.EndsWith("hello", [~] "O") : b
+Binder : Text.EndsWith("hello", [~] "O")
+Reducer: true
+###
+> Text.StartsWith("hello", "hello")
+Text.StartsWith("hello", "hello") : b
+Binder : Text.StartsWith("hello", "hello")
+Reducer: true
+###
+> Text.EndsWith("hello", "hello")
+Text.EndsWith("hello", "hello") : b
+Binder : Text.EndsWith("hello", "hello")
+Reducer: true
+###
+> Text.StartsWith("hello", "Hello")
+Text.StartsWith("hello", "Hello") : b
+Binder : Text.StartsWith("hello", "Hello")
+Reducer: false
+###
+> Text.EndsWith("Hello", "hello")
+Text.EndsWith("Hello", "hello") : b
+Binder : Text.EndsWith("Hello", "hello")
+Reducer: false
+###
+> Text.StartsWith("hello", [~] "Hello")
+Text.StartsWith("hello", [~] "Hello") : b
+Binder : Text.StartsWith("hello", [~] "Hello")
+Reducer: true
+###
+> Text.EndsWith("Hello", [~] "hello")
+Text.EndsWith("Hello", [~] "hello") : b
+Binder : Text.EndsWith("Hello", [~] "hello")
+Reducer: true
+###
+> Text.StartsWith("hello", "helloo")
+Text.StartsWith("hello", "helloo") : b
+Binder : Text.StartsWith("hello", "helloo")
+Reducer: false
+###
+> Text.EndsWith("hello", "hhello")
+Text.EndsWith("hello", "hhello") : b
+Binder : Text.EndsWith("hello", "hhello")
+Reducer: false
+###
+> Text.StartsWith("hello", [~] "helloo")
+Text.StartsWith("hello", [~] "helloo") : b
+Binder : Text.StartsWith("hello", [~] "helloo")
+Reducer: false
+###
+> Text.EndsWith("hello", [~] "hhello")
+Text.EndsWith("hello", [~] "hhello") : b
+Binder : Text.EndsWith("hello", [~] "hhello")
+Reducer: false
+###
+> Text.StartsWith("", "h")
+Text.StartsWith("", "h") : b
+Binder : Text.StartsWith("", "h")
+Reducer: false
+###
+> Text.EndsWith("", "h")
+Text.EndsWith("", "h") : b
+Binder : Text.EndsWith("", "h")
+Reducer: false
+###
+> Text.StartsWith(null, "h")
+Text.StartsWith(null, "h") : b
+Binder : Text.StartsWith(str(<null>), "h")
+Reducer: false
+###
+> Text.EndsWith(null, "o")
+Text.EndsWith(null, "o") : b
+Binder : Text.EndsWith(str(<null>), "o")
+Reducer: false
+###
+> Text.StartsWith("hello", "")
+Text.StartsWith("hello", "") : b
+Binder : Text.StartsWith("hello", "")
+Reducer: true
+###
+> Text.EndsWith("hello", "")
+Text.EndsWith("hello", "") : b
+Binder : Text.EndsWith("hello", "")
+Reducer: true
+###
+> Text.StartsWith("hello", [~] "")
+Text.StartsWith("hello", [~] "") : b
+Binder : Text.StartsWith("hello", [~] "")
+Reducer: true
+###
+> Text.EndsWith("hello", [~] "")
+Text.EndsWith("hello", [~] "") : b
+Binder : Text.EndsWith("hello", [~] "")
+Reducer: true
+###
+> Text.StartsWith("hello", null)
+Text.StartsWith("hello", null) : b
+Binder : Text.StartsWith("hello", str(<null>))
+Reducer: true
+###
+> Text.EndsWith("hello", null)
+Text.EndsWith("hello", null) : b
+Binder : Text.EndsWith("hello", str(<null>))
+Reducer: true
+###
+> Text.StartsWith("", "")
+Text.StartsWith("", "") : b
+Binder : Text.StartsWith("", "")
+Reducer: true
+###
+> Text.EndsWith("", "")
+Text.EndsWith("", "") : b
+Binder : Text.EndsWith("", "")
+Reducer: true
+###
+> Text.StartsWith("", [~] "")
+Text.StartsWith("", [~] "") : b
+Binder : Text.StartsWith("", [~] "")
+Reducer: true
+###
+> Text.EndsWith("", [~] "")
+Text.EndsWith("", [~] "") : b
+Binder : Text.EndsWith("", [~] "")
+Reducer: true
+###
+> Text.StartsWith(null, null)
+Text.StartsWith(null, null) : b
+Binder : Text.StartsWith(str(<null>), str(<null>))
+Reducer: true
+###
+> Text.EndsWith(null, null)
+Text.EndsWith(null, null) : b
+Binder : Text.EndsWith(str(<null>), str(<null>))
+Reducer: true
+###
+> Text.StartsWith(null, [~] null)
+Text.StartsWith(null, [~] null) : b
+Binder : Text.StartsWith(str(<null>), [~] str(<null>))
+Reducer: true
+###
+> Text.EndsWith(null, [~] null)
+Text.EndsWith(null, [~] null) : b
+Binder : Text.EndsWith(str(<null>), [~] str(<null>))
+Reducer: true
+###
+> Text.StartsWith(null, "")
+Text.StartsWith(null, "") : b
+Binder : Text.StartsWith(str(<null>), "")
+Reducer: true
+###
+> Text.EndsWith(null, "")
+Text.EndsWith(null, "") : b
+Binder : Text.EndsWith(str(<null>), "")
+Reducer: true
+###
+> Text.StartsWith(null, [~] "")
+Text.StartsWith(null, [~] "") : b
+Binder : Text.StartsWith(str(<null>), [~] "")
+Reducer: true
+###
+> Text.EndsWith(null, [~] "")
+Text.EndsWith(null, [~] "") : b
+Binder : Text.EndsWith(str(<null>), [~] "")
+Reducer: true
+###
+> Text.StartsWith("", null)
+Text.StartsWith("", null) : b
+Binder : Text.StartsWith("", str(<null>))
+Reducer: true
+###
+> Text.EndsWith("", null)
+Text.EndsWith("", null) : b
+Binder : Text.EndsWith("", str(<null>))
+Reducer: true
+###
+> Text.StartsWith("", [~] null)
+Text.StartsWith("", [~] null) : b
+Binder : Text.StartsWith("", [~] str(<null>))
+Reducer: true
+###
+> Text.EndsWith("", [~] null)
+Text.EndsWith("", [~] null) : b
+Binder : Text.EndsWith("", [~] str(<null>))
+Reducer: true
+###
+> Text.StartsWith("animal", "\u00ADanimal")
+Text.StartsWith("animal", "\xADanimal") : b
+Binder : Text.StartsWith("animal", "­animal")
+Reducer: false
+###
+> Text.StartsWith("animal", [~] "\u00ADanimal")
+Text.StartsWith("animal", [~] "\xADanimal") : b
+Binder : Text.StartsWith("animal", [~] "­animal")
+Reducer: false
+###
+> Text.EndsWith("animal", "animal\u00AD")
+Text.EndsWith("animal", "animal\xAD") : b
+Binder : Text.EndsWith("animal", "animal­")
+Reducer: false
+###
+> Text.EndsWith("animal", [~] "animal\u00AD")
+Text.EndsWith("animal", [~] "animal\xAD") : b
+Binder : Text.EndsWith("animal", [~] "animal­")
+Reducer: false
+###
+> Text.StartsWith("sss", "\u00DFs")
+Text.StartsWith("sss", "ßs") : b
+Binder : Text.StartsWith("sss", "ßs")
+Reducer: false
+###
+> Text.StartsWith("SSS", [~] "\u00DFs")
+Text.StartsWith("SSS", [~] "ßs") : b
+Binder : Text.StartsWith("SSS", [~] "ßs")
+Reducer: false
+###
+> Text.EndsWith("less", "le\u00DF")
+Text.EndsWith("less", "leß") : b
+Binder : Text.EndsWith("less", "leß")
+Reducer: false
+###
+> Text.EndsWith("LESS", [~] "le\u00DF")
+Text.EndsWith("LESS", [~] "leß") : b
+Binder : Text.EndsWith("LESS", [~] "leß")
+Reducer: false
+###
+
+**** New globals: {b:b*, d:d*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> s.IndexOf // Bad
+s.IndexOf : v*
+*** Error: (1,2) Node: s.IndexOf, Message: Invalid use of '.'
+Binder : ForEach(*1: s, Error(ErrInvalidDot))
+###
+> s.LastIndexOf // Bad
+s.LastIndexOf : v*
+*** Error: (1,2) Node: s.LastIndexOf, Message: Invalid use of '.'
+Binder : ForEach(*1: s, Error(ErrInvalidDot))
+###
+> s->Text.IndexOf(s) // Good
+s->Text.IndexOf(s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.IndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.IndexOf(*1, *1))
+###
+> s->Text.LastIndexOf(s) // Good
+s->Text.LastIndexOf(s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.LastIndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.LastIndexOf(*1, *1))
+###
+> s->IndexOf(s) // Good
+s->IndexOf(s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.IndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.IndexOf(*1, *1))
+###
+> s->LastIndexOf(s) // Good
+s->LastIndexOf(s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.LastIndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.LastIndexOf(*1, *1))
+###
+> Text.IndexOf(s, s)
+Text.IndexOf(s, s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.IndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.IndexOf(*1, *1))
+###
+> Text.LastIndexOf(s, s)
+Text.LastIndexOf(s, s) : i8*
+Binder : ForEach(*1: s, *2: s, Text.LastIndexOf(*1, *2))
+Reducer: ForEach(*1: s, Text.LastIndexOf(*1, *1))
+###
+> Text.IndexOf("hello", s)
+Text.IndexOf("hello", s) : i8*
+Binder : ForEach(*1: s, Text.IndexOf("hello", *1))
+###
+> Text.LastIndexOf("hello", s)
+Text.LastIndexOf("hello", s) : i8*
+Binder : ForEach(*1: s, Text.LastIndexOf("hello", *1))
+###
+> Text.IndexOf(s, "hello")
+Text.IndexOf(s, "hello") : i8*
+Binder : ForEach(*1: s, Text.IndexOf(*1, "hello"))
+###
+> Text.LastIndexOf(s, "hello")
+Text.LastIndexOf(s, "hello") : i8*
+Binder : ForEach(*1: s, Text.LastIndexOf(*1, "hello"))
+###
+> Text.IndexOf(s, s, 0)
+Text.IndexOf(s, s, 0) : i8*
+Binder : ForEach(*1: s, *2: s, Text.IndexOf(*1, *2, 0))
+Reducer: ForEach(*1: s, Text.IndexOf(*1, *1, 0))
+###
+> Text.LastIndexOf(s, s, 0)
+Text.LastIndexOf(s, s, 0) : i8*
+Binder : ForEach(*1: s, *2: s, Text.LastIndexOf(*1, *2, 0))
+Reducer: ForEach(*1: s, Text.LastIndexOf(*1, *1, 0))
+###
+> Text.IndexOf(s, s, i4)
+Text.IndexOf(s, s, i4) : i8*
+Binder : ForEach(*1: s, *2: s, *3: i4, Text.IndexOf(*1, *2, Num<i8>(*3)))
+Reducer: ForEach(*1: s, *2: i4, Text.IndexOf(*1, *1, Num<i8>(*2)))
+###
+> Text.LastIndexOf(s, s, i4)
+Text.LastIndexOf(s, s, i4) : i8*
+Binder : ForEach(*1: s, *2: s, *3: i4, Text.LastIndexOf(*1, *2, Num<i8>(*3)))
+Reducer: ForEach(*1: s, *2: i4, Text.LastIndexOf(*1, *1, Num<i8>(*2)))
+###
+> Text.IndexOf("hello", s, i4)
+Text.IndexOf("hello", s, i4) : i8*
+Binder : ForEach(*1: s, *2: i4, Text.IndexOf("hello", *1, Num<i8>(*2)))
+###
+> Text.LastIndexOf("hello", s, i4)
+Text.LastIndexOf("hello", s, i4) : i8*
+Binder : ForEach(*1: s, *2: i4, Text.LastIndexOf("hello", *1, Num<i8>(*2)))
+###
+> Text.IndexOf(s, "hello", i4)
+Text.IndexOf(s, "hello", i4) : i8*
+Binder : ForEach(*1: s, *2: i4, Text.IndexOf(*1, "hello", Num<i8>(*2)))
+###
+> Text.LastIndexOf(s, "hello", i4)
+Text.LastIndexOf(s, "hello", i4) : i8*
+Binder : ForEach(*1: s, *2: i4, Text.LastIndexOf(*1, "hello", Num<i8>(*2)))
+###
+> Text.IndexOf(g, g, g, g)
+Text.IndexOf(g, g, g, g) : i8*
+*** Error: (13,14) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (16,17) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (19,20) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+*** Error: (22,23) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, *2: g, *3: g, *4: g, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: g, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.LastIndexOf(g, g, g, g)
+Text.LastIndexOf(g, g, g, g) : i8*
+*** Error: (17,18) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (20,21) Node: g, Message: Invalid operand type: cannot convert type 'g' to 's'
+*** Error: (23,24) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+*** Error: (26,27) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, *2: g, *3: g, *4: g, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: g, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.IndexOf(o, o, o, o)
+Text.IndexOf(o, o, o, o) : i8?*
+Binder : ForEach(*1: o, *2: o, *3: o, *4: o, Guard(?5: *3, ?6: *4, Text.IndexOf(str(<null>), str(<null>), Unit<i8>(?5), Unit<i8>(?6))))
+Reducer: ForEach(*1: o, null)
+###
+> Text.LastIndexOf(o, o, o, o)
+Text.LastIndexOf(o, o, o, o) : i8?*
+Binder : ForEach(*1: o, *2: o, *3: o, *4: o, Guard(?5: *3, ?6: *4, Text.LastIndexOf(str(<null>), str(<null>), Unit<i8>(?5), Unit<i8>(?6))))
+Reducer: ForEach(*1: o, null)
+###
+> Text.IndexOf(s, s, s, s)
+Text.IndexOf(s, s, s, s) : i8*
+*** Error: (19,20) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (22,23) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, *2: s, *3: s, *4: s, Text.IndexOf(*1, *2, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: s, Text.IndexOf(*1, *1, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.LastIndexOf(s, s, s, s)
+Text.LastIndexOf(s, s, s, s) : i8*
+*** Error: (23,24) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (26,27) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, *2: s, *3: s, *4: s, Text.LastIndexOf(*1, *2, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: s, Text.LastIndexOf(*1, *1, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.IndexOf(b, b, b, b)
+Text.IndexOf(b, b, b, b) : i8*
+*** Error: (13,14) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+*** Error: (16,17) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : ForEach(*1: b, *2: b, *3: b, *4: b, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: b, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.LastIndexOf(b, b, b,b)
+Text.LastIndexOf(b, b, b, b) : i8*
+*** Error: (17,18) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+*** Error: (20,21) Node: b, Message: Invalid operand type: cannot convert type 'b' to 's'
+Binder : ForEach(*1: b, *2: b, *3: b, *4: b, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: b, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.IndexOf(n, n, n, n)
+Text.IndexOf(n, n, n, n) : i8*
+*** Error: (13,14) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (16,17) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (19,20) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (22,23) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: n, *2: n, *3: n, *4: n, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: n, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.LastIndexOf(n, n, n, n)
+Text.LastIndexOf(n, n, n, n) : i8*
+*** Error: (17,18) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (20,21) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 's'
+*** Error: (23,24) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (26,27) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: n, *2: n, *3: n, *4: n, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: n, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.IndexOf(i, i, i, i)
+Text.IndexOf(i, i, i, i) : i8*
+*** Error: (13,14) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (16,17) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (19,20) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (22,23) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : ForEach(*1: i, *2: i, *3: i, *4: i, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: i, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.LastIndexOf(i, i, i, i)
+Text.LastIndexOf(i, i, i, i) : i8*
+*** Error: (17,18) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (20,21) Node: i, Message: Invalid operand type: cannot convert type 'i' to 's'
+*** Error: (23,24) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+*** Error: (26,27) Node: i, Message: Invalid operand type: cannot convert type 'i' to 'i8'
+Binder : ForEach(*1: i, *2: i, *3: i, *4: i, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: i, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst)))
+###
+> Text.IndexOf(i8, i8, i8, i8)
+Text.IndexOf(i8, i8, i8, i8) : i8*
+*** Error: (13,15) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (17,19) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : ForEach(*1: i8, *2: i8, *3: i8, *4: i8, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), *3, *4))
+Reducer: ForEach(*1: i8, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), *1, *1))
+###
+> Text.LastIndexOf(i8, i8, i8, i8)
+Text.LastIndexOf(i8, i8, i8, i8) : i8*
+*** Error: (17,19) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+*** Error: (21,23) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 's'
+Binder : ForEach(*1: i8, *2: i8, *3: i8, *4: i8, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), *3, *4))
+Reducer: ForEach(*1: i8, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), *1, *1))
+###
+> Text.IndexOf(u8, u8, u8, u8)
+Text.IndexOf(u8, u8, u8, u8) : i8*
+*** Error: (13,15) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Error: (17,19) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Warning: (21,23) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+*** Warning: (25,27) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: u8, *2: u8, *3: u8, *4: u8, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u8, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.LastIndexOf(u8, u8, u8, u8)
+Text.LastIndexOf(u8, u8, u8, u8) : i8*
+*** Error: (17,19) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Error: (21,23) Node: u8, Message: Invalid operand type: cannot convert type 'u8' to 's'
+*** Warning: (25,27) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+*** Warning: (29,31) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: u8, *2: u8, *3: u8, *4: u8, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u8, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.IndexOf(u4, u4, u4, u4)
+Text.IndexOf(u4, u4, u4, u4) : i8*
+*** Error: (13,15) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+*** Error: (17,19) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+Binder : ForEach(*1: u4, *2: u4, *3: u4, *4: u4, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u4, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.LastIndexOf(u4, u4, u4, u4)
+Text.LastIndexOf(u4, u4, u4, u4) : i8*
+*** Error: (17,19) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+*** Error: (21,23) Node: u4, Message: Invalid operand type: cannot convert type 'u4' to 's'
+Binder : ForEach(*1: u4, *2: u4, *3: u4, *4: u4, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u4, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.IndexOf(u2, u2, u2, u2)
+Text.IndexOf(u2, u2, u2, u2) : i8*
+*** Error: (13,15) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+*** Error: (17,19) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+Binder : ForEach(*1: u2, *2: u2, *3: u2, *4: u2, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u2, Text.IndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.LastIndexOf(u2, u2, u2, u2)
+Text.LastIndexOf(u2, u2, u2, u2) : i8*
+*** Error: (17,19) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+*** Error: (21,23) Node: u2, Message: Invalid operand type: cannot convert type 'u2' to 's'
+Binder : ForEach(*1: u2, *2: u2, *3: u2, *4: u2, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*3), Num<i8>(*4)))
+Reducer: ForEach(*1: u2, Text.LastIndexOf(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst), Num<i8>(*1), Num<i8>(*1)))
+###
+> Text.StartsWith(s, "h")
+Text.StartsWith(s, "h") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, "h"))
+###
+> Text.EndsWith(s, "h")
+Text.EndsWith(s, "h") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, "h"))
+###
+> Text.StartsWith(s, "H")
+Text.StartsWith(s, "H") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, "H"))
+###
+> Text.EndsWith(s, "H")
+Text.EndsWith(s, "H") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, "H"))
+###
+> Text.StartsWith(s, [~] "H")
+Text.StartsWith(s, [~] "H") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, [~] "H"))
+###
+> Text.EndsWith(s, [~] "H")
+Text.EndsWith(s, [~] "H") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, [~] "H"))
+###
+> Text.StartsWith(s, "")
+Text.StartsWith(s, "") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, ""))
+Reducer: ForEach(*1: s, true)
+###
+> Text.EndsWith(s, "")
+Text.EndsWith(s, "") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, ""))
+Reducer: ForEach(*1: s, true)
+###
+> Text.StartsWith(s, [~] "")
+Text.StartsWith(s, [~] "") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, [~] ""))
+Reducer: ForEach(*1: s, true)
+###
+> Text.EndsWith(s, [~] "")
+Text.EndsWith(s, [~] "") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, [~] ""))
+Reducer: ForEach(*1: s, true)
+###
+> Text.StartsWith(s, null)
+Text.StartsWith(s, null) : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, str(<null>)))
+Reducer: ForEach(*1: s, true)
+###
+> Text.EndsWith(s, null)
+Text.EndsWith(s, null) : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, str(<null>)))
+Reducer: ForEach(*1: s, true)
+###
+> Text.StartsWith(s, [~] null)
+Text.StartsWith(s, [~] null) : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, [~] str(<null>)))
+Reducer: ForEach(*1: s, true)
+###
+> Text.EndsWith(s, [~] null)
+Text.EndsWith(s, [~] null) : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, [~] str(<null>)))
+Reducer: ForEach(*1: s, true)
+###
+> Text.StartsWith(s, s)
+Text.StartsWith(s, s) : b*
+Binder : ForEach(*1: s, *2: s, Text.StartsWith(*1, *2))
+Reducer: ForEach(*1: s, Text.StartsWith(*1, *1))
+###
+> Text.EndsWith(s, s)
+Text.EndsWith(s, s) : b*
+Binder : ForEach(*1: s, *2: s, Text.EndsWith(*1, *2))
+Reducer: ForEach(*1: s, Text.EndsWith(*1, *1))
+###
+> Text.StartsWith(s, [~] s)
+Text.StartsWith(s, [~] s) : b*
+Binder : ForEach(*1: s, *2: s, Text.StartsWith(*1, [~] *2))
+Reducer: ForEach(*1: s, Text.StartsWith(*1, [~] *1))
+###
+> Text.EndsWith(s, [~] s)
+Text.EndsWith(s, [~] s) : b*
+Binder : ForEach(*1: s, *2: s, Text.EndsWith(*1, [~] *2))
+Reducer: ForEach(*1: s, Text.EndsWith(*1, [~] *1))
+###
+> Text.StartsWith("hello", s)
+Text.StartsWith("hello", s) : b*
+Binder : ForEach(*1: s, Text.StartsWith("hello", *1))
+###
+> Text.EndsWith("hello", s)
+Text.EndsWith("hello", s) : b*
+Binder : ForEach(*1: s, Text.EndsWith("hello", *1))
+###
+> Text.StartsWith("hello", [~] s)
+Text.StartsWith("hello", [~] s) : b*
+Binder : ForEach(*1: s, Text.StartsWith("hello", [~] *1))
+###
+> Text.EndsWith("hello", [~] s)
+Text.EndsWith("hello", [~] s) : b*
+Binder : ForEach(*1: s, Text.EndsWith("hello", [~] *1))
+###
+> Text.StartsWith(s, "hello")
+Text.StartsWith(s, "hello") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, "hello"))
+###
+> Text.EndsWith(s, "hello")
+Text.EndsWith(s, "hello") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, "hello"))
+###
+> Text.StartsWith(s, [~] "Hello")
+Text.StartsWith(s, [~] "Hello") : b*
+Binder : ForEach(*1: s, Text.StartsWith(*1, [~] "Hello"))
+###
+> Text.EndsWith(s, [~] "Hello")
+Text.EndsWith(s, [~] "Hello") : b*
+Binder : ForEach(*1: s, Text.EndsWith(*1, [~] "Hello"))
+###

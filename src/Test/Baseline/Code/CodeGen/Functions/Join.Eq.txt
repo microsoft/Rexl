@@ -1,0 +1,394 @@
+**** New definitions: T, type: {K:r8?, V:s}*
+**** New definitions: S, type: r8?*
+
+> S->KeyJoin(as a, t:T, a, K, (a, V), (a, "General"))
+S->KeyJoin(as a, t : T, a, K, (a, V), (a, "General")) : (r8?, s)*
+BndKind:Call, Type:(r8?, s)*, Bnd:(Call(∂.KeyJoin([map:1] Global(S), [map:2] Global(T), Scope(1), GetField(Scope(2), K), (Scope(1), GetField(Scope(2), V)):(r8?, s), (Scope(1), str(General)):(r8?, s)):(r8?, s)*))
+Func sig: (<ctx>:x, S:r8?*, T:{K:r8?, V:s}*) to (r8?, s)*
+Sequence: Seq<(Opt<r8>,str)>
+ 0) (3.5, General)
+ 1) (0, Zero)
+ 2) (-0, Zero)
+ 3) (∞, +Inf)
+ 4) (<null>, General)
+ 5) (1, +One)
+ 6) (-∞, -Inf)
+ 7) (NaN, General)
+ 8) (7.5, General)
+ 9) (-1, -One)
+*** Ctx ping count: 7
+    [0:3](7=0+0+7): KeyJoin(*1: S, *2: T, *1, *2.K, (*1, *2.V), (*1, "General"))
+###
+> S->KeyJoin(as a, t:T, [=] a, K, (a, V), (a, "General"))
+S->KeyJoin(as a, t : T, [=] a, K, (a, V), (a, "General")) : (r8?, s)*
+BndKind:Call, Type:(r8?, s)*, Bnd:(Call(∂.KeyJoin([map:1] Global(S), [map:2] Global(T), [=] Scope(1), GetField(Scope(2), K), (Scope(1), GetField(Scope(2), V)):(r8?, s), (Scope(1), str(General)):(r8?, s)):(r8?, s)*))
+Func sig: (<ctx>:x, S:r8?*, T:{K:r8?, V:s}*) to (r8?, s)*
+Sequence: Seq<(Opt<r8>,str)>
+ 0) (3.5, General)
+ 1) (0, Zero)
+ 2) (-0, Zero)
+ 3) (∞, +Inf)
+ 4) (<null>, Null)
+ 5) (1, +One)
+ 6) (-∞, -Inf)
+ 7) (NaN, NaN)
+ 8) (7.5, General)
+ 9) (-1, -One)
+*** Ctx ping count: 7
+    [0:3](7=0+0+7): KeyJoin(*1: S, *2: T, [=] *1, *2.K, (*1, *2.V), (*1, "General"))
+###
+
+**** New definitions: A, type: {Id:i8, V:s}*
+**** New definitions: B, type: {V:s}*
+**** New definitions: C, type: {V:s}?*
+
+> KeyJoin(x:A, y:A,     V,      V, (x, y), (x, null))
+KeyJoin(x : A, y : A, V, V, (x, y), (x, null)) : ({Id:i8, V:s}, {Id:i8, V:s}?)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(A), GetField(Scope(1), V), GetField(Scope(2), V), (Scope(1), Ref<{Id:i8, V:s}?>(Scope(2))):({Id:i8, V:s}, {Id:i8, V:s}?), (Scope(1), null:{Id:i8, V:s}?):({Id:i8, V:s}, {Id:i8, V:s}?)):({Id:i8, V:s}, {Id:i8, V:s}?)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?)*
+Sequence: Seq<({i8,str},{i8,str})>
+ 0) ({ Id: 0, V: <null> }, <null>)
+ 1) ({ Id: 1, V: A }, { Id: 1, V: A })
+ 2) ({ Id: 2, V: b }, { Id: 2, V: b })
+ 3) ({ Id: 3, V: <null> }, <null>)
+ 4) ({ Id: 4, V: B }, { Id: 4, V: B })
+ 5) ({ Id: 5, V: a }, { Id: 5, V: a })
+ 6) ({ Id: 6, V:  }, { Id: 6, V:  })
+ 7) ({ Id: 7, V: <null> }, <null>)
+*** Ctx ping count: 7
+    [0:3](7=0+0+7): KeyJoin(*1: A, *2: A, *1.V, *2.V, (*1, Ref<{Id:i8, V:s}?>(*2)), (*1, null))
+###
+> KeyJoin(x:A, y:A, [~] V,      V, (x, y), (x, null))
+KeyJoin(x : A, y : A, [~] V, V, (x, y), (x, null)) : ({Id:i8, V:s}, {Id:i8, V:s}?)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(A), [~] GetField(Scope(1), V), GetField(Scope(2), V), (Scope(1), Ref<{Id:i8, V:s}?>(Scope(2))):({Id:i8, V:s}, {Id:i8, V:s}?), (Scope(1), null:{Id:i8, V:s}?):({Id:i8, V:s}, {Id:i8, V:s}?)):({Id:i8, V:s}, {Id:i8, V:s}?)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?)*
+Sequence: Seq<({i8,str},{i8,str})>
+ 0) ({ Id: 0, V: <null> }, <null>)
+ 1) ({ Id: 1, V: A }, { Id: 1, V: A })
+ 2) ({ Id: 1, V: A }, { Id: 5, V: a })
+ 3) ({ Id: 2, V: b }, { Id: 2, V: b })
+ 4) ({ Id: 2, V: b }, { Id: 4, V: B })
+ 5) ({ Id: 3, V: <null> }, <null>)
+ 6) ({ Id: 4, V: B }, { Id: 2, V: b })
+ 7) ({ Id: 4, V: B }, { Id: 4, V: B })
+ 8) ({ Id: 5, V: a }, { Id: 1, V: A })
+ 9) ({ Id: 5, V: a }, { Id: 5, V: a })
+10) ({ Id: 6, V:  }, { Id: 6, V:  })
+11) ({ Id: 7, V: <null> }, <null>)
+*** Ctx ping count: 6
+    [0:3](6=0+0+6): KeyJoin(*1: A, *2: A, [~] *1.V, *2.V, (*1, Ref<{Id:i8, V:s}?>(*2)), (*1, null))
+###
+> KeyJoin(x:A, y:A, [=] V,      V, (x, y), (x, null))
+KeyJoin(x : A, y : A, [=] V, V, (x, y), (x, null)) : ({Id:i8, V:s}, {Id:i8, V:s}?)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(A), [=] GetField(Scope(1), V), GetField(Scope(2), V), (Scope(1), Ref<{Id:i8, V:s}?>(Scope(2))):({Id:i8, V:s}, {Id:i8, V:s}?), (Scope(1), null:{Id:i8, V:s}?):({Id:i8, V:s}, {Id:i8, V:s}?)):({Id:i8, V:s}, {Id:i8, V:s}?)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?)*
+Sequence: Seq<({i8,str},{i8,str})>
+ 0) ({ Id: 0, V: <null> }, { Id: 0, V: <null> })
+ 1) ({ Id: 0, V: <null> }, { Id: 3, V: <null> })
+ 2) ({ Id: 0, V: <null> }, { Id: 7, V: <null> })
+ 3) ({ Id: 1, V: A }, { Id: 1, V: A })
+ 4) ({ Id: 2, V: b }, { Id: 2, V: b })
+ 5) ({ Id: 3, V: <null> }, { Id: 0, V: <null> })
+ 6) ({ Id: 3, V: <null> }, { Id: 3, V: <null> })
+ 7) ({ Id: 3, V: <null> }, { Id: 7, V: <null> })
+ 8) ({ Id: 4, V: B }, { Id: 4, V: B })
+ 9) ({ Id: 5, V: a }, { Id: 5, V: a })
+10) ({ Id: 6, V:  }, { Id: 6, V:  })
+11) ({ Id: 7, V: <null> }, { Id: 0, V: <null> })
+12) ({ Id: 7, V: <null> }, { Id: 3, V: <null> })
+13) ({ Id: 7, V: <null> }, { Id: 7, V: <null> })
+*** Ctx ping count: 5
+    [0:3](5=0+0+5): KeyJoin(*1: A, *2: A, [=] *1.V, *2.V, (*1, Ref<{Id:i8, V:s}?>(*2)), (*1, null))
+###
+> KeyJoin(x:A, y:A, [=] V, [~]  V, (x, y), (x, null))
+KeyJoin(x : A, y : A, [=] V, [~] V, (x, y), (x, null)) : ({Id:i8, V:s}, {Id:i8, V:s}?)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(A), [map:2] Global(A), [=] GetField(Scope(1), V), [~] GetField(Scope(2), V), (Scope(1), Ref<{Id:i8, V:s}?>(Scope(2))):({Id:i8, V:s}, {Id:i8, V:s}?), (Scope(1), null:{Id:i8, V:s}?):({Id:i8, V:s}, {Id:i8, V:s}?)):({Id:i8, V:s}, {Id:i8, V:s}?)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?)*
+Sequence: Seq<({i8,str},{i8,str})>
+ 0) ({ Id: 0, V: <null> }, { Id: 0, V: <null> })
+ 1) ({ Id: 0, V: <null> }, { Id: 3, V: <null> })
+ 2) ({ Id: 0, V: <null> }, { Id: 7, V: <null> })
+ 3) ({ Id: 1, V: A }, { Id: 1, V: A })
+ 4) ({ Id: 1, V: A }, { Id: 5, V: a })
+ 5) ({ Id: 2, V: b }, { Id: 2, V: b })
+ 6) ({ Id: 2, V: b }, { Id: 4, V: B })
+ 7) ({ Id: 3, V: <null> }, { Id: 0, V: <null> })
+ 8) ({ Id: 3, V: <null> }, { Id: 3, V: <null> })
+ 9) ({ Id: 3, V: <null> }, { Id: 7, V: <null> })
+10) ({ Id: 4, V: B }, { Id: 2, V: b })
+11) ({ Id: 4, V: B }, { Id: 4, V: B })
+12) ({ Id: 5, V: a }, { Id: 1, V: A })
+13) ({ Id: 5, V: a }, { Id: 5, V: a })
+14) ({ Id: 6, V:  }, { Id: 6, V:  })
+15) ({ Id: 7, V: <null> }, { Id: 0, V: <null> })
+16) ({ Id: 7, V: <null> }, { Id: 3, V: <null> })
+17) ({ Id: 7, V: <null> }, { Id: 7, V: <null> })
+*** Ctx ping count: 5
+    [0:3](5=0+0+5): KeyJoin(*1: A, *2: A, [=] *1.V, [~] *2.V, (*1, Ref<{Id:i8, V:s}?>(*2)), (*1, null))
+###
+> KeyJoin(x:C, y:C,     x,      y, (x, y))
+KeyJoin(x : C, y : C, x, y, (x, y)) : ({V:s}?, {V:s}?)*
+BndKind:Call, Type:({V:s}?, {V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(C), [map:2] Global(C), Scope(1), Scope(2), (Scope(1), Scope(2)):({V:s}?, {V:s}?)):({V:s}?, {V:s}?)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?)*
+Sequence: Seq<({str},{str})>
+ 0) ({ V: A }, { V: A })
+ 1) ({ V: b }, { V: b })
+ 2) ({ V: B }, { V: B })
+ 3) ({ V: a }, { V: a })
+ 4) ({ V:  }, { V:  })
+*** Ctx ping count: 14
+    [0:3](14=3+2+9): KeyJoin(*1: C, *2: C, *1, *2, (*1, *2))
+###
+> KeyJoin(x:C, y:C, [~] x,      y, (x, y))
+KeyJoin(x : C, y : C, [~] x, y, (x, y)) : ({V:s}?, {V:s}?)*
+BndKind:Call, Type:({V:s}?, {V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(C), [map:2] Global(C), [~] Scope(1), Scope(2), (Scope(1), Scope(2)):({V:s}?, {V:s}?)):({V:s}?, {V:s}?)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?)*
+Sequence: Seq<({str},{str})>
+ 0) ({ V: A }, { V: A })
+ 1) ({ V: A }, { V: a })
+ 2) ({ V: b }, { V: b })
+ 3) ({ V: b }, { V: B })
+ 4) ({ V: B }, { V: b })
+ 5) ({ V: B }, { V: B })
+ 6) ({ V: a }, { V: A })
+ 7) ({ V: a }, { V: a })
+ 8) ({ V:  }, { V:  })
+*** Ctx ping count: 13
+    [0:3](13=3+2+8): KeyJoin(*1: C, *2: C, [~] *1, *2, (*1, *2))
+###
+> KeyJoin(x:C, y:C, [=] x,      y, (x, y))
+KeyJoin(x : C, y : C, [=] x, y, (x, y)) : ({V:s}?, {V:s}?)*
+BndKind:Call, Type:({V:s}?, {V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(C), [map:2] Global(C), [=] Scope(1), Scope(2), (Scope(1), Scope(2)):({V:s}?, {V:s}?)):({V:s}?, {V:s}?)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?)*
+Sequence: Seq<({str},{str})>
+ 0) (<null>, <null>)
+ 1) (<null>, <null>)
+ 2) ({ V: <null> }, { V: <null> })
+ 3) ({ V: <null> }, { V: <null> })
+ 4) ({ V: <null> }, { V: <null> })
+ 5) ({ V: A }, { V: A })
+ 6) ({ V: b }, { V: b })
+ 7) ({ V: <null> }, { V: <null> })
+ 8) ({ V: <null> }, { V: <null> })
+ 9) ({ V: <null> }, { V: <null> })
+10) ({ V: B }, { V: B })
+11) ({ V: a }, { V: a })
+12) ({ V:  }, { V:  })
+13) ({ V: <null> }, { V: <null> })
+14) ({ V: <null> }, { V: <null> })
+15) ({ V: <null> }, { V: <null> })
+16) (<null>, <null>)
+17) (<null>, <null>)
+*** Ctx ping count: 8
+    [0:3](8=0+0+8): KeyJoin(*1: C, *2: C, [=] *1, *2, (*1, *2))
+###
+> KeyJoin(x:C, y:C,     x, [~=] y, (x, y))
+KeyJoin(x : C, y : C, x, [~=] y, (x, y)) : ({V:s}?, {V:s}?)*
+BndKind:Call, Type:({V:s}?, {V:s}?)*, Bnd:(Call(∂.KeyJoin([map:1] Global(C), [map:2] Global(C), Scope(1), [~=] Scope(2), (Scope(1), Scope(2)):({V:s}?, {V:s}?)):({V:s}?, {V:s}?)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?)*
+Sequence: Seq<({str},{str})>
+ 0) (<null>, <null>)
+ 1) (<null>, <null>)
+ 2) ({ V: <null> }, { V: <null> })
+ 3) ({ V: <null> }, { V: <null> })
+ 4) ({ V: <null> }, { V: <null> })
+ 5) ({ V: A }, { V: A })
+ 6) ({ V: A }, { V: a })
+ 7) ({ V: b }, { V: b })
+ 8) ({ V: b }, { V: B })
+ 9) ({ V: <null> }, { V: <null> })
+10) ({ V: <null> }, { V: <null> })
+11) ({ V: <null> }, { V: <null> })
+12) ({ V: B }, { V: b })
+13) ({ V: B }, { V: B })
+14) ({ V: a }, { V: A })
+15) ({ V: a }, { V: a })
+16) ({ V:  }, { V:  })
+17) ({ V: <null> }, { V: <null> })
+18) ({ V: <null> }, { V: <null> })
+19) ({ V: <null> }, { V: <null> })
+20) (<null>, <null>)
+21) (<null>, <null>)
+*** Ctx ping count: 8
+    [0:3](8=0+0+8): KeyJoin(*1: C, *2: C, *1, [~=] *2, (*1, *2))
+###
+> KeyJoin(x:A, y:A,     V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : A, y : A, V, V, (x, y, #x, #y), (x, null, #x, -1)) : ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(A), [map:4] Global(A), GetField(Scope(2), V), GetField(Scope(4), V), (Scope(2), Ref<{Id:i8, V:s}?>(Scope(4)), Scope(1), Scope(3)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8), (Scope(2), null:{Id:i8, V:s}?, Scope(1), -1:i8):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+Sequence: Seq<({i8,str},{i8,str},i8,i8)>
+ 0) ({ Id: 0, V: <null> }, <null>, 0, -1)
+ 1) ({ Id: 1, V: A }, { Id: 1, V: A }, 1, 1)
+ 2) ({ Id: 2, V: b }, { Id: 2, V: b }, 2, 2)
+ 3) ({ Id: 3, V: <null> }, <null>, 3, -1)
+ 4) ({ Id: 4, V: B }, { Id: 4, V: B }, 4, 4)
+ 5) ({ Id: 5, V: a }, { Id: 5, V: a }, 5, 5)
+ 6) ({ Id: 6, V:  }, { Id: 6, V:  }, 6, 6)
+ 7) ({ Id: 7, V: <null> }, <null>, 7, -1)
+*** Ctx ping count: 7
+    [0:3](7=0+0+7): KeyJoin(*2: A, *4: A, *2.V, *4.V, (*2, Ref<{Id:i8, V:s}?>(*4), #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:A, y:A, [~] V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : A, y : A, [~] V, V, (x, y, #x, #y), (x, null, #x, -1)) : ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(A), [map:4] Global(A), [~] GetField(Scope(2), V), GetField(Scope(4), V), (Scope(2), Ref<{Id:i8, V:s}?>(Scope(4)), Scope(1), Scope(3)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8), (Scope(2), null:{Id:i8, V:s}?, Scope(1), -1:i8):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+Sequence: Seq<({i8,str},{i8,str},i8,i8)>
+ 0) ({ Id: 0, V: <null> }, <null>, 0, -1)
+ 1) ({ Id: 1, V: A }, { Id: 1, V: A }, 1, 1)
+ 2) ({ Id: 1, V: A }, { Id: 5, V: a }, 1, 5)
+ 3) ({ Id: 2, V: b }, { Id: 2, V: b }, 2, 2)
+ 4) ({ Id: 2, V: b }, { Id: 4, V: B }, 2, 4)
+ 5) ({ Id: 3, V: <null> }, <null>, 3, -1)
+ 6) ({ Id: 4, V: B }, { Id: 2, V: b }, 4, 2)
+ 7) ({ Id: 4, V: B }, { Id: 4, V: B }, 4, 4)
+ 8) ({ Id: 5, V: a }, { Id: 1, V: A }, 5, 1)
+ 9) ({ Id: 5, V: a }, { Id: 5, V: a }, 5, 5)
+10) ({ Id: 6, V:  }, { Id: 6, V:  }, 6, 6)
+11) ({ Id: 7, V: <null> }, <null>, 7, -1)
+*** Ctx ping count: 6
+    [0:3](6=0+0+6): KeyJoin(*2: A, *4: A, [~] *2.V, *4.V, (*2, Ref<{Id:i8, V:s}?>(*4), #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:A, y:A, [=] V,      V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : A, y : A, [=] V, V, (x, y, #x, #y), (x, null, #x, -1)) : ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(A), [map:4] Global(A), [=] GetField(Scope(2), V), GetField(Scope(4), V), (Scope(2), Ref<{Id:i8, V:s}?>(Scope(4)), Scope(1), Scope(3)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8), (Scope(2), null:{Id:i8, V:s}?, Scope(1), -1:i8):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+Sequence: Seq<({i8,str},{i8,str},i8,i8)>
+ 0) ({ Id: 0, V: <null> }, { Id: 0, V: <null> }, 0, 0)
+ 1) ({ Id: 0, V: <null> }, { Id: 3, V: <null> }, 0, 3)
+ 2) ({ Id: 0, V: <null> }, { Id: 7, V: <null> }, 0, 7)
+ 3) ({ Id: 1, V: A }, { Id: 1, V: A }, 1, 1)
+ 4) ({ Id: 2, V: b }, { Id: 2, V: b }, 2, 2)
+ 5) ({ Id: 3, V: <null> }, { Id: 0, V: <null> }, 3, 0)
+ 6) ({ Id: 3, V: <null> }, { Id: 3, V: <null> }, 3, 3)
+ 7) ({ Id: 3, V: <null> }, { Id: 7, V: <null> }, 3, 7)
+ 8) ({ Id: 4, V: B }, { Id: 4, V: B }, 4, 4)
+ 9) ({ Id: 5, V: a }, { Id: 5, V: a }, 5, 5)
+10) ({ Id: 6, V:  }, { Id: 6, V:  }, 6, 6)
+11) ({ Id: 7, V: <null> }, { Id: 0, V: <null> }, 7, 0)
+12) ({ Id: 7, V: <null> }, { Id: 3, V: <null> }, 7, 3)
+13) ({ Id: 7, V: <null> }, { Id: 7, V: <null> }, 7, 7)
+*** Ctx ping count: 5
+    [0:3](5=0+0+5): KeyJoin(*2: A, *4: A, [=] *2.V, *4.V, (*2, Ref<{Id:i8, V:s}?>(*4), #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:A, y:A, [=] V, [~]  V, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : A, y : A, [=] V, [~] V, (x, y, #x, #y), (x, null, #x, -1)) : ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+BndKind:Call, Type:({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(A), [map:4] Global(A), [=] GetField(Scope(2), V), [~] GetField(Scope(4), V), (Scope(2), Ref<{Id:i8, V:s}?>(Scope(4)), Scope(1), Scope(3)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8), (Scope(2), null:{Id:i8, V:s}?, Scope(1), -1:i8):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)):({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, A:{Id:i8, V:s}*) to ({Id:i8, V:s}, {Id:i8, V:s}?, i8, i8)*
+Sequence: Seq<({i8,str},{i8,str},i8,i8)>
+ 0) ({ Id: 0, V: <null> }, { Id: 0, V: <null> }, 0, 0)
+ 1) ({ Id: 0, V: <null> }, { Id: 3, V: <null> }, 0, 3)
+ 2) ({ Id: 0, V: <null> }, { Id: 7, V: <null> }, 0, 7)
+ 3) ({ Id: 1, V: A }, { Id: 1, V: A }, 1, 1)
+ 4) ({ Id: 1, V: A }, { Id: 5, V: a }, 1, 5)
+ 5) ({ Id: 2, V: b }, { Id: 2, V: b }, 2, 2)
+ 6) ({ Id: 2, V: b }, { Id: 4, V: B }, 2, 4)
+ 7) ({ Id: 3, V: <null> }, { Id: 0, V: <null> }, 3, 0)
+ 8) ({ Id: 3, V: <null> }, { Id: 3, V: <null> }, 3, 3)
+ 9) ({ Id: 3, V: <null> }, { Id: 7, V: <null> }, 3, 7)
+10) ({ Id: 4, V: B }, { Id: 2, V: b }, 4, 2)
+11) ({ Id: 4, V: B }, { Id: 4, V: B }, 4, 4)
+12) ({ Id: 5, V: a }, { Id: 1, V: A }, 5, 1)
+13) ({ Id: 5, V: a }, { Id: 5, V: a }, 5, 5)
+14) ({ Id: 6, V:  }, { Id: 6, V:  }, 6, 6)
+15) ({ Id: 7, V: <null> }, { Id: 0, V: <null> }, 7, 0)
+16) ({ Id: 7, V: <null> }, { Id: 3, V: <null> }, 7, 3)
+17) ({ Id: 7, V: <null> }, { Id: 7, V: <null> }, 7, 7)
+*** Ctx ping count: 5
+    [0:3](5=0+0+5): KeyJoin(*2: A, *4: A, [=] *2.V, [~] *4.V, (*2, Ref<{Id:i8, V:s}?>(*4), #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:C, y:C,     x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : C, y : C, x, y, (x, y, #x, #y), (x, null, #x, -1)) : ({V:s}?, {V:s}?, i8, i8)*
+BndKind:Call, Type:({V:s}?, {V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(C), [map:4] Global(C), Scope(2), Scope(4), (Scope(2), Scope(4), Scope(1), Scope(3)):({V:s}?, {V:s}?, i8, i8), (Scope(2), null:{V:s}?, Scope(1), -1:i8):({V:s}?, {V:s}?, i8, i8)):({V:s}?, {V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?, i8, i8)*
+Sequence: Seq<({str},{str},i8,i8)>
+ 0) (<null>, <null>, 0, -1)
+ 1) ({ V: <null> }, <null>, 1, -1)
+ 2) ({ V: A }, { V: A }, 2, 2)
+ 3) ({ V: b }, { V: b }, 3, 3)
+ 4) ({ V: <null> }, <null>, 4, -1)
+ 5) ({ V: B }, { V: B }, 5, 5)
+ 6) ({ V: a }, { V: a }, 6, 6)
+ 7) ({ V:  }, { V:  }, 7, 7)
+ 8) ({ V: <null> }, <null>, 8, -1)
+ 9) (<null>, <null>, 9, -1)
+*** Ctx ping count: 9
+    [0:3](9=0+0+9): KeyJoin(*2: C, *4: C, *2, *4, (*2, *4, #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:C, y:C, [~] x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : C, y : C, [~] x, y, (x, y, #x, #y), (x, null, #x, -1)) : ({V:s}?, {V:s}?, i8, i8)*
+BndKind:Call, Type:({V:s}?, {V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(C), [map:4] Global(C), [~] Scope(2), Scope(4), (Scope(2), Scope(4), Scope(1), Scope(3)):({V:s}?, {V:s}?, i8, i8), (Scope(2), null:{V:s}?, Scope(1), -1:i8):({V:s}?, {V:s}?, i8, i8)):({V:s}?, {V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?, i8, i8)*
+Sequence: Seq<({str},{str},i8,i8)>
+ 0) (<null>, <null>, 0, -1)
+ 1) ({ V: <null> }, <null>, 1, -1)
+ 2) ({ V: A }, { V: A }, 2, 2)
+ 3) ({ V: A }, { V: a }, 2, 6)
+ 4) ({ V: b }, { V: b }, 3, 3)
+ 5) ({ V: b }, { V: B }, 3, 5)
+ 6) ({ V: <null> }, <null>, 4, -1)
+ 7) ({ V: B }, { V: b }, 5, 3)
+ 8) ({ V: B }, { V: B }, 5, 5)
+ 9) ({ V: a }, { V: A }, 6, 2)
+10) ({ V: a }, { V: a }, 6, 6)
+11) ({ V:  }, { V:  }, 7, 7)
+12) ({ V: <null> }, <null>, 8, -1)
+13) (<null>, <null>, 9, -1)
+*** Ctx ping count: 8
+    [0:3](8=0+0+8): KeyJoin(*2: C, *4: C, [~] *2, *4, (*2, *4, #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:C, y:C, [=] x,      y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : C, y : C, [=] x, y, (x, y, #x, #y), (x, null, #x, -1)) : ({V:s}?, {V:s}?, i8, i8)*
+BndKind:Call, Type:({V:s}?, {V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(C), [map:4] Global(C), [=] Scope(2), Scope(4), (Scope(2), Scope(4), Scope(1), Scope(3)):({V:s}?, {V:s}?, i8, i8), (Scope(2), null:{V:s}?, Scope(1), -1:i8):({V:s}?, {V:s}?, i8, i8)):({V:s}?, {V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?, i8, i8)*
+Sequence: Seq<({str},{str},i8,i8)>
+ 0) (<null>, <null>, 0, 0)
+ 1) (<null>, <null>, 0, 9)
+ 2) ({ V: <null> }, { V: <null> }, 1, 1)
+ 3) ({ V: <null> }, { V: <null> }, 1, 4)
+ 4) ({ V: <null> }, { V: <null> }, 1, 8)
+ 5) ({ V: A }, { V: A }, 2, 2)
+ 6) ({ V: b }, { V: b }, 3, 3)
+ 7) ({ V: <null> }, { V: <null> }, 4, 1)
+ 8) ({ V: <null> }, { V: <null> }, 4, 4)
+ 9) ({ V: <null> }, { V: <null> }, 4, 8)
+10) ({ V: B }, { V: B }, 5, 5)
+11) ({ V: a }, { V: a }, 6, 6)
+12) ({ V:  }, { V:  }, 7, 7)
+13) ({ V: <null> }, { V: <null> }, 8, 1)
+14) ({ V: <null> }, { V: <null> }, 8, 4)
+15) ({ V: <null> }, { V: <null> }, 8, 8)
+16) (<null>, <null>, 9, 0)
+17) (<null>, <null>, 9, 9)
+*** Ctx ping count: 8
+    [0:3](8=0+0+8): KeyJoin(*2: C, *4: C, [=] *2, *4, (*2, *4, #1, #3), (*2, null, #1, -1))
+###
+> KeyJoin(x:C, y:C,     x, [~=] y, (x, y, #x, #y), (x, null, #x, -1))
+KeyJoin(x : C, y : C, x, [~=] y, (x, y, #x, #y), (x, null, #x, -1)) : ({V:s}?, {V:s}?, i8, i8)*
+BndKind:Call, Type:({V:s}?, {V:s}?, i8, i8)*, Bnd:(Call(∂.KeyJoin([map:2] Global(C), [map:4] Global(C), Scope(2), [~=] Scope(4), (Scope(2), Scope(4), Scope(1), Scope(3)):({V:s}?, {V:s}?, i8, i8), (Scope(2), null:{V:s}?, Scope(1), -1:i8):({V:s}?, {V:s}?, i8, i8)):({V:s}?, {V:s}?, i8, i8)*))
+Func sig: (<ctx>:x, C:{V:s}?*) to ({V:s}?, {V:s}?, i8, i8)*
+Sequence: Seq<({str},{str},i8,i8)>
+ 0) (<null>, <null>, 0, 0)
+ 1) (<null>, <null>, 0, 9)
+ 2) ({ V: <null> }, { V: <null> }, 1, 1)
+ 3) ({ V: <null> }, { V: <null> }, 1, 4)
+ 4) ({ V: <null> }, { V: <null> }, 1, 8)
+ 5) ({ V: A }, { V: A }, 2, 2)
+ 6) ({ V: A }, { V: a }, 2, 6)
+ 7) ({ V: b }, { V: b }, 3, 3)
+ 8) ({ V: b }, { V: B }, 3, 5)
+ 9) ({ V: <null> }, { V: <null> }, 4, 1)
+10) ({ V: <null> }, { V: <null> }, 4, 4)
+11) ({ V: <null> }, { V: <null> }, 4, 8)
+12) ({ V: B }, { V: b }, 5, 3)
+13) ({ V: B }, { V: B }, 5, 5)
+14) ({ V: a }, { V: A }, 6, 2)
+15) ({ V: a }, { V: a }, 6, 6)
+16) ({ V:  }, { V:  }, 7, 7)
+17) ({ V: <null> }, { V: <null> }, 8, 1)
+18) ({ V: <null> }, { V: <null> }, 8, 4)
+19) ({ V: <null> }, { V: <null> }, 8, 8)
+20) (<null>, <null>, 9, 0)
+21) (<null>, <null>, 9, 9)
+*** Ctx ping count: 8
+    [0:3](8=0+0+8): KeyJoin(*2: C, *4: C, *2, [~=] *4, (*2, *4, #1, #3), (*2, null, #1, -1))
+###

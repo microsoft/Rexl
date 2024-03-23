@@ -1,0 +1,33 @@
+﻿``` inf := 1r8 / 0r8;
+``` nan := 0r8 / 0r8;
+``` r8_s := [ nan, -inf, -1, -0r8, 0r8, 1, 2, 3.7, inf ];
+``` r8qs := [null] ++ r8_s;
+
+All(x: r8qs, All(y: r8qs, All(z: r8_s, (x !$= y $< z) = (x !$= y and y $< z))))
+All(x: r8qs, All(y: r8qs, All(z: r8_s, (x !@= y @< z) = (x !@= y and y @< z))))
+
+// To count:
+// * When y is zero: 2 (y) * 4 (z) * 8 (x) = 64.
+// * When z is zero: 2 (z) * 2 (y) * 9 (x) = 36.
+// * When neither y nor z is zero: (6 choose 2) * 9 = 135.
+// So the total is 235.
+Sum(x: r8qs, Sum(y: r8qs, Count(z: r8_s, x !$= y $< z)))
+
+// To count:
+// * When y is zero: 2 (y) * 4 (z) * 8 (x) = 64.
+// * When z is zero: 2 (z) * 4 (y) * 9 (x) = 72.
+// * When neither y nor z is zero: (8 choose 2) * 9 = 252.
+// So the total is 388.
+Sum(x: r8qs, Sum(y: r8qs, Count(z: r8_s, x !@= y @< z)))
+
+All(x: r8qs, All(y: r8qs, All(z: r8_s, (x !$= y $<= z $<= 0 $< 1 $<= x) = (y $<= z and z $<= 0 and 1 $<= x))))
+All(x: r8qs, All(y: r8qs, All(z: r8_s, (x !@= y @<= z @<= 0 @< 1 @<= x) = (y @<= z and z @<= 0 and 1 @<= x))))
+
+// There are 11 combinations for y $<= z $<= 0 and 4 combinations for 1 $<= x, and they are independent, hence 44 total.
+Sum(x: r8qs, Sum(y: r8qs, Count(z: r8_s, x !$= y $<= z $<= 0 $< 1 $<= x)))
+
+// There are 21 combinations for y <= z <= 0 and 4 combinations for 1 <= x, and they are independent, hence 84 total.
+Sum(x: r8qs, Sum(y: r8qs, Count(z: r8_s, x !@= y @<= z @<= 0 @< 1 @<= x)))
+
+// 3 is not used again.
+First(Wrap([1r8])) !@= 3 @< 5 @< First(Wrap([7r8]))

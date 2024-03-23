@@ -1,0 +1,237 @@
+> Abc
+> Abc_093a
+> // Quoted.
+> '123'  '2x' '' '  '
+> // Escapes.
+> ''''
+> '123''456'
+Range=(0,3), Tid=Ident, Text=[Abc], Name=[Abc], Flags=None
+Range=(6,14), Tid=Ident, Text=[Abc_093a], Name=[Abc_093a], Flags=None
+Range=(15,25), Tid=CommentLine, Text=[// Quoted.]
+Range=(26,31), Tid=Ident, Text=['123'], Name=[123], Flags=QuotesAll
+Range=(33,37), Tid=Ident, Text=['2x'], Name=[2x], Flags=QuotesAll
+Range=(38,40), Tid=Ident, Text=[''], Name=[_X], Flags=QuotesAll, Modified
+Range=(41,45), Tid=Ident, Text=['  '], Name=[_X  ], Flags=QuotesAll, Modified
+Range=(46,57), Tid=CommentLine, Text=[// Escapes.]
+Range=(58,62), Tid=Ident, Text=[''''], Name=['], Flags=QuotesAll
+Range=(63,73), Tid=Ident, Text=['123''456'], Name=[123'456], Flags=QuotesAll
+Range=(73,73), Tid=Eof, Text=[]
+###
+> // Unterminated.
+> '123
+> '123
+Range=(0,16), Tid=CommentLine, Text=[// Unterminated.]
+Range=(17,21), Tid=Ident, Text=['123], Name=[123], Flags=QuoteOpen, WantsQuotes
+Range=(22,26), Tid=Ident, Text=['123], Name=[123], Flags=QuoteOpen, WantsQuotes
+Range=(26,26), Tid=Eof, Text=[]
+###
+> /* Also unterminated. */'123''
+Range=(0,24), Tid=CommentBlock, Text=[/* Also unterminated. */]
+Range=(24,30), Tid=Ident, Text=['123''], Name=[123'], Flags=QuoteOpen, WantsQuotes
+Range=(30,30), Tid=Eof, Text=[]
+###
+> // Extended characters.
+> Èþ ß Δέήφσ
+Range=(0,23), Tid=CommentLine, Text=[// Extended characters.]
+Range=(24,26), Tid=Ident, Text=[Èþ], Name=[Èþ], Flags=None
+Range=(27,28), Tid=Ident, Text=[ß], Name=[ß], Flags=None
+Range=(29,34), Tid=Ident, Text=[Δέήφσ], Name=[Δέήφσ], Flags=None
+Range=(34,34), Tid=Eof, Text=[]
+###
+> // Reserved Keywords.
+> if then else not bnot true false null this it as import namespace _
+> in has
+> is from to with
+> execute
+> goto
+> while for break continue
+Range=(0,21), Tid=CommentLine, Text=[// Reserved Keywords.]
+Range=(22,24), Tid=KwdIf, Text=[if], Key=[if]
+Range=(25,29), Tid=KwdThen, Text=[then], Key=[then]
+Range=(30,34), Tid=KwdElse, Text=[else], Key=[else]
+Range=(35,38), Tid=KwdNot, Text=[not], Key=[not]
+Range=(39,43), Tid=KwdBnot, Text=[bnot], Key=[bnot]
+Range=(44,48), Tid=KwdTrue, Text=[true], Key=[true]
+Range=(49,54), Tid=KwdFalse, Text=[false], Key=[false]
+Range=(55,59), Tid=KwdNull, Text=[null], Key=[null]
+Range=(60,64), Tid=KwdThis, Text=[this], Key=[this]
+Range=(65,67), Tid=KwdIt, Text=[it], Key=[it]
+Range=(68,70), Tid=KwdAs, Text=[as], Key=[as]
+Range=(71,77), Tid=KwdImport, Text=[import], Key=[import]
+Range=(78,87), Tid=KwdNamespace, Text=[namespace], Key=[namespace]
+Range=(88,89), Tid=Box, Text=[_], Key=[_]
+Range=(90,92), Tid=KwdIn, Text=[in], Key=[in]
+Range=(93,96), Tid=KwdHas, Text=[has], Key=[has]
+Range=(97,99), Tid=KwdIs, Text=[is], Key=[is]
+Range=(100,104), Tid=KwdFrom, Text=[from], Key=[from]
+Range=(105,107), Tid=KwdTo, Text=[to], Key=[to]
+Range=(108,112), Tid=KwdWith, Text=[with], Key=[with]
+Range=(113,120), Tid=KwdExecute, Text=[execute], Key=[execute]
+Range=(121,125), Tid=KwdGoto, Text=[goto], Key=[goto]
+Range=(126,131), Tid=KwdWhile, Text=[while], Key=[while]
+Range=(132,135), Tid=KwdFor, Text=[for], Key=[for]
+Range=(136,141), Tid=KwdBreak, Text=[break], Key=[break]
+Range=(142,150), Tid=KwdContinue, Text=[continue], Key=[continue]
+Range=(150,150), Tid=Eof, Text=[]
+###
+> // Contextual Keywords.
+> or xor and div mod min max bor bxor band shl shr shri shru
+> param parameter const constant var let con constraint msr measure
+> opt optional req required def default
+> module plan
+Range=(0,23), Tid=CommentLine, Text=[// Contextual Keywords.]
+Range=(24,26), Tid=Ident, TidAlt=[KtxOr], AltFuzzy=False, Text=[or], Name=[or], Flags=None
+Range=(27,30), Tid=Ident, TidAlt=[KtxXor], AltFuzzy=False, Text=[xor], Name=[xor], Flags=None
+Range=(31,34), Tid=Ident, TidAlt=[KtxAnd], AltFuzzy=False, Text=[and], Name=[and], Flags=None
+Range=(35,38), Tid=Ident, TidAlt=[KtxDiv], AltFuzzy=False, Text=[div], Name=[div], Flags=None
+Range=(39,42), Tid=Ident, TidAlt=[KtxMod], AltFuzzy=False, Text=[mod], Name=[mod], Flags=None
+Range=(43,46), Tid=Ident, TidAlt=[KtxMin], AltFuzzy=False, Text=[min], Name=[min], Flags=None
+Range=(47,50), Tid=Ident, TidAlt=[KtxMax], AltFuzzy=False, Text=[max], Name=[max], Flags=None
+Range=(51,54), Tid=Ident, TidAlt=[KtxBor], AltFuzzy=False, Text=[bor], Name=[bor], Flags=None
+Range=(55,59), Tid=Ident, TidAlt=[KtxBxor], AltFuzzy=False, Text=[bxor], Name=[bxor], Flags=None
+Range=(60,64), Tid=Ident, TidAlt=[KtxBand], AltFuzzy=False, Text=[band], Name=[band], Flags=None
+Range=(65,68), Tid=Ident, TidAlt=[KtxShl], AltFuzzy=False, Text=[shl], Name=[shl], Flags=None
+Range=(69,72), Tid=Ident, TidAlt=[KtxShr], AltFuzzy=False, Text=[shr], Name=[shr], Flags=None
+Range=(73,77), Tid=Ident, TidAlt=[KtxShri], AltFuzzy=False, Text=[shri], Name=[shri], Flags=None
+Range=(78,82), Tid=Ident, TidAlt=[KtxShru], AltFuzzy=False, Text=[shru], Name=[shru], Flags=None
+Range=(83,88), Tid=Ident, TidAlt=[KtxParam], AltFuzzy=False, Text=[param], Name=[param], Flags=None
+Range=(89,98), Tid=Ident, TidAlt=[KtxParam], AltFuzzy=False, Text=[parameter], Name=[parameter], Flags=None
+Range=(99,104), Tid=Ident, TidAlt=[KtxConst], AltFuzzy=False, Text=[const], Name=[const], Flags=None
+Range=(105,113), Tid=Ident, TidAlt=[KtxConst], AltFuzzy=False, Text=[constant], Name=[constant], Flags=None
+Range=(114,117), Tid=Ident, TidAlt=[KtxVar], AltFuzzy=False, Text=[var], Name=[var], Flags=None
+Range=(118,121), Tid=Ident, TidAlt=[KtxLet], AltFuzzy=False, Text=[let], Name=[let], Flags=None
+Range=(122,125), Tid=Ident, TidAlt=[KtxCon], AltFuzzy=False, Text=[con], Name=[con], Flags=None
+Range=(126,136), Tid=Ident, TidAlt=[KtxCon], AltFuzzy=False, Text=[constraint], Name=[constraint], Flags=None
+Range=(137,140), Tid=Ident, TidAlt=[KtxMsr], AltFuzzy=False, Text=[msr], Name=[msr], Flags=None
+Range=(141,148), Tid=Ident, TidAlt=[KtxMsr], AltFuzzy=False, Text=[measure], Name=[measure], Flags=None
+Range=(149,152), Tid=Ident, TidAlt=[KtxOpt], AltFuzzy=False, Text=[opt], Name=[opt], Flags=None
+Range=(153,161), Tid=Ident, TidAlt=[KtxOpt], AltFuzzy=False, Text=[optional], Name=[optional], Flags=None
+Range=(162,165), Tid=Ident, TidAlt=[KtxReq], AltFuzzy=False, Text=[req], Name=[req], Flags=None
+Range=(166,174), Tid=Ident, TidAlt=[KtxReq], AltFuzzy=False, Text=[required], Name=[required], Flags=None
+Range=(175,178), Tid=Ident, TidAlt=[KtxDef], AltFuzzy=False, Text=[def], Name=[def], Flags=None
+Range=(179,186), Tid=Ident, TidAlt=[KtxDef], AltFuzzy=False, Text=[default], Name=[default], Flags=None
+Range=(187,193), Tid=Ident, TidAlt=[KtxModule], AltFuzzy=False, Text=[module], Name=[module], Flags=None
+Range=(194,198), Tid=Ident, TidAlt=[KtxModule], AltFuzzy=False, Text=[plan], Name=[plan], Flags=None
+Range=(198,198), Tid=Eof, Text=[]
+###
+> // Mis-casing of reserved keywords.
+> IF If Then Else
+> NoT bNOt
+> tRUE TRUE False Null nUll
+> This It aS AS
+> Import iMport NameSpace
+Range=(0,35), Tid=CommentLine, Text=[// Mis-casing of reserved keywords.]
+Range=(36,38), Tid=Ident, TidAlt=[KwdIf], AltFuzzy=True, Text=[IF], Name=[IF], Flags=None
+Range=(39,41), Tid=Ident, TidAlt=[KwdIf], AltFuzzy=True, Text=[If], Name=[If], Flags=None
+Range=(42,46), Tid=Ident, TidAlt=[KwdThen], AltFuzzy=True, Text=[Then], Name=[Then], Flags=None
+Range=(47,51), Tid=Ident, TidAlt=[KwdElse], AltFuzzy=True, Text=[Else], Name=[Else], Flags=None
+Range=(52,55), Tid=Ident, TidAlt=[KwdNot], AltFuzzy=True, Text=[NoT], Name=[NoT], Flags=None
+Range=(56,60), Tid=Ident, TidAlt=[KwdBnot], AltFuzzy=True, Text=[bNOt], Name=[bNOt], Flags=None
+Range=(61,65), Tid=Ident, TidAlt=[KwdTrue], AltFuzzy=True, Text=[tRUE], Name=[tRUE], Flags=None
+Range=(66,70), Tid=Ident, TidAlt=[KwdTrue], AltFuzzy=True, Text=[TRUE], Name=[TRUE], Flags=None
+Range=(71,76), Tid=Ident, TidAlt=[KwdFalse], AltFuzzy=True, Text=[False], Name=[False], Flags=None
+Range=(77,81), Tid=Ident, TidAlt=[KwdNull], AltFuzzy=True, Text=[Null], Name=[Null], Flags=None
+Range=(82,86), Tid=Ident, TidAlt=[KwdNull], AltFuzzy=True, Text=[nUll], Name=[nUll], Flags=None
+Range=(87,91), Tid=Ident, TidAlt=[KwdThis], AltFuzzy=True, Text=[This], Name=[This], Flags=None
+Range=(92,94), Tid=Ident, TidAlt=[KwdIt], AltFuzzy=True, Text=[It], Name=[It], Flags=None
+Range=(95,97), Tid=Ident, TidAlt=[KwdAs], AltFuzzy=True, Text=[aS], Name=[aS], Flags=None
+Range=(98,100), Tid=Ident, TidAlt=[KwdAs], AltFuzzy=True, Text=[AS], Name=[AS], Flags=None
+Range=(101,107), Tid=Ident, TidAlt=[KwdImport], AltFuzzy=True, Text=[Import], Name=[Import], Flags=None
+Range=(108,114), Tid=Ident, TidAlt=[KwdImport], AltFuzzy=True, Text=[iMport], Name=[iMport], Flags=None
+Range=(115,124), Tid=Ident, TidAlt=[KwdNamespace], AltFuzzy=True, Text=[NameSpace], Name=[NameSpace], Flags=None
+Range=(124,124), Tid=Eof, Text=[]
+###
+> // Mis-casing of contextual keywords.
+> OR Xor AnD aNd Mod Min Max bOR bXor bAnd Shl sHr shrI shrU IN haS
+> IS frOM tO WiTH
+> Param coNST VAR LET CON MSR
+> OPT REQ DEF
+> Module plAn
+Range=(0,37), Tid=CommentLine, Text=[// Mis-casing of contextual keywords.]
+Range=(38,40), Tid=Ident, TidAlt=[KtxOr], AltFuzzy=True, Text=[OR], Name=[OR], Flags=None
+Range=(41,44), Tid=Ident, TidAlt=[KtxXor], AltFuzzy=True, Text=[Xor], Name=[Xor], Flags=None
+Range=(45,48), Tid=Ident, TidAlt=[KtxAnd], AltFuzzy=True, Text=[AnD], Name=[AnD], Flags=None
+Range=(49,52), Tid=Ident, TidAlt=[KtxAnd], AltFuzzy=True, Text=[aNd], Name=[aNd], Flags=None
+Range=(53,56), Tid=Ident, TidAlt=[KtxMod], AltFuzzy=True, Text=[Mod], Name=[Mod], Flags=None
+Range=(57,60), Tid=Ident, TidAlt=[KtxMin], AltFuzzy=True, Text=[Min], Name=[Min], Flags=None
+Range=(61,64), Tid=Ident, TidAlt=[KtxMax], AltFuzzy=True, Text=[Max], Name=[Max], Flags=None
+Range=(65,68), Tid=Ident, TidAlt=[KtxBor], AltFuzzy=True, Text=[bOR], Name=[bOR], Flags=None
+Range=(69,73), Tid=Ident, TidAlt=[KtxBxor], AltFuzzy=True, Text=[bXor], Name=[bXor], Flags=None
+Range=(74,78), Tid=Ident, TidAlt=[KtxBand], AltFuzzy=True, Text=[bAnd], Name=[bAnd], Flags=None
+Range=(79,82), Tid=Ident, TidAlt=[KtxShl], AltFuzzy=True, Text=[Shl], Name=[Shl], Flags=None
+Range=(83,86), Tid=Ident, TidAlt=[KtxShr], AltFuzzy=True, Text=[sHr], Name=[sHr], Flags=None
+Range=(87,91), Tid=Ident, TidAlt=[KtxShri], AltFuzzy=True, Text=[shrI], Name=[shrI], Flags=None
+Range=(92,96), Tid=Ident, TidAlt=[KtxShru], AltFuzzy=True, Text=[shrU], Name=[shrU], Flags=None
+Range=(97,99), Tid=Ident, TidAlt=[KwdIn], AltFuzzy=True, Text=[IN], Name=[IN], Flags=None
+Range=(100,103), Tid=Ident, TidAlt=[KwdHas], AltFuzzy=True, Text=[haS], Name=[haS], Flags=None
+Range=(104,106), Tid=Ident, TidAlt=[KwdIs], AltFuzzy=True, Text=[IS], Name=[IS], Flags=None
+Range=(107,111), Tid=Ident, TidAlt=[KwdFrom], AltFuzzy=True, Text=[frOM], Name=[frOM], Flags=None
+Range=(112,114), Tid=Ident, TidAlt=[KwdTo], AltFuzzy=True, Text=[tO], Name=[tO], Flags=None
+Range=(115,119), Tid=Ident, TidAlt=[KwdWith], AltFuzzy=True, Text=[WiTH], Name=[WiTH], Flags=None
+Range=(120,125), Tid=Ident, TidAlt=[KtxParam], AltFuzzy=True, Text=[Param], Name=[Param], Flags=None
+Range=(126,131), Tid=Ident, TidAlt=[KtxConst], AltFuzzy=True, Text=[coNST], Name=[coNST], Flags=None
+Range=(132,135), Tid=Ident, TidAlt=[KtxVar], AltFuzzy=True, Text=[VAR], Name=[VAR], Flags=None
+Range=(136,139), Tid=Ident, TidAlt=[KtxLet], AltFuzzy=True, Text=[LET], Name=[LET], Flags=None
+Range=(140,143), Tid=Ident, TidAlt=[KtxCon], AltFuzzy=True, Text=[CON], Name=[CON], Flags=None
+Range=(144,147), Tid=Ident, TidAlt=[KtxMsr], AltFuzzy=True, Text=[MSR], Name=[MSR], Flags=None
+Range=(148,151), Tid=Ident, TidAlt=[KtxOpt], AltFuzzy=True, Text=[OPT], Name=[OPT], Flags=None
+Range=(152,155), Tid=Ident, TidAlt=[KtxReq], AltFuzzy=True, Text=[REQ], Name=[REQ], Flags=None
+Range=(156,159), Tid=Ident, TidAlt=[KtxDef], AltFuzzy=True, Text=[DEF], Name=[DEF], Flags=None
+Range=(160,166), Tid=Ident, TidAlt=[KtxModule], AltFuzzy=True, Text=[Module], Name=[Module], Flags=None
+Range=(167,171), Tid=Ident, TidAlt=[KtxModule], AltFuzzy=True, Text=[plAn], Name=[plAn], Flags=None
+Range=(171,171), Tid=Eof, Text=[]
+###
+> // These used to be keywords, but were retired. They're now just identifiers.
+> parent ThisItem Parent up Up
+Range=(0,77), Tid=CommentLine, Text=[// These used to be keywords, but were retired. They're now just identifiers.]
+Range=(78,84), Tid=Ident, Text=[parent], Name=[parent], Flags=None
+Range=(85,93), Tid=Ident, Text=[ThisItem], Name=[ThisItem], Flags=None
+Range=(94,100), Tid=Ident, Text=[Parent], Name=[Parent], Flags=None
+Range=(101,103), Tid=Ident, Text=[up], Name=[up], Flags=None
+Range=(104,106), Tid=Ident, Text=[Up], Name=[Up], Flags=None
+Range=(106,106), Tid=Eof, Text=[]
+###
+> // Plain identifiers.
+> exactin ExactIn thisItem paRent
+> 'null' 'true' 'div'
+Range=(0,21), Tid=CommentLine, Text=[// Plain identifiers.]
+Range=(22,29), Tid=Ident, Text=[exactin], Name=[exactin], Flags=None
+Range=(30,37), Tid=Ident, Text=[ExactIn], Name=[ExactIn], Flags=None
+Range=(38,46), Tid=Ident, Text=[thisItem], Name=[thisItem], Flags=None
+Range=(47,53), Tid=Ident, Text=[paRent], Name=[paRent], Flags=None
+Range=(54,60), Tid=Ident, Text=['null'], Name=[null], Flags=QuotesAll
+Range=(61,67), Tid=Ident, Text=['true'], Name=[true], Flags=QuotesAll
+Range=(68,73), Tid=Ident, Text=['div'], Name=[div], Flags=QuotesAll
+Range=(73,73), Tid=Eof, Text=[]
+###
+> // Box.
+> _
+Range=(0,7), Tid=CommentLine, Text=[// Box.]
+Range=(8,9), Tid=Box, Text=[_], Key=[_]
+Range=(9,9), Tid=Eof, Text=[]
+###
+> // Idents.
+> _X _3
+Range=(0,10), Tid=CommentLine, Text=[// Idents.]
+Range=(11,13), Tid=Ident, Text=[_X], Name=[_X], Flags=None
+Range=(14,16), Tid=Ident, Text=[_3], Name=[_3], Flags=None
+Range=(16,16), Tid=Eof, Text=[]
+###
+> it it$ it$0 it$123 it$12345678901234567890
+Range=(0,2), Tid=KwdIt, Text=[it], Key=[it]
+Range=(3,6), Tid=ItSlot, Text=[it$], Slot=[0]
+Range=(7,11), Tid=ItSlot, Text=[it$0], Slot=[0]
+Range=(12,18), Tid=ItSlot, Text=[it$123], Slot=[123]
+Range=(19,42), Tid=ItSlot, Text=[it$12345678901234567890], Slot=[2147483647]
+Range=(42,42), Tid=Eof, Text=[]
+###
+> /* Multi-line comment.
+>  * This isn't an error.
+>  */
+>  /* Unterminated comment is an error...
+Range=(0,50), Tid=CommentBlock, Text=[/* Multi-line comment.
+ * This isn't an error.
+ */]
+Range=(53,91), Tid=Error, Text=[/* Unterminated comment is an error...]
+Range=(91,91), Tid=Eof, Text=[]
+###

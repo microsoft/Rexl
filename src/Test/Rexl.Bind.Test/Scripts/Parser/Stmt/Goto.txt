@@ -1,0 +1,85 @@
+﻿  if (A) goto L0;
+  B := 5;
+  goto L1;
+L0:
+  X;
+L1:
+###
+N := 1;
+S := 0;
+LLoop:
+    S := S + N;
+    N := N + 1;
+if (N < 10) goto LLoop;
+###
+namespace X {
+    A := 3;
+    if (A > 2)
+        goto LDone;
+    A := 17;
+}
+LDone:
+###
+// Label illegal in nested statement scenarios.
+
+if (A) L0: X := 3;
+###
+if (A) L0:
+###
+if (A) L0: L1: X := 3;
+###
+if (A) { } else L0: X := 3;
+###
+if (A) { } else L0:
+###
+if (A) { } else L0: L1: X := 3;
+###
+L0: goto L0; // Reports infinite loop.
+###
+// REVIEW: Ideally, should report infinite loop.
+L0: X;
+goto L0;
+###
+// REVIEW: Should this report infinite loop?
+L0: if (X) goto L0;
+###
+// REVIEW: Should this report infinite loop?
+L0: if (X) Y; else goto L0;
+###
+L0: X;
+L0: Y;
+###
+if (A)
+    goto L0;
+X;
+###
+if (A) goto L0;
+else {
+    X;
+L0:
+    Y;
+}
+###
+if (A) goto L0;
+namespace N {
+    X;
+L0:
+    Y;
+}
+###
+namespace N {
+    if (A) goto L0;
+    X;
+L0:
+}
+###
+if (A) goto L0;
+E1;
+namespace N {
+    if (B) goto L0;
+    E2;
+L0:
+    E3;
+}
+L0:
+E4;

@@ -1,0 +1,127 @@
+﻿:: { si8:i8*, si8_2:i8*, A:i8, B:i8, C:i8, Txt:s, QA:i8?, T:{A:i8}, M:M{P!P:i8, M!S:i8} }
+
+// ForEach.
+ForEach(With (s: Wrap(si8), s ++ s), it^3)
+ForEach(Guard(s: Wrap(si8), s ++ s), it^3)
+ForEach(With (s: si8 ++ Range(2), s ++ s), it^3)
+ForEach(Guard(s: si8 ++ Range(2), s ++ s), it^3)
+
+// Sort.
+Sort(With (s: Wrap(si8), s ++ s), -it)
+Sort(Guard(s: Wrap(si8), s ++ s), -it)
+Sort(With (s: si8 ++ Range(2), s ++ s), -it)
+Sort(Guard(s: si8 ++ Range(2), s ++ s), -it)
+
+// ChainMap.
+ChainMap(With (s: Wrap(si8), s ++ s), Range(it^3))
+ChainMap(Guard(s: Wrap(si8), s ++ s), Range(it^3))
+ChainMap(With (s: si8 ++ Range(2), s ++ s), Range(it^3))
+ChainMap(Guard(s: si8 ++ Range(2), s ++ s), Range(it^3))
+
+// TakeIf.
+TakeIf(With (s: Wrap(si8), s ++ s), it > 3)
+TakeIf(Guard(s: Wrap(si8), s ++ s), it > 3)
+TakeIf(With (s: si8 ++ Range(2), s ++ s), it > 3)
+TakeIf(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+
+// Take.
+Take(With (s: Wrap(si8), s ++ s), 5)
+Take(Guard(s: Wrap(si8), s ++ s), 5)
+Take(With (s: si8 ++ Range(2), s ++ s), 5)
+Take(Guard(s: si8 ++ Range(2), s ++ s), 5)
+Take(si8, With(n: A * 3, n * n))
+Take(si8, With(n: A * 3, n * n))
+Take(With (s: Wrap(si8), s ++ s), With(n: A * 3, n * n))
+Take(Guard(s: Wrap(si8), s ++ s), With(n: A * 3, n * n))
+Take(With (s: si8 ++ Range(2), s ++ s), With(n: A * 3, n * n))
+Take(Guard(s: si8 ++ Range(2), s ++ s), With(n: A * 3, n * n))
+
+// TakeOne.
+TakeOne(With (s: Wrap(si8), s ++ s), it > 3)
+TakeOne(Guard(s: Wrap(si8), s ++ s), it > 3)
+TakeOne(With (s: si8 ++ Range(2), s ++ s), it > 3)
+TakeOne(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+
+// First.
+First(With (s: Wrap(si8), s ++ s), it > 3)
+First(Guard(s: Wrap(si8), s ++ s), it > 3)
+First(With (s: si8 ++ Range(2), s ++ s), it > 3)
+First(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+
+// Distinct.
+Distinct(With (s: Wrap(si8), s ++ s))
+Distinct(Guard(s: Wrap(si8), s ++ s))
+Distinct(With (s: si8 ++ Range(2), s ++ s))
+Distinct(Guard(s: si8 ++ Range(2), s ++ s))
+
+// ScanZ.
+ScanZ(v: With (s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanZ(v: Guard(s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanZ(v: With (s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanZ(v: Guard(s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanZ(v: si8, t: With(a: A * 3, a * a), t + v)
+ScanZ(v: si8, t: Guard(a: QA * 3, a * a), t + v)
+
+// ScanX.
+ScanX(v: With (s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanX(v: Guard(s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanX(v: With (s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanX(v: Guard(s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanX(v: si8, t: With(a: A * 3, a * a), t + v)
+ScanX(v: si8, t: Guard(a: QA * 3, a * a), t + v)
+
+// If.
+If(With(a:A * 3, a * a > 5), B, C)
+If(A > 5, With(b:B * 3, b * b), With(c:C * 3, c + c))
+If(With(a:A * 3, a * a > 5), With(b:B * 3, b * b), With(c:C * 3, c + c))
+
+// ToXX.
+ToI8(With(s: Txt & "000", s & s))
+ToI8(Txt, With(a: A * 3, a * a))
+ToI8(With(s: Txt & "000", s & s), With(a: A * 3, a * a))
+
+// DropOne.
+DropOne(With (s: Wrap(si8), s ++ s))
+DropOne(Guard(s: Wrap(si8), s ++ s))
+DropOne(With (s: si8 ++ Range(2), s ++ s))
+DropOne(Guard(s: si8 ++ Range(2), s ++ s))
+DropOne(With (s: Wrap(si8), s ++ s), it > 3)
+DropOne(Guard(s: Wrap(si8), s ++ s), it > 3)
+DropOne(With (s: si8 ++ Range(2), s ++ s), it > 3)
+DropOne(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+
+// Inhibit pull of with when guard is disallowed.
+TakeOne(With (s: Wrap(si8), t: s ++ s, t ++ t), it > 3)
+TakeOne(Guard(s: Wrap(si8), [with] t: s ++ s, t ++ t), it > 3)
+TakeOne(Guard(s: Wrap(si8), With(t: s ++ s, t ++ t)), it > 3)
+TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), s ++ t ++ s ++ t)), it > 3)
+TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), u: s ++ s, t ++ u ++ t ++ u)), it > 3)
+TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), u: t ++ t, s ++ u ++ s ++ u)), it > 3)
+
+// SetFields.
+T+>{ B: With(s: Range(A * 3), s ++ s) }
+T+>{ B: With(s: Range(@A * 3), s ++ s) }
+T+>{ B: With(a: @A * 3, s: Range(a + A + a + A), s ++ s) }
+T+>{ B: With(a: @A * 3, b: A * 3, s: Range(a + b + a + b), s ++ s) }
+
+// Module.Optimize.
+Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
+M->Maximize(With(x:Wrap(A), x * x * S))
+M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
+M->Maximize(S, With(x:ToText(A), x & x & x))
+
+// Multiple pulls.
+{ A: Guard([with]  s: si8 ++ si8, [with]  t: s ++ s, [with]  u: [t, t, s], u ++ u) }
+{ A: Guard([with]  s: si8 ++ si8, [guard] t: s ++ s, [with]  u: [t, t, s], u ++ u) }
+
+Test.With(a: Wrap(A), b: With(x: Wrap(B), x * x), a * b)
+
+Test.With(a: Wrap(A), b: With(x: Wrap(B), y: Wrap(C), x * x * y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: Wrap(C), x * x * y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B), y: Wrap(C) + a, x * x * y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: Wrap(C) + a, x * x * y * y), a * b)
+
+Test.With(a: Wrap(A), b: With(x: Wrap(B), y: x * x, y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B), y: x * x + a, y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: x * x, y * y), a * b)
+Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: x * x + a, y * y), a * b)

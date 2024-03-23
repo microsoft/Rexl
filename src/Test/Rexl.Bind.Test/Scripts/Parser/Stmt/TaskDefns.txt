@@ -1,0 +1,81 @@
+﻿task T
+###
+task T as
+###
+task T play
+###
+task T as {
+###
+task T play {
+###
+task T as { publish X := 3; }
+###
+task T play { publish X := 3; }
+###
+task T with
+###
+task T with {
+###
+task T with { A: 3 }
+###
+task T with { A: 3 } as
+###
+task T with { A: 3 } play
+###
+task T with { A: 3 } as {
+###
+task T with { A: 3 } play {
+###
+task T with { A: 3 } prime {
+###
+task T with { A: 3 } as { publish X := A; }
+###
+task T with { A: 3 } play { publish X := A; }
+###
+task T with { A: 3 } prime { publish X := A; }
+###
+task T with { A: 3 } prime { publish X := A; } as
+###
+task T with { A: 3 } prime { publish X := A; } play
+###
+task T with { A: 3 } prime { publish X := A; } as {
+###
+task T with { A: 3 } prime { publish X := A; } play {
+###
+task T with { A: 3 } prime { publish X := A; } as { publish Y := X * A; }
+###
+task T with { A: 3 } prime { publish X := A; } play { publish Y := X * A; }
+###
+R := { A : 3 };
+task T with (R+>{ B: 7 }) play { publish X := A * B; }
+###
+prime T play { publish X := 3; }
+###
+play T play { publish X := 3; }
+###
+pause T play { publish X := 3; }
+###
+finish T play { publish X := 3; }
+###
+abort T play { publish X := 3; }
+###
+finish T play {
+    publish X := 3;
+    publish Y := "hi";
+}
+{ T.X, T.Y };
+###
+X := 3;
+task T play {
+    play R1 as ReadRbin("blah.rbin");
+    play R2 as ReadRbin("blop.rbin");
+    prime R1;
+    prime R2;
+    stream S1 := R1.SData;
+    stream S2 := R2.SData;
+    finish R1;
+    finish R2;
+    publish D1 := R1.Data;
+    publish D2 := R2.Data;
+}
+prime T;

@@ -1,0 +1,254 @@
+**** New globals: {R1:{A:i8, B:s}, R2:{A:i8?, B:s}, R3:{A:i4, B:s}, g:g}
+
+> Like(g, 3)
+Like(g, 3) : i8?
+Binder : LikeOrNull*(g, 3)
+Reducer: LikeOrVal(g, null)
+###
+> Like(g, "hi")
+Like(g, "hi") : s
+Binder : LikeOrNull*(g, "hi")
+Reducer: LikeOrVal(g, str(<null>))
+###
+> Like(g, R1)
+Like(g, R1) : {A:i8, B:s}?
+Binder : LikeOrNull*(g, R1)
+Reducer: LikeOrVal(g, null)
+###
+> Like(g, R2)
+Like(g, R2) : {A:i8?, B:s}?
+Binder : LikeOrNull*(g, R2)
+Reducer: LikeOrVal(g, null)
+###
+> Like(R2, R1)
+Like(R2, R1) : {A:i8, B:s}?
+Binder : LikeOrNull*(R2, R1)
+Reducer: LikeOrVal(R2, null)
+###
+> Like(R1, R2)
+Like(R1, R2) : {A:i8?, B:s}?
+*** Warning: (5,7) Node: R1, Message: The 'LikeOrNull' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrNull*(R1, R2)
+Reducer: Ref<{A:i8?, B:s}?>(R1)
+###
+> LikeOr(g, 3)
+LikeOr(g, 3) : i8
+Binder : LikeOrVal(g, 3)
+###
+> LikeOr(g, "hi")
+LikeOr(g, "hi") : s
+Binder : LikeOrVal(g, "hi")
+###
+> LikeOr(g, R1)
+LikeOr(g, R1) : {A:i8, B:s}
+Binder : LikeOrVal(g, R1)
+###
+> LikeOr(g, R2)
+LikeOr(g, R2) : {A:i8?, B:s}
+Binder : LikeOrVal(g, R2)
+###
+> LikeOr(R2, R1)
+LikeOr(R2, R1) : {A:i8, B:s}
+Binder : LikeOrVal(R2, R1)
+###
+> LikeOr(R1, R2)
+LikeOr(R1, R2) : {A:i8?, B:s}
+*** Warning: (7,9) Node: R1, Message: The 'LikeOrVal' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrVal*(R1, R2)
+Reducer: Ref<{A:i8?, B:s}>(R1)
+###
+> LikeOrDef(g, 3)
+LikeOrDef(g, 3) : i8
+Binder : LikeOrDef*(g, 3)
+Reducer: LikeOrVal(g, 0)
+###
+> LikeOrDef(g, "hi")
+LikeOrDef(g, "hi") : s
+Binder : LikeOrDef*(g, "hi")
+Reducer: LikeOrVal(g, str(<null>))
+###
+> LikeOrDef(g, R1)
+LikeOrDef(g, R1) : {A:i8, B:s}
+Binder : LikeOrDef*(g, R1)
+Reducer: LikeOrVal(g, dflt<{A:i8, B:s}>)
+###
+> LikeOrDef(g, R2)
+LikeOrDef(g, R2) : {A:i8?, B:s}
+Binder : LikeOrDef*(g, R2)
+Reducer: LikeOrVal(g, dflt<{A:i8?, B:s}>)
+###
+> LikeOrDef(R2, R1)
+LikeOrDef(R2, R1) : {A:i8, B:s}
+Binder : LikeOrDef*(R2, R1)
+Reducer: LikeOrVal(R2, dflt<{A:i8, B:s}>)
+###
+> LikeOrDef(R1, R2)
+LikeOrDef(R1, R2) : {A:i8?, B:s}
+*** Warning: (10,12) Node: R1, Message: The 'LikeOrDef' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrDef*(R1, R2)
+Reducer: Ref<{A:i8?, B:s}>(R1)
+###
+> Like(7 if true else "txt", 3)
+Like(7 if true else "txt", 3) : i8?
+Binder : LikeOrNull*(If(true, Box<g>(7), Ref<g>("txt")), 3)
+Reducer: Opt<i8?>(7)
+###
+> Like(7 if true else "txt", "hi")
+Like(7 if true else "txt", "hi") : s
+Binder : LikeOrNull*(If(true, Box<g>(7), Ref<g>("txt")), "hi")
+Reducer: str(<null>)
+###
+> Like(7 if false else "txt", 3)
+Like(7 if false else "txt", 3) : i8?
+Binder : LikeOrNull*(If(false, Box<g>(7), Ref<g>("txt")), 3)
+Reducer: null
+###
+> Like(7 if false else "txt", "hi")
+Like(7 if false else "txt", "hi") : s
+Binder : LikeOrNull*(If(false, Box<g>(7), Ref<g>("txt")), "hi")
+Reducer: "txt"
+###
+> Like(3, g)
+Like(3, g) : g
+*** Error: (8,9) Node: g, Message: Illegal type for the value argument of 'LikeOrNull' function: 'g'
+Binder : LikeOrNull*(3, g)
+Reducer: LikeOrVal*(3, null)
+###
+> Like(g, Range(3))
+Like(g, Range(3)) : i8*
+*** Error: (13,14) Node: Range(3), Message: Illegal type for the value argument of 'LikeOrNull' function: 'i8*'
+Binder : LikeOrNull*(g, Range(3))
+Reducer: LikeOrVal*(g, null)
+###
+> Like(g, []->TakeOne())
+Like(g, []->TakeOne()) : o
+*** Error: (10,12) Node: []->TakeOne(), Message: Illegal type for the value argument of 'LikeOrNull' function: 'v'
+Binder : LikeOrNull*(g, TakeOne(null))
+Reducer: LikeOrVal*(g, null)
+###
+> Like(g, (3, "hi"))
+Like(g, (3, "hi")) : (i8, s)?
+*** Error: (8,9) Node: (3, "hi"), Message: Illegal type for the value argument of 'LikeOrNull' function: '(i8, s)'
+Binder : LikeOrNull*(g, (3, "hi"))
+Reducer: LikeOrVal*(g, null)
+###
+> Like(g, module {param A := 3;})
+Like(g, module { param A := 3 }) : M{param A:i8}?
+*** Error: (8,14) Node: module { param A := 3 }, Message: Illegal type for the value argument of 'LikeOrNull' function: 'M{param A:i8}'
+Binder : LikeOrNull*(g, module[items!1]{ param A := 3 })
+Reducer: LikeOrVal*(g, null)
+###
+> Like(g, Tensor.Fill(3, 17))
+Like(g, Tensor.Fill(3, 17)) : i8[*]?
+Binder : LikeOrNull*(g, Tensor.Fill(3, 17))
+Reducer: LikeOrVal(g, null)
+###
+> Like(g, Tensor.Fill({A:3}, 17))
+Like(g, Tensor.Fill({ A : 3 }, 17)) : {A:i8}[*]?
+*** Error: (19,20) Node: Tensor.Fill({ A : 3 }, 17), Message: Illegal type for the value argument of 'LikeOrNull' function: '{A:i8}[*]'
+Binder : LikeOrNull*(g, Tensor.Fill({A:3}, 17))
+Reducer: LikeOrVal*(g, null)
+###
+> Like(3, 17)
+Like(3, 17) : i8?
+*** Warning: (5,6) Node: 3, Message: The 'LikeOrNull' function isn't needed since the source argument type is not the general type: 'i8'
+Binder : LikeOrNull*(3, 17)
+Reducer: Opt<i8?>(3)
+###
+> Like(Opt(3), 17)
+Like(Opt(3), 17) : i8?
+*** Warning: (8,9) Node: Opt(3), Message: The 'LikeOrNull' function isn't needed since the source argument type is not the general type: 'i8?'
+Binder : LikeOrNull*(Opt*(3), 17)
+Reducer: Opt<i8?>(3)
+###
+> Like(R1, 17)
+Like(R1, 17) : i8?
+*** Warning: (5,7) Node: R1, Message: The 'LikeOrNull' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrNull*(R1, 17)
+Reducer: null
+###
+> Like(R1, R3)
+Like(R1, R3) : {A:i4, B:s}?
+*** Warning: (5,7) Node: R1, Message: The 'LikeOrNull' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrNull*(R1, R3)
+Reducer: null
+###
+> Like(3 if true else g, 17)
+Like(3 if true else g, 17) : i8?
+Binder : LikeOrNull*(If(true, Box<g>(3), g), 17)
+Reducer: Opt<i8?>(3)
+###
+> Like("hi" if true else g, 17)
+Like("hi" if true else g, 17) : i8?
+Binder : LikeOrNull*(If(true, Ref<g>("hi"), g), 17)
+Reducer: null
+###
+> LikeOr(3, g)
+LikeOr(3, g) : g
+*** Error: (10,11) Node: g, Message: Illegal type for the value argument of 'LikeOrVal' function: 'g'
+Binder : LikeOrVal*(3, g)
+###
+> LikeOr(g, Range(3))
+LikeOr(g, Range(3)) : i8*
+*** Error: (15,16) Node: Range(3), Message: Illegal type for the value argument of 'LikeOrVal' function: 'i8*'
+Binder : LikeOrVal*(g, Range(3))
+###
+> LikeOr(g, []->TakeOne())
+LikeOr(g, []->TakeOne()) : v
+*** Error: (12,14) Node: []->TakeOne(), Message: Illegal type for the value argument of 'LikeOrVal' function: 'v'
+Binder : LikeOrVal*(g, TakeOne(null))
+Reducer: LikeOrVal*(g, dflt<v>)
+###
+> LikeOr(g, (3, "hi"))
+LikeOr(g, (3, "hi")) : (i8, s)
+*** Error: (10,11) Node: (3, "hi"), Message: Illegal type for the value argument of 'LikeOrVal' function: '(i8, s)'
+Binder : LikeOrVal*(g, (3, "hi"))
+###
+> LikeOr(g, module {param A := 3;})
+LikeOr(g, module { param A := 3 }) : M{param A:i8}
+*** Error: (10,16) Node: module { param A := 3 }, Message: Illegal type for the value argument of 'LikeOrVal' function: 'M{param A:i8}'
+Binder : LikeOrVal*(g, module[items!1]{ param A := 3 })
+###
+> LikeOr(g, Tensor.Fill(3, 17))
+LikeOr(g, Tensor.Fill(3, 17)) : i8[*]
+Binder : LikeOrVal(g, Tensor.Fill(3, 17))
+###
+> LikeOr(g, Tensor.Fill({A:3}, 17))
+LikeOr(g, Tensor.Fill({ A : 3 }, 17)) : {A:i8}[*]
+*** Error: (21,22) Node: Tensor.Fill({ A : 3 }, 17), Message: Illegal type for the value argument of 'LikeOrVal' function: '{A:i8}[*]'
+Binder : LikeOrVal*(g, Tensor.Fill({A:3}, 17))
+###
+> LikeOr(3, 17)
+LikeOr(3, 17) : i8
+*** Warning: (7,8) Node: 3, Message: The 'LikeOrVal' function isn't needed since the source argument type is not the general type: 'i8'
+Binder : LikeOrVal*(3, 17)
+Reducer: 3
+###
+> LikeOr(Opt(3), 17)
+LikeOr(Opt(3), 17) : i8
+*** Warning: (10,11) Node: Opt(3), Message: The 'LikeOrVal' function isn't needed since the source argument type is not the general type: 'i8?'
+Binder : LikeOrVal*(Opt*(3), 17)
+Reducer: 3
+###
+> LikeOr(R1, 17)
+LikeOr(R1, 17) : i8
+*** Warning: (7,9) Node: R1, Message: The 'LikeOrVal' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrVal*(R1, 17)
+Reducer: 17
+###
+> LikeOr(R1, R3)
+LikeOr(R1, R3) : {A:i4, B:s}
+*** Warning: (7,9) Node: R1, Message: The 'LikeOrVal' function isn't needed since the source argument type is not the general type: '{A:i8, B:s}'
+Binder : LikeOrVal*(R1, R3)
+Reducer: R3
+###
+> LikeOr(3 if true else g, 17)
+LikeOr(3 if true else g, 17) : i8
+Binder : LikeOrVal(If(true, Box<g>(3), g), 17)
+Reducer: 3
+###
+> LikeOr("hi" if true else g, 17)
+LikeOr("hi" if true else g, 17) : i8
+Binder : LikeOrVal(If(true, Ref<g>("hi"), g), 17)
+Reducer: 17
+###

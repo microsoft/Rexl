@@ -1,0 +1,34 @@
+A := Range(5);
+func F(x) := x + 1;
+finish T as Pipe(Range(5, 10));
+###
+// Evaluate
+T.Data
+###
+// Evaluate
+Sum(F(A ++ T.Data))
+###
+// Evaluate
+// Parsing error
+A +
+###
+// Evaluate
+// Binding error
+A->Filter(it = "hello")
+###
+// Evaluate
+// Procs not allowed
+Pipe(Range(2))
+###
+// Evaluate
+// Parse and Bind errors
+B + 2 ** 3
+###
+// Evaluate
+// Exception thrown while generating code for the bound node
+WrapNYI(1)
+###
+// Evaluate
+// Exception thrown while executing
+Throw()
+

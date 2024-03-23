@@ -1,0 +1,30 @@
+> [Tensor.From(Range(12)), null]
+[Tensor.From(Range(12)), null] : i8[*]?*
+BndKind:Sequence, Type:i8[*]?*, Bnd:([Ref<i8[*]?>(Call(∂.Tensor.From(Call(∂.Range(12:i8):i8*)):i8[*])), null:i8[*]?]:i8[*]?*)
+Func sig: (<ctx>:x) to i8[*]?*
+Sequence: Seq<Ten<i8>>
+ 0) Ten<i8>(12)<1> [0, 1, ...]
+ 1) <null>
+*** Ctx ping count: 0
+Total blob size: 43 bytes
+###
+> Tensor.Fill(1, 2, 2, 2, 2, 2, 2, 2, 2, 2)
+Tensor.Fill(1, 2, 2, 2, 2, 2, 2, 2, 2, 2) : i8[*,*,*,*,*,*,*,*,*]
+BndKind:Call, Type:i8[*,*,*,*,*,*,*,*,*], Bnd:(Call(∂.Tensor.Fill(1:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8):i8[*,*,*,*,*,*,*,*,*]))
+Func sig: (<ctx>:x) to i8[*,*,*,*,*,*,*,*,*]
+Ten<i8>(2,2,2,2,2,2,2,2,2)<0,0,0,0,0,0,0,0,0>
+  [[[[[[[[[1, 1]
+          [...]]]]]]]]]
+*** Ctx ping count: 0
+Total blob size: 31 bytes
+###
+> Tensor.Dot(Tensor.Fill(3,2,2,2,2,2,2), Tensor.From(Range(2*2*2*2*2),2,2,2,2,2))
+Tensor.Dot(Tensor.Fill(3, 2, 2, 2, 2, 2, 2), Tensor.From(Range(2 * 2 * 2 * 2 * 2), 2, 2, 2, 2, 2)) : i8[*,*,*,*,*,*,*,*,*]
+BndKind:Call, Type:i8[*,*,*,*,*,*,*,*,*], Bnd:(Call(∂.Tensor.Dot(Call(∂.Tensor.Fill(3:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8, 2:i8):i8[*,*,*,*,*,*]), Call(∂.Tensor.From(Call(∂.Range(32:i8):i8*), 2:i8, 2:i8, 2:i8, 2:i8, 2:i8):i8[*,*,*,*,*])):i8[*,*,*,*,*,*,*,*,*]))
+Func sig: (<ctx>:x) to i8[*,*,*,*,*,*,*,*,*]
+Ten<i8>(2,2,2,2,2,2,2,2,2)<0,0,0,0,0,8,4,2,1>
+  [[[[[[[[[6, 12]
+          [...]]]]]]]]]
+*** Ctx ping count: 0
+Total blob size: 56 bytes
+###

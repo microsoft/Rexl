@@ -1,0 +1,200 @@
+**** New globals: {D:i8, S:i8*, T:{A:i8, B:i8}*}
+
+> Tensor.Build(Range(5), 10, 2 * it, 17)
+Tensor.Build(Range(5), 10, 2 * it, 17) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 10, Mul(2, *1), 17)
+Reducer: Tensor.Build(*1: Range(5), 10, Mul(*1, 2), 17)
+###
+> Tensor.Build(Range(5), 10, 2 * #0, 17)
+Tensor.Build(Range(5), 10, 2 * #, 17) : i8[*]
+Binder : Tensor.Build(*2: Range(5), 10, Mul(2, #1), 17)
+Reducer: Tensor.Build(*2: Range(5), 10, Mul(#1, 2), 17)
+###
+> Tensor.Build(Range(5), 10, 2 * it, 17, -1)
+Tensor.Build(Range(5), 10, 2 * it, 17, -1) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 10, Mul(2, *1), 17, -1)
+Reducer: Tensor.Build(*1: Range(5), 10, Mul(*1, 2), 17, -1)
+###
+> Tensor.Build(Range(5), 10, 2 * #0, 17, -1)
+Tensor.Build(Range(5), 10, 2 * #, 17, -1) : i8[*]
+Binder : Tensor.Build(*2: Range(5), 10, Mul(2, #1), 17, -1)
+Reducer: Tensor.Build(*2: Range(5), 10, Mul(#1, 2), 17, -1)
+###
+> Tensor.Build(Range(5), 10, 2 * it + 1, 17)
+Tensor.Build(Range(5), 10, 2 * it + 1, 17) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 10, Add(Mul(2, *1), 1), 17)
+Reducer: Tensor.Build(*1: Range(5), 10, Add(Mul(*1, 2), 1), 17)
+###
+> Tensor.Build(Range(5), 10, 2 * it + 2, 17)
+Tensor.Build(Range(5), 10, 2 * it + 2, 17) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 10, Add(Mul(2, *1), 2), 17)
+Reducer: Tensor.Build(*1: Range(5), 10, Add(Mul(*1, 2), 2), 17)
+###
+> Tensor.Build(S, D, 2 * it, 17)
+Tensor.Build(S, D, 2 * it, 17) : i8[*]
+Binder : Tensor.Build(*1: S, D, Mul(2, *1), 17)
+Reducer: Tensor.Build(*1: S, D, Mul(*1, 2), 17)
+###
+> Tensor.Build(S, D, 2 * #0, 17)
+Tensor.Build(S, D, 2 * #, 17) : i8[*]
+Binder : Tensor.Build(*2: S, D, Mul(2, #1), 17)
+Reducer: Tensor.Build(*2: S, D, Mul(#1, 2), 17)
+###
+> Tensor.Build(S, D, 2 * it, 17, -1)
+Tensor.Build(S, D, 2 * it, 17, -1) : i8[*]
+Binder : Tensor.Build(*1: S, D, Mul(2, *1), 17, -1)
+Reducer: Tensor.Build(*1: S, D, Mul(*1, 2), 17, -1)
+###
+> Tensor.Build(S, D, 2 * #0, 17, -1)
+Tensor.Build(S, D, 2 * #, 17, -1) : i8[*]
+Binder : Tensor.Build(*2: S, D, Mul(2, #1), 17, -1)
+Reducer: Tensor.Build(*2: S, D, Mul(#1, 2), 17, -1)
+###
+> Tensor.Build(S, D, 2 * it + 1, 17)
+Tensor.Build(S, D, 2 * it + 1, 17) : i8[*]
+Binder : Tensor.Build(*1: S, D, Add(Mul(2, *1), 1), 17)
+Reducer: Tensor.Build(*1: S, D, Add(Mul(*1, 2), 1), 17)
+###
+> Tensor.Build(S, D, 2 * it + 2, 17)
+Tensor.Build(S, D, 2 * it + 2, 17) : i8[*]
+Binder : Tensor.Build(*1: S, D, Add(Mul(2, *1), 2), 17)
+Reducer: Tensor.Build(*1: S, D, Add(Mul(*1, 2), 2), 17)
+###
+> Tensor.Build(Range(0), D, 2 * it, 17) // Could reduce to Tensor.Fill.
+Tensor.Build(Range(0), D, 2 * it, 17) : i8[*]
+Binder : Tensor.Build(*1: Range(0), D, Mul(2, *1), 17)
+Reducer: Tensor.Build(*1: Range(0), D, Mul(*1, 2), 17)
+###
+> Tensor.Build(Range(0), D, 2 * #0, 17)
+Tensor.Build(Range(0), D, 2 * #, 17) : i8[*]
+Binder : Tensor.Build(*2: Range(0), D, Mul(2, #1), 17)
+Reducer: Tensor.Build(*2: Range(0), D, Mul(#1, 2), 17)
+###
+> Tensor.Build(Range(0), D, 2 * it, 17, -1)
+Tensor.Build(Range(0), D, 2 * it, 17, -1) : i8[*]
+Binder : Tensor.Build(*1: Range(0), D, Mul(2, *1), 17, -1)
+Reducer: Tensor.Build(*1: Range(0), D, Mul(*1, 2), 17, -1)
+###
+> Tensor.Build(Range(0), D, 2 * #0, 17, -1)
+Tensor.Build(Range(0), D, 2 * #, 17, -1) : i8[*]
+Binder : Tensor.Build(*2: Range(0), D, Mul(2, #1), 17, -1)
+Reducer: Tensor.Build(*2: Range(0), D, Mul(#1, 2), 17, -1)
+###
+> Tensor.Build(Range(5), 0, 2 * it, 17) // Could reduce to Tensor.Fill.
+Tensor.Build(Range(5), 0, 2 * it, 17) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 0, Mul(2, *1), 17)
+Reducer: Tensor.Build(*1: Range(5), 0, Mul(*1, 2), 17)
+###
+> Tensor.Build(Range(5), 0, 2 * #0, 17)
+Tensor.Build(Range(5), 0, 2 * #, 17) : i8[*]
+Binder : Tensor.Build(*2: Range(5), 0, Mul(2, #1), 17)
+Reducer: Tensor.Build(*2: Range(5), 0, Mul(#1, 2), 17)
+###
+> Tensor.Build(Range(5), 0, 2 * it, 17, -1)
+Tensor.Build(Range(5), 0, 2 * it, 17, -1) : i8[*]
+Binder : Tensor.Build(*1: Range(5), 0, Mul(2, *1), 17, -1)
+Reducer: Tensor.Build(*1: Range(5), 0, Mul(*1, 2), 17, -1)
+###
+> Tensor.Build(Range(5), 0, 2 * #0, 17, -1)
+Tensor.Build(Range(5), 0, 2 * #, 17, -1) : i8[*]
+Binder : Tensor.Build(*2: Range(5), 0, Mul(2, #1), 17, -1)
+Reducer: Tensor.Build(*2: Range(5), 0, Mul(#1, 2), 17, -1)
+###
+> Tensor.Build(S, 0, 2 * it, 17)
+Tensor.Build(S, 0, 2 * it, 17) : i8[*]
+Binder : Tensor.Build(*1: S, 0, Mul(2, *1), 17)
+Reducer: Tensor.Build(*1: S, 0, Mul(*1, 2), 17)
+###
+> Tensor.Build(S, 0, 2 * #0, 17)
+Tensor.Build(S, 0, 2 * #, 17) : i8[*]
+Binder : Tensor.Build(*2: S, 0, Mul(2, #1), 17)
+Reducer: Tensor.Build(*2: S, 0, Mul(#1, 2), 17)
+###
+> Tensor.Build(S, 0, 2 * it, 17, -1)
+Tensor.Build(S, 0, 2 * it, 17, -1) : i8[*]
+Binder : Tensor.Build(*1: S, 0, Mul(2, *1), 17, -1)
+Reducer: Tensor.Build(*1: S, 0, Mul(*1, 2), 17, -1)
+###
+> Tensor.Build(S, 0, 2 * #0, 17, -1)
+Tensor.Build(S, 0, 2 * #, 17, -1) : i8[*]
+Binder : Tensor.Build(*2: S, 0, Mul(2, #1), 17, -1)
+Reducer: Tensor.Build(*2: S, 0, Mul(#1, 2), 17, -1)
+###
+> Tensor.Build(Range(D), D, D, it, it, 1)
+Tensor.Build(Range(D), D, D, it, it, 1) : i8[*,*]
+Binder : Tensor.Build(*1: Range(D), D, D, *1, *1, 1)
+###
+> Tensor.Build(Range(D), D, D, #0, it, 1)
+Tensor.Build(Range(D), D, D, #, it, 1) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, #1, *2, 1)
+###
+> Tensor.Build(Range(D), D, D, it, #0, 1)
+Tensor.Build(Range(D), D, D, it, #, 1) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, *2, #1, 1)
+###
+> Tensor.Build(Range(D), D, D, #0, #0, 1)
+Tensor.Build(Range(D), D, D, #, #, 1) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, #1, #1, 1)
+###
+> Tensor.Build(Range(D), D, D, it, it, 1, 8)
+Tensor.Build(Range(D), D, D, it, it, 1, 8) : i8[*,*]
+Binder : Tensor.Build(*1: Range(D), D, D, *1, *1, 1, 8)
+###
+> Tensor.Build(Range(D), D, D, it, #0, 1, 8)
+Tensor.Build(Range(D), D, D, it, #, 1, 8) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, *2, #1, 1, 8)
+###
+> Tensor.Build(Range(D), D, D, it, it, 1, null)
+Tensor.Build(Range(D), D, D, it, it, 1, null) : i8?[*,*]
+Binder : Tensor.Build(*1: Range(D), D, D, *1, *1, Opt<i8?>(1), null)
+###
+> Tensor.Build(Range(D), D, D, it, it + 1, 1)
+Tensor.Build(Range(D), D, D, it, it + 1, 1) : i8[*,*]
+Binder : Tensor.Build(*1: Range(D), D, D, *1, Add(*1, 1), 1)
+###
+> Tensor.Build(Range(D), D, D, it, #0 + 1, 1)
+Tensor.Build(Range(D), D, D, it, # + 1, 1) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, *2, Add(#1, 1), 1)
+###
+> Tensor.Build(Range(D), D, D, it, it + 1, 1, 8)
+Tensor.Build(Range(D), D, D, it, it + 1, 1, 8) : i8[*,*]
+Binder : Tensor.Build(*1: Range(D), D, D, *1, Add(*1, 1), 1, 8)
+###
+> Tensor.Build(Range(D), D, D, it, #0 + 1, 1, 8)
+Tensor.Build(Range(D), D, D, it, # + 1, 1, 8) : i8[*,*]
+Binder : Tensor.Build(*2: Range(D), D, D, *2, Add(#1, 1), 1, 8)
+###
+> Tensor.Build(T, D, D, A, B, it)
+Tensor.Build(T, D, D, A, B, it) : {A:i8, B:i8}[*,*]
+Binder : Tensor.Build(*1: T, D, D, *1.A, *1.B, *1)
+###
+> Tensor.Build(T, D, D, A, B, it->Opt())
+Tensor.Build(T, D, D, A, B, it->Opt()) : {A:i8, B:i8}?[*,*]
+Binder : Tensor.Build(*1: T, D, D, *1.A, *1.B, Opt*(*1))
+Reducer: Tensor.Build(*1: T, D, D, *1.A, *1.B, Ref<{A:i8, B:i8}?>(*1))
+###
+> Tensor.Build(T, D, D, A, B, it, null)
+Tensor.Build(T, D, D, A, B, it, null) : {A:i8, B:i8}?[*,*]
+Binder : Tensor.Build(*1: T, D, D, *1.A, *1.B, Ref<{A:i8, B:i8}?>(*1), null)
+###
+> Tensor.Build(Range(10), 3 - 7, it, it)
+Tensor.Build(Range(10), 3 - 7, it, it) : i8[*]
+Binder : Tensor.Build(*1: Range(10), Add(3, [-] 7), *1, *1)
+*** Warning: Node: -4, Message: Tensor dimension should be non-negative
+Reducer: Tensor.Build(*1: Range(10), 0, *1, *1)
+###
+> Tensor.Build(10, 10, it, it)
+Tensor.Build(10, 10, it, it) : i8[*]
+*** Error: (13,15) Node: 10, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Tensor.Build(*1: Error(ErrBadType_Src_Dst), 10, *1, *1)
+###
+> Tensor.Build(Range(10), "Hi", it, it)
+Tensor.Build(Range(10), "Hi", it, it) : i8[*]
+*** Error: (24,28) Node: "Hi", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.Build(*1: Range(10), Error(ErrBadType_Src_Dst), *1, *1)
+###
+> Tensor.Build(Range(10), 10, "Hi", it)
+Tensor.Build(Range(10), 10, "Hi", it) : i8[*]
+*** Error: (28,32) Node: "Hi", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Tensor.Build(*1: Range(10), 10, Error(ErrBadType_Src_Dst), *1)
+###

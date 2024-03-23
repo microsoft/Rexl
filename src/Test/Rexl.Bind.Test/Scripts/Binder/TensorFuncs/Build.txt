@@ -1,0 +1,57 @@
+﻿:: { D:i8, S:i8*, T:{A:i8, B:i8}* }
+
+Tensor.Build(Range(5), 10, 2 * it, 17)
+Tensor.Build(Range(5), 10, 2 * #0, 17)
+Tensor.Build(Range(5), 10, 2 * it, 17, -1)
+Tensor.Build(Range(5), 10, 2 * #0, 17, -1)
+Tensor.Build(Range(5), 10, 2 * it + 1, 17)
+Tensor.Build(Range(5), 10, 2 * it + 2, 17)
+Tensor.Build(S, D, 2 * it, 17)
+Tensor.Build(S, D, 2 * #0, 17)
+Tensor.Build(S, D, 2 * it, 17, -1)
+Tensor.Build(S, D, 2 * #0, 17, -1)
+Tensor.Build(S, D, 2 * it + 1, 17)
+Tensor.Build(S, D, 2 * it + 2, 17)
+
+Tensor.Build(Range(0), D, 2 * it, 17) // Could reduce to Tensor.Fill.
+Tensor.Build(Range(0), D, 2 * #0, 17)
+Tensor.Build(Range(0), D, 2 * it, 17, -1)
+Tensor.Build(Range(0), D, 2 * #0, 17, -1)
+
+Tensor.Build(Range(5), 0, 2 * it, 17) // Could reduce to Tensor.Fill.
+Tensor.Build(Range(5), 0, 2 * #0, 17)
+Tensor.Build(Range(5), 0, 2 * it, 17, -1)
+Tensor.Build(Range(5), 0, 2 * #0, 17, -1)
+Tensor.Build(S, 0, 2 * it, 17)
+Tensor.Build(S, 0, 2 * #0, 17)
+Tensor.Build(S, 0, 2 * it, 17, -1)
+Tensor.Build(S, 0, 2 * #0, 17, -1)
+
+// Identity matrix.
+Tensor.Build(Range(D), D, D, it, it, 1)
+Tensor.Build(Range(D), D, D, #0, it, 1)
+Tensor.Build(Range(D), D, D, it, #0, 1)
+Tensor.Build(Range(D), D, D, #0, #0, 1)
+
+Tensor.Build(Range(D), D, D, it, it, 1, 8)
+Tensor.Build(Range(D), D, D, it, #0, 1, 8)
+Tensor.Build(Range(D), D, D, it, it, 1, null)
+
+// Ones on super diagonal.
+Tensor.Build(Range(D), D, D, it, it + 1, 1)
+Tensor.Build(Range(D), D, D, it, #0 + 1, 1)
+Tensor.Build(Range(D), D, D, it, it + 1, 1, 8)
+Tensor.Build(Range(D), D, D, it, #0 + 1, 1, 8)
+
+// Non-trivial default.
+Tensor.Build(T, D, D, A, B, it)
+Tensor.Build(T, D, D, A, B, it->Opt())
+Tensor.Build(T, D, D, A, B, it, null)
+
+// Reduction.
+Tensor.Build(Range(10), 3 - 7, it, it)
+
+// Errors.
+Tensor.Build(10, 10, it, it)
+Tensor.Build(Range(10), "Hi", it, it)
+Tensor.Build(Range(10), 10, "Hi", it)

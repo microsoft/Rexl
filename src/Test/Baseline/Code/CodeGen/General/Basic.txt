@@ -1,0 +1,573 @@
+**** New globals: {i1:i1, i2:i2, i4:i4, i8:i8, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 5
+5 : i8
+BndKind:Int, Type:i8, Bnd:(5:i8)
+Func sig: () to i8
+Type: i8, Value: 5
+###
+> 5.0
+5 : r8
+BndKind:Flt, Type:r8, Bnd:(5:r8)
+Func sig: () to r8
+Type: r8, Value: 5
+###
+> "hello"
+"hello" : s
+BndKind:Str, Type:s, Bnd:(str(hello))
+Func sig: () to s
+Type: str, Value: hello
+###
+> null
+null : o
+BndKind:Null, Type:o, Bnd:(null)
+Func sig: () to o
+Type: <null>, Value: <null>
+###
+> 5.1
+5.1 : r8
+BndKind:Flt, Type:r8, Bnd:(5.1:r8)
+Func sig: () to r8
+Type: r8, Value: 5.1
+###
+> 5 + 3
+5 + 3 : i8
+BndKind:Int, Type:i8, Bnd:(8:i8)
+Func sig: () to i8
+Type: i8, Value: 8
+###
+> 5 * 4
+5 * 4 : i8
+BndKind:Int, Type:i8, Bnd:(20:i8)
+Func sig: () to i8
+Type: i8, Value: 20
+###
+> r8 + 1
+r8 + 1 : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Global(r8), 1:r8))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 1
+###
+> r8 + r4 * i1
+r8 + r4 * i1 : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Global(r8), Mul(Num<r8>(Global(r4)), Num<r8>(Global(i1)))))
+Func sig: (r8:r8, r4:r4, i1:i1) to r8
+Type: r8, Value: 0
+###
+> (r8 + 3) + (r4 + 4) * (i1 + 1)
+r8 + 3 + (r4 + 4) * (i1 + 1) : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Global(r8), 3:r8, Mul(Add(Num<r8>(Global(r4)), 4:r8), Num<r8>(Add(Num<i8>(Global(i1)), 1:i8)))))
+Func sig: (r8:r8, r4:r4, i1:i1) to r8
+Type: r8, Value: 7
+###
+> Wrap(3) + Wrap(4.0f) * Wrap(1)
+Wrap(3) + Wrap(4) * Wrap(1) : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Num<r8>(Call(∂.Test.Wrap(3:i8):i8)), Mul(Num<r8>(Call(∂.Test.Wrap(4:r4):r4)), Num<r8>(Call(∂.Test.Wrap(1:i8):i8)))))
+Func sig: () to r8
+Type: r8, Value: 7
+###
+> Wrap(3) + Wrap(4.0d) * Wrap(1)
+Wrap(3) + Wrap(4) * Wrap(1) : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Num<r8>(Call(∂.Test.Wrap(3:i8):i8)), Mul(Call(∂.Test.Wrap(4:r8):r8), Num<r8>(Call(∂.Test.Wrap(1:i8):i8)))))
+Func sig: () to r8
+Type: r8, Value: 7
+###
+> (r4 + 3f) ^ (r4)
+(r4 + 3)^r4 : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Num<r8>(Global(r4)), 3:r8), Num<r8>(Global(r4))))
+Func sig: (r4:r4) to r8
+Type: r8, Value: 1
+###
+> (r4 + 3f) ^ (r4 + 2)
+(r4 + 3)^(r4 + 2) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Num<r8>(Global(r4)), 3:r8), Add(Num<r8>(Global(r4)), 2:r8)))
+Func sig: (r4:r4) to r8
+Type: r8, Value: 9
+###
+> (r8 + 3f) ^ (r4)
+(r8 + 3)^r4 : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Global(r8), 3:r8), Num<r8>(Global(r4))))
+Func sig: (r8:r8, r4:r4) to r8
+Type: r8, Value: 1
+###
+> (r8 + 3f) ^ (r4 + 2)
+(r8 + 3)^(r4 + 2) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Global(r8), 3:r8), Add(Num<r8>(Global(r4)), 2:r8)))
+Func sig: (r8:r8, r4:r4) to r8
+Type: r8, Value: 9
+###
+> (r8 + 3f) ^ (r8)
+(r8 + 3)^r8 : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Global(r8), 3:r8), Global(r8)))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 1
+###
+> (r8 + 3f) ^ (r8 + 2)
+(r8 + 3)^(r8 + 2) : r8
+BndKind:BinaryOp, Type:r8, Bnd:(Power(Add(Global(r8), 3:r8), Add(Global(r8), 2:r8)))
+Func sig: (r8:r8) to r8
+Type: r8, Value: 9
+###
+> r8  = r4
+r8 @= r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(r8) @= Num<r8>(Global(r4))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> r8 != r4
+r8 !@= r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(r8) !@= Num<r8>(Global(r4))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> r8  = r4 + 1f
+r8 @= r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(r8) @= Add(Num<r8>(Global(r4)), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> r8 != r4 + 1f
+r8 !@= r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(r8) !@= Add(Num<r8>(Global(r4)), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> r8 + 1f  = r4 + 1f
+r8 + 1 @= r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Global(r8), 1:r8) @= Add(Num<r8>(Global(r4)), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> r8 + 1f != r4 + 1f
+r8 + 1 !@= r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Global(r8), 1:r8) !@= Add(Num<r8>(Global(r4)), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8  @= 1 / r4
+1 / r8 @= 1 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) @= Mul([/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8  $= 1 / r4
+1 / r8 $= 1 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) $= Mul([/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8 !@= 1 / r4
+1 / r8 !@= 1 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) !@= Mul([/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8 !$= 1 / r4
+1 / r8 !$= 1 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) !$= Mul([/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8  @= 1 / r4 + 1f
+1 / r8 @= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) @= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8  $= 1 / r4 + 1f
+1 / r8 $= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) $= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8 !@= 1 / r4 + 1f
+1 / r8 !@= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) !@= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8 !$= 1 / r4 + 1f
+1 / r8 !$= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul([/] Global(r8)) !$= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8 + 1f  @= 1 / r4 + 1f
+1 / r8 + 1 @= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul([/] Global(r8)), 1:r8) @= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8 + 1f  $= 1 / r4 + 1f
+1 / r8 + 1 $= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul([/] Global(r8)), 1:r8) $= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 1 / r8 + 1f !@= 1 / r4 + 1f
+1 / r8 + 1 !@= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul([/] Global(r8)), 1:r8) !@= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 1 / r8 + 1f !$= 1 / r4 + 1f
+1 / r8 + 1 !$= 1 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul([/] Global(r8)), 1:r8) !$= Add(Mul([/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8  @= 0 / r4
+0 / r8 @= 0 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @= Mul(0:r8, [/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8  $= 0 / r4
+0 / r8 $= 0 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) $= Mul(0:r8, [/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 !@= 0 / r4
+0 / r8 !@= 0 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !@= Mul(0:r8, [/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 !$= 0 / r4
+0 / r8 !$= 0 / r4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !$= Mul(0:r8, [/] Num<r8>(Global(r4)))))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8  @= 0 / r4 + 1f
+0 / r8 @= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8  $= 0 / r4 + 1f
+0 / r8 $= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) $= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 !@= 0 / r4 + 1f
+0 / r8 !@= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !@= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 !$= 0 / r4 + 1f
+0 / r8 !$= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !$= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8 + 1f  @=  0 / r4 + 1f
+0 / r8 + 1 @= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul(0:r8, [/] Global(r8)), 1:r8) @= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8 + 1f  $=  0 / r4 + 1f
+0 / r8 + 1 $= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul(0:r8, [/] Global(r8)), 1:r8) $= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 + 1f !@= 0 / r4 + 1f
+0 / r8 + 1 !@= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul(0:r8, [/] Global(r8)), 1:r8) !@= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: false
+###
+> 0 / r8 + 1f !$= 0 / r4 + 1f
+0 / r8 + 1 !$= 0 / r4 + 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Add(Mul(0:r8, [/] Global(r8)), 1:r8) !$= Add(Mul(0:r8, [/] Num<r8>(Global(r4))), 1:r8)))
+Func sig: (r8:r8, r4:r4) to b
+Type: bool, Value: true 
+###
+> 0 / r8  @<  1
+0 / r8 @< 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @< 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> 0 / r8  @>= 1
+0 / r8 @>= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @>= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8  @ = 1
+0 / r8 @= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8  $<  1
+0 / r8 $< 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) $< 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8  $>= 1
+0 / r8 $>= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) $>= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8  $ = 1
+0 / r8 $= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) $= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8 !@<  1
+0 / r8 !@< 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @>= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: false
+###
+> 0 / r8 !@>= 1
+0 / r8 !@>= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) @< 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> 0 / r8 !@ = 1
+0 / r8 !@= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !@= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> 0 / r8 !$<  1
+0 / r8 !$< 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !$< 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> 0 / r8 !$>= 1
+0 / r8 !$>= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !$>= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> 0 / r8 !$ = 1
+0 / r8 !$= 1 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Mul(0:r8, [/] Global(r8)) !$= 1:r8))
+Func sig: (r8:r8) to b
+Type: bool, Value: true 
+###
+> -1 < i4 < 3 >= i4
+-1 $< i4 $< 3 $>= i4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i8 @< Num<i8>(Global(i4)) @< 3:i8 @>= Num<i8>(Global(i4))))
+Func sig: (i4:i4) to b
+Type: bool, Value: true 
+###
+> -1 < i4 < 3 < i4
+-1 $< i4 $< 3 $< i4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i8 @< Num<i8>(Global(i4)) @< 3:i8 @< Num<i8>(Global(i4))))
+Func sig: (i4:i4) to b
+Type: bool, Value: false
+###
+> -1 < i4 < 3 >= -5 < i4
+-1 $< i4 $< 3 $>= -5 $< i4 : b
+BndKind:Compare, Type:b, Bnd:(Cmp(-1:i8 @< Num<i8>(Global(i4)) @< 3:i8 && -5:i8 @< Num<i8>(Global(i4))))
+Func sig: (i4:i4) to b
+Type: bool, Value: true 
+###
+> s =  "hello"
+s @= "hello" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(s) @= str(hello)))
+Func sig: (s:s) to b
+Type: bool, Value: false
+###
+> s != "hello"
+s !@= "hello" : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(s) !@= str(hello)))
+Func sig: (s:s) to b
+Type: bool, Value: true 
+###
+> s & "" // One arg concat
+s & "" : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s)))
+Func sig: (s:s) to s
+Type: str, Value: 
+###
+> s & "A" // Two arg concat
+s & "A" : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s), str(A)))
+Func sig: (s:s) to s
+Type: str, Value: A
+###
+> s & "A" & s // Three arg concat
+s & "A" & s : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s), str(A), Global(s)))
+Func sig: (s:s) to s
+Type: str, Value: A
+###
+> s & "A" & s & "B" // Four arg concat
+s & "A" & s & "B" : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s), str(A), Global(s), str(B)))
+Func sig: (s:s) to s
+Type: str, Value: AB
+###
+> s & "A" & s & "B" & s // Five arg concat
+s & "A" & s & "B" & s : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s), str(A), Global(s), str(B), Global(s)))
+Func sig: (s:s) to s
+Type: str, Value: AB
+###
+> s & "A" & s & "B" & s & "C" // Six arg concat
+s & "A" & s & "B" & s & "C" : s
+BndKind:VariadicOp, Type:s, Bnd:(StrConcat(Global(s), str(A), Global(s), str(B), Global(s), str(C)))
+Func sig: (s:s) to s
+Type: str, Value: ABC
+###
+> "B" in ["B"]
+"B" in ["B"] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(str(B), [str(B)]:s*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> "B" in ["A"]
+"B" in ["A"] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(str(B), [str(A)]:s*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): In("B", ["A"])
+###
+> "B" in ["B", null]
+"B" in ["B", null] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(str(B), [str(B), str(<null>)]:s*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> "B" in ["B", null, 1] // Error
+"B" in ["B", null, 1] : b
+BndKind:Error, Type:b, Bnd:(Error(ErrInequatableType_Type))
+*** Error: (19,20) Node: 1, Message: The given types are incompatible: 's' and 'i8'
+*** Error: (7,8) Node: ["B", null, 1], Message: Equality comparison is not supported for items of type 'g'
+###
+> null in [1, null]
+null in [1, null] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(null:i8?, [Opt<i8?>(1:i8), null:i8?]:i8?*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 1
+    [0](1): In(null, [Opt<i8?>(1), null])
+###
+> null in ["B"]
+null in ["B"] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(str(<null>), [str(B)]:s*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): In(str(<null>), ["B"])
+###
+> 1 in [1]
+1 in [1] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(1:i8, [1:i8]:i8*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> 1 in [2]
+1 in [2] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(1:i8, [2:i8]:i8*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): In(1, [2])
+###
+> 1 in [1, null]
+1 in [1, null] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(Opt<i8?>(1:i8), [Opt<i8?>(1:i8), null:i8?]:i8?*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> 0xFFi1 in [0xFFu1]
+255 in [255] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(-1:i2, [255:i2]:i2*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: false
+*** Ctx ping count: 1
+    [0](1): In(-1, [255])
+###
+> 0xFFi2 in [0xFFu1]
+255 in [255] : b
+BndKind:BinaryOp, Type:b, Bnd:(In(255:i2, [255:i2]:i2*))
+Func sig: (<ctx>:x) to b
+Type: bool, Value: true 
+*** Ctx ping count: 0
+###
+> Wrap(3ia) + 5
+Wrap(3) + 5 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Call(∂.Test.Wrap(3:i):i), 5:i))
+Func sig: () to i
+Type: ia, Value: 8
+###
+
+**** New definitions: hello, type: s
+**** New definitions: empty, type: s
+**** New definitions: snull, type: s
+**** New definitions: S, type: i8*
+**** New definitions: SN, type: i8*
+
+> IsEmpty(hello)
+IsEmpty(hello) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Global(hello)):b))
+Func sig: (hello:s) to b
+Type: bool, Value: false
+###
+> IsEmpty(empty)
+IsEmpty(empty) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Global(empty)):b))
+Func sig: (empty:s) to b
+Type: bool, Value: true 
+###
+> IsEmpty(snull)
+IsEmpty(snull) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Global(snull)):b))
+Func sig: (snull:s) to b
+Type: bool, Value: true 
+###
+> IsEmpty(S)
+IsEmpty(S) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Global(S)):b))
+Func sig: (S:i8*) to b
+Type: bool, Value: false
+###
+> IsEmpty(S->TakeIf(it > 1000))
+IsEmpty(S->TakeIf(it $> 1000)) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Call(∂.Take([map:1] Global(S), [if] Cmp(Scope(1) @> 1000:i8)):i8*)):b))
+Func sig: (<ctx>:x, S:i8*) to b
+Type: bool, Value: true 
+*** Ctx ping count: 10
+    [0](10): Take(*1: S, [if] *1 @> 1000)
+###
+> IsEmpty(SN)
+IsEmpty(SN) : b
+BndKind:Call, Type:b, Bnd:(Call(∂.IsEmpty(Global(SN)):b))
+Func sig: (SN:i8*) to b
+Type: bool, Value: true 
+###
+
+**** New definitions: X, type: r8
+**** New definitions: Y, type: r8
+**** New definitions: Z, type: r8
+**** New definitions: A, type: r8
+**** New definitions: B, type: r8
+
+> (A, B, A = B)
+(A, B, A @= B) : (r8, r8, b)
+BndKind:Tuple, Type:(r8, r8, b), Bnd:((Global(A), Global(B), Cmp(Global(A) @= Global(B))):(r8, r8, b))
+Func sig: (A:r8, B:r8) to (r8, r8, b)
+Type: (r8,r8,bool), Value: (1.2345E-17, 1.2345E-17, true )
+###

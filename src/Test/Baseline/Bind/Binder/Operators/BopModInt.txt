@@ -1,0 +1,949 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 8 mod 3
+8 mod 3 : i8
+Binder : IntMod(8, 3)
+Reducer: 2
+###
+> 8 mod 1
+8 mod 1 : i8
+Binder : IntMod(8, 1)
+Reducer: 0
+###
+> i1 mod 1
+i1 mod 1 : i8
+Binder : IntMod(Num<i8>(i1), 1)
+Reducer: 0
+###
+> i8 mod 1
+i8 mod 1 : i8
+Binder : IntMod(i8, 1)
+Reducer: 0
+###
+> u1 mod 1
+u1 mod 1 : i8
+Binder : IntMod(Num<i8>(u1), 1)
+Reducer: 0
+###
+> u8 mod 1
+u8 mod 1 : i8
+*** Warning: (0,2) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : IntMod(Num<i8>(u8), 1)
+Reducer: 0
+###
+> u8 mod 1u8
+u8 mod 1 : u8
+Binder : IntMod(u8, 1)
+Reducer: 0
+###
+> 53 mod 4
+53 mod 4 : i8
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53 mod 4u8
+53 mod 4 : i8
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53 mod 4ia
+53 mod 4 : i
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53u8 mod 4
+53 mod 4 : i8
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53u8 mod 4u8
+53 mod 4 : u8
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53u8 mod 4ia
+53 mod 4 : i
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53ia mod 4
+53 mod 4 : i
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53ia mod 4u8
+53 mod 4 : i
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 53ia mod 4ia
+53 mod 4 : i
+Binder : IntMod(53, 4)
+Reducer: 1
+###
+> 2 mod  1
+2 mod 1 : i8
+Binder : IntMod(2, 1)
+Reducer: 0
+###
+> 2 mod -1
+2 mod -1 : i8
+Binder : IntMod(2, -1)
+Reducer: 0
+###
+> -2 mod  1
+-2 mod 1 : i8
+Binder : IntMod(-2, 1)
+Reducer: 0
+###
+> -2 mod -1
+-2 mod -1 : i8
+Binder : IntMod(-2, -1)
+Reducer: 0
+###
+> 2 mod 0
+2 mod 0 : i8
+Binder : IntMod(2, 0)
+*** Warning: Node: IntMod(2, 0), Message: Integer division by zero
+Reducer: 0
+###
+> -2 mod 0
+-2 mod 0 : i8
+Binder : IntMod(-2, 0)
+*** Warning: Node: IntMod(-2, 0), Message: Integer division by zero
+Reducer: 0
+###
+> 0x3FFFFFFF mod 2
+1073741823 mod 2 : i8
+Binder : IntMod(1073741823, 2)
+Reducer: 1
+###
+> 0x3FFFFFFF mod 4
+1073741823 mod 4 : i8
+Binder : IntMod(1073741823, 4)
+Reducer: 3
+###
+> 0x7FFFFFFFU4 mod 2
+2147483647 mod 2 : i8
+Binder : IntMod(2147483647, 2)
+Reducer: 1
+###
+> 0x7FFFFFFFU4 mod 2U4
+2147483647 mod 2 : i8
+Binder : IntMod(2147483647, 2)
+Reducer: 1
+###
+> 0x7FFFFFFFU4 mod 4
+2147483647 mod 4 : i8
+Binder : IntMod(2147483647, 4)
+Reducer: 3
+###
+> 0x7FFFFFFFU8 mod 2
+2147483647 mod 2 : i8
+Binder : IntMod(2147483647, 2)
+Reducer: 1
+###
+> 0x7FFFFFFFU8 mod 2U8
+2147483647 mod 2 : u8
+Binder : IntMod(2147483647, 2)
+Reducer: 1
+###
+> 0x7FFFFFFFU8 mod 4
+2147483647 mod 4 : i8
+Binder : IntMod(2147483647, 4)
+Reducer: 3
+###
+> 3 mod null
+3 mod null : i8?
+Binder : Guard(?1: null, IntMod(3, Unit<i8>(?1)))
+*** Warning: Node: IntMod(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null mod 3
+null mod 3 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), 3))
+Reducer: null
+###
+> 0 mod null
+0 mod null : i8?
+Binder : Guard(?1: null, IntMod(0, Unit<i8>(?1)))
+Reducer: null
+###
+> null mod 0
+null mod 0 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), 0))
+Reducer: null
+###
+> i4 mod 3
+i4 mod 3 : i8
+Binder : IntMod(Num<i8>(i4), 3)
+###
+> 3 mod i4
+3 mod i4 : i8
+Binder : IntMod(3, Num<i8>(i4))
+###
+> i4 mod null
+i4 mod null : i8?
+Binder : Guard(?1: null, IntMod(Num<i8>(i4), Unit<i8>(?1)))
+*** Warning: Node: IntMod(Num<i8>(i4), Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null mod i4
+null mod i4 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> i4 mod 2 mod null
+i4 mod 2 mod null : i8?
+Binder : Guard(?1: null, IntMod(IntMod(Num<i8>(i4), 2), Unit<i8>(?1)))
+*** Warning: Node: IntMod(IntMod(Num<i8>(i4), 2), Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> null mod i4 mod 2
+null mod i4 mod 2 : i8?
+Binder : Guard(?2: Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(i4))), IntMod(?2, 2))
+Reducer: null
+###
+> i1 mod i2 mod i2
+i1 mod i2 mod i2 : i8
+Binder : IntMod(IntMod(Num<i8>(i1), Num<i8>(i2)), Num<i8>(i2))
+###
+> i1 mod i2 mod i4
+i1 mod i2 mod i4 : i8
+Binder : IntMod(IntMod(Num<i8>(i1), Num<i8>(i2)), Num<i8>(i4))
+###
+> i4 mod i2 mod i1
+i4 mod i2 mod i1 : i8
+Binder : IntMod(IntMod(Num<i8>(i4), Num<i8>(i2)), Num<i8>(i1))
+###
+> (i1 mod 3) mod (i2 mod 2)
+i1 mod 3 mod (i2 mod 2) : i8
+Binder : IntMod(IntMod(Num<i8>(i1), 3), IntMod(Num<i8>(i2), 2))
+###
+> (i1 mod 3i1) mod (i2 mod i4)
+i1 mod 3 mod (i2 mod i4) : i8
+Binder : IntMod(IntMod(Num<i8>(i1), 3), IntMod(Num<i8>(i2), Num<i8>(i4)))
+###
+> i1 mod 3i1 mod 2i1
+i1 mod 3 mod 2 : i8
+Binder : IntMod(IntMod(Num<i8>(i1), 3), 2)
+###
+> i1 mod -1i1 mod -1i1
+i1 mod -1 mod -1 : i8
+Binder : IntMod(IntMod(Num<i8>(i1), -1), -1)
+Reducer: 0
+###
+> i1 mod 3i1 mod -1i1
+i1 mod 3 mod -1 : i8
+Binder : IntMod(IntMod(Num<i8>(i1), 3), -1)
+Reducer: 0
+###
+> i2 mod qi2 mod i1
+i2 mod qi2 mod i1 : i8?
+Binder : Guard(?2: Guard(?1: qi2, IntMod(Num<i8>(i2), Num<i8>(?1))), IntMod(?2, Num<i8>(i1)))
+Reducer: Guard(?1: qi2, IntMod(IntMod(Num<i8>(i2), Num<i8>(?1)), Num<i8>(i1)))
+###
+> i4 mod qi2 mod i1
+i4 mod qi2 mod i1 : i8?
+Binder : Guard(?2: Guard(?1: qi2, IntMod(Num<i8>(i4), Num<i8>(?1))), IntMod(?2, Num<i8>(i1)))
+Reducer: Guard(?1: qi2, IntMod(IntMod(Num<i8>(i4), Num<i8>(?1)), Num<i8>(i1)))
+###
+> 3 mod true
+3 mod true : i8
+Binder : IntMod(3, 1)
+Reducer: 0
+###
+> true mod 3
+true mod 3 : i8
+Binder : IntMod(1, 3)
+Reducer: 1
+###
+> false mod true
+false mod true : i8
+Binder : IntMod(0, 1)
+Reducer: 0
+###
+> true mod false
+true mod false : i8
+Binder : IntMod(1, 0)
+*** Warning: Node: IntMod(1, 0), Message: Integer division by zero
+Reducer: 0
+###
+> "3" mod true
+"3" mod true : i8
+*** Error: (0,3) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntMod(Error(ErrBadType_Src_Dst), 1)
+Reducer: 0
+###
+> 3 mod "true"
+3 mod "true" : i8
+*** Error: (6,12) Node: "true", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> "3" mod "true"
+"3" mod "true" : i8
+*** Error: (0,3) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (8,14) Node: "true", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntMod(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> 2.0f mod 4.0f
+2 mod 4 : i8
+*** Error: (0,4) Node: 2, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+*** Error: (9,13) Node: 4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : IntMod(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> 2.0d mod 4.0d
+2 mod 4 : i8
+*** Error: (0,4) Node: 2, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+*** Error: (9,13) Node: 4, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntMod(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> 3 mod g
+3 mod g : i8
+*** Error: (6,7) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3 mod o
+3 mod o : i8?
+Binder : Guard(?1: o, IntMod(3, Unit<i8>(?1)))
+*** Warning: Node: IntMod(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> 3 mod s
+3 mod s : i8
+*** Error: (6,7) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3 mod b
+3 mod b : i8
+Binder : IntMod(3, Num<i8>(b))
+###
+> 3 mod n
+3 mod n : i8
+*** Error: (6,7) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3 mod r8
+3 mod r8 : i8
+*** Error: (6,8) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3 mod r4
+3 mod r4 : i8
+*** Error: (6,8) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3 mod i
+3 mod i : i
+Binder : IntMod(3, i)
+###
+> 3 mod i8
+3 mod i8 : i8
+Binder : IntMod(3, i8)
+###
+> 3 mod i4
+3 mod i4 : i8
+Binder : IntMod(3, Num<i8>(i4))
+###
+> 3 mod i2
+3 mod i2 : i8
+Binder : IntMod(3, Num<i8>(i2))
+###
+> 3 mod i1
+3 mod i1 : i8
+Binder : IntMod(3, Num<i8>(i1))
+###
+> 3 mod u8
+3 mod u8 : i8
+*** Warning: (6,8) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : IntMod(3, Num<i8>(u8))
+###
+> 3 mod u4
+3 mod u4 : i8
+Binder : IntMod(3, Num<i8>(u4))
+###
+> 3 mod u2
+3 mod u2 : i8
+Binder : IntMod(3, Num<i8>(u2))
+###
+> 3 mod u1
+3 mod u1 : i8
+Binder : IntMod(3, Num<i8>(u1))
+###
+> 3u mod g
+3 mod g : u8
+*** Error: (7,8) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'u8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3u mod o
+3 mod o : u8?
+Binder : Guard(?1: o, IntMod(3, Unit<u8>(?1)))
+*** Warning: Node: IntMod(3, Unit<u8>(?1x)), Message: Integer division by zero
+Reducer: null
+###
+> 3u mod s
+3 mod s : u8
+*** Error: (7,8) Node: s, Message: Invalid operand type: cannot convert type 's' to 'u8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3u mod b
+3 mod b : u8
+Binder : IntMod(3, Num<u8>(b))
+###
+> 3u mod n
+3 mod n : u8
+*** Error: (7,8) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3u mod r8
+3 mod r8 : u8
+*** Error: (7,9) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3u mod r4
+3 mod r4 : u8
+*** Error: (7,9) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'u8'
+Binder : IntMod(3, Error(ErrBadType_Src_Dst))
+###
+> 3u mod i
+3 mod i : i
+Binder : IntMod(3, i)
+###
+> 3u mod i8
+3 mod i8 : i8
+Binder : IntMod(3, i8)
+###
+> 3u mod i4
+3 mod i4 : i8
+Binder : IntMod(3, Num<i8>(i4))
+###
+> 3u mod i2
+3 mod i2 : i8
+Binder : IntMod(3, Num<i8>(i2))
+###
+> 3u mod i1
+3 mod i1 : i8
+Binder : IntMod(3, Num<i8>(i1))
+###
+> 3u mod u8
+3 mod u8 : u8
+Binder : IntMod(3, u8)
+###
+> 3u mod u4
+3 mod u4 : u8
+Binder : IntMod(3, Num<u8>(u4))
+###
+> 3u mod u2
+3 mod u2 : u8
+Binder : IntMod(3, Num<u8>(u2))
+###
+> 3u mod u1
+3 mod u1 : u8
+Binder : IntMod(3, Num<u8>(u1))
+###
+> null mod g
+null mod g : i8?
+*** Error: (9,10) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod o
+null mod o : i8?
+Binder : Guard(?1: null, ?2: o, IntMod(Unit<i8>(?1), Unit<i8>(?2)))
+Reducer: null
+###
+> null mod s
+null mod s : i8?
+*** Error: (9,10) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod b
+null mod b : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(b)))
+Reducer: null
+###
+> null mod n
+null mod n : i8?
+*** Error: (9,10) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod r8
+null mod r8 : i8?
+*** Error: (9,11) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod r4
+null mod r4 : i8?
+*** Error: (9,11) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod i
+null mod i : i?
+Binder : Guard(?1: null, IntMod(Unit<i>(?1), i))
+Reducer: null
+###
+> null mod i8
+null mod i8 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), i8))
+Reducer: null
+###
+> null mod i4
+null mod i4 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> null mod i2
+null mod i2 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(i2)))
+Reducer: null
+###
+> null mod i1
+null mod i1 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(i1)))
+Reducer: null
+###
+> null mod u8
+null mod u8 : u8?
+Binder : Guard(?1: null, IntMod(Unit<u8>(?1), u8))
+Reducer: null
+###
+> null mod u4
+null mod u4 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(u4)))
+Reducer: null
+###
+> null mod u2
+null mod u2 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(u2)))
+Reducer: null
+###
+> null mod u1
+null mod u1 : i8?
+Binder : Guard(?1: null, IntMod(Unit<i8>(?1), Num<i8>(u1)))
+Reducer: null
+###
+> 3 mod qb
+3 mod qb : i8?
+Binder : Guard(?1: qb, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qn
+3 mod qn : i8?
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: qn, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod qr8
+3 mod qr8 : i8?
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: qr8, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod qr4
+3 mod qr4 : i8?
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: qr4, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod qi
+3 mod qi : i?
+Binder : Guard(?1: qi, IntMod(3, ?1))
+###
+> 3 mod qi8
+3 mod qi8 : i8?
+Binder : Guard(?1: qi8, IntMod(3, ?1))
+###
+> 3 mod qi4
+3 mod qi4 : i8?
+Binder : Guard(?1: qi4, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qi2
+3 mod qi2 : i8?
+Binder : Guard(?1: qi2, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qi1
+3 mod qi1 : i8?
+Binder : Guard(?1: qi1, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qu8
+3 mod qu8 : i8?
+*** Warning: (6,9) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?1: qu8, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qu4
+3 mod qu4 : i8?
+Binder : Guard(?1: qu4, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qu2
+3 mod qu2 : i8?
+Binder : Guard(?1: qu2, IntMod(3, Num<i8>(?1)))
+###
+> 3 mod qu1
+3 mod qu1 : i8?
+Binder : Guard(?1: qu1, IntMod(3, Num<i8>(?1)))
+###
+> 3u mod qb
+3 mod qb : u8?
+Binder : Guard(?1: qb, IntMod(3, Num<u8>(?1)))
+###
+> 3u mod qn
+3 mod qn : u8?
+*** Error: (7,9) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : Guard(?1: qn, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u mod qr8
+3 mod qr8 : u8?
+*** Error: (7,10) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'u8'
+Binder : Guard(?1: qr8, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u mod qr4
+3 mod qr4 : u8?
+*** Error: (7,10) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'u8'
+Binder : Guard(?1: qr4, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3u mod qi
+3 mod qi : i?
+Binder : Guard(?1: qi, IntMod(3, ?1))
+###
+> 3u mod qi8
+3 mod qi8 : i8?
+Binder : Guard(?1: qi8, IntMod(3, ?1))
+###
+> 3u mod qi4
+3 mod qi4 : i8?
+Binder : Guard(?1: qi4, IntMod(3, Num<i8>(?1)))
+###
+> 3u mod qi2
+3 mod qi2 : i8?
+Binder : Guard(?1: qi2, IntMod(3, Num<i8>(?1)))
+###
+> 3u mod qi1
+3 mod qi1 : i8?
+Binder : Guard(?1: qi1, IntMod(3, Num<i8>(?1)))
+###
+> 3u mod qu8
+3 mod qu8 : u8?
+Binder : Guard(?1: qu8, IntMod(3, ?1))
+###
+> 3u mod qu4
+3 mod qu4 : u8?
+Binder : Guard(?1: qu4, IntMod(3, Num<u8>(?1)))
+###
+> 3u mod qu2
+3 mod qu2 : u8?
+Binder : Guard(?1: qu2, IntMod(3, Num<u8>(?1)))
+###
+> 3u mod qu1
+3 mod qu1 : u8?
+Binder : Guard(?1: qu1, IntMod(3, Num<u8>(?1)))
+###
+> null mod qb
+null mod qb : i8?
+Binder : Guard(?1: null, ?2: qb, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qn
+null mod qn : i8?
+*** Error: (9,11) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, ?2: qn, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod qr8
+null mod qr8 : i8?
+*** Error: (9,12) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : Guard(?1: null, ?2: qr8, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod qr4
+null mod qr4 : i8?
+*** Error: (9,12) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : Guard(?1: null, ?2: qr4, IntMod(Unit<i8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null mod qi
+null mod qi : i?
+Binder : Guard(?1: null, ?2: qi, IntMod(Unit<i>(?1), ?2))
+Reducer: null
+###
+> null mod qi8
+null mod qi8 : i8?
+Binder : Guard(?1: null, ?2: qi8, IntMod(Unit<i8>(?1), ?2))
+Reducer: null
+###
+> null mod qi4
+null mod qi4 : i8?
+Binder : Guard(?1: null, ?2: qi4, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qi2
+null mod qi2 : i8?
+Binder : Guard(?1: null, ?2: qi2, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qi1
+null mod qi1 : i8?
+Binder : Guard(?1: null, ?2: qi1, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qu8
+null mod qu8 : u8?
+Binder : Guard(?1: null, ?2: qu8, IntMod(Unit<u8>(?1), ?2))
+Reducer: null
+###
+> null mod qu4
+null mod qu4 : i8?
+Binder : Guard(?1: null, ?2: qu4, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qu2
+null mod qu2 : i8?
+Binder : Guard(?1: null, ?2: qu2, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null mod qu1
+null mod qu1 : i8?
+Binder : Guard(?1: null, ?2: qu1, IntMod(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> i mod qb
+i mod qb : i?
+Binder : Guard(?1: qb, IntMod(i, Num<i>(?1)))
+###
+> i mod qn
+i mod qn : i?
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qn, IntMod(i, Error(ErrBadType_Src_Dst)))
+###
+> i mod qr8
+i mod qr8 : i?
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qr8, IntMod(i, Error(ErrBadType_Src_Dst)))
+###
+> i mod qr4
+i mod qr4 : i?
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i'
+Binder : Guard(?1: qr4, IntMod(i, Error(ErrBadType_Src_Dst)))
+###
+> i mod qi
+i mod qi : i?
+Binder : Guard(?1: qi, IntMod(i, ?1))
+###
+> i mod qi8
+i mod qi8 : i?
+Binder : Guard(?1: qi8, IntMod(i, Num<i>(?1)))
+###
+> i mod qi4
+i mod qi4 : i?
+Binder : Guard(?1: qi4, IntMod(i, Num<i>(?1)))
+###
+> i mod qi2
+i mod qi2 : i?
+Binder : Guard(?1: qi2, IntMod(i, Num<i>(?1)))
+###
+> i mod qi1
+i mod qi1 : i?
+Binder : Guard(?1: qi1, IntMod(i, Num<i>(?1)))
+###
+> i mod qu8
+i mod qu8 : i?
+Binder : Guard(?1: qu8, IntMod(i, Num<i>(?1)))
+###
+> i mod qu4
+i mod qu4 : i?
+Binder : Guard(?1: qu4, IntMod(i, Num<i>(?1)))
+###
+> i mod qu2
+i mod qu2 : i?
+Binder : Guard(?1: qu2, IntMod(i, Num<i>(?1)))
+###
+> i mod qu1
+i mod qu1 : i?
+Binder : Guard(?1: qu1, IntMod(i, Num<i>(?1)))
+###
+> qi mod qb
+qi mod qb : i?
+Binder : Guard(?1: qi, ?2: qb, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qn
+qi mod qn : i?
+*** Error: (7,9) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qi, ?2: qn, IntMod(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi mod qr8
+qi mod qr8 : i?
+*** Error: (7,10) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i'
+Binder : Guard(?1: qi, ?2: qr8, IntMod(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi mod qr4
+qi mod qr4 : i?
+*** Error: (7,10) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i'
+Binder : Guard(?1: qi, ?2: qr4, IntMod(?1, Error(ErrBadType_Src_Dst)))
+###
+> qi mod qi
+qi mod qi : i?
+Binder : Guard(?1: qi, ?2: qi, IntMod(?1, ?2))
+Reducer: Guard(?1: qi, IntMod(?1, ?1))
+###
+> qi mod qi8
+qi mod qi8 : i?
+Binder : Guard(?1: qi, ?2: qi8, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qi4
+qi mod qi4 : i?
+Binder : Guard(?1: qi, ?2: qi4, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qi2
+qi mod qi2 : i?
+Binder : Guard(?1: qi, ?2: qi2, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qi1
+qi mod qi1 : i?
+Binder : Guard(?1: qi, ?2: qi1, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qu8
+qi mod qu8 : i?
+Binder : Guard(?1: qi, ?2: qu8, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qu4
+qi mod qu4 : i?
+Binder : Guard(?1: qi, ?2: qu4, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qu2
+qi mod qu2 : i?
+Binder : Guard(?1: qi, ?2: qu2, IntMod(?1, Num<i>(?2)))
+###
+> qi mod qu1
+qi mod qu1 : i?
+Binder : Guard(?1: qi, ?2: qu1, IntMod(?1, Num<i>(?2)))
+###
+
+**** New globals: {b:b*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> 3 mod g
+3 mod g : i8*
+*** Error: (6,7) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : ForEach(*1: g, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod o
+3 mod o : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, IntMod(3, Unit<i8>(?2))))
+*** Warning: Node: IntMod(3, Unit<i8>(?1x)), Message: Integer division by zero
+Reducer: ForEach(*1: o, null)
+###
+> 3 mod s
+3 mod s : i8*
+*** Error: (6,7) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : ForEach(*1: s, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod b
+3 mod b : i8*
+Binder : ForEach(*1: b, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod n
+3 mod n : i8*
+*** Error: (6,7) Node: n, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: n, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod r8
+3 mod r8 : i8*
+*** Error: (6,8) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: r8, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod r4
+3 mod r4 : i8*
+*** Error: (6,8) Node: r4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*1: r4, IntMod(3, Error(ErrBadType_Src_Dst)))
+###
+> 3 mod i
+3 mod i : i*
+Binder : ForEach(*1: i, IntMod(3, *1))
+###
+> 3 mod i8
+3 mod i8 : i8*
+Binder : ForEach(*1: i8, IntMod(3, *1))
+###
+> 3 mod i4
+3 mod i4 : i8*
+Binder : ForEach(*1: i4, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod i2
+3 mod i2 : i8*
+Binder : ForEach(*1: i2, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod i1
+3 mod i1 : i8*
+Binder : ForEach(*1: i1, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod u8
+3 mod u8 : i8*
+*** Warning: (6,8) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: u8, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod u4
+3 mod u4 : i8*
+Binder : ForEach(*1: u4, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod u2
+3 mod u2 : i8*
+Binder : ForEach(*1: u2, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod u1
+3 mod u1 : i8*
+Binder : ForEach(*1: u1, IntMod(3, Num<i8>(*1)))
+###
+> 3 mod qb
+3 mod qb : i8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qn
+3 mod qn : i8?*
+*** Error: (6,8) Node: qn, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: qn, Guard(?2: *1, IntMod(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 mod qr8
+3 mod qr8 : i8?*
+*** Error: (6,9) Node: qr8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : ForEach(*1: qr8, Guard(?2: *1, IntMod(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 mod qr4
+3 mod qr4 : i8?*
+*** Error: (6,9) Node: qr4, Message: Invalid operand type: cannot convert type 'r4' to 'i8'
+Binder : ForEach(*1: qr4, Guard(?2: *1, IntMod(3, Error(ErrBadType_Src_Dst))))
+###
+> 3 mod qi
+3 mod qi : i?*
+Binder : ForEach(*1: qi, Guard(?2: *1, IntMod(3, ?2)))
+###
+> 3 mod qi8
+3 mod qi8 : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, IntMod(3, ?2)))
+###
+> 3 mod qi4
+3 mod qi4 : i8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qi2
+3 mod qi2 : i8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qi1
+3 mod qi1 : i8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qu8
+3 mod qu8 : i8?*
+*** Warning: (6,9) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : ForEach(*1: qu8, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qu4
+3 mod qu4 : i8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qu2
+3 mod qu2 : i8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###
+> 3 mod qu1
+3 mod qu1 : i8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, IntMod(3, Num<i8>(?2))))
+###

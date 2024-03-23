@@ -1,0 +1,291 @@
+﻿`` Data := Range(20)->{ A: it, B: it mod 2, C: it mod 3 }->SortUp(B, [>] C).A ++ [null];
+
+// Record the sortings.
+           Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+
+// Verify that sorting is consistent with the operator.
+With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+
+// Count ties.
+With(T: SortUp(   Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+
+`` Data := [ 3.5, 1/0, -1/0, 0/0, null, -2.5, 1e100, -1e100, -1/0, 0/0, null ];
+
+// Record the sortings.
+           Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+
+// Verify that sorting is consistent with the operator.
+With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+
+// Count ties.
+With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+
+`` Data := Range(20)->ForEach(it mod 3 = it mod 2 if it mod 5 != 0 else null);
+
+// Record the sortings.
+           Data ->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp(    Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>] Data)->ToText()->ForEach(it ?? "<null>")->Text.Concat(",")
+
+// Verify that sorting is consistent with the operator.
+With(T: SortUp(    Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([<] Data), ForEach(a: T, b: T->DropOne(), a @<= b))->All()
+With(T: SortUp([>] Data), ForEach(a: T, b: T->DropOne(), a @>= b))->All()
+
+// Count ties.
+With(T: SortUp(   Data), ForEach(a: T, b: T->DropOne(), a @= b))->Count(it)
+
+`` Data :=
+``   [
+``     "B", "A", "a", "A", "b", "\xC1", "\xE1", "\xC0", "\xE0", "0", "9", " ", "", null, "AZ", "BZ", "AZ", "az", "aZ", "Az", "Bz", "Ba", "BA", "az",
+``     "st", "\xDF", "ss", "SS", "St", "ST", "\xDF", "st",
+``   ];
+
+// Record the sortings.
+SortUp(     Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([<]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([>]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~]  Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~<] Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+SortUp([~>] Data)->ForEach(it ?? "<null>")->Text.Concat(",")
+
+// Verify that sorting is consistent with the operator and its negated form.
+With(T: SortUp(     Data), ForEach(a: T, b: T->DropOne(), a  @<=  b))->All()
+With(T: SortUp([<]  Data), ForEach(a: T, b: T->DropOne(), a  @<=  b))->All()
+With(T: SortUp([~]  Data), ForEach(a: T, b: T->DropOne(), a ~@<= b))->All()
+With(T: SortUp([~<] Data), ForEach(a: T, b: T->DropOne(), a ~@<= b))->All()
+With(T: SortUp([>]  Data), ForEach(a: T, b: T->DropOne(), a  @>=  b))->All()
+With(T: SortUp([~>] Data), ForEach(a: T, b: T->DropOne(), a ~@>= b))->All()
+
+// Count ties.
+With(T: SortUp(     Data), ForEach(a: T, b: T->DropOne(), a  @= b))->Count(it)
+With(T: SortUp([~]  Data), ForEach(a: T, b: T->DropOne(), a ~@= b))->Count(it)
+
+`` Dates :=
+``   [
+``     Date(1776, 7,  4),
+``     Date(1776, 7,  4, 15, 28, 37, 123, 4567),
+``     Date(1066, 9, 12, 21, 19, 17,  15,   13),
+``     Date(1500, 8,  1),
+``     Date(1776, 7,  4,  0,  0,  0,   0,    1),
+``     Date(1776, 7,  4, 15, 28, 37,  12,  345),
+``     Date(1776, 7,  4)
+``   ];
+Sort(Dates)
+Sort([>] Dates)
+Sort([<] Dates)
+SortUp(Dates)
+SortUp([>] Dates)
+SortUp([<] Dates)
+SortDown(Dates)
+SortDown([>] Dates)
+SortDown([<] Dates)
+
+Sort(Dates, it)
+Sort(Dates, [>] it)
+Sort(Dates, [<] it)
+SortUp(Dates, it)
+SortUp(Dates, [>] it)
+SortUp(Dates, [<] it)
+SortDown(Dates, it)
+SortDown(Dates, [>] it)
+SortDown(Dates, [<] it)
+
+// Ignore the time part when sorting.
+Dates
+Sort(Dates, Date)
+Sort(Dates, [>] Date)
+Sort(Dates, [<] Date)
+SortUp(Dates, Date)
+SortUp(Dates, [>] Date)
+SortUp(Dates, [<] Date)
+SortDown(Dates, Date)
+SortDown(Dates, [>] Date)
+SortDown(Dates, [<] Date)
+
+// Ignore the date part when sorting.
+Dates
+Sort(Dates, Time)
+Sort(Dates, [>] Time)
+Sort(Dates, [<] Time)
+SortUp(Dates, Time)
+SortUp(Dates, [>] Time)
+SortUp(Dates, [<] Time)
+SortDown(Dates, Time)
+SortDown(Dates, [>] Time)
+SortDown(Dates, [<] Time)
+
+// Indices.
+`` Data := Range(10)->Map(-it if it mod 2 = 0 else it)
+Sort(Data, #)
+Sort(Data, [>] #)
+Sort(Data, [<] #)
+Sort(Data, it mod 2 = 0, #)
+Sort(Data, it mod 2 = 0, [>] #)
+Sort(Data, it mod 2 = 0, [<] #)
+Sort(Data, # * -it)
+Sort(Data, [>] # * -it)
+Sort(Data, [<] # * -it)
+Sort(Data, it mod 2 = 0, # * -it)
+Sort(Data, it mod 2 = 0, [>] # * -it)
+Sort(Data, it mod 2 = 0, [<] # * -it)
+Sort(Data, [<] #it mod 3)
+
+// Coverage for comparison methods on all sortable types.
+`` Data := [0.1, 0/0, 0.3, 0.2, 1/0, 0.3, -1/0, 0/0];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(CastR4(Data), [<] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastR4(Data), [>] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+Sort(CastR4(Data), [<] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastR4(Data), [>] Wrap(it))
+Sort(CastR4(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [true, false, false, true, false];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+
+`` Data := [-(2ia shl 129), 2ia shl 129, -(2ia shl 129), 2ia shl 129, -1, 0, 1];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(Data, [<] Wrap(it))
+Sort(Data, Wrap(0), [<] Wrap(it))
+Sort(Data, [>] Wrap(it))
+Sort(Data, Wrap(0), [>] Wrap(it))
+
+`` Data := [-(2^63), 2^63 - 1, -(2^63), 2^63 - 1, -1, 0, 1];
+Sort(CastI8(Data), [<] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI8(Data), [>] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastI8(Data), [<] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI8(Data), [>] Wrap(it))
+Sort(CastI8(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [-(2^31), 2^31 - 1, -(2^31), 2^31 - 1, -1, 0, 1];
+Sort(CastI4(Data), [<] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI4(Data), [>] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastI4(Data), [<] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI4(Data), [>] Wrap(it))
+Sort(CastI4(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [-(2^15), 2^15 - 1, -(2^15), 2^15 - 1, -1, 0, 1];
+Sort(CastI2(Data), [<] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI2(Data), [>] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastI2(Data), [<] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI2(Data), [>] Wrap(it))
+Sort(CastI2(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [-(2^7), 2^7 - 1, -(2^7), 2^7 - 1, -1, 0, 1];
+Sort(CastI1(Data), [<] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI1(Data), [>] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastI1(Data), [<] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastI1(Data), [>] Wrap(it))
+Sort(CastI1(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [2^64 - 1, 2^64 - 1, 0, 2^63, 0, 1];
+Sort(CastU8(Data), [<] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU8(Data), [>] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastU8(Data), [<] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU8(Data), [>] Wrap(it))
+Sort(CastU8(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [2^32 - 1, 2^32 - 1, 0, 2^31, 2^31 - 1, 0, 1];
+Sort(CastU4(Data), [<] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU4(Data), [>] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastU4(Data), [<] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU4(Data), [>] Wrap(it))
+Sort(CastU4(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [2^16 - 1, 2^16 - 1, 0, 2^15, 2^15 - 1, 0, 1];
+Sort(CastU2(Data), [<] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU2(Data), [>] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastU2(Data), [<] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU2(Data), [>] Wrap(it))
+Sort(CastU2(Data), Wrap(0), [>] Wrap(it))
+
+`` Data := [2^8 - 1, 2^8 - 1, 0, 2^7, 2^7 - 1, 0, 1];
+Sort(CastU1(Data), [<] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU1(Data), [>] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [>] Wrap(it))
+`` Data := [null, null] ++ Data ++ [null];
+Sort(CastU1(Data), [<] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [<] Wrap(it))
+Sort(CastU1(Data), [>] Wrap(it))
+Sort(CastU1(Data), Wrap(0), [>] Wrap(it))
+
+Sort(Dates, [<] Time)
+Sort(Dates, Wrap(0), [<] Time)
+Sort(Dates, [>] Time)
+Sort(Dates, Wrap(0), [>] Time)
+Sort(Dates, [<] Date)
+Sort(Dates, Wrap(0), [<] Date)
+Sort(Dates, [>] Date)
+Sort(Dates, Wrap(0), [>] Date)
+`` Dates := [null, null] ++ Dates ++ [null];
+Sort(Dates, [<] Time)
+Sort(Dates, Wrap(0), [<] Time)
+Sort(Dates, [>] Time)
+Sort(Dates, Wrap(0), [>] Time)
+Sort(Dates, [<] Date)
+Sort(Dates, Wrap(0), [<] Date)
+Sort(Dates, [>] Date)
+Sort(Dates, Wrap(0), [>] Date)

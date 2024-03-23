@@ -1,0 +1,2351 @@
+**** New globals: {b:b, i:i, i1:i1, i2:i2, i4:i4, i8:i8, qb:b?, qi:i?, qi1:i1?, qi8:i8?, r4:r4, r8:r8, si1:i1*, u1:u1, u2:u2, u4:u4, u8:u8, vs:v*}
+
+> CastI1(b)
+CastI1(b) : i1
+BndKind:CastNum, Type:i1, Bnd:(Num<i1>(Global(b)))
+// (∂.b:b) : i1
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldloc.0 [bool]
+      5) box [i1]
+      1) ret
+  Total Size: 16
+
+Func sig: (b:b) to i1
+Type: i1, Value: 0
+###
+> CastI1(qb)
+CastI1(qb) : i1?
+BndKind:Call, Type:i1?, Bnd:(Call(∂.Guard([guard:1] Global(qb), Num<i1>(Scope(1))):i1?))
+// (∂.qb:b?) : i1?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      1) stloc.1 [bool]
+      1) ldloc.1 [bool]
+      5) newobj Opt<i1>(i1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i1>
+  Label [1]:
+      5) box [Opt<i1>]
+      1) ret
+  Total Size: 51
+
+Func sig: (qb:b?) to i1?
+Type: <null>, Value: <null>
+###
+> CastI1(qi8)
+CastI1(qi8) : i1?
+BndKind:Call, Type:i1?, Bnd:(Call(∂.Guard([guard:1] Global(qi8), Call(∂.CastI1(Scope(1)):i1)):i1?))
+// (∂.qi8:i8?) : i1?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i8>
+      1) stloc.0 [Opt<i8>]
+      2) ldloca.s [Opt<i8> (0)]
+      5) call Opt<i8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i8> (0)]
+      5) call Opt<i8>::GetValueOrDefault():i8
+      1) stloc.1 [i8]
+      1) ldloc.1 [i8]
+      1) conv.i1
+      5) newobj Opt<i1>(i1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i1>
+  Label [1]:
+      5) box [Opt<i1>]
+      1) ret
+  Total Size: 52
+
+Func sig: (qi8:i8?) to i1?
+Type: <null>, Value: <null>
+###
+> CastI1(CastI2(CastI4(CastI8(i))))
+CastI1(CastI2(CastI4(CastI8(i)))) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Call(∂.CastI2(Call(∂.CastI4(Call(∂.CastI8(Global(i)):i8)):i4)):i2)):i1))
+// (∂.i:i) : i1
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldloc.0 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) conv.i2
+      1) conv.i1
+      5) box [i1]
+      1) ret
+  Total Size: 24
+
+Func sig: (i:i) to i1
+Type: i1, Value: 0
+###
+> CastI1(CastI2(CastShort(CastI8(i))))
+CastI1(CastI2(CastShort(CastI8(i)))) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Call(∂.CastI2(Call(∂.CastI4(Call(∂.CastI8(Global(i)):i8)):i4)):i2)):i1))
+// (∂.i:i) : i1
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldloc.0 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) conv.i2
+      1) conv.i1
+      5) box [i1]
+      1) ret
+  Total Size: 24
+
+Func sig: (i:i) to i1
+Type: i1, Value: 0
+###
+> CastI1(CastI2(CastI4(CastInt(i))))
+CastI1(CastI2(CastI4(CastInt(i)))) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Call(∂.CastI2(Call(∂.CastI4(Call(∂.CastI8(Global(i)):i8)):i4)):i2)):i1))
+// (∂.i:i) : i1
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldloc.0 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) conv.i2
+      1) conv.i1
+      5) box [i1]
+      1) ret
+  Total Size: 24
+
+Func sig: (i:i) to i1
+Type: i1, Value: 0
+###
+> CastI1(CastI2(CastI4(CastI8(i))))
+CastI1(CastI2(CastI4(CastI8(i)))) : i1
+BndKind:Call, Type:i1, Bnd:(Call(∂.CastI1(Call(∂.CastI2(Call(∂.CastI4(Call(∂.CastI8(Global(i)):i8)):i4)):i2)):i1))
+// (∂.i:i) : i1
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldloc.0 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) conv.i2
+      1) conv.i1
+      5) box [i1]
+      1) ret
+  Total Size: 24
+
+Func sig: (i:i) to i1
+Type: i1, Value: 0
+###
+> CastI1(CastI2(CastI4(CastI8(qi))))
+CastI1(CastI2(CastI4(CastI8(qi)))) : i1?
+BndKind:Call, Type:i1?, Bnd:(Call(∂.Guard([guard:1] Global(qi), Call(∂.CastI1(Call(∂.CastI2(Call(∂.CastI4(Call(∂.CastI8(Scope(1)):i8)):i4)):i2)):i1)):i1?))
+// (∂.qi:i?) : i1?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<ia>
+      1) stloc.0 [Opt<ia>]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::GetValueOrDefault():ia
+      1) stloc.1 [ia]
+      1) ldloc.1 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) conv.i2
+      1) conv.i1
+      5) newobj Opt<i1>(i1)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i1>
+  Label [1]:
+      5) box [Opt<i1>]
+      1) ret
+  Total Size: 59
+
+Func sig: (qi:i?) to i1?
+Type: <null>, Value: <null>
+###
+> CastI8(CastI4(CastI2(CastI1(i1))))
+CastI8(CastI4(CastI2(CastI1(i1)))) : i8
+BndKind:CastNum, Type:i8, Bnd:(Num<i8>(Num<i4>(Num<i2>(Global(i1)))))
+// (∂.i1:i1) : i8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i1
+      1) stloc.0 [i1]
+      1) ldloc.0 [i1]
+      1) conv.i8
+      5) box [i8]
+      1) ret
+  Total Size: 17
+
+Func sig: (i1:i1) to i8
+Type: i8, Value: 0
+###
+> CastI8(CastI4(CastI2(CastI1(qi1))))
+CastI8(CastI4(CastI2(CastI1(qi1)))) : i8?
+BndKind:Call, Type:i8?, Bnd:(Call(∂.Guard([guard:1] Global(qi1), Num<i8>(Num<i4>(Num<i2>(Scope(1))))):i8?))
+// (∂.qi1:i1?) : i8?
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i1>
+      1) stloc.0 [Opt<i1>]
+      2) ldloca.s [Opt<i1> (0)]
+      5) call Opt<i1>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i1> (0)]
+      5) call Opt<i1>::GetValueOrDefault():i1
+      1) stloc.1 [i1]
+      1) ldloc.1 [i1]
+      1) conv.i8
+      5) newobj Opt<i8>(i8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [1]:
+      5) box [Opt<i8>]
+      1) ret
+  Total Size: 52
+
+Func sig: (qi1:i1?) to i8?
+Type: <null>, Value: <null>
+###
+> CastI2(CastI2(i1))
+CastI2(CastI2(i1)) : i2
+BndKind:CastNum, Type:i2, Bnd:(Num<i2>(Global(i1)))
+// (∂.i1:i1) : i2
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i1
+      1) stloc.0 [i1]
+      1) ldloc.0 [i1]
+      5) box [i2]
+      1) ret
+  Total Size: 16
+
+Func sig: (i1:i1) to i2
+Type: i2, Value: 0
+###
+> CastR8(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1))))))))))
+CastR8(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1)))))))))) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(si1), Num<r8>(Num<r4>(Num<u8>(Num<u4>(Num<u2>(Call(∂.CastU1(Num<i8>(Num<i4>(Num<i2>(Scope(1))))):u1))))))):r8*))
+// (∂.si1:i1*) : r8*
+ForEach_1(Arr<obj>, i1):r8
+      1) ldarg.1 [i1]
+      1) conv.i8
+      1) conv.u1
+      1) conv.u8
+      5) call static NumUtil::ToR4(u8):r4
+      1) conv.r8
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i1>
+      1) stloc.0 [Seq<i1>]
+      1) ldloc.0 [Seq<i1>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i1,r8>]
+      5) call static ForEachGen::Exec(Seq<i1>, Func<i1,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (si1:i1*) to r8*
+Type: <null>, Value: <null>
+###
+> CastReal(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1))))))))))
+CastReal(CastR4(CastU8(CastU4(CastU2(CastU1(CastI8(CastI4(CastI2(CastI1(si1)))))))))) : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(si1), Num<r8>(Num<r4>(Num<u8>(Num<u4>(Num<u2>(Call(∂.CastU1(Num<i8>(Num<i4>(Num<i2>(Scope(1))))):u1))))))):r8*))
+// (∂.si1:i1*) : r8*
+ForEach_1(Arr<obj>, i1):r8
+      1) ldarg.1 [i1]
+      1) conv.i8
+      1) conv.u1
+      1) conv.u8
+      5) call static NumUtil::ToR4(u8):r4
+      1) conv.r8
+      1) ret
+  Total Size: 11
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i1>
+      1) stloc.0 [Seq<i1>]
+      1) ldloc.0 [Seq<i1>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i1,r8>]
+      5) call static ForEachGen::Exec(Seq<i1>, Func<i1,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (si1:i1*) to r8*
+Type: <null>, Value: <null>
+###
+> CastI1([])
+CastI1([]) : i1*
+BndKind:Null, Type:i1*, Bnd:(null:i1*)
+// () : i1*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldnull
+      1) ret
+  Total Size: 2
+
+Func sig: () to i1*
+Type: <null>, Value: <null>
+###
+> CastI1(vs)
+CastI1(vs) : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.ForEach([map:1] Global(vs), 0:i1):i1*))
+// (∂.vs:v*) : i1*
+ForEach_1(Arr<obj>, obj):i1
+      1) ldc.i4.0
+      1) ret
+  Total Size: 2
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<obj>
+      1) stloc.0 [Seq<obj>]
+      1) ldloc.0 [Seq<obj>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<obj,i1>]
+      5) call static ForEachGen::Exec(Seq<obj>, Func<obj,i1>):Seq<i1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i1>):Seq<i1>
+      1) ret
+  Total Size: 28
+
+Func sig: (vs:v*) to i1*
+Type: <null>, Value: <null>
+###
+> i + r8
+i + r8 : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Num<r8>(Global(i)), Global(r8)))
+// (∂.i:i, ∂.r8:r8) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [ia]
+      5) call static NumUtil::ToR8(ia):r8
+      1) ldloc.1 [r8]
+      1) add
+      5) box [r8]
+      1) ret
+  Total Size: 32
+
+Func sig: (i:i, r8:r8) to r8
+Type: r8, Value: 0
+###
+> i + r4
+i + r4 : r8
+BndKind:VariadicOp, Type:r8, Bnd:(Add(Num<r8>(Global(i)), Num<r8>(Global(r4))))
+// (∂.i:i, ∂.r4:r4) : r8
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      1) ldloc.0 [ia]
+      5) call static NumUtil::ToR8(ia):r8
+      1) ldloc.1 [r4]
+      1) conv.r8
+      1) add
+      5) box [r8]
+      1) ret
+  Total Size: 33
+
+Func sig: (i:i, r4:r4) to r8
+Type: r8, Value: 0
+###
+> i + i8
+i + i8 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(i8))))
+// (∂.i:i, ∂.i8:i8) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i8
+      1) stloc.1 [i8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [i8]
+      5) newobj ia(i8)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, i8:i8) to i
+Type: ia, Value: 0
+###
+> i + i4
+i + i4 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(i4))))
+// (∂.i:i, ∂.i4:i4) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [i4]
+      5) newobj ia(i4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, i4:i4) to i
+Type: ia, Value: 0
+###
+> i + i2
+i + i2 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(i2))))
+// (∂.i:i, ∂.i2:i2) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i2
+      1) stloc.1 [i2]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [i2]
+      5) newobj ia(i4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, i2:i2) to i
+Type: ia, Value: 0
+###
+> i + i1
+i + i1 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(i1))))
+// (∂.i:i, ∂.i1:i1) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i1
+      1) stloc.1 [i1]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [i1]
+      5) newobj ia(i4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, i1:i1) to i
+Type: ia, Value: 0
+###
+> i + u8
+i + u8 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(u8))))
+// (∂.i:i, ∂.u8:u8) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u8
+      1) stloc.1 [u8]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [u8]
+      5) newobj ia(u8)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, u8:u8) to i
+Type: ia, Value: 0
+###
+> i + u4
+i + u4 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(u4))))
+// (∂.i:i, ∂.u4:u4) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [u4]
+      5) newobj ia(u4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, u4:u4) to i
+Type: ia, Value: 0
+###
+> i + u2
+i + u2 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(u2))))
+// (∂.i:i, ∂.u2:u2) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u2
+      1) stloc.1 [u2]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [u2]
+      5) newobj ia(u4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, u2:u2) to i
+Type: ia, Value: 0
+###
+> i + u1
+i + u1 : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(u1))))
+// (∂.i:i, ∂.u1:u1) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u1
+      1) stloc.1 [u1]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [u1]
+      5) newobj ia(u4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, u1:u1) to i
+Type: ia, Value: 0
+###
+> i + b
+i + b : i
+BndKind:VariadicOp, Type:i, Bnd:(Add(Global(i), Num<i>(Global(b))))
+// (∂.i:i, ∂.b:b) : i
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [bool]
+      5) newobj ia(u4)
+      5) call static ia::op_Addition(ia, ia):ia
+      5) box [ia]
+      1) ret
+  Total Size: 36
+
+Func sig: (i:i, b:b) to i
+Type: ia, Value: 0
+###
+
+**** New definitions: R8s, type: r8*
+**** New definitions: R4s, type: r4*
+**** New definitions: I_s, type: i*
+**** New definitions: I8s, type: i8*
+**** New definitions: I4s, type: i4*
+**** New definitions: I2s, type: i2*
+**** New definitions: I1s, type: i1*
+**** New definitions: U8s, type: u8*
+**** New definitions: U4s, type: u4*
+**** New definitions: U2s, type: u2*
+**** New definitions: U1s, type: u1*
+**** New definitions: Bs, type: b*
+
+> R8s->CastIA()
+R8s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastIA(Scope(1)):i)):i*))
+// (∂.R8s:r8*) : i*
+ForEach_1(Arr<obj>, r8):ia
+      1) ldarg.1 [r8]
+      1) dup
+      5) call static NumUtil::IsFinite(r8):bool
+      5) brtrue [0]
+      1) pop
+      9) ldc.r8 [0]
+  Label [0]:
+      5) newobj ia(r8)
+      1) ret
+  Total Size: 28
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,ia>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) 9223372036854775808
+ 9) 18446744073709551616
+10) 170141183460469231731687303715884105728
+11) 340282366920938463463374607431768211456
+12) 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastIA()
+R4s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastIA(Scope(1)):i)):i*))
+// (∂.R4s:r4*) : i*
+ForEach_1(Arr<obj>, r4):ia
+      1) ldarg.1 [r4]
+      1) dup
+      5) call static NumUtil::IsFinite(r4):bool
+      5) brtrue [0]
+      1) pop
+      5) ldc.r4 [0]
+  Label [0]:
+      5) newobj ia(r4)
+      1) ret
+  Total Size: 24
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,ia>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) 9223372036854775808
+ 9) 18446744073709551616
+10) 170141183460469231731687303715884105728
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> I_s->CastIA()
+I_s->CastIA() : i*
+BndKind:Global, Type:i*, Bnd:(Global(I_s))
+// (∂.I_s:i*) : i*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ret
+  Total Size: 11
+
+Func sig: (I_s:i*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9223372036854775807
+12) 9223372036854775808
+13) 18446744073709551616
+14) 170141183460469231731687303715884105727
+15) 170141183460469231731687303715884105728
+16) 170141183460469231750052062260377170448
+###
+> I8s->CastIA()
+I8s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(I8s), Num<i>(Scope(1))):i*))
+// (∂.I8s:i8*) : i*
+ForEach_1(Arr<obj>, i8):ia
+      1) ldarg.1 [i8]
+      5) newobj ia(i8)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,ia>]
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (I8s:i8*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9223372036854775807
+12) -9223372036854775808
+###
+> I4s->CastIA()
+I4s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(I4s), Num<i>(Scope(1))):i*))
+// (∂.I4s:i4*) : i*
+ForEach_1(Arr<obj>, i4):ia
+      1) ldarg.1 [i4]
+      5) newobj ia(i4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i4>
+      1) stloc.0 [Seq<i4>]
+      1) ldloc.0 [Seq<i4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i4,ia>]
+      5) call static ForEachGen::Exec(Seq<i4>, Func<i4,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (I4s:i4*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) -2147483648
+###
+> I2s->CastIA()
+I2s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(I2s), Num<i>(Scope(1))):i*))
+// (∂.I2s:i2*) : i*
+ForEach_1(Arr<obj>, i2):ia
+      1) ldarg.1 [i2]
+      5) newobj ia(i4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i2>
+      1) stloc.0 [Seq<i2>]
+      1) ldloc.0 [Seq<i2>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i2,ia>]
+      5) call static ForEachGen::Exec(Seq<i2>, Func<i2,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (I2s:i2*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) -32768
+###
+> I1s->CastIA()
+I1s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(I1s), Num<i>(Scope(1))):i*))
+// (∂.I1s:i1*) : i*
+ForEach_1(Arr<obj>, i1):ia
+      1) ldarg.1 [i1]
+      5) newobj ia(i4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i1>
+      1) stloc.0 [Seq<i1>]
+      1) ldloc.0 [Seq<i1>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i1,ia>]
+      5) call static ForEachGen::Exec(Seq<i1>, Func<i1,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (I1s:i1*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) -128
+###
+> U8s->CastIA()
+U8s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(U8s), Num<i>(Scope(1))):i*))
+// (∂.U8s:u8*) : i*
+ForEach_1(Arr<obj>, u8):ia
+      1) ldarg.1 [u8]
+      5) newobj ia(u8)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u8,ia>]
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (U8s:u8*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) 7
+ 2) 128
+ 3) 255
+ 4) 256
+ 5) 32768
+ 6) 65535
+ 7) 65536
+ 8) 2147483648
+ 9) 4294967295
+10) 4294967296
+11) 9223372036854775808
+12) 18446744073709551615
+###
+> U4s->CastIA()
+U4s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(U4s), Num<i>(Scope(1))):i*))
+// (∂.U4s:u4*) : i*
+ForEach_1(Arr<obj>, u4):ia
+      1) ldarg.1 [u4]
+      5) newobj ia(u4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u4>
+      1) stloc.0 [Seq<u4>]
+      1) ldloc.0 [Seq<u4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u4,ia>]
+      5) call static ForEachGen::Exec(Seq<u4>, Func<u4,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (U4s:u4*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) 7
+ 2) 128
+ 3) 255
+ 4) 256
+ 5) 32768
+ 6) 65535
+ 7) 65536
+ 8) 2147483648
+ 9) 4294967295
+###
+> U2s->CastIA()
+U2s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(U2s), Num<i>(Scope(1))):i*))
+// (∂.U2s:u2*) : i*
+ForEach_1(Arr<obj>, u2):ia
+      1) ldarg.1 [u2]
+      5) newobj ia(u4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u2>
+      1) stloc.0 [Seq<u2>]
+      1) ldloc.0 [Seq<u2>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u2,ia>]
+      5) call static ForEachGen::Exec(Seq<u2>, Func<u2,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (U2s:u2*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) 7
+ 2) 128
+ 3) 255
+ 4) 256
+ 5) 32768
+ 6) 65535
+###
+> U1s->CastIA()
+U1s->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(U1s), Num<i>(Scope(1))):i*))
+// (∂.U1s:u1*) : i*
+ForEach_1(Arr<obj>, u1):ia
+      1) ldarg.1 [u1]
+      5) newobj ia(u4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u1>
+      1) stloc.0 [Seq<u1>]
+      1) ldloc.0 [Seq<u1>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u1,ia>]
+      5) call static ForEachGen::Exec(Seq<u1>, Func<u1,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (U1s:u1*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) 7
+ 2) 128
+ 3) 255
+###
+> Bs->CastIA()
+Bs->CastIA() : i*
+BndKind:Call, Type:i*, Bnd:(Call(∂.ForEach([map:1] Global(Bs), Num<i>(Scope(1))):i*))
+// (∂.Bs:b*) : i*
+ForEach_1(Arr<obj>, bool):ia
+      1) ldarg.1 [bool]
+      5) newobj ia(u4)
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<bool>
+      1) stloc.0 [Seq<bool>]
+      1) ldloc.0 [Seq<bool>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<bool,ia>]
+      5) call static ForEachGen::Exec(Seq<bool>, Func<bool,ia>):Seq<ia>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<ia>):Seq<ia>
+      1) ret
+  Total Size: 28
+
+Func sig: (Bs:b*) to i*
+Sequence: Seq<ia>
+ 0) 0
+ 1) 1
+###
+> I_s->CastR8()
+I_s->CastR8() : r8*
+BndKind:Call, Type:r8*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Num<r8>(Scope(1))):r8*))
+// (∂.I_s:i*) : r8*
+ForEach_1(Arr<obj>, ia):r8
+      1) ldarg.1 [ia]
+      5) call static NumUtil::ToR8(ia):r8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,r8>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,r8>):Seq<r8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r8>):Seq<r8>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to r8*
+Sequence: Seq<r8>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9.223372036854776E+18
+12) 9.223372036854776E+18
+13) 1.8446744073709552E+19
+14) 1.7014118346046923E+38
+15) 1.7014118346046923E+38
+16) 1.7014118346046923E+38
+###
+> I_s->CastR4()
+I_s->CastR4() : r4*
+BndKind:Call, Type:r4*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Num<r4>(Scope(1))):r4*))
+// (∂.I_s:i*) : r4*
+ForEach_1(Arr<obj>, ia):r4
+      1) ldarg.1 [ia]
+      5) call static NumUtil::ToR4(ia):r4
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,r4>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,r4>):Seq<r4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<r4>):Seq<r4>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to r4*
+Sequence: Seq<r4>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2.1474836E+09
+ 9) 2.1474836E+09
+10) 4.2949673E+09
+11) 9.223372E+18
+12) 9.223372E+18
+13) 1.8446744E+19
+14) 1.7014118E+38
+15) 1.7014118E+38
+16) 1.7014118E+38
+###
+> I_s->CastIA()
+I_s->CastIA() : i*
+BndKind:Global, Type:i*, Bnd:(Global(I_s))
+// (∂.I_s:i*) : i*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ret
+  Total Size: 11
+
+Func sig: (I_s:i*) to i*
+Sequence: Seq<ia>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9223372036854775807
+12) 9223372036854775808
+13) 18446744073709551616
+14) 170141183460469231731687303715884105727
+15) 170141183460469231731687303715884105728
+16) 170141183460469231750052062260377170448
+###
+> I_s->CastI8()
+I_s->CastI8() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastI8(Scope(1)):i8)):i8*))
+// (∂.I_s:i*) : i8*
+ForEach_1(Arr<obj>, ia):i8
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,i8>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9223372036854775807
+12) -9223372036854775808
+13) 0
+14) -1
+15) 0
+16) -81985529216486896
+###
+> I_s->CastI4()
+I_s->CastI4() : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastI4(Scope(1)):i4)):i4*))
+// (∂.I_s:i*) : i4*
+ForEach_1(Arr<obj>, ia):i4
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,i4>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to i4*
+Sequence: Seq<i4>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) -2147483648
+10) 0
+11) -1
+12) 0
+13) 0
+14) -1
+15) 0
+16) 1985229328
+###
+> I_s->CastI2()
+I_s->CastI2() : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastI2(Scope(1)):i2)):i2*))
+// (∂.I_s:i*) : i2*
+ForEach_1(Arr<obj>, ia):i2
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,i2>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,i2>):Seq<i2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i2>):Seq<i2>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to i2*
+Sequence: Seq<i2>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) -32768
+ 7) 0
+ 8) -1
+ 9) 0
+10) 0
+11) -1
+12) 0
+13) 0
+14) -1
+15) 0
+16) 12816
+###
+> I_s->CastI1()
+I_s->CastI1() : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastI1(Scope(1)):i1)):i1*))
+// (∂.I_s:i*) : i1*
+ForEach_1(Arr<obj>, ia):i1
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecI8(ia):i8
+      1) conv.i1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,i1>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,i1>):Seq<i1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i1>):Seq<i1>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to i1*
+Sequence: Seq<i1>
+ 0) 3
+ 1) -7
+ 2) 127
+ 3) -128
+ 4) 0
+ 5) -1
+ 6) 0
+ 7) 0
+ 8) -1
+ 9) 0
+10) 0
+11) -1
+12) 0
+13) 0
+14) -1
+15) 0
+16) 16
+###
+> I_s->CastU8()
+I_s->CastU8() : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastU8(Scope(1)):u8)):u8*))
+// (∂.I_s:i*) : u8*
+ForEach_1(Arr<obj>, ia):u8
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecU8(ia):u8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,u8>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to u8*
+Sequence: Seq<u8>
+ 0) 3
+ 1) 18446744073709551609
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 4294967296
+11) 9223372036854775807
+12) 9223372036854775808
+13) 0
+14) 18446744073709551615
+15) 0
+16) 18364758544493064720
+###
+> I_s->CastU4()
+I_s->CastU4() : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastU4(Scope(1)):u4)):u4*))
+// (∂.I_s:i*) : u4*
+ForEach_1(Arr<obj>, ia):u4
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecU8(ia):u8
+      1) conv.u4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,u4>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,u4>):Seq<u4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u4>):Seq<u4>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to u4*
+Sequence: Seq<u4>
+ 0) 3
+ 1) 4294967289
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 65536
+ 8) 2147483647
+ 9) 2147483648
+10) 0
+11) 4294967295
+12) 0
+13) 0
+14) 4294967295
+15) 0
+16) 1985229328
+###
+> I_s->CastU2()
+I_s->CastU2() : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastU2(Scope(1)):u2)):u2*))
+// (∂.I_s:i*) : u2*
+ForEach_1(Arr<obj>, ia):u2
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecU8(ia):u8
+      1) conv.u2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,u2>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,u2>):Seq<u2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u2>):Seq<u2>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to u2*
+Sequence: Seq<u2>
+ 0) 3
+ 1) 65529
+ 2) 127
+ 3) 128
+ 4) 256
+ 5) 32767
+ 6) 32768
+ 7) 0
+ 8) 65535
+ 9) 0
+10) 0
+11) 65535
+12) 0
+13) 0
+14) 65535
+15) 0
+16) 12816
+###
+> I_s->CastU1()
+I_s->CastU1() : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.ForEach([map:1] Global(I_s), Call(∂.CastU1(Scope(1)):u1)):u1*))
+// (∂.I_s:i*) : u1*
+ForEach_1(Arr<obj>, ia):u1
+      1) ldarg.1 [ia]
+      5) call static CastGen::ExecU8(ia):u8
+      1) conv.u1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<ia>
+      1) stloc.0 [Seq<ia>]
+      1) ldloc.0 [Seq<ia>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<ia,u1>]
+      5) call static ForEachGen::Exec(Seq<ia>, Func<ia,u1>):Seq<u1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u1>):Seq<u1>
+      1) ret
+  Total Size: 28
+
+Func sig: (I_s:i*) to u1*
+Sequence: Seq<u1>
+ 0) 3
+ 1) 249
+ 2) 127
+ 3) 128
+ 4) 0
+ 5) 255
+ 6) 0
+ 7) 0
+ 8) 255
+ 9) 0
+10) 0
+11) 255
+12) 0
+13) 0
+14) 255
+15) 0
+16) 16
+###
+> R8s->CastI8()
+R8s->CastI8() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastI8(Scope(1)):i8)):i8*))
+// (∂.R8s:r8*) : i8*
+ForEach_1(Arr<obj>, r8):i8
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,i8>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) -9223372036854775808
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastI4()
+R8s->CastI4() : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastI4(Scope(1)):i4)):i4*))
+// (∂.R8s:r8*) : i4*
+ForEach_1(Arr<obj>, r8):i4
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.i4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,i4>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to i4*
+Sequence: Seq<i4>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) -2147483648
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastI2()
+R8s->CastI2() : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastI2(Scope(1)):i2)):i2*))
+// (∂.R8s:r8*) : i2*
+ForEach_1(Arr<obj>, r8):i2
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.i2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,i2>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,i2>):Seq<i2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i2>):Seq<i2>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to i2*
+Sequence: Seq<i2>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) -32768
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastI1()
+R8s->CastI1() : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastI1(Scope(1)):i1)):i1*))
+// (∂.R8s:r8*) : i1*
+ForEach_1(Arr<obj>, r8):i1
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.i1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,i1>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,i1>):Seq<i1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i1>):Seq<i1>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to i1*
+Sequence: Seq<i1>
+ 0) 3
+ 1) -7
+ 2) -128
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastU8()
+R8s->CastU8() : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastU8(Scope(1)):u8)):u8*))
+// (∂.R8s:r8*) : u8*
+ForEach_1(Arr<obj>, r8):u8
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,u8>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u8*
+Sequence: Seq<u8>
+ 0) 3
+ 1) 18446744073709551609
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) 9223372036854775808
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastU4()
+R8s->CastU4() : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastU4(Scope(1)):u4)):u4*))
+// (∂.R8s:r8*) : u4*
+ForEach_1(Arr<obj>, r8):u4
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.u4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,u4>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,u4>):Seq<u4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u4>):Seq<u4>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u4*
+Sequence: Seq<u4>
+ 0) 3
+ 1) 4294967289
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastU2()
+R8s->CastU2() : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastU2(Scope(1)):u2)):u2*))
+// (∂.R8s:r8*) : u2*
+ForEach_1(Arr<obj>, r8):u2
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.u2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,u2>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,u2>):Seq<u2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u2>):Seq<u2>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u2*
+Sequence: Seq<u2>
+ 0) 3
+ 1) 65529
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R8s->CastU1()
+R8s->CastU1() : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.ForEach([map:1] Global(R8s), Call(∂.CastU1(Scope(1)):u1)):u1*))
+// (∂.R8s:r8*) : u1*
+ForEach_1(Arr<obj>, r8):u1
+      1) ldarg.1 [r8]
+      5) call static NumUtil::ModToI8(r8):i8
+      1) conv.u1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r8>
+      1) stloc.0 [Seq<r8>]
+      1) ldloc.0 [Seq<r8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r8,u1>]
+      5) call static ForEachGen::Exec(Seq<r8>, Func<r8,u1>):Seq<u1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u1>):Seq<u1>
+      1) ret
+  Total Size: 28
+
+Func sig: (R8s:r8*) to u1*
+Sequence: Seq<u1>
+ 0) 3
+ 1) 249
+ 2) 128
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastI8()
+R4s->CastI8() : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastI8(Scope(1)):i8)):i8*))
+// (∂.R4s:r4*) : i8*
+ForEach_1(Arr<obj>, r4):i8
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,i8>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to i8*
+Sequence: Seq<i8>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) -9223372036854775808
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastI4()
+R4s->CastI4() : i4*
+BndKind:Call, Type:i4*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastI4(Scope(1)):i4)):i4*))
+// (∂.R4s:r4*) : i4*
+ForEach_1(Arr<obj>, r4):i4
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.i4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,i4>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,i4>):Seq<i4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i4>):Seq<i4>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to i4*
+Sequence: Seq<i4>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) -2147483648
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastI2()
+R4s->CastI2() : i2*
+BndKind:Call, Type:i2*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastI2(Scope(1)):i2)):i2*))
+// (∂.R4s:r4*) : i2*
+ForEach_1(Arr<obj>, r4):i2
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.i2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,i2>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,i2>):Seq<i2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i2>):Seq<i2>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to i2*
+Sequence: Seq<i2>
+ 0) 3
+ 1) -7
+ 2) 128
+ 3) 256
+ 4) -32768
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastI1()
+R4s->CastI1() : i1*
+BndKind:Call, Type:i1*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastI1(Scope(1)):i1)):i1*))
+// (∂.R4s:r4*) : i1*
+ForEach_1(Arr<obj>, r4):i1
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.i1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,i1>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,i1>):Seq<i1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i1>):Seq<i1>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to i1*
+Sequence: Seq<i1>
+ 0) 3
+ 1) -7
+ 2) -128
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastU8()
+R4s->CastU8() : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastU8(Scope(1)):u8)):u8*))
+// (∂.R4s:r4*) : u8*
+ForEach_1(Arr<obj>, r4):u8
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) ret
+  Total Size: 7
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,u8>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to u8*
+Sequence: Seq<u8>
+ 0) 3
+ 1) 18446744073709551609
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 4294967296
+ 8) 9223372036854775808
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastU4()
+R4s->CastU4() : u4*
+BndKind:Call, Type:u4*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastU4(Scope(1)):u4)):u4*))
+// (∂.R4s:r4*) : u4*
+ForEach_1(Arr<obj>, r4):u4
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.u4
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,u4>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,u4>):Seq<u4>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u4>):Seq<u4>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to u4*
+Sequence: Seq<u4>
+ 0) 3
+ 1) 4294967289
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 65536
+ 6) 2147483648
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastU2()
+R4s->CastU2() : u2*
+BndKind:Call, Type:u2*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastU2(Scope(1)):u2)):u2*))
+// (∂.R4s:r4*) : u2*
+ForEach_1(Arr<obj>, r4):u2
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.u2
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,u2>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,u2>):Seq<u2>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u2>):Seq<u2>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to u2*
+Sequence: Seq<u2>
+ 0) 3
+ 1) 65529
+ 2) 128
+ 3) 256
+ 4) 32768
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###
+> R4s->CastU1()
+R4s->CastU1() : u1*
+BndKind:Call, Type:u1*, Bnd:(Call(∂.ForEach([map:1] Global(R4s), Call(∂.CastU1(Scope(1)):u1)):u1*))
+// (∂.R4s:r4*) : u1*
+ForEach_1(Arr<obj>, r4):u1
+      1) ldarg.1 [r4]
+      5) call static NumUtil::ModToI8(r4):i8
+      1) conv.u1
+      1) ret
+  Total Size: 8
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<r4>
+      1) stloc.0 [Seq<r4>]
+      1) ldloc.0 [Seq<r4>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<r4,u1>]
+      5) call static ForEachGen::Exec(Seq<r4>, Func<r4,u1>):Seq<u1>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u1>):Seq<u1>
+      1) ret
+  Total Size: 28
+
+Func sig: (R4s:r4*) to u1*
+Sequence: Seq<u1>
+ 0) 3
+ 1) 249
+ 2) 128
+ 3) 0
+ 4) 0
+ 5) 0
+ 6) 0
+ 7) 0
+ 8) 0
+ 9) 0
+10) 0
+11) 0
+12) 0
+13) 0
+14) 0
+15) 0
+16) 0
+###

@@ -1,0 +1,365 @@
+﻿`` T := Tensor.From(Range(2, 5));
+`` QT := Opt(T);
+`` U := Tensor.From(Range(11, 16));
+`` QU := Opt(U);
+`` S := Range(21, 26);
+`` b := true;
+
+T->Tensor.ForEach(it * 1)
+T->Tensor.ForEach(it^2)
+T->Tensor.ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(as a, T as b, T as c, a * b * c)
+T->Tensor.ForEach(as a, T as b, T as c, T as d, a * b * c * d)
+T->Tensor.ForEach(as a, U as b, T as c, U as d, a * b * c * d)
+
+QT->Tensor.ForEach(it * 1)
+QT->Tensor.ForEach(it^2)
+QT->Tensor.ForEach(as a, QT as b, a * b)
+QT->Tensor.ForEach(as a, QT as b, QT as c, a * b * c)
+QT->Tensor.ForEach(as a, QT as b, QT as c, QT as d, a * b * c * d)
+QT->Tensor.ForEach(as a, QU as b, QT as c, QU as d, a * b * c * d)
+
+T->Tensor.ForEach(as a, U as b, a * b)
+
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2)
+
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, T as b, a * b)
+
+(Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3)
+
+`` T0 := Tensor.From(Range(100, 1000), 5);
+`` T1 := Tensor.From(Range(200, 1000), 5);
+`` T2 := Tensor.From(Range(300, 1000), 5);
+`` T3 := Tensor.From(Range(400, 1000), 5);
+`` U0 := Tensor.From(Range(500, 1000), 7);
+`` U1 := Tensor.From(Range(600, 1000), 7);
+`` U2 := Tensor.From(Range(700, 1000), 7);
+`` U3 := Tensor.From(Range(800, 1000), 7);
+"*** Rank 1 regular ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, d:T3, (a,b,c,d)) // NYI
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 3);
+`` U0 := Tensor.From(Range(500, 1000), 2, 3);
+`` U1 := Tensor.From(Range(600, 1000), 2, 3);
+`` U2 := Tensor.From(Range(700, 1000), 2, 3);
+`` U3 := Tensor.From(Range(800, 1000), 2, 3);
+"*** Rank 2 regular ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 3);
+`` U0 := Tensor.From(Range(500, 1000), 2, 4);
+`` U1 := Tensor.From(Range(600, 1000), 2, 4);
+`` U2 := Tensor.From(Range(700, 1000), 2, 4);
+`` U3 := Tensor.From(Range(800, 1000), 2, 4);
+"*** Rank 2 non-regular U ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 3);
+`` U0 := Tensor.From(Range(500, 1000), 3);
+`` U1 := Tensor.From(Range(600, 1000), 3);
+`` U2 := Tensor.From(Range(700, 1000), 3);
+`` U3 := Tensor.From(Range(800, 1000), 3);
+"*** Rank 2 and 1 (brodcasting slot 0) ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 3);
+`` U0 := Tensor.From(Range(500, 1000), 1, 3);
+`` U1 := Tensor.From(Range(600, 1000), 1, 3);
+`` U2 := Tensor.From(Range(700, 1000), 1, 3);
+`` U3 := Tensor.From(Range(800, 1000), 1, 3);
+"*** Rank 2 brodcasting slot 0 ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 3);
+`` U0 := Tensor.From(Range(500, 1000), 3, 1);
+`` U1 := Tensor.From(Range(600, 1000), 3, 1);
+`` U2 := Tensor.From(Range(700, 1000), 3, 1);
+`` U3 := Tensor.From(Range(800, 1000), 3, 1);
+"*** Rank 2 brodcasting slot 1 ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 1, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 1, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 1, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 1, 3);
+`` U0 := Tensor.From(Range(500, 1000), 3, 1, 2);
+`` U1 := Tensor.From(Range(600, 1000), 3, 1, 2);
+`` U2 := Tensor.From(Range(700, 1000), 3, 1, 2);
+`` U3 := Tensor.From(Range(800, 1000), 3, 1, 2);
+"*** Rank 3 matching 1 in slot 1 ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 2, 3);
+`` T1 := Tensor.From(Range(200, 1000), 2, 2, 3);
+`` T2 := Tensor.From(Range(300, 1000), 2, 2, 3);
+`` T3 := Tensor.From(Range(400, 1000), 2, 2, 3);
+`` U0 := Tensor.Fill(500, 2, 2, 3);
+`` U1 := Tensor.Fill(600, 2, 2, 3);
+`` U2 := Tensor.Fill(700, 2, 2, 3);
+`` U3 := Tensor.Fill(800, 2, 2, 3);
+"*** Rank 3 with const U ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(100, 1000), 2, 4);
+`` T1 := Tensor.From(Range(200, 1000), 2, 4);
+`` T2 := Tensor.From(Range(300, 1000), 2, 4);
+`` T3 := Tensor.From(Range(400, 1000), 2, 4);
+`` U0 := Tensor.Fill(500, 2, 3);
+`` U1 := Tensor.Fill(600, 2, 3);
+`` U2 := Tensor.Fill(700, 2, 3);
+`` U3 := Tensor.Fill(800, 2, 3);
+"*** Rank 2 with const U, non-regular T ***"
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+$$$
+
+`` T0 := Tensor.From(Range(0, 5), 5);
+`` T1 := Tensor.From(Range(1, 6), 5);
+`` T2 := Tensor.From(Range(2, 7), 5);
+`` T3 := Tensor.From(Range(3, 8), 5);
+`` U0 := Tensor.Fill(0, 15);
+`` U1 := Tensor.Fill(1, 15);
+`` U2 := Tensor.Fill(2, 15);
+`` U3 := Tensor.Fill(3, 15);
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(0, 5), 5);
+`` T1 := Tensor.From(Range(1, 6), 5);
+`` T2 := Tensor.From(Range(2, 7), 5);
+`` T3 := Tensor.From(Range(3, 8), 5);
+`` U0 := Tensor.Fill(0);
+`` U1 := Tensor.Fill(1);
+`` U2 := Tensor.Fill(2);
+`` U3 := Tensor.Fill(3);
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(0, 6), 2, 3);
+`` T1 := Tensor.From(Range(1, 7), 2, 3);
+`` T2 := Tensor.From(Range(2, 8), 2, 3);
+`` T3 := Tensor.From(Range(3, 9), 2, 3);
+`` U0 := Tensor.From(Range(0, 15), 2, 4);
+`` U1 := Tensor.From(Range(1, 16), 2, 4);
+`` U2 := Tensor.From(Range(2, 17), 2, 4);
+`` U3 := Tensor.From(Range(3, 18), 2, 4);
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(0, 6), 2, 3);
+`` T1 := Tensor.From(Range(1, 7), 2, 3);
+`` T2 := Tensor.From(Range(2, 8), 2, 3);
+`` T3 := Tensor.From(Range(3, 9), 2, 3);
+`` U0 := Tensor.From(Range(0, 15), 2, 2, 3);
+`` U1 := Tensor.From(Range(1, 16), 2, 2, 3);
+`` U2 := Tensor.From(Range(2, 17), 2, 2, 3);
+`` U3 := Tensor.From(Range(3, 18), 2, 2, 3);
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+
+`` T0 := Tensor.From(Range(0, 6), 2, 3);
+`` T1 := Tensor.From(Range(1, 7), 2, 3);
+`` T2 := Tensor.From(Range(2, 8), 2, 3);
+`` T3 := Tensor.From(Range(3, 9), 2, 3);
+`` U0 := Tensor.From(Range(0, 15), 2, 2, 2);
+`` U1 := Tensor.From(Range(1, 16), 2, 2, 2);
+`` U2 := Tensor.From(Range(2, 17), 2, 2, 2);
+`` U3 := Tensor.From(Range(3, 18), 2, 2, 2);
+
+Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a:U0, b:U1, (a,b))
+
+Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))

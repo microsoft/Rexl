@@ -1,0 +1,390 @@
+**** New globals: {Games:{AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*}
+
+> Games
+Games : {AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*
+Binder : Games
+###
+> Count(Games)
+Count(Games) : i8
+Binder : Count(Games)
+###
+> Count(Games, true)
+Count(Games, true) : i8
+Binder : Count(*1: Games, true)
+Reducer: Count(Games)
+###
+> Sum(Games, 1)
+Sum(Games, 1) : i8
+Binder : Sum(*1: Games, 1)
+###
+> Count(Games.Away) // REVIEW: Optimize this (strip out the Map)!
+Count(Games.Away) : i8
+Binder : Count(ForEach(*1: Games, *1.Away))
+###
+> Sum(Games, HScore)
+Sum(Games, HScore) : i8
+Binder : Sum(*1: Games, Num<i8>(*1.HScore))
+###
+> Sum(Games.HScore)
+Sum(Games.HScore) : i8
+Binder : Sum(ForEach(*1: Games, *1.HScore))
+Reducer: Sum(*1: Games, Num<i8>(*1.HScore))
+###
+> Sum(g : Games, g.HScore)
+Sum(g : Games, g.HScore) : i8
+Binder : Sum(*1: Games, Num<i8>(*1.HScore))
+###
+> Sum(Games, AScore)
+Sum(Games, AScore) : i8
+Binder : Sum(*1: Games, Num<i8>(*1.AScore))
+###
+> Sum(Games, HScore + AScore)
+Sum(Games, HScore + AScore) : i8
+Binder : Sum(*1: Games, Add(Num<i8>(*1.HScore), Num<i8>(*1.AScore)))
+###
+> Sum(Games.HScore + Games.AScore)
+Sum(Games.HScore + Games.AScore) : i8
+Binder : Sum(ForEach(*3: ForEach(*1: Games, *1.HScore), *4: ForEach(*2: Games, *2.AScore), Add(Num<i8>(*3), Num<i8>(*4))))
+Reducer: Sum(*1: Games, Add(Num<i8>(*1.HScore), Num<i8>(*1.AScore)))
+###
+> (Sum(Games, HScore)) / (Sum(Games, HScore + AScore)) * 100
+Sum(Games, HScore) / Sum(Games, HScore + AScore) * 100 : r8
+Binder : Mul(Num<r8>(Sum(*1: Games, Num<i8>(*1.HScore))), [/] Num<r8>(Sum(*2: Games, Add(Num<i8>(*2.HScore), Num<i8>(*2.AScore)))), 100)
+###
+> Count(Games, HScore > AScore)
+Count(Games, HScore $> AScore) : i8
+Binder : Count(*1: Games, *1.HScore @> *1.AScore)
+###
+> Count(Games, HScore > AScore) / Count(Games) * 100
+Count(Games, HScore $> AScore) / Count(Games) * 100 : r8
+Binder : Mul(Num<r8>(Count(*1: Games, *1.HScore @> *1.AScore)), [/] Num<r8>(Count(Games)), 100)
+###
+> Count(Games, HScore = AScore)
+Count(Games, HScore @= AScore) : i8
+Binder : Count(*1: Games, *1.HScore @= *1.AScore)
+###
+> Count(Games, HScore + AScore >= 70)
+Count(Games, HScore + AScore $>= 70) : i8
+Binder : Count(*1: Games, Add(Num<i8>(*1.HScore), Num<i8>(*1.AScore)) @>= 70)
+###
+> Count(Games, HScore = 0 or AScore = 0)
+Count(Games, HScore @= 0 or AScore @= 0) : i8
+Binder : Count(*1: Games, Or(Num<i8>(*1.HScore) @= 0, Num<i8>(*1.AScore) @= 0))
+###
+> Count(Games, HScore * AScore = 0)
+Count(Games, HScore * AScore @= 0) : i8
+Binder : Count(*1: Games, Mul(Num<i8>(*1.HScore), Num<i8>(*1.AScore)) @= 0)
+###
+> Count(Games, HScore = 0) + Count(Games, AScore = 0)
+Count(Games, HScore @= 0) + Count(Games, AScore @= 0) : i8
+Binder : Add(Count(*1: Games, Num<i8>(*1.HScore) @= 0), Count(*2: Games, Num<i8>(*2.AScore) @= 0))
+###
+> Filter(Games, HScore = 0 or AScore = 0)
+Filter(Games, HScore @= 0 or AScore @= 0) : {AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*
+Binder : TakeIf*(*1: Games, Or(Num<i8>(*1.HScore) @= 0, Num<i8>(*1.AScore) @= 0))
+Reducer: Take(*1: Games, [if] Or(Num<i8>(*1.HScore) @= 0, Num<i8>(*1.AScore) @= 0))
+###
+> Distinct(Games.Home)
+Distinct(Games.Home) : s*
+Binder : Distinct(ForEach(*1: Games, *1.Home))
+###
+> Distinct(Games, Home)
+Distinct(Games, Home) : {AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*
+Binder : Distinct(*1: Games, *1.Home)
+###
+> Count(Distinct(Games.Home)) // REVIEW: Optimize this!
+Count(Distinct(Games.Home)) : i8
+Binder : Count(Distinct(ForEach(*1: Games, *1.Home)))
+###
+> GroupBy(Games, Home, XGames)
+GroupBy(Games, Home, XGames) : {Home:s, XGames:{AScore:i1, Away:s, HScore:i1, Week:i1, When:d}*}*
+Binder : GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>)
+###
+> Count(GroupBy(Games, Home, XGames))
+Count(GroupBy(Games, Home, XGames)) : i8
+Binder : Count(GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>))
+###
+> Count(Distinct(Games.Away))
+Count(Distinct(Games.Away)) : i8
+Binder : Count(Distinct(ForEach(*1: Games, *1.Away)))
+###
+> GroupBy(Games, Away, XGames)
+GroupBy(Games, Away, XGames) : {Away:s, XGames:{AScore:i1, HScore:i1, Home:s, Week:i1, When:d}*}*
+Binder : GroupBy(*1: Games, [key] Away:*1.Away, [auto] XGames:<auto>)
+###
+> Count(GroupBy(Games, Away, XGames))
+Count(GroupBy(Games, Away, XGames)) : i8
+Binder : Count(GroupBy(*1: Games, [key] Away:*1.Away, [auto] XGames:<auto>))
+###
+> Map(GroupBy(Games, Home, XGames), { Team: Home, Count: Count(XGames) }) // REVIEW: Once GroupBy is general, optimize this!
+Map(GroupBy(Games, Home, XGames), { Team : Home, Count : Count(XGames) }) : {Count:i8, Team:s}*
+Binder : ForEach(*3: GroupBy(*1: Games, [key] Home:*1.Home, [auto] XGames:<auto>), {Count:Count(*3.XGames), Team:*3.Home})
+###
+> Map(GroupBy(Games, Away, XGames), { Team: Away, Count: Count(XGames) })
+Map(GroupBy(Games, Away, XGames), { Team : Away, Count : Count(XGames) }) : {Count:i8, Team:s}*
+Binder : ForEach(*3: GroupBy(*1: Games, [key] Away:*1.Away, [auto] XGames:<auto>), {Count:Count(*3.XGames), Team:*3.Away})
+###
+
+**** Add globals: {GameCounts:{Count:i4, Home:s}*}
+
+> Count(GameCounts, Count = 8)
+Count(GameCounts, Count @= 8) : i8
+Binder : Count(*1: GameCounts, Num<i8>(*1.Count) @= 8)
+###
+> Count(GameCounts, Count != 8) = 0
+Count(GameCounts, Count !@= 8) @= 0 : b
+Binder : Count(*1: GameCounts, Num<i8>(*1.Count) !@= 8) @= 0
+###
+> SetFields(Games, Team: Home, Against: Away, Pts: HScore, PtsAgainst: AScore, IsHome: true)
+SetFields(Games, Team : Home, Against : Away, Pts : HScore, PtsAgainst : AScore, IsHome : true) : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : ForEach(*1: Games, SetFields(!2: *1, Against : !2.Away, IsHome : true, Pts : !2.HScore, PtsAgainst : !2.AScore, Team : !2.Home))
+###
+> SetFields(Games, Team: Away, Against: Home, Pts: AScore, PtsAgainst: HScore, IsHome: false)
+SetFields(Games, Team : Away, Against : Home, Pts : AScore, PtsAgainst : HScore, IsHome : false) : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : ForEach(*1: Games, SetFields(!2: *1, Against : !2.Home, IsHome : false, Pts : !2.AScore, PtsAgainst : !2.HScore, Team : !2.Away))
+###
+
+**** Add globals: {TeamGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*}
+
+> TeamGames
+TeamGames : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : TeamGames
+###
+> Count(TeamGames)
+Count(TeamGames) : i8
+Binder : Count(TeamGames)
+###
+> TeamGames ++ TeamGames
+TeamGames ++ TeamGames : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : SeqConcat(TeamGames, TeamGames)
+###
+> SortUp(TeamGames, When)
+SortUp(TeamGames, When) : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : SortUp(*1: TeamGames, *1.When)
+###
+> GroupBy(TeamGames, Team, XGames)
+GroupBy(TeamGames, Team, XGames) : {Team:s, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : GroupBy(*1: TeamGames, [key] Team:*1.Team, [auto] XGames:<auto>)
+###
+
+**** Add globals: {Teams:{Team:s, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}
+
+> Teams
+Teams : {Team:s, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : Teams
+###
+> Count(Teams)
+Count(Teams) : i8
+Binder : Count(Teams)
+###
+> Map(Teams, {Team: Team, Wins: Count(XGames, Pts > PtsAgainst), Pts: Sum(XGames.Pts), PtsAgainst: Sum(XGames.PtsAgainst), PtsDiff: Sum(XGames, Pts - PtsAgainst)})
+Map(Teams, { Team : Team, Wins : Count(XGames, Pts $> PtsAgainst), Pts : Sum(XGames.Pts), PtsAgainst : Sum(XGames.PtsAgainst), PtsDiff : Sum(XGames, Pts - PtsAgainst) }) : {Pts:i8, PtsAgainst:i8, PtsDiff:i8, Team:s, Wins:i8}*
+Binder : ForEach(*1: Teams, {Pts:Sum(ForEach(*2: *1.XGames, *2.Pts)), PtsAgainst:Sum(ForEach(*3: *1.XGames, *3.PtsAgainst)), PtsDiff:Sum(*4: *1.XGames, Add(Num<i8>(*4.Pts), [-] Num<i8>(*4.PtsAgainst))), Team:*1.Team, Wins:Count(*5: *1.XGames, *5.Pts @> *5.PtsAgainst)})
+Reducer: ForEach(*1: Teams, {Pts:Sum(*2: *1.XGames, Num<i8>(*2.Pts)), PtsAgainst:Sum(*3: *1.XGames, Num<i8>(*3.PtsAgainst)), PtsDiff:Sum(*4: *1.XGames, Add(Num<i8>(*4.Pts), [-] Num<i8>(*4.PtsAgainst))), Team:*1.Team, Wins:Count(*5: *1.XGames, *5.Pts @> *5.PtsAgainst)})
+###
+> Map(Teams, {Team: Team, Wins: Count(XGames, Pts > PtsAgainst), Pts: Sum(XGames.Pts), PtsAgainst: Sum(XGames.PtsAgainst), PtsDiff: Sum(XGames.Pts - XGames.PtsAgainst)})
+Map(Teams, { Team : Team, Wins : Count(XGames, Pts $> PtsAgainst), Pts : Sum(XGames.Pts), PtsAgainst : Sum(XGames.PtsAgainst), PtsDiff : Sum(XGames.Pts - XGames.PtsAgainst) }) : {Pts:i8, PtsAgainst:i8, PtsDiff:i8, Team:s, Wins:i8}*
+Binder : ForEach(*1: Teams, {Pts:Sum(ForEach(*2: *1.XGames, *2.Pts)), PtsAgainst:Sum(ForEach(*3: *1.XGames, *3.PtsAgainst)), PtsDiff:Sum(ForEach(*6: ForEach(*4: *1.XGames, *4.Pts), *7: ForEach(*5: *1.XGames, *5.PtsAgainst), Add(Num<i8>(*6), [-] Num<i8>(*7)))), Team:*1.Team, Wins:Count(*8: *1.XGames, *8.Pts @> *8.PtsAgainst)})
+Reducer: ForEach(*1: Teams, {Pts:Sum(*2: *1.XGames, Num<i8>(*2.Pts)), PtsAgainst:Sum(*3: *1.XGames, Num<i8>(*3.PtsAgainst)), PtsDiff:Sum(*4: *1.XGames, Add(Num<i8>(*4.Pts), [-] Num<i8>(*4.PtsAgainst))), Team:*1.Team, Wins:Count(*5: *1.XGames, *5.Pts @> *5.PtsAgainst)})
+###
+
+**** Add globals: {TeamStats:{Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*}
+
+> TeamStats
+TeamStats : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : TeamStats
+###
+> Sum(TeamStats, PtsDiff)
+Sum(TeamStats, PtsDiff) : i8
+Binder : Sum(*1: TeamStats, Num<i8>(*1.PtsDiff))
+###
+> SortUp(TeamStats, Team)
+SortUp(TeamStats, Team) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortUp(*1: TeamStats, *1.Team)
+###
+> SortDown(TeamStats, Wins)
+SortDown(TeamStats, Wins) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortDown(*1: TeamStats, *1.Wins)
+###
+> SortDown(TeamStats, PtsDiff)
+SortDown(TeamStats, PtsDiff) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortDown(*1: TeamStats, *1.PtsDiff)
+###
+> SortDown(TeamStats, Wins, PtsDiff)
+SortDown(TeamStats, Wins, PtsDiff) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortDown(*1: TeamStats, *1.Wins, *1.PtsDiff)
+###
+> SortDown(TeamStats, Wins, Team)
+SortDown(TeamStats, Wins, Team) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortDown(*1: TeamStats, *1.Wins, *1.Team)
+###
+> SortUp(TeamStats, -Wins, Team)
+SortUp(TeamStats, -Wins, Team) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : SortUp(*1: TeamStats, Add([-] Num<i8>(*1.Wins)), *1.Team)
+###
+> Sort(TeamStats, [>] Wins, Team)
+Sort(TeamStats, [>] Wins, Team) : {Pts:i4, PtsAgainst:i4, PtsDiff:i4, Team:s, Wins:i4}*
+Binder : Sort(*1: TeamStats, [>] *1.Wins, *1.Team)
+###
+> SetFields(Games, Away: Away if Text.Len(Away) = 3 else Away & "_", Home: Home if Text.Len(Home) = 3 else Home & "_")
+SetFields(Games, Away : Away if Text.Len(Away) @= 3 else Away & "_", Home : Home if Text.Len(Home) @= 3 else Home & "_") : {AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*
+Binder : ForEach(*1: Games, SetFields(!2: *1, Away : If(Text.Len(!2.Away) @= 3, !2.Away, StrConcat(!2.Away, "_")), Home : If(Text.Len(!2.Home) @= 3, !2.Home, StrConcat(!2.Home, "_"))))
+###
+> SetFields(Games, Away: First(Filter(x : [Away, Away & "_"], Text.Len(x) = 3)), Home: First(Filter(x : [Home, Home & "_"], Text.Len(x) = 3)))
+SetFields(Games, Away : First(Filter(x : [Away, Away & "_"], Text.Len(x) @= 3)), Home : First(Filter(x : [Home, Home & "_"], Text.Len(x) @= 3))) : {AScore:i1, Away:s, HScore:i1, Home:s, Week:i1, When:d}*
+Binder : ForEach(*1: Games, SetFields(!2: *1, Away : First*(TakeIf*(*3: [!2.Away, StrConcat(!2.Away, "_")], Text.Len(*3) @= 3)), Home : First*(TakeIf*(*4: [!2.Home, StrConcat(!2.Home, "_")], Text.Len(*4) @= 3))))
+Reducer: ForEach(*1: Games, SetFields(!2: *1, Away : TakeOne(Take(*3: [!2.Away, StrConcat(!2.Away, "_")], [if] Text.Len(*3) @= 3)), Home : TakeOne(Take(*4: [!2.Home, StrConcat(!2.Home, "_")], [if] Text.Len(*4) @= 3))))
+###
+> Chain(SetFields(Games, Team : Home, Against : Away, Pts : HScore, PtsAgainst : AScore, IsHome : true), SetFields(Games, Team : Away, Against : Home, Pts : AScore, PtsAgainst : HScore, IsHome : false))
+Chain(SetFields(Games, Team : Home, Against : Away, Pts : HScore, PtsAgainst : AScore, IsHome : true), SetFields(Games, Team : Away, Against : Home, Pts : AScore, PtsAgainst : HScore, IsHome : false)) : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : Chain*(ForEach(*1: Games, SetFields(!2: *1, Against : !2.Away, IsHome : true, Pts : !2.HScore, PtsAgainst : !2.AScore, Team : !2.Home)), ForEach(*3: Games, SetFields(!4: *3, Against : !4.Home, IsHome : false, Pts : !4.AScore, PtsAgainst : !4.HScore, Team : !4.Away)))
+Reducer: SeqConcat(ForEach(*1: Games, SetFields(!2: *1, Against : !2.Away, IsHome : true, Pts : !2.HScore, PtsAgainst : !2.AScore, Team : !2.Home)), ForEach(*3: Games, SetFields(!4: *3, Against : !4.Home, IsHome : false, Pts : !4.AScore, PtsAgainst : !4.HScore, Team : !4.Away)))
+###
+> TeamGames
+TeamGames : {Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Team:s, Week:i1, When:d}*
+Binder : TeamGames
+###
+> SetFields(GroupBy(Sort(TeamGames, Team, When), Team, XGames), Wins: Count(XGames, Pts > PtsAgainst), HomeWins: Count(XGames, IsHome and Pts > PtsAgainst))
+SetFields(GroupBy(Sort(TeamGames, Team, When), Team, XGames), Wins : Count(XGames, Pts $> PtsAgainst), HomeWins : Count(XGames, IsHome and Pts $> PtsAgainst)) : {HomeWins:i8, Team:s, Wins:i8, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : ForEach(*4: GroupBy(*2: Sort(*1: TeamGames, *1.Team, *1.When), [key] Team:*2.Team, [auto] XGames:<auto>), SetFields(!5: *4, HomeWins : Count(*6: !5.XGames, And(*6.IsHome, *6.Pts @> *6.PtsAgainst)), Wins : Count(*7: !5.XGames, *7.Pts @> *7.PtsAgainst)))
+###
+
+**** Add globals: {Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}
+
+> Teams
+Teams : {HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : Teams
+###
+> Teams.Team
+Teams.Team : s*
+Binder : ForEach(*1: Teams, *1.Team)
+###
+> First(Teams)
+First(Teams) : {HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}?
+Binder : First*(Teams)
+Reducer: TakeOne(Teams, [else] null)
+###
+> TakeOne(Teams)
+TakeOne(Teams) : {HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}
+Binder : TakeOne(Teams)
+###
+> Map(Filter(Teams, Team = "SEA" or Team = "ARI"), { Team: Team, RivalGames: GroupBy(XGames, Against, G) })
+Map(Filter(Teams, Team @= "SEA" or Team @= "ARI"), { Team : Team, RivalGames : GroupBy(XGames, Against, G) }) : {RivalGames:{Against:s, G:{IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*, Team:s}*
+Binder : ForEach(*2: TakeIf*(*1: Teams, Or(*1.Team @= "SEA", *1.Team @= "ARI")), {RivalGames:GroupBy(*3: *2.XGames, [key] Against:*3.Against, [auto] G:<auto>), Team:*2.Team})
+Reducer: ForEach(*2: Take(*1: Teams, [if] Or(*1.Team @= "SEA", *1.Team @= "ARI")), {RivalGames:GroupBy(*3: *2.XGames, [key] Against:*3.Against, [auto] G:<auto>), Team:*2.Team})
+###
+> Map(Teams, { Team: Team, RivalGames: GroupBy(XGames, Against, G) })
+Map(Teams, { Team : Team, RivalGames : GroupBy(XGames, Against, G) }) : {RivalGames:{Against:s, G:{IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*, Team:s}*
+Binder : ForEach(*1: Teams, {RivalGames:GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), Team:*1.Team})
+###
+> Map(Teams, { Team: Team, RivalGames: Filter(GroupBy(XGames, Against, G), Count(G) > 1) })
+Map(Teams, { Team : Team, RivalGames : Filter(GroupBy(XGames, Against, G), Count(G) $> 1) }) : {RivalGames:{Against:s, G:{IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*, Team:s}*
+Binder : ForEach(*1: Teams, {RivalGames:TakeIf*(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), Count(*4.G) @> 1), Team:*1.Team})
+Reducer: ForEach(*1: Teams, {RivalGames:Take(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), [if] Count(*4.G) @> 1), Team:*1.Team})
+###
+> Map(Teams, { Team: Team, Rivals: Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) > 1).Against, [Team])) })
+Map(Teams, { Team : Team, Rivals : Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) $> 1).Against, [Team])) }) : {Rivals:s*, Team:s}*
+Binder : ForEach(*1: Teams, {Rivals:Sort(Chain*(ForEach(*5: TakeIf*(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), Count(*4.G) @> 1), *5.Against), [*1.Team])), Team:*1.Team})
+Reducer: ForEach(*1: Teams, {Rivals:Sort(SeqConcat(ForEach(*5: Take(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), [if] Count(*4.G) @> 1), *5.Against), [*1.Team])), Team:*1.Team})
+###
+> Map(Teams, { Team: Team, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) > 1).Against, [Team])), "|") })
+Map(Teams, { Team : Team, Division : Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Count(G) $> 1).Against, [Team])), "|") }) : {Division:s, Team:s}*
+Binder : ForEach(*1: Teams, {Division:Text.Concat(Sort(Chain*(ForEach(*5: TakeIf*(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), Count(*4.G) @> 1), *5.Against), [*1.Team])), "|"), Team:*1.Team})
+Reducer: ForEach(*1: Teams, {Division:Text.Concat(Sort(SeqConcat(ForEach(*5: Take(*4: GroupBy(*2: *1.XGames, [key] Against:*2.Against, [auto] G:<auto>), [if] Count(*4.G) @> 1), *5.Against), [*1.Team])), "|"), Team:*1.Team})
+###
+
+**** Add globals: {Copies:i4, Rivals:{Division:s, Team:s}*}
+
+> Rivals
+Rivals : {Division:s, Team:s}*
+Binder : Rivals
+###
+> GroupBy(Rivals, Division, Teams)
+GroupBy(Rivals, Division, Teams) : {Division:s, Teams:{Team:s}*}*
+Binder : GroupBy(*1: Rivals, [key] Division:*1.Division, [auto] Teams:<auto>)
+###
+> Map(GroupBy(Rivals, Division, Teams), { Div: Division, Size: Count(Teams) })
+Map(GroupBy(Rivals, Division, Teams), { Div : Division, Size : Count(Teams) }) : {Div:s, Size:i8}*
+Binder : ForEach(*3: GroupBy(*1: Rivals, [key] Division:*1.Division, [auto] Teams:<auto>), {Div:*3.Division, Size:Count(*3.Teams)})
+###
+> SetFields(Teams, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) > 1).Against, [Team])), "|"))
+SetFields(Teams, Division : Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) $> 1).Against, [Team])), "|")) : {Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : ForEach(*1: Teams, SetFields(!2: *1, Division : Text.Concat(Sort(Chain*(ForEach(*7: TakeIf*(*5: GroupBy(*3: !2.XGames, [key] Against:*3.Against, [auto] G:<auto>), Sum(*6: *5.G, 1) @> 1), *7.Against), [!2.Team])), "|")))
+Reducer: ForEach(*1: Teams, SetFields(!2: *1, Division : Text.Concat(Sort(SeqConcat(ForEach(*7: Take(*5: GroupBy(*3: !2.XGames, [key] Against:*3.Against, [auto] G:<auto>), [if] Sum(*6: *5.G, 1) @> 1), *7.Against), [!2.Team])), "|")))
+###
+> SetFields(Teams, Division: Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) > Copies).Against, [Team])), "|")) // Curried global.
+SetFields(Teams, Division : Text.Concat(Sort(Chain(Filter(GroupBy(XGames, Against, G), Sum(G, 1) $> Copies).Against, [Team])), "|")) : {Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : ForEach(*1: Teams, SetFields(!2: *1, Division : Text.Concat(Sort(Chain*(ForEach(*7: TakeIf*(*5: GroupBy(*3: !2.XGames, [key] Against:*3.Against, [auto] G:<auto>), Sum(*6: *5.G, 1) @> Num<i8>(Copies)), *7.Against), [!2.Team])), "|")))
+Reducer: ForEach(*1: Teams, SetFields(!2: *1, Division : Text.Concat(Sort(SeqConcat(ForEach(*7: Take(*5: GroupBy(*3: !2.XGames, [key] Against:*3.Against, [auto] G:<auto>), [if] Sum(*6: *5.G, 1) @> Num<i8>(Copies)), *7.Against), [!2.Team])), "|")))
+###
+
+**** Add globals: {TeamsWithDiv:{Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}
+
+> TeamsWithDiv
+TeamsWithDiv : {Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : TeamsWithDiv
+###
+> First(TeamsWithDiv)
+First(TeamsWithDiv) : {Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}?
+Binder : First*(TeamsWithDiv)
+Reducer: TakeOne(TeamsWithDiv, [else] null)
+###
+> TakeOne(TeamsWithDiv)
+TakeOne(TeamsWithDiv) : {Division:s, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}
+Binder : TakeOne(TeamsWithDiv)
+###
+> GroupBy(TeamsWithDiv, Division, Teams)
+GroupBy(TeamsWithDiv, Division, Teams) : {Division:s, Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}*
+Binder : GroupBy(*1: TeamsWithDiv, [key] Division:*1.Division, [auto] Teams:<auto>)
+###
+
+**** Add globals: {Divisions:{Division:s, Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}*}
+
+> Divisions
+Divisions : {Division:s, Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}*
+Binder : Divisions
+###
+> First(Divisions)
+First(Divisions) : {Division:s, Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}?
+Binder : First*(Divisions)
+Reducer: TakeOne(Divisions, [else] null)
+###
+> TakeOne(Divisions)
+TakeOne(Divisions) : {Division:s, Teams:{HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*}
+Binder : TakeOne(Divisions)
+###
+> Divisions.Teams.Wins
+Divisions.Teams.Wins : i4**
+Binder : ForEach(*2: ForEach(*1: Divisions, *1.Teams), ForEach(*3: *2, *3.Wins))
+Reducer: ForEach(*1: Divisions, ForEach(*2: *1.Teams, *2.Wins))
+###
+> Map(Divisions, { Division: Division, Wins: Sum(Teams.Wins), WinsExt: Sum(Teams.Wins) - 12, Wpts: Sum(Teams, Sum(XGames.Pts)), WptsAgainst: Sum(Teams, Sum(XGames.PtsAgainst)), WptsDiff: Sum(Teams, Sum(XGames.Pts - XGames.PtsAgainst)) })
+Map(Divisions, { Division : Division, Wins : Sum(Teams.Wins), WinsExt : Sum(Teams.Wins) - 12, Wpts : Sum(Teams, Sum(XGames.Pts)), WptsAgainst : Sum(Teams, Sum(XGames.PtsAgainst)), WptsDiff : Sum(Teams, Sum(XGames.Pts - XGames.PtsAgainst)) }) : {Division:s, Wins:i8, WinsExt:i8, Wpts:i8, WptsAgainst:i8, WptsDiff:i8}*
+Binder : ForEach(*1: Divisions, {Division:*1.Division, Wins:Sum(ForEach(*2: *1.Teams, *2.Wins)), WinsExt:Add(Sum(ForEach(*3: *1.Teams, *3.Wins)), [-] 12), Wpts:Sum(*4: *1.Teams, Sum(ForEach(*5: *4.XGames, *5.Pts))), WptsAgainst:Sum(*6: *1.Teams, Sum(ForEach(*7: *6.XGames, *7.PtsAgainst))), WptsDiff:Sum(*8: *1.Teams, Sum(ForEach(*11: ForEach(*9: *8.XGames, *9.Pts), *12: ForEach(*10: *8.XGames, *10.PtsAgainst), Add(Num<i8>(*11), [-] Num<i8>(*12)))))})
+Reducer: ForEach(*1: Divisions, {Division:*1.Division, Wins:Sum(*2: *1.Teams, Num<i8>(*2.Wins)), WinsExt:Add(Sum(*3: *1.Teams, Num<i8>(*3.Wins)), [-] 12), Wpts:Sum(*4: *1.Teams, Sum(*5: *4.XGames, Num<i8>(*5.Pts))), WptsAgainst:Sum(*6: *1.Teams, Sum(*7: *6.XGames, Num<i8>(*7.PtsAgainst))), WptsDiff:Sum(*8: *1.Teams, Sum(*9: *8.XGames, Add(Num<i8>(*9.Pts), [-] Num<i8>(*9.PtsAgainst))))})
+###
+
+**** Add globals: {DivisionStats:{Division:s, Wins:i4, WinsExt:i4, Wpts:i4, WptsAgainst:i4, WptsDiff:i4}*}
+
+> SortDown(DivisionStats, Wins, Wpts)
+SortDown(DivisionStats, Wins, Wpts) : {Division:s, Wins:i4, WinsExt:i4, Wpts:i4, WptsAgainst:i4, WptsDiff:i4}*
+Binder : SortDown(*1: DivisionStats, *1.Wins, *1.Wpts)
+###
+> SortDown(DivisionStats, Wpts)
+SortDown(DivisionStats, Wpts) : {Division:s, Wins:i4, WinsExt:i4, Wpts:i4, WptsAgainst:i4, WptsDiff:i4}*
+Binder : SortDown(*1: DivisionStats, *1.Wpts)
+###
+> SortDown(DivisionStats, WptsDiff)
+SortDown(DivisionStats, WptsDiff) : {Division:s, Wins:i4, WinsExt:i4, Wpts:i4, WptsAgainst:i4, WptsDiff:i4}*
+Binder : SortDown(*1: DivisionStats, *1.WptsDiff)
+###
+> SetFields(TeamsWithDiv,                GamesExt: Filter(      XGames, not (  Division has   Against)))
+SetFields(TeamsWithDiv, GamesExt : Filter(XGames, not Division has Against)) : {Division:s, GamesExt:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : ForEach(*1: TeamsWithDiv, SetFields(!2: *1, GamesExt : TakeIf*(*3: !2.XGames, Xor(Has(!2.Division, *3.Against), true))))
+Reducer: ForEach(*1: TeamsWithDiv, SetFields(!2: *1, GamesExt : Take(*3: !2.XGames, [if] Xor(Has(!2.Division, *3.Against), true))))
+###
+> Map(r : TeamsWithDiv, SetFields(s : r, GamesExt: Filter(g : s.XGames, not (s.Division has g.Against))))
+Map(r : TeamsWithDiv, SetFields(s : r, GamesExt : Filter(g : s.XGames, not s.Division has g.Against))) : {Division:s, GamesExt:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*, HomeWins:i4, Team:s, Wins:i4, XGames:{Against:s, IsHome:b, Pts:i1, PtsAgainst:i1, Week:i1, When:d}*}*
+Binder : ForEach(*1: TeamsWithDiv, SetFields(!2: *1, GamesExt : TakeIf*(*3: !2.XGames, Xor(Has(!2.Division, *3.Against), true))))
+Reducer: ForEach(*1: TeamsWithDiv, SetFields(!2: *1, GamesExt : Take(*3: !2.XGames, [if] Xor(Has(!2.Division, *3.Against), true))))
+###

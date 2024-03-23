@@ -1,0 +1,313 @@
+**** New globals: {Is:i8*, T:s, Ts:s*, a:i8, b:i8, c:i8, tup:(i8, i8, i8), tup5:(i8, b, i8, b, i8)}
+
+> T[]
+T[] : s
+*** Error: (1,2) Node: (), Tok: '[', Message: Expected an index or a slice
+Binder : T
+###
+> T[3]
+T[3] : u2
+Binder : T[3]
+###
+> T["3"]
+T["3"] : u2
+*** Error: (2,5) Node: "3", Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : T[Error(ErrBadType_Src_Dst)]
+###
+> T[3, 5]
+T[3, 5] : u2
+*** Error: (5,6) Node: 5, Message: Expected a single index or slice
+Binder : T[3]
+###
+> T[^3]
+T[^3] : u2
+Binder : T[^(3)]
+###
+> T[%3]
+T[%3] : u2
+Binder : T[%(3)]
+###
+> T[&3]
+T[&3] : u2
+Binder : T[&(3)]
+###
+> T[^%3]
+T[^%3] : u2
+Binder : T[^%(3)]
+###
+> T[%^3]
+T[^%3] : u2
+Binder : T[^%(3)]
+###
+> T[3:12]
+T[3:12] : s
+Binder : T[3:12:]
+###
+> T[^3:12]
+T[^3:12] : s
+Binder : T[^(3):12:]
+###
+> T[3:^12]
+T[3:^12] : s
+Binder : T[3:^(12):]
+###
+> T[3:*12]
+T[3:*12] : s
+Binder : T[3:*(12):]
+###
+> T[3:^*12]
+T[3:^*12] : s
+Binder : T[3:^*(12):]
+###
+> T[3:*^12]
+T[3:^*12] : s
+Binder : T[3:^*(12):]
+###
+> Ts[3]
+Ts[3] : u2*
+Binder : ForEach(*1: Ts, *1[3])
+###
+> T[Is]
+T[Is] : u2*
+Binder : ForEach(*1: Is, T[*1])
+###
+> Ts[Is]
+Ts[Is] : u2*
+Binder : ForEach(*1: Ts, *2: Is, *1[*2])
+###
+> T[Is:7]
+T[Is:7] : s*
+Binder : ForEach(*1: Is, T[*1:7:])
+###
+> T[7:Is]
+T[7:Is] : s*
+Binder : ForEach(*1: Is, T[7:*1:])
+###
+> T[::Is]
+T[::Is] : s*
+Binder : ForEach(*1: Is, T[::*1])
+###
+> Ts[Is:7]
+Ts[Is:7] : s*
+Binder : ForEach(*1: Ts, *2: Is, *1[*2:7:])
+###
+> Ts[7:Is]
+Ts[7:Is] : s*
+Binder : ForEach(*1: Ts, *2: Is, *1[7:*2:])
+###
+> Ts[::Is]
+Ts[::Is] : s*
+Binder : ForEach(*1: Ts, *2: Is, *1[::*2])
+###
+> Ts[Is:Is + 3]
+Ts[Is:Is + 3] : s*
+Binder : ForEach(*2: Ts, *3: Is, *4: ForEach(*1: Is, Add(*1, 3)), *2[*3:*4:])
+Reducer: ForEach(*1: Ts, *2: Is, *1[*2:Add(*2, 3):])
+###
+> T[^7:Is]
+T[^7:Is] : s*
+Binder : ForEach(*1: Is, T[^(7):*1:])
+###
+> T[7:^Is]
+T[7:^Is] : s*
+Binder : ForEach(*1: Is, T[7:^(*1):])
+###
+> T[7:*Is]
+T[7:*Is] : s*
+Binder : ForEach(*1: Is, T[7:*(*1):])
+###
+> T[7:^*Is]
+T[7:^*Is] : s*
+Binder : ForEach(*1: Is, T[7:^*(*1):])
+###
+> T[7:*^Is]
+T[7:^*Is] : s*
+Binder : ForEach(*1: Is, T[7:^*(*1):])
+###
+> T[tup]
+T[tup] : s
+Binder : T[tup]
+###
+> T[tup5]
+T[tup5] : s
+Binder : T[tup5]
+###
+> Ts[tup]
+Ts[tup] : s*
+Binder : ForEach(*1: Ts, *1[tup])
+###
+> Ts[tup5]
+Ts[tup5] : s*
+Binder : ForEach(*1: Ts, *1[tup5])
+###
+> Null("X")[tup]
+Null("X")[tup] : s
+Binder : DefOpt*("X")[tup]
+Reducer: str(<null>)
+###
+> ""[tup]
+""[tup] : s
+Binder : ""
+###
+> T[Null(3):]
+T[Null(3):] : s
+Binder : T[DefOpt*(3)::]
+Reducer: T
+###
+> ""[3]
+""[3] : u2
+Binder : 0
+###
+> "0123456789"[3]
+"0123456789"[3] : u2
+Binder : 51
+###
+> "0123456789"[^3]
+"0123456789"[^3] : u2
+Binder : 55
+###
+> "0123456789"[42]
+"0123456789"[42] : u2
+Binder : 0
+###
+> "0123456789"[%42]
+"0123456789"[%42] : u2
+Binder : 50
+###
+> "0123456789"[&42]
+"0123456789"[&42] : u2
+Binder : 57
+###
+> "0123456789"[^%42]
+"0123456789"[^%42] : u2
+Binder : 56
+###
+> "0123456789"[-42]
+"0123456789"[-42] : u2
+Binder : 0
+###
+> "0123456789"[%-42]
+"0123456789"[%-42] : u2
+Binder : 56
+###
+> "0123456789"[&-42]
+"0123456789"[&-42] : u2
+Binder : 48
+###
+> "0123456789"[^%-42]
+"0123456789"[^%-42] : u2
+Binder : 50
+###
+> ("0123456789" & "ABCDEF")[a]
+("0123456789" & "ABCDEF")[a] : u2
+Binder : StrConcat("0123456789", "ABCDEF")[a]
+Reducer: "0123456789ABCDEF"[a]
+###
+> ""[:3]
+""[:3] : s
+Binder : ""
+###
+> "0123456789"[:3]
+"0123456789"[:3] : s
+Binder : "012"
+###
+> "0123456789"[:0]
+"0123456789"[:0] : s
+Binder : ""
+###
+> "0123456789"[:42]
+"0123456789"[:42] : s
+Binder : "0123456789"
+###
+> "0123456789"[3:7]
+"0123456789"[3:7] : s
+Binder : "3456"
+###
+> "0123456789"[7:3]
+"0123456789"[7:3] : s
+Binder : "7654"
+###
+> "0123456789"[7::-1]
+"0123456789"[7::-1] : s
+Binder : "76543210"
+###
+> "0123456789"[::-1]
+"0123456789"[::-1] : s
+Binder : "9876543210"
+###
+> "0123456789"[::2]
+"0123456789"[::2] : s
+Binder : "02468"
+###
+> "0123456789"[a:3]
+"0123456789"[a:3] : s
+Binder : "0123456789"[a:3:]
+###
+> "0123456789"[3:b]
+"0123456789"[3:b] : s
+Binder : "0123456789"[3:b:]
+###
+> "0123456789"[3:7:c]
+"0123456789"[3:7:c] : s
+Binder : "0123456789"[3:7:c]
+###
+> ("0123456789" & "ABCDEF")[::-2]
+("0123456789" & "ABCDEF")[::-2] : s
+Binder : StrConcat("0123456789", "ABCDEF")[::-2]
+Reducer: "FDB97531"
+###
+> "0123456789"[Null(a):3]
+"0123456789"[Null(a):3] : s
+Binder : "0123456789"[DefOpt*(a):3:]
+Reducer: "012"
+###
+> "0123456789"[Null(a):b]
+"0123456789"[Null(a):b] : s
+Binder : "0123456789"[DefOpt*(a):b:]
+Reducer: "0123456789"[:b:]
+###
+> "0123456789"[Opt(a):3]
+"0123456789"[Opt(a):3] : s
+Binder : "0123456789"[Opt*(a):3:]
+Reducer: "0123456789"[a:3:]
+###
+> "0123456789"[Opt(-17):3]
+"0123456789"[Opt(-17):3] : s
+Binder : "0123456789"[Opt*(-17):3:]
+Reducer: "012"
+###
+> "0123456789"[Opt(-17):b]
+"0123456789"[Opt(-17):b] : s
+Binder : "0123456789"[Opt*(-17):b:]
+Reducer: "0123456789"[-17:b:]
+###
+> T[Range(10)->Sum(it * a * b)]
+T[Range(10)->Sum(it * a * b)] : u2
+Binder : T[Sum(*1: Range(10), Mul(*1, a, b))]
+Hoister: T[With(!1: Mul(a, b), Sum(*2: Range(10), Mul(!1, *2)))]
+Reducer: With(!1: Mul(a, b), T[Sum(*2: Range(10), Mul(!1, *2))])
+###
+> T[:Range(10)->Sum(it * a * b)]
+T[:Range(10)->Sum(it * a * b)] : s
+Binder : T[:Sum(*1: Range(10), Mul(*1, a, b)):]
+Hoister: T[:With(!1: Mul(a, b), Sum(*2: Range(10), Mul(!1, *2))):]
+###
+> T[Range(10) * a * b]
+T[Range(10) * a * b] : u2*
+Binder : ForEach(*3: ForEach(*2: ForEach(*1: Range(10), Mul(*1, a)), Mul(*2, b)), T[*3])
+Reducer: ForEach(*1: Range(10), T[Mul(*1, a, b)])
+Hoister: With(!1: Mul(a, b), ForEach(*2: Range(10), T[Mul(!1, *2)]))
+###
+> T[:Range(10) * a * b]
+T[:Range(10) * a * b] : s*
+Binder : ForEach(*3: ForEach(*2: ForEach(*1: Range(10), Mul(*1, a)), Mul(*2, b)), T[:*3:])
+Reducer: ForEach(*1: Range(10), T[:Mul(*1, a, b):])
+Hoister: With(!1: Mul(a, b), ForEach(*2: Range(10), T[:Mul(!1, *2):]))
+###
+> ForEach(x:"", With(y: z, {y, A: x[0]}))
+ForEach(x : "", With(y : z, { y, A : x[0] })) : {A:u2, y:v}*
+*** Error: (10,12) Node: "", Message: Invalid operand type: cannot convert type 's' to 's*'
+*** Error: (22,23) Node: z, Message: Name does not exist in the current context
+Binder : ForEach(*1: Error(ErrBadType_Src_Dst), With(!2: Error(ErrNameDoesNotExist), {A:*1[0], y:!2}))
+Reducer: ForEach(*1: Error(ErrBadType_Src_Dst), {A:*1[0], y:Error(ErrNameDoesNotExist)})
+###

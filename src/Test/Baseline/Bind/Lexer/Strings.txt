@@ -1,0 +1,181 @@
+>  "This is a string literal." 'This is an ident'
+Range=(1,28), Tid=TxtLit, Text=["This is a string literal."], Value=[This is a string literal.], Flags=None
+Range=(29,47), Tid=Ident, Text=['This is an ident'], Name=[This is an ident], Flags=QuotesAll
+Range=(47,47), Tid=Eof, Text=[]
+###
+> x"This is a string literal." 'This is an ident'
+Range=(0,28), Tid=TxtLit, Text=[x"This is a string literal."], Value=[This is a string literal.], Flags=None
+Range=(29,47), Tid=Ident, Text=['This is an ident'], Name=[This is an ident], Flags=QuotesAll
+Range=(47,47), Tid=Eof, Text=[]
+###
+> r"This is a string literal." 'This is an ident'
+Range=(0,28), Tid=TxtLit, Text=[r"This is a string literal."], Value=[This is a string literal.], Flags=None
+Range=(29,47), Tid=Ident, Text=['This is an ident'], Name=[This is an ident], Flags=QuotesAll
+Range=(47,47), Tid=Eof, Text=[]
+###
+> @"This is a string literal." 'This is an ident'
+Range=(0,28), Tid=TxtLit, Text=[@"This is a string literal."], Value=[This is a string literal.], Flags=None
+Range=(29,47), Tid=Ident, Text=['This is an ident'], Name=[This is an ident], Flags=QuotesAll
+Range=(47,47), Tid=Eof, Text=[]
+###
+>  "This is 'single-quoted' with ""double-quoted""."
+Range=(1,50), Tid=TxtLit, Text=["This is 'single-quoted' with ""double-quoted""."], Value=[This is 'single-quoted' with "double-quoted".], Flags=None
+Range=(50,50), Tid=Eof, Text=[]
+###
+> x"This is 'single-quoted' with ""double-quoted""."
+Range=(0,50), Tid=TxtLit, Text=[x"This is 'single-quoted' with ""double-quoted""."], Value=[This is 'single-quoted' with "double-quoted".], Flags=None
+Range=(50,50), Tid=Eof, Text=[]
+###
+> r"This is 'single-quoted' with ""double-quoted""."
+Range=(0,50), Tid=TxtLit, Text=[r"This is 'single-quoted' with ""double-quoted""."], Value=[This is 'single-quoted' with "double-quoted".], Flags=None
+Range=(50,50), Tid=Eof, Text=[]
+###
+> @"This is 'single-quoted' with ""double-quoted""."
+> @"Multi
+> Line"
+Range=(0,50), Tid=TxtLit, Text=[@"This is 'single-quoted' with ""double-quoted""."], Value=[This is 'single-quoted' with "double-quoted".], Flags=None
+Range=(52,65), Tid=TxtLit, Text=[@"Multi
+Line"], Value=[Multi<0A>Line], Flags=None
+Range=(65,65), Tid=Eof, Text=[]
+###
+> 'This is ''single-quoted'' with "double-quoted" in an ident.'
+> "This is unterminated...
+> 'So is this, but an ident..."
+Range=(0,61), Tid=Ident, Text=['This is ''single-quoted'' with "double-quoted" in an ident.'], Name=[This is 'single-quoted' with "double-quoted" in an ident.], Flags=QuotesAll
+Range=(62,86), Tid=TxtLit, Text=["This is unterminated...], Value=[This is unterminated...], Flags=Unterminated
+Range=(87,116), Tid=Ident, Text=['So is this, but an ident..."], Name=[So is this, but an ident..."], Flags=QuoteOpen, WantsQuotes
+Range=(116,116), Tid=Eof, Text=[]
+###
+>  "A\x41BCD"
+Range=(1,11), Tid=TxtLit, Text=["A\x41BCD"], Value=[AABCD], Flags=None
+Range=(11,11), Tid=Eof, Text=[]
+###
+> x"A\x41BCD"
+Range=(0,11), Tid=TxtLit, Text=[x"A\x41BCD"], Value=[AABCD], Flags=None
+Range=(11,11), Tid=Eof, Text=[]
+###
+> r"A\x41BCD"
+Range=(0,11), Tid=TxtLit, Text=[r"A\x41BCD"], Value=[A\x41BCD], Flags=None
+Range=(11,11), Tid=Eof, Text=[]
+###
+> @"A\x41BCD"
+Range=(0,11), Tid=TxtLit, Text=[@"A\x41BCD"], Value=[A\x41BCD], Flags=None
+Range=(11,11), Tid=Eof, Text=[]
+###
+>  "A\u0041BCD"
+Range=(1,13), Tid=TxtLit, Text=["A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(13,13), Tid=Eof, Text=[]
+###
+> x"A\u0041BCD"
+Range=(0,13), Tid=TxtLit, Text=[x"A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(13,13), Tid=Eof, Text=[]
+###
+> r"A\u0041BCD"
+Range=(0,13), Tid=TxtLit, Text=[r"A\u0041BCD"], Value=[A\u0041BCD], Flags=None
+Range=(13,13), Tid=Eof, Text=[]
+###
+> @"A\u0041BCD"
+Range=(0,13), Tid=TxtLit, Text=[@"A\u0041BCD"], Value=[A\u0041BCD], Flags=None
+Range=(13,13), Tid=Eof, Text=[]
+###
+>   "A\u0041BCD"
+Range=(2,14), Tid=TxtLit, Text=["A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(14,14), Tid=Eof, Text=[]
+###
+> x "A\u0041BCD"
+Range=(0,1), Tid=Ident, Text=[x], Name=[x], Flags=None
+Range=(2,14), Tid=TxtLit, Text=["A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(14,14), Tid=Eof, Text=[]
+###
+> r "A\u0041BCD"
+Range=(0,1), Tid=Ident, Text=[r], Name=[r], Flags=None
+Range=(2,14), Tid=TxtLit, Text=["A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(14,14), Tid=Eof, Text=[]
+###
+> @ "A\u0041BCD"
+Range=(0,1), Tid=At, Text=[@], Punc=[@]
+Range=(2,14), Tid=TxtLit, Text=["A\u0041BCD"], Value=[AABCD], Flags=None
+Range=(14,14), Tid=Eof, Text=[]
+###
+> x"A\0B"
+> x"A\\B"
+> x"A\'B"
+> x"A\"B"
+> x"A\nB"
+> x"A\rB"
+> x"A\tB"
+> x"A\x21B"
+> x"A\x7EB"
+> x"A\x7FB"
+> x"A\xFFB"
+> x"A\u0021B"
+> x"A\u007EB"
+> x"A\u007FB"
+> x"A\u00FFB"
+> x"A\u2202B"
+Range=(0,7), Tid=TxtLit, Text=[x"A\0B"], Value=[A<00>B], Flags=None
+Range=(8,15), Tid=TxtLit, Text=[x"A\\B"], Value=[A\B], Flags=None
+Range=(16,23), Tid=TxtLit, Text=[x"A\'B"], Value=[A'B], Flags=None
+Range=(24,31), Tid=TxtLit, Text=[x"A\"B"], Value=[A"B], Flags=None
+Range=(32,39), Tid=TxtLit, Text=[x"A\nB"], Value=[A<0A>B], Flags=None
+Range=(40,47), Tid=TxtLit, Text=[x"A\rB"], Value=[A<0D>B], Flags=None
+Range=(48,55), Tid=TxtLit, Text=[x"A\tB"], Value=[A<09>B], Flags=None
+Range=(56,65), Tid=TxtLit, Text=[x"A\x21B"], Value=[A!B], Flags=None
+Range=(66,75), Tid=TxtLit, Text=[x"A\x7EB"], Value=[A~B], Flags=None
+Range=(76,85), Tid=TxtLit, Text=[x"A\x7FB"], Value=[A<7F>B], Flags=None
+Range=(86,95), Tid=TxtLit, Text=[x"A\xFFB"], Value=[A<FF>B], Flags=None
+Range=(96,107), Tid=TxtLit, Text=[x"A\u0021B"], Value=[A!B], Flags=None
+Range=(108,119), Tid=TxtLit, Text=[x"A\u007EB"], Value=[A~B], Flags=None
+Range=(120,131), Tid=TxtLit, Text=[x"A\u007FB"], Value=[A<7F>B], Flags=None
+Range=(132,143), Tid=TxtLit, Text=[x"A\u00FFB"], Value=[A<FF>B], Flags=None
+Range=(144,155), Tid=TxtLit, Text=[x"A\u2202B"], Value=[A<2202>B], Flags=None
+Range=(155,155), Tid=Eof, Text=[]
+###
+> x"A\i\j\kB"
+> x"A\i\j\kB
+> x"A\U00000000B"
+> x"A\x3JB"
+> x"A\xJXB"
+> x"A\u3JB"
+> x"AAA\uJXYZB"
+> x"AAAA\u1XYZB"
+> x"AA\u12YZB"
+> x"AAAAA\u123ZB"
+> x"A\x"
+> x"A\x3"
+> x"A\x35"
+> x"A\u"
+> x"A\u3"
+> x"A\u35"
+> x"A\u357"
+> x"A\u3579"
+Range=(0,11), Tid=TxtLit, Text=[x"A\i\j\kB"], Value=[AijkB], Flags=BadEscape, IchBad=4
+Range=(12,22), Tid=TxtLit, Text=[x"A\i\j\kB], Value=[AijkB], Flags=Unterminated, BadEscape, IchBad=4
+Range=(23,38), Tid=TxtLit, Text=[x"A\U00000000B"], Value=[AU00000000B], Flags=BadEscape, IchBad=4
+Range=(39,48), Tid=TxtLit, Text=[x"A\x3JB"], Value=[Ax3JB], Flags=BadEscape, IchBad=4
+Range=(49,58), Tid=TxtLit, Text=[x"A\xJXB"], Value=[AxJXB], Flags=BadEscape, IchBad=4
+Range=(59,68), Tid=TxtLit, Text=[x"A\u3JB"], Value=[Au3JB], Flags=BadEscape, IchBad=4
+Range=(69,82), Tid=TxtLit, Text=[x"AAA\uJXYZB"], Value=[AAAuJXYZB], Flags=BadEscape, IchBad=6
+Range=(83,97), Tid=TxtLit, Text=[x"AAAA\u1XYZB"], Value=[AAAAu1XYZB], Flags=BadEscape, IchBad=7
+Range=(98,110), Tid=TxtLit, Text=[x"AA\u12YZB"], Value=[AAu12YZB], Flags=BadEscape, IchBad=5
+Range=(111,126), Tid=TxtLit, Text=[x"AAAAA\u123ZB"], Value=[AAAAAu123ZB], Flags=BadEscape, IchBad=8
+Range=(127,133), Tid=TxtLit, Text=[x"A\x"], Value=[Ax], Flags=BadEscape, IchBad=4
+Range=(134,141), Tid=TxtLit, Text=[x"A\x3"], Value=[Ax3], Flags=BadEscape, IchBad=4
+Range=(142,150), Tid=TxtLit, Text=[x"A\x35"], Value=[A5], Flags=None
+Range=(151,157), Tid=TxtLit, Text=[x"A\u"], Value=[Au], Flags=BadEscape, IchBad=4
+Range=(158,165), Tid=TxtLit, Text=[x"A\u3"], Value=[Au3], Flags=BadEscape, IchBad=4
+Range=(166,174), Tid=TxtLit, Text=[x"A\u35"], Value=[Au35], Flags=BadEscape, IchBad=4
+Range=(175,184), Tid=TxtLit, Text=[x"A\u357"], Value=[Au357], Flags=BadEscape, IchBad=4
+Range=(185,195), Tid=TxtLit, Text=[x"A\u3579"], Value=[A<3579>], Flags=None
+Range=(195,195), Tid=Eof, Text=[]
+###
+> // This must go last in the file.
+> @"Unterminated
+> Multi
+> Line
+Range=(0,33), Tid=CommentLine, Text=[// This must go last in the file.]
+Range=(34,59), Tid=TxtLit, Text=[@"Unterminated
+Multi
+Line], Value=[Unterminated<0A>Multi<0A>Line], Flags=Unterminated
+Range=(59,59), Tid=Eof, Text=[]
+###

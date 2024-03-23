@@ -1,0 +1,50 @@
+**** New globals: {R:{A:i4, B:b, C:r8, D:d}, X:r8}
+
+> R.A
+R.A : i4
+Binder : R.A
+###
+> X.A
+X.A : v
+*** Error: (1,2) Node: X.A, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> R.B.X
+R.B.X : v
+*** Error: (3,4) Node: R.B.X, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> R.X // Bad field name.
+R.X : v
+*** Error: (2,3) Node: R.X, Tok: 'X', Message: Field does not exist in type: '{A:i4, B:b, C:r8, D:d}'
+Binder : Error(ErrFieldDoesNotExist_Type)
+###
+> R.A
+R.A : i4
+Binder : R.A
+###
+> R.a
+Corrected by binder: [R.A]
+R.a : i4
+*** Error: (2,3) Node: R.a, Tok: 'a', Message: Unknown field, did you intend 'A' in type: '{A:i4, B:b, C:r8, D:d}'
+Binder : R.A
+###
+> r
+Corrected by binder: [R]
+r : {A:i4, B:b, C:r8, D:d}
+*** Error: (0,1) Node: r, Message: Name does not exist in the current context, did you intend 'R'?
+Binder : r
+###
+> r.A
+Corrected by binder: [R.A]
+r.A : i4
+*** Error: (0,1) Node: r, Message: Name does not exist in the current context, did you intend 'R'?
+Binder : r.A
+###
+> r.a
+Corrected by binder: [R.A]
+r.a : i4
+*** Error: (0,1) Node: r, Message: Name does not exist in the current context, did you intend 'R'?
+*** Error: (2,3) Node: r.a, Tok: 'a', Message: Unknown field, did you intend 'A' in type: '{A:i4, B:b, C:r8, D:d}'
+Binder : r.A
+###

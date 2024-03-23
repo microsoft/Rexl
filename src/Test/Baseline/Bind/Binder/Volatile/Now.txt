@@ -1,0 +1,17 @@
+> Date.Now()
+Date.Now() : {Local:d, Offset:t, Utc:d}
+Binder : [CallVolatile] Date.Now()
+###
+> Date.Now.Utc()
+Date.Now.Utc() : d
+Binder : [CallVolatile] Date.Now.Utc()
+###
+> Date.Now.Local()
+Date.Now.Local() : d
+Binder : [CallVolatile] Date.Now.Local()
+###
+> Range(10)->(Date.Now(), Date.Now.Utc(), Date.Now.Local())
+Range(10)->(Date.Now(), Date.Now.Utc(), Date.Now.Local()) : ({Local:d, Offset:t, Utc:d}, d, d)*
+Binder : [Int|ArgScopeRef|Tuple|Call|CallVolatile|ScopeOwner] ForEach(*1: Range(10), Guard(!2: *1, (Date.Now(), Date.Now.Utc(), Date.Now.Local())))
+Reducer: [Int|Tuple|Call|CallVolatile|ScopeOwner] ForEach(*1: Repeat(false, 10), (Date.Now(), Date.Now.Utc(), Date.Now.Local()))
+###

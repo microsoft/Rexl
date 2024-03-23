@@ -1,0 +1,332 @@
+**** New globals: {i4:i4, i4s:i4*, r:{C:i4, D:s}, rs:{C:i4, D:s}*, t:(i4, b), ts:(i4, b)*}
+
+> i4->{ }
+i4->{  } : {}
+Binder : Guard(!1: i4, {})
+Reducer: {}
+###
+> i4->()
+i4->() : ()
+Binder : Guard(!1: i4, ())
+Reducer: ()
+###
+> i4s->{ }
+i4s->{  } : {}*
+Binder : ForEach(*1: i4s, Guard(!2: *1, {}))
+Reducer: ForEach(*1: i4s, {})
+Hoister: With(!1: {}, ForEach(*2: i4s, !1))
+###
+> i4s->()
+i4s->() : ()*
+Binder : ForEach(*1: i4s, Guard(!2: *1, ()))
+Reducer: ForEach(*1: i4s, ())
+Hoister: With(!1: (), ForEach(*2: i4s, !1))
+###
+> i4->{ A: it, B: it * it }
+i4->{ A : it, B : it * it } : {A:i4, B:i8}
+Binder : Guard(!1: i4, {A:!1, B:Mul(Num<i8>(!1), Num<i8>(!1))})
+Reducer: {A:i4, B:Mul(Num<i8>(i4), Num<i8>(i4))}
+###
+> i4->(it, it * it)
+i4->(it, it * it) : (i4, i8)
+Binder : Guard(!1: i4, (!1, Mul(Num<i8>(!1), Num<i8>(!1))))
+Reducer: (i4, Mul(Num<i8>(i4), Num<i8>(i4)))
+###
+> i4->(it * it,)
+i4->(it * it,) : (i8)
+Binder : Guard(!1: i4, (Mul(Num<i8>(!1), Num<i8>(!1)),))
+Reducer: (Mul(Num<i8>(i4), Num<i8>(i4)),)
+###
+> i4->(it * it)
+i4->(it * it) : i8
+Binder : Guard(!1: i4, Mul(Num<i8>(!1), Num<i8>(!1)))
+Reducer: Mul(Num<i8>(i4), Num<i8>(i4))
+###
+> i4s->{ A: it, B: it * it }
+i4s->{ A : it, B : it * it } : {A:i4, B:i8}*
+Binder : ForEach(*1: i4s, Guard(!2: *1, {A:!2, B:Mul(Num<i8>(!2), Num<i8>(!2))}))
+Reducer: ForEach(*1: i4s, {A:*1, B:Mul(Num<i8>(*1), Num<i8>(*1))})
+###
+> i4s->(it, it * it)
+i4s->(it, it * it) : (i4, i8)*
+Binder : ForEach(*1: i4s, Guard(!2: *1, (!2, Mul(Num<i8>(!2), Num<i8>(!2)))))
+Reducer: ForEach(*1: i4s, (*1, Mul(Num<i8>(*1), Num<i8>(*1))))
+###
+> i4s->(it * it,)
+i4s->(it * it,) : (i8)*
+Binder : ForEach(*1: i4s, Guard(!2: *1, (Mul(Num<i8>(!2), Num<i8>(!2)),)))
+Reducer: ForEach(*1: i4s, (Mul(Num<i8>(*1), Num<i8>(*1)),))
+###
+> i4s->(it * it)
+i4s->(it * it) : i8*
+Binder : ForEach(*1: i4s, Guard(!2: *1, Mul(Num<i8>(!2), Num<i8>(!2))))
+Reducer: ForEach(*1: i4s, Mul(Num<i8>(*1), Num<i8>(*1)))
+###
+> r->{ }
+r->{  } : {}
+Binder : Guard(!1: r, {})
+Reducer: {}
+###
+> r+>{ }
+r+>{  } : {C:i4, D:s}
+Binder : r
+###
+> r->&{ }
+r+>{  } : {C:i4, D:s}
+Binder : r
+###
+> rs->{ }
+rs->{  } : {}*
+Binder : ForEach(*1: rs, Guard(!2: *1, {}))
+Reducer: ForEach(*1: rs, {})
+Hoister: With(!1: {}, ForEach(*2: rs, !1))
+###
+> rs+>{ }
+rs+>{  } : {C:i4, D:s}*
+Binder : ForEach(*1: rs, *1)
+Reducer: rs
+###
+> rs->&{ }
+rs+>{  } : {C:i4, D:s}*
+Binder : ForEach(*1: rs, *1)
+Reducer: rs
+###
+> r->{ A: C, B: C * C }
+r->{ A : C, B : C * C } : {A:i4, B:i8}
+Binder : Guard(!1: r, {A:!1.C, B:Mul(Num<i8>(!1.C), Num<i8>(!1.C))})
+Reducer: {A:r.C, B:Mul(Num<i8>(r.C), Num<i8>(r.C))}
+###
+> r+>{ A: C, B: C * C }
+r+>{ A : C, B : C * C } : {A:i4, B:i8, D:s}
+Binder : SetFields(!1: r, A : !1.C, B : Mul(Num<i8>(!1.C), Num<i8>(!1.C)))
+###
+> r->(it & { A: C, B: C * C })
+r->(it & { A : C, B : C * C }) : {A:i4, B:i8, C:i4, D:s}
+Binder : Guard(!1: r, RecordConcat(!1, {A:!1.C, B:Mul(Num<i8>(!1.C), Num<i8>(!1.C))}))
+Reducer: RecordConcat(r, {A:r.C, B:Mul(Num<i8>(r.C), Num<i8>(r.C))})
+###
+> rs->{ A: C, B: C * C }
+rs->{ A : C, B : C * C } : {A:i4, B:i8}*
+Binder : ForEach(*1: rs, Guard(!2: *1, {A:!2.C, B:Mul(Num<i8>(!2.C), Num<i8>(!2.C))}))
+Reducer: ForEach(*1: rs, {A:*1.C, B:Mul(Num<i8>(*1.C), Num<i8>(*1.C))})
+###
+> rs+>{ A: C, B: C * C }
+rs+>{ A : C, B : C * C } : {A:i4, B:i8, D:s}*
+Binder : ForEach(*1: rs, SetFields(!2: *1, A : !2.C, B : Mul(Num<i8>(!2.C), Num<i8>(!2.C))))
+###
+> rs->(it & { A: C, B: C * C })
+rs->(it & { A : C, B : C * C }) : {A:i4, B:i8, C:i4, D:s}*
+Binder : ForEach(*1: rs, Guard(!2: *1, RecordConcat(!2, {A:!2.C, B:Mul(Num<i8>(!2.C), Num<i8>(!2.C))})))
+Reducer: ForEach(*1: rs, RecordConcat(*1, {A:*1.C, B:Mul(Num<i8>(*1.C), Num<i8>(*1.C))}))
+###
+> t->()
+t->() : ()
+Binder : Guard(!1: t, ())
+Reducer: ()
+###
+> t+>()
+t+>() : (i4, b)
+Binder : With(!1: t, TupleConcat(!1, ()))
+Reducer: t
+###
+> ts->()
+ts->() : ()*
+Binder : ForEach(*1: ts, Guard(!2: *1, ()))
+Reducer: ForEach(*1: ts, ())
+Hoister: With(!1: (), ForEach(*2: ts, !1))
+###
+> ts+>()
+ts+>() : (i4, b)*
+Binder : ForEach(*1: ts, TupleConcat(*1, ()))
+Reducer: ts
+###
+> Wrap(t)->(Item0 if Item1 else Item0 * Item0)
+Wrap(t)->(Item0 if Item1 else Item0 * Item0) : i8
+Binder : Guard(!1: Test.Wrap(t), If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))))
+Reducer: Guard(!1: Test.Wrap(t), If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))))
+###
+> Wrap(t)+>(Item0 if Item1 else Item0 * Item0)
+Wrap(t)+>(Item0 if Item1 else Item0 * Item0,) : (i4, b, i8)
+Binder : With(!1: Test.Wrap(t), TupleConcat(!1, (If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))),)))
+Reducer: With(!1: Test.Wrap(t), TupleConcat(!1, (If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))),)))
+###
+> Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0))
+Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0)) : (i4, b, i8)
+*** Error: (15,16) Node: Item0 if Item1 else Item0 * Item0, Message: Operand must be a tuple
+Binder : Guard(!1: Test.Wrap(t), TupleConcat(!1, (If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))),)))
+Reducer: Guard(!1: Test.Wrap(t), TupleConcat(!1, (If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))),)))
+###
+> Wrap(t)->(Item0 if Item1 else Item0 * Item0,)
+Wrap(t)->(Item0 if Item1 else Item0 * Item0,) : (i8)
+Binder : Guard(!1: Test.Wrap(t), (If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))),))
+Reducer: Guard(!1: Test.Wrap(t), (If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))),))
+###
+> Wrap(t)+>(Item0 if Item1 else Item0 * Item0,)
+Wrap(t)+>(Item0 if Item1 else Item0 * Item0,) : (i4, b, i8)
+Binder : With(!1: Test.Wrap(t), TupleConcat(!1, (If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))),)))
+Reducer: With(!1: Test.Wrap(t), TupleConcat(!1, (If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))),)))
+###
+> Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0,))
+Wrap(t)->(it & (Item0 if Item1 else Item0 * Item0,)) : (i4, b, i8)
+Binder : Guard(!1: Test.Wrap(t), TupleConcat(!1, (If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))),)))
+Reducer: Guard(!1: Test.Wrap(t), TupleConcat(!1, (If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))),)))
+###
+> Wrap(t)->(Item0, Item0 if Item1 else Item0 * Item0)
+Wrap(t)->(Item0, Item0 if Item1 else Item0 * Item0) : (i4, i8)
+Binder : Guard(!1: Test.Wrap(t), (Tuple.Item0*(!1), If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1))))))
+Reducer: Guard(!1: Test.Wrap(t), (!1.0, If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0)))))
+###
+> Wrap(t)+>(Item0, Item0 if Item1 else Item0 * Item0)
+Wrap(t)+>(Item0, Item0 if Item1 else Item0 * Item0) : (i4, b, i4, i8)
+Binder : With(!1: Test.Wrap(t), TupleConcat(!1, (Tuple.Item0*(!1), If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))))))
+Reducer: With(!1: Test.Wrap(t), TupleConcat(!1, (!1.0, If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))))))
+###
+> Wrap(t)->(it & (Item0, Item0 if Item1 else Item0 * Item0))
+Wrap(t)->(it & (Item0, Item0 if Item1 else Item0 * Item0)) : (i4, b, i4, i8)
+Binder : Guard(!1: Test.Wrap(t), TupleConcat(!1, (Tuple.Item0*(!1), If(Tuple.Item1*(!1), Num<i8>(Tuple.Item0*(!1)), Mul(Num<i8>(Tuple.Item0*(!1)), Num<i8>(Tuple.Item0*(!1)))))))
+Reducer: Guard(!1: Test.Wrap(t), TupleConcat(!1, (!1.0, If(!1.1, Num<i8>(!1.0), Mul(Num<i8>(!1.0), Num<i8>(!1.0))))))
+###
+> ts->(Item0 if Item1 else Item0 * Item0)
+ts->(Item0 if Item1 else Item0 * Item0) : i8*
+Binder : ForEach(*1: ts, Guard(!2: *1, If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2))))))
+Reducer: ForEach(*1: ts, If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))))
+###
+> ts+>(Item0 if Item1 else Item0 * Item0)
+ts+>(Item0 if Item1 else Item0 * Item0,) : (i4, b, i8)*
+Binder : ForEach(*1: ts, TupleConcat(*1, (If(Tuple.Item1*(*1), Num<i8>(Tuple.Item0*(*1)), Mul(Num<i8>(Tuple.Item0*(*1)), Num<i8>(Tuple.Item0*(*1)))),)))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))),)))
+###
+> ts->(it & (Item0 if Item1 else Item0 * Item0))
+ts->(it & (Item0 if Item1 else Item0 * Item0)) : (i4, b, i8)*
+*** Error: (10,11) Node: Item0 if Item1 else Item0 * Item0, Message: Operand must be a tuple
+Binder : ForEach(*1: ts, Guard(!2: *1, TupleConcat(!2, (If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2)))),))))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))),)))
+###
+> ts->(Item0 if Item1 else Item0 * Item0,)
+ts->(Item0 if Item1 else Item0 * Item0,) : (i8)*
+Binder : ForEach(*1: ts, Guard(!2: *1, (If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2)))),)))
+Reducer: ForEach(*1: ts, (If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))),))
+###
+> ts+>(Item0 if Item1 else Item0 * Item0,)
+ts+>(Item0 if Item1 else Item0 * Item0,) : (i4, b, i8)*
+Binder : ForEach(*1: ts, TupleConcat(*1, (If(Tuple.Item1*(*1), Num<i8>(Tuple.Item0*(*1)), Mul(Num<i8>(Tuple.Item0*(*1)), Num<i8>(Tuple.Item0*(*1)))),)))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))),)))
+###
+> ts->(it & (Item0 if Item1 else Item0 * Item0,))
+ts->(it & (Item0 if Item1 else Item0 * Item0,)) : (i4, b, i8)*
+Binder : ForEach(*1: ts, Guard(!2: *1, TupleConcat(!2, (If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2)))),))))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))),)))
+###
+> ts->(Item0, Item0 if Item1 else Item0 * Item0)
+ts->(Item0, Item0 if Item1 else Item0 * Item0) : (i4, i8)*
+Binder : ForEach(*1: ts, Guard(!2: *1, (Tuple.Item0*(!2), If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2)))))))
+Reducer: ForEach(*1: ts, (*1.0, If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0)))))
+###
+> ts+>(Item0, Item0 if Item1 else Item0 * Item0)
+ts+>(Item0, Item0 if Item1 else Item0 * Item0) : (i4, b, i4, i8)*
+Binder : ForEach(*1: ts, TupleConcat(*1, (Tuple.Item0*(*1), If(Tuple.Item1*(*1), Num<i8>(Tuple.Item0*(*1)), Mul(Num<i8>(Tuple.Item0*(*1)), Num<i8>(Tuple.Item0*(*1)))))))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (*1.0, If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))))))
+###
+> ts->(it & (Item0, Item0 if Item1 else Item0 * Item0))
+ts->(it & (Item0, Item0 if Item1 else Item0 * Item0)) : (i4, b, i4, i8)*
+Binder : ForEach(*1: ts, Guard(!2: *1, TupleConcat(!2, (Tuple.Item0*(!2), If(Tuple.Item1*(!2), Num<i8>(Tuple.Item0*(!2)), Mul(Num<i8>(Tuple.Item0*(!2)), Num<i8>(Tuple.Item0*(!2))))))))
+Reducer: ForEach(*1: ts, TupleConcat(*1, (*1.0, If(*1.1, Num<i8>(*1.0), Mul(Num<i8>(*1.0), Num<i8>(*1.0))))))
+###
+> r->(C, C * C)
+r->(C, C * C) : (i4, i8)
+Binder : Guard(!1: r, (!1.C, Mul(Num<i8>(!1.C), Num<i8>(!1.C))))
+Reducer: (r.C, Mul(Num<i8>(r.C), Num<i8>(r.C)))
+###
+> Wrap(t)->{ A: Item0, B: Item1 }
+Wrap(t)->{ A : Item0, B : Item1 } : {A:i4, B:b}
+Binder : Guard(!1: Test.Wrap(t), {A:Tuple.Item0*(!1), B:Tuple.Item1*(!1)})
+Reducer: Guard(!1: Test.Wrap(t), {A:!1.0, B:!1.1})
+###
+> t->{ A: Item0, B: Item1 }
+t->{ A : Item0, B : Item1 } : {A:i4, B:b}
+Binder : Guard(!1: t, {A:Tuple.Item0*(!1), B:Tuple.Item1*(!1)})
+Reducer: {A:t.0, B:t.1}
+###
+> rs->(C, C * C)
+rs->(C, C * C) : (i4, i8)*
+Binder : ForEach(*1: rs, Guard(!2: *1, (!2.C, Mul(Num<i8>(!2.C), Num<i8>(!2.C)))))
+Reducer: ForEach(*1: rs, (*1.C, Mul(Num<i8>(*1.C), Num<i8>(*1.C))))
+###
+> ts->{ A: Item0, B: Item1 }
+ts->{ A : Item0, B : Item1 } : {A:i4, B:b}*
+Binder : ForEach(*1: ts, Guard(!2: *1, {A:Tuple.Item0*(!2), B:Tuple.Item1*(!2)}))
+Reducer: ForEach(*1: ts, {A:*1.0, B:*1.1})
+###
+> i4+>{ }
+i4+>{  } : {}
+*** Error: (0,2) Node: i4, Message: Operand must be a record
+Binder : With(!1: i4, {})
+Reducer: {}
+###
+> i4->&{ }
+i4+>{  } : {}
+*** Error: (0,2) Node: i4, Message: Operand must be a record
+Binder : With(!1: i4, {})
+Reducer: {}
+###
+> i4->&()
+i4+>() : ()
+*** Error: (0,2) Node: i4, Message: Operand must be a tuple
+Binder : With(!1: i4, ())
+Reducer: ()
+###
+> r->&(C, C * C)
+r+>(C, C * C) : (i4, i8)
+*** Error: (0,1) Node: r, Message: Operand must be a tuple
+Binder : With(!1: r, (!1.C, Mul(Num<i8>(!1.C), Num<i8>(!1.C))))
+Reducer: (r.C, Mul(Num<i8>(r.C), Num<i8>(r.C)))
+###
+> Wrap(t)->&{ A: Item0, B: Item1 }
+Wrap(t)+>{ A : Item0, B : Item1 } : {A:i4, B:b}
+*** Error: (4,5) Node: Wrap(t), Message: Operand must be a record
+Binder : With(!1: Test.Wrap(t), {A:Tuple.Item0*(!1), B:Tuple.Item1*(!1)})
+Reducer: With(!1: Test.Wrap(t), {A:!1.0, B:!1.1})
+###
+> t->&{ A: Item0, B: Item1 }
+t+>{ A : Item0, B : Item1 } : {A:i4, B:b}
+*** Error: (0,1) Node: t, Message: Operand must be a record
+Binder : With(!1: t, {A:Tuple.Item0*(!1), B:Tuple.Item1*(!1)})
+Reducer: {A:t.0, B:t.1}
+###
+> i4s+>{ }
+i4s+>{  } : {}*
+*** Error: (0,3) Node: i4s, Message: Operand must be a record
+Binder : ForEach(*1: i4s, With(!2: *1, {}))
+Reducer: ForEach(*1: i4s, {})
+Hoister: With(!1: {}, ForEach(*2: i4s, !1))
+###
+> i4s->&{ }
+i4s+>{  } : {}*
+*** Error: (0,3) Node: i4s, Message: Operand must be a record
+Binder : ForEach(*1: i4s, With(!2: *1, {}))
+Reducer: ForEach(*1: i4s, {})
+Hoister: With(!1: {}, ForEach(*2: i4s, !1))
+###
+> i4s->&()
+i4s+>() : ()*
+*** Error: (0,3) Node: i4s, Message: Operand must be a tuple
+Binder : ForEach(*1: i4s, ())
+Hoister: With(!1: (), ForEach(*2: i4s, !1))
+###
+> rs->&(C, C * C)
+rs+>(C, C * C) : (i4, i8)*
+*** Error: (0,2) Node: rs, Message: Operand must be a tuple
+Binder : ForEach(*1: rs, (*1.C, Mul(Num<i8>(*1.C), Num<i8>(*1.C))))
+###
+> ts->&{ A: Item0, B: Item1 }
+ts+>{ A : Item0, B : Item1 } : {A:i4, B:b}*
+*** Error: (0,2) Node: ts, Message: Operand must be a record
+Binder : ForEach(*1: ts, With(!2: *1, {A:Tuple.Item0*(!2), B:Tuple.Item1*(!2)}))
+Reducer: ForEach(*1: ts, {A:*1.0, B:*1.1})
+###
+> ({a: b},)[8].a // Error, found from fuzz testing.
+({ a : b },)[8].a : v
+*** Error: (5,6) Node: b, Message: Name does not exist in the current context
+*** Warning: (10,11) Node: 8, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<v>
+###

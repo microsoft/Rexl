@@ -1,0 +1,52 @@
+**** New definitions: T, type: {A:i4?}?*
+
+> T.A + 2
+T.A + 2 : i8?*
+BndKind:Call, Type:i8?*, Bnd:(Call(∂.ForEach([map:1] Global(T), Call(∂.Guard([guard:2] Scope(1), [guard:3] GetField(Scope(2), A), Add(Num<i8>(Scope(3)), 2:i8)):i8?)):i8?*))
+// (∂.T:{A:i4?}?*) : i8?*
+ForEach_1(Arr<obj>, {i4}):Opt<i8>
+      1) ldarg.1 [{i4}]
+      5) brfalse [0]
+      1) ldarg.1 [{i4}]
+      5) ldfld {i4}::_B0:u1
+      1) ldc.i4.1
+      1) and
+      5) brfalse [0]
+      1) ldarg.1 [{i4}]
+      5) ldfld {i4}::_F0:i4
+      1) stloc.0 [i4]
+      1) ldloc.0 [i4]
+      1) conv.i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) add
+      5) newobj Opt<i8>(i8)
+      5) br [1]
+  Label [0]:
+      5) call static CodeGenUtil::GetDefault():Opt<i8>
+  Label [1]:
+      1) ret
+  Total Size: 47
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{i4}>
+      1) stloc.0 [Seq<{i4}>]
+      1) ldloc.0 [Seq<{i4}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{i4},Opt<i8>>]
+      5) call static ForEachGen::Exec(Seq<{i4}>, Func<{i4},Opt<i8>>):Seq<Opt<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Opt<i8>>):Seq<Opt<i8>>
+      1) ret
+  Total Size: 28
+
+Func sig: (T:{A:i4?}?*) to i8?*
+Sequence: Seq<Opt<i8>>
+ 0) 19
+ 1) -1
+ 2) <null>
+ 3) <null>
+###

@@ -1,0 +1,68 @@
+**** New globals: {GA:i8, GB:r8}
+
+> With(
+    M : module{
+        param N := module {
+            param A := 3;
+            const B := A * A
+        };
+        const C := N.B^2;
+    },
+    (M.C, M.N.A, M.N.B))
+With(M : module { param N := module { param A := 3; const B := A * A }; const C := N.B^2 }, (M.C, M.N.A, M.N.B)) : (i8, i8, i8)
+Binder : With(!3: module[items!1]{ param N := module[items!2]{ param A := 3; const B := Mul(!2.0, !2.0) }; const C := Power(ModToRec(!1.0).B, 2) }, (ModToRec(!3).C, ModToRec(ModToRec(!3).N).A, ModToRec(ModToRec(!3).N).B))
+###
+> With(
+    M : module {
+        param P := 17;
+        param N := module {
+            param A := P;
+            const B := A * A
+        };
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+With(M : module { param P := 17; param N := module { param A := P; const B := A * A }; const C := N.B^2 }, (M.C, M.N.A, M.N.B)) : (i8, i8, i8)
+Binder : With(!4: module[items!1]{ param P := 17; param N := module[ext!2(!1.0,), items!3]{ param A := !2.0; const B := Mul(!3.0, !3.0) }; const C := Power(ModToRec(!1.1).B, 2) }, (ModToRec(!4).C, ModToRec(ModToRec(!4).N).A, ModToRec(ModToRec(!4).N).B))
+###
+> With(
+    M : module {
+        param P := 17;
+        param N := Range(10)->ForEach(as k, module {
+            param A := k * P * k * P;
+            const B := A * A
+        });
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+With(M : module { param P := 17; param N := Range(10)->ForEach(as k, module { param A := k * P * k * P; const B := A * A }); const C := N.B^2 }, (M.C, M.N.A, M.N.B)) : (i8*, i8*, i8*)
+Binder : With(!7: module[items!1]{ param P := 17; param N := ForEach(*2: Range(10), module[ext!3(*2,!1.0,), items!4]{ param A := Mul(!3.0, !3.1, !3.0, !3.1); const B := Mul(!4.0, !4.0) }); const C := ForEach(*6: ForEach(*5: !1.1, ModToRec(*5).B), Power(*6, 2)) }, (ModToRec(!7).C, ForEach(*8: ModToRec(!7).N, ModToRec(*8).A), ForEach(*9: ModToRec(!7).N, ModToRec(*9).B)))
+Reducer: With(!6: module[items!1]{ param P := 17; param N := ForEach(*2: Range(10), module[ext!3(*2,!1.0,), items!4]{ param A := Mul(!3.0, !3.1, !3.0, !3.1); const B := Mul(!4.0, !4.0) }); const C := ForEach(*5: !1.1, Power(ModToRec(*5).B, 2)) }, (ModToRec(!6).C, ForEach(*7: ModToRec(!6).N, ModToRec(*7).A), ForEach(*8: ModToRec(!6).N, ModToRec(*8).B)))
+###
+> With(
+    Q : 37,
+    M : module {
+        param P := 17 * Q;
+        param N := module {
+            param A := P * Q * Q;
+            const B := A * A * Q
+        };
+        const C := N.B^2
+    },
+    (M.C, M.N.A, M.N.B))
+With(Q : 37, M : module { param P := 17 * Q; param N := module { param A := P * Q * Q; const B := A * A * Q }; const C := N.B^2 }, (M.C, M.N.A, M.N.B)) : (i8, i8, i8)
+Binder : With(!1: 37, !6: module[ext!2(!1,), items!3]{ param P := Mul(17, !2.0); param N := module[ext!4(!3.0,!2.0,), items!5]{ param A := Mul(!4.0, !4.1, !4.1); const B := Mul(!5.0, !5.0, !4.1) }; const C := Power(ModToRec(!3.1).B, 2) }, (ModToRec(!6).C, ModToRec(ModToRec(!6).N).A, ModToRec(ModToRec(!6).N).B))
+Reducer: With(!5: module[ext!1(37,), items!2]{ param P := Mul(!1.0, 17); param N := module[ext!3(!2.0,!1.0,), items!4]{ param A := Mul(!3.0, !3.1, !3.1); const B := Mul(!4.0, !4.0, !3.1) }; const C := Power(ModToRec(!2.1).B, 2) }, (ModToRec(!5).C, ModToRec(ModToRec(!5).N).A, ModToRec(ModToRec(!5).N).B))
+###
+> With(
+    M : module {
+        param N := module {
+            param A := GA;
+            const B := A * A
+        };
+        const C := N.B + GA * GB;
+    },
+    (M.C, M.N.A, M.N.B))
+With(M : module { param N := module { param A := GA; const B := A * A }; const C := N.B + GA * GB }, (M.C, M.N.A, M.N.B)) : (r8, i8, i8)
+Binder : With(!5: module[ext!1(GA,GB,), items!2]{ param N := module[ext!3(!1.0,), items!4]{ param A := !3.0; const B := Mul(!4.0, !4.0) }; const C := Add(Num<r8>(ModToRec(!2.0).B), Mul(Num<r8>(!1.0), !1.1)) }, (ModToRec(!5).C, ModToRec(ModToRec(!5).N).A, ModToRec(ModToRec(!5).N).B))
+###

@@ -1,0 +1,94 @@
+﻿::: { s:s, r8:r8, r4:r4, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1, qr8:r8?, qr4:r4?, qi8:i8?, qi4:i4?, qi2:i2?, qi1:i1?, qu8:u8?, qu4:u4?, qu2:u2?, qu1:u1?}
+
+//i4
+Div(Wrap(3), 4)
+Div(Wrap(3), -4)
+Div(Wrap(2), -1)
+Div(Wrap(2), Wrap(0))
+Div(Wrap(0x3FFFFFFF), 2)
+Div(Wrap(0x3FFFFFFF), 4)
+Div(Wrap(0x3FFFFFFF), Wrap(0))
+Div(Wrap(-0), 2)
+Div(Wrap(-2), -0)
+Div(i4, 3)
+Div(3, i4)
+Div(Wrap(0x80000000i4), -1)
+
+//i8
+Div(i8+3,4)
+Div(i8+2,-1)
+Div(Wrap(0x3FFFFFFFF), 2)
+Div(Wrap(0x3FFFFFFFF), 4)
+Div(Wrap(0x3FFFFFFFF), Wrap(0))
+Div(Wrap(0x8000000000000000i8), -1)
+
+
+//u4
+Div(u4+2u, 2)
+Div(u4+10u, 4)
+Div(Wrap(0x7FFFFFFFU), 2)
+Div(Wrap(0x7FFFFFFFU), 2U)
+Div(Wrap(0x7FFFFFFFU), Wrap(0U))
+Div(Wrap(0x7FFFFFFFU), 4)
+Div(Wrap(0x812345u4), 0x81234567u4)
+Div(Wrap(0x80123456u4), 0x81234567u4)
+Div(Wrap(0x81234567u4), 0x80123456u4)
+Div(Wrap(0x81234567u4), 0x812345u4)
+
+//u8
+Div(Wrap(0x7FFFFFFFFFU), 2U)
+Div(Wrap(0x7FFFFFFFFFU), Wrap(0U))
+
+//r4
+Div(Wrap(-0f), 2f)
+Div(Wrap(-0.0), 2.0)
+Div(Wrap(2f), 0f)
+Div(Wrap(-2.0), -0.0)
+Div(Wrap(2.0), 4.0)
+Div(Wrap(2.0), 3.0)
+
+//r8
+Div(r8+1.0, 2.0)
+Div(r8-2.0, 2.0)
+Div(r8-2.0, -0.0)
+Div(r8, 0f)
+Div(r8, -0f)
+Div(r8, 2.0)
+Div(Wrap(-2e100), -0f)
+Div(Wrap(2e100), 2)
+Div(Wrap(2e100), 3)
+Div(1.0/0, r8)
+Div(-1.0/0, r8)
+Div(1.0/0 * 0, r8)
+Div(-1.0/0 * 0, r8)
+
+
+//i
+Div(Wrap(0x7FFFFFFFFFU), 2)
+Div(Wrap(0x7FFFFFFFFFU), 4)
+
+Div(Wrap(0x3FFFFFFFFFFFFFFFF), 2)
+Div(Wrap(0x3FFFFFFFFFFFFFFFF), -4)
+Div(Wrap(0x3FFFFFFFFFFFFFFFF), Wrap(0))
+
+// Make sure values for CodeGen and Reduce paths are equivalent.
+Div(Wrap(3), 4) = Div(3, 4)
+Div(Wrap(3i8), 4) = Div(3i8, 4)
+Div(Wrap(0x80000000i4), -1) = Div(0x80000000i4, -1)
+Div(Wrap(0x8000000000000000i8), -1) = Div(0x8000000000000000i8, -1)
+Div(Wrap(2), Wrap(0)) = Div(2, 0)
+Div(Wrap(2i8), Wrap(0)) = Div(2i8, 0)
+Div(Wrap(3u), 4u) = Div(3u, 4u)
+Div(Wrap(3u8), 4u) = Div(3u8, 4u)
+Div(Wrap(3), -4) = Div(3, -4)
+Div(Wrap(2u), Wrap(0u)) = Div(2u, 0u)
+Div(Wrap(2u8), Wrap(0u)) = Div(2u8, 0u)
+Div(Wrap(2.0), 4.0) = Div(2.0, 4.0)
+Div(Wrap(2f), 0f) = Div(2f, 0f)
+Div(Wrap(-2.0), -0.0) = Div(-2.0, -0.0)
+Div(r8+1.0, 2.0) = Div(1.0r8, 2.0)
+Div(Wrap(-2e100), -0f) = Div(-2e100, -0f)
+Div(Wrap(0x812345u4), 0x81234567u4) = Div(0x812345u4, 0x81234567u4)
+Div(Wrap(0x80123456u4), 0x81234567u4) = Div(0x80123456u4, 0x81234567u4)
+Div(Wrap(0x81234567u4), 0x80123456u4) = Div(0x81234567u4, 0x80123456u4)
+Div(Wrap(0x81234567u4), 0x812345u4) = Div(0x81234567u4, 0x812345u4)

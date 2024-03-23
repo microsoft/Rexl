@@ -1,0 +1,258 @@
+>>> *** Source:
+    Ints := module {
+        param Exps := [ 6, 13, 20, 27, 34, 41, 48, 55, 63 ];
+        const Vals := Exps->(1 shl it);
+        const MaxPos := Vals - 1;
+        const MaxNeg := -Vals;
+        const MinPos := [0] ++ Vals->TakeIf(# < Exps->Count() - 1);
+        const MinNeg := -MinPos - 1;
+        const Seq :=
+            MinPos ++ (MinPos + 1) ++
+            MaxPos ++ (MaxPos - 1) ++
+            MinNeg ++ (MinNeg - 1) ++
+            MaxNeg ++ (MaxNeg + 1);
+    };
+    I8s := Ints.Seq;
+    U8s := Ints.Seq->CastU8();
+    Ints4 := Ints with { Exps: [ 6, 13, 20, 27, 31 ] };
+    I4s := Ints4.Seq->CastI4();
+    U4s := Ints4.Seq->CastU4();
+    func Project(seq) := (seq, seq->(it, ~it), seq->{A:it, B:~it}, seq->Tensor.From());
+    func Cmp(p1, p2) := (
+        p1->GetType(),
+        p1->GetType() = p2->GetType(),
+        p1[0]->Count(), p2[0]->Count(),
+        p1[1]->Count(), p2[1]->Count(),
+        p1[2]->Count(), p2[2]->Count(),
+        p1[3].Shape, p2[3].Shape,
+        ForEach(a:p1[0], b:p2[0], a = b)->All(),
+        ForEach(a:p1[1], b:p2[1], a[0] = b[0] and a[1] = b[1] and a[1] = ~a[0])->All(),
+        ForEach(a:p1[2], b:p2[2], a.A = b.A and a.B = b.B and a.B = ~a.A)->All(),
+        ForEach(a:p1[3].Values, b:p2[3].Values, a = b)->All(),
+    );
+    PI8s := I8s->Project();
+    PU8s := U8s->Project();
+    PI4s := I4s->Project();
+    PU4s := U4s->Project();
+    finish R1 as ReadRbin(_DATA_ & "I8s.0105.rbin");
+    finish R2 as ReadRbin(_DATA_ & "U8s.0105.rbin");
+    finish R3 as ReadRbin(_DATA_ & "I4s.0105.rbin");
+    finish R4 as ReadRbin(_DATA_ & "U4s.0105.rbin");
+    (R1$Failed, R1$ErrorMessage, R1$ResultNames);
+    (R2$Failed, R2$ErrorMessage, R2$ResultNames);
+    (R3$Failed, R3$ErrorMessage, R3$ResultNames);
+    (R4$Failed, R4$ErrorMessage, R4$ResultNames);
+    R1.RowCount;
+    R2.RowCount;
+    R3.RowCount;
+    R4.RowCount;
+    Cmp(R1.Data, PI8s);
+    Cmp(R2.Data, PU8s);
+    Cmp(R3.Data, PI4s);
+    Cmp(R4.Data, PU4s);
+    finish W1 as WriteRbin(PI8s, "temp/I8s.Cur.rbin", true, false);
+    finish W2 as WriteRbin(PU8s, "temp/U8s.Cur.rbin", true, false);
+    finish W3 as WriteRbin(PI4s, "temp/I4s.Cur.rbin", true, false);
+    finish W4 as WriteRbin(PU4s, "temp/U4s.Cur.rbin", true, false);
+    (W1$Failed, W1$ResultNames, W1.Size);
+    (W2$Failed, W2$ResultNames, W2.Size);
+    (W3$Failed, W3$ResultNames, W3.Size);
+    (W4$Failed, W4$ResultNames, W4.Size);
+    finish R1 as ReadRbin("temp/I8s.Cur.rbin");
+    finish R2 as ReadRbin("temp/U8s.Cur.rbin");
+    finish R3 as ReadRbin("temp/I4s.Cur.rbin");
+    finish R4 as ReadRbin("temp/U4s.Cur.rbin");
+    (R1$Failed, R1$ResultNames, R1.RowCount);
+    (R2$Failed, R2$ResultNames, R2.RowCount);
+    (R3$Failed, R3$ResultNames, R3.RowCount);
+    (R4$Failed, R4$ResultNames, R4.RowCount);
+    Cmp(R1.Data, PI8s);
+    Cmp(R2.Data, PU8s);
+    Cmp(R3.Data, PI4s);
+    Cmp(R4.Data, PU4s);
+
+>>> *** Instructions:
+   0) [0] Define Ints <- module { param Exps := [6, 13, 20, 27, 34, 41, 48, 55, 63]; const Vals := Exps->(1 shl it); const MaxPos := Vals - 1; const MaxNeg := -Vals; const MinPos := [0] ++ Vals->TakeIf(# $< Exps->Count() - 1); const MinNeg := -MinPos - 1; const Seq := MinPos ++ MinPos + 1 ++ MaxPos ++ MaxPos - 1 ++ MinNeg ++ MinNeg - 1 ++ MaxNeg ++ MaxNeg + 1 }
+   1) [0] Define I8s <- Ints.Seq
+   2) [0] Define U8s <- Ints.Seq->CastU8()
+   3) [0] Define Ints4 <- Ints=>{ Exps : [6, 13, 20, 27, 31] }
+   4) [0] Define I4s <- Ints4.Seq->CastI4()
+   5) [0] Define U4s <- Ints4.Seq->CastU4()
+   6) [0] DefineFunc Project(seq) <- (seq, seq->(it, ~it), seq->{ A : it, B : ~it }, seq->Tensor.From())
+   7) [0] DefineFunc Cmp(p1, p2) <- (p1->GetType(), p1->GetType() @= p2->GetType(), p1[0]->Count(), p2[0]->Count(), p1[1]->Count(), p2[1]->Count(), p1[2]->Count(), p2[2]->Count(), p1[3].Shape, p2[3].Shape, ForEach(a : p1[0], b : p2[0], a @= b)->All(), ForEach(a : p1[1], b : p2[1], a[0] @= b[0] and a[1] @= b[1] and a[1] @= ~a[0])->All(), ForEach(a : p1[2], b : p2[2], a.A @= b.A and a.B @= b.B and a.B @= ~a.A)->All(), ForEach(a : p1[3].Values, b : p2[3].Values, a @= b)->All())
+   8) [0] Define PI8s <- I8s->Project()
+   9) [0] Define PU8s <- U8s->Project()
+  10) [0] Define PI4s <- I4s->Project()
+  11) [0] Define PU4s <- U4s->Project()
+  12) [0] TaskProc finish R1 as ReadRbin(_DATA_ & "I8s.0105.rbin")
+  13) [0] TaskProc finish R2 as ReadRbin(_DATA_ & "U8s.0105.rbin")
+  14) [0] TaskProc finish R3 as ReadRbin(_DATA_ & "I4s.0105.rbin")
+  15) [0] TaskProc finish R4 as ReadRbin(_DATA_ & "U4s.0105.rbin")
+  16) [0] Expr (R1$Failed, R1$ErrorMessage, R1$ResultNames)
+  17) [0] Expr (R2$Failed, R2$ErrorMessage, R2$ResultNames)
+  18) [0] Expr (R3$Failed, R3$ErrorMessage, R3$ResultNames)
+  19) [0] Expr (R4$Failed, R4$ErrorMessage, R4$ResultNames)
+  20) [0] Expr R1.RowCount
+  21) [0] Expr R2.RowCount
+  22) [0] Expr R3.RowCount
+  23) [0] Expr R4.RowCount
+  24) [0] Expr Cmp(R1.Data, PI8s)
+  25) [0] Expr Cmp(R2.Data, PU8s)
+  26) [0] Expr Cmp(R3.Data, PI4s)
+  27) [0] Expr Cmp(R4.Data, PU4s)
+  28) [0] TaskProc finish W1 as WriteRbin(PI8s, "temp/I8s.Cur.rbin", true, false)
+  29) [0] TaskProc finish W2 as WriteRbin(PU8s, "temp/U8s.Cur.rbin", true, false)
+  30) [0] TaskProc finish W3 as WriteRbin(PI4s, "temp/I4s.Cur.rbin", true, false)
+  31) [0] TaskProc finish W4 as WriteRbin(PU4s, "temp/U4s.Cur.rbin", true, false)
+  32) [0] Expr (W1$Failed, W1$ResultNames, W1.Size)
+  33) [0] Expr (W2$Failed, W2$ResultNames, W2.Size)
+  34) [0] Expr (W3$Failed, W3$ResultNames, W3.Size)
+  35) [0] Expr (W4$Failed, W4$ResultNames, W4.Size)
+  36) [0] TaskProc finish R1 as ReadRbin("temp/I8s.Cur.rbin")
+  37) [0] TaskProc finish R2 as ReadRbin("temp/U8s.Cur.rbin")
+  38) [0] TaskProc finish R3 as ReadRbin("temp/I4s.Cur.rbin")
+  39) [0] TaskProc finish R4 as ReadRbin("temp/U4s.Cur.rbin")
+  40) [0] Expr (R1$Failed, R1$ResultNames, R1.RowCount)
+  41) [0] Expr (R2$Failed, R2$ResultNames, R2.RowCount)
+  42) [0] Expr (R3$Failed, R3$ResultNames, R3.RowCount)
+  43) [0] Expr (R4$Failed, R4$ResultNames, R4.RowCount)
+  44) [0] Expr Cmp(R1.Data, PI8s)
+  45) [0] Expr Cmp(R2.Data, PU8s)
+  46) [0] Expr Cmp(R3.Data, PI4s)
+  47) [0] Expr Cmp(R4.Data, PU4s)
+  48) [0] End
+
+>    0) [0] Define Ints <- module { param Exps := [6, 13, 20, 27, 34, 41, 48, 55, 63]; const Vals := Exps->(1 shl it); const MaxPos := Vals - 1; const MaxNeg := -Vals; const MinPos := [0] ++ Vals->TakeIf(# $< Exps->Count() - 1); const MinNeg := -MinPos - 1; const Seq := MinPos ++ MinPos + 1 ++ MaxPos ++ MaxPos - 1 ++ MinNeg ++ MinNeg - 1 ++ MaxNeg ++ MaxNeg + 1 }
+Global 'Ints' has DType: M{param Exps:i8*, const MaxNeg:i8*, const MaxPos:i8*, const MinNeg:i8*, const MinPos:i8*, const Seq:i8*, const Vals:i8*}, SysType: RuntimeModule<{Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>},(Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>)>
+>    1) [0] Define I8s <- Ints.Seq
+Global 'I8s' has DType: i8*, SysType: Seq<i8>
+>    2) [0] Define U8s <- Ints.Seq->CastU8()
+Global 'U8s' has DType: u8*, SysType: Seq<u8>
+>    3) [0] Define Ints4 <- Ints=>{ Exps : [6, 13, 20, 27, 31] }
+Global 'Ints4' has DType: M{param Exps:i8*, const MaxNeg:i8*, const MaxPos:i8*, const MinNeg:i8*, const MinPos:i8*, const Seq:i8*, const Vals:i8*}, SysType: RuntimeModule<{Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>},(Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>)>
+>    4) [0] Define I4s <- Ints4.Seq->CastI4()
+Global 'I4s' has DType: i4*, SysType: Seq<i4>
+>    5) [0] Define U4s <- Ints4.Seq->CastU4()
+Global 'U4s' has DType: u4*, SysType: Seq<u4>
+>    6) [0] DefineFunc Project(seq) <- (seq, seq->(it, ~it), seq->{ A : it, B : ~it }, seq->Tensor.From())
+UDF 'Project' has arity 1
+>    7) [0] DefineFunc Cmp(p1, p2) <- (p1->GetType(), p1->GetType() @= p2->GetType(), p1[0]->Count(), p2[0]->Count(), p1[1]->Count(), p2[1]->Count(), p1[2]->Count(), p2[2]->Count(), p1[3].Shape, p2[3].Shape, ForEach(a : p1[0], b : p2[0], a @= b)->All(), ForEach(a : p1[1], b : p2[1], a[0] @= b[0] and a[1] @= b[1] and a[1] @= ~a[0])->All(), ForEach(a : p1[2], b : p2[2], a.A @= b.A and a.B @= b.B and a.B @= ~a.A)->All(), ForEach(a : p1[3].Values, b : p2[3].Values, a @= b)->All())
+UDF 'Cmp' has arity 2
+>    8) [0] Define PI8s <- I8s->Project()
+Global 'PI8s' has DType: (i8*, (i8, i8)*, {A:i8, B:i8}*, i8[*]), SysType: (Seq<i8>,Seq<(i8,i8)>,Seq<{i8,i8}>,Ten<i8>)
+>    9) [0] Define PU8s <- U8s->Project()
+Global 'PU8s' has DType: (u8*, (u8, u8)*, {A:u8, B:u8}*, u8[*]), SysType: (Seq<u8>,Seq<(u8,u8)>,Seq<{u8,u8}>,Ten<u8>)
+>   10) [0] Define PI4s <- I4s->Project()
+Global 'PI4s' has DType: (i4*, (i4, i4)*, {A:i4, B:i4}*, i4[*]), SysType: (Seq<i4>,Seq<(i4,i4)>,Seq<{i4,i4}>,Ten<i4>)
+>   11) [0] Define PU4s <- U4s->Project()
+Global 'PU4s' has DType: (u4*, (u4, u4)*, {A:u4, B:u4}*, u4[*]), SysType: (Seq<u4>,Seq<(u4,u4)>,Seq<{u4,u4}>,Ten<u4>)
+>   12) [0] TaskProc finish R1 as ReadRbin(_DATA_ & "I8s.0105.rbin")
+Task 'R1' added
+Task 'R1' now playing
+Task 'R1' finished
+>   13) [0] TaskProc finish R2 as ReadRbin(_DATA_ & "U8s.0105.rbin")
+Task 'R2' added
+Task 'R2' now playing
+Task 'R2' finished
+>   14) [0] TaskProc finish R3 as ReadRbin(_DATA_ & "I4s.0105.rbin")
+Task 'R3' added
+Task 'R3' now playing
+Task 'R3' finished
+>   15) [0] TaskProc finish R4 as ReadRbin(_DATA_ & "U4s.0105.rbin")
+Task 'R4' added
+Task 'R4' now playing
+Task 'R4' finished
+>   16) [0] Expr (R1$Failed, R1$ErrorMessage, R1$ResultNames)
+(false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   17) [0] Expr (R2$Failed, R2$ErrorMessage, R2$ResultNames)
+(false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   18) [0] Expr (R3$Failed, R3$ErrorMessage, R3$ResultNames)
+(false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   19) [0] Expr (R4$Failed, R4$ErrorMessage, R4$ResultNames)
+(false, <null>, (Link, FullLink, RowCount, SData, Data))
+>   20) [0] Expr R1.RowCount
+0
+>   21) [0] Expr R2.RowCount
+0
+>   22) [0] Expr R3.RowCount
+0
+>   23) [0] Expr R4.RowCount
+0
+>   24) [0] Expr Cmp(R1.Data, PI8s)
+((i8*, (i8, i8)*, {A:i8, B:i8}*, i8[*]), true, 72, 72, 72, 72, 72, 72, (72,), (72,), true, true, true, true)
+*** Ctx ping count: 0
+>   25) [0] Expr Cmp(R2.Data, PU8s)
+((u8*, (u8, u8)*, {A:u8, B:u8}*, u8[*]), true, 72, 72, 72, 72, 72, 72, (72,), (72,), true, true, true, true)
+*** Ctx ping count: 0
+>   26) [0] Expr Cmp(R3.Data, PI4s)
+((i4*, (i4, i4)*, {A:i4, B:i4}*, i4[*]), true, 40, 40, 40, 40, 40, 40, (40,), (40,), true, true, true, true)
+*** Ctx ping count: 0
+>   27) [0] Expr Cmp(R4.Data, PU4s)
+((u4*, (u4, u4)*, {A:u4, B:u4}*, u4[*]), true, 40, 40, 40, 40, 40, 40, (40,), (40,), true, true, true, true)
+*** Ctx ping count: 0
+>   28) [0] TaskProc finish W1 as WriteRbin(PI8s, "temp/I8s.Cur.rbin", true, false)
+Task 'W1' added
+Task 'W1' now playing
+Task 'W1' finished
+>   29) [0] TaskProc finish W2 as WriteRbin(PU8s, "temp/U8s.Cur.rbin", true, false)
+Task 'W2' added
+Task 'W2' now playing
+Task 'W2' finished
+>   30) [0] TaskProc finish W3 as WriteRbin(PI4s, "temp/I4s.Cur.rbin", true, false)
+Task 'W3' added
+Task 'W3' now playing
+Task 'W3' finished
+>   31) [0] TaskProc finish W4 as WriteRbin(PU4s, "temp/U4s.Cur.rbin", true, false)
+Task 'W4' added
+Task 'W4' now playing
+Task 'W4' finished
+>   32) [0] Expr (W1$Failed, W1$ResultNames, W1.Size)
+(false, (Link, Compression, FullLink, Size), 2843)
+>   33) [0] Expr (W2$Failed, W2$ResultNames, W2.Size)
+(false, (Link, Compression, FullLink, Size), 2843)
+>   34) [0] Expr (W3$Failed, W3$ResultNames, W3.Size)
+(false, (Link, Compression, FullLink, Size), 1145)
+>   35) [0] Expr (W4$Failed, W4$ResultNames, W4.Size)
+(false, (Link, Compression, FullLink, Size), 1145)
+>   36) [0] TaskProc finish R1 as ReadRbin("temp/I8s.Cur.rbin")
+Overwriting task: R1
+Task 'R1' added
+Task 'R1' now playing
+Task 'R1' finished
+>   37) [0] TaskProc finish R2 as ReadRbin("temp/U8s.Cur.rbin")
+Overwriting task: R2
+Task 'R2' added
+Task 'R2' now playing
+Task 'R2' finished
+>   38) [0] TaskProc finish R3 as ReadRbin("temp/I4s.Cur.rbin")
+Overwriting task: R3
+Task 'R3' added
+Task 'R3' now playing
+Task 'R3' finished
+>   39) [0] TaskProc finish R4 as ReadRbin("temp/U4s.Cur.rbin")
+Overwriting task: R4
+Task 'R4' added
+Task 'R4' now playing
+Task 'R4' finished
+>   40) [0] Expr (R1$Failed, R1$ResultNames, R1.RowCount)
+(false, (Link, FullLink, RowCount, SData, Data), 0)
+>   41) [0] Expr (R2$Failed, R2$ResultNames, R2.RowCount)
+(false, (Link, FullLink, RowCount, SData, Data), 0)
+>   42) [0] Expr (R3$Failed, R3$ResultNames, R3.RowCount)
+(false, (Link, FullLink, RowCount, SData, Data), 0)
+>   43) [0] Expr (R4$Failed, R4$ResultNames, R4.RowCount)
+(false, (Link, FullLink, RowCount, SData, Data), 0)
+>   44) [0] Expr Cmp(R1.Data, PI8s)
+((i8*, (i8, i8)*, {A:i8, B:i8}*, i8[*]), true, 72, 72, 72, 72, 72, 72, (72,), (72,), true, true, true, true)
+*** Ctx ping count: 0
+>   45) [0] Expr Cmp(R2.Data, PU8s)
+((u8*, (u8, u8)*, {A:u8, B:u8}*, u8[*]), true, 72, 72, 72, 72, 72, 72, (72,), (72,), true, true, true, true)
+*** Ctx ping count: 0
+>   46) [0] Expr Cmp(R3.Data, PI4s)
+((i4*, (i4, i4)*, {A:i4, B:i4}*, i4[*]), true, 40, 40, 40, 40, 40, 40, (40,), (40,), true, true, true, true)
+*** Ctx ping count: 0
+>   47) [0] Expr Cmp(R4.Data, PU4s)
+((u4*, (u4, u4)*, {A:u4, B:u4}*, u4[*]), true, 40, 40, 40, 40, 40, 40, (40,), (40,), true, true, true, true)
+*** Ctx ping count: 0
+>   48) [0] End
+

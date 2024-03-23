@@ -1,0 +1,64 @@
+﻿`` D := 5;
+`` D2 := 10;
+`` D0 := 0;
+`` S := Range(D);
+`` E := S->TakeIf(false);
+`` T := S->{ A: it, B: (it * 2 + 1) mod 5 };
+
+Tensor.Build(S, D2, 2 * it, 17)
+Tensor.Build(S, D2, 2 * #0, 17)
+Tensor.Build(S, D2, 2 * it, 17, -1)
+Tensor.Build(S, D2, 2 * #0, 17, -1)
+Tensor.Build(S, D2, 2 * it + 1, 17)
+Tensor.Build(S, D2, 2 * it + 2, 17)
+
+Tensor.Build(E, D2, 2 * it, 17)
+Tensor.Build(E, D2, 2 * #0, 17)
+Tensor.Build(E, D2, 2 * it, 17, -1)
+Tensor.Build(E, D2, 2 * #0, 17, -1)
+
+Tensor.Build(S, D0, 2 * it, 17)
+Tensor.Build(S, D0, 2 * #0, 17)
+Tensor.Build(S, D0, 2 * it, 17, -1)
+Tensor.Build(S, D0, 2 * #0, 17, -1)
+
+// Identity matrix.
+Tensor.Build(S, D, D, it, it, 1)
+Tensor.Build(S, D, D, #0, it, 1)
+Tensor.Build(S, D, D, it, #0, 1)
+Tensor.Build(S, D, D, #0, #0, 1)
+
+Tensor.Build(S, D, D, it, it, 1, 8)
+Tensor.Build(S, D, D, it, #0, 1, 8)
+Tensor.Build(S, D, D, it, it, 1, null)
+
+// Ones on super diagonal.
+Tensor.Build(S, D, D, it, it + 1, 1)
+Tensor.Build(S, D, D, it, #0 + 1, 1)
+Tensor.Build(S, D, D, it, it + 1, 1, 8)
+Tensor.Build(S, D, D, it, #0 + 1, 1, 8)
+
+// Non-trivial default.
+Tensor.Build(T, D, D, A, B, it)
+Tensor.Build(T, D, D, A, B, it->Opt())
+Tensor.Build(T, D, D, A, B, it, null)
+Tensor.Build(T, D, D, A, B, it, { A: -1, B:null })
+Tensor.Build(T, D, D, A, B, it, { A: -1 })
+Tensor.Build(T, D, D, A, B, it, { A: -1, B:null, C:"filled" })
+
+// Coverage.
+Tensor.Build(E, D, D, it, it, 1)
+Tensor.Build(E, D, D, #0, it, 1)
+Tensor.Build(E, D, D, it, #0, 1)
+Tensor.Build(E, D, D, #0, #0, 1)
+
+Tensor.Build(E, D, D, it, it, 1, 8)
+Tensor.Build(E, D, D, it, #0, 1, 8)
+Tensor.Build(E, D, D, it, it, 1, null)
+
+Tensor.Build(S, D0, D, it, it, 1)
+Tensor.Build(S, D, D0, #0, it, 1)
+Tensor.Build(S, D0, D, it, it, 1, 8)
+Tensor.Build(S, D, D0, #0, it, 1, 8)
+
+Tensor.Build(S, 2 - 3, D, it, it, 1)

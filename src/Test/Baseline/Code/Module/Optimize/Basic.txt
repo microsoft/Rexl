@@ -1,0 +1,35 @@
+>>> *** Source:
+    P := plan {
+        var X from 0.0 to 1.0;
+        var Y from 0.0 to 1.0;
+        msr M := 2 * X + Y;
+        con Limit := X + Y <= 1.5;
+    };
+    P;
+    "*** Maximize ***";
+    P->Maximize(M);
+
+>>> *** Instructions:
+   0) [0] Define P <- module { var X from 0 to 1; var Y from 0 to 1; msr M := 2 * X + Y; con Limit := X + Y $<= 1.5 }
+   1) [0] Expr P
+   2) [0] Expr "*** Maximize ***"
+   3) [0] Expr P->Maximize(M)
+   4) [0] End
+
+>    0) [0] Define P <- module { var X from 0 to 1; var Y from 0 to 1; msr M := 2 * X + Y; con Limit := X + Y $<= 1.5 }
+Global 'P' has DType: M{con Limit:b, msr M:r8, var X:r8, var Y:r8}, SysType: RuntimeModule<{bool,r8,r8,r8},(r8,r8,r8,r8,r8,r8,r8,bool)>
+>    1) [0] Expr P
+module symbols:
+  var X: 0
+  var Y: 0
+  msr M: 0
+  con Limit: true
+>    2) [0] Expr "*** Maximize ***"
+*** Maximize ***
+>    3) [0] Expr P->Maximize(M)
+*** Solver diagnostics:
+  Error: Solver '<default>' unknown or not implemented
+<null>
+*** Ctx ping count: 0
+>    4) [0] End
+

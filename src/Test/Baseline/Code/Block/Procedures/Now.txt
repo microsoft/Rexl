@@ -1,0 +1,134 @@
+>>> *** Source:
+    A := NowUtc();
+    B := NowLocal();
+    C := NowOffset();
+    (A, B, C);
+    "*** NowUtc ***";
+    task now1 as NowUtc();
+    (now1$State, now1$Finished, now1$Failed, now1$ResultNames);
+    abort now1;
+    (now1$State, now1$Finished, now1$Failed, now1$ResultNames);
+    finish now1 as NowUtc();
+    (now1$State, now1$Finished, now1$Failed, now1$ResultNames);
+    (now1.Utc, now1.Local, now1.Offset);
+    "*** NowLocal ***";
+    task now2 as NowLocal();
+    (now2$State, now2$Finished, now2$Failed, now2$ResultNames);
+    abort now2;
+    (now2$State, now2$Finished, now2$Failed, now2$ResultNames);
+    finish now2 as NowLocal();
+    (now2$State, now2$Finished, now2$Failed, now2$ResultNames);
+    (now2.Utc, now2.Local, now2.Offset);
+    "*** NowOffset ***";
+    task now3 as NowOffset();
+    (now3$State, now3$Finished, now3$Failed, now3$ResultNames);
+    abort now3;
+    (now3$State, now3$Finished, now3$Failed, now3$ResultNames);
+    finish now3 as NowOffset();
+    (now3$State, now3$Finished, now3$Failed, now3$ResultNames);
+    (now3.Utc, now3.Local, now3.Offset);
+
+>>> *** Instructions:
+   0) [0] Define A <- NowUtc()
+   1) [0] Define B <- NowLocal()
+   2) [0] Define C <- NowOffset()
+   3) [0] Expr (A, B, C)
+   4) [0] Expr "*** NowUtc ***"
+   5) [0] TaskProc task now1 as NowUtc()
+   6) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+   7) [0] TaskCmd abort now1
+   8) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+   9) [0] TaskProc finish now1 as NowUtc()
+  10) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+  11) [0] Expr (now1.Utc, now1.Local, now1.Offset)
+  12) [0] Expr "*** NowLocal ***"
+  13) [0] TaskProc task now2 as NowLocal()
+  14) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+  15) [0] TaskCmd abort now2
+  16) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+  17) [0] TaskProc finish now2 as NowLocal()
+  18) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+  19) [0] Expr (now2.Utc, now2.Local, now2.Offset)
+  20) [0] Expr "*** NowOffset ***"
+  21) [0] TaskProc task now3 as NowOffset()
+  22) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+  23) [0] TaskCmd abort now3
+  24) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+  25) [0] TaskProc finish now3 as NowOffset()
+  26) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+  27) [0] Expr (now3.Utc, now3.Local, now3.Offset)
+  28) [0] End
+
+>    0) [0] Define A <- NowUtc()
+Global 'A' has DType: d, SysType: Date
+<Anonymous task> now playing
+<Anonymous task> finished
+>    1) [0] Define B <- NowLocal()
+Global 'B' has DType: d, SysType: Date
+<Anonymous task> now playing
+<Anonymous task> finished
+>    2) [0] Define C <- NowOffset()
+Global 'C' has DType: t, SysType: Time
+<Anonymous task> now playing
+<Anonymous task> finished
+>    3) [0] Expr (A, B, C)
+(2022/09/21 19:10:34.8770000, 2022/09/21 22:25:34.8770000, 03:15:00)
+>    4) [0] Expr "*** NowUtc ***"
+*** NowUtc ***
+>    5) [0] TaskProc task now1 as NowUtc()
+Task 'now1' added
+>    6) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+(Created, false, false, ())
+>    7) [0] TaskCmd abort now1
+Task 'now1' finished
+>    8) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+(Finished, true, true, ())
+>    9) [0] TaskProc finish now1 as NowUtc()
+Overwriting task: now1
+Task 'now1' added
+Task 'now1' now playing
+Task 'now1' finished
+>   10) [0] Expr (now1$State, now1$Finished, now1$Failed, now1$ResultNames)
+(Finished, true, false, (Utc, Local, Offset))
+>   11) [0] Expr (now1.Utc, now1.Local, now1.Offset)
+(2022/09/21 19:10:34.8770000, 2022/09/21 22:25:34.8770000, 03:15:00)
+>   12) [0] Expr "*** NowLocal ***"
+*** NowLocal ***
+>   13) [0] TaskProc task now2 as NowLocal()
+Task 'now2' added
+>   14) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+(Created, false, false, ())
+>   15) [0] TaskCmd abort now2
+Task 'now2' finished
+>   16) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+(Finished, true, true, ())
+>   17) [0] TaskProc finish now2 as NowLocal()
+Overwriting task: now2
+Task 'now2' added
+Task 'now2' now playing
+Task 'now2' finished
+>   18) [0] Expr (now2$State, now2$Finished, now2$Failed, now2$ResultNames)
+(Finished, true, false, (Utc, Local, Offset))
+>   19) [0] Expr (now2.Utc, now2.Local, now2.Offset)
+(2022/09/21 19:10:34.8770000, 2022/09/21 22:25:34.8770000, 03:15:00)
+>   20) [0] Expr "*** NowOffset ***"
+*** NowOffset ***
+>   21) [0] TaskProc task now3 as NowOffset()
+Task 'now3' added
+>   22) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+(Created, false, false, ())
+>   23) [0] TaskCmd abort now3
+Task 'now3' finished
+>   24) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+(Finished, true, true, ())
+>   25) [0] TaskProc finish now3 as NowOffset()
+Overwriting task: now3
+Task 'now3' added
+Task 'now3' now playing
+Task 'now3' finished
+>   26) [0] Expr (now3$State, now3$Finished, now3$Failed, now3$ResultNames)
+(Finished, true, false, (Utc, Local, Offset))
+>   27) [0] Expr (now3.Utc, now3.Local, now3.Offset)
+(2022/09/21 19:10:34.8770000, 2022/09/21 22:25:34.8770000, 03:15:00)
+>   28) [0] End
+

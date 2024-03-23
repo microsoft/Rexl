@@ -1,0 +1,286 @@
+>>> *** Source:
+    () & 1;
+    () & 2;
+    3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  [Coverage.txt] Error: (5,6) Node: 1, Message: Operand must be a tuple
+###
+>>> *** Source:
+    () & 1;
+    () & 2;
+    3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  [Coverage.txt] Error: (17,18) Node: 1, Message: Operand must be a tuple
+>    1) [0] Expr () & 2
+*** Bind diagnostics:
+  [Coverage.txt] Error: (25,26) Node: 2, Message: Operand must be a tuple
+>    2) [0] Expr 3
+3
+>    3) [0] End
+###
+>>> *** Source:
+    execute "() & 1; () & 2; 3;";
+    () & 4;
+    5;
+
+>>> *** Instructions:
+   0) [0] Execute: "() & 1; () & 2; 3;"
+   1) [0] Expr () & 4
+   2) [0] Expr 5
+   3) [0] End
+
+>    0) [0] Execute: "() & 1; () & 2; 3;"
+>>> *** Source:
+    () & 1; () & 2; 3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  Error: (5,6) Node: 1, Message: Operand must be a tuple
+###
+>>> *** Source:
+    execute "() & 1; () & 2; 3;";
+    () & 4;
+    5;
+
+>>> *** Instructions:
+   0) [0] Execute: "() & 1; () & 2; 3;"
+   1) [0] Expr () & 4
+   2) [0] Expr 5
+   3) [0] End
+
+>    0) [0] Execute: "() & 1; () & 2; 3;"
+>>> *** Source:
+    () & 1; () & 2; 3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  Error: (5,6) Node: 1, Message: Operand must be a tuple
+>    1) [0] Expr () & 4
+*** Bind diagnostics:
+  [Coverage.txt] Error: (47,48) Node: 4, Message: Operand must be a tuple
+>    2) [0] Expr 5
+5
+>    3) [0] End
+###
+>>> *** Source:
+    execute "/*recover*/() & 1; () & 2; 3;";
+    () & 4;
+    5;
+
+>>> *** Instructions:
+   0) [0] Execute: "/*recover*/() & 1; () & 2; 3;"
+   1) [0] Expr () & 4
+   2) [0] Expr 5
+   3) [0] End
+
+>    0) [0] Execute: "/*recover*/() & 1; () & 2; 3;"
+>>> *** Source:
+    () & 1; () & 2; 3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  Error: (16,17) Node: 1, Message: Operand must be a tuple
+>    1) [0] Expr () & 2
+*** Bind diagnostics:
+  Error: (24,25) Node: 2, Message: Operand must be a tuple
+>    2) [0] Expr 3
+3
+>    3) [0] End
+>    1) [0] Expr () & 4
+*** Bind diagnostics:
+  [Coverage.txt] Error: (46,47) Node: 4, Message: Operand must be a tuple
+###
+>>> *** Source:
+    execute "/*recover*/() & 1; () & 2; 3;";
+    () & 4;
+    5;
+
+>>> *** Instructions:
+   0) [0] Execute: "/*recover*/() & 1; () & 2; 3;"
+   1) [0] Expr () & 4
+   2) [0] Expr 5
+   3) [0] End
+
+>    0) [0] Execute: "/*recover*/() & 1; () & 2; 3;"
+>>> *** Source:
+    () & 1; () & 2; 3;
+
+>>> *** Instructions:
+   0) [0] Expr () & 1
+   1) [0] Expr () & 2
+   2) [0] Expr 3
+   3) [0] End
+
+>    0) [0] Expr () & 1
+*** Bind diagnostics:
+  Error: (16,17) Node: 1, Message: Operand must be a tuple
+>    1) [0] Expr () & 2
+*** Bind diagnostics:
+  Error: (24,25) Node: 2, Message: Operand must be a tuple
+>    2) [0] Expr 3
+3
+>    3) [0] End
+>    1) [0] Expr () & 4
+*** Bind diagnostics:
+  [Coverage.txt] Error: (58,59) Node: 4, Message: Operand must be a tuple
+>    2) [0] Expr 5
+5
+>    3) [0] End
+###
+>>> *** Source:
+    WrapNYI(1);
+    2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+>>> *** Source:
+    WrapNYI(1);
+    2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+>>> *** Source:
+    execute "WrapNYI(1); 2;";
+    WrapNYI(3);
+    4;
+
+>>> *** Instructions:
+   0) [0] Execute: "WrapNYI(1); 2;"
+   1) [0] Expr WrapNYI(3)
+   2) [0] Expr 4
+   3) [0] End
+
+>    0) [0] Execute: "WrapNYI(1); 2;"
+>>> *** Source:
+    WrapNYI(1); 2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+>>> *** Source:
+    execute "WrapNYI(1); 2;";
+    WrapNYI(3);
+    4;
+
+>>> *** Instructions:
+   0) [0] Execute: "WrapNYI(1); 2;"
+   1) [0] Expr WrapNYI(3)
+   2) [0] Expr 4
+   3) [0] End
+
+>    0) [0] Execute: "WrapNYI(1); 2;"
+>>> *** Source:
+    WrapNYI(1); 2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+>>> *** Source:
+    execute "/*recover*/ WrapNYI(1); 2;";
+    WrapNYI(3);
+    4;
+
+>>> *** Instructions:
+   0) [0] Execute: "/*recover*/ WrapNYI(1); 2;"
+   1) [0] Expr WrapNYI(3)
+   2) [0] Expr 4
+   3) [0] End
+
+>    0) [0] Execute: "/*recover*/ WrapNYI(1); 2;"
+>>> *** Source:
+    WrapNYI(1); 2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+>>> *** Source:
+    execute "/*recover*/ WrapNYI(1); 2;";
+    WrapNYI(3);
+    4;
+
+>>> *** Instructions:
+   0) [0] Execute: "/*recover*/ WrapNYI(1); 2;"
+   1) [0] Expr WrapNYI(3)
+   2) [0] Expr 4
+   3) [0] End
+
+>    0) [0] Execute: "/*recover*/ WrapNYI(1); 2;"
+>>> *** Source:
+    WrapNYI(1); 2;
+
+>>> *** Instructions:
+   0) [0] Expr WrapNYI(1)
+   1) [0] Expr 2
+   2) [0] End
+
+>    0) [0] Expr WrapNYI(1)
+  Error: *** Exception! ***
+    Exception (NotSupportedException): Code generation for Test.WrapNYI failed
+###
+

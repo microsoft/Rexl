@@ -1,0 +1,1093 @@
+**** New udf: G, arity: 2
+**** Add globals: {xb__:b, xb_q:b?, xd__:d, xd_q:d?, xi4_:i4, xi4q:i4?, xi__:i, xi_q:i?, xr4_:r4, xr4q:r4?, xr8_:r8, xr8q:r8?, xs__:s, xt__:t, xt_q:t?, xu4_:u4, xu4q:u4?}
+**** Add globals: {yb__:b, yb_q:b?, yd__:d, yd_q:d?, yi4_:i4, yi4q:i4?, yi__:i, yi_q:i?, yr4_:r4, yr4q:r4?, yr8_:r8, yr8q:r8?, ys__:s, yt__:t, yt_q:t?, yu4_:u4, yu4q:u4?}
+
+> G(xs__, ys__) // Req with Req (RR).
+G(xs__, ys__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xs__) $>= Global(ys__)))
+// (∂.xs__:s, ∂.ys__:s) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.0 [str]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):str
+      1) stloc.1 [str]
+      1) ldloc.0 [str]
+      1) ldloc.1 [str]
+      5) call static StrComparer::GeTi(str, str):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xs__:s, ys__:s) to b
+Type: bool, Value: false
+###
+> G(xb__, yb__)
+G(xb__, yb__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xb__) @>= Global(yb__)))
+// (∂.xb__:b, ∂.yb__:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      1) ldloc.0 [bool]
+      1) ldloc.1 [bool]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xb__:b, yb__:b) to b
+Type: bool, Value: true 
+###
+> G(xr8_, yr8_)
+G(xr8_, yr8_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr8_) $>= Global(yr8_)))
+// (∂.xr8_:r8, ∂.yr8_:r8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      1) ldloc.0 [r8]
+      1) ldloc.1 [r8]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xr8_:r8, yr8_:r8) to b
+Type: bool, Value: true 
+###
+> G(xr4_, yr4_)
+G(xr4_, yr4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr4_) $>= Global(yr4_)))
+// (∂.xr4_:r4, ∂.yr4_:r4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.0 [r4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      1) ldloc.0 [r4]
+      1) ldloc.1 [r4]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xr4_:r4, yr4_:r4) to b
+Type: bool, Value: true 
+###
+> G(xi__, yi__)
+G(xi__, yi__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi__) @>= Global(yi__)))
+// (∂.xi__:i, ∂.yi__:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      1) ldloc.0 [ia]
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi__:i, yi__:i) to b
+Type: bool, Value: true 
+###
+> G(xi4_, yi4_)
+G(xi4_, yi4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi4_) @>= Global(yi4_)))
+// (∂.xi4_:i4, ∂.yi4_:i4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      1) ldloc.0 [i4]
+      1) ldloc.1 [i4]
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xi4_:i4, yi4_:i4) to b
+Type: bool, Value: true 
+###
+> G(xu4_, yu4_)
+G(xu4_, yu4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xu4_) @>= Global(yu4_)))
+// (∂.xu4_:u4, ∂.yu4_:u4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      1) ldloc.0 [u4]
+      1) ldloc.1 [u4]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xu4_:u4, yu4_:u4) to b
+Type: bool, Value: true 
+###
+> G(xd__, yd__)
+G(xd__, yd__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xd__) @>= Global(yd__)))
+// (∂.xd__:d, ∂.yd__:d) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Date
+      1) stloc.0 [Date]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Date
+      1) stloc.1 [Date]
+      1) ldloc.0 [Date]
+      1) ldloc.1 [Date]
+      5) call static Date::op_GreaterThanOrEqual(Date, Date):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xd__:d, yd__:d) to b
+Type: bool, Value: true 
+###
+> G(xt__, yt__)
+G(xt__, yt__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xt__) @>= Global(yt__)))
+// (∂.xt__:t, ∂.yt__:t) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Time
+      1) stloc.0 [Time]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Time
+      1) stloc.1 [Time]
+      1) ldloc.0 [Time]
+      1) ldloc.1 [Time]
+      5) call static Time::op_GreaterThanOrEqual(Time, Time):bool
+      5) box [bool]
+      1) ret
+  Total Size: 31
+
+Func sig: (xt__:t, yt__:t) to b
+Type: bool, Value: true 
+###
+> G(xb__, yb_q) // Req with Opt (RQ).
+G(xb__, yb_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xb__) $>= Global(yb_q)))
+// (∂.xb__:b, ∂.yb_q:b?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.0 [bool]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (1)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [bool]
+      2) ldloca.s [Opt<bool> (1)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xb__:b, yb_q:b?) to b
+Type: bool, Value: false
+###
+> G(xr8_, yr8q)
+G(xr8_, yr8q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr8_) $>= Global(yr8q)))
+// (∂.xr8_:r8, ∂.yr8q:r8?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.0 [r8]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r8>
+      1) stloc.1 [Opt<r8>]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [r8]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xr8_:r8, yr8q:r8?) to b
+Type: bool, Value: false
+###
+> G(xr4_, yr4q)
+G(xr4_, yr4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr4_) $>= Global(yr4q)))
+// (∂.xr4_:r4, ∂.yr4q:r4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.0 [r4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r4>
+      1) stloc.1 [Opt<r4>]
+      2) ldloca.s [Opt<r4> (1)]
+      5) call Opt<r4>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [r4]
+      2) ldloca.s [Opt<r4> (1)]
+      5) call Opt<r4>::GetValueOrDefault():r4
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xr4_:r4, yr4q:r4?) to b
+Type: bool, Value: false
+###
+> G(xi__, yi_q)
+G(xi__, yi_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi__) $>= Global(yi_q)))
+// (∂.xi__:i, ∂.yi_q:i?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.0 [ia]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<ia>
+      1) stloc.1 [Opt<ia>]
+      2) ldloca.s [Opt<ia> (1)]
+      5) call Opt<ia>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [ia]
+      2) ldloca.s [Opt<ia> (1)]
+      5) call Opt<ia>::GetValueOrDefault():ia
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xi__:i, yi_q:i?) to b
+Type: bool, Value: false
+###
+> G(xi4_, yi4q)
+G(xi4_, yi4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi4_) $>= Global(yi4q)))
+// (∂.xi4_:i4, ∂.yi4q:i4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.0 [i4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i4>
+      1) stloc.1 [Opt<i4>]
+      2) ldloca.s [Opt<i4> (1)]
+      5) call Opt<i4>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [i4]
+      2) ldloca.s [Opt<i4> (1)]
+      5) call Opt<i4>::GetValueOrDefault():i4
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xi4_:i4, yi4q:i4?) to b
+Type: bool, Value: false
+###
+> G(xu4_, yu4q)
+G(xu4_, yu4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xu4_) $>= Global(yu4q)))
+// (∂.xu4_:u4, ∂.yu4q:u4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.0 [u4]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<u4>
+      1) stloc.1 [Opt<u4>]
+      2) ldloca.s [Opt<u4> (1)]
+      5) call Opt<u4>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [u4]
+      2) ldloca.s [Opt<u4> (1)]
+      5) call Opt<u4>::GetValueOrDefault():u4
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xu4_:u4, yu4q:u4?) to b
+Type: bool, Value: false
+###
+> G(xd__, yd_q)
+G(xd__, yd_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xd__) $>= Global(yd_q)))
+// (∂.xd__:d, ∂.yd_q:d?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Date
+      1) stloc.0 [Date]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Date>
+      1) stloc.1 [Opt<Date>]
+      2) ldloca.s [Opt<Date> (1)]
+      5) call Opt<Date>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [Date]
+      2) ldloca.s [Opt<Date> (1)]
+      5) call Opt<Date>::GetValueOrDefault():Date
+      5) call static Date::op_GreaterThanOrEqual(Date, Date):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xd__:d, yd_q:d?) to b
+Type: bool, Value: false
+###
+> G(xt__, yt_q)
+G(xt__, yt_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xt__) $>= Global(yt_q)))
+// (∂.xt__:t, ∂.yt_q:t?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Time
+      1) stloc.0 [Time]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Time>
+      1) stloc.1 [Opt<Time>]
+      2) ldloca.s [Opt<Time> (1)]
+      5) call Opt<Time>::get_HasValue():bool
+      5) brfalse [0]
+      1) ldloc.0 [Time]
+      2) ldloca.s [Opt<Time> (1)]
+      5) call Opt<Time>::GetValueOrDefault():Time
+      5) call static Time::op_GreaterThanOrEqual(Time, Time):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xt__:t, yt_q:t?) to b
+Type: bool, Value: false
+###
+> G(xb_q, yb__) // Opt with Req (QR).
+G(xb_q, yb__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xb_q) $>= Global(yb__)))
+// (∂.xb_q:b?, ∂.yb__:b) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):bool
+      1) stloc.1 [bool]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      1) ldloc.1 [bool]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xb_q:b?, yb__:b) to b
+Type: bool, Value: false
+###
+> G(xr8q, yr8_)
+G(xr8q, yr8_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr8q) $>= Global(yr8_)))
+// (∂.xr8q:r8?, ∂.yr8_:r8) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r8>
+      1) stloc.0 [Opt<r8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r8
+      1) stloc.1 [r8]
+      2) ldloca.s [Opt<r8> (0)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r8> (0)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      1) ldloc.1 [r8]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xr8q:r8?, yr8_:r8) to b
+Type: bool, Value: false
+###
+> G(xr4q, yr4_)
+G(xr4q, yr4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr4q) $>= Global(yr4_)))
+// (∂.xr4q:r4?, ∂.yr4_:r4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r4>
+      1) stloc.0 [Opt<r4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):r4
+      1) stloc.1 [r4]
+      2) ldloca.s [Opt<r4> (0)]
+      5) call Opt<r4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r4> (0)]
+      5) call Opt<r4>::GetValueOrDefault():r4
+      1) ldloc.1 [r4]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xr4q:r4?, yr4_:r4) to b
+Type: bool, Value: false
+###
+> G(xi_q, yi__)
+G(xi_q, yi__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi_q) $>= Global(yi__)))
+// (∂.xi_q:i?, ∂.yi__:i) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<ia>
+      1) stloc.0 [Opt<ia>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):ia
+      1) stloc.1 [ia]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::GetValueOrDefault():ia
+      1) ldloc.1 [ia]
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xi_q:i?, yi__:i) to b
+Type: bool, Value: false
+###
+> G(xi4q, yi4_)
+G(xi4q, yi4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi4q) $>= Global(yi4_)))
+// (∂.xi4q:i4?, ∂.yi4_:i4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i4>
+      1) stloc.0 [Opt<i4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):i4
+      1) stloc.1 [i4]
+      2) ldloca.s [Opt<i4> (0)]
+      5) call Opt<i4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i4> (0)]
+      5) call Opt<i4>::GetValueOrDefault():i4
+      1) ldloc.1 [i4]
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xi4q:i4?, yi4_:i4) to b
+Type: bool, Value: false
+###
+> G(xu4q, yu4_)
+G(xu4q, yu4_) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xu4q) $>= Global(yu4_)))
+// (∂.xu4q:u4?, ∂.yu4_:u4) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<u4>
+      1) stloc.0 [Opt<u4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):u4
+      1) stloc.1 [u4]
+      2) ldloca.s [Opt<u4> (0)]
+      5) call Opt<u4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<u4> (0)]
+      5) call Opt<u4>::GetValueOrDefault():u4
+      1) ldloc.1 [u4]
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xu4q:u4?, yu4_:u4) to b
+Type: bool, Value: false
+###
+> G(xd_q, yd__)
+G(xd_q, yd__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xd_q) $>= Global(yd__)))
+// (∂.xd_q:d?, ∂.yd__:d) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Date>
+      1) stloc.0 [Opt<Date>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Date
+      1) stloc.1 [Date]
+      2) ldloca.s [Opt<Date> (0)]
+      5) call Opt<Date>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Date> (0)]
+      5) call Opt<Date>::GetValueOrDefault():Date
+      1) ldloc.1 [Date]
+      5) call static Date::op_GreaterThanOrEqual(Date, Date):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xd_q:d?, yd__:d) to b
+Type: bool, Value: false
+###
+> G(xt_q, yt__)
+G(xt_q, yt__) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xt_q) $>= Global(yt__)))
+// (∂.xt_q:t?, ∂.yt__:t) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Time>
+      1) stloc.0 [Opt<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToVal(obj):Time
+      1) stloc.1 [Time]
+      2) ldloca.s [Opt<Time> (0)]
+      5) call Opt<Time>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Time> (0)]
+      5) call Opt<Time>::GetValueOrDefault():Time
+      1) ldloc.1 [Time]
+      5) call static Time::op_GreaterThanOrEqual(Time, Time):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 55
+
+Func sig: (xt_q:t?, yt__:t) to b
+Type: bool, Value: false
+###
+> G(xb_q, yb_q) // Opt with Opt (QQ).
+G(xb_q, yb_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xb_q) $>= Global(yb_q)))
+// (∂.xb_q:b?, ∂.yb_q:b?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.0 [Opt<bool>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<bool>
+      1) stloc.1 [Opt<bool>]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<bool> (1)]
+      5) call Opt<bool>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<bool> (0)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      2) ldloca.s [Opt<bool> (1)]
+      5) call Opt<bool>::GetValueOrDefault():bool
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xb_q:b?, yb_q:b?) to b
+Type: bool, Value: false
+###
+> G(xr8q, yr8q)
+G(xr8q, yr8q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr8q) $>= Global(yr8q)))
+// (∂.xr8q:r8?, ∂.yr8q:r8?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r8>
+      1) stloc.0 [Opt<r8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r8>
+      1) stloc.1 [Opt<r8>]
+      2) ldloca.s [Opt<r8> (0)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r8> (0)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      2) ldloca.s [Opt<r8> (1)]
+      5) call Opt<r8>::GetValueOrDefault():r8
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xr8q:r8?, yr8q:r8?) to b
+Type: bool, Value: false
+###
+> G(xr4q, yr4q)
+G(xr4q, yr4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xr4q) $>= Global(yr4q)))
+// (∂.xr4q:r4?, ∂.yr4q:r4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r4>
+      1) stloc.0 [Opt<r4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<r4>
+      1) stloc.1 [Opt<r4>]
+      2) ldloca.s [Opt<r4> (0)]
+      5) call Opt<r4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r4> (1)]
+      5) call Opt<r4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<r4> (0)]
+      5) call Opt<r4>::GetValueOrDefault():r4
+      2) ldloca.s [Opt<r4> (1)]
+      5) call Opt<r4>::GetValueOrDefault():r4
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xr4q:r4?, yr4q:r4?) to b
+Type: bool, Value: false
+###
+> G(xi_q, yi_q)
+G(xi_q, yi_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi_q) $>= Global(yi_q)))
+// (∂.xi_q:i?, ∂.yi_q:i?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<ia>
+      1) stloc.0 [Opt<ia>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<ia>
+      1) stloc.1 [Opt<ia>]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<ia> (1)]
+      5) call Opt<ia>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<ia> (0)]
+      5) call Opt<ia>::GetValueOrDefault():ia
+      2) ldloca.s [Opt<ia> (1)]
+      5) call Opt<ia>::GetValueOrDefault():ia
+      5) call static ia::op_GreaterThanOrEqual(ia, ia):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xi_q:i?, yi_q:i?) to b
+Type: bool, Value: false
+###
+> G(xi4q, yi4q)
+G(xi4q, yi4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xi4q) $>= Global(yi4q)))
+// (∂.xi4q:i4?, ∂.yi4q:i4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i4>
+      1) stloc.0 [Opt<i4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<i4>
+      1) stloc.1 [Opt<i4>]
+      2) ldloca.s [Opt<i4> (0)]
+      5) call Opt<i4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i4> (1)]
+      5) call Opt<i4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<i4> (0)]
+      5) call Opt<i4>::GetValueOrDefault():i4
+      2) ldloca.s [Opt<i4> (1)]
+      5) call Opt<i4>::GetValueOrDefault():i4
+      2) clt
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xi4q:i4?, yi4q:i4?) to b
+Type: bool, Value: false
+###
+> G(xu4q, yu4q)
+G(xu4q, yu4q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xu4q) $>= Global(yu4q)))
+// (∂.xu4q:u4?, ∂.yu4q:u4?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<u4>
+      1) stloc.0 [Opt<u4>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<u4>
+      1) stloc.1 [Opt<u4>]
+      2) ldloca.s [Opt<u4> (0)]
+      5) call Opt<u4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<u4> (1)]
+      5) call Opt<u4>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<u4> (0)]
+      5) call Opt<u4>::GetValueOrDefault():u4
+      2) ldloca.s [Opt<u4> (1)]
+      5) call Opt<u4>::GetValueOrDefault():u4
+      2) clt.un
+      1) ldc.i4.0
+      2) ceq
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xu4q:u4?, yu4q:u4?) to b
+Type: bool, Value: false
+###
+> G(xd_q, yd_q)
+G(xd_q, yd_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xd_q) $>= Global(yd_q)))
+// (∂.xd_q:d?, ∂.yd_q:d?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Date>
+      1) stloc.0 [Opt<Date>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Date>
+      1) stloc.1 [Opt<Date>]
+      2) ldloca.s [Opt<Date> (0)]
+      5) call Opt<Date>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Date> (1)]
+      5) call Opt<Date>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Date> (0)]
+      5) call Opt<Date>::GetValueOrDefault():Date
+      2) ldloca.s [Opt<Date> (1)]
+      5) call Opt<Date>::GetValueOrDefault():Date
+      5) call static Date::op_GreaterThanOrEqual(Date, Date):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xd_q:d?, yd_q:d?) to b
+Type: bool, Value: false
+###
+> G(xt_q, yt_q)
+G(xt_q, yt_q) : b
+BndKind:Compare, Type:b, Bnd:(Cmp(Global(xt_q) $>= Global(yt_q)))
+// (∂.xt_q:t?, ∂.yt_q:t?) : b
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Time>
+      1) stloc.0 [Opt<Time>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToOpt(obj):Opt<Time>
+      1) stloc.1 [Opt<Time>]
+      2) ldloca.s [Opt<Time> (0)]
+      5) call Opt<Time>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Time> (1)]
+      5) call Opt<Time>::get_HasValue():bool
+      5) brfalse [0]
+      2) ldloca.s [Opt<Time> (0)]
+      5) call Opt<Time>::GetValueOrDefault():Time
+      2) ldloca.s [Opt<Time> (1)]
+      5) call Opt<Time>::GetValueOrDefault():Time
+      5) call static Time::op_GreaterThanOrEqual(Time, Time):bool
+      5) br [1]
+  Label [0]:
+      1) ldc.i4.0
+  Label [1]:
+      5) box [bool]
+      1) ret
+  Total Size: 73
+
+Func sig: (xt_q:t?, yt_q:t?) to b
+Type: bool, Value: false
+###

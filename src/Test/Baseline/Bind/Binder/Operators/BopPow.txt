@@ -1,0 +1,1591 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 2^3
+2^3 : i8
+Binder : Power(2, 3)
+Reducer: 8
+###
+> 3^2
+3^2 : i8
+Binder : Power(3, 2)
+Reducer: 9
+###
+> 2d^3
+2^3 : r8
+Binder : Power(2, 3)
+Reducer: 8
+###
+> 3^2d
+3^2 : r8
+Binder : Power(3, 2)
+Reducer: 9
+###
+> null^3
+null^3 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), 3))
+Reducer: null
+###
+> 2^null
+2^null : i8?
+Binder : Guard(?1: null, Power(2, Unit<u8>(?1)))
+Reducer: null
+###
+> null^null
+null^null : i8?
+Binder : Guard(?1: null, ?2: null, Power(Unit<i8>(?1), Unit<u8>(?2)))
+Reducer: null
+###
+> 16^0
+16^0 : i8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16i8^0
+16^0 : i8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16u8^0
+16^0 : u8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16^0r
+16^0 : r8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16r^0
+16^0 : r8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16ia^0
+16^0 : r8
+Binder : Power(16, 0)
+Reducer: 1
+###
+> 16^-1
+16^-1 : i8
+Binder : Power(16, -1)
+Reducer: 1
+###
+> 16i8^-1
+16^-1 : i8
+Binder : Power(16, -1)
+Reducer: 1
+###
+> 16u8^-1
+16^-1 : u8
+Binder : Power(16, -1)
+Reducer: 1
+###
+> 16^-1r
+16^-1 : r8
+Binder : Power(16, -1)
+Reducer: 0.0625
+###
+> 16r^-1
+16^-1 : r8
+Binder : Power(16, -1)
+Reducer: 0.0625
+###
+> 16ia^-1
+16^-1 : r8
+Binder : Power(16, -1)
+Reducer: 0.0625
+###
+> 2^(-2)
+2^-2 : i8
+Binder : Power(2, -2)
+Reducer: 1
+###
+> 2^-2
+2^-2 : i8
+Binder : Power(2, -2)
+Reducer: 1
+###
+> 2d^(-2)
+2^-2 : r8
+Binder : Power(2, -2)
+Reducer: 0.25
+###
+> 2^-2d
+2^-2 : r8
+Binder : Power(2, -2)
+Reducer: 0.25
+###
+> -2^4
+-2^4 : i8
+Binder : Add([-] Power(2, 4))
+Reducer: -16
+###
+> (-2)^4
+(-2)^4 : i8
+Binder : Power(-2, 4)
+Reducer: 16
+###
+> (-2f)^4
+(-2)^4 : r8
+Binder : Power(-2, 4)
+Reducer: 16
+###
+> 2^-null
+2^-null : i8?
+Binder : Guard(?2: Guard(?1: null, Add([-] Unit<i8>(?1))), Power(2, ?2))
+Reducer: null
+###
+> null^-2
+null^-2 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), -2))
+Reducer: null
+###
+> 2^3^2
+2^3^2 : i8
+Binder : Power(2, Power(3, 2))
+Reducer: 512
+###
+> 2^(3^2)
+2^3^2 : i8
+Binder : Power(2, Power(3, 2))
+Reducer: 512
+###
+> (2^3)^2
+(2^3)^2 : i8
+Binder : Power(Power(2, 3), 2)
+Reducer: 64
+###
+> 3^2^3^2 // overflow
+3^2^3^2 : i8
+Binder : Power(3, Power(2, Power(3, 2)))
+Reducer: 2118395047680534529
+###
+> 3^(2^(3^2)) // overflow
+3^2^3^2 : i8
+Binder : Power(3, Power(2, Power(3, 2)))
+Reducer: 2118395047680534529
+###
+> 3^2^3^2d // humongous
+3^2^3^2 : r8
+Binder : Power(3, Power(2, Power(3, 2)))
+Reducer: 1.9323349832288915E+244
+###
+> 3^(2^(3^2d)) // humongous
+3^2^3^2 : r8
+Binder : Power(3, Power(2, Power(3, 2)))
+Reducer: 1.9323349832288915E+244
+###
+> ((3^2)^3)^2
+((3^2)^3)^2 : i8
+Binder : Power(Power(Power(3, 2), 3), 2)
+Reducer: 531441
+###
+> ((3d^2)^3)^2
+((3^2)^3)^2 : r8
+Binder : Power(Power(Power(3, 2), 3), 2)
+Reducer: 531441
+###
+> 4^3^2
+4^3^2 : i8
+Binder : Power(4, Power(3, 2))
+Reducer: 262144
+###
+> 4^(3^2)
+4^3^2 : i8
+Binder : Power(4, Power(3, 2))
+Reducer: 262144
+###
+> (4^3)^2
+(4^3)^2 : i8
+Binder : Power(Power(4, 3), 2)
+Reducer: 4096
+###
+> 5^4^3^2 // overflow
+5^4^3^2 : i8
+Binder : Power(5, Power(4, Power(3, 2)))
+Reducer: 2835686979342958593
+###
+> 5^(4^(3^2)) // overflow
+5^4^3^2 : i8
+Binder : Power(5, Power(4, Power(3, 2)))
+Reducer: 2835686979342958593
+###
+> 5^4^3^2d // infinite
+5^4^3^2 : r8
+Binder : Power(5, Power(4, Power(3, 2)))
+Reducer: ∞
+###
+> 5^(4^(3^2d)) // infinite
+5^4^3^2 : r8
+Binder : Power(5, Power(4, Power(3, 2)))
+Reducer: ∞
+###
+> ((5^4)^3)^2
+((5^4)^3)^2 : i8
+Binder : Power(Power(Power(5, 4), 3), 2)
+Reducer: 59604644775390625
+###
+> ((5d^4)^3)^2 // fp result has too many bits of precision for double, so won't show the same answer as the previous line.
+((5^4)^3)^2 : r8
+Binder : Power(Power(Power(5, 4), 3), 2)
+Reducer: 59604644775390620
+###
+> 5^-4^3^2 // one
+5^-4^3^2 : i8
+Binder : Power(5, Add([-] Power(4, Power(3, 2))))
+Reducer: 1
+###
+> 5^(-4^(3^2)) // one
+5^-4^3^2 : i8
+Binder : Power(5, Add([-] Power(4, Power(3, 2))))
+Reducer: 1
+###
+> 5^-4^3^2d // zero
+5^-4^3^2 : r8
+Binder : Power(5, Add([-] Power(4, Power(3, 2))))
+Reducer: 0
+###
+> 5^(-4^(3^2d)) // zero
+5^-4^3^2 : r8
+Binder : Power(5, Add([-] Power(4, Power(3, 2))))
+Reducer: 0
+###
+> ((5^-4)^3)^2
+((5^-4)^3)^2 : i8
+Binder : Power(Power(Power(5, -4), 3), 2)
+Reducer: 1
+###
+> ((5d^-4)^3)^2
+((5^-4)^3)^2 : r8
+Binder : Power(Power(Power(5, -4), 3), 2)
+Reducer: 1.6777216000000005E-17
+###
+> 2^3%
+2^3% : r8
+Binder : Power(2, Mul(3, [/] 100))
+Reducer: 1.0210121257071934
+###
+> (2^3)%
+(2^3)% : r8
+Binder : Mul(Num<r8>(Power(2, 3)), [/] 100)
+Reducer: 0.08
+###
+> 2^(3%)
+2^3% : r8
+Binder : Power(2, Mul(3, [/] 100))
+Reducer: 1.0210121257071934
+###
+> 2%^3%
+2%^3% : r8
+Binder : Power(Mul(2, [/] 100), Mul(3, [/] 100))
+Reducer: 0.8892643863946261
+###
+> 2%^3%^4%
+2%^3%^4% : r8
+Binder : Power(Mul(2, [/] 100), Power(Mul(3, [/] 100), Mul(4, [/] 100)))
+Reducer: 0.03337135403070874
+###
+> 2%^3%^4%^5%
+2%^3%^4%^5% : r8
+Binder : Power(Mul(2, [/] 100), Power(Mul(3, [/] 100), Power(Mul(4, [/] 100), Mul(5, [/] 100))))
+Reducer: 0.8206506429990624
+###
+> 2%^(3%)
+2%^3% : r8
+Binder : Power(Mul(2, [/] 100), Mul(3, [/] 100))
+Reducer: 0.8892643863946261
+###
+> 2%^(3%)^(4%)
+2%^3%^4% : r8
+Binder : Power(Mul(2, [/] 100), Power(Mul(3, [/] 100), Mul(4, [/] 100)))
+Reducer: 0.03337135403070874
+###
+> 2%^(3%)^(4%)^(5%)
+2%^3%^4%^5% : r8
+Binder : Power(Mul(2, [/] 100), Power(Mul(3, [/] 100), Power(Mul(4, [/] 100), Mul(5, [/] 100))))
+Reducer: 0.8206506429990624
+###
+> 2u8^5
+2^5 : u8
+Binder : Power(2, 5)
+Reducer: 32
+###
+> r4^1
+r4^1 : r8
+Binder : Power(Num<r8>(r4), 1)
+Reducer: Num<r8>(r4)
+###
+> r4^(10f / 10)
+r4^(10 / 10) : r8
+Binder : Power(Num<r8>(r4), Mul(10, [/] 10))
+Reducer: Num<r8>(r4)
+###
+> r4^-(10f / -10)
+r4^-(10 / -10) : r8
+Binder : Power(Num<r8>(r4), Add([-] Mul(10, [/] -10)))
+Reducer: Num<r8>(r4)
+###
+> r4^(10 / 10)
+r4^(10 / 10) : r8
+Binder : Power(Num<r8>(r4), Mul(10, [/] 10))
+Reducer: Num<r8>(r4)
+###
+> r4^-(10 / -10)
+r4^-(10 / -10) : r8
+Binder : Power(Num<r8>(r4), Add([-] Mul(10, [/] -10)))
+Reducer: Num<r8>(r4)
+###
+> r8^1
+r8^1 : r8
+Binder : Power(r8, 1)
+Reducer: r8
+###
+> r8^(10 / 10)
+r8^(10 / 10) : r8
+Binder : Power(r8, Mul(10, [/] 10))
+Reducer: r8
+###
+> r8^-(10 / -10)
+r8^-(10 / -10) : r8
+Binder : Power(r8, Add([-] Mul(10, [/] -10)))
+Reducer: r8
+###
+> r8^(2 + 3)
+r8^(2 + 3) : r8
+Binder : Power(r8, Num<r8>(Add(2, 3)))
+Reducer: Power(r8, 5)
+###
+> (2 + 3)^r8
+(2 + 3)^r8 : r8
+Binder : Power(Num<r8>(Add(2, 3)), r8)
+Reducer: Power(5, r8)
+###
+> 2^g
+2^g : r8
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2^o
+2^o : i8?
+Binder : Guard(?1: o, Power(2, Unit<u8>(?1)))
+Reducer: null
+###
+> 2^s
+2^s : r8
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2^b
+2^b : i8
+Binder : Power(2, Num<u8>(b))
+###
+> 2^n
+2^n : r8
+Binder : Power(2, n)
+###
+> 2^r8
+2^r8 : r8
+Binder : Power(2, r8)
+###
+> 2^r4
+2^r4 : r8
+Binder : Power(2, Num<r8>(r4))
+###
+> 2^i
+2^i : r8
+Binder : Power(2, Num<r8>(i))
+###
+> 2^i8
+2^i8 : i8
+Binder : Power(2, i8)
+###
+> 2^i4
+2^i4 : i8
+Binder : Power(2, Num<i8>(i4))
+###
+> 2^i2
+2^i2 : i8
+Binder : Power(2, Num<i8>(i2))
+###
+> 2^i1
+2^i1 : i8
+Binder : Power(2, Num<i8>(i1))
+###
+> 2^u8
+2^u8 : i8
+Binder : Power(2, u8)
+###
+> 2^u4
+2^u4 : i8
+Binder : Power(2, Num<u8>(u4))
+###
+> 2^u2
+2^u2 : i8
+Binder : Power(2, Num<u8>(u2))
+###
+> 2^u1
+2^u1 : i8
+Binder : Power(2, Num<u8>(u1))
+###
+> 2^-g
+2^-g : i8
+*** Error: (3,4) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'i8'
+Binder : Power(2, Add([-] Error(ErrBadType_Src_Dst)))
+###
+> 2^-o
+2^-o : i8?
+Binder : Guard(?2: Guard(?1: o, Add([-] Unit<i8>(?1))), Power(2, ?2))
+Reducer: null
+###
+> 2^-s
+2^-s : i8
+*** Error: (3,4) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : Power(2, Add([-] Error(ErrBadType_Src_Dst)))
+###
+> 2^-b
+2^-b : i8
+Binder : Power(2, Add([-] Num<i8>(b)))
+###
+> 2^-n
+2^-n : r8
+Binder : Power(2, Add([-] n))
+###
+> 2^-r8
+2^-r8 : r8
+Binder : Power(2, Add([-] r8))
+###
+> 2^-r4
+2^-r4 : r8
+Binder : Power(2, Add([-] Num<r8>(r4)))
+###
+> 2^-i
+2^-i : r8
+Binder : Power(2, Num<r8>(Add([-] i)))
+###
+> 2^-i8
+2^-i8 : i8
+Binder : Power(2, Add([-] i8))
+###
+> 2^-i4
+2^-i4 : i8
+Binder : Power(2, Add([-] Num<i8>(i4)))
+###
+> 2^-i2
+2^-i2 : i8
+Binder : Power(2, Add([-] Num<i8>(i2)))
+###
+> 2^-i1
+2^-i1 : i8
+Binder : Power(2, Add([-] Num<i8>(i1)))
+###
+> 2^-u8
+2^-u8 : i8
+*** Warning: (3,5) Node: u8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Power(2, Add([-] Num<i8>(u8)))
+###
+> 2^-u4
+2^-u4 : i8
+Binder : Power(2, Add([-] Num<i8>(u4)))
+###
+> 2^-u2
+2^-u2 : i8
+Binder : Power(2, Add([-] Num<i8>(u2)))
+###
+> 2^-u1
+2^-u1 : i8
+Binder : Power(2, Add([-] Num<i8>(u1)))
+###
+> (-2)^g
+(-2)^g : r8
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(-2, Error(ErrBadType_Src_Dst))
+###
+> (-2)^o
+(-2)^o : i8?
+Binder : Guard(?1: o, Power(-2, Unit<u8>(?1)))
+Reducer: null
+###
+> (-2)^s
+(-2)^s : r8
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(-2, Error(ErrBadType_Src_Dst))
+###
+> (-2)^b
+(-2)^b : i8
+Binder : Power(-2, Num<u8>(b))
+###
+> (-2)^n
+(-2)^n : r8
+Binder : Power(-2, n)
+###
+> (-2)^r8
+(-2)^r8 : r8
+Binder : Power(-2, r8)
+###
+> (-2)^r4
+(-2)^r4 : r8
+Binder : Power(-2, Num<r8>(r4))
+###
+> (-2)^i
+(-2)^i : r8
+Binder : Power(-2, Num<r8>(i))
+###
+> (-2)^i8
+(-2)^i8 : i8
+Binder : Power(-2, i8)
+###
+> (-2)^i4
+(-2)^i4 : i8
+Binder : Power(-2, Num<i8>(i4))
+###
+> (-2)^i2
+(-2)^i2 : i8
+Binder : Power(-2, Num<i8>(i2))
+###
+> (-2)^i1
+(-2)^i1 : i8
+Binder : Power(-2, Num<i8>(i1))
+###
+> (-2)^u8
+(-2)^u8 : i8
+Binder : Power(-2, u8)
+###
+> (-2)^u4
+(-2)^u4 : i8
+Binder : Power(-2, Num<u8>(u4))
+###
+> (-2)^u2
+(-2)^u2 : i8
+Binder : Power(-2, Num<u8>(u2))
+###
+> (-2)^u1
+(-2)^u1 : i8
+Binder : Power(-2, Num<u8>(u1))
+###
+> 2u^g
+2^g : r8
+*** Error: (3,4) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2u^o
+2^o : u8?
+Binder : Guard(?1: o, Power(2, Unit<u8>(?1)))
+Reducer: null
+###
+> 2u^s
+2^s : r8
+*** Error: (3,4) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2u^b
+2^b : u8
+Binder : Power(2, Num<u8>(b))
+###
+> 2u^n
+2^n : r8
+Binder : Power(2, n)
+###
+> 2u^r8
+2^r8 : r8
+Binder : Power(2, r8)
+###
+> 2u^r4
+2^r4 : r8
+Binder : Power(2, Num<r8>(r4))
+###
+> 2u^i
+2^i : r8
+Binder : Power(2, Num<r8>(i))
+###
+> 2u^i8
+2^i8 : u8
+Binder : Power(2, i8)
+###
+> 2u^i4
+2^i4 : u8
+Binder : Power(2, Num<i8>(i4))
+###
+> 2u^i2
+2^i2 : u8
+Binder : Power(2, Num<i8>(i2))
+###
+> 2u^i1
+2^i1 : u8
+Binder : Power(2, Num<i8>(i1))
+###
+> 2u^u8
+2^u8 : u8
+Binder : Power(2, u8)
+###
+> 2u^u4
+2^u4 : u8
+Binder : Power(2, Num<u8>(u4))
+###
+> 2u^u2
+2^u2 : u8
+Binder : Power(2, Num<u8>(u2))
+###
+> 2u^u1
+2^u1 : u8
+Binder : Power(2, Num<u8>(u1))
+###
+> 2u8^g
+2^g : r8
+*** Error: (4,5) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2u8^o
+2^o : u8?
+Binder : Guard(?1: o, Power(2, Unit<u8>(?1)))
+Reducer: null
+###
+> 2u8^s
+2^s : r8
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2u8^b
+2^b : u8
+Binder : Power(2, Num<u8>(b))
+###
+> 2u8^n
+2^n : r8
+Binder : Power(2, n)
+###
+> 2u8^r8
+2^r8 : r8
+Binder : Power(2, r8)
+###
+> 2u8^r4
+2^r4 : r8
+Binder : Power(2, Num<r8>(r4))
+###
+> 2u8^i
+2^i : r8
+Binder : Power(2, Num<r8>(i))
+###
+> 2u8^i8
+2^i8 : u8
+Binder : Power(2, i8)
+###
+> 2u8^i4
+2^i4 : u8
+Binder : Power(2, Num<i8>(i4))
+###
+> 2u8^i2
+2^i2 : u8
+Binder : Power(2, Num<i8>(i2))
+###
+> 2u8^i1
+2^i1 : u8
+Binder : Power(2, Num<i8>(i1))
+###
+> 2u8^u8
+2^u8 : u8
+Binder : Power(2, u8)
+###
+> 2u8^u4
+2^u4 : u8
+Binder : Power(2, Num<u8>(u4))
+###
+> 2u8^u2
+2^u2 : u8
+Binder : Power(2, Num<u8>(u2))
+###
+> 2u8^u1
+2^u1 : u8
+Binder : Power(2, Num<u8>(u1))
+###
+> 2f^g
+2^g : r8
+*** Error: (3,4) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2f^o
+2^o : r8?
+Binder : Guard(?1: o, Power(2, Unit<r8>(?1)))
+Reducer: null
+###
+> 2f^s
+2^s : r8
+*** Error: (3,4) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(2, Error(ErrBadType_Src_Dst))
+###
+> 2f^b
+2^b : r8
+Binder : Power(2, Num<r8>(b))
+###
+> 2f^n
+2^n : r8
+Binder : Power(2, n)
+###
+> 2f^r8
+2^r8 : r8
+Binder : Power(2, r8)
+###
+> 2f^r4
+2^r4 : r8
+Binder : Power(2, Num<r8>(r4))
+###
+> 2f^i
+2^i : r8
+Binder : Power(2, Num<r8>(i))
+###
+> 2f^i8
+2^i8 : r8
+Binder : Power(2, Num<r8>(i8))
+###
+> 2f^i4
+2^i4 : r8
+Binder : Power(2, Num<r8>(i4))
+###
+> 2f^i2
+2^i2 : r8
+Binder : Power(2, Num<r8>(i2))
+###
+> 2f^i1
+2^i1 : r8
+Binder : Power(2, Num<r8>(i1))
+###
+> 2f^u8
+2^u8 : r8
+Binder : Power(2, Num<r8>(u8))
+###
+> 2f^u4
+2^u4 : r8
+Binder : Power(2, Num<r8>(u4))
+###
+> 2f^u2
+2^u2 : r8
+Binder : Power(2, Num<r8>(u2))
+###
+> 2f^u1
+2^u1 : r8
+Binder : Power(2, Num<r8>(u1))
+###
+> null^g
+null^g : r8?
+*** Error: (5,6) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Guard(?1: null, Power(Unit<r8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null^o
+null^o : i8?
+Binder : Guard(?1: null, ?2: o, Power(Unit<i8>(?1), Unit<u8>(?2)))
+Reducer: null
+###
+> null^s
+null^s : r8?
+*** Error: (5,6) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Guard(?1: null, Power(Unit<r8>(?1), Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> null^b
+null^b : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<u8>(b)))
+Reducer: null
+###
+> null^n
+null^n : r8?
+Binder : Guard(?1: null, Power(Unit<r8>(?1), n))
+Reducer: null
+###
+> null^r8
+null^r8 : r8?
+Binder : Guard(?1: null, Power(Unit<r8>(?1), r8))
+Reducer: null
+###
+> null^r4
+null^r4 : r8?
+Binder : Guard(?1: null, Power(Unit<r8>(?1), Num<r8>(r4)))
+Reducer: null
+###
+> null^i
+null^i : r8?
+Binder : Guard(?1: null, Power(Unit<r8>(?1), Num<r8>(i)))
+Reducer: null
+###
+> null^i8
+null^i8 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), i8))
+Reducer: null
+###
+> null^i4
+null^i4 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<i8>(i4)))
+Reducer: null
+###
+> null^i2
+null^i2 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<i8>(i2)))
+Reducer: null
+###
+> null^i1
+null^i1 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<i8>(i1)))
+Reducer: null
+###
+> null^u8
+null^u8 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), u8))
+Reducer: null
+###
+> null^u4
+null^u4 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<u8>(u4)))
+Reducer: null
+###
+> null^u2
+null^u2 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<u8>(u2)))
+Reducer: null
+###
+> null^u1
+null^u1 : i8?
+Binder : Guard(?1: null, Power(Unit<i8>(?1), Num<u8>(u1)))
+Reducer: null
+###
+> 2^qb
+2^qb : i8?
+Binder : Guard(?1: qb, Power(2, Num<u8>(?1)))
+###
+> 2^qn
+2^qn : r8?
+Binder : Guard(?1: qn, Power(2, ?1))
+###
+> 2^qr8
+2^qr8 : r8?
+Binder : Guard(?1: qr8, Power(2, ?1))
+###
+> 2^qr4
+2^qr4 : r8?
+Binder : Guard(?1: qr4, Power(2, Num<r8>(?1)))
+###
+> 2^qi
+2^qi : r8?
+Binder : Guard(?1: qi, Power(2, Num<r8>(?1)))
+###
+> 2^qi8
+2^qi8 : i8?
+Binder : Guard(?1: qi8, Power(2, ?1))
+###
+> 2^qi4
+2^qi4 : i8?
+Binder : Guard(?1: qi4, Power(2, Num<i8>(?1)))
+###
+> 2^qi2
+2^qi2 : i8?
+Binder : Guard(?1: qi2, Power(2, Num<i8>(?1)))
+###
+> 2^qi1
+2^qi1 : i8?
+Binder : Guard(?1: qi1, Power(2, Num<i8>(?1)))
+###
+> 2^qu8
+2^qu8 : i8?
+Binder : Guard(?1: qu8, Power(2, ?1))
+###
+> 2^qu4
+2^qu4 : i8?
+Binder : Guard(?1: qu4, Power(2, Num<u8>(?1)))
+###
+> 2^qu2
+2^qu2 : i8?
+Binder : Guard(?1: qu2, Power(2, Num<u8>(?1)))
+###
+> 2^qu1
+2^qu1 : i8?
+Binder : Guard(?1: qu1, Power(2, Num<u8>(?1)))
+###
+> 2^-qb
+2^-qb : i8?
+Binder : Guard(?2: Guard(?1: qb, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qb, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qn
+2^-qn : r8?
+Binder : Guard(?2: Guard(?1: qn, Add([-] ?1)), Power(2, ?2))
+Reducer: Guard(?1: qn, Power(2, Add([-] ?1)))
+###
+> 2^-qr8
+2^-qr8 : r8?
+Binder : Guard(?2: Guard(?1: qr8, Add([-] ?1)), Power(2, ?2))
+Reducer: Guard(?1: qr8, Power(2, Add([-] ?1)))
+###
+> 2^-qr4
+2^-qr4 : r8?
+Binder : Guard(?2: Guard(?1: qr4, Add([-] Num<r8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qr4, Power(2, Add([-] Num<r8>(?1))))
+###
+> 2^-qi
+2^-qi : r8?
+Binder : Guard(?2: Guard(?1: qi, Add([-] ?1)), Power(2, Num<r8>(?2)))
+Reducer: Guard(?1: qi, Power(2, Num<r8>(Add([-] ?1))))
+###
+> 2^-qi8
+2^-qi8 : i8?
+Binder : Guard(?2: Guard(?1: qi8, Add([-] ?1)), Power(2, ?2))
+Reducer: Guard(?1: qi8, Power(2, Add([-] ?1)))
+###
+> 2^-qi4
+2^-qi4 : i8?
+Binder : Guard(?2: Guard(?1: qi4, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qi4, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qi2
+2^-qi2 : i8?
+Binder : Guard(?2: Guard(?1: qi2, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qi2, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qi1
+2^-qi1 : i8?
+Binder : Guard(?2: Guard(?1: qi1, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qi1, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qu8
+2^-qu8 : i8?
+*** Warning: (3,6) Node: qu8, Message: Conversion from unsigned to signed integer can reinterpret large values as negative
+Binder : Guard(?2: Guard(?1: qu8, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qu8, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qu4
+2^-qu4 : i8?
+Binder : Guard(?2: Guard(?1: qu4, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qu4, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qu2
+2^-qu2 : i8?
+Binder : Guard(?2: Guard(?1: qu2, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qu2, Power(2, Add([-] Num<i8>(?1))))
+###
+> 2^-qu1
+2^-qu1 : i8?
+Binder : Guard(?2: Guard(?1: qu1, Add([-] Num<i8>(?1))), Power(2, ?2))
+Reducer: Guard(?1: qu1, Power(2, Add([-] Num<i8>(?1))))
+###
+> (-2)^qb
+(-2)^qb : i8?
+Binder : Guard(?1: qb, Power(-2, Num<u8>(?1)))
+###
+> (-2)^qn
+(-2)^qn : r8?
+Binder : Guard(?1: qn, Power(-2, ?1))
+###
+> (-2)^qr8
+(-2)^qr8 : r8?
+Binder : Guard(?1: qr8, Power(-2, ?1))
+###
+> (-2)^qr4
+(-2)^qr4 : r8?
+Binder : Guard(?1: qr4, Power(-2, Num<r8>(?1)))
+###
+> (-2)^qi
+(-2)^qi : r8?
+Binder : Guard(?1: qi, Power(-2, Num<r8>(?1)))
+###
+> (-2)^qi8
+(-2)^qi8 : i8?
+Binder : Guard(?1: qi8, Power(-2, ?1))
+###
+> (-2)^qi4
+(-2)^qi4 : i8?
+Binder : Guard(?1: qi4, Power(-2, Num<i8>(?1)))
+###
+> (-2)^qi2
+(-2)^qi2 : i8?
+Binder : Guard(?1: qi2, Power(-2, Num<i8>(?1)))
+###
+> (-2)^qi1
+(-2)^qi1 : i8?
+Binder : Guard(?1: qi1, Power(-2, Num<i8>(?1)))
+###
+> (-2)^qu8
+(-2)^qu8 : i8?
+Binder : Guard(?1: qu8, Power(-2, ?1))
+###
+> (-2)^qu4
+(-2)^qu4 : i8?
+Binder : Guard(?1: qu4, Power(-2, Num<u8>(?1)))
+###
+> (-2)^qu2
+(-2)^qu2 : i8?
+Binder : Guard(?1: qu2, Power(-2, Num<u8>(?1)))
+###
+> (-2)^qu1
+(-2)^qu1 : i8?
+Binder : Guard(?1: qu1, Power(-2, Num<u8>(?1)))
+###
+> 2u^qb
+2^qb : u8?
+Binder : Guard(?1: qb, Power(2, Num<u8>(?1)))
+###
+> 2u^qn
+2^qn : r8?
+Binder : Guard(?1: qn, Power(2, ?1))
+###
+> 2u^qr8
+2^qr8 : r8?
+Binder : Guard(?1: qr8, Power(2, ?1))
+###
+> 2u^qr4
+2^qr4 : r8?
+Binder : Guard(?1: qr4, Power(2, Num<r8>(?1)))
+###
+> 2u^qi
+2^qi : r8?
+Binder : Guard(?1: qi, Power(2, Num<r8>(?1)))
+###
+> 2u^qi8
+2^qi8 : u8?
+Binder : Guard(?1: qi8, Power(2, ?1))
+###
+> 2u^qi4
+2^qi4 : u8?
+Binder : Guard(?1: qi4, Power(2, Num<i8>(?1)))
+###
+> 2u^qi2
+2^qi2 : u8?
+Binder : Guard(?1: qi2, Power(2, Num<i8>(?1)))
+###
+> 2u^qi1
+2^qi1 : u8?
+Binder : Guard(?1: qi1, Power(2, Num<i8>(?1)))
+###
+> 2u^qu8
+2^qu8 : u8?
+Binder : Guard(?1: qu8, Power(2, ?1))
+###
+> 2u^qu4
+2^qu4 : u8?
+Binder : Guard(?1: qu4, Power(2, Num<u8>(?1)))
+###
+> 2u^qu2
+2^qu2 : u8?
+Binder : Guard(?1: qu2, Power(2, Num<u8>(?1)))
+###
+> 2u^qu1
+2^qu1 : u8?
+Binder : Guard(?1: qu1, Power(2, Num<u8>(?1)))
+###
+> 2f^qb
+2^qb : r8?
+Binder : Guard(?1: qb, Power(2, Num<r8>(?1)))
+###
+> 2f^qn
+2^qn : r8?
+Binder : Guard(?1: qn, Power(2, ?1))
+###
+> 2f^qr8
+2^qr8 : r8?
+Binder : Guard(?1: qr8, Power(2, ?1))
+###
+> 2f^qr4
+2^qr4 : r8?
+Binder : Guard(?1: qr4, Power(2, Num<r8>(?1)))
+###
+> 2f^qi
+2^qi : r8?
+Binder : Guard(?1: qi, Power(2, Num<r8>(?1)))
+###
+> 2f^qi8
+2^qi8 : r8?
+Binder : Guard(?1: qi8, Power(2, Num<r8>(?1)))
+###
+> 2f^qi4
+2^qi4 : r8?
+Binder : Guard(?1: qi4, Power(2, Num<r8>(?1)))
+###
+> 2f^qi2
+2^qi2 : r8?
+Binder : Guard(?1: qi2, Power(2, Num<r8>(?1)))
+###
+> 2f^qi1
+2^qi1 : r8?
+Binder : Guard(?1: qi1, Power(2, Num<r8>(?1)))
+###
+> 2f^qu8
+2^qu8 : r8?
+Binder : Guard(?1: qu8, Power(2, Num<r8>(?1)))
+###
+> 2f^qu4
+2^qu4 : r8?
+Binder : Guard(?1: qu4, Power(2, Num<r8>(?1)))
+###
+> 2f^qu2
+2^qu2 : r8?
+Binder : Guard(?1: qu2, Power(2, Num<r8>(?1)))
+###
+> 2f^qu1
+2^qu1 : r8?
+Binder : Guard(?1: qu1, Power(2, Num<r8>(?1)))
+###
+> null^qb
+null^qb : i8?
+Binder : Guard(?1: null, ?2: qb, Power(Unit<i8>(?1), Num<u8>(?2)))
+Reducer: null
+###
+> null^qn
+null^qn : r8?
+Binder : Guard(?1: null, ?2: qn, Power(Unit<r8>(?1), ?2))
+Reducer: null
+###
+> null^qr8
+null^qr8 : r8?
+Binder : Guard(?1: null, ?2: qr8, Power(Unit<r8>(?1), ?2))
+Reducer: null
+###
+> null^qr4
+null^qr4 : r8?
+Binder : Guard(?1: null, ?2: qr4, Power(Unit<r8>(?1), Num<r8>(?2)))
+Reducer: null
+###
+> null^qi
+null^qi : r8?
+Binder : Guard(?1: null, ?2: qi, Power(Unit<r8>(?1), Num<r8>(?2)))
+Reducer: null
+###
+> null^qi8
+null^qi8 : i8?
+Binder : Guard(?1: null, ?2: qi8, Power(Unit<i8>(?1), ?2))
+Reducer: null
+###
+> null^qi4
+null^qi4 : i8?
+Binder : Guard(?1: null, ?2: qi4, Power(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null^qi2
+null^qi2 : i8?
+Binder : Guard(?1: null, ?2: qi2, Power(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null^qi1
+null^qi1 : i8?
+Binder : Guard(?1: null, ?2: qi1, Power(Unit<i8>(?1), Num<i8>(?2)))
+Reducer: null
+###
+> null^qu8
+null^qu8 : i8?
+Binder : Guard(?1: null, ?2: qu8, Power(Unit<i8>(?1), ?2))
+Reducer: null
+###
+> null^qu4
+null^qu4 : i8?
+Binder : Guard(?1: null, ?2: qu4, Power(Unit<i8>(?1), Num<u8>(?2)))
+Reducer: null
+###
+> null^qu2
+null^qu2 : i8?
+Binder : Guard(?1: null, ?2: qu2, Power(Unit<i8>(?1), Num<u8>(?2)))
+Reducer: null
+###
+> null^qu1
+null^qu1 : i8?
+Binder : Guard(?1: null, ?2: qu1, Power(Unit<i8>(?1), Num<u8>(?2)))
+Reducer: null
+###
+> g^2
+g^2 : r8
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : Power(Error(ErrBadType_Src_Dst), 2)
+###
+> o^2
+o^2 : i8?
+Binder : Guard(?1: o, Power(Unit<i8>(?1), 2))
+Reducer: null
+###
+> s^2
+s^2 : r8
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Power(Error(ErrBadType_Src_Dst), 2)
+###
+> b^2
+b^2 : i8
+Binder : Power(Num<i8>(b), 2)
+###
+> n^2
+n^2 : r8
+Binder : Power(n, 2)
+###
+> r8^2
+r8^2 : r8
+Binder : Power(r8, 2)
+###
+> r4^2
+r4^2 : r8
+Binder : Power(Num<r8>(r4), 2)
+###
+> i^2
+i^2 : r8
+Binder : Power(Num<r8>(i), 2)
+###
+> i8^2
+i8^2 : i8
+Binder : Power(i8, 2)
+###
+> i4^2
+i4^2 : i8
+Binder : Power(Num<i8>(i4), 2)
+###
+> i2^2
+i2^2 : i8
+Binder : Power(Num<i8>(i2), 2)
+###
+> i1^2
+i1^2 : i8
+Binder : Power(Num<i8>(i1), 2)
+###
+> u8^2
+u8^2 : u8
+Binder : Power(u8, 2)
+###
+> u4^2
+u4^2 : i8
+Binder : Power(Num<i8>(u4), 2)
+###
+> u2^2
+u2^2 : i8
+Binder : Power(Num<i8>(u2), 2)
+###
+> u1^2
+u1^2 : i8
+Binder : Power(Num<i8>(u1), 2)
+###
+> qb^2
+qb^2 : i8?
+Binder : Guard(?1: qb, Power(Num<i8>(?1), 2))
+###
+> qn^2
+qn^2 : r8?
+Binder : Guard(?1: qn, Power(?1, 2))
+###
+> qr8^2
+qr8^2 : r8?
+Binder : Guard(?1: qr8, Power(?1, 2))
+###
+> qr4^2
+qr4^2 : r8?
+Binder : Guard(?1: qr4, Power(Num<r8>(?1), 2))
+###
+> qi^2
+qi^2 : r8?
+Binder : Guard(?1: qi, Power(Num<r8>(?1), 2))
+###
+> qi8^2
+qi8^2 : i8?
+Binder : Guard(?1: qi8, Power(?1, 2))
+###
+> qi4^2
+qi4^2 : i8?
+Binder : Guard(?1: qi4, Power(Num<i8>(?1), 2))
+###
+> qi2^2
+qi2^2 : i8?
+Binder : Guard(?1: qi2, Power(Num<i8>(?1), 2))
+###
+> qi1^2
+qi1^2 : i8?
+Binder : Guard(?1: qi1, Power(Num<i8>(?1), 2))
+###
+> qu8^2
+qu8^2 : u8?
+Binder : Guard(?1: qu8, Power(?1, 2))
+###
+> qu4^2
+qu4^2 : i8?
+Binder : Guard(?1: qu4, Power(Num<i8>(?1), 2))
+###
+> qu2^2
+qu2^2 : i8?
+Binder : Guard(?1: qu2, Power(Num<i8>(?1), 2))
+###
+> qu1^2
+qu1^2 : i8?
+Binder : Guard(?1: qu1, Power(Num<i8>(?1), 2))
+###
+
+**** New globals: {b:b*, g:g*, i:i*, i1:i1*, i2:i2*, i4:i4*, i8:i8*, n:r8*, o:o*, qb:b?*, qi:i?*, qi1:i1?*, qi2:i2?*, qi4:i4?*, qi8:i8?*, qn:r8?*, qr4:r4?*, qr8:r8?*, qu1:u1?*, qu2:u2?*, qu4:u4?*, qu8:u8?*, r4:r4*, r8:r8*, s:s*, u1:u1*, u2:u2*, u4:u4*, u8:u8*}
+
+> 2^g
+2^g : r8*
+*** Error: (2,3) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : ForEach(*1: g, Power(2, Error(ErrBadType_Src_Dst)))
+###
+> 2^o
+2^o : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, Power(2, Unit<u8>(?2))))
+Reducer: ForEach(*1: o, null)
+###
+> 2^s
+2^s : r8*
+*** Error: (2,3) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : ForEach(*1: s, Power(2, Error(ErrBadType_Src_Dst)))
+###
+> 2^b
+2^b : i8*
+Binder : ForEach(*1: b, Power(2, Num<u8>(*1)))
+###
+> 2^n
+2^n : r8*
+Binder : ForEach(*1: n, Power(2, *1))
+###
+> 2^r8
+2^r8 : r8*
+Binder : ForEach(*1: r8, Power(2, *1))
+###
+> 2^r4
+2^r4 : r8*
+Binder : ForEach(*1: r4, Power(2, Num<r8>(*1)))
+###
+> 2^i
+2^i : r8*
+Binder : ForEach(*1: i, Power(2, Num<r8>(*1)))
+###
+> 2^i8
+2^i8 : i8*
+Binder : ForEach(*1: i8, Power(2, *1))
+###
+> 2^i4
+2^i4 : i8*
+Binder : ForEach(*1: i4, Power(2, Num<i8>(*1)))
+###
+> 2^i2
+2^i2 : i8*
+Binder : ForEach(*1: i2, Power(2, Num<i8>(*1)))
+###
+> 2^i1
+2^i1 : i8*
+Binder : ForEach(*1: i1, Power(2, Num<i8>(*1)))
+###
+> 2^u8
+2^u8 : i8*
+Binder : ForEach(*1: u8, Power(2, *1))
+###
+> 2^u4
+2^u4 : i8*
+Binder : ForEach(*1: u4, Power(2, Num<u8>(*1)))
+###
+> 2^u2
+2^u2 : i8*
+Binder : ForEach(*1: u2, Power(2, Num<u8>(*1)))
+###
+> 2^u1
+2^u1 : i8*
+Binder : ForEach(*1: u1, Power(2, Num<u8>(*1)))
+###
+> 2^qb
+2^qb : i8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Power(2, Num<u8>(?2))))
+###
+> 2^qn
+2^qn : r8?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Power(2, ?2)))
+###
+> 2^qr8
+2^qr8 : r8?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Power(2, ?2)))
+###
+> 2^qr4
+2^qr4 : r8?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Power(2, Num<r8>(?2))))
+###
+> 2^qi
+2^qi : r8?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Power(2, Num<r8>(?2))))
+###
+> 2^qi8
+2^qi8 : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Power(2, ?2)))
+###
+> 2^qi4
+2^qi4 : i8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Power(2, Num<i8>(?2))))
+###
+> 2^qi2
+2^qi2 : i8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Power(2, Num<i8>(?2))))
+###
+> 2^qi1
+2^qi1 : i8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Power(2, Num<i8>(?2))))
+###
+> 2^qu8
+2^qu8 : i8?*
+Binder : ForEach(*1: qu8, Guard(?2: *1, Power(2, ?2)))
+###
+> 2^qu4
+2^qu4 : i8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Power(2, Num<u8>(?2))))
+###
+> 2^qu2
+2^qu2 : i8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Power(2, Num<u8>(?2))))
+###
+> 2^qu1
+2^qu1 : i8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Power(2, Num<u8>(?2))))
+###
+> g^2
+g^2 : r8*
+*** Error: (0,1) Node: g, Message: Invalid operand type: cannot convert type 'g' to 'r8'
+Binder : ForEach(*1: g, Power(Error(ErrBadType_Src_Dst), 2))
+###
+> o^2
+o^2 : i8?*
+Binder : ForEach(*1: o, Guard(?2: *1, Power(Unit<i8>(?2), 2)))
+Reducer: ForEach(*1: o, null)
+###
+> s^2
+s^2 : r8*
+*** Error: (0,1) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : ForEach(*1: s, Power(Error(ErrBadType_Src_Dst), 2))
+###
+> b^2
+b^2 : i8*
+Binder : ForEach(*1: b, Power(Num<i8>(*1), 2))
+###
+> n^2
+n^2 : r8*
+Binder : ForEach(*1: n, Power(*1, 2))
+###
+> r8^2
+r8^2 : r8*
+Binder : ForEach(*1: r8, Power(*1, 2))
+###
+> r4^2
+r4^2 : r8*
+Binder : ForEach(*1: r4, Power(Num<r8>(*1), 2))
+###
+> i^2
+i^2 : r8*
+Binder : ForEach(*1: i, Power(Num<r8>(*1), 2))
+###
+> i8^2
+i8^2 : i8*
+Binder : ForEach(*1: i8, Power(*1, 2))
+###
+> i4^2
+i4^2 : i8*
+Binder : ForEach(*1: i4, Power(Num<i8>(*1), 2))
+###
+> i2^2
+i2^2 : i8*
+Binder : ForEach(*1: i2, Power(Num<i8>(*1), 2))
+###
+> i1^2
+i1^2 : i8*
+Binder : ForEach(*1: i1, Power(Num<i8>(*1), 2))
+###
+> u8^2
+u8^2 : u8*
+Binder : ForEach(*1: u8, Power(*1, 2))
+###
+> u4^2
+u4^2 : i8*
+Binder : ForEach(*1: u4, Power(Num<i8>(*1), 2))
+###
+> u2^2
+u2^2 : i8*
+Binder : ForEach(*1: u2, Power(Num<i8>(*1), 2))
+###
+> u1^2
+u1^2 : i8*
+Binder : ForEach(*1: u1, Power(Num<i8>(*1), 2))
+###
+> qb^2
+qb^2 : i8?*
+Binder : ForEach(*1: qb, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qn^2
+qn^2 : r8?*
+Binder : ForEach(*1: qn, Guard(?2: *1, Power(?2, 2)))
+###
+> qr8^2
+qr8^2 : r8?*
+Binder : ForEach(*1: qr8, Guard(?2: *1, Power(?2, 2)))
+###
+> qr4^2
+qr4^2 : r8?*
+Binder : ForEach(*1: qr4, Guard(?2: *1, Power(Num<r8>(?2), 2)))
+###
+> qi^2
+qi^2 : r8?*
+Binder : ForEach(*1: qi, Guard(?2: *1, Power(Num<r8>(?2), 2)))
+###
+> qi8^2
+qi8^2 : i8?*
+Binder : ForEach(*1: qi8, Guard(?2: *1, Power(?2, 2)))
+###
+> qi4^2
+qi4^2 : i8?*
+Binder : ForEach(*1: qi4, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qi2^2
+qi2^2 : i8?*
+Binder : ForEach(*1: qi2, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qi1^2
+qi1^2 : i8?*
+Binder : ForEach(*1: qi1, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qu8^2
+qu8^2 : u8?*
+Binder : ForEach(*1: qu8, Guard(?2: *1, Power(?2, 2)))
+###
+> qu4^2
+qu4^2 : i8?*
+Binder : ForEach(*1: qu4, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qu2^2
+qu2^2 : i8?*
+Binder : ForEach(*1: qu2, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> qu1^2
+qu1^2 : i8?*
+Binder : ForEach(*1: qu1, Guard(?2: *1, Power(Num<i8>(?2), 2)))
+###
+> [1,2,3]^2
+[1, 2, 3]^2 : i8*
+Binder : ForEach(*1: [1, 2, 3], Power(*1, 2))
+###
+> Wrap([1,2,3])^2
+Wrap([1, 2, 3])^2 : i8*
+Binder : ForEach(*1: Test.Wrap([1, 2, 3]), Power(*1, 2))
+###
+> [-1,-2,-3]^2
+[-1, -2, -3]^2 : i8*
+Binder : ForEach(*1: [-1, -2, -3], Power(*1, 2))
+###
+> Test.Wrap([-1,-2,-3])^2
+Test.Wrap([-1, -2, -3])^2 : i8*
+Binder : ForEach(*1: Test.Wrap([-1, -2, -3]), Power(*1, 2))
+###
+> [[1,2,3], [-1,-2,-3], [4,5]]^2
+[[1, 2, 3], [-1, -2, -3], [4, 5]]^2 : i8**
+Binder : ForEach(*1: [[1, 2, 3], [-1, -2, -3], [4, 5]], ForEach(*2: *1, Power(*2, 2)))
+###
+> Wrap([[1,2,3], [-1,-2,-3], [4,5]])^2
+Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]])^2 : i8**
+Binder : ForEach(*1: Test.Wrap([[1, 2, 3], [-1, -2, -3], [4, 5]]), ForEach(*2: *1, Power(*2, 2)))
+###
+> [Wrap([1,2,3]), [-1,-2,-3], [4,5]]^2
+[Wrap([1, 2, 3]), [-1, -2, -3], [4, 5]]^2 : i8**
+Binder : ForEach(*1: [Test.Wrap([1, 2, 3]), [-1, -2, -3], [4, 5]], ForEach(*2: *1, Power(*2, 2)))
+###
+> [[1,2,3], Wrap([-1,-2,-3]), [4,5]]^2
+[[1, 2, 3], Wrap([-1, -2, -3]), [4, 5]]^2 : i8**
+Binder : ForEach(*1: [[1, 2, 3], Test.Wrap([-1, -2, -3]), [4, 5]], ForEach(*2: *1, Power(*2, 2)))
+###
+> [[1,2,3], [-1,-2,-3], Wrap([4,5])]^2
+[[1, 2, 3], [-1, -2, -3], Wrap([4, 5])]^2 : i8**
+Binder : ForEach(*1: [[1, 2, 3], [-1, -2, -3], Test.Wrap([4, 5])], ForEach(*2: *1, Power(*2, 2)))
+###
+> 2^3
+2^3 : i8
+Binder : Power(2, 3)
+Reducer: 8
+###
+> [[1,2,3], [-1,-2,-3], Wrap([4,5])]^2
+[[1, 2, 3], [-1, -2, -3], Wrap([4, 5])]^2 : i8**
+Binder : ForEach(*1: [[1, 2, 3], [-1, -2, -3], Test.Wrap([4, 5])], ForEach(*2: *1, Power(*2, 2)))
+###

@@ -1,0 +1,202 @@
+**** New globals: {i8:i8, i8s:i8*, r4:r4, r8:r8, r8s:r8*}
+
+> Random.Uniform()
+Random.Uniform() : r8
+Binder : [CallVolatile] Random.Uniform()
+###
+> Random.Uniform(i8)
+Random.Uniform(i8) : r8*
+Binder : [Global|CallVolatile] Random.Uniform(i8)
+###
+> Random.Uniform(r8, r8)
+Random.Uniform(r8, r8) : r8
+Binder : [Global|CallVolatile] Random.Uniform(r8, r8)
+###
+> Random.Uniform(r8, r4)
+Random.Uniform(r8, r4) : r8
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(r8, Num<r8>(r4))
+###
+> Random.Uniform(r4, r8)
+Random.Uniform(r4, r8) : r8
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(Num<r8>(r4), r8)
+###
+> Random.Uniform(r4, r4)
+Random.Uniform(r4, r4) : r8
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(Num<r8>(r4), Num<r8>(r4))
+###
+> Random.Uniform(r8, r8, i8)
+Random.Uniform(r8, r8, i8) : r8*
+Binder : [Global|CallVolatile] Random.Uniform(r8, r8, i8)
+###
+> Random.Uniform(r8, r4, i8)
+Random.Uniform(r8, r4, i8) : r8*
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(r8, Num<r8>(r4), i8)
+###
+> Random.Uniform(r4, r8, i8)
+Random.Uniform(r4, r8, i8) : r8*
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(Num<r8>(r4), r8, i8)
+###
+> Random.Uniform(r4, r4, i8)
+Random.Uniform(r4, r4, i8) : r8*
+Binder : [Global|CastNum|CallVolatile] Random.Uniform(Num<r8>(r4), Num<r8>(r4), i8)
+###
+> Random.Uniform(0, 1)
+Random.Uniform(0, 1) : r8
+Binder : [Flt|CallVolatile] Random.Uniform(0, 1)
+Reducer: [CallVolatile] Random.Uniform()
+###
+> Random.Uniform(1, 0) // Not reduced.
+Random.Uniform(1, 0) : r8
+Binder : [Flt|CallVolatile] Random.Uniform(1, 0)
+###
+> Random.Uniform(1, 1) // Constant.
+Random.Uniform(1, 1) : r8
+Binder : [Flt|CallVolatile] Random.Uniform(1, 1)
+Reducer: [Flt] 1
+###
+> Random.Uniform(0, 0) // Constant.
+Random.Uniform(0, 0) : r8
+Binder : [Flt|CallVolatile] Random.Uniform(0, 0)
+Reducer: [Flt] 0
+###
+> Random.Uniform(1, 1/0) // Constant infinity.
+Random.Uniform(1, 1 / 0) : r8
+Binder : [Flt|VariadicOp|CallVolatile] Random.Uniform(1, Mul(1, [/] 0))
+Reducer: [Flt] ∞
+###
+> Random.Uniform(1/0, -3) // Constant infinity.
+Random.Uniform(1 / 0, -3) : r8
+Binder : [Flt|VariadicOp|CallVolatile] Random.Uniform(Mul(1, [/] 0), -3)
+Reducer: [Flt] ∞
+###
+> Random.Uniform(1, -1/0) // Constant negative infinity.
+Random.Uniform(1, -1 / 0) : r8
+Binder : [Flt|VariadicOp|CallVolatile] Random.Uniform(1, Mul(-1, [/] 0))
+Reducer: [Flt] -∞
+###
+> Random.Uniform(-1/0, 3) // Constant negative infinity.
+Random.Uniform(-1 / 0, 3) : r8
+Binder : [Flt|VariadicOp|CallVolatile] Random.Uniform(Mul(-1, [/] 0), 3)
+Reducer: [Flt] -∞
+###
+> Random.Uniform(-1/0, 1/0) // Constant nan.
+Random.Uniform(-1 / 0, 1 / 0) : r8
+Binder : [Flt|VariadicOp|CallVolatile] Random.Uniform(Mul(-1, [/] 0), Mul(1, [/] 0))
+Reducer: [Flt] NaN
+###
+> Random.Uniform(0.1, 0.9) // Not reduced.
+Random.Uniform(0.1, 0.9) : r8
+Binder : [Flt|CallVolatile] Random.Uniform(0.1, 0.9)
+###
+> Random.Uniform(0, 1, i8)
+Random.Uniform(0, 1, i8) : r8*
+Binder : [Flt|Global|CallVolatile] Random.Uniform(0, 1, i8)
+Reducer: [Global|CallVolatile] Random.Uniform(i8)
+###
+> Random.Uniform(1, 0, i8) // Not reduced.
+Random.Uniform(1, 0, i8) : r8*
+Binder : [Flt|Global|CallVolatile] Random.Uniform(1, 0, i8)
+###
+> Random.Uniform(1, 1, i8) // Constant.
+Random.Uniform(1, 1, i8) : r8*
+Binder : [Flt|Global|CallVolatile] Random.Uniform(1, 1, i8)
+Reducer: [Flt|Global|Call] Repeat(1, i8)
+###
+> Random.Uniform(0, 0, i8) // Constant.
+Random.Uniform(0, 0, i8) : r8*
+Binder : [Flt|Global|CallVolatile] Random.Uniform(0, 0, i8)
+Reducer: [Flt|Global|Call] Repeat(0, i8)
+###
+> Random.Uniform(1, 1/0, i8) // Constant infinity.
+Random.Uniform(1, 1 / 0, i8) : r8*
+Binder : [Flt|Global|VariadicOp|CallVolatile] Random.Uniform(1, Mul(1, [/] 0), i8)
+Reducer: [Flt|Global|Call] Repeat(∞, i8)
+###
+> Random.Uniform(1/0, -3, i8) // Constant infinity.
+Random.Uniform(1 / 0, -3, i8) : r8*
+Binder : [Flt|Global|VariadicOp|CallVolatile] Random.Uniform(Mul(1, [/] 0), -3, i8)
+Reducer: [Flt|Global|Call] Repeat(∞, i8)
+###
+> Random.Uniform(1, -1/0, i8) // Constant negative infinity.
+Random.Uniform(1, -1 / 0, i8) : r8*
+Binder : [Flt|Global|VariadicOp|CallVolatile] Random.Uniform(1, Mul(-1, [/] 0), i8)
+Reducer: [Flt|Global|Call] Repeat(-∞, i8)
+###
+> Random.Uniform(-1/0, 3, i8) // Constant negative infinity.
+Random.Uniform(-1 / 0, 3, i8) : r8*
+Binder : [Flt|Global|VariadicOp|CallVolatile] Random.Uniform(Mul(-1, [/] 0), 3, i8)
+Reducer: [Flt|Global|Call] Repeat(-∞, i8)
+###
+> Random.Uniform(-1/0, 1/0, i8) // Constant nan.
+Random.Uniform(-1 / 0, 1 / 0, i8) : r8*
+Binder : [Flt|Global|VariadicOp|CallVolatile] Random.Uniform(Mul(-1, [/] 0), Mul(1, [/] 0), i8)
+Reducer: [Flt|Global|Call] Repeat(NaN, i8)
+###
+> Random.Uniform(0.1, 0.9, i8) // Not reduced.
+Random.Uniform(0.1, 0.9, i8) : r8*
+Binder : [Flt|Global|CallVolatile] Random.Uniform(0.1, 0.9, i8)
+###
+> (Random.Uniform(), Random.Uniform())
+(Random.Uniform(), Random.Uniform()) : (r8, r8)
+Binder : [Tuple|CallVolatile] (Random.Uniform(), Random.Uniform())
+###
+> Random.Uniform(-1)
+Random.Uniform(-1) : r8*
+Binder : [Int|CallVolatile] Random.Uniform(-1)
+Reducer: [Null] null
+###
+> Random.Uniform(0)
+Random.Uniform(0) : r8*
+Binder : [Int|CallVolatile] Random.Uniform(0)
+Reducer: [Null] null
+###
+> Random.Uniform(r8, r8, -1)
+Random.Uniform(r8, r8, -1) : r8*
+Binder : [Int|Global|CallVolatile] Random.Uniform(r8, r8, -1)
+Reducer: [Null] null
+###
+> Random.Uniform(r8, r8, 0)
+Random.Uniform(r8, r8, 0) : r8*
+Binder : [Int|Global|CallVolatile] Random.Uniform(r8, r8, 0)
+Reducer: [Null] null
+###
+> Random.Uniform(r8) // Error.
+Random.Uniform(r8) : r8*
+*** Error: (15,17) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : [Error|CallVolatile] Random.Uniform(Error(ErrBadType_Src_Dst))
+###
+> Random.Uniform(i8s) // Error.
+Random.Uniform(i8s) : r8*
+*** Error: (15,18) Node: i8s, Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+Binder : [Error|CallVolatile] Random.Uniform(Error(ErrBadType_Src_Dst))
+###
+> Random.Uniform(r8, r8s) // Error.
+Random.Uniform(r8, r8s) : r8
+*** Error: (19,22) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(r8, Error(ErrBadType_Src_Dst))
+###
+> Random.Uniform(r8s, r8) // Error.
+Random.Uniform(r8s, r8) : r8
+*** Error: (15,18) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(Error(ErrBadType_Src_Dst), r8)
+###
+> Random.Uniform(r8, r8, i8s) // Error.
+Random.Uniform(r8, r8, i8s) : r8*
+*** Error: (23,26) Node: i8s, Message: Invalid operand type: cannot convert type 'i8*' to 'i8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(r8, r8, Error(ErrBadType_Src_Dst))
+###
+> Random.Uniform(r8, r8, r8) // Error.
+Random.Uniform(r8, r8, r8) : r8*
+*** Error: (23,25) Node: r8, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(r8, r8, Error(ErrBadType_Src_Dst))
+###
+> Random.Uniform(r8, r8s, i8) // Error.
+Random.Uniform(r8, r8s, i8) : r8*
+*** Error: (19,22) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(r8, Error(ErrBadType_Src_Dst), i8)
+###
+> Random.Uniform(r8s, r8, i8) // Error.
+Random.Uniform(r8s, r8, i8) : r8*
+*** Error: (15,18) Node: r8s, Message: Invalid operand type: cannot convert type 'r8*' to 'r8'
+Binder : [Error|Global|CallVolatile] Random.Uniform(Error(ErrBadType_Src_Dst), r8, i8)
+###

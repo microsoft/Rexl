@@ -1,0 +1,319 @@
+>>> *** Source:
+    "*** Loop for first Fib bigger than....";
+    // REVIEW: Optimize to avoid repeated binding and code gen.
+    P := (0, 1);
+    while (P[1] <= 1000)
+        P := (P[1], P[0] + P[1]);
+    P;
+    P := (0, 1);
+    while (P[1] <= 1000) {
+        P := (P[1], P[0] + P[1]);
+    }
+    P;
+    while (P[1] <= 1000) // Shouldn't loop at all.
+        P := (P[1], P[0] + P[1]);
+    P;
+    A := 0;
+    B := 1;
+    while (B <= 1000) {
+        // REVIEW: Would be nice for T to be "local".
+        T := A + B;
+        A := B;
+        B := T;
+    }
+    B;
+
+>>> *** Instructions:
+   0) [0] Expr "*** Loop for first Fib bigger than...."
+   1) [0] Define P <- (0, 1)
+   2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+   3) [0] Define P <- (P[1], P[0] + P[1])
+   4) [0] Jump 2 (0=>0)
+   5) [0] Expr P
+   6) [0] Define P <- (0, 1)
+   7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+   8) [0] Enter (0=>1)
+   9) [1] Define P <- (P[1], P[0] + P[1])
+  10) [1] Leave (1=>0)
+  11) [0] Jump 7 (0=>0)
+  12) [0] Expr P
+  13) [0] JumpIfNot 16 (0=>0) P[1] $<= 1000
+  14) [0] Define P <- (P[1], P[0] + P[1])
+  15) [0] Jump 13 (0=>0)
+  16) [0] Expr P
+  17) [0] Define A <- 0
+  18) [0] Define B <- 1
+  19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+  20) [0] Enter (0=>1)
+  21) [1] Define T <- A + B
+  22) [1] Define A <- B
+  23) [1] Define B <- T
+  24) [1] Leave (1=>0)
+  25) [0] Jump 19 (0=>0)
+  26) [0] Expr B
+  27) [0] End
+
+>    0) [0] Expr "*** Loop for first Fib bigger than...."
+*** Loop for first Fib bigger than....
+>    1) [0] Define P <- (0, 1)
+Global 'P' has DType: (i8, i8), SysType: (i8,i8)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    3) [0] Define P <- (P[1], P[0] + P[1])
+>    4) [0] Jump 2 (0=>0)
+>    2) [0] JumpIfNot 5 (0=>0) P[1] $<= 1000
+>    5) [0] Expr P
+(987, 1597)
+>    6) [0] Define P <- (0, 1)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>    8) [0] Enter (0=>1)
+>    9) [1] Define P <- (P[1], P[0] + P[1])
+>   10) [1] Leave (1=>0)
+>   11) [0] Jump 7 (0=>0)
+>    7) [0] JumpIfNot 12 (0=>0) P[1] $<= 1000
+>   12) [0] Expr P
+(987, 1597)
+>   13) [0] JumpIfNot 16 (0=>0) P[1] $<= 1000
+>   16) [0] Expr P
+(987, 1597)
+>   17) [0] Define A <- 0
+Global 'A' has DType: i8, SysType: i8
+>   18) [0] Define B <- 1
+Global 'B' has DType: i8, SysType: i8
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+Global 'T' has DType: i8, SysType: i8
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   20) [0] Enter (0=>1)
+>   21) [1] Define T <- A + B
+>   22) [1] Define A <- B
+>   23) [1] Define B <- T
+>   24) [1] Leave (1=>0)
+>   25) [0] Jump 19 (0=>0)
+>   19) [0] JumpIfNot 26 (0=>0) B $<= 1000
+>   26) [0] Expr B
+1597
+>   27) [0] End
+

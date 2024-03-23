@@ -1,0 +1,92 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+:: {r8:r8, qr8:r8?, r4:r4, qr4:r4?, i8:i8, qi8:i8?, s:s, b:b, qb:b?, v:v, o:o}
+
+"*** Vacuous and null (errors)."
+<# Gen("v", "v"); #>
+<# Gen("o", "o"); #>
+
+"*** For i8, b, strict treats null differently."
+<#
+foreach (var a in new[] {"i8", "3", "qi8", "Null(3)", "Opt(3)"}) {
+    foreach (var b in new[] {"i8", "5", "qi8", "Null(5)", "Opt(5)"}) {
+        Gen(a, b);
+    }
+}
+#>
+
+// REVIEW: Some of the below could reduce, using that false is the min and true is the max,
+// so b < false is false, b >= false is true, b <= true is true, and b > true is false.
+// Moreover, b >= true could reduce to just b.
+<#
+foreach (var a in new[] {"b", "false", "true", "qb", "Null(false)", "Opt(false)", "Opt(true)"}) {
+    foreach (var b in new[] {"b", "false", "true", "qb", "Null(false)", "Opt(false)", "Opt(true)"}) {
+        Gen(a, b);
+    }
+}
+#>
+
+"*** For r8 and r4, strict treats NaN and null differently. Reductions handle non-finites."
+<#
+foreach (var a in new[] {"r8", "3r8", "0/0", "1/0", "-1/0", "qr8", "Null(3r8)", "Opt(3r8)"}) {
+    foreach (var b in new[] {"r8", "5r8", "0/0", "1/0", "-1/0", "qr8", "Null(5r8)", "Opt(5r8)"}) {
+        Gen(a, b);
+    }
+}
+#>
+
+<#
+foreach (var a in new[] {"r4", "3r4", "CastR4(0/0)", "CastR4(1/0)", "CastR4(-1/0)", "qr4", "Null(3r4)", "Opt(3r4)"}) {
+    foreach (var b in new[] {"r4", "5r4", "CastR4(0/0)", "CastR4(1/0)", "CastR4(-1/0)", "qr4", "Null(5r4)", "Opt(5r4)"}) {
+        Gen(a, b);
+    }
+}
+#>
+
+"*** For text, strict treats null differently."
+<#
+foreach (var a in new[] {"s", "\"\"", "\"AA\"", "\"aA\"", "\"Aa\"", "\"BB\"", "Null(\"\")"}) {
+    foreach (var b in new[] {"s", "\"\"", "\"AA\"", "\"aA\"", "\"Aa\"", "\"BB\"", "Null(\"\")"}) {
+        GenText(a, b);
+    }
+}
+#>
+
+<#+
+string[] roots = new[] { "= ", "< ", "<=", "> ", ">="};
+string[] nots = new[] {" ", "!"};
+
+void Gen(string a, string b)
+{
+    foreach (var not in nots) {
+        foreach (var root in roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+#>
+(<#=a#> <#=op#> <#=b#>, <#=a#> <#=sop#> <#=b#>)
+<#+
+        }
+    }
+}
+
+void GenText(string a, string b)
+{
+    foreach (var not in nots) {
+        foreach (var root in roots) {
+            var op = not + "@" + root;
+            var sop = not + "$" + root;
+            var cop = not + "~@" + root;
+            var scop = not + "~$" + root;
+#>
+(<#=a#> <#=op#> <#=b#>, <#=a#> <#=cop#> <#=b#>, <#=a#> <#=sop#> <#=b#>, <#=a#> <#=scop#> <#=b#>)
+<#+
+        }
+    }
+}
+#>

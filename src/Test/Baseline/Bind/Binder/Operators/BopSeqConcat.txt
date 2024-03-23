@@ -1,0 +1,127 @@
+**** New globals: {i4:i4, i8:i8, si4:i4*, si8:i8*}
+
+> [0,-3,5] ++ [1,2,3]
+[0, -3, 5] ++ [1, 2, 3] : i8*
+Binder : SeqConcat([0, -3, 5], [1, 2, 3])
+###
+> [0,-3,5] ++ []
+[0, -3, 5] ++ [] : i8*
+Binder : SeqConcat([0, -3, 5], null)
+Reducer: [0, -3, 5]
+###
+> [] ++ [1,2,3]
+[] ++ [1, 2, 3] : i8*
+Binder : SeqConcat(null, [1, 2, 3])
+Reducer: [1, 2, 3]
+###
+> i4 ++ [1,2,3]
+i4 ++ [1, 2, 3] : i8*
+*** Error: (0,2) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 'i8*'
+Binder : SeqConcat(Error(ErrBadType_Src_Dst), [1, 2, 3])
+###
+> [1,2,3] ++ i4
+[1, 2, 3] ++ i4 : i8*
+*** Error: (11,13) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 'i8*'
+Binder : SeqConcat([1, 2, 3], Error(ErrBadType_Src_Dst))
+###
+> i4 ++ []
+i4 ++ [] : i4*
+*** Error: (0,2) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 'i4*'
+Binder : SeqConcat(Error(ErrBadType_Src_Dst), null)
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> [] ++ i4
+[] ++ i4 : i4*
+*** Error: (6,8) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to 'i4*'
+Binder : SeqConcat(null, Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> [i4] ++ [1,2,3]
+[i4] ++ [1, 2, 3] : i8*
+Binder : SeqConcat([Num<i8>(i4)], [1, 2, 3])
+###
+> [1,2,3] ++ [i4]
+[1, 2, 3] ++ [i4] : i8*
+Binder : SeqConcat([1, 2, 3], [Num<i8>(i4)])
+###
+> [i4] ++ []
+[i4] ++ [] : i4*
+Binder : SeqConcat([i4], null)
+Reducer: [i4]
+###
+> [] ++ [i4]
+[] ++ [i4] : i4*
+Binder : SeqConcat(null, [i4])
+Reducer: [i4]
+###
+> si4 ++ [1,2,3]
+si4 ++ [1, 2, 3] : i8*
+Binder : SeqConcat(ForEach(*1: si4, Num<i8>(*1)), [1, 2, 3])
+###
+> [1,2,3] ++ si4
+[1, 2, 3] ++ si4 : i8*
+Binder : SeqConcat([1, 2, 3], ForEach(*1: si4, Num<i8>(*1)))
+###
+> si4 ++ []
+si4 ++ [] : i4*
+Binder : SeqConcat(si4, null)
+Reducer: si4
+###
+> [] ++ si4
+[] ++ si4 : i4*
+Binder : SeqConcat(null, si4)
+Reducer: si4
+###
+> si8 ++ [1,2,3]
+si8 ++ [1, 2, 3] : i8*
+Binder : SeqConcat(si8, [1, 2, 3])
+###
+> [1,2,3] ++ si8
+[1, 2, 3] ++ si8 : i8*
+Binder : SeqConcat([1, 2, 3], si8)
+###
+> si8 ++ []
+si8 ++ [] : i8*
+Binder : SeqConcat(si8, null)
+Reducer: si8
+###
+> [] ++ si8
+[] ++ si8 : i8*
+Binder : SeqConcat(null, si8)
+Reducer: si8
+###
+> si4 ++ si4 ++ null ++ si4 ++ [] ++ si4
+si4 ++ si4 ++ null ++ si4 ++ [] ++ si4 : i4*
+Binder : SeqConcat(si4, si4, null, si4, null, si4)
+Reducer: SeqConcat(si4, si4, si4, si4)
+###
+> si4 ++ si4 ++ null ++ si8 ++ [] ++ si4
+si4 ++ si4 ++ null ++ si8 ++ [] ++ si4 : i8*
+Binder : SeqConcat(ForEach(*1: si4, Num<i8>(*1)), ForEach(*2: si4, Num<i8>(*2)), null, si8, null, ForEach(*3: si4, Num<i8>(*3)))
+Reducer: SeqConcat(ForEach(*1: si4, Num<i8>(*1)), ForEach(*2: si4, Num<i8>(*2)), si8, ForEach(*3: si4, Num<i8>(*3)))
+###
+> null ++ null
+null ++ null : v*
+Binder : SeqConcat(null, null)
+Reducer: null
+###
+> null ++ [] ++ null
+null ++ [] ++ null : v*
+Binder : SeqConcat(null, null, null)
+Reducer: null
+###
+> [] ++ null ++ []
+[] ++ null ++ [] : v*
+Binder : SeqConcat(null, null, null)
+Reducer: null
+###
+> null ++ ([] if true else [1])
+null ++ ([] if true else [1]) : i8*
+Binder : SeqConcat(null, If(true, null, [1]))
+Reducer: null
+###
+> ([] if true else [1]) ++ null
+([] if true else [1]) ++ null : i8*
+Binder : SeqConcat(If(true, null, [1]), null)
+Reducer: null
+###

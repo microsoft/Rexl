@@ -1,0 +1,164 @@
+**** New udf: N.F, arity: 1
+**** New udf: N.P.G, arity: 1
+**** New udf: N.H, arity: 2
+**** New udf: N.P.I, arity: 1
+**** New udf: N.Q.J, arity: 1
+**** New globals: {i4:i4, i8:i8, r8:r8}
+**** Changed namespace to: Other
+
+> N.H(i4, i8)
+N.H(i4, i8) : (i8, i8)
+Binder : With(!1: i4, !2: i8, (With(!3: !1, Mul(Num<i8>(!3), Num<i8>(!3))), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(i8, i8), i8))
+###
+> N.H(i8, r8)
+N.H(i8, r8) : (i8, r8)
+Binder : With(!1: i8, !2: r8, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(i8, i8), Add(Mul(r8, r8), r8))
+###
+> N.H(3, 7)
+N.H(3, 7) : (i8, i8)
+Binder : With(!1: 3, !2: 7, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (9, 56)
+###
+> N.P.I(i4)
+N.P.I(i4) : (i8, (i8, i8))
+Binder : With(!1: i4, (With(!2: !1, Add(With(!3: !2, Mul(Num<i8>(!3), Num<i8>(!3))), Num<i8>(!2))), With(!4: !1, !5: Mul(Num<i8>(!1), Num<i8>(!1)), (With(!6: !4, Mul(Num<i8>(!6), Num<i8>(!6))), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(Num<i8>(i4), Num<i8>(i4)), (Add(Mul(Num<i8>(i4), Num<i8>(i4)), Num<i8>(i4)), (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(!1, !1), !1))))
+###
+> N.P.I(i8)
+N.P.I(i8) : (i8, (i8, i8))
+Binder : With(!1: i8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(i8, i8), (Add(Mul(i8, i8), i8), (Mul(i8, i8), Add(Mul(!1, !1), !1))))
+###
+> N.P.I(r8)
+N.P.I(r8) : (r8, (r8, r8))
+Binder : With(!1: r8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(r8, r8), (Add(Mul(r8, r8), r8), (Mul(r8, r8), Add(Mul(!1, !1), !1))))
+###
+> N.P.I(17)
+N.P.I(17) : (i8, (i8, i8))
+Binder : With(!1: 17, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: (306, (289, 83810))
+###
+> N.Q.J(i4)
+N.Q.J(i4) : ((i8, (i8, i8)), i8)
+Binder : With(!1: i4, (With(!2: !1, (With(!3: !2, Add(With(!4: !3, Mul(Num<i8>(!4), Num<i8>(!4))), Num<i8>(!3))), With(!5: !2, !6: Mul(Num<i8>(!2), Num<i8>(!2)), (With(!7: !5, Mul(Num<i8>(!7), Num<i8>(!7))), With(!8: !6, Add(With(!9: !8, Mul(!9, !9)), !8)))))), With(!10: !1, Mul(Num<i8>(!10), Num<i8>(!10)))))
+Reducer: With(!1: Mul(Num<i8>(i4), Num<i8>(i4)), ((Add(Mul(Num<i8>(i4), Num<i8>(i4)), Num<i8>(i4)), (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(!1, !1), !1))), Mul(Num<i8>(i4), Num<i8>(i4))))
+###
+> N.Q.J(i8)
+N.Q.J(i8) : ((i8, (i8, i8)), i8)
+Binder : With(!1: i8, (With(!2: !1, (With(!3: !2, Add(With(!4: !3, Mul(!4, !4)), !3)), With(!5: !2, !6: Mul(!2, !2), (With(!7: !5, Mul(!7, !7)), With(!8: !6, Add(With(!9: !8, Mul(!9, !9)), !8)))))), With(!10: !1, Mul(!10, !10))))
+Reducer: With(!1: Mul(i8, i8), ((Add(Mul(i8, i8), i8), (Mul(i8, i8), Add(Mul(!1, !1), !1))), Mul(i8, i8)))
+###
+> N.Q.J(r8)
+N.Q.J(r8) : ((r8, (r8, r8)), r8)
+Binder : With(!1: r8, (With(!2: !1, (With(!3: !2, Add(With(!4: !3, Mul(!4, !4)), !3)), With(!5: !2, !6: Mul(!2, !2), (With(!7: !5, Mul(!7, !7)), With(!8: !6, Add(With(!9: !8, Mul(!9, !9)), !8)))))), With(!10: !1, Mul(!10, !10))))
+Reducer: With(!1: Mul(r8, r8), ((Add(Mul(r8, r8), r8), (Mul(r8, r8), Add(Mul(!1, !1), !1))), Mul(r8, r8)))
+###
+> N.Q.J(17)
+N.Q.J(17) : ((i8, (i8, i8)), i8)
+Binder : With(!1: 17, (With(!2: !1, (With(!3: !2, Add(With(!4: !3, Mul(!4, !4)), !3)), With(!5: !2, !6: Mul(!2, !2), (With(!7: !5, Mul(!7, !7)), With(!8: !6, Add(With(!9: !8, Mul(!9, !9)), !8)))))), With(!10: !1, Mul(!10, !10))))
+Reducer: ((306, (289, 83810)), 289)
+###
+> H(i8, r8)
+H(i8, r8) : v
+*** Error: (1,2) Node: H(i8, r8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i8, r8)
+###
+> P.I(i8)
+P.I(i8) : v
+*** Error: (3,4) Node: P.I(i8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i8)
+###
+> I(i8)
+I(i8) : v
+*** Error: (1,2) Node: I(i8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i8)
+###
+
+**** Changed namespace to: N
+
+> H(i4, i8)
+H(i4, i8) : (i8, i8)
+Binder : With(!1: i4, !2: i8, (With(!3: !1, Mul(Num<i8>(!3), Num<i8>(!3))), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(i8, i8), i8))
+###
+> H(i8, r8)
+H(i8, r8) : (i8, r8)
+Binder : With(!1: i8, !2: r8, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(i8, i8), Add(Mul(r8, r8), r8))
+###
+> H(3, 7)
+H(3, 7) : (i8, i8)
+Binder : With(!1: 3, !2: 7, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (9, 56)
+###
+> P.I(i4)
+P.I(i4) : (i8, (i8, i8))
+Binder : With(!1: i4, (With(!2: !1, Add(With(!3: !2, Mul(Num<i8>(!3), Num<i8>(!3))), Num<i8>(!2))), With(!4: !1, !5: Mul(Num<i8>(!1), Num<i8>(!1)), (With(!6: !4, Mul(Num<i8>(!6), Num<i8>(!6))), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(Num<i8>(i4), Num<i8>(i4)), (Add(Mul(Num<i8>(i4), Num<i8>(i4)), Num<i8>(i4)), (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(!1, !1), !1))))
+###
+> P.I(i8)
+P.I(i8) : (i8, (i8, i8))
+Binder : With(!1: i8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(i8, i8), (Add(Mul(i8, i8), i8), (Mul(i8, i8), Add(Mul(!1, !1), !1))))
+###
+> P.I(r8)
+P.I(r8) : (r8, (r8, r8))
+Binder : With(!1: r8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(r8, r8), (Add(Mul(r8, r8), r8), (Mul(r8, r8), Add(Mul(!1, !1), !1))))
+###
+> P.I(17)
+P.I(17) : (i8, (i8, i8))
+Binder : With(!1: 17, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: (306, (289, 83810))
+###
+> I(i8)
+I(i8) : v
+*** Error: (1,2) Node: I(i8), Message: Invocation of unknown or unsupported function
+Binder : __err__.Unknown(i8)
+###
+
+**** Changed namespace to: N.P
+
+> H(i4, i8)
+H(i4, i8) : (i8, i8)
+Binder : With(!1: i4, !2: i8, (With(!3: !1, Mul(Num<i8>(!3), Num<i8>(!3))), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(i8, i8), i8))
+###
+> H(i8, r8)
+H(i8, r8) : (i8, r8)
+Binder : With(!1: i8, !2: r8, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (Mul(i8, i8), Add(Mul(r8, r8), r8))
+###
+> H(3, 7)
+H(3, 7) : (i8, i8)
+Binder : With(!1: 3, !2: 7, (With(!3: !1, Mul(!3, !3)), With(!4: !2, Add(With(!5: !4, Mul(!5, !5)), !4))))
+Reducer: (9, 56)
+###
+> P.I(i4)
+P.I(i4) : (i8, (i8, i8))
+Binder : With(!1: i4, (With(!2: !1, Add(With(!3: !2, Mul(Num<i8>(!3), Num<i8>(!3))), Num<i8>(!2))), With(!4: !1, !5: Mul(Num<i8>(!1), Num<i8>(!1)), (With(!6: !4, Mul(Num<i8>(!6), Num<i8>(!6))), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(Num<i8>(i4), Num<i8>(i4)), (Add(Mul(Num<i8>(i4), Num<i8>(i4)), Num<i8>(i4)), (Mul(Num<i8>(i4), Num<i8>(i4)), Add(Mul(!1, !1), !1))))
+###
+> P.I(i8)
+P.I(i8) : (i8, (i8, i8))
+Binder : With(!1: i8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(i8, i8), (Add(Mul(i8, i8), i8), (Mul(i8, i8), Add(Mul(!1, !1), !1))))
+###
+> P.I(r8)
+P.I(r8) : (r8, (r8, r8))
+Binder : With(!1: r8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(r8, r8), (Add(Mul(r8, r8), r8), (Mul(r8, r8), Add(Mul(!1, !1), !1))))
+###
+> P.I(17)
+P.I(17) : (i8, (i8, i8))
+Binder : With(!1: 17, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: (306, (289, 83810))
+###
+> I(i8)
+I(i8) : (i8, (i8, i8))
+Binder : With(!1: i8, (With(!2: !1, Add(With(!3: !2, Mul(!3, !3)), !2)), With(!4: !1, !5: Mul(!1, !1), (With(!6: !4, Mul(!6, !6)), With(!7: !5, Add(With(!8: !7, Mul(!8, !8)), !7))))))
+Reducer: With(!1: Mul(i8, i8), (Add(Mul(i8, i8), i8), (Mul(i8, i8), Add(Mul(!1, !1), !1))))
+###

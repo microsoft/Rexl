@@ -1,0 +1,158 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Collections.Generic;
+
+using Microsoft.Rexl.Private;
+
+// Disable this warning, since that's how we test for NaN.
+#pragma warning disable CS1718 // Comparison made to same variable
+
+namespace Microsoft.Rexl.Code;
+
+using Integer = System.Numerics.BigInteger;
+
+// REVIEW: Consider returning early for all Min functions without count where the min is 0 (unsigned types).
+partial class MinMaxGen
+{
+<#
+var types = new string[]
+{
+    "double",
+    "float",
+    "long",
+    "ulong",
+    "int",
+    "uint",
+    "short",
+    "ushort",
+    "sbyte",
+    "byte",
+    "Integer",
+    "bool"
+};
+
+var funcs = new string[]
+{
+    "MinMax",
+    "Min",
+    "Max"
+};
+
+var bools = new[] { false, true };
+
+const int Simple = 0;
+const int Selector = 1;
+const int Indexed = 2;
+#>
+
+<#  var move = "ctx.Ping(id); if (!e.MoveNext()) goto LDone;";#>
+<#  foreach (var kind in new[] { Simple, Selector, Indexed }) {#>
+<#      var reg = kind == Simple ? "Simple" : kind == Selector ? "Selector" : "Indexed";#>
+    #region <#=reg#>
+<#      foreach (var opt in bools) {#>
+    #region <#=opt ? "Opt" : "Req"#>
+<#          foreach (var type in types) {#>
+    #region <#=type#>
+<#              var rx = type == "double" || type == "float";#>
+<#              string typeItem = !opt ? type : type + "?";#>
+<#              string minTest = type == "bool" ? "!val" : "!(min <= val)";#>
+<#              string maxTest = type == "bool" ? "val" : "!(max >= val)";#>
+<#              if (rx) {#>
+<#                  minTest = minTest + " && min == min";#>
+<#                  maxTest = maxTest + " && max == max";#>
+<#              }#>
+<#              string aggMin = "if (" + minTest + ") min = val;";#>
+<#              string aggMax = "if (" + maxTest + ") max = val;";#>
+<#              foreach (var func in funcs) {#>
+<#                  bool needMin = func != "Max";#>
+<#                  bool needMax = func != "Min";#>
+<#                  foreach (var needCount in new[] { true, false }) {#>
+<#                      bool isInd = kind == Indexed;#>
+<#                      bool needIdx = isInd && (!needCount || opt);#>
+<#                      string inv = kind == Simple ? "e.Current" : kind == Selector ? "fn(e.Current)" : needIdx ? "fn(idx++, e.Current)" : "fn(count, e.Current)";#>
+<#                      string first = !opt ? "var val = " + inv + ";" : "var raw = " + inv + "; if (raw == null) goto LFirst; var val = raw.GetValueOrDefault();";#>
+<#                      string cur = !opt ? "val = " + inv + ";" : "raw = " + inv + "; if (raw == null) goto LNext; val = raw.GetValueOrDefault();";#>
+<#                      string funcName = isInd ? func + "Ind" : func;#>
+<#                      string init = type + (needMin ? needMax ? " min = default, max = default;" : " min = default;" : " max = default;");#>
+<#                      if (needCount) init += " long count = 0;";#>
+<#                      if (needIdx) init += " long idx = 0;";#>
+<#                      string retType;#>
+<#                      bool needOuts;#>
+<#                      if (needCount) {#>
+<#                          funcName += "C";#>
+<#                          retType = "long";#>
+<#                          needOuts = true;#>
+<#                      } else {#>
+<#                          if (type == "bool") continue;#>
+<#                          needOuts = needMin && needMax;#>
+<#                          retType = needOuts ? "void" : type;#>
+<#                      }#>
+<#                      string outParams = "";#>
+<#                      if (needOuts && needMin) outParams += ", out " + type + " a";#>
+<#                      if (needOuts && needMax) outParams += ", out " + type + " b";#>
+<#                      if (kind == Simple) {#>
+    public static <#= retType #> Exec<#= funcName #>(IEnumerable<<#=typeItem#>> items, ExecCtx ctx, int id<#= outParams #>)
+<#                      } else if (kind == Selector) {#>
+    public static <#= retType #> Exec<#= funcName #><T>(IEnumerable<T> items, Func<T, <#=typeItem#>> fn, ExecCtx ctx, int id<#= outParams #>)
+<#                      } else { System.Diagnostics.Debug.Assert(kind == Indexed);#>
+    public static <#= retType #> Exec<#= funcName #><T>(IEnumerable<T> items, Func<long, T, <#=typeItem#>> fn, ExecCtx ctx, int id<#= outParams #>)
+<#                      }#>
+    {
+        Validation.AssertValue(ctx);
+        <#=init#>
+        if (items != null)
+        {
+            using var e = items.GetEnumerator();
+<#                      if (opt) {#>
+        LFirst:
+<#                      }#>
+            <#=move#>
+            <#=first#>
+            <#=func != "Max" ? "min = " : ""#><#=func != "Min" ? "max = " : ""#>val;
+<#                      if (needCount) {#>
+            count++;
+<#                      }#>
+        LNext:
+            <#=move#>
+            <#=cur#>
+<#                      if (needMin) {#>
+            <#=aggMin#>
+<#                      } if (needMax) {#>
+            <#=aggMax#>
+<#                      } if (needCount) {#>
+            count++;
+<#                      }#>
+            goto LNext;
+        }
+    LDone:
+<#                      if (needCount || needMin && needMax) {#>
+<#                          if (needMin)#>
+        a = min;
+<#                          if (needMax) {#>
+        b = max;
+<#                          } if (needCount) {#>
+        return count;
+<#                          }#>
+<#                      } else {#>
+        return <#= func == "Min" ? "min" : "max" #>;
+<#                      } #>
+    }
+<#                  }#>
+<#              }#>
+    #endregion <#=type#>
+<#          }#>
+    #endregion <#=opt ? "Opt" : "Req"#>
+<#      }#>
+    #endregion <#=reg#>
+<#  }#>
+}

@@ -1,0 +1,134 @@
+**** New globals: {b:b, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> 2d^127 | CastR4(_)
+2^127 | CastR4(_) : r4
+Binder : CastR4(Power(2, 127))
+Reducer: 1.7014118346046923E+38
+###
+> 2d^128 | CastR4(_) // Overflow, no warning.
+2^128 | CastR4(_) : r4
+Binder : CastR4(Power(2, 128))
+Reducer: ∞
+###
+> 2d^1023
+2^1023 : r8
+Binder : Power(2, 1023)
+Reducer: 8.98846567431158E+307
+###
+> 2d^1024 // Overflow, no warning.
+2^1024 : r8
+Binder : Power(2, 1024)
+Reducer: ∞
+###
+> 2d^-149 | CastR4(_)
+2^-149 | CastR4(_) : r4
+Binder : CastR4(Power(2, -149))
+Reducer: 1.401298464324817E-45
+###
+> 2d^-149 / 2 | CastR4(_) // Underflow, no warning.
+2^-149 / 2 | CastR4(_) : r4
+Binder : CastR4(Mul(Power(2, -149), [/] 2))
+Reducer: 0
+###
+> 2d^-1074
+2^-1074 : r8
+Binder : Power(2, -1074)
+Reducer: 5E-324
+###
+> 2d^-1074 / 2 // Underflow, no warning.
+2^-1074 / 2 : r8
+Binder : Mul(Power(2, -1074), [/] 2)
+Reducer: 0
+###
+> (1ia shl 127)
+1 shl 127 : i
+Binder : Shl(1, 127)
+Reducer: 170141183460469231731687303715884105728
+###
+> (1ia shl 127) | CastR4(_)
+1 shl 127 | CastR4(_) : r4
+Binder : CastR4*(Shl(1, 127))
+Reducer: 1.7014118346046923E+38
+###
+> (1ia shl 127) * 2d | CastR4(_) // Overflow, no warning.
+(1 shl 127) * 2 | CastR4(_) : r4
+Binder : CastR4(Mul(Num<r8>(Shl(1, 127)), 2))
+Reducer: ∞
+###
+> (1ia shl 128)
+1 shl 128 : i
+Binder : Shl(1, 128)
+Reducer: 340282366920938463463374607431768211456
+###
+> (1ia shl 128) | CastR4(_) // Overflow, no warning.
+1 shl 128 | CastR4(_) : r4
+Binder : CastR4*(Shl(1, 128))
+Reducer: ∞
+###
+> (1ia shl 1023)
+1 shl 1023 : i
+Binder : Shl(1, 1023)
+Reducer: 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608
+###
+> (1ia shl 1023) | CastR8(_)
+1 shl 1023 | CastR8(_) : r8
+Binder : CastR8*(Shl(1, 1023))
+Reducer: 8.98846567431158E+307
+###
+> (1ia shl 1023) * 1d
+(1 shl 1023) * 1 : r8
+Binder : Mul(Num<r8>(Shl(1, 1023)), 1)
+Reducer: 8.98846567431158E+307
+###
+> (1ia shl 1023) * r8
+(1 shl 1023) * r8 : r8
+Binder : Mul(Num<r8>(Shl(1, 1023)), r8)
+Reducer: Mul(8.98846567431158E+307, r8)
+###
+> (1ia shl 1023) | CastR4(_) // Overflow, no warning.
+1 shl 1023 | CastR4(_) : r4
+Binder : CastR4*(Shl(1, 1023))
+Reducer: ∞
+###
+> (1ia shl 1023) * 1d | CastR4(_) // Overflow, no warning.
+(1 shl 1023) * 1 | CastR4(_) : r4
+Binder : CastR4(Mul(Num<r8>(Shl(1, 1023)), 1))
+Reducer: ∞
+###
+> (1ia shl 1023) * 2d // Overflow, no warning.
+(1 shl 1023) * 2 : r8
+Binder : Mul(Num<r8>(Shl(1, 1023)), 2)
+Reducer: ∞
+###
+> (1ia shl 1023) * 2d * r8 // Overflow, no warning.
+(1 shl 1023) * 2 * r8 : r8
+Binder : Mul(Num<r8>(Shl(1, 1023)), 2, r8)
+Reducer: Mul(∞, r8)
+###
+> (1ia shl 1023) * 2 * r8 // Overflow, WITH warning.
+(1 shl 1023) * 2 * r8 : r8
+Binder : Mul(Num<r8>(Mul(Shl(1, 1023), 2)), r8)
+*** Warning: Node: 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216, Message: Constant floating point overflow to infinity
+Reducer: Mul(∞, r8)
+###
+> (1ia shl 1024)
+1 shl 1024 : i
+Binder : Shl(1, 1024)
+Reducer: 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216
+###
+> (1ia shl 1024) | CastR8(_) // Overflow, no warning.
+1 shl 1024 | CastR8(_) : r8
+Binder : CastR8*(Shl(1, 1024))
+Reducer: ∞
+###
+> (1ia shl 1024) | CastR4(_) // Overflow, no warning.
+1 shl 1024 | CastR4(_) : r4
+Binder : CastR4*(Shl(1, 1024))
+Reducer: ∞
+###
+> (1ia shl 1024) * r8 // Overflow, WITH warning.
+(1 shl 1024) * r8 : r8
+Binder : Mul(Num<r8>(Shl(1, 1024)), r8)
+*** Warning: Node: 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216, Message: Constant floating point overflow to infinity
+Reducer: Mul(∞, r8)
+###

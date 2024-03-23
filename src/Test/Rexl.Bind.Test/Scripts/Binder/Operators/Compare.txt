@@ -1,0 +1,296 @@
+:: {g:g, o:o, s:s, b:b, qb:b?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1? }
+
+// Warning.
+3    !~= 5
+3    ~!= 5
+3 not ~= 5
+3  ~not= 5
+
+// Error.
+3 ==    5 
+3  <>   5 
+3 !<>   5 
+3 !     5 
+3 !~    5 
+3 ~ not 5 
+3 not ~ 5 
+3 ~!    5 
+3 !!    5 
+3 ! not 5 
+3 ! ~ ~ not =  7
+3 ! ~ ~ not <  7
+3 ! ~ ~ not >  7
+3 ! ~ ~ not <= 7
+3 ! ~ ~ not >= 7
+3 ! ~ ~ not 7
+3 ! ~ not ~ 7
+3 ! not ~ ~ 7
+3 not ! ! ~ 7
+3 !   ~ ~ ! 7
+3 ~ ~ not ~ 7
+3 ~ ~ ~ not 7
+3 ~ ~ ~ ~   7
+3 ! ! ! not 7
+
+// Time.
+CastTime()  = CastTime()
+CastTime() <  CastTime()
+CastTime() <= CastTime()
+CastTime() >  CastTime()
+CastTime() >= CastTime()
+
+// Guid.
+CastGuid()  = CastGuid()
+CastGuid() <  CastGuid()
+CastGuid() <= CastGuid()
+CastGuid() >  CastGuid()
+CastGuid() >= CastGuid()
+
+// Tuples.
+:: {  t1:(i8,s,b) ,  t2:(i4,s,i2) ,  t3:(r8,s,u1) ,  t4:(i8?,s,b) ,  tb:(i8,s,b*) ,  tx:(i8,b,b)  }
+::+{ qt1:(i8,s,b)?, qt2:(i4,s,i2)?, qt3:(r8,s,u1)?, qt4:(i8?,s,b)?, qtb:(i8,s,b*)?, qtx:(i8,b,b)? }
+
+t1  = t1
+t1  = t2
+t1  = t3
+t1  = t4
+t2  = t1
+t3  = t1
+t4  = t1
+t1 != t1
+t1 != t2
+t1 != t3
+t1 != t4
+t2 != t1
+t3 != t1
+t4 != t1
+
+qt1  = t1
+qt1  = t2
+qt1  = t3
+qt1  = t4
+qt2  = t1
+qt3  = t1
+qt4  = t1
+qt1 != t1
+qt1 != t2
+qt1 != t3
+qt1 != t4
+qt2 != t1
+qt3 != t1
+qt4 != t1
+
+t1  = qt1
+t1  = qt2
+t1  = qt3
+t1  = qt4
+t2  = qt1
+t3  = qt1
+t4  = qt1
+t1 != qt1
+t1 != qt2
+t1 != qt3
+t1 != qt4
+t2 != qt1
+t3 != qt1
+t4 != qt1
+
+qt1  = qt1
+qt1  = qt2
+qt1  = qt3
+qt1  = qt4
+qt2  = qt1
+qt3  = qt1
+qt4  = qt1
+qt1 != qt1
+qt1 != qt2
+qt1 != qt3
+qt1 != qt4
+qt2 != qt1
+qt3 != qt1
+qt4 != qt1
+
+t1   = t1
+t1  ~= t1
+t1 ! = t1
+t1 !~= t1
+tx   = tx
+tx  ~= tx
+tx ! = tx
+tx !~= tx
+
+qt1   = t1
+qt1  ~= t1
+qt1 ! = t1
+qt1 !~= t1
+qtx   = tx
+qtx  ~= tx
+qtx ! = tx
+qtx !~= tx
+
+t1   = qt1
+t1  ~= qt1
+t1 ! = qt1
+t1 !~= qt1
+tx   = qtx
+tx  ~= qtx
+tx ! = qtx
+tx !~= qtx
+
+qt1   = qt1
+qt1  ~= qt1
+qt1 ! = qt1
+qt1 !~= qt1
+qtx   = qtx
+qtx  ~= qtx
+qtx ! = qtx
+qtx !~= qtx
+
+// Errors.
+t1  = tx
+tx  = t1
+t1  = tb
+tb  = tb
+t1 != tx
+tx != t1
+t1 != tb
+tb != tb
+
+t1  < t1
+
+// Records.
+:: {  r1:{A:i8,B:s,C:b} ,  r2:{A:i4,B:s,C:i2} ,  r3:{A:r8,B:s,C:u1} ,  r4:{A:i8?,B:s,C:b} ,  rb:{A:i8,B:s,C:b*} ,  rx:{A:i8,B:b,C:b}  }
+::+{ qr1:{A:i8,B:s,C:b}?, qr2:{A:i4,B:s,C:i2}?, qr3:{A:r8,B:s,C:u1}?, qr4:{A:i8?,B:s,C:b}?, qrb:{A:i8,B:s,C:b*}?, qrx:{A:i8,B:b,C:b}? }
+
+r1  = r1
+r1  = r2
+r1  = r3
+r1  = r4
+r2  = r1
+r3  = r1
+r4  = r1
+r1 != r1
+r1 != r2
+r1 != r3
+r1 != r4
+r2 != r1
+r3 != r1
+r4 != r1
+
+qr1  = r1
+qr1  = r2
+qr1  = r3
+qr1  = r4
+qr2  = r1
+qr3  = r1
+qr4  = r1
+qr1 != r1
+qr1 != r2
+qr1 != r3
+qr1 != r4
+qr2 != r1
+qr3 != r1
+qr4 != r1
+
+r1  = qr1
+r1  = qr2
+r1  = qr3
+r1  = qr4
+r2  = qr1
+r3  = qr1
+r4  = qr1
+r1 != qr1
+r1 != qr2
+r1 != qr3
+r1 != qr4
+r2 != qr1
+r3 != qr1
+r4 != qr1
+
+qr1  = qr1
+qr1  = qr2
+qr1  = qr3
+qr1  = qr4
+qr2  = qr1
+qr3  = qr1
+qr4  = qr1
+qr1 != qr1
+qr1 != qr2
+qr1 != qr3
+qr1 != qr4
+qr2 != qr1
+qr3 != qr1
+qr4 != qr1
+
+r1   = r1
+r1  ~= r1
+r1 ! = r1
+r1 !~= r1
+rx   = rx
+rx  ~= rx
+rx ! = rx
+rx !~= rx
+
+qr1   = r1
+qr1  ~= r1
+qr1 ! = r1
+qr1 !~= r1
+qrx   = rx
+qrx  ~= rx
+qrx ! = rx
+qrx !~= rx
+
+r1   = qr1
+r1  ~= qr1
+r1 ! = qr1
+r1 !~= qr1
+rx   = qrx
+rx  ~= qrx
+rx ! = qrx
+rx !~= qrx
+
+qr1   = qr1
+qr1  ~= qr1
+qr1 ! = qr1
+qr1 !~= qr1
+qrx   = qrx
+qrx  ~= qrx
+qrx ! = qrx
+qrx !~= qrx
+
+// Errors.
+r1  = rx
+rx  = r1
+r1  = rb
+rb  = rb
+r1 != rx
+rx != r1
+r1 != rb
+rb != rb
+
+r1  < r1
+
+// Uris.
+:: { i:U<Image>, d:U<Document>, v:U<Video>, r:U<Text.Rexl>, n:o }
+
+i  = i
+i  = n
+i  = d
+i  = v
+i  = r
+i != i
+i != n
+i != d
+i != v
+i != r
+
+i  = i
+n  = i
+d  = i
+v  = i
+r  = i
+i != i
+n != i
+d != i
+v != i
+r != i

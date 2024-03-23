@@ -1,0 +1,31 @@
+﻿:: { T:i8[3], QT:i8[3]?, U:r8[5], QU:r8[5]?, S:i8*, b:b }
+
+T->Tensor.ForEach(it * 1)
+T->Tensor.ForEach(it^2)
+T->Tensor.ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(as a, T as b, T as c, a * b * c)
+T->Tensor.ForEach(as a, T as b, T as c, T as d, a * b * c * d)
+T->Tensor.ForEach(as a, U as b, T as c, U as d, a * b * c * d)
+
+QT->Tensor.ForEach(it * 1)
+QT->Tensor.ForEach(it^2)
+QT->Tensor.ForEach(as a, QT as b, a * b)
+QT->Tensor.ForEach(as a, QT as b, QT as c, a * b * c)
+QT->Tensor.ForEach(as a, QT as b, QT as c, QT as d, a * b * c * d)
+QT->Tensor.ForEach(as a, QU as b, QT as c, QU as d, a * b * c * d)
+
+T->Tensor.ForEach(as a, U as b, a * b)
+
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2)
+
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, T as b, a * b)
+
+(Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3)
+
+// Error cases.
+Tensor.ForEach()
+Tensor.ForEach(5)
+Tensor.ForEach(3, 5)
+Tensor.ForEach(Range(10), it * 5)

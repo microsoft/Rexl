@@ -1,0 +1,1155 @@
+**** New definitions: T, type: i8[*]
+**** New definitions: QT, type: i8[*]?
+**** New definitions: U, type: i8[*]
+**** New definitions: QU, type: i8[*]?
+**** New definitions: S, type: i8*
+**** New definitions: b, type: b
+
+> T->Tensor.ForEach(it * 1)
+T->Tensor.ForEach(it * 1) : i8[*]
+BndKind:Global, Type:i8[*], Bnd:(Global(T))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [2, 3, 4]
+###
+> T->Tensor.ForEach(it^2)
+T->Tensor.ForEach(it^2) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Power(Scope(1), 2:i8)):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [4, 9, 16]
+###
+> T->Tensor.ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(as a, b : T, a * b) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Mul(Scope(1), Scope(1))):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [4, 9, 16]
+###
+> T->Tensor.ForEach(as a, T as b, T as c, a * b * c)
+T->Tensor.ForEach(as a, b : T, c : T, a * b * c) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Mul(Scope(1), Scope(1), Scope(1))):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [8, 27, 64]
+###
+> T->Tensor.ForEach(as a, T as b, T as c, T as d, a * b * c * d)
+T->Tensor.ForEach(as a, b : T, c : T, d : T, a * b * c * d) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Mul(Scope(1), Scope(1), Scope(1), Scope(1))):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [16, 81, 256]
+###
+> T->Tensor.ForEach(as a, U as b, T as c, U as d, a * b * c * d)
+T->Tensor.ForEach(as a, b : U, c : T, d : U, a * b * c * d) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), [ten:2] Global(U), Mul(Scope(1), Scope(2), Scope(1), Scope(2))):i8[*]))
+Func sig: (T:i8[*], U:i8[*]) to i8[*]
+Ten<i8>(3)<1> [484, 1296, 2704]
+###
+> QT->Tensor.ForEach(it * 1)
+QT->Tensor.ForEach(it * 1) : i8[*]?
+BndKind:Global, Type:i8[*]?, Bnd:(Global(QT))
+Func sig: (QT:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [2, 3, 4]
+###
+> QT->Tensor.ForEach(it^2)
+QT->Tensor.ForEach(it^2) : i8[*]?
+BndKind:Call, Type:i8[*]?, Bnd:(Call(∂.Guard([guard:1] Global(QT), Call(∂.Tensor.ForEach([ten:2] Scope(1), Power(Scope(2), 2:i8)):i8[*])):i8[*]?))
+Func sig: (QT:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [4, 9, 16]
+###
+> QT->Tensor.ForEach(as a, QT as b, a * b)
+QT->Tensor.ForEach(as a, b : QT, a * b) : i8[*]?
+BndKind:Call, Type:i8[*]?, Bnd:(Call(∂.Guard([guard:1] Global(QT), Call(∂.Tensor.ForEach([ten:2] Scope(1), Mul(Scope(2), Scope(2))):i8[*])):i8[*]?))
+Func sig: (QT:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [4, 9, 16]
+###
+> QT->Tensor.ForEach(as a, QT as b, QT as c, a * b * c)
+QT->Tensor.ForEach(as a, b : QT, c : QT, a * b * c) : i8[*]?
+BndKind:Call, Type:i8[*]?, Bnd:(Call(∂.Guard([guard:1] Global(QT), Call(∂.Tensor.ForEach([ten:2] Scope(1), Mul(Scope(2), Scope(2), Scope(2))):i8[*])):i8[*]?))
+Func sig: (QT:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [8, 27, 64]
+###
+> QT->Tensor.ForEach(as a, QT as b, QT as c, QT as d, a * b * c * d)
+QT->Tensor.ForEach(as a, b : QT, c : QT, d : QT, a * b * c * d) : i8[*]?
+BndKind:Call, Type:i8[*]?, Bnd:(Call(∂.Guard([guard:1] Global(QT), Call(∂.Tensor.ForEach([ten:2] Scope(1), Mul(Scope(2), Scope(2), Scope(2), Scope(2))):i8[*])):i8[*]?))
+Func sig: (QT:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [16, 81, 256]
+###
+> QT->Tensor.ForEach(as a, QU as b, QT as c, QU as d, a * b * c * d)
+QT->Tensor.ForEach(as a, b : QU, c : QT, d : QU, a * b * c * d) : i8[*]?
+BndKind:Call, Type:i8[*]?, Bnd:(Call(∂.Guard([guard:1] Global(QT), [guard:2] Global(QU), Call(∂.Tensor.ForEach([ten:3] Scope(1), [ten:4] Scope(2), Mul(Scope(3), Scope(4), Scope(3), Scope(4))):i8[*])):i8[*]?))
+Func sig: (QT:i8[*]?, QU:i8[*]?) to i8[*]?
+Ten<i8>(3)<1> [484, 1296, 2704]
+###
+> T->Tensor.ForEach(as a, U as b, a * b)
+T->Tensor.ForEach(as a, b : U, a * b) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), [ten:2] Global(U), Mul(Scope(1), Scope(2))):i8[*]))
+Func sig: (T:i8[*], U:i8[*]) to i8[*]
+Ten<i8>(3)<1> [22, 36, 52]
+###
+> T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2)
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(it^2) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Power(Add(Mul(Scope(1), 2:i8), 5:i8), 2:i8)):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [81, 121, 169]
+###
+> T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, T as b, a * b)
+T->Tensor.ForEach(it * 2)->ForEach(it + 5)->ForEach(as a, b : T, a * b) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T), Mul(Add(Mul(Scope(1), 2:i8), 5:i8), Scope(1))):i8[*]))
+Func sig: (T:i8[*]) to i8[*]
+Ten<i8>(3)<1> [18, 33, 52]
+###
+> (Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if b else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] If(Global(b), Call(∂.Tensor.From(Global(S), 5:i8):i8[*]), Call(∂.Tensor.Fill(0:i8, 7:i8):i8[*])), Mul(Scope(1), 3:i8)):i8[*]))
+Func sig: (<ctx>:x, b:b, S:i8*) to i8[*]
+Ten<i8>(5)<1> [63, 66, 69, 72, 75]
+*** Ctx ping count: 0
+###
+> (Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if true else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.From(Global(S), 5:i8):i8[*]), Mul(Scope(1), 3:i8)):i8[*]))
+Func sig: (<ctx>:x, S:i8*) to i8[*]
+Ten<i8>(5)<1> [63, 66, 69, 72, 75]
+*** Ctx ping count: 0
+###
+> (Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3)
+(Tensor.From(S, 5) if false else Tensor.Fill(0, 7))->ForEach(it * 3) : i8[*]
+BndKind:Call, Type:i8[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Call(∂.Tensor.Fill(0:i8, 7:i8):i8[*]), Mul(Scope(1), 3:i8)):i8[*]))
+Func sig: (<ctx>:x) to i8[*]
+Ten<i8>(7)<0> [0, 0, 0, 0, 0, 0, 0]
+*** Ctx ping count: 0
+###
+
+**** New definitions: T0, type: i8[*]
+**** New definitions: T1, type: i8[*]
+**** New definitions: T2, type: i8[*]
+**** New definitions: T3, type: i8[*]
+**** New definitions: U0, type: i8[*]
+**** New definitions: U1, type: i8[*]
+**** New definitions: U2, type: i8[*]
+**** New definitions: U3, type: i8[*]
+
+> "*** Rank 1 regular ***"
+"*** Rank 1 regular ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 1 regular ***))
+Func sig: () to s
+Type: str, Value: *** Rank 1 regular ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*]
+BndKind:Call, Type:(i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*]))
+Func sig: (T0:i8[*], T1:i8[*]) to (i8, i8)[*]
+Ten<(i8,i8)>(5)<1> [(100, 200), (101, 201), (102, 202), (103, 203), (104, 204)]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*]
+BndKind:Call, Type:(i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*]))
+Func sig: (T0:i8[*], U1:i8[*]) to (i8, i8)[*]
+Ten<(i8,i8)>(5)<1> [(100, 600), (101, 601), (102, 602), (103, 603), (104, 604)]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*]
+BndKind:Call, Type:(i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*]))
+Func sig: (U0:i8[*], T1:i8[*]) to (i8, i8)[*]
+Ten<(i8,i8)>(5)<1> [(500, 200), (501, 201), (502, 202), (503, 203), (504, 204)]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*]
+BndKind:Call, Type:(i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*]))
+Func sig: (U0:i8[*], U1:i8[*]) to (i8, i8)[*]
+Ten<(i8,i8)>(7)<1> [(500, 600), (501, 601), (502, 602), (503, 603), (504, 604), (505, 605), (506, 606)]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (T0:i8[*], T1:i8[*], T2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(100, 200, 300), (101, 201, 301), (102, 202, 302), (103, 203, 303), (104, 204, 304)]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (T0:i8[*], T1:i8[*], U2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(100, 200, 700), (101, 201, 701), (102, 202, 702), (103, 203, 703), (104, 204, 704)]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (T0:i8[*], U1:i8[*], T2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(100, 600, 300), (101, 601, 301), (102, 602, 302), (103, 603, 303), (104, 604, 304)]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (T0:i8[*], U1:i8[*], U2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(100, 600, 700), (101, 601, 701), (102, 602, 702), (103, 603, 703), (104, 604, 704)]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (U0:i8[*], T1:i8[*], T2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(500, 200, 300), (501, 201, 301), (502, 202, 302), (503, 203, 303), (504, 204, 304)]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (U0:i8[*], T1:i8[*], U2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(500, 200, 700), (501, 201, 701), (502, 202, 702), (503, 203, 703), (504, 204, 704)]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (U0:i8[*], U1:i8[*], T2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(5)<1> [(500, 600, 300), (501, 601, 301), (502, 602, 302), (503, 603, 303), (504, 604, 304)]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (U0:i8[*], U1:i8[*], U2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(7)<1> [(500, 600, 700), (501, 601, 701), (502, 602, 702), (503, 603, 703), (504, 604, 704), (505, 605, 705), (506, 606, 706)]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, d:T3, (a,b,c,d)) // NYI
+Tensor.ForEach(a : T0, b : T1, c : T2, d : T3, (a, b, c, d)) : (i8, i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), [ten:4] Global(T3), (Scope(1), Scope(2), Scope(3), Scope(4)):(i8, i8, i8, i8)):(i8, i8, i8, i8)[*]))
+*** Unsupported Exception: 'Code generation for Tensor.ForEach failed'
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*,*]
+**** New definitions: U1, type: i8[*,*]
+**** New definitions: U2, type: i8[*,*]
+**** New definitions: U3, type: i8[*,*]
+
+> "*** Rank 2 regular ***"
+"*** Rank 2 regular ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 regular ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 regular ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 200), (101, 201), (102, 202)]
+   [(103, 203), (104, 204), (105, 205)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 601), (102, 602)]
+   [(103, 603), (104, 604), (105, 605)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (501, 201), (502, 202)]
+   [(503, 203), (504, 204), (505, 205)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 600), (501, 601), (502, 602)]
+   [(503, 603), (504, 604), (505, 605)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+   [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 701), (102, 202, 702)]
+   [(103, 203, 703), (104, 204, 704), (105, 205, 705)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 601, 301), (102, 602, 302)]
+   [(103, 603, 303), (104, 604, 304), (105, 605, 305)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 601, 701), (102, 602, 702)]
+   [(103, 603, 703), (104, 604, 704), (105, 605, 705)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (501, 201, 301), (502, 202, 302)]
+   [(503, 203, 303), (504, 204, 304), (505, 205, 305)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (501, 201, 701), (502, 202, 702)]
+   [(503, 203, 703), (504, 204, 704), (505, 205, 705)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (501, 601, 301), (502, 602, 302)]
+   [(503, 603, 303), (504, 604, 304), (505, 605, 305)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 700), (501, 601, 701), (502, 602, 702)]
+   [(503, 603, 703), (504, 604, 704), (505, 605, 705)]]
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*,*]
+**** New definitions: U1, type: i8[*,*]
+**** New definitions: U2, type: i8[*,*]
+**** New definitions: U3, type: i8[*,*]
+
+> "*** Rank 2 non-regular U ***"
+"*** Rank 2 non-regular U ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 non-regular U ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 non-regular U ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 200), (101, 201), (102, 202)]
+   [(103, 203), (104, 204), (105, 205)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 601), (102, 602)]
+   [(103, 604), (104, 605), (105, 606)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (501, 201), (502, 202)]
+   [(504, 203), (505, 204), (506, 205)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,4)<4,1>
+  [[(500, 600), (501, 601), (502, 602), (503, 603)]
+   [(504, 604), (505, 605), (506, 606), (507, 607)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+   [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 701), (102, 202, 702)]
+   [(103, 203, 704), (104, 204, 705), (105, 205, 706)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 601, 301), (102, 602, 302)]
+   [(103, 604, 303), (104, 605, 304), (105, 606, 305)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 601, 701), (102, 602, 702)]
+   [(103, 604, 704), (104, 605, 705), (105, 606, 706)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (501, 201, 301), (502, 202, 302)]
+   [(504, 203, 303), (505, 204, 304), (506, 205, 305)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (501, 201, 701), (502, 202, 702)]
+   [(504, 203, 704), (505, 204, 705), (506, 205, 706)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (501, 601, 301), (502, 602, 302)]
+   [(504, 604, 303), (505, 605, 304), (506, 606, 305)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,4)<4,1>
+  [[(500, 600, 700), (501, 601, 701), (502, 602, 702), (503, 603, 703)]
+   [(504, 604, 704), (505, 605, 705), (506, 606, 706), (507, 607, 707)]]
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*]
+**** New definitions: U1, type: i8[*]
+**** New definitions: U2, type: i8[*]
+**** New definitions: U3, type: i8[*]
+
+> "*** Rank 2 and 1 (brodcasting slot 0) ***"
+"*** Rank 2 and 1 (brodcasting slot 0) ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 and 1 (brodcasting slot 0) ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 and 1 (brodcasting slot 0) ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 200), (101, 201), (102, 202)]
+   [(103, 203), (104, 204), (105, 205)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 601), (102, 602)]
+   [(103, 600), (104, 601), (105, 602)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (501, 201), (502, 202)]
+   [(500, 203), (501, 204), (502, 205)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*]
+BndKind:Call, Type:(i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*]))
+Func sig: (U0:i8[*], U1:i8[*]) to (i8, i8)[*]
+Ten<(i8,i8)>(3)<1> [(500, 600), (501, 601), (502, 602)]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+   [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 701), (102, 202, 702)]
+   [(103, 203, 700), (104, 204, 701), (105, 205, 702)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 601, 301), (102, 602, 302)]
+   [(103, 600, 303), (104, 601, 304), (105, 602, 305)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*], U2:i8[*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 601, 701), (102, 602, 702)]
+   [(103, 600, 700), (104, 601, 701), (105, 602, 702)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (501, 201, 301), (502, 202, 302)]
+   [(500, 203, 303), (501, 204, 304), (502, 205, 305)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*], T1:i8[*,*], U2:i8[*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (501, 201, 701), (502, 202, 702)]
+   [(500, 203, 700), (501, 204, 701), (502, 205, 702)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*], U1:i8[*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (501, 601, 301), (502, 602, 302)]
+   [(500, 600, 303), (501, 601, 304), (502, 602, 305)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*]
+BndKind:Call, Type:(i8, i8, i8)[*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*]))
+Func sig: (U0:i8[*], U1:i8[*], U2:i8[*]) to (i8, i8, i8)[*]
+Ten<(i8,i8,i8)>(3)<1> [(500, 600, 700), (501, 601, 701), (502, 602, 702)]
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*,*]
+**** New definitions: U1, type: i8[*,*]
+**** New definitions: U2, type: i8[*,*]
+**** New definitions: U3, type: i8[*,*]
+
+> "*** Rank 2 brodcasting slot 0 ***"
+"*** Rank 2 brodcasting slot 0 ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 brodcasting slot 0 ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 brodcasting slot 0 ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 200), (101, 201), (102, 202)]
+   [(103, 203), (104, 204), (105, 205)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 601), (102, 602)]
+   [(103, 600), (104, 601), (105, 602)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (501, 201), (502, 202)]
+   [(500, 203), (501, 204), (502, 205)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(1,3)<0,1>
+  [[(500, 600), (501, 601), (502, 602)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+   [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 701), (102, 202, 702)]
+   [(103, 203, 700), (104, 204, 701), (105, 205, 702)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 601, 301), (102, 602, 302)]
+   [(103, 600, 303), (104, 601, 304), (105, 602, 305)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 601, 701), (102, 602, 702)]
+   [(103, 600, 700), (104, 601, 701), (105, 602, 702)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (501, 201, 301), (502, 202, 302)]
+   [(500, 203, 303), (501, 204, 304), (502, 205, 305)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (501, 201, 701), (502, 202, 702)]
+   [(500, 203, 700), (501, 204, 701), (502, 205, 702)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (501, 601, 301), (502, 602, 302)]
+   [(500, 600, 303), (501, 601, 304), (502, 602, 305)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(1,3)<0,1>
+  [[(500, 600, 700), (501, 601, 701), (502, 602, 702)]]
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*,*]
+**** New definitions: U1, type: i8[*,*]
+**** New definitions: U2, type: i8[*,*]
+**** New definitions: U3, type: i8[*,*]
+
+> "*** Rank 2 brodcasting slot 1 ***"
+"*** Rank 2 brodcasting slot 1 ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 brodcasting slot 1 ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 brodcasting slot 1 ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 200), (101, 201), (102, 202)]
+   [(103, 203), (104, 204), (105, 205)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 600), (102, 600)]
+   [(103, 601), (104, 601), (105, 601)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (500, 201), (500, 202)]
+   [(501, 203), (501, 204), (501, 205)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(3,1)<1,0>
+  [[(500, 600)]
+   [(501, 601)]
+   [(502, 602)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+   [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 700), (102, 202, 700)]
+   [(103, 203, 701), (104, 204, 701), (105, 205, 701)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 600, 301), (102, 600, 302)]
+   [(103, 601, 303), (104, 601, 304), (105, 601, 305)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 600, 700), (102, 600, 700)]
+   [(103, 601, 701), (104, 601, 701), (105, 601, 701)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (500, 201, 301), (500, 202, 302)]
+   [(501, 203, 303), (501, 204, 304), (501, 205, 305)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (500, 201, 700), (500, 202, 700)]
+   [(501, 203, 701), (501, 204, 701), (501, 205, 701)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (500, 600, 301), (500, 600, 302)]
+   [(501, 601, 303), (501, 601, 304), (501, 601, 305)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(3,1)<1,0>
+  [[(500, 600, 700)]
+   [(501, 601, 701)]
+   [(502, 602, 702)]]
+###
+
+**** New definitions: T0, type: i8[*,*,*]
+**** New definitions: T1, type: i8[*,*,*]
+**** New definitions: T2, type: i8[*,*,*]
+**** New definitions: T3, type: i8[*,*,*]
+**** New definitions: U0, type: i8[*,*,*]
+**** New definitions: U1, type: i8[*,*,*]
+**** New definitions: U2, type: i8[*,*,*]
+**** New definitions: U3, type: i8[*,*,*]
+
+> "*** Rank 3 matching 1 in slot 1 ***"
+"*** Rank 3 matching 1 in slot 1 ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 3 matching 1 in slot 1 ***))
+Func sig: () to s
+Type: str, Value: *** Rank 3 matching 1 in slot 1 ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,1,3)<3,0,1>
+  [[[(100, 200), (101, 201), (102, 202)]]
+
+   [[(103, 203), (104, 204), (105, 205)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,1,2)<2,0,1>
+  [[[(100, 600), (101, 601)]]
+
+   [[(103, 602), (104, 603)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,1,2)<2,0,1>
+  [[[(500, 200), (501, 201)]]
+
+   [[(502, 203), (503, 204)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(3,1,2)<2,0,1>
+  [[[(500, 600), (501, 601)]]
+
+   [[(502, 602), (503, 603)]]
+
+   [[(504, 604), (505, 605)]]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,3)<3,0,1>
+  [[[(100, 200, 300), (101, 201, 301), (102, 202, 302)]]
+
+   [[(103, 203, 303), (104, 204, 304), (105, 205, 305)]]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(100, 200, 700), (101, 201, 701)]]
+
+   [[(103, 203, 702), (104, 204, 703)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(100, 600, 300), (101, 601, 301)]]
+
+   [[(103, 602, 303), (104, 603, 304)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(100, 600, 700), (101, 601, 701)]]
+
+   [[(103, 602, 702), (104, 603, 703)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(500, 200, 300), (501, 201, 301)]]
+
+   [[(502, 203, 303), (503, 204, 304)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(500, 200, 700), (501, 201, 701)]]
+
+   [[(502, 203, 702), (503, 204, 703)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,1,2)<2,0,1>
+  [[[(500, 600, 300), (501, 601, 301)]]
+
+   [[(502, 602, 303), (503, 603, 304)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(3,1,2)<2,0,1>
+  [[[(500, 600, 700), (501, 601, 701)]]
+
+   [[(502, 602, 702), (503, 603, 703)]]
+
+   [[(504, 604, 704), (505, 605, 705)]]]
+###
+
+**** New definitions: T0, type: i8[*,*,*]
+**** New definitions: T1, type: i8[*,*,*]
+**** New definitions: T2, type: i8[*,*,*]
+**** New definitions: T3, type: i8[*,*,*]
+**** New definitions: U0, type: i8[*,*,*]
+**** New definitions: U1, type: i8[*,*,*]
+**** New definitions: U2, type: i8[*,*,*]
+**** New definitions: U3, type: i8[*,*,*]
+
+> "*** Rank 3 with const U ***"
+"*** Rank 3 with const U ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 3 with const U ***))
+Func sig: () to s
+Type: str, Value: *** Rank 3 with const U ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 200), (101, 201), (102, 202)]
+    [(103, 203), (104, 204), (105, 205)]]
+
+   [[(106, 206), (107, 207), (108, 208)]
+    [(109, 209), (110, 210), (111, 211)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 600), (101, 600), (102, 600)]
+    [(103, 600), (104, 600), (105, 600)]]
+
+   [[(106, 600), (107, 600), (108, 600)]
+    [(109, 600), (110, 600), (111, 600)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,2,3)<6,3,1>
+  [[[(500, 200), (500, 201), (500, 202)]
+    [(500, 203), (500, 204), (500, 205)]]
+
+   [[(500, 206), (500, 207), (500, 208)]
+    [(500, 209), (500, 210), (500, 211)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*]) to (i8, i8)[*,*,*]
+Ten<(i8,i8)>(2,2,3)<0,0,0>
+  [[[(500, 600), (500, 600), (500, 600)]
+    [(500, 600), (500, 600), (500, 600)]]
+
+   [[(500, 600), (500, 600), (500, 600)]
+    [(500, 600), (500, 600), (500, 600)]]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 200, 300), (101, 201, 301), (102, 202, 302)]
+    [(103, 203, 303), (104, 204, 304), (105, 205, 305)]]
+
+   [[(106, 206, 306), (107, 207, 307), (108, 208, 308)]
+    [(109, 209, 309), (110, 210, 310), (111, 211, 311)]]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], T1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 200, 700), (101, 201, 700), (102, 202, 700)]
+    [(103, 203, 700), (104, 204, 700), (105, 205, 700)]]
+
+   [[(106, 206, 700), (107, 207, 700), (108, 208, 700)]
+    [(109, 209, 700), (110, 210, 700), (111, 211, 700)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 600, 300), (101, 600, 301), (102, 600, 302)]
+    [(103, 600, 303), (104, 600, 304), (105, 600, 305)]]
+
+   [[(106, 600, 306), (107, 600, 307), (108, 600, 308)]
+    [(109, 600, 309), (110, 600, 310), (111, 600, 311)]]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (T0:i8[*,*,*], U1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(100, 600, 700), (101, 600, 700), (102, 600, 700)]
+    [(103, 600, 700), (104, 600, 700), (105, 600, 700)]]
+
+   [[(106, 600, 700), (107, 600, 700), (108, 600, 700)]
+    [(109, 600, 700), (110, 600, 700), (111, 600, 700)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(500, 200, 300), (500, 201, 301), (500, 202, 302)]
+    [(500, 203, 303), (500, 204, 304), (500, 205, 305)]]
+
+   [[(500, 206, 306), (500, 207, 307), (500, 208, 308)]
+    [(500, 209, 309), (500, 210, 310), (500, 211, 311)]]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], T1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(500, 200, 700), (500, 201, 700), (500, 202, 700)]
+    [(500, 203, 700), (500, 204, 700), (500, 205, 700)]]
+
+   [[(500, 206, 700), (500, 207, 700), (500, 208, 700)]
+    [(500, 209, 700), (500, 210, 700), (500, 211, 700)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*], T2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<6,3,1>
+  [[[(500, 600, 300), (500, 600, 301), (500, 600, 302)]
+    [(500, 600, 303), (500, 600, 304), (500, 600, 305)]]
+
+   [[(500, 600, 306), (500, 600, 307), (500, 600, 308)]
+    [(500, 600, 309), (500, 600, 310), (500, 600, 311)]]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*,*]))
+Func sig: (U0:i8[*,*,*], U1:i8[*,*,*], U2:i8[*,*,*]) to (i8, i8, i8)[*,*,*]
+Ten<(i8,i8,i8)>(2,2,3)<0,0,0>
+  [[[(500, 600, 700), (500, 600, 700), (500, 600, 700)]
+    [(500, 600, 700), (500, 600, 700), (500, 600, 700)]]
+
+   [[(500, 600, 700), (500, 600, 700), (500, 600, 700)]
+    [(500, 600, 700), (500, 600, 700), (500, 600, 700)]]]
+###
+
+**** New definitions: T0, type: i8[*,*]
+**** New definitions: T1, type: i8[*,*]
+**** New definitions: T2, type: i8[*,*]
+**** New definitions: T3, type: i8[*,*]
+**** New definitions: U0, type: i8[*,*]
+**** New definitions: U1, type: i8[*,*]
+**** New definitions: U2, type: i8[*,*]
+**** New definitions: U3, type: i8[*,*]
+
+> "*** Rank 2 with const U, non-regular T ***"
+"*** Rank 2 with const U, non-regular T ***" : s
+BndKind:Str, Type:s, Bnd:(str(*** Rank 2 with const U, non-regular T ***))
+Func sig: () to s
+Type: str, Value: *** Rank 2 with const U, non-regular T ***
+###
+> Tensor.ForEach(a:T0, b:T1, (a,b))
+Tensor.ForEach(a : T0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,4)<4,1>
+  [[(100, 200), (101, 201), (102, 202), (103, 203)]
+   [(104, 204), (105, 205), (106, 206), (107, 207)]]
+###
+> Tensor.ForEach(a:T0, b:U1, (a,b))
+Tensor.ForEach(a : T0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(100, 600), (101, 600), (102, 600)]
+   [(104, 600), (105, 600), (106, 600)]]
+###
+> Tensor.ForEach(a:U0, b:T1, (a,b))
+Tensor.ForEach(a : U0, b : T1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<3,1>
+  [[(500, 200), (500, 201), (500, 202)]
+   [(500, 204), (500, 205), (500, 206)]]
+###
+> Tensor.ForEach(a:U0, b:U1, (a,b))
+Tensor.ForEach(a : U0, b : U1, (a, b)) : (i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), (Scope(1), Scope(2)):(i8, i8)):(i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*]) to (i8, i8)[*,*]
+Ten<(i8,i8)>(2,3)<0,0>
+  [[(500, 600), (500, 600), (500, 600)]
+   [(500, 600), (500, 600), (500, 600)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,4)<4,1>
+  [[(100, 200, 300), (101, 201, 301), (102, 202, 302), (103, 203, 303)]
+   [(104, 204, 304), (105, 205, 305), (106, 206, 306), (107, 207, 307)]]
+###
+> Tensor.ForEach(a:T0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 200, 700), (101, 201, 700), (102, 202, 700)]
+   [(104, 204, 700), (105, 205, 700), (106, 206, 700)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 300), (101, 600, 301), (102, 600, 302)]
+   [(104, 600, 304), (105, 600, 305), (106, 600, 306)]]
+###
+> Tensor.ForEach(a:T0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : T0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(T0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (T0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(100, 600, 700), (101, 600, 700), (102, 600, 700)]
+   [(104, 600, 700), (105, 600, 700), (106, 600, 700)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 300), (500, 201, 301), (500, 202, 302)]
+   [(500, 204, 304), (500, 205, 305), (500, 206, 306)]]
+###
+> Tensor.ForEach(a:U0, b:T1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : T1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(T1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], T1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 200, 700), (500, 201, 700), (500, 202, 700)]
+   [(500, 204, 700), (500, 205, 700), (500, 206, 700)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:T2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : T2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(T2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], T2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<3,1>
+  [[(500, 600, 300), (500, 600, 301), (500, 600, 302)]
+   [(500, 600, 304), (500, 600, 305), (500, 600, 306)]]
+###
+> Tensor.ForEach(a:U0, b:U1, c:U2, (a,b,c))
+Tensor.ForEach(a : U0, b : U1, c : U2, (a, b, c)) : (i8, i8, i8)[*,*]
+BndKind:Call, Type:(i8, i8, i8)[*,*], Bnd:(Call(∂.Tensor.ForEach([ten:1] Global(U0), [ten:2] Global(U1), [ten:3] Global(U2), (Scope(1), Scope(2), Scope(3)):(i8, i8, i8)):(i8, i8, i8)[*,*]))
+Func sig: (U0:i8[*,*], U1:i8[*,*], U2:i8[*,*]) to (i8, i8, i8)[*,*]
+Ten<(i8,i8,i8)>(2,3)<0,0>
+  [[(500, 600, 700), (500, 600, 700), (500, 600, 700)]
+   [(500, 600, 700), (500, 600, 700), (500, 600, 700)]]
+###

@@ -1,0 +1,2844 @@
+**** New definitions: S, type: s*
+**** New definitions: TA, type: {A:s, X:r8}*
+**** New definitions: TB, type: {A:s, B:s, X:r8}*
+
+> (TA if 1 = 0 else null)->MultiDS_A()
+(TA if 1 @= 0 else null)->MultiDS_A() : {B:s*}*
+BndKind:Call, Type:{B:s*}*, Bnd:(Call(∂.Test.MultiDS_A.Simple(null:{A:s}*)))
+// (<ctx>) : {B:s*}*
+mis_item_to_mos_item(Arr<obj>, str, i8, {str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str}]
+      5) ldfld {str}::_F0:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleOne(str, i8, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 50
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldnull
+      1) stloc.1 [Seq<{str}>]
+      5) ldstr []
+      1) stloc.2 [str]
+      9) ldc.i8 [9223372036854775807]
+      1) stloc.3 [i8]
+      1) ldloc.1 [Seq<{str}>]
+      1) ldloc.2 [str]
+      1) ldloc.3 [i8]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,i8,{str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str}>, str, i8, Func<str,i8,{str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ret
+  Total Size: 55
+
+Func sig: (<ctx>:x) to {B:s*}*
+Type: <null>, Value: <null>
+*** Ctx ping count: 0
+###
+> TA->MultiDS_A()->Map(B->Text.Concat(", "))
+TA->MultiDS_A()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_A.Simple(Call(∂.ForEach([map:1] Global(TA), {A:GetField(Scope(1), A)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.TA:{A:s, X:r8}*) : s*
+ForEach_1(Arr<obj>, {str,r8}):{str}
+      5) newobj {str}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {str}::_B0:u1
+      1) stloc.0 [{str}]
+      1) ldloc.0 [{str}]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str}::_F0:str
+      1) ldloc.0 [{str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 40
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str}]
+      5) ldfld {str}::_F0:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleOne(str, i8, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 50
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,r8}>
+      1) stloc.1 [Seq<{str,r8}>]
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,r8},{str}>]
+      5) call static ForEachGen::Exec(Seq<{str,r8}>, Func<{str,r8},{str}>):Seq<{str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str}>):Seq<{str}>
+      1) stloc.2 [Seq<{str}>]
+      5) ldstr []
+      1) stloc.3 [str]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (4)]
+      1) ldloc.2 [Seq<{str}>]
+      1) ldloc.3 [str]
+      2) ldloc.s [i8 (4)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str}>, str, i8, Func<str,i8,{str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 129
+
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x]
+ 1) A: [xy]
+ 2) A: <null>
+ 3) A: [xyz]
+ 4) A: <null>
+ 5) A: [adios]
+ 6) A: [hola]
+ 7) A: [guten morgen]
+*** Ctx ping count: 16
+    [0](16): Text.Concat(*1x.B, ", ")
+###
+> TB->MultiDS_B()->Map(B->Text.Concat(", "))
+TB->MultiDS_B()->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDS_B.Simple(Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : s*
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) stloc.2 [Seq<{str,str}>]
+      5) ldstr []
+      1) stloc.3 [str]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (4)]
+      1) ldloc.2 [Seq<{str,str}>]
+      1) ldloc.3 [str]
+      2) ldloc.s [i8 (4)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 129
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x], B: [x]
+ 1) A: <null>, B: [xy]
+ 2) A: <null>, B: <null>
+ 3) A: [xyz], B: [xyz]
+ 4) A: <null>, B: <null>
+ 5) A: [adios], B: <null>
+ 6) A: [hola], B: [hola]
+ 7) A: <null>, B: [guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TA->MultiDSMA()->Map(it+>{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMA()->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.ForEach([map:3] Call(∂.Test.MultiDSMA.MergeSeq([with:1] Global(TA), Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A)})), Scope(1))), SetFields([with:4] Scope(3), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(4), B), str(, )):s), str(]))))))
+// (<ctx>, ∂.TA:{A:s, X:r8}*) : {A:s, B:s, X:r8}*
+ForEach_1(Arr<obj>, {str,r8}):{str}
+      5) newobj {str}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {str}::_B0:u1
+      1) stloc.0 [{str}]
+      1) ldloc.0 [{str}]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str}::_F0:str
+      1) ldloc.0 [{str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 40
+
+merge(Arr<obj>, {Seq<str>}, {str,r8}):{str,Seq<str>,r8}
+      5) newobj {str,Seq<str>,r8}()
+      1) dup
+      1) ldc.i4.5
+      5) stfld {str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,Seq<str>,r8}]
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F1:r8
+      5) stfld {str,Seq<str>,r8}::_F2:r8
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,Seq<str>,r8}::_F1:Seq<str>
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 64
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str}]
+      5) ldfld {str}::_F0:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleOne(str, i8, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 50
+
+ForEach_1(Arr<obj>, {str,Seq<str>,r8}):{str,str,r8}
+      5) newobj {str,str,r8}()
+      1) dup
+      1) ldc.i4.7
+      5) stfld {str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,r8}]
+      1) ldloc.0 [{str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F1:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F2:r8
+      5) stfld {str,str,r8}::_F2:r8
+      1) ldloc.0 [{str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 103
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,r8}>
+      1) stloc.1 [Seq<{str,r8}>]
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,r8},{str}>]
+      5) call static ForEachGen::Exec(Seq<{str,r8}>, Func<{str,r8},{str}>):Seq<{str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str}>):Seq<{str}>
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) stloc.2 [Seq<{str,r8}>]
+      1) stloc.3 [Seq<{str}>]
+      5) ldstr []
+      2) stloc.s [str (4)]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str}>, str, i8, Func<str,i8,{str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [0]
+      1) ldloc.2 [Seq<{str,r8}>]
+      1) dup
+      5) brtrue [1]
+      1) pop
+  Label [0]:
+      1) pop
+      1) ldnull
+      5) br [2]
+  Label [1]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [{str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,r8}>, Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>, {str,Seq<str>,r8}):Seq<{str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,Seq<str>,r8}>):Seq<{str,Seq<str>,r8}>
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,Seq<str>,r8},{str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,Seq<str>,r8}>, Func<{str,Seq<str>,r8},{str,str,r8}>):Seq<{str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,r8}>):Seq<{str,str,r8}>
+      1) ret
+  Total Size: 187
+
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x]], X: 1 }
+ 1) { A: xy, B: [A: [xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>], X: 3 }
+ 3) { A: xyz, B: [A: [xyz]], X: 4 }
+ 4) { A: <null>, B: [A: <null>], X: 0 }
+ 5) { A: adios, B: [A: [adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen]], X: 8 }
+*** Ctx ping count: 16
+    [0](16): Text.Concat(!1x.B, ", ")
+###
+> S->MultiDSMB(A: it & "-1st", B: it & "-2nd")->Map(B->Text.Concat(", "))
+S->MultiDSMB(A : it & "-1st", B : it & "-2nd")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDSMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-1st)), B:StrConcat(Scope(1), str(-2nd))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.S:s*) : s*
+ForEach_1(Arr<obj>, str):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [str]
+      5) ldstr [-1st]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [str]
+      5) ldstr [-2nd]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.1 [Seq<str>]
+      1) ldloc.1 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,{str,str}>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) stloc.2 [Seq<{str,str}>]
+      5) ldstr []
+      1) stloc.3 [str]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (4)]
+      1) ldloc.2 [Seq<{str,str}>]
+      1) ldloc.3 [str]
+      2) ldloc.s [i8 (4)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 129
+
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-1st], B: [x-2nd]
+ 1) A: [xy-1st], B: [xy-2nd]
+ 2) A: [-1st], B: [-2nd]
+ 3) A: [xyz-1st], B: [xyz-2nd]
+ 4) A: [hi-1st], B: [hi-2nd]
+ 5) A: [adios-1st], B: [adios-2nd]
+ 6) A: [hola-1st], B: [hola-2nd]
+ 7) A: [guten morgen-1st], B: [guten morgen-2nd]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDsMB({ A: "a-" & it, B: "b-" & it })->Map(B->Text.Concat(", "))
+S->MultiDsMB({ A : "a-" & it, B : "b-" & it })->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDsMB.Simple(Call(∂.ForEach([map:1] Global(S), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})))), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.S:s*) : s*
+ForEach_1(Arr<obj>, str):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      5) ldstr [a-]
+      1) ldarg.1 [str]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      5) ldstr [b-]
+      1) ldarg.1 [str]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.1 [Seq<str>]
+      1) ldloc.1 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,{str,str}>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) stloc.2 [Seq<{str,str}>]
+      5) ldstr []
+      1) stloc.3 [str]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (4)]
+      1) ldloc.2 [Seq<{str,str}>]
+      1) ldloc.3 [str]
+      2) ldloc.s [i8 (4)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 129
+
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [a-x], B: [b-x]
+ 1) A: [a-xy], B: [b-xy]
+ 2) A: [a-], B: [b-]
+ 3) A: [a-xyz], B: [b-xyz]
+ 4) A: [a-hi], B: [b-hi]
+ 5) A: [a-adios], B: [b-adios]
+ 6) A: [a-hola], B: [b-hola]
+ 7) A: [a-guten morgen], B: [b-guten morgen]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TA->MultiDSMB("b-" & A, A       )
+TA->MultiDSMB("b-" & A, A) : {A:s, B:s*, X:r8}*
+BndKind:Call, Type:{A:s, B:s*, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:StrConcat(str(b-), GetField(Scope(3), A))})), Scope(2))))))
+// (<ctx>, ∂.TA:{A:s, X:r8}*) : {A:s, B:s*, X:r8}*
+ForEach_1(Arr<obj>, {str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      5) ldstr [b-]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+merge(Arr<obj>, {Seq<str>}, {str,r8}):{str,Seq<str>,r8}
+      5) newobj {str,Seq<str>,r8}()
+      1) dup
+      1) ldc.i4.5
+      5) stfld {str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,Seq<str>,r8}]
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F1:r8
+      5) stfld {str,Seq<str>,r8}::_F2:r8
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,Seq<str>,r8}::_F1:Seq<str>
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 64
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,r8}>
+      1) stloc.1 [Seq<{str,r8}>]
+      1) ldloc.1 [Seq<{str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,r8}>):bool
+      5) brtrue [0]
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,r8}>, Func<{str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) stloc.2 [Seq<{str,r8}>]
+      1) stloc.3 [Seq<{str,str}>]
+      5) ldstr []
+      2) stloc.s [str (4)]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.2 [Seq<{str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [{str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,r8}>, Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>, {str,Seq<str>,r8}):Seq<{str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,Seq<str>,r8}>):Seq<{str,Seq<str>,r8}>
+  Label [3]:
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 144
+
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s*, X:r8}*
+Sequence: Seq<{str,Seq<str>,r8}>
+ 1) { A: xy, 
+      B: Sequence: Seq<str>
+         0) A: [xy]
+         1) B: [b-xy]
+      X: 2 }
+ 5) { A: adios, 
+      B: Sequence: Seq<str>
+         0) A: [adios]
+         1) B: [b-adios]
+      X: 6 }
+ 3) { A: xyz, 
+      B: Sequence: Seq<str>
+         0) A: [xyz]
+         1) B: [b-xyz]
+      X: 4 }
+ 7) { A: guten morgen, 
+      B: Sequence: Seq<str>
+         0) A: [guten morgen]
+         1) B: [b-guten morgen]
+      X: 8 }
+ 0) { A: x, 
+      B: Sequence: Seq<str>
+         0) A: [x]
+         1) B: [b-x]
+      X: 1 }
+ 4) { A: <null>, 
+      B: Sequence: Seq<str>
+         0) A: <null>
+         1) B: [b-]
+      X: 0 }
+ 2) { A: <null>, 
+      B: Sequence: Seq<str>
+         0) A: <null>
+         1) B: [b-]
+      X: 3 }
+ 6) { A: hola, 
+      B: Sequence: Seq<str>
+         0) A: [hola]
+         1) B: [b-hola]
+      X: 7 }
+*** Ctx ping count: 0
+###
+> TA->MultiDSMB("b-" & A, A       )->Map(it->&{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDSMB("b-" & A, A)->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:StrConcat(str(b-), GetField(Scope(3), A))})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+// (<ctx>, ∂.TA:{A:s, X:r8}*) : {A:s, B:s, X:r8}*
+ForEach_1(Arr<obj>, {str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      5) ldstr [b-]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+merge(Arr<obj>, {Seq<str>}, {str,r8}):{str,Seq<str>,r8}
+      5) newobj {str,Seq<str>,r8}()
+      1) dup
+      1) ldc.i4.5
+      5) stfld {str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,Seq<str>,r8}]
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F1:r8
+      5) stfld {str,Seq<str>,r8}::_F2:r8
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,Seq<str>,r8}::_F1:Seq<str>
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 64
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,Seq<str>,r8}):{str,str,r8}
+      5) newobj {str,str,r8}()
+      1) dup
+      1) ldc.i4.7
+      5) stfld {str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,r8}]
+      1) ldloc.0 [{str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F1:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F2:r8
+      5) stfld {str,str,r8}::_F2:r8
+      1) ldloc.0 [{str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 103
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,r8}>
+      1) stloc.1 [Seq<{str,r8}>]
+      1) ldloc.1 [Seq<{str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,r8}>):bool
+      5) brtrue [0]
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,r8}>, Func<{str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) stloc.2 [Seq<{str,r8}>]
+      1) stloc.3 [Seq<{str,str}>]
+      5) ldstr []
+      2) stloc.s [str (4)]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.2 [Seq<{str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [{str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,r8}>, Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>, {str,Seq<str>,r8}):Seq<{str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,Seq<str>,r8}>):Seq<{str,Seq<str>,r8}>
+  Label [3]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,Seq<str>,r8},{str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,Seq<str>,r8}>, Func<{str,Seq<str>,r8},{str,str,r8}>):Seq<{str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,r8}>):Seq<{str,str,r8}>
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 204
+
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x], B: [b-x]], X: 1 }
+ 1) { A: xy, B: [A: [xy], B: [b-xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>, B: [b-]], X: 3 }
+ 3) { A: xyz, B: [A: [xyz], B: [b-xyz]], X: 4 }
+ 4) { A: <null>, B: [A: <null>, B: [b-]], X: 0 }
+ 5) { A: adios, B: [A: [adios], B: [b-adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola], B: [b-hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen], B: [b-guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TA->MultiDsMB({ A, B: "b-" & A })->Map(it->&{ B: "[" & B->Text.Concat(", ") & "]" })
+TA->MultiDsMB({ A, B : "b-" & A })->Map(it+>{ B : "[" & B->Text.Concat(", ") & "]" }) : {A:s, B:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TA), Call(∂.ForEach([map:4] Call(∂.Test.MultiDsMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:StrConcat(str(b-), GetField(Scope(3), A))})), Scope(2))), SetFields([with:5] Scope(4), B : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B), str(, )):s), str(]))))))))
+// (<ctx>, ∂.TA:{A:s, X:r8}*) : {A:s, B:s, X:r8}*
+ForEach_1(Arr<obj>, {str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      5) ldstr [b-]
+      1) ldarg.1 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+merge(Arr<obj>, {Seq<str>}, {str,r8}):{str,Seq<str>,r8}
+      5) newobj {str,Seq<str>,r8}()
+      1) dup
+      1) ldc.i4.5
+      5) stfld {str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,Seq<str>,r8}]
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F0:str
+      5) stfld {str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.2 [{str,r8}]
+      5) ldfld {str,r8}::_F1:r8
+      5) stfld {str,Seq<str>,r8}::_F2:r8
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,Seq<str>,r8}::_F1:Seq<str>
+      1) ldloc.0 [{str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 64
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,Seq<str>,r8}):{str,str,r8}
+      5) newobj {str,str,r8}()
+      1) dup
+      1) ldc.i4.7
+      5) stfld {str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,r8}]
+      1) ldloc.0 [{str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F1:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,r8}]
+      1) ldarg.1 [{str,Seq<str>,r8}]
+      5) ldfld {str,Seq<str>,r8}::_F2:r8
+      5) stfld {str,str,r8}::_F2:r8
+      1) ldloc.0 [{str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 103
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,r8}>
+      1) stloc.1 [Seq<{str,r8}>]
+      1) ldloc.1 [Seq<{str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,r8}>):bool
+      5) brtrue [0]
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,r8}>, Func<{str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) ldloc.1 [Seq<{str,r8}>]
+      1) stloc.2 [Seq<{str,r8}>]
+      1) stloc.3 [Seq<{str,str}>]
+      5) ldstr []
+      2) stloc.s [str (4)]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.2 [Seq<{str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [{str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,r8}>, Func<{Seq<str>},{str,r8},{str,Seq<str>,r8}>, {str,Seq<str>,r8}):Seq<{str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,Seq<str>,r8}>):Seq<{str,Seq<str>,r8}>
+  Label [3]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,Seq<str>,r8},{str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,Seq<str>,r8}>, Func<{str,Seq<str>,r8},{str,str,r8}>):Seq<{str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,r8}>):Seq<{str,str,r8}>
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 204
+
+Func sig: (<ctx>:x, TA:{A:s, X:r8}*) to {A:s, B:s, X:r8}*
+Sequence: Seq<{str,str,r8}>
+ 0) { A: x, B: [A: [x], B: [b-x]], X: 1 }
+ 1) { A: xy, B: [A: [xy], B: [b-xy]], X: 2 }
+ 2) { A: <null>, B: [A: <null>, B: [b-]], X: 3 }
+ 3) { A: xyz, B: [A: [xyz], B: [b-xyz]], X: 4 }
+ 4) { A: <null>, B: [A: <null>, B: [b-]], X: 0 }
+ 5) { A: adios, B: [A: [adios], B: [b-adios]], X: 6 }
+ 6) { A: hola, B: [A: [hola], B: [b-hola]], X: 7 }
+ 7) { A: guten morgen, B: [A: [guten morgen], B: [b-guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B, ", ")
+###
+> TB->MultiDSMB(A: A, B: B)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDSMB(A : A, B : B)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDSMB.MergeSeq([with:2] Scope(1), Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : {A:s, B:s, B2:s, X:r8}*
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+merge(Arr<obj>, {Seq<str>}, {str,str,r8}):{str,str,Seq<str>,r8}
+      5) newobj {str,str,Seq<str>,r8}()
+      1) dup
+      2) ldc.i4.s [11]
+      5) stfld {str,str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,str,Seq<str>,r8}]
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str,Seq<str>,r8}::_F1:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F2:r8
+      5) stfld {str,str,Seq<str>,r8}::_F3:r8
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 77
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,str,Seq<str>,r8}):{str,str,str,r8}
+      5) newobj {str,str,str,r8}()
+      1) dup
+      2) ldc.i4.s [15]
+      5) stfld {str,str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,str,r8}]
+      1) ldloc.0 [{str,str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,str,r8}::_F2:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F1:str
+      5) stfld {str,str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F3:r8
+      5) stfld {str,str,str,r8}::_F3:r8
+      1) ldloc.0 [{str,str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 116
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,str,r8}>):bool
+      5) brtrue [0]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) stloc.2 [Seq<{str,str,r8}>]
+      1) stloc.3 [Seq<{str,str}>]
+      5) ldstr []
+      2) stloc.s [str (4)]
+      9) ldc.i8 [9223372036854775807]
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.2 [Seq<{str,str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [{str,str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,str,r8}>, Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>, {str,str,Seq<str>,r8}):Seq<{str,str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,Seq<str>,r8}>):Seq<{str,str,Seq<str>,r8}>
+  Label [3]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,str,Seq<str>,r8},{str,str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,str,Seq<str>,r8}>, Func<{str,str,Seq<str>,r8},{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 204
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x], B: [x]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>, B: [xy]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz], B: [xyz]], X: 4 }
+ 4) { A: <null>, B: <null>, B2: [A: <null>, B: <null>], X: 0 }
+ 5) { A: adios, B: <null>, B2: [A: [adios], B: <null>], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola], B: [hola]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>, B: [guten morgen]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> S->MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDRMB(it & "-1st", it & "-2nd", S2 : 7, S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDRMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(Scope(1), str(-2nd)), B:StrConcat(Scope(1), str(-1st))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.S:s*) : s*
+ForEach_1(Arr<obj>, str):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [str]
+      5) ldstr [-2nd]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [str]
+      5) ldstr [-1st]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.1 [Seq<str>]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,{str,str}>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/suf]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.7
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) stloc.3 [Seq<{str,str}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (4)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 186
+
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [x-2nd/suf], B: [x-1st/suf]
+ 1) A: [xy-2nd/suf], B: [xy-1st/suf]
+ 2) A: [-2nd/suf], B: [-1st/suf]
+ 3) A: [xyz-2nd/suf], B: [xyz-1st/suf]
+ 4) A: [hi-2nd/suf], B: [hi-1st/suf]
+ 5) A: [adios-2/suf], B: [adios-1/suf]
+ 6) A: [hola-2n/suf], B: [hola-1s/suf]
+ 7) A: [guten m/suf], B: [guten m/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> S->MultiDrMB({ B: "b-" & it, A: "a-" & it }, S2: 7, S1: "/suf")->Map(B->Text.Concat(", "))
+S->MultiDrMB({ B : "b-" & it, A : "a-" & it }, S2 : 7, S1 : "/suf")->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDrMB.Simple({Mis:Call(∂.ForEach([map:1] Global(S), {A:StrConcat(str(a-), Scope(1)), B:StrConcat(str(b-), Scope(1))})), S1:str(/suf), S2:7:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.S:s*) : s*
+ForEach_1(Arr<obj>, str):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      5) ldstr [a-]
+      1) ldarg.1 [str]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      5) ldstr [b-]
+      1) ldarg.1 [str]
+      5) call static str::Concat(str, str):str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 62
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<str>
+      1) stloc.1 [Seq<str>]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<str>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<str,{str,str}>]
+      5) call static ForEachGen::Exec(Seq<str>, Func<str,{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/suf]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.7
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) stloc.3 [Seq<{str,str}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (4)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 186
+
+Func sig: (<ctx>:x, S:s*) to s*
+Sequence: Seq<str>
+ 0) A: [a-x/suf], B: [b-x/suf]
+ 1) A: [a-xy/suf], B: [b-xy/suf]
+ 2) A: [a-/suf], B: [b-/suf]
+ 3) A: [a-xyz/suf], B: [b-xyz/suf]
+ 4) A: [a-hi/suf], B: [b-hi/suf]
+ 5) A: [a-adios/suf], B: [b-adios/suf]
+ 6) A: [a-hola/suf], B: [b-hola/suf]
+ 7) A: [a-guten/suf], B: [b-guten/suf]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###
+> TB->MultiDRMB(B, A, "/suf", 5)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDRMB(B, A, "/suf", 5)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDRMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : {A:s, B:s, B2:s, X:r8}*
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+merge(Arr<obj>, {Seq<str>}, {str,str,r8}):{str,str,Seq<str>,r8}
+      5) newobj {str,str,Seq<str>,r8}()
+      1) dup
+      2) ldc.i4.s [11]
+      5) stfld {str,str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,str,Seq<str>,r8}]
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str,Seq<str>,r8}::_F1:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F2:r8
+      5) stfld {str,str,Seq<str>,r8}::_F3:r8
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 77
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,str,Seq<str>,r8}):{str,str,str,r8}
+      5) newobj {str,str,str,r8}()
+      1) dup
+      2) ldc.i4.s [15]
+      5) stfld {str,str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,str,r8}]
+      1) ldloc.0 [{str,str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,str,r8}::_F2:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F1:str
+      5) stfld {str,str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F3:r8
+      5) stfld {str,str,str,r8}::_F3:r8
+      1) ldloc.0 [{str,str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 116
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,str,r8}>):bool
+      5) brtrue [0]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/suf]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.5
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) stloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      2) stloc.s [Seq<{str,str}> (4)]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (5)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (6)]
+      2) ldloc.s [Seq<{str,str}> (4)]
+      2) ldloc.s [str (5)]
+      2) ldloc.s [i8 (6)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [{str,str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,str,r8}>, Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>, {str,str,Seq<str>,r8}):Seq<{str,str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,Seq<str>,r8}>):Seq<{str,str,Seq<str>,r8}>
+  Label [3]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,str,Seq<str>,r8},{str,str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.7
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,str,Seq<str>,r8}>, Func<{str,str,Seq<str>,r8},{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 261
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 0 }
+ 5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDrMB({ A, B }, "/suf", 5)->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" })
+TB->MultiDrMB({ A, B }, "/suf", 5)->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) : {A:s, B:s, B2:s, X:r8}*
+BndKind:Call, Type:{A:s, B:s, B2:s, X:r8}*, Bnd:(Call(∂.Guard([guard:1] Global(TB), Call(∂.ForEach([map:4] Call(∂.Test.MultiDrMB.MergeRec([with:2] Scope(1), {Mis:Call(∂.ForEach([map:3] Scope(2), {A:GetField(Scope(3), A), B:GetField(Scope(3), B)})), S1:str(/suf), S2:5:i8}, Scope(2))), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(]))))))))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : {A:s, B:s, B2:s, X:r8}*
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+merge(Arr<obj>, {Seq<str>}, {str,str,r8}):{str,str,Seq<str>,r8}
+      5) newobj {str,str,Seq<str>,r8}()
+      1) dup
+      2) ldc.i4.s [11]
+      5) stfld {str,str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,str,Seq<str>,r8}]
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str,Seq<str>,r8}::_F1:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F2:r8
+      5) stfld {str,str,Seq<str>,r8}::_F3:r8
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 77
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,str,Seq<str>,r8}):{str,str,str,r8}
+      5) newobj {str,str,str,r8}()
+      1) dup
+      2) ldc.i4.s [15]
+      5) stfld {str,str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,str,r8}]
+      1) ldloc.0 [{str,str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,str,r8}::_F2:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F1:str
+      5) stfld {str,str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F3:r8
+      5) stfld {str,str,str,r8}::_F3:r8
+      1) ldloc.0 [{str,str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 116
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      5) call static IsEmptyGen::IsEmptyEnum(Seq<{str,str,r8}>):bool
+      5) brtrue [0]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/suf]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.5
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) stloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      2) stloc.s [Seq<{str,str}> (4)]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (5)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (6)]
+      2) ldloc.s [Seq<{str,str}> (4)]
+      2) ldloc.s [str (5)]
+      2) ldloc.s [i8 (6)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [1]
+      1) ldloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) brtrue [2]
+      1) pop
+  Label [1]:
+      1) pop
+      1) ldnull
+      5) br [3]
+  Label [2]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [{str,str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,str,r8}>, Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>, {str,str,Seq<str>,r8}):Seq<{str,str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,Seq<str>,r8}>):Seq<{str,str,Seq<str>,r8}>
+  Label [3]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,str,Seq<str>,r8},{str,str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.7
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,str,Seq<str>,r8}>, Func<{str,str,Seq<str>,r8},{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) br [4]
+  Label [0]:
+      1) ldnull
+  Label [4]:
+      1) ret
+  Total Size: 261
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {A:s, B:s, B2:s, X:r8}*
+Sequence: Seq<{str,str,str,r8}>
+ 0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+ 1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+ 2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+ 3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+ 4) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 0 }
+ 5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+ 6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+ 7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> TB->MultiDRMBW(B, A, "/suf", 5)->&{ Mos: Mos->Map(it->&{ B2: "[" & B2->Text.Concat(", ") & "]" }) }
+TB->MultiDRMBW(B, A, "/suf", 5)+>{ Mos : Mos->Map(it+>{ B2 : "[" & B2->Text.Concat(", ") & "]" }) } : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+BndKind:SetFields, Type:{Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}, Bnd:(SetFields([with:3] Call(∂.Test.MultiDRMBW.MergeRec([with:1] Global(TB), {Mis:Call(∂.ForEach([map:2] Scope(1), {A:GetField(Scope(2), A), B:GetField(Scope(2), B)})), S1:str(/suf), S2:5:i8}, Scope(1))), Mos : Call(∂.ForEach([map:4] GetField(Scope(3), Mos), SetFields([with:5] Scope(4), B2 : StrConcat(str([), Call(∂.Text.Concat(GetField(Scope(5), B2), str(, )):s), str(])))))))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+merge(Arr<obj>, {Seq<str>}, {str,str,r8}):{str,str,Seq<str>,r8}
+      5) newobj {str,str,Seq<str>,r8}()
+      1) dup
+      2) ldc.i4.s [11]
+      5) stfld {str,str,Seq<str>,r8}::_B0:u1
+      1) stloc.0 [{str,str,Seq<str>,r8}]
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str,Seq<str>,r8}::_F0:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str,Seq<str>,r8}::_F1:str
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.2 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F2:r8
+      5) stfld {str,str,Seq<str>,r8}::_F3:r8
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) stfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      1) ldloc.0 [{str,str,Seq<str>,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 77
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {str,str,Seq<str>,r8}):{str,str,str,r8}
+      5) newobj {str,str,str,r8}()
+      1) dup
+      2) ldc.i4.s [15]
+      5) stfld {str,str,str,r8}::_B0:u1
+      1) stloc.0 [{str,str,str,r8}]
+      1) ldloc.0 [{str,str,str,r8}]
+      5) ldstr [[]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F2:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      5) ldstr []]
+      5) call static str::Concat(str, str, str):str
+      5) stfld {str,str,str,r8}::_F2:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F0:str
+      5) stfld {str,str,str,r8}::_F0:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F1:str
+      5) stfld {str,str,str,r8}::_F1:str
+      1) ldloc.0 [{str,str,str,r8}]
+      1) ldarg.1 [{str,str,Seq<str>,r8}]
+      5) ldfld {str,str,Seq<str>,r8}::_F3:r8
+      5) stfld {str,str,str,r8}::_F3:r8
+      1) ldloc.0 [{str,str,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 116
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/suf]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.5
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) stloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      2) stloc.s [Seq<{str,str}> (4)]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (5)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (6)]
+      5) newobj {Seq<{Seq<str>}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{Seq<str>}>,str,i8}::_B0:u1
+      2) stloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      2) ldloc.s [Seq<{str,str}> (4)]
+      2) ldloc.s [str (5)]
+      2) ldloc.s [i8 (6)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) stfld {Seq<{Seq<str>}>,str,i8}::_F0:Seq<{Seq<str>}>
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      2) ldloc.s [str (5)]
+      5) stfld {Seq<{Seq<str>}>,str,i8}::_F1:str
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      2) ldloc.s [i8 (6)]
+      5) stfld {Seq<{Seq<str>}>,str,i8}::_F2:i8
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) dup
+      2) stloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      5) ldfld {Seq<{Seq<str>}>,str,i8}::_F0:Seq<{Seq<str>}>
+      1) dup
+      5) brfalse [0]
+      1) ldloc.3 [Seq<{str,str,r8}>]
+      1) dup
+      5) brtrue [1]
+      1) pop
+  Label [0]:
+      1) pop
+      1) ldnull
+      5) br [2]
+  Label [1]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.6
+      5) ldelem [{str,str,Seq<str>,r8}]
+      5) call static MultiFormFuncHelper::Merge(Seq<{Seq<str>}>, Seq<{str,str,r8}>, Func<{Seq<str>},{str,str,r8},{str,str,Seq<str>,r8}>, {str,str,Seq<str>,r8}):Seq<{str,str,Seq<str>,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,Seq<str>,r8}>):Seq<{str,str,Seq<str>,r8}>
+  Label [2]:
+      2) stloc.s [Seq<{str,str,Seq<str>,r8}> (8)]
+      5) newobj {Seq<{str,str,Seq<str>,r8}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_B0:u1
+      2) stloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      5) ldfld {Seq<{Seq<str>}>,str,i8}::_F1:str
+      5) stfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F1:str
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      2) ldloc.s [{Seq<{Seq<str>}>,str,i8} (7)]
+      5) ldfld {Seq<{Seq<str>}>,str,i8}::_F2:i8
+      5) stfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F2:i8
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      2) ldloc.s [Seq<{str,str,Seq<str>,r8}> (8)]
+      5) stfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F0:Seq<{str,str,Seq<str>,r8}>
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.7
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      2) stloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      5) newobj {Seq<{str,str,str,r8}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str,str,r8}>,str,i8}::_B0:u1
+      2) stloc.s [{Seq<{str,str,str,r8}>,str,i8} (10)]
+      2) ldloc.s [{Seq<{str,str,str,r8}>,str,i8} (10)]
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      5) ldfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F0:Seq<{str,str,Seq<str>,r8}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.8
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{str,str,Seq<str>,r8},{str,str,str,r8}>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      2) ldc.i4.s [9]
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{str,str,Seq<str>,r8}>, Func<{str,str,Seq<str>,r8},{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str,str,r8}>):Seq<{str,str,str,r8}>
+      5) stfld {Seq<{str,str,str,r8}>,str,i8}::_F0:Seq<{str,str,str,r8}>
+      2) ldloc.s [{Seq<{str,str,str,r8}>,str,i8} (10)]
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      5) ldfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F1:str
+      5) stfld {Seq<{str,str,str,r8}>,str,i8}::_F1:str
+      2) ldloc.s [{Seq<{str,str,str,r8}>,str,i8} (10)]
+      2) ldloc.s [{Seq<{str,str,Seq<str>,r8}>,str,i8} (9)]
+      5) ldfld {Seq<{str,str,Seq<str>,r8}>,str,i8}::_F2:i8
+      5) stfld {Seq<{str,str,str,r8}>,str,i8}::_F2:i8
+      2) ldloc.s [{Seq<{str,str,str,r8}>,str,i8} (10)]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      2) ldc.i4.s [10]
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 449
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to {Mos:{A:s, B:s, B2:s, X:r8}*, S1:s, S2:i8}
+Type: {Seq<{str,str,str,r8}>,str,i8}, Value: { Mos: Sequence: Seq<{str,str,str,r8}>
+     0) { A: x, B: x, B2: [A: [x/suf], B: [x/suf]], X: 1 }
+     1) { A: <null>, B: xy, B2: [A: <null>/suf, B: [xy/suf]], X: 2 }
+     2) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 3 }
+     3) { A: xyz, B: xyz, B2: [A: [xyz/suf], B: [xyz/suf]], X: 4 }
+     4) { A: <null>, B: <null>, B2: [A: <null>/suf, B: <null>/suf], X: 0 }
+     5) { A: adios, B: <null>, B2: [A: [adios/suf], B: <null>/suf], X: 6 }
+     6) { A: hola, B: hola, B2: [A: [hola/suf], B: [hola/suf]], X: 7 }
+     7) { A: <null>, B: guten morgen, B2: [A: <null>/suf, B: [guten/suf]], X: 8 }
+  S1: /suf, S2: 5 }
+*** Ctx ping count: 24
+    [0](24): Text.Concat(!1x.B2, ", ")
+###
+> MultiDfMB(  Mis: TB, S1: "/pre", S2: 5  )->Map(B->Text.Concat(", "))
+MultiDfMB(Mis : TB, S1 : "/pre", S2 : 5)->Map(B->Text.Concat(", ")) : s*
+BndKind:Call, Type:s*, Bnd:(Call(∂.ForEach([map:2] Call(∂.Test.MultiDfMB.Simple({Mis:Call(∂.ForEach([map:1] Global(TB), {A:GetField(Scope(1), A), B:GetField(Scope(1), B)})), S1:str(/pre), S2:5:i8})), Call(∂.Text.Concat(GetField(Scope(2), B), str(, )):s)):s*))
+// (<ctx>, ∂.TB:{A:s, B:s, X:r8}*) : s*
+ForEach_1(Arr<obj>, {str,str,r8}):{str,str}
+      5) newobj {str,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {str,str}::_B0:u1
+      1) stloc.0 [{str,str}]
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F0:str
+      5) stfld {str,str}::_F0:str
+      1) ldloc.0 [{str,str}]
+      1) ldarg.1 [{str,str,r8}]
+      5) ldfld {str,str,r8}::_F1:str
+      5) stfld {str,str}::_F1:str
+      1) ldloc.0 [{str,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+mis_item_to_mos_item(Arr<obj>, str, i8, {str,str}):{Seq<str>}
+      5) newobj {Seq<str>}()
+      1) stloc.0 [{Seq<str>}]
+      1) ldloc.0 [{Seq<str>}]
+      1) ldarg.1 [str]
+      1) ldarg.2 [i8]
+      5) ldstr [A]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F0:str
+      5) ldstr [B]
+      1) ldarg.3 [{str,str}]
+      5) ldfld {str,str}::_F1:str
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::HandleTwo(str, i8, str, str, str, str):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      5) stfld {Seq<str>}::_F0:Seq<str>
+      1) ldloc.0 [{Seq<str>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 61
+
+ForEach_1(Arr<obj>, {Seq<str>}):str
+      1) ldarg.1 [{Seq<str>}]
+      5) ldfld {Seq<str>}::_F0:Seq<str>
+      5) ldstr [, ]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static TextConcatGen::Exec(Seq<str>, str, ExecCtx, i4):str
+      1) ret
+  Total Size: 25
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<{str,str,r8}>
+      1) stloc.1 [Seq<{str,str,r8}>]
+      5) newobj {Seq<{str,str}>,str,i8}()
+      1) dup
+      1) ldc.i4.6
+      5) stfld {Seq<{str,str}>,str,i8}::_B0:u1
+      1) stloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldloc.1 [Seq<{str,str,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<{str,str,r8},{str,str}>]
+      5) call static ForEachGen::Exec(Seq<{str,str,r8}>, Func<{str,str,r8},{str,str}>):Seq<{str,str}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{str,str}>):Seq<{str,str}>
+      5) stfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      5) ldstr [/pre]
+      5) stfld {Seq<{str,str}>,str,i8}::_F1:str
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) ldc.i4.5
+      1) conv.i8
+      5) stfld {Seq<{str,str}>,str,i8}::_F2:i8
+      1) ldloc.2 [{Seq<{str,str}>,str,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F0:Seq<{str,str}>
+      1) stloc.3 [Seq<{str,str}>]
+      1) dup
+      5) ldfld {Seq<{str,str}>,str,i8}::_F1:str
+      2) stloc.s [str (4)]
+      5) ldfld {Seq<{str,str}>,str,i8}::_F2:i8
+      2) stloc.s [i8 (5)]
+      1) ldloc.3 [Seq<{str,str}>]
+      2) ldloc.s [str (4)]
+      2) ldloc.s [i8 (5)]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [Func<str,i8,{str,str},{Seq<str>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [{Seq<str>}]
+      5) call static TestMultiFormOperGen<TestMultiFormFunc,ExecutionOper<MultiFormFuncTypes>>::Exec(Seq<{str,str}>, str, i8, Func<str,i8,{str,str},{Seq<str>}>, {Seq<str>}):Seq<{Seq<str>}>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<{Seq<str>}>):Seq<{Seq<str>}>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<{Seq<str>},str>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<{Seq<str>}>, Func<{Seq<str>},str>):Seq<str>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<str>):Seq<str>
+      1) ret
+  Total Size: 186
+
+Func sig: (<ctx>:x, TB:{A:s, B:s, X:r8}*) to s*
+Sequence: Seq<str>
+ 0) A: [x/pre], B: [x/pre]
+ 1) A: <null>/pre, B: [xy/pre]
+ 2) A: <null>/pre, B: <null>/pre
+ 3) A: [xyz/pre], B: [xyz/pre]
+ 4) A: <null>/pre, B: <null>/pre
+ 5) A: [adios/pre], B: <null>/pre
+ 6) A: [hola/pre], B: [hola/pre]
+ 7) A: <null>/pre, B: [guten/pre]
+*** Ctx ping count: 24
+    [0](24): Text.Concat(*1x.B, ", ")
+###

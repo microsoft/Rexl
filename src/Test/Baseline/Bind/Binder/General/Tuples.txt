@@ -1,0 +1,2323 @@
+**** New globals: {b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qrec:{A:i8}?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, u1:u1, u2:u2, u4:u4, u8:u8}
+
+> [1,2,3]
+[1, 2, 3] : i8*
+Binder : [1, 2, 3]
+###
+> [1, 2U]
+[1, 2] : i8*
+Binder : [1, 2]
+###
+> [1, 2F]
+[1, 2] : r4*
+Binder : [1, 2]
+###
+> [1, -1, 2.5]
+[1, -1, 2.5] : r8*
+Binder : [1, -1, 2.5]
+###
+> [1, 128]
+[1, 128] : i8*
+Binder : [1, 128]
+###
+> [1, 0x80, 0x8000]
+[1, 128, 32768] : i8*
+Binder : [1, 128, 32768]
+###
+> [1, 0x80, 0x8000, 0x80000000]
+[1, 128, 32768, 2147483648] : i8*
+Binder : [1, 128, 32768, 2147483648]
+###
+> [0x80000000, 1, 0x80, 0x8000]
+[2147483648, 1, 128, 32768] : i8*
+Binder : [2147483648, 1, 128, 32768]
+###
+> [0x80000000, 1, 0x80, null, 0x8000]
+[2147483648, 1, 128, null, 32768] : i8?*
+Binder : [Opt<i8?>(2147483648), Opt<i8?>(1), Opt<i8?>(128), null, Opt<i8?>(32768)]
+###
+> [true, false, true, true]
+[true, false, true, true] : b*
+Binder : [true, false, true, true]
+###
+> [true, null, false]
+[true, null, false] : b?*
+Binder : [Opt<b?>(true), null, Opt<b?>(false)]
+###
+> ["hi", null, ""]
+["hi", null, ""] : s*
+Binder : ["hi", str(<null>), ""]
+###
+> ["hi", true]
+["hi", true] : g*
+*** Error: (7,11) Node: true, Message: The given types are incompatible: 's' and 'b'
+Binder : [Ref<g>("hi"), Box<g>(true)]
+###
+> ["hi", 3]
+["hi", 3] : g*
+*** Error: (7,8) Node: 3, Message: The given types are incompatible: 's' and 'i8'
+Binder : [Ref<g>("hi"), Box<g>(3)]
+###
+> ["hi", true, -3]
+["hi", true, -3] : g*
+*** Error: (7,11) Node: true, Message: The given types are incompatible: 's' and 'b'
+Binder : [Ref<g>("hi"), Box<g>(true), Box<g>(-3)]
+###
+> [o, s, "hi"]
+[o, s, "hi"] : s*
+Binder : [str(<null>), s, "hi"]
+###
+> [g, o, s]
+[g, o, s] : g*
+Binder : [g, null, Ref<g>(s)]
+###
+> [b, true, false]
+[b, true, false] : b*
+Binder : [b, true, false]
+###
+> [qi]
+[qi] : i?*
+Binder : [qi]
+###
+> [qi, null, 3]
+[qi, null, 3] : i?*
+Binder : [qi, null, Opt<i?>(3)]
+###
+> []
+[] : v*
+Binder : null
+###
+> [1,2,3] + 4
+[1, 2, 3] + 4 : i8*
+Binder : ForEach(*1: [1, 2, 3], Add(*1, 4))
+###
+> [] + 4
+[] + 4 : i8*
+Binder : ForEach(*1: null, Add(Unit<i8>(*1), 4))
+Reducer: null
+###
+> [d, null]
+[d, null] : d?*
+Binder : [Opt<d?>(d), null]
+###
+> [qd, d]
+[qd, d] : d?*
+Binder : [qd, Opt<d?>(d)]
+###
+> [{A:i4}, {A:i4+3}]
+[{ A : i4 }, { A : i4 + 3 }] : {A:i8}*
+Binder : [{A:Num<i8>(i4)}, {A:Add(Num<i8>(i4), 3)}]
+###
+> [{A:i4}, {A:i8}]
+[{ A : i4 }, { A : i8 }] : {A:i8}*
+Binder : [{A:Num<i8>(i4)}, {A:i8}]
+###
+> (1,2,3)
+(1, 2, 3) : (i8, i8, i8)
+Binder : (1, 2, 3)
+###
+> (1, 2U)
+(1, 2) : (i8, u8)
+Binder : (1, 2)
+###
+> (1, 2F)
+(1, 2) : (i8, r4)
+Binder : (1, 2)
+###
+> (1, -1, 2.5)
+(1, -1, 2.5) : (i8, i8, r8)
+Binder : (1, -1, 2.5)
+###
+> (1, 128)
+(1, 128) : (i8, i8)
+Binder : (1, 128)
+###
+> (1, 0x80, 0x8000)
+(1, 128, 32768) : (i8, i8, i8)
+Binder : (1, 128, 32768)
+###
+> (1, 0x80, 0x8000, 0x80000000)
+(1, 128, 32768, 2147483648) : (i8, i8, i8, i8)
+Binder : (1, 128, 32768, 2147483648)
+###
+> (0x80000000, 1, 0x80, 0x8000)
+(2147483648, 1, 128, 32768) : (i8, i8, i8, i8)
+Binder : (2147483648, 1, 128, 32768)
+###
+> (0x80000000, 1, 0x80, null, 0x8000)
+(2147483648, 1, 128, null, 32768) : (i8, i8, i8, o, i8)
+Binder : (2147483648, 1, 128, null, 32768)
+###
+> (true, false, true, true)
+(true, false, true, true) : (b, b, b, b)
+Binder : (true, false, true, true)
+###
+> (true, null, false)
+(true, null, false) : (b, o, b)
+Binder : (true, null, false)
+###
+> ("hi", null, "")
+("hi", null, "") : (s, o, s)
+Binder : ("hi", null, "")
+###
+> ("hi", true)
+("hi", true) : (s, b)
+Binder : ("hi", true)
+###
+> ("hi", 3)
+("hi", 3) : (s, i8)
+Binder : ("hi", 3)
+###
+> ("hi", true, -3)
+("hi", true, -3) : (s, b, i8)
+Binder : ("hi", true, -3)
+###
+> (o, s, "hi")
+(o, s, "hi") : (o, s, s)
+Binder : (o, s, "hi")
+###
+> (g, o, s)
+(g, o, s) : (g, o, s)
+Binder : (g, o, s)
+###
+> (b, true, false)
+(b, true, false) : (b, b, b)
+Binder : (b, true, false)
+###
+> (qi)
+qi : i?
+Binder : qi
+###
+> (qi,)
+(qi,) : (i?)
+Binder : (qi,)
+###
+> (qi, null, 3)
+(qi, null, 3) : (i?, o, i8)
+Binder : (qi, null, 3)
+###
+> ()
+() : ()
+Binder : ()
+###
+> (1,2,3) + 4
+(1, 2, 3) + 4 : i8
+*** Error: (0,1) Node: (1, 2, 3), Message: Invalid operand type: cannot convert type '(i8, i8, i8)' to 'i8'
+Binder : Add(Error(ErrBadType_Src_Dst), 4)
+###
+> () + 4
+() + 4 : i8
+*** Error: (0,1) Node: (), Message: Invalid operand type: cannot convert type '()' to 'i8'
+Binder : Add(Error(ErrBadType_Src_Dst), 4)
+###
+> (d, null)
+(d, null) : (d, o)
+Binder : (d, null)
+###
+> (qd, d)
+(qd, d) : (d?, d)
+Binder : (qd, d)
+###
+> ({A:i4}, {A:i4+3})
+({ A : i4 }, { A : i4 + 3 }) : ({A:i4}, {A:i8})
+Binder : ({A:i4}, {A:Add(Num<i8>(i4), 3)})
+###
+> ({A:i4}, {A:i8})
+({ A : i4 }, { A : i8 }) : ({A:i4}, {A:i8})
+Binder : ({A:i4}, {A:i8})
+###
+
+**** Add globals: {qtup:(i8, s, b)?, qtupe:()?, sqtup:(i8, s, b)?*, sqtupe:()?*, stup:(i8, s, b)*, stupe:()*, tup:(i8, s, b), tupe:()}
+
+> tup[^3]
+tup[^3] : i8
+Binder : tup.0
+###
+> tup[^2]
+tup[^2] : s
+Binder : tup.1
+###
+> tup[^1]
+tup[^1] : b
+Binder : tup.2
+###
+> tup[0]
+tup[0] : i8
+Binder : tup.0
+###
+> tup[1]
+tup[1] : s
+Binder : tup.1
+###
+> tup[2]
+tup[2] : b
+Binder : tup.2
+###
+> tup[^4]
+tup[^4] : v
+*** Error: (5,6) Node: ^4, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : Error(ErrHetTupleOffsetOutOfRange_Max)
+###
+> tup[3]
+tup[3] : v
+*** Error: (4,5) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+Binder : Error(ErrHetTupleIndexOutOfRange_Arity)
+###
+> tup[i8]
+tup[i8] : v
+*** Error: (4,6) Node: i8, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> tup[-1]
+tup[-1] : v
+*** Error: (4,5) Node: -1, Message: Negative tuple index not supported, use '^1' to index from the end of the tuple
+Binder : Error(ErrTupleNegativeIndex_Index)
+###
+> tup[-2]
+tup[-2] : v
+*** Error: (4,5) Node: -2, Message: Negative tuple index not supported, use '^2' to index from the end of the tuple
+Binder : Error(ErrTupleNegativeIndex_Index)
+###
+> tup[7]
+tup[7] : v
+*** Error: (4,5) Node: 7, Message: Index is out of range, should be at least 0 and less than 3
+Binder : Error(ErrHetTupleIndexOutOfRange_Arity)
+###
+> tup[^7]
+tup[^7] : v
+*** Error: (5,6) Node: ^7, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : Error(ErrHetTupleOffsetOutOfRange_Max)
+###
+> tup[%7]
+tup[%7] : s
+Binder : tup.1
+###
+> tup[&7]
+tup[&7] : b
+Binder : tup.2
+###
+> tup[^%7]
+tup[^%7] : b
+Binder : tup.2
+###
+> tup[^&7]
+tup[^&7] : i8
+Binder : tup.0
+###
+> tup[-7]
+tup[-7] : v
+*** Error: (4,5) Node: -7, Message: Index is out of range, should be at least 0 and less than 3
+Binder : Error(ErrHetTupleIndexOutOfRange_Arity)
+###
+> tup[%-7]
+tup[%-7] : b
+Binder : tup.2
+###
+> tup[&-7]
+tup[&-7] : i8
+Binder : tup.0
+###
+> tup[^%-7]
+tup[^%-7] : s
+Binder : tup.1
+###
+> tup[^&-7]
+tup[^&-7] : b
+Binder : tup.2
+###
+> tup[]
+tup[] : v
+*** Error: (3,4) Node: (), Tok: '[', Message: Expected an index or a slice
+Binder : Error(ErrExpectedIndexOrSlice)
+###
+> tup[0,]
+tup[0, (<missing>)] : i8
+=== Parse diagnostics:
+*** Error: (6,7) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (6,7) Node: (<missing>), Message: Expected an operand
+*** Error: (6,7) Node: (<missing>), Message: Expected a single index or slice
+Binder : tup.0
+###
+> tup[0, s, 1,]
+tup[0, s, 1, (<missing>)] : i8
+=== Parse diagnostics:
+*** Error: (12,13) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (12,13) Node: (<missing>), Message: Expected an operand
+*** Error: (7,8) Node: s, Message: Expected a single index or slice
+Binder : tup.0
+###
+> tup[s, 0]
+tup[s, 0] : v
+*** Error: (7,8) Node: 0, Message: Expected a single index or slice
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (4,5) Node: s, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> tup[s]
+tup[s] : v
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+*** Error: (4,5) Node: s, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> tupe[0]
+tupe[0] : v
+*** Error: (4,5) Node: tupe[0], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tupe[]
+tupe[] : v
+*** Error: (4,5) Node: tupe[], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tupe[0,]
+tupe[0, (<missing>)] : v
+=== Parse diagnostics:
+*** Error: (7,8) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (7,8) Node: (<missing>), Message: Expected an operand
+*** Error: (4,5) Node: tupe[0, (<missing>)], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tupe[0, s, 1,]
+tupe[0, s, 1, (<missing>)] : v
+=== Parse diagnostics:
+*** Error: (13,14) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (13,14) Node: (<missing>), Message: Expected an operand
+*** Error: (4,5) Node: tupe[0, s, 1, (<missing>)], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tupe[s, 1]
+tupe[s, 1] : v
+*** Error: (4,5) Node: tupe[s, 1], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tupe[s]
+tupe[s] : v
+*** Error: (4,5) Node: tupe[s], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> qtup[^3]
+qtup[^3] : i8?
+Binder : Guard(?1: qtup, ?1.0)
+###
+> qtup[^2]
+qtup[^2] : s
+Binder : Guard(?1: qtup, ?1.1)
+###
+> qtup[^1]
+qtup[^1] : b?
+Binder : Guard(?1: qtup, ?1.2)
+###
+> qtup[0]
+qtup[0] : i8?
+Binder : Guard(?1: qtup, ?1.0)
+###
+> qtup[1]
+qtup[1] : s
+Binder : Guard(?1: qtup, ?1.1)
+###
+> qtup[2]
+qtup[2] : b?
+Binder : Guard(?1: qtup, ?1.2)
+###
+> qtup[^4]
+qtup[^4] : o
+*** Error: (6,7) Node: ^4, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : Guard(?1: qtup, Error(ErrHetTupleOffsetOutOfRange_Max))
+Reducer: null
+###
+> qtup[3]
+qtup[3] : o
+*** Error: (5,6) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+Binder : Guard(?1: qtup, Error(ErrHetTupleIndexOutOfRange_Arity))
+Reducer: null
+###
+> qtup[i8]
+qtup[i8] : o
+*** Error: (5,7) Node: i8, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Guard(?1: qtup, Error(ErrBadHetTupleIndex))
+Reducer: null
+###
+> stup[^3]
+stup[^3] : i8*
+Binder : ForEach(*1: stup, *1.0)
+###
+> stup[^2]
+stup[^2] : s*
+Binder : ForEach(*1: stup, *1.1)
+###
+> stup[^1]
+stup[^1] : b*
+Binder : ForEach(*1: stup, *1.2)
+###
+> stup[0]
+stup[0] : i8*
+Binder : ForEach(*1: stup, *1.0)
+###
+> stup[1]
+stup[1] : s*
+Binder : ForEach(*1: stup, *1.1)
+###
+> stup[2]
+stup[2] : b*
+Binder : ForEach(*1: stup, *1.2)
+###
+> stup[^4]
+stup[^4] : v*
+*** Error: (6,7) Node: ^4, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : ForEach(*1: stup, Error(ErrHetTupleOffsetOutOfRange_Max))
+###
+> stup[3]
+stup[3] : v*
+*** Error: (5,6) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+Binder : ForEach(*1: stup, Error(ErrHetTupleIndexOutOfRange_Arity))
+###
+> stup[i8]
+stup[i8] : v*
+*** Error: (5,7) Node: i8, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : ForEach(*1: stup, Error(ErrBadHetTupleIndex))
+###
+> stupe[0]
+stupe[0] : v*
+*** Error: (5,6) Node: stupe[0], Message: An empty tuple can't be indexed
+Binder : ForEach(*1: stupe, Error(ErrEmptyTupleNoIndexing))
+###
+> sqtup[^3]
+sqtup[^3] : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.0))
+###
+> sqtup[^2]
+sqtup[^2] : s*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.1))
+###
+> sqtup[^1]
+sqtup[^1] : b?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.2))
+###
+> sqtup[0]
+sqtup[0] : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.0))
+###
+> sqtup[1]
+sqtup[1] : s*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.1))
+###
+> sqtup[2]
+sqtup[2] : b?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2.2))
+###
+> sqtup[^4]
+sqtup[^4] : o*
+*** Error: (7,8) Node: ^4, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Error(ErrHetTupleOffsetOutOfRange_Max)))
+Reducer: ForEach(*1: sqtup, null)
+###
+> sqtup[3]
+sqtup[3] : o*
+*** Error: (6,7) Node: 3, Message: Index is out of range, should be at least 0 and less than 3
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Error(ErrHetTupleIndexOutOfRange_Arity)))
+Reducer: ForEach(*1: sqtup, null)
+###
+> sqtupe[0]
+sqtupe[0] : o*
+*** Error: (6,7) Node: sqtupe[0], Message: An empty tuple can't be indexed
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Error(ErrEmptyTupleNoIndexing)))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> tup.Item0
+tup.Item0 : i8
+Binder : Tuple.Item0*(tup)
+Reducer: tup.0
+###
+> tup.Item1
+tup.Item1 : s
+Binder : Tuple.Item1*(tup)
+Reducer: tup.1
+###
+> tup.Item2
+tup.Item2 : b
+Binder : Tuple.Item2*(tup)
+Reducer: tup.2
+###
+> tup.Item3
+tup.Item3 : v
+*** Error: (0,3) Node: tup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (0,3) Node: tup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : Tuple.Item3*(Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst).3
+###
+> tupe.Item0
+tupe.Item0 : v
+*** Error: (0,4) Node: tupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (0,4) Node: tupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : Tuple.Item0*(Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst).0
+###
+> qtup.Item0
+qtup.Item0 : i8?
+Binder : Guard(?1: qtup, Tuple.Item0*(?1))
+Reducer: Guard(?1: qtup, ?1.0)
+###
+> qtup.Item1
+qtup.Item1 : s
+Binder : Guard(?1: qtup, Tuple.Item1*(?1))
+Reducer: Guard(?1: qtup, ?1.1)
+###
+> qtup.Item2
+qtup.Item2 : b?
+Binder : Guard(?1: qtup, Tuple.Item2*(?1))
+Reducer: Guard(?1: qtup, ?1.2)
+###
+> qtup.Item3
+qtup.Item3 : o
+*** Error: (0,4) Node: qtup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (0,4) Node: qtup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : Guard(?1: qtup, Tuple.Item3*(Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> qtupe.Item0
+qtupe.Item0 : o
+*** Error: (0,5) Node: qtupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (0,5) Node: qtupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : Guard(?1: qtupe, Tuple.Item0*(Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> stup.Item0
+stup.Item0 : i8*
+Binder : ForEach(*1: stup, Tuple.Item0*(*1))
+Reducer: ForEach(*1: stup, *1.0)
+###
+> stup.Item1
+stup.Item1 : s*
+Binder : ForEach(*1: stup, Tuple.Item1*(*1))
+Reducer: ForEach(*1: stup, *1.1)
+###
+> stup.Item2
+stup.Item2 : b*
+Binder : ForEach(*1: stup, Tuple.Item2*(*1))
+Reducer: ForEach(*1: stup, *1.2)
+###
+> stup.Item3
+stup.Item3 : v*
+*** Error: (0,4) Node: stup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (0,4) Node: stup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : ForEach(*1: stup, Tuple.Item3*(Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: stup, Error(ErrBadType_Src_Dst).3)
+###
+> stupe.Item0
+stupe.Item0 : v*
+*** Error: (0,5) Node: stupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (0,5) Node: stupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : ForEach(*1: stupe, Tuple.Item0*(Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: stupe, Error(ErrBadType_Src_Dst).0)
+###
+> sqtup.Item0
+sqtup.Item0 : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item0*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.0))
+###
+> sqtup.Item1
+sqtup.Item1 : s*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item1*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.1))
+###
+> sqtup.Item2
+sqtup.Item2 : b?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item2*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.2))
+###
+> sqtup.Item3
+sqtup.Item3 : o*
+*** Error: (0,5) Node: sqtup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (0,5) Node: sqtup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item3*(Error(ErrBadType_Src_Dst))))
+Reducer: ForEach(*1: sqtup, null)
+###
+> sqtupe.Item0
+sqtupe.Item0 : o*
+*** Error: (0,6) Node: sqtupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (0,6) Node: sqtupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Tuple.Item0*(Error(ErrBadType_Src_Dst))))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> Tuple.Item0(tup)
+Tuple.Item0(tup) : i8
+Binder : Tuple.Item0*(tup)
+Reducer: tup.0
+###
+> Tuple.Item1(tup)
+Tuple.Item1(tup) : s
+Binder : Tuple.Item1*(tup)
+Reducer: tup.1
+###
+> Tuple.Item2(tup)
+Tuple.Item2(tup) : b
+Binder : Tuple.Item2*(tup)
+Reducer: tup.2
+###
+> Tuple.Item3(tup)
+Tuple.Item3(tup) : v
+*** Error: (12,15) Node: tup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (12,15) Node: tup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : Tuple.Item3*(Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst).3
+###
+> Tuple.Item0(tupe)
+Tuple.Item0(tupe) : v
+*** Error: (12,16) Node: tupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (12,16) Node: tupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : Tuple.Item0*(Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst).0
+###
+> Tuple.Item0(qtup)
+Tuple.Item0(qtup) : i8?
+Binder : Guard(?1: qtup, Tuple.Item0*(?1))
+Reducer: Guard(?1: qtup, ?1.0)
+###
+> Tuple.Item1(qtup)
+Tuple.Item1(qtup) : s
+Binder : Guard(?1: qtup, Tuple.Item1*(?1))
+Reducer: Guard(?1: qtup, ?1.1)
+###
+> Tuple.Item2(qtup)
+Tuple.Item2(qtup) : b?
+Binder : Guard(?1: qtup, Tuple.Item2*(?1))
+Reducer: Guard(?1: qtup, ?1.2)
+###
+> Tuple.Item3(qtup)
+Tuple.Item3(qtup) : o
+*** Error: (12,16) Node: qtup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (12,16) Node: qtup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : Guard(?1: qtup, Tuple.Item3*(Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> Tuple.Item0(qtupe)
+Tuple.Item0(qtupe) : o
+*** Error: (12,17) Node: qtupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (12,17) Node: qtupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : Guard(?1: qtupe, Tuple.Item0*(Error(ErrBadType_Src_Dst)))
+Reducer: null
+###
+> Tuple.Item0(stup)
+Tuple.Item0(stup) : i8*
+Binder : ForEach(*1: stup, Tuple.Item0*(*1))
+Reducer: ForEach(*1: stup, *1.0)
+###
+> Tuple.Item1(stup)
+Tuple.Item1(stup) : s*
+Binder : ForEach(*1: stup, Tuple.Item1*(*1))
+Reducer: ForEach(*1: stup, *1.1)
+###
+> Tuple.Item2(stup)
+Tuple.Item2(stup) : b*
+Binder : ForEach(*1: stup, Tuple.Item2*(*1))
+Reducer: ForEach(*1: stup, *1.2)
+###
+> Tuple.Item3(stup)
+Tuple.Item3(stup) : v*
+*** Error: (12,16) Node: stup, Message: Tuple operand has 3 items, needs at least 4
+*** Error: (12,16) Node: stup, Message: Invalid operand type: cannot convert type '(i8, s, b)' to '(i8, s, b, v)'
+Binder : ForEach(*1: stup, Tuple.Item3*(Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: stup, Error(ErrBadType_Src_Dst).3)
+###
+> Tuple.Item0(stupe)
+Tuple.Item0(stupe) : v*
+*** Error: (12,17) Node: stupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (12,17) Node: stupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : ForEach(*1: stupe, Tuple.Item0*(Error(ErrBadType_Src_Dst)))
+Reducer: ForEach(*1: stupe, Error(ErrBadType_Src_Dst).0)
+###
+> Tuple.Item0(sqtup)
+Tuple.Item0(sqtup) : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item0*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.0))
+###
+> Tuple.Item1(sqtup)
+Tuple.Item1(sqtup) : s*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item1*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.1))
+###
+> Tuple.Item2(sqtup)
+Tuple.Item2(sqtup) : b?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item2*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.2))
+###
+> Tuple.Item2(sqtup)
+Tuple.Item2(sqtup) : b?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Item2*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2.2))
+###
+> Tuple.Item0(sqtupe)
+Tuple.Item0(sqtupe) : o*
+*** Error: (12,18) Node: sqtupe, Message: Tuple operand has 0 items, needs at least 1
+*** Error: (12,18) Node: sqtupe, Message: Invalid operand type: cannot convert type '()' to '(v)'
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Tuple.Item0*(Error(ErrBadType_Src_Dst))))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> i4[3]
+i4[3] : i4
+*** Error: (2,3) Node: i4[3], Message: Operand must be either a tensor or a tuple
+Binder : Error(ErrNotIndexable)
+###
+> i4.Item3
+i4.Item3 : v
+*** Error: (2,3) Node: i4.Item3, Message: Invalid use of '.'
+Binder : Error(ErrInvalidDot)
+###
+> Tuple.Item3(i4)
+Tuple.Item3(i4) : v
+*** Error: (12,14) Node: i4, Message: Operand must be a tuple
+*** Error: (12,14) Node: i4, Message: Invalid operand type: cannot convert type 'i4' to '(v, v, v, v)'
+Binder : Tuple.Item3*(Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst).3
+###
+> tup.Len
+tup.Len : i8
+Binder : Tuple.Len*(tup)
+Reducer: 3
+###
+> tupe.Len
+tupe.Len : i8
+Binder : Tuple.Len*(tupe)
+Reducer: 0
+###
+> qtup.Len
+qtup.Len : i8?
+Binder : Guard(?1: qtup, Tuple.Len*(?1))
+Reducer: Guard(?1: qtup, 3)
+###
+> qtupe.Len
+qtupe.Len : i8?
+Binder : Guard(?1: qtupe, Tuple.Len*(?1))
+Reducer: Guard(?1: qtupe, 0)
+###
+> stup.Len
+stup.Len : i8*
+Binder : ForEach(*1: stup, Tuple.Len*(*1))
+Reducer: ForEach(*1: stup, 3)
+###
+> stupe.Len
+stupe.Len : i8*
+Binder : ForEach(*1: stupe, Tuple.Len*(*1))
+Reducer: ForEach(*1: stupe, 0)
+###
+> sqtup.Len
+sqtup.Len : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Len*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, 3))
+###
+> sqtupe.Len
+sqtupe.Len : i8?*
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Tuple.Len*(?2)))
+Reducer: ForEach(*1: sqtupe, Guard(?2: *1, 0))
+###
+> Tuple.Len(tup)
+Tuple.Len(tup) : i8
+Binder : Tuple.Len*(tup)
+Reducer: 3
+###
+> Tuple.Len(tupe)
+Tuple.Len(tupe) : i8
+Binder : Tuple.Len*(tupe)
+Reducer: 0
+###
+> Tuple.Len(qtup)
+Tuple.Len(qtup) : i8?
+Binder : Guard(?1: qtup, Tuple.Len*(?1))
+Reducer: Guard(?1: qtup, 3)
+###
+> Tuple.Len(qtupe)
+Tuple.Len(qtupe) : i8?
+Binder : Guard(?1: qtupe, Tuple.Len*(?1))
+Reducer: Guard(?1: qtupe, 0)
+###
+> Tuple.Len(stup)
+Tuple.Len(stup) : i8*
+Binder : ForEach(*1: stup, Tuple.Len*(*1))
+Reducer: ForEach(*1: stup, 3)
+###
+> Tuple.Len(stupe)
+Tuple.Len(stupe) : i8*
+Binder : ForEach(*1: stupe, Tuple.Len*(*1))
+Reducer: ForEach(*1: stupe, 0)
+###
+> Tuple.Len(sqtup)
+Tuple.Len(sqtup) : i8?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, Tuple.Len*(?2)))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, 3))
+###
+> Tuple.Len(sqtupe)
+Tuple.Len(sqtupe) : i8?*
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Tuple.Len*(?2)))
+Reducer: ForEach(*1: sqtupe, Guard(?2: *1, 0))
+###
+> Tuple.Len("hi")
+Tuple.Len("hi") : i8
+*** Error: (10,14) Node: "hi", Message: Invalid operand type: cannot convert type 's' to '(s)'
+Binder : Tuple.Len*(Error(ErrBadType_Src_Dst))
+Reducer: 1
+###
+> [(1, "hi", false), tup]
+[(1, "hi", false), tup] : (i8, s, b)*
+Binder : [(1, "hi", false), tup]
+###
+> [(1.5, "hi", false), tup]
+[(1.5, "hi", false), tup] : (r8, s, b)*
+Binder : [(1.5, "hi", false), With(!1: tup, (Num<r8>(!1.0), !1.1, !1.2))]
+Reducer: [(1.5, "hi", false), (Num<r8>(tup.0), tup.1, tup.2)]
+###
+> [(1.5, "hi", false), Wrap(tup)]
+[(1.5, "hi", false), Wrap(tup)] : (r8, s, b)*
+Binder : [(1.5, "hi", false), With(!1: Test.Wrap(tup), (Num<r8>(!1.0), !1.1, !1.2))]
+Reducer: With(!1: Test.Wrap(tup), [(1.5, "hi", false), (Num<r8>(!1.0), !1.1, !1.2)])
+###
+> [[(1, "hi", false)], stup]
+[[(1, "hi", false)], stup] : (i8, s, b)**
+Binder : [[(1, "hi", false)], stup]
+###
+> [[(1.5, "hi", false)], stup]
+[[(1.5, "hi", false)], stup] : (r8, s, b)**
+Binder : [[(1.5, "hi", false)], ForEach(*1: stup, With(!2: *1, (Num<r8>(!2.0), !2.1, !2.2)))]
+Reducer: [[(1.5, "hi", false)], ForEach(*1: stup, (Num<r8>(*1.0), *1.1, *1.2))]
+###
+> [stup, sqtup]
+[stup, sqtup] : (i8, s, b)?**
+Binder : [Ref<(i8, s, b)?*>(stup), sqtup]
+###
+> [(1.5, "hi", false), (-3, 17, null) ]
+[(1.5, "hi", false), (-3, 17, null)] : (r8, g, b?)*
+*** Error: (21,22) Node: (-3, 17, null), Message: The given types are incompatible: '(r8, s, b)' and '(i8, i8, o)'
+Binder : [(1.5, Ref<g>("hi"), Opt<b?>(false)), (-3, Box<g>(17), null)]
+###
+> [(1, "hi", false), (-3, 17, null) ]
+[(1, "hi", false), (-3, 17, null)] : (i8, g, b?)*
+*** Error: (19,20) Node: (-3, 17, null), Message: The given types are incompatible: '(i8, s, b)' and '(i8, i8, o)'
+Binder : [(1, Ref<g>("hi"), Opt<b?>(false)), (-3, Box<g>(17), null)]
+###
+> [(1.5, "hi", false), (-3, "bye", true) ]
+[(1.5, "hi", false), (-3, "bye", true)] : (r8, s, b)*
+Binder : [(1.5, "hi", false), (-3, "bye", true)]
+###
+> [(1, "hi", false), (-3.5, "bye", true) ]
+[(1, "hi", false), (-3.5, "bye", true)] : (r8, s, b)*
+Binder : [(1, "hi", false), (-3.5, "bye", true)]
+###
+> (i4, s, b)[0]
+(i4, s, b)[0] : i4
+Binder : i4
+###
+> (i4, s, b)[1]
+(i4, s, b)[1] : s
+Binder : s
+###
+> (i4, s, b)[2]
+(i4, s, b)[2] : b
+Binder : b
+###
+> (i4, s, b).Item0
+(i4, s, b).Item0 : i4
+Binder : Tuple.Item0*((i4, s, b))
+Reducer: i4
+###
+> (i4, s, b).Item1
+(i4, s, b).Item1 : s
+Binder : Tuple.Item1*((i4, s, b))
+Reducer: s
+###
+> (i4, s, b).Item2
+(i4, s, b).Item2 : b
+Binder : Tuple.Item2*((i4, s, b))
+Reducer: b
+###
+> (tup if true else qtup)[0]
+(tup if true else qtup)[0] : i8?
+Binder : Guard(?1: If(true, Ref<(i8, s, b)?>(tup), qtup), ?1.0)
+Reducer: Opt<i8?>(tup.0)
+###
+> (tup if true else qtup).Item0
+(tup if true else qtup).Item0 : i8?
+Binder : Guard(?1: If(true, Ref<(i8, s, b)?>(tup), qtup), Tuple.Item0*(?1))
+Reducer: Opt<i8?>(tup.0)
+###
+> (tup if true else tup)[0]
+(tup if true else tup)[0] : i8
+Binder : If(true, tup, tup).0
+Reducer: tup.0
+###
+> (tup if true else tup).Item0
+(tup if true else tup).Item0 : i8
+Binder : Tuple.Item0*(If(true, tup, tup))
+Reducer: tup.0
+###
+> ()[:] // Error.
+()[:] : v
+*** Error: (2,3) Node: ()[:], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> ()[1:] // Error.
+()[1:] : v
+*** Error: (2,3) Node: ()[1:], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> (1,)[:]
+(1,)[:] : (i8)
+Binder : (1,)
+###
+> (1,)[::0]
+(1,)[::0] : (i8)
+Binder : (1,)
+###
+> (1,)[::-1]
+(1,)[::-1] : (i8)
+Binder : (1,)
+###
+> (1,)[0:1:0]
+(1,)[0:1:0] : (i8)
+Binder : (1,)
+###
+> (1,)[0:1:1]
+(1,)[0:1:1] : (i8)
+Binder : (1,)
+###
+> (1,)[0:1:2]
+(1,)[0:1:2] : (i8)
+Binder : (1,)
+###
+> (1,)[0:1:-1]
+(1,)[0:1:-1] : ()
+Binder : ()
+###
+> (i4, s, b)[:]
+(i4, s, b)[:] : (i4, s, b)
+Binder : (i4, s, b)
+###
+> (i4, s, b)[1::]
+(i4, s, b)[1::] : (s, b)
+Binder : (s, b)
+###
+> (i4, s, b)[:1:]
+(i4, s, b)[:1:] : (i4)
+Binder : (i4,)
+###
+> (i4, s, b)[::-1]
+(i4, s, b)[::-1] : (b, s, i4)
+Binder : (b, s, i4)
+###
+> (i4, s, b)[::0]
+(i4, s, b)[::0] : (i4, s, b)
+Binder : (i4, s, b)
+###
+> (i4, s, b)[::1]
+(i4, s, b)[::1] : (i4, s, b)
+Binder : (i4, s, b)
+###
+> (i4, s, b)[2::]
+(i4, s, b)[2::] : (b)
+Binder : (b,)
+###
+> (i4, s, b)[:2:]
+(i4, s, b)[:2:] : (i4, s)
+Binder : (i4, s)
+###
+> (i4, s, b)[::2]
+(i4, s, b)[::2] : (i4, b)
+Binder : (i4, b)
+###
+> (i4, s, b)[0:0:]
+(i4, s, b)[0:0:] : ()
+Binder : ()
+###
+> (i4, s, b)[0:10:]
+(i4, s, b)[0:10:] : (i4, s, b)
+Binder : (i4, s, b)
+###
+> (i4, s, b)[0:2:]
+(i4, s, b)[0:2:] : (i4, s)
+Binder : (i4, s)
+###
+> (i4, s, b)[0:2:0]
+(i4, s, b)[0:2:0] : (i4, s)
+Binder : (i4, s)
+###
+> (i4, s, b)[0:2:-1]
+(i4, s, b)[0:2:-1] : ()
+Binder : ()
+###
+> (i4, s, b)[0:2:2]
+(i4, s, b)[0:2:2] : (i4)
+Binder : (i4,)
+###
+> (i4, s, b)[-1:0:]
+(i4, s, b)[-1:0:] : ()
+Binder : ()
+###
+> (i4, s, b)[1:10:]
+(i4, s, b)[1:10:] : (s, b)
+Binder : (s, b)
+###
+> (i4, s, b)[2:10:]
+(i4, s, b)[2:10:] : (b)
+Binder : (b,)
+###
+> (i4, s, b)[2:-1:]
+(i4, s, b)[2:-1:] : (b, s, i4)
+Binder : (b, s, i4)
+###
+> (i4, s, b)[1:-3:]
+(i4, s, b)[1:-3:] : (s, i4)
+Binder : (s, i4)
+###
+> (i4, s, b)[1:-3:1]
+(i4, s, b)[1:-3:1] : ()
+Binder : ()
+###
+> (i4, s, b)[1:-3:2]
+(i4, s, b)[1:-3:2] : ()
+Binder : ()
+###
+> (i4, s, b)[1:-3:-1]
+(i4, s, b)[1:-3:-1] : (s, i4)
+Binder : (s, i4)
+###
+> (i4, s, b)[1:-3:-2]
+(i4, s, b)[1:-3:-2] : (s)
+Binder : (s,)
+###
+> (i4, s, b)[1:-1:]
+(i4, s, b)[1:-1:] : (s, i4)
+Binder : (s, i4)
+###
+> (i8, r8, s, b)[:]
+(i8, r8, s, b)[:] : (i8, r8, s, b)
+Binder : (i8, r8, s, b)
+###
+> (i8, r8, s, b)[1::]
+(i8, r8, s, b)[1::] : (r8, s, b)
+Binder : (r8, s, b)
+###
+> (i8, r8, s, b)[:1:]
+(i8, r8, s, b)[:1:] : (i8)
+Binder : (i8,)
+###
+> (i8, r8, s, b)[::-1]
+(i8, r8, s, b)[::-1] : (b, s, r8, i8)
+Binder : (b, s, r8, i8)
+###
+> (i8, r8, s, b)[::0]
+(i8, r8, s, b)[::0] : (i8, r8, s, b)
+Binder : (i8, r8, s, b)
+###
+> (i8, r8, s, b)[::1]
+(i8, r8, s, b)[::1] : (i8, r8, s, b)
+Binder : (i8, r8, s, b)
+###
+> (i8, r8, s, b)[2::]
+(i8, r8, s, b)[2::] : (s, b)
+Binder : (s, b)
+###
+> (i8, r8, s, b)[:2:]
+(i8, r8, s, b)[:2:] : (i8, r8)
+Binder : (i8, r8)
+###
+> (i8, r8, s, b)[::2]
+(i8, r8, s, b)[::2] : (i8, s)
+Binder : (i8, s)
+###
+> (i8, r8, s, b)[0:0:]
+(i8, r8, s, b)[0:0:] : ()
+Binder : ()
+###
+> (i8, r8, s, b)[0:10:]
+(i8, r8, s, b)[0:10:] : (i8, r8, s, b)
+Binder : (i8, r8, s, b)
+###
+> (i8, r8, s, b)[0:10:-1]
+(i8, r8, s, b)[0:10:-1] : ()
+Binder : ()
+###
+> (i8, r8, s, b)[0:10:-2]
+(i8, r8, s, b)[0:10:-2] : ()
+Binder : ()
+###
+> (i8, r8, s, b)[0:10:2]
+(i8, r8, s, b)[0:10:2] : (i8, s)
+Binder : (i8, s)
+###
+> (i8, r8, s, b)[0:10:10]
+(i8, r8, s, b)[0:10:10] : (i8)
+Binder : (i8,)
+###
+> (i8, r8, s, b)[0:2:]
+(i8, r8, s, b)[0:2:] : (i8, r8)
+Binder : (i8, r8)
+###
+> (i8, r8, s, b)[1:-1:]
+(i8, r8, s, b)[1:-1:] : (r8, i8)
+Binder : (r8, i8)
+###
+> tupe[:] // Error.
+tupe[:] : v
+*** Error: (4,5) Node: tupe[:], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> tup[:]
+tup[:] : (i8, s, b)
+Binder : tup
+###
+> stupe[:] // Error.
+stupe[:] : v*
+*** Error: (5,6) Node: stupe[:], Message: An empty tuple can't be indexed
+Binder : ForEach(*1: stupe, Error(ErrEmptyTupleNoIndexing))
+###
+> stup[:]
+stup[:] : (i8, s, b)*
+Binder : ForEach(*1: stup, *1)
+Reducer: stup
+###
+> qtupe[:] // Error.
+qtupe[:] : o
+*** Error: (5,6) Node: qtupe[:], Message: An empty tuple can't be indexed
+Binder : Guard(?1: qtupe, Error(ErrEmptyTupleNoIndexing))
+Reducer: null
+###
+> qtup[:]
+qtup[:] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> sqtupe[:] // Error.
+sqtupe[:] : o*
+*** Error: (6,7) Node: sqtupe[:], Message: An empty tuple can't be indexed
+Binder : ForEach(*1: sqtupe, Guard(?2: *1, Error(ErrEmptyTupleNoIndexing)))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> sqtup[:]
+sqtup[:] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> tup[null:2]
+tup[null:2] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[2:null]
+tup[2:null] : (b)
+Binder : tup[2:3:1]
+###
+> tup[:2:null]
+tup[:2:null] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[0::] // Reduce to tup.
+tup[0::] : (i8, s, b)
+Binder : tup
+###
+> tup[:^0] // Reduce to tup.
+tup[:^0] : (i8, s, b)
+Binder : tup
+###
+> tup[::1] // Reduce to tup.
+tup[::1] : (i8, s, b)
+Binder : tup
+###
+> tup[:3:] // Reduce to tup.
+tup[:3:] : (i8, s, b)
+Binder : tup
+###
+> tup[^0:] // Reduce to empty.
+tup[^0:] : ()
+Binder : ()
+###
+> tup[:^1:] // Doesn't reduce.
+tup[:^1:] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[:^1+1:] // Error.
+tup[:^1 + 1:] : v
+*** Error: (7,8) Node: 1 + 1, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> tup[0::-1] // Doesn't reduce.
+tup[0::-1] : (i8)
+Binder : tup[0:-1:-1]
+###
+> tup[0::2] // Doesn't reduce.
+tup[0::2] : (i8, b)
+Binder : tup[0:4:2]
+###
+> tup[:*3] // Reduce to tup.
+tup[:*3] : (i8, s, b)
+Binder : tup
+###
+> tup[:*47] // Reduce to tup.
+tup[:*47] : (i8, s, b)
+Binder : tup
+###
+> tup[:*2] // Doesn't reduce.
+tup[:*2] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[:^*0] // Reduce to tup.
+tup[:^*0] : (i8, s, b)
+Binder : tup
+###
+> tup[:*^3] // Reduce to empty.
+tup[:^*3] : ()
+Binder : ()
+###
+> tup[:*^2] // Doesn't reduce.
+tup[:^*2] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[:^*0:2] // Doesn't reduce.
+tup[:^*0:2] : (i8, b)
+Binder : tup[0:4:2]
+###
+> tup[1:*2] // Doesn't reduce.
+tup[1:*2] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[3:*2] // Reduce to empty.
+tup[3:*2] : ()
+Binder : ()
+###
+> tup[1:*0] // Reduce to empty.
+tup[1:*0] : ()
+Binder : ()
+###
+> tup[-3:*3]
+tup[-3:*3] : (i8, s, b)
+Binder : tup
+###
+> tup[-3:*2]
+tup[-3:*2] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[-3:*1]
+tup[-3:*1] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[-3:*0]
+tup[-3:*0] : ()
+Binder : ()
+###
+> tup[-3:*^3]
+tup[-3:^*3] : ()
+Binder : ()
+###
+> tup[-3:*^2]
+tup[-3:^*2] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[-3:*^1]
+tup[-3:^*1] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[-3:*^0]
+tup[-3:^*0] : (i8, s, b)
+Binder : tup
+###
+> tup[-3:*3:1]
+tup[-3:*3:1] : (i8, s, b)
+Binder : tup
+###
+> tup[-3:*2:1]
+tup[-3:*2:1] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[-3:*1:1]
+tup[-3:*1:1] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[-3:*0:1]
+tup[-3:*0:1] : ()
+Binder : ()
+###
+> tup[-3:*^3:1]
+tup[-3:^*3:1] : ()
+Binder : ()
+###
+> tup[-3:*^2:1]
+tup[-3:^*2:1] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[-3:*^1:1]
+tup[-3:^*1:1] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[-3:*^0:1]
+tup[-3:^*0:1] : (i8, s, b)
+Binder : tup
+###
+> tup[-3:*3:-1]
+tup[-3:*3:-1] : ()
+Binder : ()
+###
+> tup[-3:*2:-1]
+tup[-3:*2:-1] : ()
+Binder : ()
+###
+> tup[-3:*1:-1]
+tup[-3:*1:-1] : ()
+Binder : ()
+###
+> tup[-3:*0:-1]
+tup[-3:*0:-1] : ()
+Binder : ()
+###
+> tup[-3:*^3:-1]
+tup[-3:^*3:-1] : ()
+Binder : ()
+###
+> tup[-3:*^2:-1]
+tup[-3:^*2:-1] : ()
+Binder : ()
+###
+> tup[-3:*^1:-1]
+tup[-3:^*1:-1] : ()
+Binder : ()
+###
+> tup[-3:*^0:-1]
+tup[-3:^*0:-1] : ()
+Binder : ()
+###
+> tup[1:*3]
+tup[1:*3] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*2]
+tup[1:*2] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*1]
+tup[1:*1] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:*0]
+tup[1:*0] : ()
+Binder : ()
+###
+> tup[1:*^3]
+tup[1:^*3] : ()
+Binder : ()
+###
+> tup[1:*^2]
+tup[1:^*2] : ()
+Binder : ()
+###
+> tup[1:*^1]
+tup[1:^*1] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:*^0]
+tup[1:^*0] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*3:1]
+tup[1:*3:1] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*2:1]
+tup[1:*2:1] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*1:1]
+tup[1:*1:1] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:*0:1]
+tup[1:*0:1] : ()
+Binder : ()
+###
+> tup[1:*^3:1]
+tup[1:^*3:1] : ()
+Binder : ()
+###
+> tup[1:*^2:1]
+tup[1:^*2:1] : ()
+Binder : ()
+###
+> tup[1:*^1:1]
+tup[1:^*1:1] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:*^0:1]
+tup[1:^*0:1] : (s, b)
+Binder : tup[1:3:1]
+###
+> tup[1:*3:-1]
+tup[1:*3:-1] : (s, i8)
+Binder : tup[1:-1:-1]
+###
+> tup[1:*2:-1]
+tup[1:*2:-1] : (s, i8)
+Binder : tup[1:-1:-1]
+###
+> tup[1:*1:-1]
+tup[1:*1:-1] : (s)
+Binder : tup[1:0:-1]
+###
+> tup[1:*0:-1]
+tup[1:*0:-1] : ()
+Binder : ()
+###
+> tup[1:*^3:-1]
+tup[1:^*3:-1] : ()
+Binder : ()
+###
+> tup[1:*^2:-1]
+tup[1:^*2:-1] : ()
+Binder : ()
+###
+> tup[1:*^1:-1]
+tup[1:^*1:-1] : (s)
+Binder : tup[1:0:-1]
+###
+> tup[1:*^0:-1]
+tup[1:^*0:-1] : (s, i8)
+Binder : tup[1:-1:-1]
+###
+> tup[4:*3]
+tup[4:*3] : ()
+Binder : ()
+###
+> tup[4:*2]
+tup[4:*2] : ()
+Binder : ()
+###
+> tup[4:*1]
+tup[4:*1] : ()
+Binder : ()
+###
+> tup[4:*0]
+tup[4:*0] : ()
+Binder : ()
+###
+> tup[4:*^3]
+tup[4:^*3] : ()
+Binder : ()
+###
+> tup[4:*^2]
+tup[4:^*2] : ()
+Binder : ()
+###
+> tup[4:*^1]
+tup[4:^*1] : ()
+Binder : ()
+###
+> tup[4:*^0]
+tup[4:^*0] : ()
+Binder : ()
+###
+> tup[4:*3:1]
+tup[4:*3:1] : ()
+Binder : ()
+###
+> tup[4:*2:1]
+tup[4:*2:1] : ()
+Binder : ()
+###
+> tup[4:*1:1]
+tup[4:*1:1] : ()
+Binder : ()
+###
+> tup[4:*0:1]
+tup[4:*0:1] : ()
+Binder : ()
+###
+> tup[4:*^3:1]
+tup[4:^*3:1] : ()
+Binder : ()
+###
+> tup[4:*^2:1]
+tup[4:^*2:1] : ()
+Binder : ()
+###
+> tup[4:*^1:1]
+tup[4:^*1:1] : ()
+Binder : ()
+###
+> tup[4:*^0:1]
+tup[4:^*0:1] : ()
+Binder : ()
+###
+> tup[4:*3:-1]
+tup[4:*3:-1] : (b, s, i8)
+Binder : tup[2:-1:-1]
+###
+> tup[4:*2:-1]
+tup[4:*2:-1] : (b, s)
+Binder : tup[2:0:-1]
+###
+> tup[4:*1:-1]
+tup[4:*1:-1] : (b)
+Binder : tup[2:1:-1]
+###
+> tup[4:*0:-1]
+tup[4:*0:-1] : ()
+Binder : ()
+###
+> tup[4:*^3:-1]
+tup[4:^*3:-1] : ()
+Binder : ()
+###
+> tup[4:*^2:-1]
+tup[4:^*2:-1] : (b)
+Binder : tup[2:1:-1]
+###
+> tup[4:*^1:-1]
+tup[4:^*1:-1] : (b, s)
+Binder : tup[2:0:-1]
+###
+> tup[4:*^0:-1]
+tup[4:^*0:-1] : (b, s, i8)
+Binder : tup[2:-1:-1]
+###
+> tup[3:]
+tup[3:] : ()
+Binder : ()
+###
+> tup[::2]
+tup[::2] : (i8, b)
+Binder : tup[0:4:2]
+###
+> tup[3::1]
+tup[3::1] : ()
+Binder : ()
+###
+> tup[0::0]
+tup[0::0] : (i8, s, b)
+Binder : tup
+###
+> tup[0::1]
+tup[0::1] : (i8, s, b)
+Binder : tup
+###
+> tup[:3:1]
+tup[:3:1] : (i8, s, b)
+Binder : tup
+###
+> tup[0:3:]
+tup[0:3:] : (i8, s, b)
+Binder : tup
+###
+> tup[0:3:1]
+tup[0:3:1] : (i8, s, b)
+Binder : tup
+###
+> qtup[3:]
+qtup[3:] : ()?
+Binder : Guard(?1: qtup, ())
+###
+> qtup[0::]
+qtup[0::] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[::1]
+qtup[::1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[::2]
+qtup[::2] : (i8, b)?
+Binder : Guard(?1: qtup, ?1[0:4:2])
+###
+> qtup[:3:]
+qtup[:3:] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[0::0]
+qtup[0::0] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[0::1]
+qtup[0::1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[:3:1]
+qtup[:3:1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[0:3:]
+qtup[0:3:] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[0:3:1]
+qtup[0:3:1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> sqtup[3:]
+sqtup[3:] : ()?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ()))
+Hoister: With(!1: (), ForEach(*2: sqtup, Guard(?3: *2, !1)))
+###
+> sqtup[0::]
+sqtup[0::] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[::1]
+sqtup[::1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[::2]
+sqtup[::2] : (i8, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[0:4:2]))
+###
+> sqtup[:3:]
+sqtup[:3:] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[0::0]
+sqtup[0::0] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[0::1]
+sqtup[0::1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[:3:1]
+sqtup[:3:1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[0:3:]
+sqtup[0:3:] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[0:3:1]
+sqtup[0:3:1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> tup[-1::1]
+tup[-1::1] : (i8, s, b)
+Binder : tup
+###
+> qtup[-1::1]
+qtup[-1::1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> sqtup[-1::1]
+sqtup[-1::1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> tup[-3:-1:1]
+tup[-3:-1:1] : ()
+Binder : ()
+###
+> qtup[-3:-1:1]
+qtup[-3:-1:1] : ()?
+Binder : Guard(?1: qtup, ())
+###
+> sqtup[-3:-1:1]
+sqtup[-3:-1:1] : ()?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ()))
+Hoister: With(!1: (), ForEach(*2: sqtup, Guard(?3: *2, !1)))
+###
+> tup[0:1:1]
+tup[0:1:1] : (i8)
+Binder : tup[0:1:1]
+###
+> qtup[0:1:1]
+qtup[0:1:1] : (i8)?
+Binder : Guard(?1: qtup, ?1[0:1:1])
+###
+> sqtup[0:1:1]
+sqtup[0:1:1] : (i8)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[0:1:1]))
+###
+> tup[:^0:1]
+tup[:^0:1] : (i8, s, b)
+Binder : tup
+###
+> tup[:^0:-1]
+tup[:^0:-1] : ()
+Binder : ()
+###
+> tup[0:2:1]
+tup[0:2:1] : (i8, s)
+Binder : tup[0:2:1]
+###
+> tup[0:^1:1]
+tup[0:^1:1] : (i8, s)
+Binder : tup[0:2:1]
+###
+> qtup[:^0:1]
+qtup[:^0:1] : (i8, s, b)?
+Binder : Guard(?1: qtup, ?1)
+Reducer: qtup
+###
+> qtup[:^0:-1]
+qtup[:^0:-1] : ()?
+Binder : Guard(?1: qtup, ())
+###
+> qtup[0:2:1]
+qtup[0:2:1] : (i8, s)?
+Binder : Guard(?1: qtup, ?1[0:2:1])
+###
+> qtup[0:^1:1]
+qtup[0:^1:1] : (i8, s)?
+Binder : Guard(?1: qtup, ?1[0:2:1])
+###
+> sqtup[:^0:1]
+sqtup[:^0:1] : (i8, s, b)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2))
+Reducer: sqtup
+###
+> sqtup[:^0:-1]
+sqtup[:^0:-1] : ()?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ()))
+Hoister: With(!1: (), ForEach(*2: sqtup, Guard(?3: *2, !1)))
+###
+> sqtup[0:2:1]
+sqtup[0:2:1] : (i8, s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[0:2:1]))
+###
+> sqtup[0:^1:1]
+sqtup[0:^1:1] : (i8, s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[0:2:1]))
+###
+> tup[1:2:1]
+tup[1:2:1] : (s)
+Binder : tup[1:2:1]
+###
+> tup[^2:^1:1]
+tup[^2:^1:1] : (s)
+Binder : tup[1:2:1]
+###
+> qtup[1:2:1]
+qtup[1:2:1] : (s)?
+Binder : Guard(?1: qtup, ?1[1:2:1])
+###
+> qtup[^2:^1:1]
+qtup[^2:^1:1] : (s)?
+Binder : Guard(?1: qtup, ?1[1:2:1])
+###
+> sqtup[1:2:1]
+sqtup[1:2:1] : (s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1]))
+###
+> sqtup[^2:^1:1]
+sqtup[^2:^1:1] : (s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1]))
+###
+> tup[2:0:-1]
+tup[2:0:-1] : (b, s)
+Binder : tup[2:0:-1]
+###
+> tup[^1:^3:-1]
+tup[^1:^3:-1] : (b, s)
+Binder : tup[2:0:-1]
+###
+> qtup[2:0:-1]
+qtup[2:0:-1] : (b, s)?
+Binder : Guard(?1: qtup, ?1[2:0:-1])
+###
+> qtup[^1:^3:-1]
+qtup[^1:^3:-1] : (b, s)?
+Binder : Guard(?1: qtup, ?1[2:0:-1])
+###
+> sqtup[2:0:-1]
+sqtup[2:0:-1] : (b, s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[2:0:-1]))
+###
+> sqtup[^1:^3:-1]
+sqtup[^1:^3:-1] : (b, s)?*
+Binder : ForEach(*1: sqtup, Guard(?2: *1, ?2[2:0:-1]))
+###
+> tup[:][:]
+tup[:][:] : (i8, s, b)
+Binder : tup
+###
+> tup[:][0:1]
+tup[:][0:1] : (i8)
+Binder : tup[0:1:1]
+###
+> tup[1:2][:]
+tup[1:2][:] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:2][0:2]
+tup[1:2][0:2] : (s)
+Binder : tup[1:2:1]
+###
+> tup[1:3][0:3]
+tup[1:3][0:3] : (s, b)
+Binder : tup[1:3:1]
+###
+> qtup[:][:]
+qtup[:][:] : (i8, s, b)?
+Binder : Guard(?2: Guard(?1: qtup, ?1), ?2)
+Reducer: qtup
+###
+> qtup[:][0:1]
+qtup[:][0:1] : (i8)?
+Binder : Guard(?2: Guard(?1: qtup, ?1), ?2[0:1:1])
+Reducer: Guard(?1: qtup, ?1[0:1:1])
+###
+> qtup[1:2][:]
+qtup[1:2][:] : (s)?
+Binder : Guard(?2: Guard(?1: qtup, ?1[1:2:1]), ?2)
+Reducer: Guard(?1: qtup, ?1[1:2:1])
+###
+> qtup[1:2][0:2]
+qtup[1:2][0:2] : (s)?
+Binder : Guard(?2: Guard(?1: qtup, ?1[1:2:1]), ?2)
+Reducer: Guard(?1: qtup, ?1[1:2:1])
+###
+> qtup[1:3][0:3]
+qtup[1:3][0:3] : (s, b)?
+Binder : Guard(?2: Guard(?1: qtup, ?1[1:3:1]), ?2)
+Reducer: Guard(?1: qtup, ?1[1:3:1])
+###
+> sqtup[:][:]
+sqtup[:][:] : (i8, s, b)?*
+Binder : ForEach(*3: ForEach(*1: sqtup, Guard(?2: *1, ?2)), Guard(?4: *3, ?4))
+Reducer: sqtup
+###
+> sqtup[:][0:1]
+sqtup[:][0:1] : (i8)?*
+Binder : ForEach(*3: ForEach(*1: sqtup, Guard(?2: *1, ?2)), Guard(?4: *3, ?4[0:1:1]))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2[0:1:1]))
+###
+> sqtup[1:2][:]
+sqtup[1:2][:] : (s)?*
+Binder : ForEach(*3: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1])), Guard(?4: *3, ?4))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1]))
+###
+> sqtup[1:2][0:2]
+sqtup[1:2][0:2] : (s)?*
+Binder : ForEach(*3: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1])), Guard(?4: *3, ?4))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:2:1]))
+###
+> sqtup[1:3][0:3]
+sqtup[1:3][0:3] : (s, b)?*
+Binder : ForEach(*3: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:3:1])), Guard(?4: *3, ?4))
+Reducer: ForEach(*1: sqtup, Guard(?2: *1, ?2[1:3:1]))
+###
+> tup[(2,4,1)] // Error.
+tup[(2, 4, 1)] : v
+*** Error: (4,5) Node: (2, 4, 1), Message: Invalid operand type: cannot convert type '(i8, i8, i8)' to 'i8'
+*** Error: (4,5) Node: (2, 4, 1), Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> tup[(2,true,4,true,1)] // Error.
+tup[(2, true, 4, true, 1)] : v
+*** Error: (4,5) Node: (2, true, 4, true, 1), Message: Invalid operand type: cannot convert type '(i8, b, i8, b, i8)' to 'i8'
+*** Error: (4,5) Node: (2, true, 4, true, 1), Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> ((s,s,s), (s,s,s))[4][1:]
+((s, s, s), (s, s, s))[4][1:] : (s, s)
+*** Warning: (19,20) Node: 4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<(s, s)>
+###
+> tup[1-1::1] // Error.
+tup[1 - 1::1] : v
+*** Error: (5,6) Node: 1 - 1, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> tup[:0+1:] // Error.
+tup[:0 + 1:] : v
+*** Error: (6,7) Node: 0 + 1, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> tup[-1::1+0] // Error.
+tup[-1::1 + 0] : v
+*** Error: (9,10) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> tup[-1:-1:1+0] // Error.
+tup[-1:-1:1 + 0] : v
+*** Error: (11,12) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> tup[-1:-2:1+0] // Error.
+tup[-1:-2:1 + 0] : v
+*** Error: (11,12) Node: 1 + 0, Message: Invalid tuple slice, all indices must be either integer literals or omitted
+Binder : Error(ErrBadTupleSliceRange)
+###
+> (tup if true else qtup)[0:]
+(tup if true else qtup)[0:] : (i8, s, b)?
+Binder : Guard(?1: If(true, Ref<(i8, s, b)?>(tup), qtup), ?1)
+Reducer: Ref<(i8, s, b)?>(tup)
+###
+> (tup if true else tup)[0:]
+(tup if true else tup)[0:] : (i8, s, b)
+Binder : If(true, tup, tup)
+Reducer: tup
+###
+> (tup if true else qtup)[1:]
+(tup if true else qtup)[1:] : (s, b)?
+Binder : Guard(?1: If(true, Ref<(i8, s, b)?>(tup), qtup), ?1[1:3:1])
+Reducer: Ref<(s, b)?>(tup[1:3:1])
+###
+> (tup if true else tup)[1:]
+(tup if true else tup)[1:] : (s, b)
+Binder : If(true, tup, tup)[1:3:1]
+Reducer: tup[1:3:1]
+###
+> ForEach(x:stup, tup[1:] & x)[2:]
+ForEach(x : stup, tup[1:] & x)[2:] : (i8, s, b)*
+Binder : ForEach(*2: ForEach(*1: stup, TupleConcat(tup[1:3:1], *1)), *2[2:5:1])
+Reducer: ForEach(*1: stup, TupleConcat(tup[1:3:1], *1)[2:5:1])
+Hoister: With(!1: tup[1:3:1], ForEach(*2: stup, TupleConcat(!1, *2)[2:5:1]))
+###
+
+**** Add globals: {hom:({A:s, B:i8, C:b?}, {A:s, B:i8, C:b?}, {A:s, B:i8, C:b?}), homhet:((i8, s, b), (i8, s, b), (i8, s, b)), homhom:((s, s, s), (s, s, s), (s, s, s))}
+
+> hom[^3]
+hom[^3] : {A:s, B:i8, C:b?}
+Binder : hom.0
+###
+> hom[^2]
+hom[^2] : {A:s, B:i8, C:b?}
+Binder : hom.1
+###
+> hom[^1]
+hom[^1] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[0]
+hom[0] : {A:s, B:i8, C:b?}
+Binder : hom.0
+###
+> hom[1]
+hom[1] : {A:s, B:i8, C:b?}
+Binder : hom.1
+###
+> hom[2]
+hom[2] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[7]
+hom[7] : {A:s, B:i8, C:b?}
+*** Warning: (4,5) Node: 7, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<{A:s, B:i8, C:b?}>
+###
+> hom[^7]
+hom[^7] : {A:s, B:i8, C:b?}
+*** Warning: (5,6) Node: ^7, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<{A:s, B:i8, C:b?}>
+###
+> hom[%7]
+hom[%7] : {A:s, B:i8, C:b?}
+Binder : hom.1
+###
+> hom[&7]
+hom[&7] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[^%7]
+hom[^%7] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[^&7]
+hom[^&7] : {A:s, B:i8, C:b?}
+Binder : hom.0
+###
+> hom[-7]
+hom[-7] : {A:s, B:i8, C:b?}
+*** Warning: (4,5) Node: -7, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<{A:s, B:i8, C:b?}>
+###
+> hom[%-7]
+hom[%-7] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[&-7]
+hom[&-7] : {A:s, B:i8, C:b?}
+Binder : hom.0
+###
+> hom[^%-7]
+hom[^%-7] : {A:s, B:i8, C:b?}
+Binder : hom.1
+###
+> hom[^&-7]
+hom[^&-7] : {A:s, B:i8, C:b?}
+Binder : hom.2
+###
+> hom[^10]
+hom[^10] : {A:s, B:i8, C:b?}
+*** Warning: (5,7) Node: ^10, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<{A:s, B:i8, C:b?}>
+###
+> hom[^4].A
+hom[^4].A : s
+*** Warning: (5,6) Node: ^4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : str(<null>)
+###
+> hom[^3 * 2].B
+hom[^3 * 2].B : i8
+Binder : hom[^(Mul(3, 2))].B
+*** Warning: Node: hom[^(Mul(3, 2))], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Reducer: 0
+###
+> hom[3].C
+hom[3].C : b?
+*** Warning: (4,5) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : null
+###
+> hom[i8]
+hom[i8] : {A:s, B:i8, C:b?}
+Binder : hom[i8]
+###
+> hom[With(x:i8 * i8, x^x)]
+hom[With(x : i8 * i8, x^x)] : {A:s, B:i8, C:b?}
+Binder : hom[With(!1: Mul(i8, i8), Power(!1, !1))]
+Reducer: With(!1: Mul(i8, i8), hom[Power(!1, !1)])
+###
+> hom[]
+hom[] : {A:s, B:i8, C:b?}
+*** Error: (3,4) Node: (), Tok: '[', Message: Expected an index or a slice
+Binder : hom[<missing>]
+###
+> hom[0,]
+hom[0, (<missing>)] : {A:s, B:i8, C:b?}
+=== Parse diagnostics:
+*** Error: (6,7) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (6,7) Node: (<missing>), Message: Expected an operand
+*** Error: (6,7) Node: (<missing>), Message: Expected a single index or slice
+Binder : hom.0
+###
+> hom[0, s, 1,]
+hom[0, s, 1, (<missing>)] : {A:s, B:i8, C:b?}
+=== Parse diagnostics:
+*** Error: (12,13) Tok: ']', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (12,13) Node: (<missing>), Message: Expected an operand
+*** Error: (7,8) Node: s, Message: Expected a single index or slice
+Binder : hom.0
+###
+> hom[s, 1]
+hom[s, 1] : {A:s, B:i8, C:b?}
+*** Error: (7,8) Node: 1, Message: Expected a single index or slice
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : hom[Error(ErrBadType_Src_Dst)]
+###
+> hom[s]
+hom[s] : {A:s, B:i8, C:b?}
+*** Error: (4,5) Node: s, Message: Invalid operand type: cannot convert type 's' to 'i8'
+Binder : hom[Error(ErrBadType_Src_Dst)]
+###
+> homhom[^4+1][i8]
+homhom[^4 + 1][i8] : s
+Binder : homhom[^(Add(4, 1))][i8]
+*** Warning: Node: homhom[^(Add(4, 1))], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Reducer: str(<null>)
+###
+> homhom[3+1][0]
+homhom[3 + 1][0] : s
+Binder : homhom[Add(3, 1)].0
+*** Warning: Node: homhom[Add(3, 1)], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Reducer: str(<null>)
+###
+> homhom[3+1][^4]
+homhom[3 + 1][^4] : s
+*** Warning: (13,14) Node: ^4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : str(<null>)
+###
+> homhom[3+1][3]
+homhom[3 + 1][3] : s
+*** Warning: (12,13) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : str(<null>)
+###
+> homhom[i8][i8]
+homhom[i8][i8] : s
+Binder : homhom[i8][i8]
+###
+> homhet[^4][^4]
+homhet[^4][^4] : v
+*** Warning: (8,9) Node: ^4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+*** Error: (12,13) Node: ^4, Message: Index from end is out of range, should be at least ^1 and at most ^3
+Binder : Error(ErrHetTupleOffsetOutOfRange_Max)
+###
+> homhom[^4][^4]
+homhom[^4][^4] : s
+*** Warning: (8,9) Node: ^4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+*** Warning: (12,13) Node: ^4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : str(<null>)
+###
+> homhet[^1][0]
+homhet[^1][0] : i8
+Binder : homhet.2.0
+###
+> homhom[^1][0]
+homhom[^1][0] : s
+Binder : homhom.2.0
+###
+> homhet[0][i8]
+homhet[0][i8] : v
+*** Error: (10,12) Node: i8, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> homhom[0][i8]
+homhom[0][i8] : s
+Binder : homhom.0[i8]
+###
+> homhet[3,0][2]
+homhet[3, 0][2] : b
+*** Error: (9,10) Node: 0, Message: Expected a single index or slice
+*** Warning: (7,8) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : false
+###
+> homhom[3,0][2]
+homhom[3, 0][2] : s
+*** Error: (9,10) Node: 0, Message: Expected a single index or slice
+*** Warning: (7,8) Node: 3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : str(<null>)
+###
+> homhet[1 + 2][0]
+homhet[1 + 2][0] : i8
+Binder : homhet[Add(1, 2)].0
+*** Warning: Node: homhet[Add(1, 2)], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Reducer: 0
+###
+> homhom[1 + 2][-1 + 1]
+homhom[1 + 2][-1 + 1] : s
+Binder : homhom[Add(1, 2)][Add(-1, 1)]
+*** Warning: Node: homhom[Add(1, 2)], Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Reducer: str(<null>)
+###
+> (10,20)[^3]
+(10, 20)[^3] : i8
+*** Warning: (9,10) Node: ^3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : 0
+###
+> (true, true)[2]
+(true, true)[2] : b
+*** Warning: (13,14) Node: 2, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : false
+###
+> (2.71, 3.14)[^400]
+(2.71, 3.14)[^400] : r8
+*** Warning: (14,17) Node: ^400, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : 0
+###
+> (qrec, qrec)[4]
+(qrec, qrec)[4] : {A:i8}?
+*** Warning: (13,14) Node: 4, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : null
+###
+> (10, 20)[1 - 1]
+(10, 20)[1 - 1] : i8
+Binder : (10, 20)[Add(1, [-] 1)]
+Reducer: 10
+###
+
+**** Add globals: {shom:({A:s, B:i8, C:b?}, {A:s, B:i8, C:b?}, {A:s, B:i8, C:b?})*}
+
+> Map(x1:Range(10), x2:shom, x2[(1 max x1) shl 2])
+Map(x1 : Range(10), x2 : shom, x2[(1 max x1) shl 2]) : {A:s, B:i8, C:b?}*
+Binder : ForEach(*1: Range(10), *2: shom, *2[Shl(Max(1, *1), 2)])
+###
+> tup[1+1]
+tup[1 + 1] : v
+*** Error: (5,6) Node: 1 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> tup[3+1]
+tup[3 + 1] : v
+*** Error: (5,6) Node: 3 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> stup[1+1]
+stup[1 + 1] : v*
+*** Error: (6,7) Node: 1 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : With(!1: Add(1, 1), ForEach(*2: stup, Error(ErrBadHetTupleIndex)))
+Reducer: ForEach(*1: stup, Error(ErrBadHetTupleIndex))
+###
+> stup[3+1]
+stup[3 + 1] : v*
+*** Error: (6,7) Node: 3 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : With(!1: Add(3, 1), ForEach(*2: stup, Error(ErrBadHetTupleIndex)))
+Reducer: ForEach(*1: stup, Error(ErrBadHetTupleIndex))
+###
+> tupe[-1+1]
+tupe[-1 + 1] : v
+*** Error: (4,5) Node: tupe[-1 + 1], Message: An empty tuple can't be indexed
+Binder : Error(ErrEmptyTupleNoIndexing)
+###
+> stupe[-1+1]
+stupe[-1 + 1] : v*
+*** Error: (5,6) Node: stupe[-1 + 1], Message: An empty tuple can't be indexed
+Binder : With(!1: Add(-1, 1), ForEach(*2: stupe, Error(ErrEmptyTupleNoIndexing)))
+Reducer: ForEach(*1: stupe, Error(ErrEmptyTupleNoIndexing))
+###
+> stupe[1 shl 1]
+stupe[1 shl 1] : v*
+*** Error: (5,6) Node: stupe[1 shl 1], Message: An empty tuple can't be indexed
+Binder : With(!1: Shl(1, 1), ForEach(*2: stupe, Error(ErrEmptyTupleNoIndexing)))
+Reducer: ForEach(*1: stupe, Error(ErrEmptyTupleNoIndexing))
+###
+> sqtup[1+1]
+sqtup[1 + 1] : o*
+*** Error: (7,8) Node: 1 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : With(!1: Add(1, 1), ForEach(*2: sqtup, Guard(?3: *2, Error(ErrBadHetTupleIndex))))
+Reducer: ForEach(*1: sqtup, null)
+###
+> sqtup[3+1]
+sqtup[3 + 1] : o*
+*** Error: (7,8) Node: 3 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : With(!1: Add(3, 1), ForEach(*2: sqtup, Guard(?3: *2, Error(ErrBadHetTupleIndex))))
+Reducer: ForEach(*1: sqtup, null)
+###
+> sqtupe[-1+1]
+sqtupe[-1 + 1] : o*
+*** Error: (6,7) Node: sqtupe[-1 + 1], Message: An empty tuple can't be indexed
+Binder : With(!1: Add(-1, 1), ForEach(*2: sqtupe, Guard(?3: *2, Error(ErrEmptyTupleNoIndexing))))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> sqtupe[1+1]
+sqtupe[1 + 1] : o*
+*** Error: (6,7) Node: sqtupe[1 + 1], Message: An empty tuple can't be indexed
+Binder : With(!1: Add(1, 1), ForEach(*2: sqtupe, Guard(?3: *2, Error(ErrEmptyTupleNoIndexing))))
+Reducer: ForEach(*1: sqtupe, null)
+###
+> homhet[i8][1+1]
+homhet[i8][1 + 1] : v
+*** Error: (12,13) Node: 1 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> homhet[i8][3+1]
+homhet[i8][3 + 1] : v
+*** Error: (12,13) Node: 3 + 1, Message: Invalid item index for a heterogeneous tuple, should be a constant integer
+Binder : Error(ErrBadHetTupleIndex)
+###
+> (,)[^3] // Error, found from fuzz testing.
+((<missing>),)[^3] : v
+=== Parse diagnostics:
+*** Error: (1,2) Tok: ',', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (1,2) Node: (<missing>), Message: Expected an operand
+*** Warning: (5,6) Node: ^3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<v>
+###
+> (,)[-3] // Error, found from fuzz testing.
+((<missing>),)[-3] : v
+=== Parse diagnostics:
+*** Error: (1,2) Tok: ',', Message: Expected an operand
+=== Bind diagnostics:
+*** Error: (1,2) Node: (<missing>), Message: Expected an operand
+*** Warning: (4,5) Node: -3, Message: Homogeneous tuple index out of range, this will produce the item type's default value
+Binder : dflt<v>
+###

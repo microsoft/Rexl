@@ -1,0 +1,723 @@
+**** New globals: {qr:{A:i4, B:b, C:s}?, r:{A:i4, B:b, C:s}, ra:{A:s}, rb:{B:s}, re:{}, rx:{X:s}, sqr:{A:i4, B:b, C:s}?*, sr:{A:i4, B:b, C:s}*}
+
+> {} & {}
+{  } & {  } : {}
+Binder : RecordConcat({}, {})
+Reducer: {}
+###
+> {} & re
+{  } & re : {}
+Binder : RecordConcat({}, re)
+Reducer: {}
+###
+> {} & { A: 3 }
+{  } & { A : 3 } : {A:i8}
+Binder : RecordConcat({}, {A:3})
+Reducer: {A:3}
+###
+> {} & { A: 3, B: true }
+{  } & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat({}, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> {} & { A: 3, B: true }
+{  } & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat({}, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> {} & r
+{  } & r : {A:i4, B:b, C:s}
+Binder : RecordConcat({}, r)
+Reducer: r
+###
+> {} & qr
+{  } & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat({}, ?1))
+Reducer: qr
+###
+> {} & sr
+{  } & sr : {A:i4, B:b, C:s}*
+Binder : With(!1: {}, ForEach(*2: sr, RecordConcat(!1, *2)))
+Reducer: sr
+###
+> {} & sqr
+{  } & sqr : {A:i4, B:b, C:s}?*
+Binder : With(!1: {}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(!1, ?3))))
+Reducer: sqr
+###
+> re & {}
+re & {  } : {}
+Binder : RecordConcat(re, {})
+Reducer: {}
+###
+> re & re
+re & re : {}
+Binder : RecordConcat(re, re)
+Reducer: {}
+###
+> re & { A: 3 }
+re & { A : 3 } : {A:i8}
+Binder : RecordConcat(re, {A:3})
+Reducer: {A:3}
+###
+> re & { A: 3, B: true }
+re & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat(re, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> re & r
+re & r : {A:i4, B:b, C:s}
+Binder : RecordConcat(re, r)
+Reducer: r
+###
+> re & qr
+re & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(re, ?1))
+Reducer: qr
+###
+> re & sr
+re & sr : {A:i4, B:b, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(re, *1))
+Reducer: sr
+###
+> re & sqr
+re & sqr : {A:i4, B:b, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(re, ?2)))
+Reducer: sqr
+###
+> { X: "hi" } & {}
+{ X : "hi" } & {  } : {X:s}
+Binder : RecordConcat({X:"hi"}, {})
+Reducer: {X:"hi"}
+###
+> { X: "hi" } & re
+{ X : "hi" } & re : {X:s}
+Binder : RecordConcat({X:"hi"}, re)
+Reducer: {X:"hi"}
+###
+> { X: "hi" } & { A: 3 }
+{ X : "hi" } & { A : 3 } : {A:i8, X:s}
+Binder : RecordConcat({X:"hi"}, {A:3})
+Reducer: {A:3, X:"hi"}
+###
+> { X: "hi" } & { A: 3, B: true }
+{ X : "hi" } & { A : 3, B : true } : {A:i8, B:b, X:s}
+Binder : RecordConcat({X:"hi"}, {A:3, B:true})
+Reducer: {A:3, B:true, X:"hi"}
+###
+> { X: "hi" } & r
+{ X : "hi" } & r : {A:i4, B:b, C:s, X:s}
+Binder : RecordConcat({X:"hi"}, r)
+###
+> { X: "hi" } & qr
+{ X : "hi" } & qr : {A:i4, B:b, C:s, X:s}?
+Binder : Guard(?1: qr, RecordConcat({X:"hi"}, ?1))
+###
+> { X: "hi" } & sr
+{ X : "hi" } & sr : {A:i4, B:b, C:s, X:s}*
+Binder : With(!1: {X:"hi"}, ForEach(*2: sr, RecordConcat(!1, *2)))
+###
+> { X: "hi" } & sqr
+{ X : "hi" } & sqr : {A:i4, B:b, C:s, X:s}?*
+Binder : With(!1: {X:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(!1, ?3))))
+###
+> rx & {}
+rx & {  } : {X:s}
+Binder : RecordConcat(rx, {})
+Reducer: rx
+###
+> rx & re
+rx & re : {X:s}
+Binder : RecordConcat(rx, re)
+Reducer: rx
+###
+> rx & { A: 3 }
+rx & { A : 3 } : {A:i8, X:s}
+Binder : RecordConcat(rx, {A:3})
+###
+> rx & { A: 3, B: true }
+rx & { A : 3, B : true } : {A:i8, B:b, X:s}
+Binder : RecordConcat(rx, {A:3, B:true})
+###
+> rx & r
+rx & r : {A:i4, B:b, C:s, X:s}
+Binder : RecordConcat(rx, r)
+###
+> rx & qr
+rx & qr : {A:i4, B:b, C:s, X:s}?
+Binder : Guard(?1: qr, RecordConcat(rx, ?1))
+###
+> rx & sr
+rx & sr : {A:i4, B:b, C:s, X:s}*
+Binder : ForEach(*1: sr, RecordConcat(rx, *1))
+###
+> rx & sqr
+rx & sqr : {A:i4, B:b, C:s, X:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(rx, ?2)))
+###
+> { A: "hi" } & {}
+{ A : "hi" } & {  } : {A:s}
+Binder : RecordConcat({A:"hi"}, {})
+Reducer: {A:"hi"}
+###
+> { A: "hi" } & re
+{ A : "hi" } & re : {A:s}
+Binder : RecordConcat({A:"hi"}, re)
+Reducer: {A:"hi"}
+###
+> { A: "hi" } & { A: 3 }
+{ A : "hi" } & { A : 3 } : {A:i8}
+Binder : RecordConcat({A:"hi"}, {A:3})
+Reducer: {A:3}
+###
+> { A: "hi" } & { A: 3, B: true }
+{ A : "hi" } & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat({A:"hi"}, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> { A: "hi" } & r
+{ A : "hi" } & r : {A:i4, B:b, C:s}
+Binder : RecordConcat({A:"hi"}, r)
+Reducer: r
+###
+> { A: "hi" } & qr
+{ A : "hi" } & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat({A:"hi"}, ?1))
+Reducer: qr
+###
+> { A: "hi" } & sr
+{ A : "hi" } & sr : {A:i4, B:b, C:s}*
+Binder : With(!1: {A:"hi"}, ForEach(*2: sr, RecordConcat(!1, *2)))
+Reducer: sr
+###
+> { A: "hi" } & sqr
+{ A : "hi" } & sqr : {A:i4, B:b, C:s}?*
+Binder : With(!1: {A:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(!1, ?3))))
+Reducer: sqr
+###
+> ra & {}
+ra & {  } : {A:s}
+Binder : RecordConcat(ra, {})
+Reducer: ra
+###
+> ra & re
+ra & re : {A:s}
+Binder : RecordConcat(ra, re)
+Reducer: ra
+###
+> ra & { A: 3 }
+ra & { A : 3 } : {A:i8}
+Binder : RecordConcat(ra, {A:3})
+Reducer: {A:3}
+###
+> ra & { A: 3, B: true }
+ra & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat(ra, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> ra & r
+ra & r : {A:i4, B:b, C:s}
+Binder : RecordConcat(ra, r)
+Reducer: r
+###
+> ra & qr
+ra & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(ra, ?1))
+Reducer: qr
+###
+> ra & sr
+ra & sr : {A:i4, B:b, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(ra, *1))
+Reducer: sr
+###
+> ra & sqr
+ra & sqr : {A:i4, B:b, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(ra, ?2)))
+Reducer: sqr
+###
+> { B: "hi" } & {}
+{ B : "hi" } & {  } : {B:s}
+Binder : RecordConcat({B:"hi"}, {})
+Reducer: {B:"hi"}
+###
+> { B: "hi" } & re
+{ B : "hi" } & re : {B:s}
+Binder : RecordConcat({B:"hi"}, re)
+Reducer: {B:"hi"}
+###
+> { B: "hi" } & { A: 3 }
+{ B : "hi" } & { A : 3 } : {A:i8, B:s}
+Binder : RecordConcat({B:"hi"}, {A:3})
+Reducer: {A:3, B:"hi"}
+###
+> { B: "hi" } & { A: 3, B: true }
+{ B : "hi" } & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat({B:"hi"}, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> { B: "hi" } & r
+{ B : "hi" } & r : {A:i4, B:b, C:s}
+Binder : RecordConcat({B:"hi"}, r)
+Reducer: r
+###
+> { B: "hi" } & qr
+{ B : "hi" } & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat({B:"hi"}, ?1))
+Reducer: qr
+###
+> { B: "hi" } & sr
+{ B : "hi" } & sr : {A:i4, B:b, C:s}*
+Binder : With(!1: {B:"hi"}, ForEach(*2: sr, RecordConcat(!1, *2)))
+Reducer: sr
+###
+> { B: "hi" } & sqr
+{ B : "hi" } & sqr : {A:i4, B:b, C:s}?*
+Binder : With(!1: {B:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(!1, ?3))))
+Reducer: sqr
+###
+> rb & {}
+rb & {  } : {B:s}
+Binder : RecordConcat(rb, {})
+Reducer: rb
+###
+> rb & re
+rb & re : {B:s}
+Binder : RecordConcat(rb, re)
+Reducer: rb
+###
+> rb & { A: 3 }
+rb & { A : 3 } : {A:i8, B:s}
+Binder : RecordConcat(rb, {A:3})
+###
+> rb & { A: 3, B: true }
+rb & { A : 3, B : true } : {A:i8, B:b}
+Binder : RecordConcat(rb, {A:3, B:true})
+Reducer: {A:3, B:true}
+###
+> rb & r
+rb & r : {A:i4, B:b, C:s}
+Binder : RecordConcat(rb, r)
+Reducer: r
+###
+> rb & qr
+rb & qr : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(rb, ?1))
+Reducer: qr
+###
+> rb & sr
+rb & sr : {A:i4, B:b, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(rb, *1))
+Reducer: sr
+###
+> rb & sqr
+rb & sqr : {A:i4, B:b, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(rb, ?2)))
+Reducer: sqr
+###
+> {} & {}
+{  } & {  } : {}
+Binder : RecordConcat({}, {})
+Reducer: {}
+###
+> re & {}
+re & {  } : {}
+Binder : RecordConcat(re, {})
+Reducer: {}
+###
+> { A: 3 } & {}
+{ A : 3 } & {  } : {A:i8}
+Binder : RecordConcat({A:3}, {})
+Reducer: {A:3}
+###
+> { A: 3, B: true } & {}
+{ A : 3, B : true } & {  } : {A:i8, B:b}
+Binder : RecordConcat({A:3, B:true}, {})
+Reducer: {A:3, B:true}
+###
+> { A: 3, B: true } & {}
+{ A : 3, B : true } & {  } : {A:i8, B:b}
+Binder : RecordConcat({A:3, B:true}, {})
+Reducer: {A:3, B:true}
+###
+> r & {}
+r & {  } : {A:i4, B:b, C:s}
+Binder : RecordConcat(r, {})
+Reducer: r
+###
+> qr & {}
+qr & {  } : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, {}))
+Reducer: qr
+###
+> sr & {}
+sr & {  } : {A:i4, B:b, C:s}*
+Binder : With(!1: {}, ForEach(*2: sr, RecordConcat(*2, !1)))
+Reducer: sr
+###
+> sqr & {}
+sqr & {  } : {A:i4, B:b, C:s}?*
+Binder : With(!1: {}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(?3, !1))))
+Reducer: sqr
+###
+> {} & re
+{  } & re : {}
+Binder : RecordConcat({}, re)
+Reducer: {}
+###
+> re & re
+re & re : {}
+Binder : RecordConcat(re, re)
+Reducer: {}
+###
+> { A: 3 } & re
+{ A : 3 } & re : {A:i8}
+Binder : RecordConcat({A:3}, re)
+Reducer: {A:3}
+###
+> { A: 3, B: true } & re
+{ A : 3, B : true } & re : {A:i8, B:b}
+Binder : RecordConcat({A:3, B:true}, re)
+Reducer: {A:3, B:true}
+###
+> r & re
+r & re : {A:i4, B:b, C:s}
+Binder : RecordConcat(r, re)
+Reducer: r
+###
+> qr & re
+qr & re : {A:i4, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, re))
+Reducer: qr
+###
+> sr & re
+sr & re : {A:i4, B:b, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(*1, re))
+Reducer: sr
+###
+> sqr & re
+sqr & re : {A:i4, B:b, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(?2, re)))
+Reducer: sqr
+###
+> {} & { X: "hi" }
+{  } & { X : "hi" } : {X:s}
+Binder : RecordConcat({}, {X:"hi"})
+Reducer: {X:"hi"}
+###
+> re & { X: "hi" }
+re & { X : "hi" } : {X:s}
+Binder : RecordConcat(re, {X:"hi"})
+Reducer: {X:"hi"}
+###
+> { A: 3 } & { X: "hi" }
+{ A : 3 } & { X : "hi" } : {A:i8, X:s}
+Binder : RecordConcat({A:3}, {X:"hi"})
+Reducer: {A:3, X:"hi"}
+###
+> { A: 3, B: true } & { X: "hi" }
+{ A : 3, B : true } & { X : "hi" } : {A:i8, B:b, X:s}
+Binder : RecordConcat({A:3, B:true}, {X:"hi"})
+Reducer: {A:3, B:true, X:"hi"}
+###
+> r & { X: "hi" }
+r & { X : "hi" } : {A:i4, B:b, C:s, X:s}
+Binder : RecordConcat(r, {X:"hi"})
+###
+> qr & { X: "hi" }
+qr & { X : "hi" } : {A:i4, B:b, C:s, X:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, {X:"hi"}))
+###
+> sr & { X: "hi" }
+sr & { X : "hi" } : {A:i4, B:b, C:s, X:s}*
+Binder : With(!1: {X:"hi"}, ForEach(*2: sr, RecordConcat(*2, !1)))
+###
+> sqr & { X: "hi" }
+sqr & { X : "hi" } : {A:i4, B:b, C:s, X:s}?*
+Binder : With(!1: {X:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(?3, !1))))
+###
+> {} & rx
+{  } & rx : {X:s}
+Binder : RecordConcat({}, rx)
+Reducer: rx
+###
+> re & rx
+re & rx : {X:s}
+Binder : RecordConcat(re, rx)
+Reducer: rx
+###
+> { A: 3 } & rx
+{ A : 3 } & rx : {A:i8, X:s}
+Binder : RecordConcat({A:3}, rx)
+###
+> { A: 3, B: true } & rx
+{ A : 3, B : true } & rx : {A:i8, B:b, X:s}
+Binder : RecordConcat({A:3, B:true}, rx)
+###
+> r & rx
+r & rx : {A:i4, B:b, C:s, X:s}
+Binder : RecordConcat(r, rx)
+###
+> qr & rx
+qr & rx : {A:i4, B:b, C:s, X:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, rx))
+###
+> sr & rx
+sr & rx : {A:i4, B:b, C:s, X:s}*
+Binder : ForEach(*1: sr, RecordConcat(*1, rx))
+###
+> sqr & rx
+sqr & rx : {A:i4, B:b, C:s, X:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(?2, rx)))
+###
+> {} & { A: "hi" }
+{  } & { A : "hi" } : {A:s}
+Binder : RecordConcat({}, {A:"hi"})
+Reducer: {A:"hi"}
+###
+> re & { A: "hi" }
+re & { A : "hi" } : {A:s}
+Binder : RecordConcat(re, {A:"hi"})
+Reducer: {A:"hi"}
+###
+> { A: 3 } & { A: "hi" }
+{ A : 3 } & { A : "hi" } : {A:s}
+Binder : RecordConcat({A:3}, {A:"hi"})
+Reducer: {A:"hi"}
+###
+> { A: 3, B: true } & { A: "hi" }
+{ A : 3, B : true } & { A : "hi" } : {A:s, B:b}
+Binder : RecordConcat({A:3, B:true}, {A:"hi"})
+Reducer: {A:"hi", B:true}
+###
+> r & { A: "hi" }
+r & { A : "hi" } : {A:s, B:b, C:s}
+Binder : RecordConcat(r, {A:"hi"})
+###
+> qr & { A: "hi" }
+qr & { A : "hi" } : {A:s, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, {A:"hi"}))
+###
+> sr & { A: "hi" }
+sr & { A : "hi" } : {A:s, B:b, C:s}*
+Binder : With(!1: {A:"hi"}, ForEach(*2: sr, RecordConcat(*2, !1)))
+###
+> sqr & { A: "hi" }
+sqr & { A : "hi" } : {A:s, B:b, C:s}?*
+Binder : With(!1: {A:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(?3, !1))))
+###
+> {} & ra
+{  } & ra : {A:s}
+Binder : RecordConcat({}, ra)
+Reducer: ra
+###
+> re & ra
+re & ra : {A:s}
+Binder : RecordConcat(re, ra)
+Reducer: ra
+###
+> { A: 3 } & ra
+{ A : 3 } & ra : {A:s}
+Binder : RecordConcat({A:3}, ra)
+Reducer: ra
+###
+> { A: 3, B: true } & ra
+{ A : 3, B : true } & ra : {A:s, B:b}
+Binder : RecordConcat({A:3, B:true}, ra)
+Reducer: RecordConcat({B:true}, ra)
+###
+> r & ra
+r & ra : {A:s, B:b, C:s}
+Binder : RecordConcat(r, ra)
+###
+> qr & ra
+qr & ra : {A:s, B:b, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, ra))
+###
+> sr & ra
+sr & ra : {A:s, B:b, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(*1, ra))
+###
+> sqr & ra
+sqr & ra : {A:s, B:b, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(?2, ra)))
+###
+> {} & { B: "hi" }
+{  } & { B : "hi" } : {B:s}
+Binder : RecordConcat({}, {B:"hi"})
+Reducer: {B:"hi"}
+###
+> re & { B: "hi" }
+re & { B : "hi" } : {B:s}
+Binder : RecordConcat(re, {B:"hi"})
+Reducer: {B:"hi"}
+###
+> { A: 3 } & { B: "hi" }
+{ A : 3 } & { B : "hi" } : {A:i8, B:s}
+Binder : RecordConcat({A:3}, {B:"hi"})
+Reducer: {A:3, B:"hi"}
+###
+> { A: 3, B: true } & { B: "hi" }
+{ A : 3, B : true } & { B : "hi" } : {A:i8, B:s}
+Binder : RecordConcat({A:3, B:true}, {B:"hi"})
+Reducer: {A:3, B:"hi"}
+###
+> r & { B: "hi" }
+r & { B : "hi" } : {A:i4, B:s, C:s}
+Binder : RecordConcat(r, {B:"hi"})
+###
+> qr & { B: "hi" }
+qr & { B : "hi" } : {A:i4, B:s, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, {B:"hi"}))
+###
+> sr & { B: "hi" }
+sr & { B : "hi" } : {A:i4, B:s, C:s}*
+Binder : With(!1: {B:"hi"}, ForEach(*2: sr, RecordConcat(*2, !1)))
+###
+> sqr & { B: "hi" }
+sqr & { B : "hi" } : {A:i4, B:s, C:s}?*
+Binder : With(!1: {B:"hi"}, ForEach(*2: sqr, Guard(?3: *2, RecordConcat(?3, !1))))
+###
+> {} & rb
+{  } & rb : {B:s}
+Binder : RecordConcat({}, rb)
+Reducer: rb
+###
+> re & rb
+re & rb : {B:s}
+Binder : RecordConcat(re, rb)
+Reducer: rb
+###
+> { A: 3 } & rb
+{ A : 3 } & rb : {A:i8, B:s}
+Binder : RecordConcat({A:3}, rb)
+###
+> { A: 3, B: true } & rb
+{ A : 3, B : true } & rb : {A:i8, B:s}
+Binder : RecordConcat({A:3, B:true}, rb)
+Reducer: RecordConcat({A:3}, rb)
+###
+> r & rb
+r & rb : {A:i4, B:s, C:s}
+Binder : RecordConcat(r, rb)
+###
+> qr & rb
+qr & rb : {A:i4, B:s, C:s}?
+Binder : Guard(?1: qr, RecordConcat(?1, rb))
+###
+> sr & rb
+sr & rb : {A:i4, B:s, C:s}*
+Binder : ForEach(*1: sr, RecordConcat(*1, rb))
+###
+> sqr & rb
+sqr & rb : {A:i4, B:s, C:s}?*
+Binder : ForEach(*1: sqr, Guard(?2: *1, RecordConcat(?2, rb)))
+###
+> { A: "hi" } & { A: 3 if false else 7, B: true }
+{ A : "hi" } & { A : 3 if false else 7, B : true } : {A:i8, B:b}
+Binder : RecordConcat({A:"hi"}, {A:If(false, 3, 7), B:true})
+Reducer: {A:7, B:true}
+###
+> { C: "hi" } & { A: 3 if false else 7, B: true }
+{ C : "hi" } & { A : 3 if false else 7, B : true } : {A:i8, B:b, C:s}
+Binder : RecordConcat({C:"hi"}, {A:If(false, 3, 7), B:true})
+Reducer: {A:7, B:true, C:"hi"}
+###
+> { C: "hi", A: 1.5 } & { A: 3 if false else 7, B: true }
+{ C : "hi", A : 1.5 } & { A : 3 if false else 7, B : true } : {A:i8, B:b, C:s}
+Binder : RecordConcat({A:1.5, C:"hi"}, {A:If(false, 3, 7), B:true})
+Reducer: {A:7, B:true, C:"hi"}
+###
+> { C: "hi", A: 1.5 } & { A: 3 if false else 7, B: true } & rx
+{ C : "hi", A : 1.5 } & { A : 3 if false else 7, B : true } & rx : {A:i8, B:b, C:s, X:s}
+Binder : RecordConcat({A:1.5, C:"hi"}, {A:If(false, 3, 7), B:true}, rx)
+Reducer: RecordConcat({A:7, B:true, C:"hi"}, rx)
+###
+> ({ A: "hi" } if true else { B: 5 }) & { C: true } // Note the B field is not in BndRecordNode.Items
+({ A : "hi" } if true else { B : 5 }) & { C : true } : {A:s, B:i8?, C:b}
+Binder : RecordConcat(If(true, {A:"hi"[, B:null:i8?]}, {B:Opt<i8?>(5)[, A:str(<null>)]}), {C:true})
+Reducer: {A:"hi", C:true[, B:null:i8?]}
+###
+> ({ D: 2.5, A: "hi" } if true else { B: 5 }) & { C: true }
+({ D : 2.5, A : "hi" } if true else { B : 5 }) & { C : true } : {A:s, B:i8?, C:b, D:r8?}
+Binder : RecordConcat(If(true, {A:"hi", D:Opt<r8?>(2.5)[, B:null:i8?]}, {B:Opt<i8?>(5)[, A:str(<null>), D:null:r8?]}), {C:true})
+Reducer: {A:"hi", C:true, D:Opt<r8?>(2.5)[, B:null:i8?]}
+###
+> r & { B: 3 * 5 }
+r & { B : 3 * 5 } : {A:i4, B:i8, C:s}
+Binder : RecordConcat(r, {B:Mul(3, 5)})
+Reducer: RecordConcat(r, {B:15})
+###
+> r & { E:"hi" } & { D:3 }
+r & { E : "hi" } & { D : 3 } : {A:i4, B:b, C:s, D:i8, E:s}
+Binder : RecordConcat(r, {E:"hi"}, {D:3})
+Reducer: RecordConcat(r, {D:3, E:"hi"})
+###
+> { E:"hi" } & r & { D:3 }
+{ E : "hi" } & r & { D : 3 } : {A:i4, B:b, C:s, D:i8, E:s}
+Binder : RecordConcat({E:"hi"}, r, {D:3})
+###
+> { E:"hi" } & { D:3 } & r
+{ E : "hi" } & { D : 3 } & r : {A:i4, B:b, C:s, D:i8, E:s}
+Binder : RecordConcat({E:"hi"}, {D:3}, r)
+Reducer: RecordConcat({D:3, E:"hi"}, r)
+###
+> { E:"hi" } & { D:3 } & { B:5 }
+{ E : "hi" } & { D : 3 } & { B : 5 } : {B:i8, D:i8, E:s}
+Binder : RecordConcat({E:"hi"}, {D:3}, {B:5})
+Reducer: {B:5, D:3, E:"hi"}
+###
+> r & { E:"hi" } & { E:3 }
+r & { E : "hi" } & { E : 3 } : {A:i4, B:b, C:s, E:i8}
+Binder : RecordConcat(r, {E:"hi"}, {E:3})
+Reducer: RecordConcat(r, {E:3})
+###
+> { E:"hi" } & r & { E:3 }
+{ E : "hi" } & r & { E : 3 } : {A:i4, B:b, C:s, E:i8}
+Binder : RecordConcat({E:"hi"}, r, {E:3})
+Reducer: RecordConcat(r, {E:3})
+###
+> { E:"hi" } & { E:3 } & r
+{ E : "hi" } & { E : 3 } & r : {A:i4, B:b, C:s, E:i8}
+Binder : RecordConcat({E:"hi"}, {E:3}, r)
+Reducer: RecordConcat({E:3}, r)
+###
+> { E:"hi" } & { E:3 } & { E:5 }
+{ E : "hi" } & { E : 3 } & { E : 5 } : {E:i8}
+Binder : RecordConcat({E:"hi"}, {E:3}, {E:5})
+Reducer: {E:5}
+###
+> r & null
+r & null : {A:i4, B:b, C:s}?
+*** Error: (4,8) Node: null, Message: Operand must be a record
+Binder : Guard(?1: null, RecordConcat(r, Error(ErrNotRecord)))
+Reducer: null
+###
+> null & r
+null & r : {A:i4, B:b, C:s}?
+*** Error: (0,4) Node: null, Message: Operand must be a record
+Binder : Guard(?1: null, RecordConcat(Error(ErrNotRecord), r))
+Reducer: null
+###
+> r & "hi"
+r & "hi" : {A:i4, B:b, C:s}
+*** Error: (4,8) Node: "hi", Message: Operand must be a record
+Binder : RecordConcat(r, Error(ErrNotRecord))
+Reducer: r
+###
+> "hi" & r
+"hi" & r : s
+*** Error: (7,8) Node: r, Message: Invalid operand type: cannot convert type '{A:i4, B:b, C:s}' to 's'
+Binder : StrConcat("hi", Error(ErrBadType_Src_Dst))
+###
+> r & true
+r & true : {A:i4, B:b, C:s}
+*** Error: (4,8) Node: true, Message: Operand must be a record
+Binder : RecordConcat(r, Error(ErrNotRecord))
+Reducer: r
+###
+> true & r
+true & r : {A:i4, B:b, C:s}
+*** Error: (0,4) Node: true, Message: Operand must be a record
+Binder : RecordConcat(Error(ErrNotRecord), r)
+Reducer: r
+###

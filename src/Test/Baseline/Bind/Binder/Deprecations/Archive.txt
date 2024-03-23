@@ -1,0 +1,302 @@
+**** New globals: {B:{A:r8, C:s}*, Het:(i8, s, b), Hom:(s, s, s), R:{A:r8}, b:b, d:d, g:g, i:i, i1:i1, i2:i2, i4:i4, i8:i8, n:r8, o:o, qb:b?, qd:d?, qi:i?, qi1:i1?, qi2:i2?, qi4:i4?, qi8:i8?, qn:r8?, qr4:r4?, qr8:r8?, qu1:u1?, qu2:u2?, qu4:u4?, qu8:u8?, r4:r4, r8:r8, s:s, ss:s*, sss:s**, u:b, u1:u1, u2:u2, u4:u4, u8:u8, v:b}
+
+> 3 ==  5
+3 @= 5 : b
+=== Parse diagnostics:
+*** Error: (3,4) Tok: '=', Message: Redundant '='
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+Binder : 3 @= 5
+Reducer: false
+###
+> "Hello"  ~ "hi"
+"Hello" ~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (11,15) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: ~=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" ~@= "hi"
+Reducer: false
+=== Corrected by parser: ["Hello"  ~= "hi"]
+"Hello" ~@= "hi" : b
+Binder : "Hello" ~@= "hi"
+Reducer: false
+###
+> "Hello" !~ "hi"
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (11,15) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: ~=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" !~= "hi"]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> "Hello" ~! "hi"
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (11,15) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: !
+  Guess: !=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" ~!= "hi"]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> "Hello" ~== "hi"
+"Hello" ~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (10,11) Tok: '=', Message: Redundant '='
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+Binder : "Hello" ~@= "hi"
+Reducer: false
+###
+> "Hello"  ~ ~ "hi" // Error.
+"Hello" ~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (11,12) Tok: '~', Message: Redundant '~'
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: 
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+*** Error: (13,17) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: ~=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" ~@= "hi"
+Reducer: false
+=== Corrected by parser: ["Hello"  ~=  "hi" // Error.]
+"Hello" ~@= "hi" : b
+Binder : "Hello" ~@= "hi"
+Reducer: false
+###
+> "Hello" ~!~ "hi" // Error.
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (10,11) Tok: '~', Message: Redundant '~'
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: 
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+*** Error: (12,16) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: !
+  Guess: !=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" ~!= "hi" // Error.]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> "Hello" ! not ~ "hi" // Error.
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (10,13) Tok: 'not', Message: Redundant 'not'
+{
+  IsDeprecation: false
+  TokText: not
+  Guess: 
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+*** Error: (16,20) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: ~=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" !  ~= "hi" // Error.]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> "Hello" ! !~ "hi" // Error.
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (10,11) Tok: '!', Message: Redundant '!'
+{
+  IsDeprecation: false
+  TokText: !
+  Guess: 
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+*** Error: (13,17) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: ~=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" ! ~= "hi" // Error.]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> "Hello" ~! ~ "hi" // Error.
+"Hello" !~@= "hi" : b
+=== Parse diagnostics:
+*** Error: (11,12) Tok: '~', Message: Redundant '~'
+{
+  IsDeprecation: false
+  TokText: ~
+  Guess: 
+  MessageTag: ErrRedundantToken_Tok
+  IsError: true
+}
+*** Error: (13,17) Tok: 'hi', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: !
+  Guess: !=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+Binder : "Hello" !~@= "hi"
+Reducer: true
+=== Corrected by parser: ["Hello" ~!=  "hi" // Error.]
+"Hello" !~@= "hi" : b
+Binder : "Hello" !~@= "hi"
+Reducer: true
+###
+> R!A
+R !@= A : b
+=== Parse diagnostics:
+*** Error: (2,3) Tok: 'A', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: !=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+=== Bind diagnostics:
+*** Error: (2,3) Node: A, Message: Name does not exist in the current context
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrNameDoesNotExist
+  IsError: true
+}
+Binder : R !@= Unit<{A:r8}>(Error(ErrNameDoesNotExist))
+Reducer: R !@= dflt<{A:r8}>
+=== Corrected by parser: [R!=A]
+R !@= A : b
+*** Error: (3,4) Node: A, Message: Name does not exist in the current context
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrNameDoesNotExist
+  IsError: true
+}
+Binder : R !@= Unit<{A:r8}>(Error(ErrNameDoesNotExist))
+Reducer: R !@= dflt<{A:r8}>
+###
+> Het!
+Het !@= (<missing>) : b
+=== Parse diagnostics:
+*** Error: (4,4) Tok: '<eof>', Message: Expected a comparison operator
+{
+  IsDeprecation: false
+  TokText: !
+  Guess: !=
+  MessageTag: ErrComparisonOperatorExpected
+  IsError: true
+}
+*** Error: (4,4) Tok: '<eof>', Message: Expected an operand
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrOperandExpected
+  IsError: true
+}
+=== Bind diagnostics:
+*** Error: (4,4) Node: (<missing>), Message: Expected an operand
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrOperandExpected
+  IsError: true
+}
+Binder : Het !@= Unit<(i8, s, b)>(<missing>)
+Reducer: Het !@= dflt<(i8, s, b)>
+=== Corrected by parser: [Het!=]
+Het !@= (<missing>) : b
+=== Parse diagnostics:
+*** Error: (5,5) Tok: '<eof>', Message: Expected an operand
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrOperandExpected
+  IsError: true
+}
+=== Bind diagnostics:
+*** Error: (5,5) Node: (<missing>), Message: Expected an operand
+{
+  IsDeprecation: false
+  TokText: null
+  Guess: null
+  MessageTag: ErrOperandExpected
+  IsError: true
+}
+Binder : Het !@= Unit<(i8, s, b)>(<missing>)
+Reducer: Het !@= dflt<(i8, s, b)>
+###

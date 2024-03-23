@@ -1,0 +1,77 @@
+**** New globals: {M:M{param A:i8, msr S:r8, var X:r8}, R:{A:i8, M:M{param A:i8, msr S:r8, var X:r8}}}
+
+> module { param A := 3; }
+module { param A := 3 } : M{param A:i8}
+*** Error: (0,6) Node: module { param A := 3 }, Message: Modules are not supported by this host
+Binder : module[items!1]{ param A := 3 }
+###
+> M.A
+M.A : i8
+*** Error: (0,1) Node: M, Message: Modules are not supported by this host
+*** Error: (1,2) Node: M.A, Message: Modules are not supported by this host
+Binder : ModToRec(M).A
+###
+> M.X
+M.X : r8
+*** Error: (0,1) Node: M, Message: Modules are not supported by this host
+*** Error: (1,2) Node: M.X, Message: Modules are not supported by this host
+Binder : ModToRec(M).X
+###
+> M
+M : M{param A:i8, msr S:r8, var X:r8}
+*** Error: (0,1) Node: M, Message: Modules are not supported by this host
+Binder : M
+###
+> M => { A: 17 }
+M=>{ A : 17 } : M{param A:i8, msr S:r8, var X:r8}
+*** Error: (0,1) Node: M, Message: Modules are not supported by this host
+*** Error: (2,4) Node: M=>{ A : 17 }, Message: Modules are not supported by this host
+Binder : ModuleProjection(!1: M, {A:17})
+###
+> Module.Maximize(M, S)
+Module.Maximize(M, S) : M{param A:i8, msr S:r8, var X:r8}?
+*** Error: (16,17) Node: M, Message: Modules are not supported by this host
+*** Error: (19,20) Node: S, Message: Modules are not supported by this host
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> M->Maximize(S)
+M->Maximize(S) : M{param A:i8, msr S:r8, var X:r8}?
+*** Error: (0,1) Node: M, Message: Modules are not supported by this host
+*** Error: (12,13) Node: S, Message: Modules are not supported by this host
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> R
+R : {A:i8, M:M{param A:i8, msr S:r8, var X:r8}}
+*** Error: (0,1) Node: R, Message: Modules are not supported by this host
+Binder : R
+###
+> R.A
+R.A : i8
+*** Error: (0,1) Node: R, Message: Modules are not supported by this host
+Binder : R.A
+###
+> R.M
+R.M : M{param A:i8, msr S:r8, var X:r8}
+*** Error: (0,1) Node: R, Message: Modules are not supported by this host
+Binder : R.M
+###
+> R.M.A
+R.M.A : i8
+*** Error: (0,1) Node: R, Message: Modules are not supported by this host
+*** Error: (3,4) Node: R.M.A, Message: Modules are not supported by this host
+Binder : ModToRec(R.M).A
+###
+> module { param A := 3; }.A
+module { param A := 3 }.A : i8
+*** Error: (0,6) Node: module { param A := 3 }, Message: Modules are not supported by this host
+*** Error: (24,25) Node: module { param A := 3 }.A, Message: Modules are not supported by this host
+Binder : ModToRec(module[items!1]{ param A := 3 }).A
+###
+> module { param A := 3; } => { A: 17 }
+module { param A := 3 }=>{ A : 17 } : M{param A:i8}
+*** Error: (0,6) Node: module { param A := 3 }, Message: Modules are not supported by this host
+*** Error: (25,27) Node: module { param A := 3 }=>{ A : 17 }, Message: Modules are not supported by this host
+Binder : ModuleProjection(!2: module[items!1]{ param A := 3 }, {A:17})
+###

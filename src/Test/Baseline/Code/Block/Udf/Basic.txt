@@ -1,0 +1,396 @@
+>>> *** Source:
+    func PI() := Atan(1) * 4;
+    func PI2() := Asin(1) * 2;
+    PI();
+    PI2();
+    PI2() - PI();
+    func F(x) := x max false;
+    S := [-4, 0, 2];
+    S->CastI1()->F();
+    S->CastI2()->F();
+    S->CastR4()->F();
+    func G(x) := F(x) + F(-x);
+    S->CastI1()->G();
+    S->CastI8()->G();
+    S->CastIA()->G();
+    S->CastR4()->G();
+    S->CastR8()->G();
+    func F(x) := x * x;
+    S->CastI1()->G();
+    S->CastI8()->G();
+    S->CastIA()->G();
+    S->CastR4()->G();
+    S->CastR8()->G();
+    "*** Arity zero functions vs globals ***";
+    GA := 3;
+    func FA() := 3;
+    GB := GA * GA;
+    func FB() := FA() * FA();
+    GB;
+    FB();
+    // Redefine the A's.
+    GA := 7;
+    func FA() := 7;
+    GB; // Didn't change.
+    FB(); // Different.
+    // Fuzzy.
+    gA;
+    Fa();
+    Gb;
+    fB();
+    abs(-12);
+    // Copied from the binder basic tests.
+    i8 := 17i8;
+    r8 := 3.5;
+    func F(x) := x + Abs(x);
+    func G(x, y) := x + Abs(y);
+    func H(x) := F(x) * G(x, x);
+    func H(x, y, z) := F(x) * G(y, z);
+    F(i8);
+    F(r8);
+    F(3);
+    F(-7);
+    F(-7.5);
+    F(3.5);
+    F(i8 * i8);
+    F(i8 + r8);
+    G(i8, i8);
+    G(i8, r8);
+    G(i8, -12);
+    G(3, -12);
+    H(i8);
+    H(3);
+    H(i8, i8, i8);
+    H(i8, r8, 7);
+    H(3, i8, -12);
+    H(3, -12, 5);
+    // Wrong arity.
+    F();
+    F(3, -12);
+    H();
+    H(3, -12);
+    H(3, -12, 5, 4);
+    // Case correction.
+    f(-7);
+    f();
+    f(3, -12);
+    h();
+    h(3, -12);
+    h(3, -12, 5, 4);
+    // Remove F and get errors.
+    func F(x) := _;
+    F(i8);
+    G(3, -12);
+    H(i8);
+    H(3);
+    // Prop without namespace.
+    // REVIEW: Should this produce an error/warning?
+    prop P(x) := 3;
+
+>>> *** Instructions:
+   0) [0] DefineFunc PI() <- Atan(1) * 4
+   1) [0] DefineFunc PI2() <- Asin(1) * 2
+   2) [0] Expr PI()
+   3) [0] Expr PI2()
+   4) [0] Expr PI2() - PI()
+   5) [0] DefineFunc F(x) <- x max false
+   6) [0] Define S <- [-4, 0, 2]
+   7) [0] Expr S->CastI1()->F()
+   8) [0] Expr S->CastI2()->F()
+   9) [0] Expr S->CastR4()->F()
+  10) [0] DefineFunc G(x) <- F(x) + F(-x)
+  11) [0] Expr S->CastI1()->G()
+  12) [0] Expr S->CastI8()->G()
+  13) [0] Expr S->CastIA()->G()
+  14) [0] Expr S->CastR4()->G()
+  15) [0] Expr S->CastR8()->G()
+  16) [0] DefineFunc F(x) <- x * x
+  17) [0] Expr S->CastI1()->G()
+  18) [0] Expr S->CastI8()->G()
+  19) [0] Expr S->CastIA()->G()
+  20) [0] Expr S->CastR4()->G()
+  21) [0] Expr S->CastR8()->G()
+  22) [0] Expr "*** Arity zero functions vs globals ***"
+  23) [0] Define GA <- 3
+  24) [0] DefineFunc FA() <- 3
+  25) [0] Define GB <- GA * GA
+  26) [0] DefineFunc FB() <- FA() * FA()
+  27) [0] Expr GB
+  28) [0] Expr FB()
+  29) [0] Define GA <- 7
+  30) [0] DefineFunc FA() <- 7
+  31) [0] Expr GB
+  32) [0] Expr FB()
+  33) [0] Expr gA
+  34) [0] Expr Fa()
+  35) [0] Expr Gb
+  36) [0] Expr fB()
+  37) [0] Expr abs(-12)
+  38) [0] Define i8 <- 17
+  39) [0] Define r8 <- 3.5
+  40) [0] DefineFunc F(x) <- x + Abs(x)
+  41) [0] DefineFunc G(x, y) <- x + Abs(y)
+  42) [0] DefineFunc H(x) <- F(x) * G(x, x)
+  43) [0] DefineFunc H(x, y, z) <- F(x) * G(y, z)
+  44) [0] Expr F(i8)
+  45) [0] Expr F(r8)
+  46) [0] Expr F(3)
+  47) [0] Expr F(-7)
+  48) [0] Expr F(-7.5)
+  49) [0] Expr F(3.5)
+  50) [0] Expr F(i8 * i8)
+  51) [0] Expr F(i8 + r8)
+  52) [0] Expr G(i8, i8)
+  53) [0] Expr G(i8, r8)
+  54) [0] Expr G(i8, -12)
+  55) [0] Expr G(3, -12)
+  56) [0] Expr H(i8)
+  57) [0] Expr H(3)
+  58) [0] Expr H(i8, i8, i8)
+  59) [0] Expr H(i8, r8, 7)
+  60) [0] Expr H(3, i8, -12)
+  61) [0] Expr H(3, -12, 5)
+  62) [0] Expr F()
+  63) [0] Expr F(3, -12)
+  64) [0] Expr H()
+  65) [0] Expr H(3, -12)
+  66) [0] Expr H(3, -12, 5, 4)
+  67) [0] Expr f(-7)
+  68) [0] Expr f()
+  69) [0] Expr f(3, -12)
+  70) [0] Expr h()
+  71) [0] Expr h(3, -12)
+  72) [0] Expr h(3, -12, 5, 4)
+  73) [0] DefineFunc F(x) <- _
+  74) [0] Expr F(i8)
+  75) [0] Expr G(3, -12)
+  76) [0] Expr H(i8)
+  77) [0] Expr H(3)
+  78) [0] DefineFunc [prop] P(x) <- 3
+  79) [0] End
+
+>    0) [0] DefineFunc PI() <- Atan(1) * 4
+UDF 'PI' has arity 0
+>    1) [0] DefineFunc PI2() <- Asin(1) * 2
+UDF 'PI2' has arity 0
+>    2) [0] Expr PI()
+3.141592653589793
+>    3) [0] Expr PI2()
+3.141592653589793
+>    4) [0] Expr PI2() - PI()
+0
+>    5) [0] DefineFunc F(x) <- x max false
+UDF 'F' has arity 1
+>    6) [0] Define S <- [-4, 0, 2]
+Global 'S' has DType: i8*, SysType: Seq<i8>
+>    7) [0] Expr S->CastI1()->F()
+Seq<i1>
+   0) 0
+   1) 0
+   2) 2
+>    8) [0] Expr S->CastI2()->F()
+Seq<i2>
+   0) 0
+   1) 0
+   2) 2
+>    9) [0] Expr S->CastR4()->F()
+Seq<r4>
+   0) 0
+   1) 0
+   2) 2
+>   10) [0] DefineFunc G(x) <- F(x) + F(-x)
+UDF 'G' has arity 1
+>   11) [0] Expr S->CastI1()->G()
+Seq<i8>
+   0) 4
+   1) 0
+   2) 2
+>   12) [0] Expr S->CastI8()->G()
+Seq<i8>
+   0) 4
+   1) 0
+   2) 2
+>   13) [0] Expr S->CastIA()->G()
+Seq<ia>
+   0) 4
+   1) 0
+   2) 2
+>   14) [0] Expr S->CastR4()->G()
+Seq<r8>
+   0) 4
+   1) 0
+   2) 2
+>   15) [0] Expr S->CastR8()->G()
+Seq<r8>
+   0) 4
+   1) 0
+   2) 2
+>   16) [0] DefineFunc F(x) <- x * x
+Overwriting UDF: F
+UDF 'F' has arity 1
+>   17) [0] Expr S->CastI1()->G()
+Seq<i8>
+   0) 32
+   1) 0
+   2) 8
+>   18) [0] Expr S->CastI8()->G()
+Seq<i8>
+   0) 32
+   1) 0
+   2) 8
+>   19) [0] Expr S->CastIA()->G()
+Seq<ia>
+   0) 32
+   1) 0
+   2) 8
+>   20) [0] Expr S->CastR4()->G()
+Seq<r8>
+   0) 32
+   1) 0
+   2) 8
+>   21) [0] Expr S->CastR8()->G()
+Seq<r8>
+   0) 32
+   1) 0
+   2) 8
+>   22) [0] Expr "*** Arity zero functions vs globals ***"
+*** Arity zero functions vs globals ***
+>   23) [0] Define GA <- 3
+Global 'GA' has DType: i8, SysType: i8
+>   24) [0] DefineFunc FA() <- 3
+UDF 'FA' has arity 0
+>   25) [0] Define GB <- GA * GA
+Global 'GB' has DType: i8, SysType: i8
+>   26) [0] DefineFunc FB() <- FA() * FA()
+UDF 'FB' has arity 0
+>   27) [0] Expr GB
+9
+>   28) [0] Expr FB()
+9
+>   29) [0] Define GA <- 7
+>   30) [0] DefineFunc FA() <- 7
+Overwriting UDF: FA
+UDF 'FA' has arity 0
+>   31) [0] Expr GB
+9
+>   32) [0] Expr FB()
+49
+>   33) [0] Expr gA
+*** Bind diagnostics:
+  [Basic.txt] Error: (635,637) Node: gA, Message: Name does not exist in the current context, did you intend 'GA'?
+>   34) [0] Expr Fa()
+*** Bind diagnostics:
+  [Basic.txt] Error: (641,642) Node: Fa(), Message: Invocation of unknown function, did you intend 'FA'?
+>   35) [0] Expr Gb
+*** Bind diagnostics:
+  [Basic.txt] Error: (645,647) Node: Gb, Message: Name does not exist in the current context, did you intend 'GB'?
+>   36) [0] Expr fB()
+*** Bind diagnostics:
+  [Basic.txt] Error: (651,652) Node: fB(), Message: Invocation of unknown function, did you intend 'FB'?
+>   37) [0] Expr abs(-12)
+*** Bind diagnostics:
+  [Basic.txt] Error: (658,659) Node: abs(-12), Message: Invocation of unknown function, did you intend 'Abs'?
+>   38) [0] Define i8 <- 17
+Global 'i8' has DType: i8, SysType: i8
+>   39) [0] Define r8 <- 3.5
+Global 'r8' has DType: r8, SysType: r8
+>   40) [0] DefineFunc F(x) <- x + Abs(x)
+Overwriting UDF: F
+UDF 'F' has arity 1
+>   41) [0] DefineFunc G(x, y) <- x + Abs(y)
+UDF 'G' has arity 2
+>   42) [0] DefineFunc H(x) <- F(x) * G(x, x)
+UDF 'H' has arity 1
+>   43) [0] DefineFunc H(x, y, z) <- F(x) * G(y, z)
+UDF 'H' has arity 3
+>   44) [0] Expr F(i8)
+34
+>   45) [0] Expr F(r8)
+7
+>   46) [0] Expr F(3)
+6
+>   47) [0] Expr F(-7)
+0
+>   48) [0] Expr F(-7.5)
+0
+>   49) [0] Expr F(3.5)
+7
+>   50) [0] Expr F(i8 * i8)
+578
+>   51) [0] Expr F(i8 + r8)
+41
+>   52) [0] Expr G(i8, i8)
+34
+>   53) [0] Expr G(i8, r8)
+20.5
+>   54) [0] Expr G(i8, -12)
+29
+>   55) [0] Expr G(3, -12)
+15
+>   56) [0] Expr H(i8)
+1156
+>   57) [0] Expr H(3)
+36
+>   58) [0] Expr H(i8, i8, i8)
+1156
+>   59) [0] Expr H(i8, r8, 7)
+357
+>   60) [0] Expr H(3, i8, -12)
+174
+>   61) [0] Expr H(3, -12, 5)
+-42
+>   62) [0] Expr F()
+*** Bind diagnostics:
+  [Basic.txt] Error: (1052,1053) Node: F(), Message: Too few arguments for F, expected 1 additional
+>   63) [0] Expr F(3, -12)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1061,1062) Node: -12, Message: Too many arguments for F, expected 1 fewer
+>   64) [0] Expr H()
+*** Bind diagnostics:
+  [Basic.txt] Error: (1069,1070) Node: H(), Message: Too few arguments for H, expected 1 additional
+>   65) [0] Expr H(3, -12)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1074,1075) Node: H(3, -12), Message: Too few arguments for H, expected 1 additional
+>   66) [0] Expr H(3, -12, 5, 4)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1097,1098) Node: 4, Message: Too many arguments for H, expected 1 fewer
+>   67) [0] Expr f(-7)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1123,1124) Node: f(-7), Message: Invocation of unknown function, did you intend 'F'?
+>   68) [0] Expr f()
+*** Bind diagnostics:
+  [Basic.txt] Error: (1130,1131) Node: f(), Message: Invocation of unknown function, did you intend 'F'?
+  [Basic.txt] Error: (1130,1131) Node: f(), Message: Too few arguments for F, expected 1 additional
+>   69) [0] Expr f(3, -12)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1135,1136) Node: f(3, -12), Message: Invocation of unknown function, did you intend 'F'?
+  [Basic.txt] Error: (1139,1140) Node: -12, Message: Too many arguments for F, expected 1 fewer
+>   70) [0] Expr h()
+*** Bind diagnostics:
+  [Basic.txt] Error: (1146,1147) Node: h(), Message: Invocation of unknown function, did you intend 'H'?
+  [Basic.txt] Error: (1146,1147) Node: h(), Message: Too few arguments for H, expected 1 additional
+>   71) [0] Expr h(3, -12)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1151,1152) Node: h(3, -12), Message: Invocation of unknown function, did you intend 'H'?
+  [Basic.txt] Error: (1151,1152) Node: h(3, -12), Message: Too few arguments for H, expected 1 additional
+>   72) [0] Expr h(3, -12, 5, 4)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1162,1163) Node: h(3, -12, 5, 4), Message: Invocation of unknown function, did you intend 'H'?
+  [Basic.txt] Error: (1174,1175) Node: 4, Message: Too many arguments for H, expected 1 fewer
+>   73) [0] DefineFunc F(x) <- _
+Deleting UDF: F
+>   74) [0] Expr F(i8)
+*** Bind diagnostics:
+  [Basic.txt] Error: (1225,1226) Node: F(i8), Message: Invocation of unknown or unsupported function
+>   75) [0] Expr G(3, -12)
+15
+>   76) [0] Expr H(i8)
+*** Bind diagnostics:
+  [Basic.txt] Error: (796,797) Node: F(x), Message: Invocation of unknown or unsupported function
+>   77) [0] Expr H(3)
+*** Bind diagnostics:
+  [Basic.txt] Error: (796,797) Node: F(x), Message: Invocation of unknown or unsupported function
+>   78) [0] DefineFunc [prop] P(x) <- 3
+UDF 'P' has arity 1
+>   79) [0] End
+

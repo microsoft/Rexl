@@ -1,0 +1,632 @@
+**** New globals: {qt:(i4, b, s)?, sqt:(i4, b, s)?*, st:(i4, b, s)*, t:(i4, b, s), te:(), ts:(s)}
+
+> () & ()
+() & () : ()
+Binder : TupleConcat((), ())
+Reducer: ()
+###
+> () & te
+() & te : ()
+Binder : TupleConcat((), te)
+Reducer: ()
+###
+> () & (3,)
+() & (3,) : (i8)
+Binder : TupleConcat((), (3,))
+Reducer: (3,)
+###
+> () & (3, true)
+() & (3, true) : (i8, b)
+Binder : TupleConcat((), (3, true))
+Reducer: (3, true)
+###
+> () & t
+() & t : (i4, b, s)
+Binder : TupleConcat((), t)
+Reducer: t
+###
+> () & qt
+() & qt : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat((), ?1))
+Reducer: qt
+###
+> () & st
+() & st : (i4, b, s)*
+Binder : With(!1: (), ForEach(*2: st, TupleConcat(!1, *2)))
+Reducer: st
+###
+> () & sqt
+() & sqt : (i4, b, s)?*
+Binder : With(!1: (), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3))))
+Reducer: sqt
+###
+> te & ()
+te & () : ()
+Binder : TupleConcat(te, ())
+Reducer: ()
+###
+> te & te
+te & te : ()
+Binder : TupleConcat(te, te)
+Reducer: ()
+###
+> te & (3,)
+te & (3,) : (i8)
+Binder : TupleConcat(te, (3,))
+Reducer: (3,)
+###
+> te & (3, true)
+te & (3, true) : (i8, b)
+Binder : TupleConcat(te, (3, true))
+Reducer: (3, true)
+###
+> te & t
+te & t : (i4, b, s)
+Binder : TupleConcat(te, t)
+Reducer: t
+###
+> te & qt
+te & qt : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(te, ?1))
+Reducer: qt
+###
+> te & st
+te & st : (i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(te, *1))
+Reducer: st
+###
+> te & sqt
+te & sqt : (i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(te, ?2)))
+Reducer: sqt
+###
+> ("hi",) & ()
+("hi",) & () : (s)
+Binder : TupleConcat(("hi",), ())
+Reducer: ("hi",)
+###
+> ("hi",) & te
+("hi",) & te : (s)
+Binder : TupleConcat(("hi",), te)
+Reducer: ("hi",)
+###
+> ("hi",) & (3,)
+("hi",) & (3,) : (s, i8)
+Binder : TupleConcat(("hi",), (3,))
+Reducer: ("hi", 3)
+###
+> ("hi",) & (3, true)
+("hi",) & (3, true) : (s, i8, b)
+Binder : TupleConcat(("hi",), (3, true))
+Reducer: ("hi", 3, true)
+###
+> ("hi",) & t
+("hi",) & t : (s, i4, b, s)
+Binder : TupleConcat(("hi",), t)
+###
+> ("hi",) & qt
+("hi",) & qt : (s, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(("hi",), ?1))
+###
+> ("hi",) & st
+("hi",) & st : (s, i4, b, s)*
+Binder : With(!1: ("hi",), ForEach(*2: st, TupleConcat(!1, *2)))
+###
+> ("hi",) & sqt
+("hi",) & sqt : (s, i4, b, s)?*
+Binder : With(!1: ("hi",), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3))))
+###
+> t & ()
+t & () : (i4, b, s)
+Binder : TupleConcat(t, ())
+Reducer: t
+###
+> t & te
+t & te : (i4, b, s)
+Binder : TupleConcat(t, te)
+Reducer: t
+###
+> t & (3,)
+t & (3,) : (i4, b, s, i8)
+Binder : TupleConcat(t, (3,))
+###
+> t & (3, true)
+t & (3, true) : (i4, b, s, i8, b)
+Binder : TupleConcat(t, (3, true))
+###
+> t & t
+t & t : (i4, b, s, i4, b, s)
+Binder : TupleConcat(t, t)
+###
+> t & qt
+t & qt : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(t, ?1))
+###
+> t & st
+t & st : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(t, *1))
+###
+> t & sqt
+t & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(t, ?2)))
+###
+> qt & ()
+qt & () : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, ()))
+Reducer: qt
+###
+> qt & te
+qt & te : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, te))
+Reducer: qt
+###
+> qt & (3,)
+qt & (3,) : (i4, b, s, i8)?
+Binder : Guard(?1: qt, TupleConcat(?1, (3,)))
+###
+> qt & (3, true)
+qt & (3, true) : (i4, b, s, i8, b)?
+Binder : Guard(?1: qt, TupleConcat(?1, (3, true)))
+###
+> qt & t
+qt & t : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, t))
+###
+> qt & qt
+qt & qt : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, ?2: qt, TupleConcat(?1, ?2))
+Reducer: Guard(?1: qt, TupleConcat(?1, ?1))
+###
+> qt & st
+qt & st : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, Guard(?2: qt, TupleConcat(?2, *1)))
+###
+> qt & sqt
+qt & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: qt, ?3: *1, TupleConcat(?2, ?3)))
+###
+> st & ()
+st & () : (i4, b, s)*
+Binder : With(!1: (), ForEach(*2: st, TupleConcat(*2, !1)))
+Reducer: st
+###
+> st & te
+st & te : (i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(*1, te))
+Reducer: st
+###
+> st & (3,)
+st & (3,) : (i4, b, s, i8)*
+Binder : With(!1: (3,), ForEach(*2: st, TupleConcat(*2, !1)))
+###
+> st & (3, true)
+st & (3, true) : (i4, b, s, i8, b)*
+Binder : With(!1: (3, true), ForEach(*2: st, TupleConcat(*2, !1)))
+###
+> st & t
+st & t : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(*1, t))
+###
+> st & qt
+st & qt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, Guard(?2: qt, TupleConcat(*1, ?2)))
+###
+> st & st
+st & st : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, *2: st, TupleConcat(*1, *2))
+Reducer: ForEach(*1: st, TupleConcat(*1, *1))
+###
+> st & sqt
+st & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, *2: sqt, Guard(?3: *2, TupleConcat(*1, ?3)))
+###
+> sqt & ()
+sqt & () : (i4, b, s)?*
+Binder : With(!1: (), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(?3, !1))))
+Reducer: sqt
+###
+> sqt & te
+sqt & te : (i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, te)))
+Reducer: sqt
+###
+> sqt & (3,)
+sqt & (3,) : (i4, b, s, i8)?*
+Binder : With(!1: (3,), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(?3, !1))))
+###
+> sqt & (3, true)
+sqt & (3, true) : (i4, b, s, i8, b)?*
+Binder : With(!1: (3, true), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(?3, !1))))
+###
+> sqt & t
+sqt & t : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, t)))
+###
+> sqt & qt
+sqt & qt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, ?3: qt, TupleConcat(?2, ?3)))
+###
+> sqt & st
+sqt & st : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, *2: st, Guard(?3: *1, TupleConcat(?3, *2)))
+###
+> sqt & sqt
+sqt & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, *2: sqt, Guard(?3: *1, ?4: *2, TupleConcat(?3, ?4)))
+Reducer: ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, ?2)))
+###
+> () & ()
+() & () : ()
+Binder : TupleConcat((), ())
+Reducer: ()
+###
+> te & ()
+te & () : ()
+Binder : TupleConcat(te, ())
+Reducer: ()
+###
+> (3,) & ()
+(3,) & () : (i8)
+Binder : TupleConcat((3,), ())
+Reducer: (3,)
+###
+> (3, true) & ()
+(3, true) & () : (i8, b)
+Binder : TupleConcat((3, true), ())
+Reducer: (3, true)
+###
+> t & ()
+t & () : (i4, b, s)
+Binder : TupleConcat(t, ())
+Reducer: t
+###
+> qt & ()
+qt & () : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, ()))
+Reducer: qt
+###
+> st & ()
+st & () : (i4, b, s)*
+Binder : With(!1: (), ForEach(*2: st, TupleConcat(*2, !1)))
+Reducer: st
+###
+> sqt & ()
+sqt & () : (i4, b, s)?*
+Binder : With(!1: (), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(?3, !1))))
+Reducer: sqt
+###
+> () & te
+() & te : ()
+Binder : TupleConcat((), te)
+Reducer: ()
+###
+> te & te
+te & te : ()
+Binder : TupleConcat(te, te)
+Reducer: ()
+###
+> (3,) & te
+(3,) & te : (i8)
+Binder : TupleConcat((3,), te)
+Reducer: (3,)
+###
+> (3, true) & te
+(3, true) & te : (i8, b)
+Binder : TupleConcat((3, true), te)
+Reducer: (3, true)
+###
+> t & te
+t & te : (i4, b, s)
+Binder : TupleConcat(t, te)
+Reducer: t
+###
+> qt & te
+qt & te : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, te))
+Reducer: qt
+###
+> st & te
+st & te : (i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(*1, te))
+Reducer: st
+###
+> sqt & te
+sqt & te : (i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, te)))
+Reducer: sqt
+###
+> () & ("hi",)
+() & ("hi",) : (s)
+Binder : TupleConcat((), ("hi",))
+Reducer: ("hi",)
+###
+> te & ("hi",)
+te & ("hi",) : (s)
+Binder : TupleConcat(te, ("hi",))
+Reducer: ("hi",)
+###
+> (3,) & ("hi",)
+(3,) & ("hi",) : (i8, s)
+Binder : TupleConcat((3,), ("hi",))
+Reducer: (3, "hi")
+###
+> (3, true) & ("hi",)
+(3, true) & ("hi",) : (i8, b, s)
+Binder : TupleConcat((3, true), ("hi",))
+Reducer: (3, true, "hi")
+###
+> t & ("hi",)
+t & ("hi",) : (i4, b, s, s)
+Binder : TupleConcat(t, ("hi",))
+###
+> qt & ("hi",)
+qt & ("hi",) : (i4, b, s, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, ("hi",)))
+###
+> st & ("hi",)
+st & ("hi",) : (i4, b, s, s)*
+Binder : With(!1: ("hi",), ForEach(*2: st, TupleConcat(*2, !1)))
+###
+> sqt & ("hi",)
+sqt & ("hi",) : (i4, b, s, s)?*
+Binder : With(!1: ("hi",), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(?3, !1))))
+###
+> () & t
+() & t : (i4, b, s)
+Binder : TupleConcat((), t)
+Reducer: t
+###
+> te & t
+te & t : (i4, b, s)
+Binder : TupleConcat(te, t)
+Reducer: t
+###
+> (3,) & t
+(3,) & t : (i8, i4, b, s)
+Binder : TupleConcat((3,), t)
+###
+> (3, true) & t
+(3, true) & t : (i8, b, i4, b, s)
+Binder : TupleConcat((3, true), t)
+###
+> t & t
+t & t : (i4, b, s, i4, b, s)
+Binder : TupleConcat(t, t)
+###
+> qt & t
+qt & t : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(?1, t))
+###
+> st & t
+st & t : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(*1, t))
+###
+> sqt & t
+sqt & t : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, t)))
+###
+> () & qt
+() & qt : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat((), ?1))
+Reducer: qt
+###
+> te & qt
+te & qt : (i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(te, ?1))
+Reducer: qt
+###
+> (3,) & qt
+(3,) & qt : (i8, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat((3,), ?1))
+###
+> (3, true) & qt
+(3, true) & qt : (i8, b, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat((3, true), ?1))
+###
+> t & qt
+t & qt : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, TupleConcat(t, ?1))
+###
+> qt & qt
+qt & qt : (i4, b, s, i4, b, s)?
+Binder : Guard(?1: qt, ?2: qt, TupleConcat(?1, ?2))
+Reducer: Guard(?1: qt, TupleConcat(?1, ?1))
+###
+> st & qt
+st & qt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, Guard(?2: qt, TupleConcat(*1, ?2)))
+###
+> sqt & qt
+sqt & qt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, ?3: qt, TupleConcat(?2, ?3)))
+###
+> () & st
+() & st : (i4, b, s)*
+Binder : With(!1: (), ForEach(*2: st, TupleConcat(!1, *2)))
+Reducer: st
+###
+> te & st
+te & st : (i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(te, *1))
+Reducer: st
+###
+> (3,) & st
+(3,) & st : (i8, i4, b, s)*
+Binder : With(!1: (3,), ForEach(*2: st, TupleConcat(!1, *2)))
+###
+> (3, true) & st
+(3, true) & st : (i8, b, i4, b, s)*
+Binder : With(!1: (3, true), ForEach(*2: st, TupleConcat(!1, *2)))
+###
+> t & st
+t & st : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, TupleConcat(t, *1))
+###
+> qt & st
+qt & st : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, Guard(?2: qt, TupleConcat(?2, *1)))
+###
+> st & st
+st & st : (i4, b, s, i4, b, s)*
+Binder : ForEach(*1: st, *2: st, TupleConcat(*1, *2))
+Reducer: ForEach(*1: st, TupleConcat(*1, *1))
+###
+> sqt & st
+sqt & st : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, *2: st, Guard(?3: *1, TupleConcat(?3, *2)))
+###
+> () & sqt
+() & sqt : (i4, b, s)?*
+Binder : With(!1: (), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3))))
+Reducer: sqt
+###
+> te & sqt
+te & sqt : (i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(te, ?2)))
+Reducer: sqt
+###
+> (3,) & sqt
+(3,) & sqt : (i8, i4, b, s)?*
+Binder : With(!1: (3,), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3))))
+###
+> (3, true) & sqt
+(3, true) & sqt : (i8, b, i4, b, s)?*
+Binder : With(!1: (3, true), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3))))
+###
+> t & sqt
+t & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: *1, TupleConcat(t, ?2)))
+###
+> qt & sqt
+qt & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, Guard(?2: qt, ?3: *1, TupleConcat(?2, ?3)))
+###
+> st & sqt
+st & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: st, *2: sqt, Guard(?3: *2, TupleConcat(*1, ?3)))
+###
+> sqt & sqt
+sqt & sqt : (i4, b, s, i4, b, s)?*
+Binder : ForEach(*1: sqt, *2: sqt, Guard(?3: *1, ?4: *2, TupleConcat(?3, ?4)))
+Reducer: ForEach(*1: sqt, Guard(?2: *1, TupleConcat(?2, ?2)))
+###
+> ("hi",) & () & ("end",)
+("hi",) & () & ("end",) : (s, s)
+Binder : TupleConcat(("hi",), (), ("end",))
+Reducer: ("hi", "end")
+###
+> ("hi",) & te & ("end",)
+("hi",) & te & ("end",) : (s, s)
+Binder : TupleConcat(("hi",), te, ("end",))
+Reducer: ("hi", "end")
+###
+> ("hi",) & (3,) & ("end",)
+("hi",) & (3,) & ("end",) : (s, i8, s)
+Binder : TupleConcat(("hi",), (3,), ("end",))
+Reducer: ("hi", 3, "end")
+###
+> ("hi",) & (3, true) & ("end",)
+("hi",) & (3, true) & ("end",) : (s, i8, b, s)
+Binder : TupleConcat(("hi",), (3, true), ("end",))
+Reducer: ("hi", 3, true, "end")
+###
+> ("hi",) & t & ("end",)
+("hi",) & t & ("end",) : (s, i4, b, s, s)
+Binder : TupleConcat(("hi",), t, ("end",))
+###
+> ("hi",) & qt & ("end",)
+("hi",) & qt & ("end",) : (s, i4, b, s, s)?
+Binder : Guard(?2: Guard(?1: qt, TupleConcat(("hi",), ?1)), TupleConcat(?2, ("end",)))
+Reducer: Guard(?1: qt, TupleConcat(("hi",), ?1, ("end",)))
+###
+> ("hi",) & st & ("end",)
+("hi",) & st & ("end",) : (s, i4, b, s, s)*
+Binder : With(!1: ("end",), ForEach(*4: With(!2: ("hi",), ForEach(*3: st, TupleConcat(!2, *3))), TupleConcat(*4, !1)))
+Reducer: With(!1: ("end",), !2: ("hi",), ForEach(*3: st, TupleConcat(!2, *3, !1)))
+###
+> ("hi",) & sqt & ("end",)
+("hi",) & sqt & ("end",) : (s, i4, b, s, s)?*
+Binder : With(!1: ("end",), ForEach(*5: With(!2: ("hi",), ForEach(*3: sqt, Guard(?4: *3, TupleConcat(!2, ?4)))), Guard(?6: *5, TupleConcat(?6, !1))))
+Reducer: With(!1: ("end",), !2: ("hi",), ForEach(*3: sqt, Guard(?4: *3, TupleConcat(!2, ?4, !1))))
+###
+> ("hi",) & () & ts
+("hi",) & () & ts : (s, s)
+Binder : TupleConcat(("hi",), (), ts)
+Reducer: TupleConcat(("hi",), ts)
+###
+> ("hi",) & te & ts
+("hi",) & te & ts : (s, s)
+Binder : TupleConcat(("hi",), te, ts)
+Reducer: TupleConcat(("hi",), ts)
+###
+> ("hi",) & (3,) & ts
+("hi",) & (3,) & ts : (s, i8, s)
+Binder : TupleConcat(("hi",), (3,), ts)
+Reducer: TupleConcat(("hi", 3), ts)
+###
+> ("hi",) & (3, true) & ts
+("hi",) & (3, true) & ts : (s, i8, b, s)
+Binder : TupleConcat(("hi",), (3, true), ts)
+Reducer: TupleConcat(("hi", 3, true), ts)
+###
+> ("hi",) & t & ts
+("hi",) & t & ts : (s, i4, b, s, s)
+Binder : TupleConcat(("hi",), t, ts)
+###
+> ("hi",) & qt & ts
+("hi",) & qt & ts : (s, i4, b, s, s)?
+Binder : Guard(?2: Guard(?1: qt, TupleConcat(("hi",), ?1)), TupleConcat(?2, ts))
+Reducer: Guard(?1: qt, TupleConcat(("hi",), ?1, ts))
+###
+> ("hi",) & st & ts
+("hi",) & st & ts : (s, i4, b, s, s)*
+Binder : ForEach(*3: With(!1: ("hi",), ForEach(*2: st, TupleConcat(!1, *2))), TupleConcat(*3, ts))
+Reducer: With(!1: ("hi",), ForEach(*2: st, TupleConcat(!1, *2, ts)))
+###
+> ("hi",) & sqt & ts
+("hi",) & sqt & ts : (s, i4, b, s, s)?*
+Binder : ForEach(*4: With(!1: ("hi",), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3)))), Guard(?5: *4, TupleConcat(?5, ts)))
+Reducer: With(!1: ("hi",), ForEach(*2: sqt, Guard(?3: *2, TupleConcat(!1, ?3, ts))))
+###
+> ts & ("hi",) & (3,)
+ts & ("hi",) & (3,) : (s, s, i8)
+Binder : TupleConcat(ts, ("hi",), (3,))
+Reducer: TupleConcat(ts, ("hi", 3))
+###
+> ("hi",) & ("a" if true else "b",) & (3, true)
+("hi",) & ("a" if true else "b",) & (3, true) : (s, s, i8, b)
+Binder : TupleConcat(("hi",), (If(true, "a", "b"),), (3, true))
+Reducer: ("hi", "a", 3, true)
+###
+> t & null
+t & null : (i4, b, s)?
+*** Error: (4,8) Node: null, Message: Operand must be a tuple
+Binder : Guard(?1: null, TupleConcat(t, ()))
+Reducer: null
+###
+> null & t
+null & t : (i4, b, s)?
+*** Error: (0,4) Node: null, Message: Operand must be a tuple
+Binder : Guard(?1: null, TupleConcat((), t))
+Reducer: null
+###
+> t & "hi"
+t & "hi" : (i4, b, s, s)
+*** Error: (4,8) Node: "hi", Message: Operand must be a tuple
+Binder : TupleConcat(t, ("hi",))
+###
+> "hi" & t
+"hi" & t : s
+*** Error: (7,8) Node: t, Message: Invalid operand type: cannot convert type '(i4, b, s)' to 's'
+Binder : StrConcat("hi", Error(ErrBadType_Src_Dst))
+###
+> t & true
+t & true : (i4, b, s, b)
+*** Error: (4,8) Node: true, Message: Operand must be a tuple
+Binder : TupleConcat(t, (true,))
+###
+> true & t
+true & t : (b, i4, b, s)
+*** Error: (0,4) Node: true, Message: Operand must be a tuple
+Binder : TupleConcat((true,), t)
+###

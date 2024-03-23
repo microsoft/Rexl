@@ -1,0 +1,119 @@
+﻿`` RA := {X:3, Y:"hi"};
+`` QA := Opt(RA);
+`` NA := Null(RA);
+`` RBs := [{X:3, Y:"hi"}, {X:5, Y:"hi"}, {X:3, Y:"HI"}, {X:3, Y:"hj"}];
+`` QBs := RBs ++ [null];
+`` RCs := RBs->DropOne();
+`` __IL_Func_Ind := 0;
+
+RA   = RBs
+RA   = QBs
+QA   = RBs
+QA   = QBs
+NA   = RBs
+NA   = QBs
+RA ! = RBs
+RA ! = QBs
+QA ! = RBs
+QA ! = QBs
+NA ! = RBs
+NA ! = QBs
+RA  ~= RBs
+RA  ~= QBs
+QA  ~= RBs
+QA  ~= QBs
+NA  ~= RBs
+NA  ~= QBs
+RA !~= RBs
+RA !~= QBs
+QA !~= RBs
+QA !~= QBs
+NA !~= RBs
+NA !~= QBs
+
+RA   = RBs = RBs
+RA   = QBs = QBs
+QA   = RBs = RBs
+QA   = QBs = QBs
+NA   = RBs = RBs
+NA   = QBs = QBs
+RA ! = RBs = RBs
+RA ! = QBs = QBs
+QA ! = RBs = RBs
+QA ! = QBs = QBs
+NA ! = RBs = RBs
+NA ! = QBs = QBs
+RA  ~= RBs = RBs
+RA  ~= QBs = QBs
+QA  ~= RBs = RBs
+QA  ~= QBs = QBs
+NA  ~= RBs = RBs
+NA  ~= QBs = QBs
+RA !~= RBs = RBs
+RA !~= QBs = QBs
+QA !~= RBs = RBs
+QA !~= QBs = QBs
+NA !~= RBs = RBs
+NA !~= QBs = QBs
+
+RA = RA   = RBs
+RA = RA   = QBs
+QA = QA   = RBs
+QA = QA   = QBs
+NA = NA   = RBs
+NA = NA   = QBs
+RA = RA ! = RBs
+RA = RA ! = QBs
+QA = QA ! = RBs
+QA = QA ! = QBs
+NA = NA ! = RBs
+NA = NA ! = QBs
+RA = RA  ~= RBs
+RA = RA  ~= QBs
+QA = QA  ~= RBs
+QA = QA  ~= QBs
+NA = NA  ~= RBs
+NA = NA  ~= QBs
+RA = RA !~= RBs
+RA = RA !~= QBs
+QA = QA !~= RBs
+QA = QA !~= QBs
+NA = NA !~= RBs
+NA = NA !~= QBs
+
+RA   in RBs
+RA   in RCs
+RA ! in RBs
+RA ! in RCs
+RA  ~in RBs
+RA  ~in RCs
+RA !~in RBs
+RA !~in RCs
+
+// Coverage.
+NA = null != RA = RBs
+
+`` RAs := [{X:3.5, Y:"hi"}, {X:0/0, Y:"hi"}];
+`` QAs := RAs ++ [null];
+`` RBs := [{X:3.5, Y:"hi"}, {X:5.0, Y:"hi"}, {X:3.5, Y:"HI"}, {X:3.5, Y:"hj"}, {X:0/0, Y:"hi"}, {X:0/0, Y:"HI"}];
+// DAs has instances taken from the RBs sequence. This is used to test the reference equality
+// short-cut, which must be disabled for $ variants.
+`` DAs := [RBs->TakeAt(0), RBs->TakeAt(4)];
+`` QBs := RBs ++ [null];
+`` func F(As, Bs) := ForEach(a:As, ForEach(b:Bs,
+``     (
+``      ("M" if a   = b else "_") &
+``      ("M" if a ~ = b else "_") &
+``      ("M" if a  $= b else "_") &
+``      ("M" if a ~$= b else "_"),
+``      a, b
+``     )));
+
+F(RAs, RBs)
+F(RAs, QBs)
+F(QAs, RBs)
+F(QAs, QBs)
+F(DAs, RBs)
+F(DAs, QBs)
+F(DAs ++ [null], RBs)
+F(DAs ++ [null], QBs)

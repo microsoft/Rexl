@@ -1,0 +1,51 @@
+﻿// Contains cases to get full code coverage of binding casts.
+
+// i4* to g
+[1, "hi", Range(5)]
+
+:: { I4ss: i4**, I4s: i4*, Gs: g*, Gss: g**, Vs: v*, Os: o*, TI4_0s: i4[]*, TI4_1s: i4[*]*, TI4q_1s: i4?[*]*, TI8_1s: i8[*]*, TI4_2s: i4[*,*]*, Us: U<>*, UAs: U<A>*, UBs: U<B>*, UABs: U<A.B>*, UACs: U<A.C>*, UABCs: U<A.B.C>* }
+
+// i4** to g*
+I4ss ++ Gs
+
+// i4** to g**
+I4ss ++ Gs
+
+// v* to i4** and o* to i4**
+Vs ++ I4ss
+Os ++ I4ss
+
+// v***, i4**, and i4* to g*
+[[[]]] ++ I4ss ++ I4s
+[[[]]]->CastGenLift() ++ I4ss ++ I4s
+[[[]]]->ForEach(it->ForEach(it->CastGen())) ++ I4ss ++ I4s
+[[[]]]->ForEach(it->CastGen()) ++ I4ss ++ I4s
+[[[]]] ++ I4ss->CastGenLift() ++ I4s
+[[[]]] ++ I4ss->ForEach(it->CastGen()) ++ I4s
+[[[]]] ++ I4ss ++ I4s->CastGenLift()
+[[[]]] ++ I4ss->CastGenLift() ++ I4s->CastGenLift()
+
+// Different item types (promote).
+TI4_1s ++ TI4q_1s
+TI4_1s ++ TI8_1s
+
+// Different ranks (g*).
+TI4_0s ++ TI4_1s
+TI4_1s ++ TI4_2s
+
+// Uri cases.
+Us ++ UAs
+UBs ++ Us
+
+UAs ++ UBs
+UABs ++ UACs
+
+UABCs ++ UABs
+UABs ++ UABCs
+
+UABCs ++ UACs
+UACs ++ UABCs
+
+// Record cases.
+[{A:3, B:true}, {A:5}]
+

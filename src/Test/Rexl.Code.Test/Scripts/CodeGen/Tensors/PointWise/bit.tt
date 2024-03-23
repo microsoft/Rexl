@@ -1,0 +1,36 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+<# var ops = new[]
+{
+    "Add",
+    "Sub",
+    "Mul",
+    "Div",
+    "Min",
+    "Max"
+};
+
+var tests = new[]
+{
+    "[true, true, false, false]->Tensor.From(2,2)",
+    "true->Tensor.Fill(2,2)",
+    "false->Tensor.Fill(2,2)",
+    "Range(10)->(it mod 4 < 2)->Tensor.From(2,5)",
+    "Range(12)->(it mod 6 >= 3)->Tensor.From(3,2,2)",
+    "true->Tensor.Fill(0)"
+};
+
+foreach (var T in tests) {
+    foreach (var U in tests) {#>
+`` T := <#= T #>;
+`` U := <#= U #>;
+({'  T': T }, {'  U': U }, <#=string.Join(", ", ops.Select(op => $"{{'{op}': T->{op}(U) }}"))#>)
+
+<#  }
+}#>

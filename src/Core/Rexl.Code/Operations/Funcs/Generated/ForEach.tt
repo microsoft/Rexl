@@ -1,0 +1,366 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+using Microsoft.Rexl.Private;
+
+<#
+// System.Func only takes up to 16 arguments. This limits the selector, which limits the
+// number of sequences. For non-indexed foreach, the number of sequences must be 16 or fewer.
+// For indexed foreach, the number of sequences must be 15 or fewer, since the index takes
+// one parameter slot.
+const int lim = 17;
+#>
+namespace Microsoft.Rexl.Code;
+
+using O = System.Object;
+using IE = IEnumerable<object>;
+
+// REVIEW: How can we implement the general case?
+partial class ForEachGen
+{
+    // We need Func with up to 20 parameters to get the Exec(Ind) methods.
+    private delegate TR Func<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, TA, TB, TC, TD, TE, TF, TG, TR>(T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9, TA ta, TB tb, TC tc, TD td, TE te, TF tf, TG tg);
+    private delegate TR Func<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, TA, TB, TC, TD, TE, TF, TG, TH, TR>(T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9, TA ta, TB tb, TC tc, TD td, TE te, TF tf, TG tg, TH th);
+    private delegate TR Func<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, TA, TB, TC, TD, TE, TF, TG, TH, TI, TR>(T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9, TA ta, TB tb, TC tc, TD td, TE te, TF tf, TG tg, TH th, TI ti);
+    private delegate TR Func<T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, TA, TB, TC, TD, TE, TF, TG, TH, TI, TJ, TR>(T0 t0, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6, T7 t7, T8 t8, T9 t9, TA ta, TB tb, TC tc, TD td, TE te, TF tf, TG tg, TH th, TI ti, TJ tj);
+
+    private static Immutable.Array<MethodInfo> GetExecs()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<<#=os#>, O>, IE>(Exec).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    private static Immutable.Array<MethodInfo> GetExecInds()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim - 1; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<long, <#=os#>, O>, IE>(ExecInd).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    private static Immutable.Array<MethodInfo> GetExecIfs()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<<#=os#>, bool>, Func<<#=os#>, O>, ExecCtx, int, IE>(ExecIf).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    private static Immutable.Array<MethodInfo> GetExecIfInds()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim - 1; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<long, <#=os#>, bool>, Func<long, <#=os#>, O>, ExecCtx, int, IE>(ExecIfInd).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    private static Immutable.Array<MethodInfo> GetExecWhiles()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<<#=os#>, bool>, Func<<#=os#>, O>, IE>(ExecWhile).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    private static Immutable.Array<MethodInfo> GetExecWhileInds()
+    {
+        var ret = Immutable.Array.CreateBuilder<MethodInfo>(<#= lim #>, init: true);
+<#  for (int num = 1; num < lim - 1; num++) {#>
+<#      var ies = string.Join(", ", Enumerable.Range(0, num).Select(i => $"IE"));#>
+<#      var os = string.Join(", ", Enumerable.Range(0, num).Select(i => $"O"));#>
+        ret[<#=num#>] = new Func<<#=ies#>, Func<long, <#=os#>, bool>, Func<long, <#=os#>, O>, IE>(ExecWhileInd).Method.GetGenericMethodDefinition();
+<#  }#>
+        return ret.ToImmutable();
+    }
+
+    public static IEnumerable<TDst> Exec<TSrc, TDst>(
+        IEnumerable<TSrc> src,
+        Func<TSrc, TDst> fn)
+    {
+        Validation.AssertValueOrNull(src);
+        Validation.AssertValue(fn);
+        if (src == null)
+            return null;
+        return CodeGenUtil.WrapWithCounter(src, Enumerable.Select(src, fn));
+    }
+    public static IEnumerable<TDst> ExecInd<TSrc, TDst>(
+        IEnumerable<TSrc> src,
+        Func<long, TSrc, TDst> fn)
+    {
+        Validation.AssertValueOrNull(src);
+        Validation.AssertValue(fn);
+        if (src == null)
+            return null;
+        return CodeGenUtil.WrapWithCounter(src, IterInd(src, fn));
+    }
+    private static IEnumerable<TDst> IterInd<TSrc, TDst>(
+        IEnumerable<TSrc> src,
+        Func<long, TSrc, TDst> fn)
+    {
+        Validation.AssertValue(src);
+        Validation.AssertValue(fn);
+
+        long idx = 0;
+        foreach (var x in src)
+            yield return fn(idx++, x);
+    }
+<#  for (int num = 2; num < lim; num++) {#>
+    public static IEnumerable<TDst> Exec<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> fn)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(fn);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return Iter(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, fn);
+    }
+    private static IEnumerable<TDst> Iter<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> fn)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(fn);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        while (<#= string.Join(" && ", Enumerable.Range(0, num).Select(i => $"e{i}.MoveNext()"))#>)
+            yield return fn(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"e{i}.Current"))#>);
+    }
+<#  }#>
+<#  for (int num = 2; num < lim - 1; num++) {#>
+    public static IEnumerable<TDst> ExecInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> fn)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(fn);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return IterInd(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, fn);
+    }
+    private static IEnumerable<TDst> IterInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> fn)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(fn);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        long idx = 0;
+        while (<#= string.Join(" && ", Enumerable.Range(0, num).Select(i => $"e{i}.MoveNext()"))#>)
+            yield return fn(idx++, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"e{i}.Current"))#>);
+    }
+<#  }#>
+<#  for (int num = 1; num < lim; num++) {#>
+    public static IEnumerable<TDst> ExecIf<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel,
+        ExecCtx ctx, int id)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        Validation.AssertValue(ctx);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return IterIf(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, pred, sel, ctx, id);
+    }
+    private static IEnumerable<TDst> IterIf<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel,
+        ExecCtx ctx, int id)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        Validation.AssertValue(ctx);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        for (; ; )
+        {
+            ctx.Ping(id);
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"!e{i}.MoveNext()")) #>)
+                yield break;
+<#      for (int i = 0; i < num; i++) {#>
+            var v<#=i#> = e<#=i#>.Current;
+<#      }#>
+            if (pred(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>))
+                yield return sel(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>);
+        }
+    }
+<#  }#>
+<#  for (int num = 1; num < lim - 1; num++) {#>
+    public static IEnumerable<TDst> ExecIfInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel,
+        ExecCtx ctx, int id)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        Validation.AssertValue(ctx);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return IterIfInd(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, pred, sel, ctx, id);
+    }
+    private static IEnumerable<TDst> IterIfInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel,
+        ExecCtx ctx, int id)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        Validation.AssertValue(ctx);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        for (long idx = 0; ; idx++)
+        {
+            ctx.Ping(id);
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"!e{i}.MoveNext()")) #>)
+                yield break;
+<#      for (int i = 0; i < num; i++) {#>
+            var v<#=i#> = e<#=i#>.Current;
+<#      }#>
+            if (pred(idx, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>))
+                yield return sel(idx, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>);
+        }
+    }
+<#  }#>
+<#  for (int num = 1; num < lim; num++) {#>
+    public static IEnumerable<TDst> ExecWhile<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return IterWhile(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, pred, sel);
+    }
+    private static IEnumerable<TDst> IterWhile<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        for (; ; )
+        {
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"!e{i}.MoveNext()")) #>)
+                yield break;
+<#      for (int i = 0; i < num; i++) {#>
+            var v<#=i#> = e<#=i#>.Current;
+<#      }#>
+            if (!pred(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>))
+                yield break;
+            yield return sel(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>);
+        }
+    }
+<#  }#>
+<#  for (int num = 1; num < lim - 1; num++) {#>
+    public static IEnumerable<TDst> ExecWhileInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValueOrNull(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+        if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"s{i} == null"))#>)
+            return null;
+        return IterWhileInd(<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}")) #>, pred, sel);
+    }
+    private static IEnumerable<TDst> IterWhileInd<<#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst>(
+        <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"IEnumerable<T{i}> s{i}")) #>,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, bool> pred,
+        Func<long, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"T{i}"))#>, TDst> sel)
+    {
+<#      for (int i = 0; i < num; i++) {#>
+        Validation.AssertValue(s<#=i#>);
+<#      }#>
+        Validation.AssertValue(pred);
+        Validation.AssertValue(sel);
+<#      for (int i = 0; i < num; i++) {#>
+        using var e<#=i#> = s<#=i#>.GetEnumerator();
+<#      }#>
+        for (long idx = 0; ; idx++)
+        {
+            if (<#= string.Join(" || ", Enumerable.Range(0, num).Select(i => $"!e{i}.MoveNext()")) #>)
+                yield break;
+<#      for (int i = 0; i < num; i++) {#>
+            var v<#=i#> = e<#=i#>.Current;
+<#      }#>
+            if (!pred(idx, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>))
+                yield break;
+            yield return sel(idx, <#= string.Join(", ", Enumerable.Range(0, num).Select(i => $"v{i}")) #>);
+        }
+    }
+<#  }#>
+}

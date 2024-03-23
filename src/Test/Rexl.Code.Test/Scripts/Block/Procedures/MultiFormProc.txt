@@ -1,0 +1,136 @@
+﻿S := ["x", "xy", null, "xyz", "hi", "adios", "hola", "guten morgen" ];
+TA := ForEach(s:S, { A: s, X: # + 1d });
+TB := ForEach(s:S, { A: null if Mod(#, 3) = 1 else s, B: null if Mod(#, 3) = 2 else s, X: # + 1d });
+TC := ForEach(s:S, { A: s, C: Range(#*2)->{ D: s, E: s }});
+
+// Errors.
+TA->Chain([null])->Proc.MultiDSMA();
+S->Proc.MultiDSMA(   it)->Map(B->Text.Concat(", "));
+TB->Proc.MultiDSMB(A: A,    B);
+TB->Proc.Multi_SMB();
+S->Proc.MultiDSMBab(it);
+S->Proc.MultiDSMBb(A: it);
+S->Proc.MultiDRMB(   it & "-1st",    it & "-2nd", S2: 7,     "/suf");
+
+"*** Simple, no mapping or merging ***";
+finish p as Proc.MultiDSMA(TA);
+p$ResultNames;
+p.Result;
+p.Visited;
+
+"*** Mapping but non-merging ***";
+finish p as Proc.MultiDSMB(S, it);
+p$ResultNames;
+p.Result;
+p.Visited;
+
+"*** Mapping and merging ***";
+
+finish p as Proc.MultiDSMA(TA, A: A);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDSMA(TA->TakeIf(false), A: A);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+
+finish p as Proc.MultiDsMB(TA, { A, B: "b-" & A });
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDsMB(TA->TakeIf(false), { A, B: "b-" & A });
+p$ResultNames;
+p.Result;
+p.PreMerge;
+
+"*** Record at the top level ***";
+
+finish p as Proc.MultiDSMB(S, it & "-1st", it & "-2nd");
+p$ResultNames;
+p.Result;
+p.Visited;
+
+finish p as Proc.MultiDSMB(S->TakeIf(false), it & "-1st", it & "-2nd");
+p$ResultNames;
+p.Result;
+
+finish p as Proc.MultiDfMB(S->Map({ B: "b-" & it, A: "a-" & it }), S2: 7, S1: "/suf");
+p$ResultNames;
+p.Result;
+p.Visited;
+
+finish p as Proc.MultiDRMB({ Mis: TB, S1: "/pre", S2: 5 });
+p$ResultNames;
+p.Result;
+p.Visited;
+
+"*** Record at the top level with merging ***";
+
+finish p as Proc.MultiDRMB(TA, A);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDRMB(TA->TakeIf(false), A);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+
+finish p as Proc.MultiDRMB(TB, B, A);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+
+"*** Record input, record output, no merge ***";
+
+finish p as Proc.MultiDSMBW(TB);
+p$ResultNames;
+p.Result;
+p.Visited;
+
+finish p as Proc.MultiDRMBW(S, A: it & "-1st", B: it & "-2nd", S1: "/suf", S2: 7);
+p$ResultNames;
+p.Result;
+p.Visited;
+
+"*** Record input, record output, merging ***";
+finish p as Proc.MultiDrMB(TB, { B, A }, "/suf", 5);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDrMB(TB->TakeIf(false), { B, A }, "/suf", 5);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+
+finish p as Proc.MultiDSMBW(TB, A, B);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;
+
+finish p as Proc.MultiDRMBW(TB, B, A, "/suf", 5);
+p$ResultNames;
+p.Result;
+p.PreMerge;
+p.Visited;

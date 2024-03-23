@@ -1,0 +1,125 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>Microsoft.Rexl.Code</AssemblyName>
+    <RootNamespace>Microsoft.Rexl.Code</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!-- NuGet Package Settings -->
+  <Import Project="..\..\..\nuget\nuget-package.props" />
+  <PropertyGroup>
+    <Title>REXL Code</Title>
+    <Description>The Rexl MSIL/CIL based code generation.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Validation.cs" Link="Shared\Validation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" />
+    <PackageReference Include="Parquet.Net" />
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
+    <PackageReference Include="Snappier" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Rexl.Base\Rexl.Base.csproj" />
+    <ProjectReference Include="..\Rexl.Bind\Rexl.Bind.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Operations\Funcs\Generated\ForEach.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ForEach.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Operations\Funcs\Generated\ChainMap.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ChainMap.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Operations\Funcs\Generated\MinMax.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MinMax.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Operations\Funcs\Generated\TTest.cs">
+      <DependentUpon>TTest.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Operations\Funcs\Generated\Sum.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Sum.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Types\Generated\TypeManager.JsonNumeric.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TypeManager.JsonNumeric.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Tensor\Generated\DotDefn.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DotDefn.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Tensor\Generated\PointWiseDefn.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PointWiseDefn.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Tensor\Generated\SliceDefn.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SliceDefn.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Operations\Funcs\Generated\ForEach.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ForEach.cs</LastGenOutput>
+    </None>
+    <None Update="Operations\Funcs\Generated\ChainMap.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ChainMap.cs</LastGenOutput>
+    </None>
+    <None Update="Operations\Funcs\Generated\MinMax.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MinMax.cs</LastGenOutput>
+    </None>
+    <None Update="Operations\Funcs\Generated\TTest.tt">
+      <LastGenOutput>TTest.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Operations\Funcs\Generated\Sum.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Sum.cs</LastGenOutput>
+    </None>
+    <None Update="Types\Generated\TypeManager.JsonNumeric.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TypeManager.JsonNumeric.cs</LastGenOutput>
+    </None>
+    <None Update="Tensor\Generated\DotDefn.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DotDefn.cs</LastGenOutput>
+    </None>
+    <None Update="Tensor\Generated\PointWiseDefn.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PointWiseDefn.cs</LastGenOutput>
+    </None>
+    <None Update="Tensor\Generated\SliceDefn.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SliceDefn.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>

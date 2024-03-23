@@ -1,0 +1,1332 @@
+**** New definitions: i8s, type: i8*
+**** New definitions: u8s, type: u8*
+**** New definitions: u4s, type: u4*
+
+> i8s
+i8s : i8*
+BndKind:Global, Type:i8*, Bnd:(Global(i8s))
+// (∂.i8s:i8*) : i8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ret
+  Total Size: 11
+
+Func sig: (i8s:i8*) to i8*
+Sequence: Seq<i8>
+ 0) -9223372036854775808
+ 1) -1000000
+ 2) -5
+ 3) -3
+ 4) -2
+ 5) -1
+ 6) 0
+ 7) 1
+ 8) 2
+ 9) 3
+10) 5
+11) 1000000
+12) 9223372036854775807
+###
+> u8s
+u8s : u8*
+BndKind:Global, Type:u8*, Bnd:(Global(u8s))
+// (∂.u8s:u8*) : u8*
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldloc.0 [Seq<u8>]
+      1) ret
+  Total Size: 11
+
+Func sig: (u8s:u8*) to u8*
+Sequence: Seq<u8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 5
+ 5) 1000000
+ 6) 18446744073709551615
+###
+> i8s^2
+i8s^2 : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(i8s), Power(Scope(1), 2:i8)):i8*))
+// (∂.i8s:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.2
+      1) conv.u8
+      5) call static NumUtil::IntPow(i8, u8):i8
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,i8>]
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (i8s:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1000000000000
+ 2) 25
+ 3) 9
+ 4) 4
+ 5) 1
+ 6) 0
+ 7) 1
+ 8) 4
+ 9) 9
+10) 25
+11) 1000000000000
+12) 1
+###
+> u8s^2
+u8s^2 : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(u8s), Power(Scope(1), 2:i8)):u8*))
+// (∂.u8s:u8*) : u8*
+ForEach_1(Arr<obj>, u8):u8
+      1) ldarg.1 [u8]
+      1) ldc.i4.2
+      1) conv.u8
+      5) call static NumUtil::IntPow(u8, u8):u8
+      1) ret
+  Total Size: 9
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u8,u8>]
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (u8s:u8*) to u8*
+Sequence: Seq<u8>
+ 0) 0
+ 1) 1
+ 2) 4
+ 3) 9
+ 4) 25
+ 5) 1000000000000
+ 6) 1
+###
+> i8s^10
+i8s^10 : i8*
+BndKind:Call, Type:i8*, Bnd:(Call(∂.ForEach([map:1] Global(i8s), Power(Scope(1), 10:i8)):i8*))
+// (∂.i8s:i8*) : i8*
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      2) ldc.i4.s [10]
+      1) conv.u8
+      5) call static NumUtil::IntPow(i8, u8):i8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<i8,i8>]
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 28
+
+Func sig: (i8s:i8*) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1152921504606846976
+ 2) 9765625
+ 3) 59049
+ 4) 1024
+ 5) 1
+ 6) 0
+ 7) 1
+ 8) 1024
+ 9) 59049
+10) 9765625
+11) 1152921504606846976
+12) 1
+###
+> u8s^10
+u8s^10 : u8*
+BndKind:Call, Type:u8*, Bnd:(Call(∂.ForEach([map:1] Global(u8s), Power(Scope(1), 10:i8)):u8*))
+// (∂.u8s:u8*) : u8*
+ForEach_1(Arr<obj>, u8):u8
+      1) ldarg.1 [u8]
+      2) ldc.i4.s [10]
+      1) conv.u8
+      5) call static NumUtil::IntPow(u8, u8):u8
+      1) ret
+  Total Size: 10
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<u8,u8>]
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 28
+
+Func sig: (u8s:u8*) to u8*
+Sequence: Seq<u8>
+ 0) 0
+ 1) 1
+ 2) 1024
+ 3) 59049
+ 4) 9765625
+ 5) 1152921504606846976
+ 6) 1
+###
+> Map(x: i8s, Map(y: i8s, x ^ y))
+Map(x : i8s, Map(y : i8s, x^y)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(i8s), Call(∂.ForEach([map:2] Global(i8s), Power(Scope(1), Scope(2))):i8*)):i8**))
+// (∂.i8s:i8*) : i8**
+ForEach_1(Arr<obj>, i8):i8
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      5) bgt [0]
+      1) ldc.i4.1
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [i8]
+      5) call static NumUtil::IntPow(i8, u8):i8
+  Label [1]:
+      1) ret
+  Total Size: 34
+
+ForEach_1(Arr<obj>, i8):Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<i8>)]
+      5) ldfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      5) newobj (Seq<i8>)()
+      1) stloc.1 [(Seq<i8>)]
+      1) ldloc.1 [(Seq<i8>)]
+      1) ldloc.0 [Seq<i8>]
+      5) stfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Seq<i8>)]
+      5) stelem [(Seq<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<i8>>):Seq<Seq<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<i8>>):Seq<Seq<i8>>
+      1) ret
+  Total Size: 84
+
+Func sig: (i8s:i8*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -9223372036854775808
+     8) 0
+     9) 0
+    10) 0
+    11) 0
+    12) 0
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -1000000
+     8) 1000000000000
+     9) -1000000000000000000
+    10) -5076944270305263616
+    11) 0
+    12) 0
+ 2) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -5
+     8) 25
+     9) -125
+    10) -3125
+    11) -1481698101600053503
+    12) 3689348814741910323
+ 3) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -3
+     8) 9
+     9) -27
+    10) -243
+    11) 7682401271709541633
+    12) 6148914691236517205
+ 4) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -2
+     8) 4
+     9) -8
+    10) -32
+    11) 0
+    12) 0
+ 5) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) -1
+     8) 1
+     9) -1
+    10) -1
+    11) 1
+    12) -1
+ 6) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 0
+     8) 0
+     9) 0
+    10) 0
+    11) 0
+    12) 0
+ 7) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 1
+     8) 1
+     9) 1
+    10) 1
+    11) 1
+    12) 1
+ 8) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 2
+     8) 4
+     9) 8
+    10) 32
+    11) 0
+    12) 0
+ 9) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 3
+     8) 9
+     9) 27
+    10) 243
+    11) 7682401271709541633
+    12) -6148914691236517205
+10) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 5
+     8) 25
+     9) 125
+    10) 3125
+    11) -1481698101600053503
+    12) -3689348814741910323
+11) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 1000000
+     8) 1000000000000
+     9) 1000000000000000000
+    10) 5076944270305263616
+    11) 0
+    12) 0
+12) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 9223372036854775807
+     8) 1
+     9) 9223372036854775807
+    10) 9223372036854775807
+    11) 1
+    12) 9223372036854775807
+###
+> Map(x: i8s, Map(y: u8s, x ^ y))
+Map(x : i8s, Map(y : u8s, x^y)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(i8s), Call(∂.ForEach([map:2] Global(u8s), Power(Scope(1), Scope(2))):i8*)):i8**))
+// (∂.i8s:i8*, ∂.u8s:u8*) : i8**
+ForEach_1(Arr<obj>, u8):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [u8]
+      5) call static NumUtil::IntPow(i8, u8):i8
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, i8):Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<u8>)]
+      5) ldfld (Seq<u8>)::_F0:Seq<u8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u8,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.1 [Seq<u8>]
+      5) newobj (Seq<u8>)()
+      1) stloc.2 [(Seq<u8>)]
+      1) ldloc.2 [(Seq<u8>)]
+      1) ldloc.1 [Seq<u8>]
+      5) stfld (Seq<u8>)::_F0:Seq<u8>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<u8>)]
+      5) stelem [(Seq<u8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<i8>>):Seq<Seq<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<i8>>):Seq<Seq<i8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (i8s:i8*, u8s:u8*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) -9223372036854775808
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) -1000000
+     2) 1000000000000
+     3) -1000000000000000000
+     4) -5076944270305263616
+     5) 0
+     6) 0
+ 2) Sequence: Seq<i8>
+     0) 1
+     1) -5
+     2) 25
+     3) -125
+     4) -3125
+     5) -1481698101600053503
+     6) 3689348814741910323
+ 3) Sequence: Seq<i8>
+     0) 1
+     1) -3
+     2) 9
+     3) -27
+     4) -243
+     5) 7682401271709541633
+     6) 6148914691236517205
+ 4) Sequence: Seq<i8>
+     0) 1
+     1) -2
+     2) 4
+     3) -8
+     4) -32
+     5) 0
+     6) 0
+ 5) Sequence: Seq<i8>
+     0) 1
+     1) -1
+     2) 1
+     3) -1
+     4) -1
+     5) 1
+     6) -1
+ 6) Sequence: Seq<i8>
+     0) 1
+     1) 0
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 7) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+ 8) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 4
+     3) 8
+     4) 32
+     5) 0
+     6) 0
+ 9) Sequence: Seq<i8>
+     0) 1
+     1) 3
+     2) 9
+     3) 27
+     4) 243
+     5) 7682401271709541633
+     6) -6148914691236517205
+10) Sequence: Seq<i8>
+     0) 1
+     1) 5
+     2) 25
+     3) 125
+     4) 3125
+     5) -1481698101600053503
+     6) -3689348814741910323
+11) Sequence: Seq<i8>
+     0) 1
+     1) 1000000
+     2) 1000000000000
+     3) 1000000000000000000
+     4) 5076944270305263616
+     5) 0
+     6) 0
+12) Sequence: Seq<i8>
+     0) 1
+     1) 9223372036854775807
+     2) 1
+     3) 9223372036854775807
+     4) 9223372036854775807
+     5) 1
+     6) 9223372036854775807
+###
+> Map(x: i8s, Map(y: u4s, x ^ y))
+Map(x : i8s, Map(y : u4s, x^y)) : i8**
+BndKind:Call, Type:i8**, Bnd:(Call(∂.ForEach([map:1] Global(i8s), Call(∂.ForEach([map:2] Global(u4s), Power(Scope(1), Num<u8>(Scope(2)))):i8*)):i8**))
+// (∂.i8s:i8*, ∂.u4s:u4*) : i8**
+ForEach_1(Arr<obj>, u4):i8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(i8)]
+      5) ldfld (i8)::_F0:i8
+      1) ldarg.1 [u4]
+      1) conv.u8
+      5) call static NumUtil::IntPow(i8, u8):i8
+      1) ret
+  Total Size: 20
+
+ForEach_1(Arr<obj>, i8):Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<u4>)]
+      5) ldfld (Seq<u4>)::_F0:Seq<u4>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u4,i8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (i8)()
+      1) dup
+      1) ldarg.1 [i8]
+      5) stfld (i8)::_F0:i8
+      5) stelem [(i8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u4>, Func<u4,i8>):Seq<i8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<i8>):Seq<i8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.0 [Seq<i8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u4>
+      1) stloc.1 [Seq<u4>]
+      5) newobj (Seq<u4>)()
+      1) stloc.2 [(Seq<u4>)]
+      1) ldloc.2 [(Seq<u4>)]
+      1) ldloc.1 [Seq<u4>]
+      5) stfld (Seq<u4>)::_F0:Seq<u4>
+      1) ldloc.0 [Seq<i8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,Seq<i8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<u4>)]
+      5) stelem [(Seq<u4>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,Seq<i8>>):Seq<Seq<i8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<i8>>):Seq<Seq<i8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (i8s:i8*, u4s:u4*) to i8**
+Sequence: Seq<Seq<i8>>
+ 0) Sequence: Seq<i8>
+     0) 1
+     1) -9223372036854775808
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 1) Sequence: Seq<i8>
+     0) 1
+     1) -1000000
+     2) 1000000000000
+     3) -1000000000000000000
+     4) -5076944270305263616
+     5) 0
+     6) 0
+ 2) Sequence: Seq<i8>
+     0) 1
+     1) -5
+     2) 25
+     3) -125
+     4) -3125
+     5) -1481698101600053503
+     6) -1851100499643518157
+ 3) Sequence: Seq<i8>
+     0) 1
+     1) -3
+     2) 9
+     3) -27
+     4) -243
+     5) 7682401271709541633
+     6) -830436559519656619
+ 4) Sequence: Seq<i8>
+     0) 1
+     1) -2
+     2) 4
+     3) -8
+     4) -32
+     5) 0
+     6) 0
+ 5) Sequence: Seq<i8>
+     0) 1
+     1) -1
+     2) 1
+     3) -1
+     4) -1
+     5) 1
+     6) -1
+ 6) Sequence: Seq<i8>
+     0) 1
+     1) 0
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 7) Sequence: Seq<i8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+ 8) Sequence: Seq<i8>
+     0) 1
+     1) 2
+     2) 4
+     3) 8
+     4) 32
+     5) 0
+     6) 0
+ 9) Sequence: Seq<i8>
+     0) 1
+     1) 3
+     2) 9
+     3) 27
+     4) 243
+     5) 7682401271709541633
+     6) 830436559519656619
+10) Sequence: Seq<i8>
+     0) 1
+     1) 5
+     2) 25
+     3) 125
+     4) 3125
+     5) -1481698101600053503
+     6) 1851100499643518157
+11) Sequence: Seq<i8>
+     0) 1
+     1) 1000000
+     2) 1000000000000
+     3) 1000000000000000000
+     4) 5076944270305263616
+     5) 0
+     6) 0
+12) Sequence: Seq<i8>
+     0) 1
+     1) 9223372036854775807
+     2) 1
+     3) 9223372036854775807
+     4) 9223372036854775807
+     5) 1
+     6) 9223372036854775807
+###
+> Map(x: u8s, Map(y: i8s, x ^ y))
+Map(x : u8s, Map(y : i8s, x^y)) : u8**
+BndKind:Call, Type:u8**, Bnd:(Call(∂.ForEach([map:1] Global(u8s), Call(∂.ForEach([map:2] Global(i8s), Power(Scope(1), Scope(2))):u8*)):u8**))
+// (∂.u8s:u8*, ∂.i8s:i8*) : u8**
+ForEach_1(Arr<obj>, i8):u8
+      1) ldarg.1 [i8]
+      1) ldc.i4.0
+      1) conv.i8
+      5) bgt [0]
+      1) ldc.i4.1
+      1) conv.i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(u8)]
+      5) ldfld (u8)::_F0:u8
+      1) ldarg.1 [i8]
+      5) call static NumUtil::IntPow(u8, u8):u8
+  Label [1]:
+      1) ret
+  Total Size: 34
+
+ForEach_1(Arr<obj>, u8):Seq<u8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<i8>)]
+      5) ldfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<i8,u8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (u8)()
+      1) dup
+      1) ldarg.1 [u8]
+      5) stfld (u8)::_F0:u8
+      5) stelem [(u8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<i8>, Func<i8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<i8>
+      1) stloc.1 [Seq<i8>]
+      5) newobj (Seq<i8>)()
+      1) stloc.2 [(Seq<i8>)]
+      1) ldloc.2 [(Seq<i8>)]
+      1) ldloc.1 [Seq<i8>]
+      5) stfld (Seq<i8>)::_F0:Seq<i8>
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u8,Seq<u8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<i8>)]
+      5) stelem [(Seq<i8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,Seq<u8>>):Seq<Seq<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<u8>>):Seq<Seq<u8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (u8s:u8*, i8s:i8*) to u8**
+Sequence: Seq<Seq<u8>>
+ 0) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 0
+     8) 0
+     9) 0
+    10) 0
+    11) 0
+    12) 0
+ 1) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 1
+     8) 1
+     9) 1
+    10) 1
+    11) 1
+    12) 1
+ 2) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 2
+     8) 4
+     9) 8
+    10) 32
+    11) 0
+    12) 0
+ 3) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 3
+     8) 9
+     9) 27
+    10) 243
+    11) 7682401271709541633
+    12) 12297829382473034411
+ 4) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 5
+     8) 25
+     9) 125
+    10) 3125
+    11) 16965045972109498113
+    12) 14757395258967641293
+ 5) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 1000000
+     8) 1000000000000
+     9) 1000000000000000000
+    10) 5076944270305263616
+    11) 0
+    12) 0
+ 6) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+     7) 18446744073709551615
+     8) 1
+     9) 18446744073709551615
+    10) 18446744073709551615
+    11) 1
+    12) 18446744073709551615
+###
+> Map(x: u8s, Map(y: u8s, x ^ y))
+Map(x : u8s, Map(y : u8s, x^y)) : u8**
+BndKind:Call, Type:u8**, Bnd:(Call(∂.ForEach([map:1] Global(u8s), Call(∂.ForEach([map:2] Global(u8s), Power(Scope(1), Scope(2))):u8*)):u8**))
+// (∂.u8s:u8*) : u8**
+ForEach_1(Arr<obj>, u8):u8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(u8)]
+      5) ldfld (u8)::_F0:u8
+      1) ldarg.1 [u8]
+      5) call static NumUtil::IntPow(u8, u8):u8
+      1) ret
+  Total Size: 19
+
+ForEach_1(Arr<obj>, u8):Seq<u8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<u8>)]
+      5) ldfld (Seq<u8>)::_F0:Seq<u8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u8,u8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (u8)()
+      1) dup
+      1) ldarg.1 [u8]
+      5) stfld (u8)::_F0:u8
+      5) stelem [(u8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      5) newobj (Seq<u8>)()
+      1) stloc.1 [(Seq<u8>)]
+      1) ldloc.1 [(Seq<u8>)]
+      1) ldloc.0 [Seq<u8>]
+      5) stfld (Seq<u8>)::_F0:Seq<u8>
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u8,Seq<u8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.1 [(Seq<u8>)]
+      5) stelem [(Seq<u8>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,Seq<u8>>):Seq<Seq<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<u8>>):Seq<Seq<u8>>
+      1) ret
+  Total Size: 84
+
+Func sig: (u8s:u8*) to u8**
+Sequence: Seq<Seq<u8>>
+ 0) Sequence: Seq<u8>
+     0) 1
+     1) 0
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 1) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+ 2) Sequence: Seq<u8>
+     0) 1
+     1) 2
+     2) 4
+     3) 8
+     4) 32
+     5) 0
+     6) 0
+ 3) Sequence: Seq<u8>
+     0) 1
+     1) 3
+     2) 9
+     3) 27
+     4) 243
+     5) 7682401271709541633
+     6) 12297829382473034411
+ 4) Sequence: Seq<u8>
+     0) 1
+     1) 5
+     2) 25
+     3) 125
+     4) 3125
+     5) 16965045972109498113
+     6) 14757395258967641293
+ 5) Sequence: Seq<u8>
+     0) 1
+     1) 1000000
+     2) 1000000000000
+     3) 1000000000000000000
+     4) 5076944270305263616
+     5) 0
+     6) 0
+ 6) Sequence: Seq<u8>
+     0) 1
+     1) 18446744073709551615
+     2) 1
+     3) 18446744073709551615
+     4) 18446744073709551615
+     5) 1
+     6) 18446744073709551615
+###
+> Map(x: u8s, Map(y: u4s, x ^ y))
+Map(x : u8s, Map(y : u4s, x^y)) : u8**
+BndKind:Call, Type:u8**, Bnd:(Call(∂.ForEach([map:1] Global(u8s), Call(∂.ForEach([map:2] Global(u4s), Power(Scope(1), Num<u8>(Scope(2)))):u8*)):u8**))
+// (∂.u8s:u8*, ∂.u4s:u4*) : u8**
+ForEach_1(Arr<obj>, u4):u8
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [(u8)]
+      5) ldfld (u8)::_F0:u8
+      1) ldarg.1 [u4]
+      1) conv.u8
+      5) call static NumUtil::IntPow(u8, u8):u8
+      1) ret
+  Total Size: 20
+
+ForEach_1(Arr<obj>, u8):Seq<u8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [(Seq<u4>)]
+      5) ldfld (Seq<u4>)::_F0:Seq<u4>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u4,u8>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.4
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.3
+      5) newobj (u8)()
+      1) dup
+      1) ldarg.1 [u8]
+      5) stfld (u8)::_F0:u8
+      5) stelem [(u8)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u4>, Func<u4,u8>):Seq<u8>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<u8>):Seq<u8>
+      1) ret
+  Total Size: 76
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u8>
+      1) stloc.0 [Seq<u8>]
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.1
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):Seq<u4>
+      1) stloc.1 [Seq<u4>]
+      5) newobj (Seq<u4>)()
+      1) stloc.2 [(Seq<u4>)]
+      1) ldloc.2 [(Seq<u4>)]
+      1) ldloc.1 [Seq<u4>]
+      5) stfld (Seq<u4>)::_F0:Seq<u4>
+      1) ldloc.0 [Seq<u8>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<u8,Seq<u8>>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.3
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.0
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Arr<obj>]
+      5) stelem [Arr<obj>]
+      1) dup
+      1) ldc.i4.2
+      1) ldloc.2 [(Seq<u4>)]
+      5) stelem [(Seq<u4>)]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      5) call static ForEachGen::Exec(Seq<u8>, Func<u8,Seq<u8>>):Seq<Seq<u8>>
+      5) call static CodeGenUtil::EnumerableToCaching(Seq<Seq<u8>>):Seq<Seq<u8>>
+      1) ret
+  Total Size: 93
+
+Func sig: (u8s:u8*, u4s:u4*) to u8**
+Sequence: Seq<Seq<u8>>
+ 0) Sequence: Seq<u8>
+     0) 1
+     1) 0
+     2) 0
+     3) 0
+     4) 0
+     5) 0
+     6) 0
+ 1) Sequence: Seq<u8>
+     0) 1
+     1) 1
+     2) 1
+     3) 1
+     4) 1
+     5) 1
+     6) 1
+ 2) Sequence: Seq<u8>
+     0) 1
+     1) 2
+     2) 4
+     3) 8
+     4) 32
+     5) 0
+     6) 0
+ 3) Sequence: Seq<u8>
+     0) 1
+     1) 3
+     2) 9
+     3) 27
+     4) 243
+     5) 7682401271709541633
+     6) 830436559519656619
+ 4) Sequence: Seq<u8>
+     0) 1
+     1) 5
+     2) 25
+     3) 125
+     4) 3125
+     5) 16965045972109498113
+     6) 1851100499643518157
+ 5) Sequence: Seq<u8>
+     0) 1
+     1) 1000000
+     2) 1000000000000
+     3) 1000000000000000000
+     4) 5076944270305263616
+     5) 0
+     6) 0
+ 6) Sequence: Seq<u8>
+     0) 1
+     1) 18446744073709551615
+     2) 1
+     3) 18446744073709551615
+     4) 18446744073709551615
+     5) 1
+     6) 18446744073709551615
+###

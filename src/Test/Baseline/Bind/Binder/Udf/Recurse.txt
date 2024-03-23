@@ -1,0 +1,87 @@
+**** New udf: Fact, arity: 1
+Error while binding definition for [<this>]: [Fact(3)].
+
+Bind errors:
+Error: (41,42) Node: Fact(n - 1), Message: Recursion not supported in user defined functions.
+
+
+> Fact(0)
+Fact(0) : i8
+*** Error: (41-42;1:42-1:43) Node: Fact(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 0, If(!1 @<= 0, 1, Mul(!1, Unit<i8>(Error(ErrRecursiveUdf)))))
+Reducer: 1
+###
+> Fact(1)
+Fact(1) : i8
+*** Error: (41-42;1:42-1:43) Node: Fact(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 1, If(!1 @<= 0, 1, Mul(!1, Unit<i8>(Error(ErrRecursiveUdf)))))
+Reducer: 0
+###
+> Fact(17)
+Fact(17) : i8
+*** Error: (41-42;1:42-1:43) Node: Fact(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 17, If(!1 @<= 0, 1, Mul(!1, Unit<i8>(Error(ErrRecursiveUdf)))))
+Reducer: 0
+###
+
+**** New udf: A, arity: 1
+**** New udf: B, arity: 1
+Error while binding definition for [<this>]: [A(3)].
+
+Bind errors:
+Error: (79,80) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+
+Error while binding definition for [<this>]: [B(3)].
+
+Bind errors:
+Error: (35,36) Node: B(n - 1), Message: Recursion not supported in user defined functions.
+
+
+> A(0)
+A(0) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 0, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 1
+###
+> A(1)
+A(1) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 1, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 1
+###
+> A(2)
+A(2) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 2, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 0
+###
+> A(5)
+A(5) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 5, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 0
+###
+> B(0)
+B(0) : i8
+*** Error: (35-36;1:36-1:37) Node: B(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 0, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 1
+###
+> A(1)
+A(1) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 1, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 1
+###
+> A(2)
+A(2) : i8
+*** Error: (79-80;2:36-2:37) Node: A(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 2, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 0
+###
+> B(5)
+B(5) : i8
+*** Error: (35-36;1:36-1:37) Node: B(n - 1), Message: Recursion not supported in user defined functions.
+Binder : With(!1: 5, If(!1 @<= 0, 1, Mul(!1, With(!2: Add(!1, [-] 1), If(!2 @<= 0, 1, Mul(!2, Unit<i8>(Error(ErrRecursiveUdf))))))))
+Reducer: 0
+###

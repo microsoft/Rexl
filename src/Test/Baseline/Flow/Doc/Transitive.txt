@@ -1,0 +1,141 @@
+Add: 00000001 [A], Fma: [3]
+Add: 00000002 [B], Fma: [A]
+Add: 00000003 [C], Fma: [Range(100)], Extra: { [this], [this->Filter(it mod B = 0)] }
+Status: 3 nodes, 1 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [B]: [A  tTuUB C dD  ], Base: i8
+    00000003 [C]: [A FtT UBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Fma: 00000001 [A], Main: [3] => [7]
+Status: 3 nodes, 2 undos, 0 redos
+  Node changes:
+    00000001 [A]: [       B C dD  ], Base: i8
+    00000002 [B]: [           dD  ], Base: i8
+    00000003 [C]: [            D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod B = 0)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod B = 0)]
+  New 2: [0:this->Sum()]
+Status: 3 nodes, 3 undos, 0 redos
+  Node changes:
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod B = 0)]
+  Old 2: [0:this->Sum()]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod B = 0)]
+Status: 3 nodes, 4 undos, 0 redos
+  Node changes:
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod B = 0)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod B = 0)]
+  New 2: [0:this->Sum(it * B)]
+Status: 3 nodes, 5 undos, 0 redos
+  Node changes:
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+Ren: 00000002 [X] <= [B]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod B = 0)]
+  Old 2: [0:this->Sum(it * B)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod X = 0)]
+  New 2: [0:this->Sum(it * X)]
+Status: 3 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [X]: [ N     B       ], Base: i8
+    00000003 [C]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+*** Undo(1)
+Ren: 00000002 [B] <= [X]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod X = 0)]
+  Old 2: [0:this->Sum(it * X)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod B = 0)]
+  New 2: [0:this->Sum(it * B)]
+Status: 3 nodes, 5 undos, 1 redos
+  Node changes:
+    00000002 [B]: [ N     B       ], Base: i8
+    00000003 [C]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+*** Redo(1)
+Ren: 00000002 [X] <= [B]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod B = 0)]
+  Old 2: [0:this->Sum(it * B)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod X = 0)]
+  New 2: [0:this->Sum(it * X)]
+Status: 3 nodes, 6 undos, 0 redos
+  Node changes:
+    00000002 [X]: [ N     B       ], Base: i8
+    00000003 [C]: [       Bb      ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+Ren: 00000002 [Y] <= [X]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod X = 0)]
+  Old 2: [0:this->Sum(it * X)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod Y = 0)]
+Status: 3 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Y]: [ N     B       ], Base: i8
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** Undo(1)
+Ren: 00000002 [X] <= [Y]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod Y = 0)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod X = 0)]
+  New 2: [0:this->Sum(it * X)]
+Status: 3 nodes, 6 undos, 1 redos
+  Node changes:
+    00000002 [X]: [ N     B       ], Base: i8
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*, Extra[2]: i8
+###
+*** Redo(1)
+Ren: 00000002 [Y] <= [X]
+Fma: 00000003 [C]
+  Old 0: [0:this]
+  Old 1: [0:this->Filter(it mod X = 0)]
+  Old 2: [0:this->Sum(it * X)]
+  New 0: [0:this]
+  New 1: [0:this->Filter(it mod Y = 0)]
+Status: 3 nodes, 7 undos, 0 redos
+  Node changes:
+    00000002 [Y]: [ N     B       ], Base: i8
+    00000003 [C]: [  F T  Bb c D  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###
+*** UndoAll
+Del: 00000001 [A]
+Del: 00000002 [Y]
+Del: 00000003 [C]
+Status: 0 nodes, 0 undos, 7 redos
+###
+*** RedoAll
+Add: 00000001 [A], Fma: [7]
+Add: 00000002 [Y], Fma: [A]
+Add: 00000003 [C], Fma: [Range(100)], Extra: { [this], [this->Filter(it mod Y = 0)] }
+Status: 3 nodes, 7 undos, 0 redos
+  Node changes:
+    00000001 [A]: [A  tT  B C dD  ], Base: i8
+    00000002 [Y]: [A  tTuUB C dD  ], Base: i8
+    00000003 [C]: [A FtT UBbCcdD  ], Base: i8*, Extra[0]: i8*, Extra[1]: i8*
+###

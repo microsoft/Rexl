@@ -1,0 +1,260 @@
+>>> *** Source:
+    BitPlan := plan {
+      param Domain := Range(10)->(1 shl it);
+      param N := 19;
+      var Bits from Domain def [];
+      msr Num := Count(Bits);
+      msr Sum := Sum(Bits);
+      msr Dif := N - Sum;
+      msr Neg := Sum - N;
+      con Limit := Sum <= N;
+    };
+    "*** Symbols ***";
+    BitPlan.Domain;
+    BitPlan.N;
+    BitPlan.Bits;
+    BitPlan.Sum;
+    BitPlan.Num;
+    BitPlan.Limit;
+    "*** Evals ***";
+    BitPlan;
+    BitPlan with { Bits: [ 16 ] };
+    BitPlan with { Bits: [ 16, 2, 1 ] };
+    R := { Bits: [ 4, 8, 1 ] };
+    BitPlan with (R+>{ N: 13 });
+    BitPlan with { Bits: [ 4, 8, 1 ] } => { N: 13 };
+    BitPlan with { Bits: Domain };
+    BitPlan with { Bits: BitPlan.Domain };
+    BitPlan with { Bits: [ "hi" ] }; // Type error.
+    BitPlan with ("hi");
+
+>>> *** Instructions:
+   0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+   1) [0] Expr "*** Symbols ***"
+   2) [0] Expr BitPlan.Domain
+   3) [0] Expr BitPlan.N
+   4) [0] Expr BitPlan.Bits
+   5) [0] Expr BitPlan.Sum
+   6) [0] Expr BitPlan.Num
+   7) [0] Expr BitPlan.Limit
+   8) [0] Expr "*** Evals ***"
+   9) [0] Expr BitPlan
+  10) [0] Expr BitPlan=>{ Bits : [16] }
+  11) [0] Expr BitPlan=>{ Bits : [16, 2, 1] }
+  12) [0] Define R <- { Bits : [4, 8, 1] }
+  13) [0] Expr BitPlan=>(R+>{ N : 13 })
+  14) [0] Expr BitPlan=>{ Bits : [4, 8, 1] }=>{ N : 13 }
+  15) [0] Expr BitPlan=>{ Bits : Domain }
+  16) [0] Expr BitPlan=>{ Bits : BitPlan.Domain }
+  17) [0] Expr BitPlan=>{ Bits : ["hi"] }
+  18) [0] Expr BitPlan=>("hi")
+  19) [0] End
+
+>    0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+Global 'BitPlan' has DType: M{var Bits:i8*, msr Dif:i8, param Domain:i8*, con Limit:b, param N:i8, msr Neg:i8, msr Num:i8, msr Sum:i8}, SysType: RuntimeModule<{Seq<i8>,i8,Seq<i8>,bool,i8,i8,i8,i8},(Seq<i8>,i8,Seq<i8>,Seq<i8>,i8,i8,i8,i8,bool)>
+>    1) [0] Expr "*** Symbols ***"
+*** Symbols ***
+>    2) [0] Expr BitPlan.Domain
+Seq<i8>
+   0) 1
+   1) 2
+   2) 4
+   3) 8
+   4) 16
+   5) 32
+   6) 64
+   7) 128
+   8) 256
+   9) 512
+>    3) [0] Expr BitPlan.N
+19
+>    4) [0] Expr BitPlan.Bits
+<null>
+>    5) [0] Expr BitPlan.Sum
+0
+>    6) [0] Expr BitPlan.Num
+0
+>    7) [0] Expr BitPlan.Limit
+true
+>    8) [0] Expr "*** Evals ***"
+*** Evals ***
+>    9) [0] Expr BitPlan
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: <null>
+  msr Num: 0
+  msr Sum: 0
+  msr Dif: 19
+  msr Neg: -19
+  con Limit: true
+>   10) [0] Expr BitPlan=>{ Bits : [16] }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 16
+  msr Num: 1
+  msr Sum: 16
+  msr Dif: 3
+  msr Neg: -3
+  con Limit: true
+>   11) [0] Expr BitPlan=>{ Bits : [16, 2, 1] }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 16
+       1) 2
+       2) 1
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+>   12) [0] Define R <- { Bits : [4, 8, 1] }
+Global 'R' has DType: {Bits:i8*}, SysType: {Seq<i8>}
+>   13) [0] Expr BitPlan=>(R+>{ N : 13 })
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 4
+       1) 8
+       2) 1
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+>   14) [0] Expr BitPlan=>{ Bits : [4, 8, 1] }=>{ N : 13 }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 4
+       1) 8
+       2) 1
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+>   15) [0] Expr BitPlan=>{ Bits : Domain }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: -1004
+  msr Neg: 1004
+  con Limit: false
+>   16) [0] Expr BitPlan=>{ Bits : BitPlan.Domain }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: -1004
+  msr Neg: 1004
+  con Limit: false
+>   17) [0] Expr BitPlan=>{ Bits : ["hi"] }
+*** Bind diagnostics:
+  [Bits.txt] Error: (621,622) Node: { Bits : ["hi"] }, Message: Invalid operand type: cannot convert type '{Bits:s*}' to '{Bits:i8*}'
+>   18) [0] Expr BitPlan=>("hi")
+*** Bind diagnostics:
+  [Bits.txt] Error: (670,671) Node: "hi", Message: Operand must be a record
+>   19) [0] End
+

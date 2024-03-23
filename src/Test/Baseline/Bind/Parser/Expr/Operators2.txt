@@ -1,0 +1,2026 @@
+> not A
+Node: [not A]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,5) [not A], extra=[Not]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+###
+> not A > 5
+Node: [not A $> 5]
+Dump:
+  00 Node[id:3, kind:UnaryOp, depth:3, tok:KwdNot, rng:(0,3) [not], full:(0,9) [not A > 5], extra=[Not]], count=1
+  01   Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(6,7) [>], full:(4,9) [A > 5]], count=2
+  02     Op:StrictGreater
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:1, kind:NumLit, depth:1, tok:5, rng:(8,9) [5], full:(8,9) [5], extra=[5]]
+###
+> ! (A > 5)
+Node: [!(A $> 5)]
+Dump:
+  00 Node[id:5, kind:UnaryOp, depth:4, tok:Bng, rng:(0,1) [!], full:(0,9) [! (A > 5)], extra=[Not]], count=1
+  01   Node[id:4, kind:Paren, depth:3, tok:ParenOpen, rng:(2,3) [(], full:(2,9) [(A > 5)]], count=1
+  02     Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(5,6) [>], full:(3,8) [A > 5]], count=2
+  03       Op:StrictGreater
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(3,4) [A], full:(3,4) [A], extra=[A]]
+  03       Node[id:1, kind:NumLit, depth:1, tok:5, rng:(7,8) [5], full:(7,8) [5], extra=[5]]
+###
+> ! A > 5
+Node: [!A $> 5]
+Dump:
+  00 Node[id:3, kind:Compare, depth:3, tok:Grt, rng:(4,5) [>], full:(0,7) [! A > 5]], count=2
+  01   Op:StrictGreater
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(0,1) [!], full:(0,3) [! A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:5, rng:(6,7) [5], full:(6,7) [5], extra=[5]]
+###
+> not A and B
+Node: [not A and B]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxAnd, rng:(6,9) [and], full:(0,11) [not A and B], extra=[And]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,5) [not A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:B, rng:(10,11) [B], full:(10,11) [B], extra=[B]]
+###
+> ! A and B
+Node: [!A and B]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxAnd, rng:(4,7) [and], full:(0,9) [! A and B], extra=[And]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(0,1) [!], full:(0,3) [! A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:B, rng:(8,9) [B], full:(8,9) [B], extra=[B]]
+###
+> not A + B
+Node: [not A + B]
+Dump:
+  00 Node[id:3, kind:UnaryOp, depth:3, tok:KwdNot, rng:(0,3) [not], full:(0,9) [not A + B], extra=[Not]], count=1
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(6,7) [+], full:(4,9) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(8,9) [B], full:(8,9) [B], extra=[B]]
+###
+> ! A + B
+Node: [!A + B]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:Add, rng:(4,5) [+], full:(0,7) [! A + B], extra=[Add]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(0,1) [!], full:(0,3) [! A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+###
+> ~A
+Node: [~A]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:Tld, rng:(0,1) [~], full:(0,2) [~A], extra=[BitNot]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(1,2) [A], full:(1,2) [A], extra=[A]]
+###
+> -~A
+Node: [-~A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,3) [-~A], extra=[Negate]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Tld, rng:(1,2) [~], full:(1,3) [~A], extra=[BitNot]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+###
+> ~-A
+Node: [~-A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Tld, rng:(0,1) [~], full:(0,3) [~-A], extra=[BitNot]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Sub, rng:(1,2) [-], full:(1,3) [-A], extra=[Negate]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+###
+> ~~A
+Node: [~~A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Tld, rng:(0,1) [~], full:(0,3) [~~A], extra=[BitNot]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Tld, rng:(1,2) [~], full:(1,3) [~A], extra=[BitNot]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(2,3) [A], full:(2,3) [A], extra=[A]]
+###
+> bnot A
+Node: [bnot A]
+Dump:
+  00 Node[id:1, kind:UnaryOp, depth:2, tok:KwdBnot, rng:(0,4) [bnot], full:(0,6) [bnot A], extra=[BitNot]], count=1
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+###
+> - bnot A
+Node: [-(bnot A)]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,8) [- bnot A], extra=[Negate]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdBnot, rng:(2,6) [bnot], full:(2,8) [bnot A], extra=[BitNot]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(7,8) [A], full:(7,8) [A], extra=[A]]
+Error: (2,6) Tok: 'bnot', Message: Invalid 'bnot' operator, consider `~` or parentheses
+###
+> bnot - A
+Node: [bnot -A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:KwdBnot, rng:(0,4) [bnot], full:(0,8) [bnot - A], extra=[BitNot]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Sub, rng:(5,6) [-], full:(5,8) [- A], extra=[Negate]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(7,8) [A], full:(7,8) [A], extra=[A]]
+###
+> bnot bnot A
+Node: [bnot bnot A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:KwdBnot, rng:(0,4) [bnot], full:(0,11) [bnot bnot A], extra=[BitNot]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdBnot, rng:(5,9) [bnot], full:(5,11) [bnot A], extra=[BitNot]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(10,11) [A], full:(10,11) [A], extra=[A]]
+###
+> bnot A + B
+Node: [bnot A + B]
+Dump:
+  00 Node[id:3, kind:UnaryOp, depth:3, tok:KwdBnot, rng:(0,4) [bnot], full:(0,10) [bnot A + B], extra=[BitNot]], count=1
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(7,8) [+], full:(5,10) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(9,10) [B], full:(9,10) [B], extra=[B]]
+###
+> not !A
+Node: [not !A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:KwdNot, rng:(0,3) [not], full:(0,6) [not !A], extra=[Not]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Bng, rng:(4,5) [!], full:(4,6) [!A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+###
+> !not A
+Node: [!(not A)]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Bng, rng:(0,1) [!], full:(0,6) [!not A], extra=[Not]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(1,4) [not], full:(1,6) [not A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+Error: (1,4) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> not -A
+Node: [not -A]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:KwdNot, rng:(0,3) [not], full:(0,6) [not -A], extra=[Not]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:Sub, rng:(4,5) [-], full:(4,6) [-A], extra=[Negate]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+###
+> -not A
+Node: [-(not A)]
+Dump:
+  00 Node[id:2, kind:UnaryOp, depth:3, tok:Sub, rng:(0,1) [-], full:(0,6) [-not A], extra=[Negate]], count=1
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(1,4) [not], full:(1,6) [not A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(5,6) [A], full:(5,6) [A], extra=[A]]
+Error: (1,4) Tok: 'not', Message: Invalid 'not' operator, consider `!` or parentheses
+###
+> A * B div C mod D * E
+Node: [A * B div C mod D * E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:Mul, rng:(18,19) [*], full:(0,21) [A * B div C mod D * E], extra=[Mul]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxMod, rng:(12,15) [mod], full:(0,17) [A * B div C mod D], extra=[IntMod]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(6,9) [div], full:(0,11) [A * B div C], extra=[IntDiv]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(2,3) [*], full:(0,5) [A * B], extra=[Mul]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(20,21) [E], full:(20,21) [E], extra=[E]]
+###
+> A * B DIV C MOD D * E
+Node: [A * B div C mod D * E]
+Corrected: [A * B div C mod D * E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:Mul, rng:(18,19) [*], full:(0,21) [A * B DIV C MOD D * E], extra=[Mul]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxMod, rng:(12,15) [MOD], full:(0,17) [A * B DIV C MOD D], extra=[IntMod]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(6,9) [DIV], full:(0,11) [A * B DIV C], extra=[IntDiv]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:Mul, rng:(2,3) [*], full:(0,5) [A * B], extra=[Mul]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(20,21) [E], full:(20,21) [E], extra=[E]]
+Error: (6,9) Tok: 'DIV', Message: Expected an operator but got 'DIV'. Did you intend 'div'?
+Error: (12,15) Tok: 'MOD', Message: Expected an operator but got 'MOD'. Did you intend 'mod'?
+###
+> A bor B bxor C band D shl E
+Node: [A bor B bxor C band D shl E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxBor, rng:(2,5) [bor], full:(0,27) [A bor B bxor C band D shl E], extra=[BitOr]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:BinaryOp, depth:4, tok:KtxBxor, rng:(8,12) [bxor], full:(6,27) [B bxor C band D shl E], extra=[BitXor]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:6, kind:BinaryOp, depth:3, tok:KtxBand, rng:(15,19) [band], full:(13,27) [C band D shl E], extra=[BitAnd]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  03       Node[id:5, kind:BinaryOp, depth:2, tok:KtxShl, rng:(22,25) [shl], full:(20,27) [D shl E], extra=[Shl]], count=2
+  04         Node[id:3, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  04         Node[id:4, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+###
+> A shl B band C bxor D bor E
+Node: [A shl B band C bxor D bor E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxBor, rng:(22,25) [bor], full:(0,27) [A shl B band C bxor D bor E], extra=[BitOr]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxBxor, rng:(15,19) [bxor], full:(0,21) [A shl B band C bxor D], extra=[BitXor]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxBand, rng:(8,12) [band], full:(0,14) [A shl B band C], extra=[BitAnd]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxShl, rng:(2,5) [shl], full:(0,7) [A shl B], extra=[Shl]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+###
+> A shri B shr C shru D shl E
+Node: [A shri B shr C shru D shl E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxShl, rng:(22,25) [shl], full:(0,27) [A shri B shr C shru D shl E], extra=[Shl]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxShru, rng:(15,19) [shru], full:(0,21) [A shri B shr C shru D], extra=[Shru]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxShr, rng:(9,12) [shr], full:(0,14) [A shri B shr C], extra=[Shr]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxShri, rng:(2,6) [shri], full:(0,8) [A shri B], extra=[Shri]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+###
+> A BOR B BXOR C BAND D SHL E
+Node: [A bor B bxor C band D shl E]
+Corrected: [A bor B bxor C band D shl E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxBor, rng:(2,5) [BOR], full:(0,27) [A BOR B BXOR C BAND D SHL E], extra=[BitOr]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:7, kind:BinaryOp, depth:4, tok:KtxBxor, rng:(8,12) [BXOR], full:(6,27) [B BXOR C BAND D SHL E], extra=[BitXor]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:6, kind:BinaryOp, depth:3, tok:KtxBand, rng:(15,19) [BAND], full:(13,27) [C BAND D SHL E], extra=[BitAnd]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  03       Node[id:5, kind:BinaryOp, depth:2, tok:KtxShl, rng:(22,25) [SHL], full:(20,27) [D SHL E], extra=[Shl]], count=2
+  04         Node[id:3, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  04         Node[id:4, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+Error: (2,5) Tok: 'BOR', Message: Expected an operator but got 'BOR'. Did you intend 'bor'?
+Error: (8,12) Tok: 'BXOR', Message: Expected an operator but got 'BXOR'. Did you intend 'bxor'?
+Error: (15,19) Tok: 'BAND', Message: Expected an operator but got 'BAND'. Did you intend 'band'?
+Error: (22,25) Tok: 'SHL', Message: Expected an operator but got 'SHL'. Did you intend 'shl'?
+###
+> A SHL B BAND C BXOR D BOR E
+Node: [A shl B band C bxor D bor E]
+Corrected: [A shl B band C bxor D bor E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxBor, rng:(22,25) [BOR], full:(0,27) [A SHL B BAND C BXOR D BOR E], extra=[BitOr]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxBxor, rng:(15,19) [BXOR], full:(0,21) [A SHL B BAND C BXOR D], extra=[BitXor]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxBand, rng:(8,12) [BAND], full:(0,14) [A SHL B BAND C], extra=[BitAnd]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxShl, rng:(2,5) [SHL], full:(0,7) [A SHL B], extra=[Shl]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+Error: (2,5) Tok: 'SHL', Message: Expected an operator but got 'SHL'. Did you intend 'shl'?
+Error: (8,12) Tok: 'BAND', Message: Expected an operator but got 'BAND'. Did you intend 'band'?
+Error: (15,19) Tok: 'BXOR', Message: Expected an operator but got 'BXOR'. Did you intend 'bxor'?
+Error: (22,25) Tok: 'BOR', Message: Expected an operator but got 'BOR'. Did you intend 'bor'?
+###
+> A SHRI B SHR C SHRU D SHL E
+Node: [A shri B shr C shru D shl E]
+Corrected: [A shri B shr C shru D shl E]
+Dump:
+  00 Node[id:8, kind:BinaryOp, depth:5, tok:KtxShl, rng:(22,25) [SHL], full:(0,27) [A SHRI B SHR C SHRU D SHL E], extra=[Shl]], count=2
+  01   Node[id:6, kind:BinaryOp, depth:4, tok:KtxShru, rng:(15,19) [SHRU], full:(0,21) [A SHRI B SHR C SHRU D], extra=[Shru]], count=2
+  02     Node[id:4, kind:BinaryOp, depth:3, tok:KtxShr, rng:(9,12) [SHR], full:(0,14) [A SHRI B SHR C], extra=[Shr]], count=2
+  03       Node[id:2, kind:BinaryOp, depth:2, tok:KtxShri, rng:(2,6) [SHRI], full:(0,8) [A SHRI B], extra=[Shri]], count=2
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  04         Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+  02     Node[id:5, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+  01   Node[id:7, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+Error: (2,6) Tok: 'SHRI', Message: Expected an operator but got 'SHRI'. Did you intend 'shri'?
+Error: (9,12) Tok: 'SHR', Message: Expected an operator but got 'SHR'. Did you intend 'shr'?
+Error: (15,19) Tok: 'SHRU', Message: Expected an operator but got 'SHRU'. Did you intend 'shru'?
+Error: (22,25) Tok: 'SHL', Message: Expected an operator but got 'SHL'. Did you intend 'shl'?
+###
+> A + B shri C
+Node: [A + B shri C]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:KtxShri, rng:(6,10) [shri], full:(0,12) [A + B shri C], extra=[Shri]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A = B < C <= D >= E > F
+Node: [A @= B $< C $<= D $>= E $> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(2,3) [=], full:(0,23) [A = B < C <= D >= E > F]], count=6
+  01   Op:Equal
+  01   Op:StrictLess
+  01   Op:StrictLessEqual
+  01   Op:StrictGreaterEqual
+  01   Op:StrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(13,14) [D], full:(13,14) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(18,19) [E], full:(18,19) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(22,23) [F], full:(22,23) [F], extra=[F]]
+###
+> A ~= B ~< C ~<= D ~>= E ~> F
+Node: [A ~@= B ~$< C ~$<= D ~$>= E ~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,28) [A ~= B ~< C ~<= D ~>= E ~> F]], count=6
+  01   Op:EqualCi
+  01   Op:StrictLessCi
+  01   Op:StrictLessEqualCi
+  01   Op:StrictGreaterEqualCi
+  01   Op:StrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(22,23) [E], full:(22,23) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(27,28) [F], full:(27,28) [F], extra=[F]]
+###
+> A != B !< C !<= D !>= E !> F
+Node: [A !@= B !$< C !$<= D !$>= E !$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,28) [A != B !< C !<= D !>= E !> F]], count=6
+  01   Op:NotEqual
+  01   Op:NotStrictLess
+  01   Op:NotStrictLessEqual
+  01   Op:NotStrictGreaterEqual
+  01   Op:NotStrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(22,23) [E], full:(22,23) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(27,28) [F], full:(27,28) [F], extra=[F]]
+###
+> A !~= B !~< C !~<= D !~>= E !~> F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(4,5) [=], full:(0,33) [A !~= B !~< C !~<= D !~>= E !~> F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(19,20) [D], full:(19,20) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(32,33) [F], full:(32,33) [F], extra=[F]]
+###
+> A ~ = B ~ < C ~ <= D ~ >= E ~ > F
+Node: [A ~@= B ~$< C ~$<= D ~$>= E ~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(4,5) [=], full:(0,33) [A ~ = B ~ < C ~ <= D ~ >= E ~ > F]], count=6
+  01   Op:EqualCi
+  01   Op:StrictLessCi
+  01   Op:StrictLessEqualCi
+  01   Op:StrictGreaterEqualCi
+  01   Op:StrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(19,20) [D], full:(19,20) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(32,33) [F], full:(32,33) [F], extra=[F]]
+###
+> A ! = B ! < C ! <= D ! >= E ! > F
+Node: [A !@= B !$< C !$<= D !$>= E !$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(4,5) [=], full:(0,33) [A ! = B ! < C ! <= D ! >= E ! > F]], count=6
+  01   Op:NotEqual
+  01   Op:NotStrictLess
+  01   Op:NotStrictLessEqual
+  01   Op:NotStrictGreaterEqual
+  01   Op:NotStrictGreater
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(19,20) [D], full:(19,20) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(26,27) [E], full:(26,27) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(32,33) [F], full:(32,33) [F], extra=[F]]
+###
+> A !~ = B !~ < C !~ <= D !~ >= E !~ > F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(5,6) [=], full:(0,38) [A !~ = B !~ < C !~ <= D !~ >= E !~ > F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(22,23) [D], full:(22,23) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(30,31) [E], full:(30,31) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(37,38) [F], full:(37,38) [F], extra=[F]]
+###
+> A ! ~= B ! ~< C ! ~<= D ! ~>= E ! ~> F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(5,6) [=], full:(0,38) [A ! ~= B ! ~< C ! ~<= D ! ~>= E ! ~> F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(22,23) [D], full:(22,23) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(30,31) [E], full:(30,31) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(37,38) [F], full:(37,38) [F], extra=[F]]
+###
+> A ! ~ = B ! ~ < C ! ~ <= D ! ~ >= E ! ~ > F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(6,7) [=], full:(0,43) [A ! ~ = B ! ~ < C ! ~ <= D ! ~ >= E ! ~ > F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(8,9) [B], full:(8,9) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(16,17) [C], full:(16,17) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(25,26) [D], full:(25,26) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(34,35) [E], full:(34,35) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(42,43) [F], full:(42,43) [F], extra=[F]]
+###
+> A $= B $!= C ~$< D !$= E $ F
+Node: [A $= B !$= C ~$< D !$= E$F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,28) [A $= B $!= C ~$< D !$= E $ F]], count=5
+  01   Op:StrictEqual
+  01   Op:NotStrictEqual
+  01   Op:StrictLessCi
+  01   Op:NotStrictEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+  01   Node[id:5, kind:MetaProp, depth:1, tok:Dol, rng:(25,26) [$], full:(23,28) [E $ F], extra=[E$F]]
+###
+> A @= B @!= C ~@< D !@= E ~@ F
+Node: [A @= B !@= C ~@< D !@= E ~@= F]
+Corrected: [A @= B @!= C ~@< D !@= E ~@= F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,29) [A @= B @!= C ~@< D !@= E ~@ F]], count=6
+  01   Op:Equal
+  01   Op:NotEqual
+  01   Op:LessCi
+  01   Op:NotEqual
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(23,24) [E], full:(23,24) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(28,29) [F], full:(28,29) [F], extra=[F]]
+Error: (28,29) Tok: 'F', Message: Expected a comparison operator
+###
+> A @= B @!= C ~@< D !@= E @ F
+Node: [A @= B !@= C ~@< D !@= E @= F]
+Corrected: [A @= B @!= C ~@< D !@= E @= F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(3,4) [=], full:(0,28) [A @= B @!= C ~@< D !@= E @ F]], count=6
+  01   Op:Equal
+  01   Op:NotEqual
+  01   Op:LessCi
+  01   Op:NotEqual
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(23,24) [E], full:(23,24) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(27,28) [F], full:(27,28) [F], extra=[F]]
+Error: (27,28) Tok: 'F', Message: Expected a comparison operator
+###
+> // Error: redundant token(s), and others.
+> A ! ~~ = B !! ~ < C ! ~ !<= D ! ~!~ >= E !~~! ~! > F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Corrected: [// Error: redundant token(s), and others.
+A ! ~ = B ! ~ < C ! ~ <= D ! ~ >= E !~  > F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(49,50) [=], full:(42,94) [A ! ~~ = B !! ~ < C ! ~ !<= D ! ~!~ >= E !~~! ~! > F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(42,43) [A], full:(42,43) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(51,52) [B], full:(51,52) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(60,61) [C], full:(60,61) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(70,71) [D], full:(70,71) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(81,82) [E], full:(81,82) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(93,94) [F], full:(93,94) [F], extra=[F]]
+Error: (47,48) Tok: '~', Message: Redundant '~'
+Error: (54,55) Tok: '!', Message: Redundant '!'
+Error: (66,67) Tok: '!', Message: Redundant '!'
+Error: (75,76) Tok: '!', Message: Redundant '!'
+Error: (76,77) Tok: '~', Message: Redundant '~'
+Error: (85,86) Tok: '~', Message: Redundant '~'
+Error: (86,87) Tok: '!', Message: Redundant '!'
+Error: (88,89) Tok: '~', Message: Redundant '~'
+Error: (89,90) Tok: '!', Message: Redundant '!'
+Comment: Range=(0,41), Tid=CommentLine, Text=[// Error: redundant token(s), and others.]
+###
+> A ! ~~ = B not ! ~ < C ! ~ not <= D ! ~not~ >= E !~~not ~! > F
+Node: [A !~@= B !~$< C !~$<= D !~$>= E !~$> F]
+Corrected: [A ! ~ = B not  ~ < C ! ~  <= D ! ~ >= E !~  > F]
+Dump:
+  00 Node[id:6, kind:Compare, depth:2, tok:Equ, rng:(7,8) [=], full:(0,62) [A ! ~~ = B not ! ~ < C ! ~ not <= D ! ~not~ >= E !~~not ~! > F]], count=6
+  01   Op:NotEqualCi
+  01   Op:NotStrictLessCi
+  01   Op:NotStrictLessEqualCi
+  01   Op:NotStrictGreaterEqualCi
+  01   Op:NotStrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(9,10) [B], full:(9,10) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(21,22) [C], full:(21,22) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(34,35) [D], full:(34,35) [D], extra=[D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(47,48) [E], full:(47,48) [E], extra=[E]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:F, rng:(61,62) [F], full:(61,62) [F], extra=[F]]
+Error: (5,6) Tok: '~', Message: Redundant '~'
+Error: (15,16) Tok: '!', Message: Redundant '!'
+Error: (27,30) Tok: 'not', Message: Redundant 'not'
+Error: (39,42) Tok: 'not', Message: Redundant 'not'
+Error: (42,43) Tok: '~', Message: Redundant '~'
+Error: (51,52) Tok: '~', Message: Redundant '~'
+Error: (52,55) Tok: 'not', Message: Redundant 'not'
+Error: (56,57) Tok: '~', Message: Redundant '~'
+Error: (57,58) Tok: '!', Message: Redundant '!'
+###
+> A $@< B @~$>= C @@= D
+Node: [A $< B ~@>= C @= D]
+Corrected: [A $< B @~>= C @= D]
+Dump:
+  00 Node[id:4, kind:Compare, depth:2, tok:Lss, rng:(4,5) [<], full:(0,21) [A $@< B @~$>= C @@= D]], count=4
+  01   Op:StrictLess
+  01   Op:GreaterEqualCi
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:2, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:D, rng:(20,21) [D], full:(20,21) [D], extra=[D]]
+Error: (3,4) Tok: '@', Message: Comparison operator modifier '@' conflicts with '$'
+Error: (10,11) Tok: '$', Message: Comparison operator modifier '$' conflicts with '@'
+Error: (17,18) Tok: '@', Message: Redundant '@'
+###
+> A $!$= B $$= C $ D $$ E
+Node: [A !$= B $= C$D $= E]
+Corrected: [A $!= B $= C $ D $= E]
+Dump:
+  00 Node[id:5, kind:Compare, depth:2, tok:Equ, rng:(5,6) [=], full:(0,23) [A $!$= B $$= C $ D $$ E]], count=4
+  01   Op:NotStrictEqual
+  01   Op:StrictEqual
+  01   Op:StrictEqual
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+  01   Node[id:3, kind:MetaProp, depth:1, tok:Dol, rng:(15,16) [$], full:(13,18) [C $ D], extra=[C$D]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:E, rng:(22,23) [E], full:(22,23) [E], extra=[E]]
+Error: (4,5) Tok: '$', Message: Redundant '$'
+Error: (10,11) Tok: '$', Message: Redundant '$'
+Error: (20,21) Tok: '$', Message: Redundant '$'
+Error: (22,23) Tok: 'E', Message: Expected a comparison operator
+###
+> A $* B
+Node: [A$'' * B]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:2, tok:Mul, rng:(3,4) [*], full:(0,6) [A $* B], extra=[Mul]], count=2
+  01   Node[id:1, kind:MetaProp, depth:1, tok:Dol, rng:(2,3) [$], full:(0,3) [A $], extra=[A$'']]
+  01   Node[id:2, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+Error: (3,4) Tok: '*', Message: Expected: '<identifier>', Found: '*'
+###
+> A !$in B
+Node: [A !in B]
+Corrected: [A !in B]
+Dump:
+  00 Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(4,6) [in], full:(0,8) [A !$in B], extra=[InNot]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+Error: (3,4) Tok: '$', Message: The 'in' operator doesn't support the comparison modifier '$'
+###
+> A !@in B
+Node: [A !in B]
+Corrected: [A !in B]
+Dump:
+  00 Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(4,6) [in], full:(0,8) [A !@in B], extra=[InNot]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+Error: (3,4) Tok: '@', Message: The 'in' operator doesn't support the comparison modifier '@'
+###
+> A !$IN B
+Node: [A !in B]
+Corrected: [A !in B]
+Dump:
+  00 Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(4,6) [IN], full:(0,8) [A !$IN B], extra=[InNot]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+Error: (4,6) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+Error: (3,4) Tok: '$', Message: The 'in' operator doesn't support the comparison modifier '$'
+###
+> A & B in C
+Node: [A & B in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(6,8) [in], full:(0,10) [A & B in C], extra=[In]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+###
+> A & B IN C
+Node: [A & B in C]
+Corrected: [A & B in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(6,8) [IN], full:(0,10) [A & B IN C], extra=[In]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+Error: (6,8) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B has C
+Node: [A & B has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(6,9) [has], full:(0,11) [A & B has C], extra=[Has]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A & B HaS C
+Node: [A & B has C]
+Corrected: [A & B has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(6,9) [HaS], full:(0,11) [A & B HaS C], extra=[Has]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (6,9) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ~in C
+Node: [A & B ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [in], full:(0,11) [A & B ~in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A & B ~ in C
+Node: [A & B ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [in], full:(0,12) [A & B ~ in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A & B ~/*comment block*/  in C
+Node: [A & B ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(26,28) [in], full:(0,30) [A & B ~/*comment block*/  in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(29,30) [C], full:(29,30) [C], extra=[C]]
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B ~IN C
+Node: [A & B ~in C]
+Corrected: [A & B ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [IN], full:(0,11) [A & B ~IN C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (7,9) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B ~ IN C
+Node: [A & B ~in C]
+Corrected: [A & B ~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [IN], full:(0,12) [A & B ~ IN C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (8,10) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B ~/*comment block*/  IN C
+Node: [A & B ~in C]
+Corrected: [A & B ~/*comment block*/  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(26,28) [IN], full:(0,30) [A & B ~/*comment block*/  IN C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(29,30) [C], full:(29,30) [C], extra=[C]]
+Error: (26,28) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B ~has C
+Node: [A & B ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(7,10) [has], full:(0,12) [A & B ~has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A & B ~ has C
+Node: [A & B ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [has], full:(0,13) [A & B ~ has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A & B ~/*comment block*/  has C
+Node: [A & B ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(26,29) [has], full:(0,31) [A & B ~/*comment block*/  has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(30,31) [C], full:(30,31) [C], extra=[C]]
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B ~HaS C
+Node: [A & B ~has C]
+Corrected: [A & B ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(7,10) [HaS], full:(0,12) [A & B ~HaS C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (7,10) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ~ HaS C
+Node: [A & B ~has C]
+Corrected: [A & B ~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [HaS], full:(0,13) [A & B ~ HaS C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (8,11) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ~/*comment block*/  HaS C
+Node: [A & B ~has C]
+Corrected: [A & B ~/*comment block*/  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(26,29) [HaS], full:(0,31) [A & B ~/*comment block*/  HaS C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(30,31) [C], full:(30,31) [C], extra=[C]]
+Error: (26,29) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !in C
+Node: [A & B !in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [in], full:(0,11) [A & B !in C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A & B ! in C
+Node: [A & B !in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [in], full:(0,12) [A & B ! in C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A & B !/*comment block*/  in C
+Node: [A & B !in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(26,28) [in], full:(0,30) [A & B !/*comment block*/  in C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(29,30) [C], full:(29,30) [C], extra=[C]]
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !IN C
+Node: [A & B !in C]
+Corrected: [A & B !in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [IN], full:(0,11) [A & B !IN C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (7,9) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B ! IN C
+Node: [A & B !in C]
+Corrected: [A & B ! in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [IN], full:(0,12) [A & B ! IN C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (8,10) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B !/*comment block*/  IN C
+Node: [A & B !in C]
+Corrected: [A & B !/*comment block*/  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(26,28) [IN], full:(0,30) [A & B !/*comment block*/  IN C], extra=[InNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(29,30) [C], full:(29,30) [C], extra=[C]]
+Error: (26,28) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !has C
+Node: [A & B !has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(7,10) [has], full:(0,12) [A & B !has C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A & B ! has C
+Node: [A & B !has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [has], full:(0,13) [A & B ! has C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A & B !/*comment block*/  has C
+Node: [A & B !has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(26,29) [has], full:(0,31) [A & B !/*comment block*/  has C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(30,31) [C], full:(30,31) [C], extra=[C]]
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !HaS C
+Node: [A & B !has C]
+Corrected: [A & B !has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(7,10) [HaS], full:(0,12) [A & B !HaS C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (7,10) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ! HaS C
+Node: [A & B !has C]
+Corrected: [A & B ! has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [HaS], full:(0,13) [A & B ! HaS C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (8,11) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B !/*comment block*/  HaS C
+Node: [A & B !has C]
+Corrected: [A & B !/*comment block*/  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(26,29) [HaS], full:(0,31) [A & B !/*comment block*/  HaS C], extra=[HasNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(30,31) [C], full:(30,31) [C], extra=[C]]
+Error: (26,29) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !~in C
+Node: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [in], full:(0,12) [A & B !~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+###
+> A & B ! ~in C
+Node: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [in], full:(0,13) [A & B ! ~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A & B !~ in C
+Node: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [in], full:(0,13) [A & B !~ in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A & B ! ~ in C
+Node: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(10,12) [in], full:(0,14) [A & B ! ~ in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+###
+> A & B !  ~/*comment block*/  in C
+Node: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(29,31) [in], full:(0,33) [A & B !  ~/*comment block*/  in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(32,33) [C], full:(32,33) [C], extra=[C]]
+Comment: Range=(10,27), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !~IN C
+Node: [A & B !~in C]
+Corrected: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(8,10) [IN], full:(0,12) [A & B !~IN C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+Error: (8,10) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B ! ~IN C
+Node: [A & B !~in C]
+Corrected: [A & B ! ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [IN], full:(0,13) [A & B ! ~IN C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (9,11) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B !~ IN C
+Node: [A & B !~in C]
+Corrected: [A & B !~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [IN], full:(0,13) [A & B !~ IN C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (9,11) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B ! ~ IN C
+Node: [A & B !~in C]
+Corrected: [A & B ! ~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(10,12) [IN], full:(0,14) [A & B ! ~ IN C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (10,12) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A & B !/*comment block*/ ~  IN C
+Node: [A & B !~in C]
+Corrected: [A & B !/*comment block*/ ~  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(28,30) [IN], full:(0,32) [A & B !/*comment block*/ ~  IN C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(31,32) [C], full:(31,32) [C], extra=[C]]
+Error: (28,30) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+Comment: Range=(7,24), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !~has C
+Node: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [has], full:(0,13) [A & B !~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+###
+> A & B ! ~has C
+Node: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [has], full:(0,14) [A & B ! ~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+###
+> A & B !~ has C
+Node: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [has], full:(0,14) [A & B !~ has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+###
+> A & B ! ~ has C
+Node: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(10,13) [has], full:(0,15) [A & B ! ~ has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+###
+> A & B !   ~/*comment block*/  has C
+Node: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(30,33) [has], full:(0,35) [A & B !   ~/*comment block*/  has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(34,35) [C], full:(34,35) [C], extra=[C]]
+Comment: Range=(11,28), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> A & B !~HaS C
+Node: [A & B !~has C]
+Corrected: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [HaS], full:(0,13) [A & B !~HaS C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (8,11) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B !~ HaS C
+Node: [A & B !~has C]
+Corrected: [A & B !~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [HaS], full:(0,14) [A & B !~ HaS C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (9,12) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ! ~HaS C
+Node: [A & B !~has C]
+Corrected: [A & B ! ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [HaS], full:(0,14) [A & B ! ~HaS C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (9,12) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B ! ~ HaS C
+Node: [A & B !~has C]
+Corrected: [A & B ! ~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(10,13) [HaS], full:(0,15) [A & B ! ~ HaS C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+Error: (10,13) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+###
+> A & B !  ~ /*comment block*/  HaS C
+Node: [A & B !~has C]
+Corrected: [A & B !  ~ /*comment block*/  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(30,33) [HaS], full:(0,35) [A & B !  ~ /*comment block*/  HaS C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(34,35) [C], full:(34,35) [C], extra=[C]]
+Error: (30,33) Tok: 'HaS', Message: Expected an operator but got 'HaS'. Did you intend 'has'?
+Comment: Range=(11,28), Tid=CommentBlock, Text=[/*comment block*/]
+###
+> // Error: redundant token(s).
+> A & B ~~in C
+Node: [A & B ~in C]
+Corrected: [// Error: redundant token(s).
+A & B ~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(38,40) [in], full:(30,42) [A & B ~~in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(32,33) [&], full:(30,35) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(30,31) [A], full:(30,31) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(34,35) [B], full:(34,35) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(41,42) [C], full:(41,42) [C], extra=[C]]
+Error: (37,38) Tok: '~', Message: Redundant '~'
+Comment: Range=(0,29), Tid=CommentLine, Text=[// Error: redundant token(s).]
+###
+> A & B ~~has C
+Node: [A & B ~has C]
+Corrected: [A & B ~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(8,11) [has], full:(0,13) [A & B ~~has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (7,8) Tok: '~', Message: Redundant '~'
+###
+> A & B ~ ~in C
+Node: [A & B ~in C]
+Corrected: [A & B ~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [in], full:(0,13) [A & B ~ ~in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B ~ ~has C
+Node: [A & B ~has C]
+Corrected: [A & B ~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [has], full:(0,14) [A & B ~ ~has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B ~~ in C
+Node: [A & B ~in C]
+Corrected: [A & B ~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [in], full:(0,13) [A & B ~~ in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (7,8) Tok: '~', Message: Redundant '~'
+###
+> A & B ~~ has C
+Node: [A & B ~has C]
+Corrected: [A & B ~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [has], full:(0,14) [A & B ~~ has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (7,8) Tok: '~', Message: Redundant '~'
+###
+> A & B ~ ~ in C
+Node: [A & B ~in C]
+Corrected: [A & B ~  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(10,12) [in], full:(0,14) [A & B ~ ~ in C], extra=[InCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B ~ ~ has C
+Node: [A & B ~has C]
+Corrected: [A & B ~  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(10,13) [has], full:(0,15) [A & B ~ ~ has C], extra=[HasCi]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B ~in in C
+Node: [A & B ~in (<missing>) in C]
+Dump:
+  00 Node[id:6, kind:InHas, depth:4, tok:KwdIn, rng:(10,12) [in], full:(0,14) [A & B ~in in C], extra=[In]], count=2
+  01   Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [in], full:(0,12) [A & B ~in in], extra=[InCi]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:3, kind:MissingValue, depth:1, tok:KwdIn, rng:(10,12) [in], full:(10,12) [in], extra=[<missing>]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (10,12) Tok: 'in', Message: Expected an operand
+###
+> A & B ~has has C
+Node: [A & B ~has (<missing>) has C]
+Dump:
+  00 Node[id:6, kind:InHas, depth:4, tok:KwdHas, rng:(11,14) [has], full:(0,16) [A & B ~has has C], extra=[Has]], count=2
+  01   Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(7,10) [has], full:(0,14) [A & B ~has has], extra=[HasCi]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:3, kind:MissingValue, depth:1, tok:KwdHas, rng:(11,14) [has], full:(11,14) [has], extra=[<missing>]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:C, rng:(15,16) [C], full:(15,16) [C], extra=[C]]
+Error: (11,14) Tok: 'has', Message: Expected an operand
+###
+> A & B !~~in C
+Node: [A & B !~in C]
+Corrected: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(9,11) [in], full:(0,13) [A & B !~~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B !~~has C
+Node: [A & B !~has C]
+Corrected: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(9,12) [has], full:(0,14) [A & B !~~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (8,9) Tok: '~', Message: Redundant '~'
+###
+> A & B !~!~in C
+Node: [A & B !~in C]
+Corrected: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(10,12) [in], full:(0,14) [A & B !~!~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (8,9) Tok: '!', Message: Redundant '!'
+Error: (9,10) Tok: '~', Message: Redundant '~'
+###
+> A & B !~!~has C
+Node: [A & B !~has C]
+Corrected: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(10,13) [has], full:(0,15) [A & B !~!~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+Error: (8,9) Tok: '!', Message: Redundant '!'
+Error: (9,10) Tok: '~', Message: Redundant '~'
+###
+> A & B !!~~in C
+Node: [A & B !~in C]
+Corrected: [A & B !~in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(10,12) [in], full:(0,14) [A & B !!~~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(13,14) [C], full:(13,14) [C], extra=[C]]
+Error: (7,8) Tok: '!', Message: Redundant '!'
+Error: (9,10) Tok: '~', Message: Redundant '~'
+###
+> A & B !!~~has C
+Node: [A & B !~has C]
+Corrected: [A & B !~has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(10,13) [has], full:(0,15) [A & B !!~~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(14,15) [C], full:(14,15) [C], extra=[C]]
+Error: (7,8) Tok: '!', Message: Redundant '!'
+Error: (9,10) Tok: '~', Message: Redundant '~'
+###
+> A & B ! ~ !~in C
+Node: [A & B !~in C]
+Corrected: [A & B ! ~ in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(12,14) [in], full:(0,16) [A & B ! ~ !~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(15,16) [C], full:(15,16) [C], extra=[C]]
+Error: (10,11) Tok: '!', Message: Redundant '!'
+Error: (11,12) Tok: '~', Message: Redundant '~'
+###
+> A & B ! ~ !~has C
+Node: [A & B !~has C]
+Corrected: [A & B ! ~ has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(12,15) [has], full:(0,17) [A & B ! ~ !~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(16,17) [C], full:(16,17) [C], extra=[C]]
+Error: (10,11) Tok: '!', Message: Redundant '!'
+Error: (11,12) Tok: '~', Message: Redundant '~'
+###
+> A & B !~ not ~in C
+Node: [A & B !~in C]
+Corrected: [A & B !~  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(14,16) [in], full:(0,18) [A & B !~ not ~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(17,18) [C], full:(17,18) [C], extra=[C]]
+Error: (9,12) Tok: 'not', Message: Redundant 'not'
+Error: (13,14) Tok: '~', Message: Redundant '~'
+###
+> A & B !~ not ~has C
+Node: [A & B !~has C]
+Corrected: [A & B !~  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(14,17) [has], full:(0,19) [A & B !~ not ~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(18,19) [C], full:(18,19) [C], extra=[C]]
+Error: (9,12) Tok: 'not', Message: Redundant 'not'
+Error: (13,14) Tok: '~', Message: Redundant '~'
+###
+> A & B !~ not ~in C
+Node: [A & B !~in C]
+Corrected: [A & B !~  in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(14,16) [in], full:(0,18) [A & B !~ not ~in C], extra=[InCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(17,18) [C], full:(17,18) [C], extra=[C]]
+Error: (9,12) Tok: 'not', Message: Redundant 'not'
+Error: (13,14) Tok: '~', Message: Redundant '~'
+###
+> A & B !~ not ~has C
+Node: [A & B !~has C]
+Corrected: [A & B !~  has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(14,17) [has], full:(0,19) [A & B !~ not ~has C], extra=[HasCiNot]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Amp, rng:(2,3) [&], full:(0,5) [A & B], extra=[GenConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(18,19) [C], full:(18,19) [C], extra=[C]]
+Error: (9,12) Tok: 'not', Message: Redundant 'not'
+Error: (13,14) Tok: '~', Message: Redundant '~'
+###
+> A Not
+Node: [((A) <error> (Not))]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+###
+> A ~ Not
+Node: [A ~@= Not]
+Corrected: [A ~= Not]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Tld, rng:(2,3) [~], full:(0,7) [A ~ Not]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(4,7) [Not], full:(4,7) [Not], extra=[Not]]
+Error: (4,7) Tok: 'Not', Message: Expected a comparison operator
+###
+> A Not ~
+Node: [((A) <error> (Not)) ~@= (<missing>)]
+Corrected: [A Not ~=]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Tld, rng:(6,7) [~], full:(0,7) [A Not ~]], count=2
+  01   Op:EqualCi
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (7,7) Tok: '<eof>', Message: Expected a comparison operator
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A Not !
+Node: [((A) <error> (Not)) !@= (<missing>)]
+Corrected: [A Not !=]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Bng, rng:(6,7) [!], full:(0,7) [A Not !]], count=2
+  01   Op:NotEqual
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (7,7) Tok: '<eof>', Message: Expected a comparison operator
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A Not <
+Node: [((A) <error> (Not)) $< (<missing>)]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Lss, rng:(6,7) [<], full:(0,7) [A Not <]], count=2
+  01   Op:StrictLess
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A Not <=
+Node: [((A) <error> (Not)) $<= (<missing>)]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:LssEqu, rng:(6,8) [<=], full:(0,8) [A Not <=]], count=2
+  01   Op:StrictLessEqual
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+###
+> A Not >
+Node: [((A) <error> (Not)) $> (<missing>)]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(6,7) [>], full:(0,7) [A Not >]], count=2
+  01   Op:StrictGreater
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A Not >=
+Node: [((A) <error> (Not)) $>= (<missing>)]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:GrtEqu, rng:(6,8) [>=], full:(0,8) [A Not >=]], count=2
+  01   Op:StrictGreaterEqual
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+###
+> A Not =
+Node: [((A) <error> (Not)) @= (<missing>)]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Equ, rng:(6,7) [=], full:(0,7) [A Not =]], count=2
+  01   Op:Equal
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(7,7) [], full:(7,7) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (7,7) Tok: '<eof>', Message: Expected an operand
+###
+> A Not in
+Node: [((A) <error> (Not)) in (<missing>)]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(6,8) [in], full:(0,8) [A Not in], extra=[In]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+###
+> A Not In
+Node: [((A) <error> (Not)) in (<missing>)]
+Corrected: [A Not in]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(6,8) [In], full:(0,8) [A Not In], extra=[In]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(8,8) [], full:(8,8) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (6,8) Tok: 'In', Message: Expected an operator but got 'In'. Did you intend 'in'?
+Error: (8,8) Tok: '<eof>', Message: Expected an operand
+###
+> A Not has
+Node: [((A) <error> (Not)) has (<missing>)]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(6,9) [has], full:(0,9) [A Not has], extra=[Has]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(9,9) [], full:(9,9) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (9,9) Tok: '<eof>', Message: Expected an operand
+###
+> A Not Has
+Node: [((A) <error> (Not)) has (<missing>)]
+Corrected: [A Not has]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(6,9) [Has], full:(0,9) [A Not Has], extra=[Has]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Not, rng:(2,5) [Not], full:(0,5) [A Not], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(2,5) [Not], full:(2,5) [Not], extra=[Not]]
+  01   Node[id:3, kind:MissingValue, depth:1, tok:Eof, rng:(9,9) [], full:(9,9) [], extra=[<missing>]]
+Error: (2,5) Tok: 'Not', Message: Expected an operator
+Error: (6,9) Tok: 'Has', Message: Expected an operator but got 'Has'. Did you intend 'has'?
+Error: (9,9) Tok: '<eof>', Message: Expected an operand
+###
+> A NOT > 10
+Node: [((A) <error> (NOT)) $> 10]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Grt, rng:(6,7) [>], full:(0,10) [A NOT > 10]], count=2
+  01   Op:StrictGreater
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:NOT, rng:(2,5) [NOT], full:(0,5) [A NOT], extra=[Error]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:NOT, rng:(2,5) [NOT], full:(2,5) [NOT], extra=[NOT]]
+  01   Node[id:3, kind:NumLit, depth:1, tok:10, rng:(8,10) [10], full:(8,10) [10], extra=[10]]
+Error: (2,5) Tok: 'NOT', Message: Expected an operator
+###
+> A ~ Not has
+Node: [A ~@= Not has (<missing>)]
+Corrected: [A ~= Not has]
+Dump:
+  00 Node[id:4, kind:Compare, depth:3, tok:Tld, rng:(2,3) [~], full:(0,11) [A ~ Not has]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:InHas, depth:2, tok:KwdHas, rng:(8,11) [has], full:(4,11) [Not has], extra=[Has]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(4,7) [Not], full:(4,7) [Not], extra=[Not]]
+  02     Node[id:2, kind:MissingValue, depth:1, tok:Eof, rng:(11,11) [], full:(11,11) [], extra=[<missing>]]
+Error: (4,7) Tok: 'Not', Message: Expected a comparison operator
+Error: (11,11) Tok: '<eof>', Message: Expected an operand
+###
+> A @ No
+Node: [A @= No]
+Corrected: [A @= No]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:At, rng:(2,3) [@], full:(0,6) [A @ No]], count=2
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:No, rng:(4,6) [No], full:(4,6) [No], extra=[No]]
+Error: (4,6) Tok: 'No', Message: Expected a comparison operator
+###
+> A @ Not
+Node: [A @= Not]
+Corrected: [A @= Not]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:At, rng:(2,3) [@], full:(0,7) [A @ Not]], count=2
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(4,7) [Not], full:(4,7) [Not], extra=[Not]]
+Error: (4,7) Tok: 'Not', Message: Expected a comparison operator
+###
+> A ~ No
+Node: [A ~@= No]
+Corrected: [A ~= No]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Tld, rng:(2,3) [~], full:(0,6) [A ~ No]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:No, rng:(4,6) [No], full:(4,6) [No], extra=[No]]
+Error: (4,6) Tok: 'No', Message: Expected a comparison operator
+###
+> A ~ Not
+Node: [A ~@= Not]
+Corrected: [A ~= Not]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Tld, rng:(2,3) [~], full:(0,7) [A ~ Not]], count=2
+  01   Op:EqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:Not, rng:(4,7) [Not], full:(4,7) [Not], extra=[Not]]
+Error: (4,7) Tok: 'Not', Message: Expected a comparison operator
+###
+> A + B - C ++ D
+Node: [A + B - C ++ D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:AddAdd, rng:(10,12) [++], full:(0,14) [A + B - C ++ D], extra=[SeqConcat]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:Sub, rng:(6,7) [-], full:(0,9) [A + B - C], extra=[Sub]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(8,9) [C], full:(8,9) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(13,14) [D], full:(13,14) [D], extra=[D]]
+###
+> A ++ B - C + D
+Node: [A ++ B - C + D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:AddAdd, rng:(2,4) [++], full:(0,14) [A ++ B - C + D], extra=[SeqConcat]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:BinaryOp, depth:3, tok:Add, rng:(11,12) [+], full:(5,14) [B - C + D], extra=[Add]], count=2
+  02     Node[id:3, kind:BinaryOp, depth:2, tok:Sub, rng:(7,8) [-], full:(5,10) [B - C], extra=[Sub]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(9,10) [C], full:(9,10) [C], extra=[C]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:D, rng:(13,14) [D], full:(13,14) [D], extra=[D]]
+###
+> A or B xor C and D
+Node: [A or B xor C and D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxOr, rng:(2,4) [or], full:(0,18) [A or B xor C and D], extra=[Or]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:BinaryOp, depth:3, tok:KtxXor, rng:(7,10) [xor], full:(5,18) [B xor C and D], extra=[Xor]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(13,16) [and], full:(11,18) [C and D], extra=[And]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+###
+> A and B xor C or D
+Node: [A and B xor C or D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxOr, rng:(14,16) [or], full:(0,18) [A and B xor C or D], extra=[Or]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxXor, rng:(8,11) [xor], full:(0,13) [A and B xor C], extra=[Xor]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [and], full:(0,7) [A and B], extra=[And]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+###
+> A OR B XOR C AND D
+Node: [A or B xor C and D]
+Corrected: [A or B xor C and D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxOr, rng:(2,4) [OR], full:(0,18) [A OR B XOR C AND D], extra=[Or]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:5, kind:BinaryOp, depth:3, tok:KtxXor, rng:(7,10) [XOR], full:(5,18) [B XOR C AND D], extra=[Xor]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:4, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(13,16) [AND], full:(11,18) [C AND D], extra=[And]], count=2
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  03       Node[id:3, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+Error: (2,4) Tok: 'OR', Message: Expected an operator but got 'OR'. Did you intend 'or'?
+Error: (7,10) Tok: 'XOR', Message: Expected an operator but got 'XOR'. Did you intend 'xor'?
+Error: (13,16) Tok: 'AND', Message: Expected an operator but got 'AND'. Did you intend 'and'?
+###
+> A AND B XOR C OR D
+Node: [A and B xor C or D]
+Corrected: [A and B xor C or D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxOr, rng:(14,16) [OR], full:(0,18) [A AND B XOR C OR D], extra=[Or]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxXor, rng:(8,11) [XOR], full:(0,13) [A AND B XOR C], extra=[Xor]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(2,5) [AND], full:(0,7) [A AND B], extra=[And]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+Error: (2,5) Tok: 'AND', Message: Expected an operator but got 'AND'. Did you intend 'and'?
+Error: (8,11) Tok: 'XOR', Message: Expected an operator but got 'XOR'. Did you intend 'xor'?
+Error: (14,16) Tok: 'OR', Message: Expected an operator but got 'OR'. Did you intend 'or'?
+###
+> not A or B xor C and D
+Node: [not A or B xor C and D]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:4, tok:KtxOr, rng:(6,8) [or], full:(0,22) [not A or B xor C and D], extra=[Or]], count=2
+  01   Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,5) [not A], extra=[Not]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  01   Node[id:6, kind:BinaryOp, depth:3, tok:KtxXor, rng:(11,14) [xor], full:(9,22) [B xor C and D], extra=[Xor]], count=2
+  02     Node[id:2, kind:FirstName, depth:1, tok:B, rng:(9,10) [B], full:(9,10) [B], extra=[B]]
+  02     Node[id:5, kind:BinaryOp, depth:2, tok:KtxAnd, rng:(17,20) [and], full:(15,22) [C and D], extra=[And]], count=2
+  03       Node[id:3, kind:FirstName, depth:1, tok:C, rng:(15,16) [C], full:(15,16) [C], extra=[C]]
+  03       Node[id:4, kind:FirstName, depth:1, tok:D, rng:(21,22) [D], full:(21,22) [D], extra=[D]]
+###
+> not A and B xor C or D
+Node: [not A and B xor C or D]
+Dump:
+  00 Node[id:7, kind:BinaryOp, depth:5, tok:KtxOr, rng:(18,20) [or], full:(0,22) [not A and B xor C or D], extra=[Or]], count=2
+  01   Node[id:5, kind:BinaryOp, depth:4, tok:KtxXor, rng:(12,15) [xor], full:(0,17) [not A and B xor C], extra=[Xor]], count=2
+  02     Node[id:3, kind:BinaryOp, depth:3, tok:KtxAnd, rng:(6,9) [and], full:(0,11) [not A and B], extra=[And]], count=2
+  03       Node[id:1, kind:UnaryOp, depth:2, tok:KwdNot, rng:(0,3) [not], full:(0,5) [not A], extra=[Not]], count=1
+  04         Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:B, rng:(10,11) [B], full:(10,11) [B], extra=[B]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:C, rng:(16,17) [C], full:(16,17) [C], extra=[C]]
+  01   Node[id:6, kind:FirstName, depth:1, tok:D, rng:(21,22) [D], full:(21,22) [D], extra=[D]]
+###
+> A in B ++ C
+Node: [A in B ++ C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(2,4) [in], full:(0,11) [A in B ++ C], extra=[In]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:AddAdd, rng:(7,9) [++], full:(5,11) [B ++ C], extra=[SeqConcat]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A IN B ++ C
+Node: [A in B ++ C]
+Corrected: [A in B ++ C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(2,4) [IN], full:(0,11) [A IN B ++ C], extra=[In]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:AddAdd, rng:(7,9) [++], full:(5,11) [B ++ C], extra=[SeqConcat]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (2,4) Tok: 'IN', Message: Expected an operator but got 'IN'. Did you intend 'in'?
+###
+> A ++ B in C
+Node: [A ++ B in C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdIn, rng:(7,9) [in], full:(0,11) [A ++ B in C], extra=[In]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:AddAdd, rng:(2,4) [++], full:(0,6) [A ++ B], extra=[SeqConcat]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A has B + C
+Node: [A has B + C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(2,5) [has], full:(0,11) [A has B + C], extra=[Has]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Add, rng:(8,9) [+], full:(6,11) [B + C], extra=[Add]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A HAS B + C
+Node: [A has B + C]
+Corrected: [A has B + C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(2,5) [HAS], full:(0,11) [A HAS B + C], extra=[Has]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Add, rng:(8,9) [+], full:(6,11) [B + C], extra=[Add]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+Error: (2,5) Tok: 'HAS', Message: Expected an operator but got 'HAS'. Did you intend 'has'?
+###
+> A + B has C
+Node: [A + B has C]
+Dump:
+  00 Node[id:4, kind:InHas, depth:3, tok:KwdHas, rng:(6,9) [has], full:(0,11) [A + B has C], extra=[Has]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+###
+> A !~ < B
+Node: [A !~$< B]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Lss, rng:(5,6) [<], full:(0,8) [A !~ < B]], count=2
+  01   Op:NotStrictLessCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(7,8) [B], full:(7,8) [B], extra=[B]]
+###
+> A ! ~ >= B
+Node: [A !~$>= B]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:GrtEqu, rng:(6,8) [>=], full:(0,10) [A ! ~ >= B]], count=2
+  01   Op:NotStrictGreaterEqualCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(9,10) [B], full:(9,10) [B], extra=[B]]
+###
+> A ~ > B
+Node: [A ~$> B]
+Dump:
+  00 Node[id:2, kind:Compare, depth:2, tok:Grt, rng:(4,5) [>], full:(0,7) [A ~ > B]], count=2
+  01   Op:StrictGreaterCi
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+###
+> A max B
+Node: [A max B]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxMax, rng:(2,5) [max], full:(0,7) [A max B], extra=[Max]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+###
+> A min B
+Node: [A min B]
+Dump:
+  00 Node[id:2, kind:BinaryOp, depth:2, tok:KtxMin, rng:(2,5) [min], full:(0,7) [A min B], extra=[Min]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+###
+> A max B min C max D
+Node: [A max B min C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxMax, rng:(14,17) [max], full:(0,19) [A max B min C max D], extra=[Max]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxMin, rng:(8,11) [min], full:(0,13) [A max B min C], extra=[Min]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxMax, rng:(2,5) [max], full:(0,7) [A max B], extra=[Max]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+###
+> A MAX B MIN C MAX D
+Node: [A max B min C max D]
+Corrected: [A max B min C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxMax, rng:(14,17) [MAX], full:(0,19) [A MAX B MIN C MAX D], extra=[Max]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxMin, rng:(8,11) [MIN], full:(0,13) [A MAX B MIN C], extra=[Min]], count=2
+  02     Node[id:2, kind:BinaryOp, depth:2, tok:KtxMax, rng:(2,5) [MAX], full:(0,7) [A MAX B], extra=[Max]], count=2
+  03       Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+Error: (2,5) Tok: 'MAX', Message: Expected an operator but got 'MAX'. Did you intend 'max'?
+Error: (8,11) Tok: 'MIN', Message: Expected an operator but got 'MIN'. Did you intend 'min'?
+Error: (14,17) Tok: 'MAX', Message: Expected an operator but got 'MAX'. Did you intend 'max'?
+###
+> A + B max C + D
+Node: [A + B max C + D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:3, tok:KtxMax, rng:(6,9) [max], full:(0,15) [A + B max C + D], extra=[Max]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:Add, rng:(2,3) [+], full:(0,5) [A + B], extra=[Add]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  01   Node[id:5, kind:BinaryOp, depth:2, tok:Add, rng:(12,13) [+], full:(10,15) [C + D], extra=[Add]], count=2
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:D, rng:(14,15) [D], full:(14,15) [D], extra=[D]]
+###
+> A bor B max C bor D
+Node: [A bor B max C bor D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:3, tok:KtxMax, rng:(8,11) [max], full:(0,19) [A bor B max C bor D], extra=[Max]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxBor, rng:(2,5) [bor], full:(0,7) [A bor B], extra=[BitOr]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:5, kind:BinaryOp, depth:2, tok:KtxBor, rng:(14,17) [bor], full:(12,19) [C bor D], extra=[BitOr]], count=2
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+###
+> A or B max C or D
+Node: [A or B max C or D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxOr, rng:(13,15) [or], full:(0,17) [A or B max C or D], extra=[Or]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxOr, rng:(2,4) [or], full:(0,12) [A or B max C], extra=[Or]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:3, kind:BinaryOp, depth:2, tok:KtxMax, rng:(7,10) [max], full:(5,12) [B max C], extra=[Max]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(5,6) [B], full:(5,6) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+###
+> not A max B
+Node: [not A max B]
+Dump:
+  00 Node[id:3, kind:UnaryOp, depth:3, tok:KwdNot, rng:(0,3) [not], full:(0,11) [not A max B], extra=[Not]], count=1
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxMax, rng:(6,9) [max], full:(4,11) [A max B], extra=[Max]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(4,5) [A], full:(4,5) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(10,11) [B], full:(10,11) [B], extra=[B]]
+###
+> A shl B max C shl D
+Node: [A shl B max C shl D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:3, tok:KtxMax, rng:(8,11) [max], full:(0,19) [A shl B max C shl D], extra=[Max]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxShl, rng:(2,5) [shl], full:(0,7) [A shl B], extra=[Shl]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:5, kind:BinaryOp, depth:2, tok:KtxShl, rng:(14,17) [shl], full:(12,19) [C shl D], extra=[Shl]], count=2
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+###
+> A = B max C = D
+Node: [A @= B max C @= D]
+Dump:
+  00 Node[id:5, kind:Compare, depth:3, tok:Equ, rng:(2,3) [=], full:(0,15) [A = B max C = D]], count=3
+  01   Op:Equal
+  01   Op:Equal
+  01   Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:KtxMax, rng:(6,9) [max], full:(4,11) [B max C], extra=[Max]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(4,5) [B], full:(4,5) [B], extra=[B]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:D, rng:(14,15) [D], full:(14,15) [D], extra=[D]]
+###
+> A max B + C max D
+Node: [A max B + C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxMax, rng:(12,15) [max], full:(0,17) [A max B + C max D], extra=[Max]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxMax, rng:(2,5) [max], full:(0,11) [A max B + C], extra=[Max]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:3, kind:BinaryOp, depth:2, tok:Add, rng:(8,9) [+], full:(6,11) [B + C], extra=[Add]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(10,11) [C], full:(10,11) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(16,17) [D], full:(16,17) [D], extra=[D]]
+###
+> A max B bor C max D
+Node: [A max B bor C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxMax, rng:(14,17) [max], full:(0,19) [A max B bor C max D], extra=[Max]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxMax, rng:(2,5) [max], full:(0,13) [A max B bor C], extra=[Max]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:3, kind:BinaryOp, depth:2, tok:KtxBor, rng:(8,11) [bor], full:(6,13) [B bor C], extra=[BitOr]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+###
+> A max B or C max D
+Node: [A max B or C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:3, tok:KtxOr, rng:(8,10) [or], full:(0,18) [A max B or C max D], extra=[Or]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxMax, rng:(2,5) [max], full:(0,7) [A max B], extra=[Max]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  01   Node[id:5, kind:BinaryOp, depth:2, tok:KtxMax, rng:(13,16) [max], full:(11,18) [C max D], extra=[Max]], count=2
+  02     Node[id:3, kind:FirstName, depth:1, tok:C, rng:(11,12) [C], full:(11,12) [C], extra=[C]]
+  02     Node[id:4, kind:FirstName, depth:1, tok:D, rng:(17,18) [D], full:(17,18) [D], extra=[D]]
+###
+> A max B shl C max D
+Node: [A max B shl C max D]
+Dump:
+  00 Node[id:6, kind:BinaryOp, depth:4, tok:KtxMax, rng:(14,17) [max], full:(0,19) [A max B shl C max D], extra=[Max]], count=2
+  01   Node[id:4, kind:BinaryOp, depth:3, tok:KtxMax, rng:(2,5) [max], full:(0,13) [A max B shl C], extra=[Max]], count=2
+  02     Node[id:0, kind:FirstName, depth:1, tok:A, rng:(0,1) [A], full:(0,1) [A], extra=[A]]
+  02     Node[id:3, kind:BinaryOp, depth:2, tok:KtxShl, rng:(8,11) [shl], full:(6,13) [B shl C], extra=[Shl]], count=2
+  03       Node[id:1, kind:FirstName, depth:1, tok:B, rng:(6,7) [B], full:(6,7) [B], extra=[B]]
+  03       Node[id:2, kind:FirstName, depth:1, tok:C, rng:(12,13) [C], full:(12,13) [C], extra=[C]]
+  01   Node[id:5, kind:FirstName, depth:1, tok:D, rng:(18,19) [D], full:(18,19) [D], extra=[D]]
+###
+> #it + #x + #it$123 + #3 + #
+Node: [#it + #x + #it$123 + #3 + #]
+Dump:
+  00 Node[id:11, kind:BinaryOp, depth:6, tok:Add, rng:(24,25) [+], full:(0,27) [#it + #x + #it$123 + #3 + #], extra=[Add]], count=2
+  01   Node[id:9, kind:BinaryOp, depth:5, tok:Add, rng:(19,20) [+], full:(0,23) [#it + #x + #it$123 + #3], extra=[Add]], count=2
+  02     Node[id:7, kind:BinaryOp, depth:4, tok:Add, rng:(9,10) [+], full:(0,18) [#it + #x + #it$123], extra=[Add]], count=2
+  03       Node[id:4, kind:BinaryOp, depth:3, tok:Add, rng:(4,5) [+], full:(0,8) [#it + #x], extra=[Add]], count=2
+  04         Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,3) [#it]], count=1
+  05           Node[id:0, kind:ItName, depth:1, tok:KwdIt, rng:(1,3) [it], full:(1,3) [it], extra=[slot=0]]
+  04         Node[id:3, kind:GetIndex, depth:2, tok:Hash, rng:(6,7) [#], full:(6,8) [#x]], count=1
+  05           Node[id:2, kind:FirstName, depth:1, tok:x, rng:(7,8) [x], full:(7,8) [x], extra=[x]]
+  03       Node[id:6, kind:GetIndex, depth:2, tok:Hash, rng:(11,12) [#], full:(11,18) [#it$123]], count=1
+  04         Node[id:5, kind:ItName, depth:1, tok:it$123, rng:(12,18) [it$123], full:(12,18) [it$123], extra=[slot=123]]
+  02     Node[id:8, kind:GetIndex, depth:1, tok:#3, rng:(21,23) [#3], full:(21,23) [#3]], count=1
+  01   Node[id:10, kind:GetIndex, depth:1, tok:Hash, rng:(26,27) [#], full:(26,27) [#]], count=1
+###
+> #ident div 2
+Node: [#ident div 2]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(7,10) [div], full:(0,12) [#ident div 2], extra=[IntDiv]], count=2
+  01   Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,6) [#ident]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:ident, rng:(1,6) [ident], full:(1,6) [ident], extra=[ident]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:2, rng:(11,12) [2], full:(11,12) [2], extra=[2]]
+###
+> # ident div 2
+Node: [#ident div 2]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(8,11) [div], full:(0,13) [# ident div 2], extra=[IntDiv]], count=2
+  01   Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,7) [# ident]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:ident, rng:(2,7) [ident], full:(2,7) [ident], extra=[ident]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:2, rng:(12,13) [2], full:(12,13) [2], extra=[2]]
+###
+> #band div 2
+Node: [#band div 2]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(6,9) [div], full:(0,11) [#band div 2], extra=[IntDiv]], count=2
+  01   Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,5) [#band]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:band, rng:(1,5) [band], full:(1,5) [band], extra=[band]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:2, rng:(10,11) [2], full:(10,11) [2], extra=[2]]
+###
+> // Error.
+> # band div 2
+Node: [((# band div) <error> (2))]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:2, rng:(21,22) [2], full:(10,22) [# band div 2], extra=[Error]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxBand, rng:(12,16) [band], full:(10,20) [# band div], extra=[BitAnd]], count=2
+  02     Node[id:0, kind:GetIndex, depth:1, tok:Hash, rng:(10,11) [#], full:(10,11) [#]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:div, rng:(17,20) [div], full:(17,20) [div], extra=[div]]
+  01   Node[id:3, kind:NumLit, depth:1, tok:2, rng:(21,22) [2], full:(21,22) [2], extra=[2]]
+Error: (21,22) Tok: '2', Message: Expected an operator
+Comment: Range=(0,9), Tid=CommentLine, Text=[// Error.]
+###
+> #/* Error. */band div 2
+Node: [((# band div) <error> (2))]
+Dump:
+  00 Node[id:4, kind:BinaryOp, depth:3, tok:2, rng:(22,23) [2], full:(0,23) [#/* Error. */band div 2], extra=[Error]], count=2
+  01   Node[id:2, kind:BinaryOp, depth:2, tok:KtxBand, rng:(13,17) [band], full:(0,21) [#/* Error. */band div], extra=[BitAnd]], count=2
+  02     Node[id:0, kind:GetIndex, depth:1, tok:Hash, rng:(0,1) [#], full:(0,1) [#]], count=1
+  02     Node[id:1, kind:FirstName, depth:1, tok:div, rng:(18,21) [div], full:(18,21) [div], extra=[div]]
+  01   Node[id:3, kind:NumLit, depth:1, tok:2, rng:(22,23) [2], full:(22,23) [2], extra=[2]]
+Error: (22,23) Tok: '2', Message: Expected an operator
+Comment: Range=(1,13), Tid=CommentBlock, Text=[/* Error. */]
+###
+> # bAnD div 2
+Node: [#bAnD div 2]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(7,10) [div], full:(0,12) [# bAnD div 2], extra=[IntDiv]], count=2
+  01   Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,6) [# bAnD]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:bAnD, rng:(2,6) [bAnD], full:(2,6) [bAnD], extra=[bAnD]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:2, rng:(11,12) [2], full:(11,12) [2], extra=[2]]
+###
+> #bAnD div 2
+Node: [#bAnD div 2]
+Dump:
+  00 Node[id:3, kind:BinaryOp, depth:3, tok:KtxDiv, rng:(6,9) [div], full:(0,11) [#bAnD div 2], extra=[IntDiv]], count=2
+  01   Node[id:1, kind:GetIndex, depth:2, tok:Hash, rng:(0,1) [#], full:(0,5) [#bAnD]], count=1
+  02     Node[id:0, kind:FirstName, depth:1, tok:bAnD, rng:(1,5) [bAnD], full:(1,5) [bAnD], extra=[bAnD]]
+  01   Node[id:2, kind:NumLit, depth:1, tok:2, rng:(10,11) [2], full:(10,11) [2], extra=[2]]
+###
+> #in div
+Node: [# in div]
+Dump:
+  00 Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(1,3) [in], full:(0,7) [#in div], extra=[In]], count=2
+  01   Node[id:0, kind:GetIndex, depth:1, tok:Hash, rng:(0,1) [#], full:(0,1) [#]], count=1
+  01   Node[id:1, kind:FirstName, depth:1, tok:div, rng:(4,7) [div], full:(4,7) [div], extra=[div]]
+###
+> # in div
+Node: [# in div]
+Dump:
+  00 Node[id:2, kind:InHas, depth:2, tok:KwdIn, rng:(2,4) [in], full:(0,8) [# in div], extra=[In]], count=2
+  01   Node[id:0, kind:GetIndex, depth:1, tok:Hash, rng:(0,1) [#], full:(0,1) [#]], count=1
+  01   Node[id:1, kind:FirstName, depth:1, tok:div, rng:(5,8) [div], full:(5,8) [div], extra=[div]]
+###
+> a if b else c | _
+Node: [a if b else c | _]
+Dump:
+  00 Node[id:5, kind:BinaryOp, depth:3, tok:Bar, rng:(14,15) [|], full:(0,17) [a if b else c | _], extra=[Pipe]], count=2
+  01   Node[id:3, kind:If, depth:2, tok:KwdIf, rng:(2,4) [if], full:(0,13) [a if b else c]], count=3
+  02     Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  02     Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:c, rng:(12,13) [c], full:(12,13) [c], extra=[c]]
+  01   Node[id:4, kind:Box, depth:1, tok:Box, rng:(16,17) [_], full:(16,17) [_]]
+###
+> a | _ if b else c
+Node: [a | _ if b else c]
+Dump:
+  00 Node[id:5, kind:BinaryOp, depth:3, tok:Bar, rng:(2,3) [|], full:(0,17) [a | _ if b else c], extra=[Pipe]], count=2
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:4, kind:If, depth:2, tok:KwdIf, rng:(6,8) [if], full:(4,17) [_ if b else c]], count=3
+  02     Node[id:1, kind:Box, depth:1, tok:Box, rng:(4,5) [_], full:(4,5) [_]]
+  02     Node[id:2, kind:FirstName, depth:1, tok:b, rng:(9,10) [b], full:(9,10) [b], extra=[b]]
+  02     Node[id:3, kind:FirstName, depth:1, tok:c, rng:(16,17) [c], full:(16,17) [c], extra=[c]]
+###
+> a if b | _ else c
+Node: [a if b | _ else c]
+Dump:
+  00 Node[id:5, kind:If, depth:3, tok:KwdIf, rng:(2,4) [if], full:(0,17) [a if b | _ else c]], count=3
+  01   Node[id:0, kind:FirstName, depth:1, tok:a, rng:(0,1) [a], full:(0,1) [a], extra=[a]]
+  01   Node[id:3, kind:BinaryOp, depth:2, tok:Bar, rng:(7,8) [|], full:(5,10) [b | _], extra=[Pipe]], count=2
+  02     Node[id:1, kind:FirstName, depth:1, tok:b, rng:(5,6) [b], full:(5,6) [b], extra=[b]]
+  02     Node[id:2, kind:Box, depth:1, tok:Box, rng:(9,10) [_], full:(9,10) [_]]
+  01   Node[id:4, kind:FirstName, depth:1, tok:c, rng:(16,17) [c], full:(16,17) [c], extra=[c]]
+###

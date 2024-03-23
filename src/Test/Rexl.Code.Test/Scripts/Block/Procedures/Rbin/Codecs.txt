@@ -1,0 +1,60 @@
+﻿func Same(T0, T1) := 
+    T0->Count() = T1->Count() and
+    ForEach(a:T0, b:T1, (#, a.A = b.A))->All(it[1]) and
+    ForEach(a:T0, b:T1, (#, a.B = b.B))->All(it[1]) and
+    ForEach(a:T0, b:T1, (#, a.C = b.C))->All(it[1]) and
+    ForEach(a:T0, b:T1, (#, a.D = b.D))->All(it[1]);
+
+// The size for Deflate changed when upgrading to VS 17.8.0. It's not clear why. Also, the sizes
+// are different under WSL.
+// This udf displays "Expected" if the value is any of the expected values. This is to avoid test
+// failures when machines are on different versions. We still want to track when the size
+// changes so don't just ignore the size.
+func OneOf(x, xs) := "Expected" if x in xs else "Bad: " & ToText(x) & " not in [" & xs->ToText()->Concat(",") & "]";
+
+T := Range(22_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+
+P := "temp/codec-test.rbin";
+
+Chunked := true;
+
+LTop:
+
+// *** Brotli ***
+finish W as WriteRbin(T, P, Chunked, "brotli");
+(W.Size, W.Compression);
+finish R as ReadRbin(W.Link);
+Same(T, R.Data);
+Brotli := W.Size;
+
+// *** Deflate ***
+finish W as WriteRbin(T, P, Chunked, "deflate");
+W.Compression;
+finish R as ReadRbin(W.Link);
+Same(T, R.Data);
+Deflate := W.Size;
+
+// *** Snappy ***
+finish W as WriteRbin(T, P, Chunked, "snappy");
+(W.Size, W.Compression);
+finish R as ReadRbin(W.Link);
+Same(T, R.Data);
+Snappy := W.Size;
+
+// *** None ***
+finish W as WriteRbin(T, P, Chunked, "none");
+(W.Size, W.Compression);
+finish R as ReadRbin(W.Link);
+Same(T, R.Data);
+None := W.Size;
+
+// *** Summary ***
+if (Chunked)
+    ChunkedSummary := { Snappy, Brotli, Deflate: OneOf(Deflate, [215299, 218127, 186947]), None };
+else
+    UnchunkedSummary := { Snappy, Brotli, Deflate: OneOf(Deflate, [216794, 218683, 187152]), None };
+
+if (Chunked) { Chunked := false; goto LTop; }
+
+ChunkedSummary;
+UnchunkedSummary;

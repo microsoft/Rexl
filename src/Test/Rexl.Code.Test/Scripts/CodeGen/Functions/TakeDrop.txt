@@ -1,0 +1,226 @@
+﻿`` N := Range(10)->Null();
+`` S := [ 1, 2, 3, 4, 5, 6, 7 ];
+`` Si := [ (0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7) ];
+`` HasNullSeq := [null, Range(5)];
+`` Zero := 0;
+`` NegOne := -1;
+`` Big := 0x7FFF_FFFF_FFFF_FFFFi8;
+
+// Take, Drop
+Take(Range(2), Wrap(-1))
+Drop(Range(2), Wrap(-1))
+Take(Range(2), [if] true)
+Take(Range(2), [if] false)
+Drop(Range(2), [if] true)
+Drop(Range(2), [if] false)
+Take(Range(10), 5)
+Drop(Range(10), 5)
+Take(Range(10), 20)
+Drop(Range(10), 20)
+Take(Range(10), [if] it < 5)
+Drop(Range(10), [if] it < 5)
+Take(Range(10), [if] it < 20)
+Drop(Range(10), [if] it < 20)
+Take(Range(10), [while] it < 5)
+Drop(Range(10), [while] it < 5)
+Take(Range(10), [while] it > 5)
+Drop(Range(10), [while] it > 5)
+Take(Range(10), [while] it < 20)
+Drop(Range(10), [while] it < 20)
+
+Take(Range(2), Wrap(-1), it > 100)
+Drop(Range(2), Wrap(-1), it > 100)
+Take(Range(2), Wrap(-1), [if] it > 100)
+Drop(Range(2), Wrap(-1), [if] it > 100)
+Take(Range(10), 20, it < 6)
+Drop(Range(10), 20, it < 6)
+Take(Range(10), 20, [if] it < 6)
+Drop(Range(10), 20, [if] it < 6)
+Take(Range(10), 20, [while] it < 6)
+Drop(Range(10), 20, [while] it < 6)
+Take(Range(10), 20, # < 6)
+Drop(Range(10), 20, # < 6)
+Take(Range(10), 20, [if] # < 6)
+Drop(Range(10), 20, [if] # < 6)
+Take(Range(10), 20, [while] # < 6)
+Drop(Range(10), 20, [while] # < 6)
+Take(Range(10), 4, [while] it < 6)
+Drop(Range(10), 4, [while] it < 6)
+Take(Range(2), Wrap(-1), [while] it > 100)
+Drop(Range(2), Wrap(-1), [while] it > 100)
+Take(Range(10), 5, it < 2 or it > 8)
+Drop(Range(10), 5, it < 2 or it > 8)
+Take(Range(10), 5, [while] it < 2 or it > 8)
+Drop(Range(10), 5, [while] it < 2 or it > 8)
+Take(Range(10), 4, [while] it < 6 or it > 8)
+Drop(Range(10), 4, [while] it < 6 or it > 8)
+Take(Range(10) ++ Range(10), 10, it < 2 or it > 8)
+Drop(Range(10) ++ Range(10), 50, it < 2 or it > 8)
+Take(Range(10) ++ Range(10), 50, [while] it > 2)
+Drop(Range(10) ++ Range(10), 10,it < 2 or it > 8)
+Take(Range(10) ++ Range(10), 5, [while] it < 2)
+Drop(Range(10) ++ Range(10), 5, [while] it < 2)
+Take(Range(10), TakeOne([-1, 0], it < 0), it > 2)
+Drop(Range(10), TakeOne([-1, 0], it < 0), it > 2)
+Take(Range(10), TakeOne([-1, 0], it < 0), [while] it > 2)
+Drop(Range(10), TakeOne([-1, 0], it < 0), [while] it > 2)
+Take(Filter(Range(20), it < 10), 11, [while] it < 10)
+Drop(Filter(Range(20), it < 10), 11, [while] it < 10)
+
+Take(Si, TakeOne([-1,0],it < 0), it[1] > 2)
+Drop(Si, TakeOne([-1,0],it < 0), #+it[1] > 2)
+Take(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Drop(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Take(Si, TakeOne([-1,0],it < 0), #+it[1] > 2)
+Drop(Si, TakeOne([-1,0],it < 0), it[1] > 2)
+Take(Si, TakeOne([-1,0],it < 0), [while] #+it[1] > 2)
+Drop(Si, TakeOne([-1,0],it < 0), [while] #+it[1] > 2)
+Take(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+Drop(Si, TakeOne([-1,0],it < 0), [while] it[1] > 2)
+
+Take(Si, [if] it[1] < 5)
+Drop(Si, [if] it[1] < 5)
+Take(Si, [while] it[1] < 5)
+Drop(Si, [while] it[1] < 5)
+Take(Si, 2, it[1] < 5)
+Drop(Si, 2, it[1] < 5)
+Take(Si, 4, it[1] < 5)
+Drop(Si, 4, it[1] < 5)
+Take(Si, 2, [while] it[1] < 5)
+Drop(Si, 2, [while] it[1] < 5)
+Take(Si, 4, [while] it[1] < 5)
+Drop(Si, 4, [while] it[1] < 5)
+Take(Si, 1, # + it[1] < 5)
+Drop(Si, 1, # + it[1] < 5)
+Take(Si, 5, # + it[1] < 5)
+Drop(Si, 5, # + it[1] < 5)
+Take(Si, 1, [while] # + it[1] < 5)
+Drop(Si, 1, [while] # + it[1] < 5)
+Take(Si, 5, [while] # + it[1] < 5)
+Drop(Si, 5, [while] # + it[1] < 5)
+Take(Si, [if] # + it[1] < 5)
+Drop(Si, [if] # + it[1] < 5)
+Take(Si, [while] # + it[1] < 5)
+Drop(Si, [while] # + it[1] < 5)
+Take(Si, 3, # + it[1] < 5)
+Drop(Si, 3, # + it[1] < 5)
+Take(Si, 4, # + it[1] < 5)
+Drop(Si, 4, # + it[1] < 5)
+Take(Si, 10, # + it[1] < 50)
+Drop(Si, 10, # + it[1] < 50)
+Take(Si, 2, [while] # + it[1] < 5)
+Drop(Si, 2, [while] # + it[1] < 5)
+Take(Si, 4, [while] # + it[1] < 5)
+Drop(Si, 4, [while] # + it[1] < 5)
+Take(Si, [while] # + it[1] < 50)
+Drop(Si, [while] # + it[1] < 50)
+Take(Si, 10, [while] # + it[1] < 50)
+Drop(Si, 10, [while] # + it[1] < 50)
+
+ForEach(s:HasNullSeq, Take(s, 1))
+ForEach(s:HasNullSeq, Drop(s, 1))
+ForEach(s:HasNullSeq, Take(s, [if] it < 3))
+ForEach(s:HasNullSeq, Drop(s, [if] it < 3))
+ForEach(s:HasNullSeq, Take(s, [while] it < 3))
+ForEach(s:HasNullSeq, Drop(s, [while] it < 3))
+ForEach(s:HasNullSeq, Take(s, [if] # + it < 3))
+ForEach(s:HasNullSeq, Drop(s, [if] # + it < 3))
+ForEach(s:HasNullSeq, Take(s, [while] # + it < 3))
+ForEach(s:HasNullSeq, Drop(s, [while] # + it < 3))
+ForEach(s:HasNullSeq, Take(s, 1, [if] it < 3))
+ForEach(s:HasNullSeq, Drop(s, 1, [if] it < 3))
+ForEach(s:HasNullSeq, Take(s, 1, [while] it < 3))
+ForEach(s:HasNullSeq, Drop(s, 1, [while] it < 3))
+ForEach(s:HasNullSeq, Take(s, 1, [if] # + it < 3))
+ForEach(s:HasNullSeq, Drop(s, 1, [if] # + it < 3))
+ForEach(s:HasNullSeq, Take(s, 1, [while] # + it < 3))
+ForEach(s:HasNullSeq, Drop(s, 1, [while] # + it < 3))
+
+N->Take(2)
+N->Drop(2)
+N->Take(2, it > 2)
+N->Drop(2, it > 2)
+N->Take(2, # + it > 3)
+N->Drop(2, # + it > 3)
+
+S->Take(2)
+S->Drop(2)
+S->Take(5)
+S->Drop(5)
+S->Take(Zero)
+S->Drop(Zero)
+S->Take(NegOne)
+S->Drop(NegOne)
+S->Take(Big)
+S->Drop(Big)
+
+S->TakeIf(it > 2)
+S->DropIf(it > 2)
+Si->TakeIf(# + it[1] > 3)
+Si->DropIf(# + it[1] > 3)
+
+S->Take(2, it > 2)
+S->Drop(2, it > 2)
+Si->Take(2, # + it[1] > 3)
+Si->Drop(2, # + it[1] > 3)
+
+S->Take(5, it > 2)
+S->Drop(5, it > 2)
+Si->Take(5, # + it[1] > 3)
+Si->Drop(5, # + it[1] > 3)
+
+S->Take(Zero, it > 2)
+S->Drop(Zero, it > 2)
+Si->Take(Zero, # + it[1] > 3)
+Si->Drop(Zero, # + it[1] > 3)
+
+S->Take(NegOne, it > 2)
+S->Drop(NegOne, it > 2)
+Si->Take(NegOne, # + it[1] > 3)
+Si->Drop(NegOne, # + it[1] > 3)
+
+S->Take(Big, it > 2)
+S->Drop(Big, it > 2)
+Si->Take(Big, # + it[1] > 3)
+Si->Drop(Big, # + it[1] > 3)
+
+// We use a filter so A doesn't know its size a priori. Of course, after computing
+// the size or iterating completely the size is known. Consequently, we need to
+// "reset" A occasionally (to get full coverage).
+`` A := (Range(20) mod 5)->Filter(it < 4);
+
+// This should have a positive ping count.
+A->Take(10)->Count()
+
+// This should show the same ping count - the iteration only happens once.
+`` A := (Range(20) mod 5)->Filter(it < 4);
+With(S:A->Take(10), (S->Count(), S->Count()))
+
+// These should have a zero ping count, since the size of A has already been computed
+// (by the above) and Take leverages that.
+A->Take(10)->Count()
+A->Take(50)->Count()
+
+// These force an iteration to count.
+A->CantCount()->Take(10)->Count()
+A->CantCount()->Take(50)->Count()
+
+A->Take(10)
+A->Take(50)
+
+`` A := (Range(20) mod 5)->Filter(it < 4);
+A->Take(Big)
+
+// Reset A.
+`` A := (Range(20) mod 5)->Filter(it < 4);
+
+// This should have a positive ping count.
+A->Drop(10)->Count()
+
+// This should have a zero ping count, since the size of B has already been computed
+// and Drop leverages that.
+A->Drop(10)->Count()
+A->Drop(50)->Count()
+
+A->Drop(10)
+A->Drop(50)

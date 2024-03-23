@@ -1,0 +1,87 @@
+>>> *** Source:
+    A := Range(5);
+    func F(x) := x + 1;
+    finish T as Pipe(Range(5, 10));
+
+>>> *** Instructions:
+   0) [0] Define A <- Range(5)
+   1) [0] DefineFunc F(x) <- x + 1
+   2) [0] TaskProc finish T as Pipe(Range(5, 10))
+   3) [0] End
+
+>    0) [0] Define A <- Range(5)
+Global 'A' has DType: i8*, SysType: Seq<i8>
+>    1) [0] DefineFunc F(x) <- x + 1
+UDF 'F' has arity 1
+>    2) [0] TaskProc finish T as Pipe(Range(5, 10))
+Task 'T' added
+Task 'T' now playing
+Task 'T' finished
+>    3) [0] End
+###
+>>> *** Source:
+    // Evaluate
+    T.Data
+Seq<i8>
+   0) 5
+   1) 6
+   2) 7
+   3) 8
+   4) 9
+###
+>>> *** Source:
+    // Evaluate
+    Sum(F(A ++ T.Data))
+55
+###
+>>> *** Source:
+    // Evaluate
+    // Parsing error
+    A +
+  *** Parse diagnostics:
+  [Basic.txt] Error: (32,32) Tok: '<eof>', Message: Expected an operand
+Failed to evaluate value!
+###
+>>> *** Source:
+    // Evaluate
+    // Binding error
+    A->Filter(it = "hello")
+  *** Bind diagnostics:
+  [Basic.txt] Error: (44,51) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+Failed to evaluate value!
+###
+>>> *** Source:
+    // Evaluate
+    // Procs not allowed
+    Pipe(Range(2))
+  *** Bind diagnostics:
+  [Basic.txt] Error: (37,38) Node: Pipe(Range(2)), Message: Procedure 'Pipe' cannot be used as a function
+Failed to evaluate value!
+###
+>>> *** Source:
+    // Evaluate
+    // Parse and Bind errors
+    B + 2 ** 3
+  *** Parse diagnostics:
+  [Basic.txt] Warning: (43,45) Tok: '**', Message: The binary operator '**' is deprecated, use '^' instead
+  *** Bind diagnostics:
+  [Basic.txt] Error: (37,38) Node: B, Message: Name does not exist in the current context
+Failed to evaluate value!
+###
+>>> *** Source:
+    // Evaluate
+    // Exception thrown while generating code for the bound node
+    WrapNYI(1)
+  *** Execution errors:
+    Code generation for Test.WrapNYI failed
+Failed to evaluate value!
+###
+>>> *** Source:
+    // Evaluate
+    // Exception thrown while executing
+    Throw()
+  *** Execution errors:
+    Exception of type 'RexlTest.ThrowFuncGen+RexlThrowException' was thrown.
+Failed to evaluate value!
+###
+

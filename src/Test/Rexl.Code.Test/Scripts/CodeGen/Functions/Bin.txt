@@ -1,0 +1,105 @@
+﻿::: { s:s, r8:r8, r4:r4, i8:i8, i4:i4, i2:i2, i1:i1, u8:u8, u4:u4, u2:u2, u1:u1, qr8:r8?, qr4:r4?, qi8:i8?, qi4:i4?, qi2:i2?, qi1:i1?, qu8:u8?, qu4:u4?, qu2:u2?, qu1:u1?}
+
+//i4
+Bin(Wrap(3), 4) 
+Bin(Wrap(3), -4) 
+Bin(Wrap(2), -1)
+Bin(Wrap(2), Wrap(0))
+Bin(Wrap(0x3FFFFFFF), 2)
+Bin(Wrap(0x3FFFFFFF), 4)
+Bin(Wrap(0x3FFFFFFF), Wrap(0))
+Bin(Wrap(-0), 2)
+Bin(Wrap(-2), -0)
+Bin(i4, 3)
+Bin(3, i4)
+Bin(Wrap(0x80000000i4), -1)
+
+//i8
+Bin(i8+3,4)
+Bin(i8+2,-1)
+Bin(Wrap(0x3FFFFFFFF), 2)
+Bin(Wrap(0x3FFFFFFFF), 4)
+Bin(Wrap(0x3FFFFFFFF), Wrap(0))
+Bin(Wrap(0x8000000000000000i8), -1)
+
+
+//u4
+Bin(u4+2u, 2)
+Bin(u4+10u, 4)
+Bin(Wrap(0x7FFFFFFFU), 2)
+Bin(Wrap(0x7FFFFFFFU), 2U)
+Bin(Wrap(0x7FFFFFFFU), Wrap(0U))
+Bin(Wrap(0x7FFFFFFFU), 4)
+Bin(Wrap(0x812345u4), 0x81234567u4)
+Bin(Wrap(0x80123456u4), 0x81234567u4)
+Bin(Wrap(0x81234567u4), 0x80123456u4)
+Bin(Wrap(0x81234567u4), 0x812345u4)
+
+//u8
+Bin(Wrap(0x7FFFFFFFFFU), 2U)
+Bin(Wrap(0x7FFFFFFFFFU), Wrap(0U))
+
+//r4
+Bin(Wrap(-0f), 2f)
+Bin(Wrap(-0.0), 2.0)
+Bin(Wrap(2f), 0f)
+Bin(Wrap(-2.0), -0.0)
+Bin(Wrap(2.0), 4.0)
+Bin(Wrap(2.0), 3.0)
+Bin(Wrap(1e30f), 1e-30f)
+Bin(Wrap(1e30), -1e-30)
+Bin(Wrap(-1e30), 1e-30)
+Bin(Wrap(-1e30), -1e-30)
+
+
+//r8
+Bin(r8+1.0, 2.0)
+Bin(r8-2.0, 2.0)
+Bin(r8-2.0, -0.0)
+Bin(r8, 0f)
+Bin(r8, -0f)
+Bin(r8, 2.0)
+Bin(Wrap(-2e100), -0f)
+Bin(Wrap(2e100), 2)
+Bin(Wrap(2e100), 3)
+Bin(1.0/0, r8)
+Bin(-1.0/0, r8)
+Bin(1.0/0 * 0, r8)
+Bin(-1.0/0 * 0, r8)
+Bin(Wrap(1e200), 1e-200)
+Bin(Wrap(1e200), -1e-200)
+Bin(Wrap(-1e200), 1e-200)
+Bin(Wrap(-1e200), -1e-200)
+
+
+//i
+Bin(Wrap(0x7FFFFFFFFFU), 2)
+Bin(Wrap(0x7FFFFFFFFFU), 4)
+
+Bin(Wrap(0x3FFFFFFFFFFFFFFFF), 2)
+Bin(Wrap(0x3FFFFFFFFFFFFFFFF), -4)
+Bin(Wrap(0x3FFFFFFFFFFFFFFFF), Wrap(0))
+
+// Make sure values for CodeGen and Reduce paths are equivalent.
+Bin(Wrap(3), 4) = Bin(3, 4)
+Bin(Wrap(3i8), 4) = Bin(3i8, 4)
+Bin(Wrap(0x80000000i4), -1) = Bin(0x80000000i4, -1)
+Bin(Wrap(0x8000000000000000i8), -1) = Bin(0x8000000000000000i8, -1)
+Bin(Wrap(2), Wrap(0)) = Bin(2, 0)
+Bin(Wrap(2i8), Wrap(0)) = Bin(2i8, 0)
+Bin(Wrap(3u), 4u) = Bin(3u, 4u)
+Bin(Wrap(3u8), 4u) = Bin(3u8, 4u)
+Bin(Wrap(3), -4) = Bin(3, -4)
+Bin(Wrap(2u), Wrap(0u)) = Bin(2u, 0u)
+Bin(Wrap(2u8), Wrap(0u)) = Bin(2u8, 0u)
+Bin(Wrap(2.0), 4.0) = Bin(2.0, 4.0)
+Bin(Wrap(2f), 0f) = Bin(2f, 0f)
+Bin(Wrap(-2.0), -0.0) = Bin(-2.0, -0.0)
+Bin(Wrap(0.0), 0.0) = Bin(0.0, 0.0)
+Bin(Wrap(-0.0), 0.0) = Bin(-0.0, 0.0)
+Bin(r8+1.0, 2.0) = Bin(1.0r8, 2.0)
+Bin(Wrap(-2e100), -0f) = Bin(-2e100, -0f)
+Bin(Wrap(0x812345u4), 0x81234567u4) = Bin(0x812345u4, 0x81234567u4)
+Bin(Wrap(0x80123456u4), 0x81234567u4) = Bin(0x80123456u4, 0x81234567u4)
+Bin(Wrap(0x81234567u4), 0x80123456u4) = Bin(0x81234567u4, 0x80123456u4)
+Bin(Wrap(0x81234567u4), 0x812345u4) = Bin(0x81234567u4, 0x812345u4)

@@ -1,0 +1,26 @@
+﻿``` inf := 1r8 / 0r8;
+``` nan := 0r8 / 0r8;
+``` r8_s := [ nan, -inf, -1, -0r8, 0r8, 1, 2, 3.7, inf ];
+``` r8qs := [null] ++ r8_s;
+
+// Should produce the same values as r8_op.txt, so can diff the baselines to verify.
+
+Map(x: r8_s, Map(y: r8_s, { EQ: x @= x @ = y, NE: x @= x !@ = y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8_s, { ET: x @= x $ = y, NT: x @= x !$ = y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8_s, { GT: x @= x @>  y, LE: x @= x  @<= y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8_s, { GE: x @= x @>= y, LT: x @= x  @<  y, X: x, Y: y }))
+
+Map(x: r8_s, Map(y: r8qs, { EQ: x @= x @ = y, NE: x @= x !@ = y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8qs, { ET: x @= x $ = y, NT: x @= x !$ = y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8qs, { GT: x @= x @>  y, LE: x @= x  @<= y, X: x, Y: y }))
+Map(x: r8_s, Map(y: r8qs, { GE: x @= x @>= y, LT: x @= x  @<  y, X: x, Y: y }))
+
+Map(x: r8qs, Map(y: r8_s, { EQ: x @= x @ = y, NE: x @= x !@ = y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8_s, { ET: x @= x $ = y, NT: x @= x !$ = y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8_s, { GT: x @= x @>  y, LE: x @= x  @<= y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8_s, { GE: x @= x @>= y, LT: x @= x  @<  y, X: x, Y: y }))
+
+Map(x: r8qs, Map(y: r8qs, { EQ: x @= x @ = y, NE: x @= x !@= y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8qs, { ET: x @= x $ = y, NT: x @= x !$= y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8qs, { GT: x @= x @>  y, LE: x @= x  @<= y, X: x, Y: y }))
+Map(x: r8qs, Map(y: r8qs, { GE: x @= x @>= y, LT: x @= x  @<  y, X: x, Y: y }))

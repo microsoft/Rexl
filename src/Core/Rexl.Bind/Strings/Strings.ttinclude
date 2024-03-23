@@ -1,0 +1,70 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+void Generate(string path, string cls)
+{
+#>
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+// WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
+
+namespace Microsoft.Rexl;
+
+static partial class <#=cls#>
+{
+<#
+    var lines = File.ReadAllLines(Host.ResolvePath(path));
+    foreach (var line in lines)
+    {
+        var src = line.Trim();
+        if (src.StartsWith("<" + "#") || src.StartsWith("#endif"))
+            continue;
+
+        if (src.Length == 0)
+        {
+#>
+
+<#
+            continue;
+        }
+        if (src.StartsWith("//") || src.StartsWith("#region") || src.StartsWith("#endregion"))
+        {
+#>
+    <#=src#>
+<#
+            continue;
+        }
+
+        int ich = src.IndexOf("=");
+        if (ich <= 0)
+        {
+#>
+    #error // Bad Line: <#=src#>
+<#
+            continue;
+        }
+
+        var name = src.Substring(0, ich).Trim();
+        var text = src.Substring(ich + 1).Trim();
+        if (!text.StartsWith("\"") && !text.StartsWith("@\"") || !text.EndsWith("\""))
+        {
+#>
+    #error // Bad String Value: <#=text#>
+<#
+            continue;
+        }
+#>
+    public static readonly StringId <#=name#> = new(nameof(<#=name#>), <#=text#>);
+<#
+    }
+#>
+}
+<#
+}
+#>

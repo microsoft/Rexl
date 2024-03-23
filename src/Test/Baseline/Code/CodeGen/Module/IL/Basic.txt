@@ -1,0 +1,1428 @@
+> module {
+    param A := 3;
+    const B := A * A;
+}
+module { param A := 3; const B := A * A } : M{param A:i8, const B:i8}
+BndKind:Module, Type:M{param A:i8, const B:i8}, Bnd:(module[items[with:1] ]{ param A := 3:i8; const B := Mul(GetSlot(Scope(1), 0), GetSlot(Scope(1), 0)) })
+// () : M{param A:i8, const B:i8}
+set_module_items(Arr<obj>, Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brfalse [0]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.3 [{i8,i8}]
+      5) ldfld {i8,i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [1]
+      1) ldarg.2 [(i8,i8)]
+      1) ldc.i4.3
+      1) conv.i8
+      5) stfld (i8,i8)::_F0:i8
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) mul
+      5) stfld (i8,i8)::_F1:i8
+  Label [2]:
+      1) ldarg.2 [(i8,i8)]
+      1) ret
+  Total Size: 70
+
+make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      5) stfld {i8,i8}::_F0:i8
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F1:i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>]
+      1) dup
+      1) ldc.i4.4
+      5) newarr [bool]
+      5) newobj (i8,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>::Invoke(Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(i8,i8),{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      1) ret
+  Total Size: 45
+
+Func sig: () to M{param A:i8, const B:i8}
+Type: RuntimeModule<{i8,i8},(i8,i8)>, Value: module symbols:
+  param A: 3
+  const B: 9
+###
+> module {
+    param A := 3;
+    param B := A * A;
+    const K := A + B;
+    var X from 3 to B def K;
+    let Y := X * X;
+    msr M := Y + X;
+    con C := Y <= 100;
+}
+module { param A := 3; param B := A * A; const K := A + B; var X from 3 to B def K; let Y := X * X; msr M := Y + X; con C := Y $<= 100 } : M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}
+BndKind:Module, Type:M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}, Bnd:(module[items[with:1] ]{ param A := 3:i8; param B := Mul(GetSlot(Scope(1), 0), GetSlot(Scope(1), 0)); const K := Add(GetSlot(Scope(1), 0), GetSlot(Scope(1), 1)); var X from 3:i8 to GetSlot(Scope(1), 1) def GetSlot(Scope(1), 2); let Y := Mul(GetSlot(Scope(1), 5), GetSlot(Scope(1), 5)); msr M := Add(GetSlot(Scope(1), 6), GetSlot(Scope(1), 5)); con C := Cmp(GetSlot(Scope(1), 6) @<= 100:i8) })
+// () : M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}
+set_module_items(Arr<obj>, Arr<bool>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), {i8,i8,bool,i8,i8,i8,i8}):(i8,i8,i8,i8,i8,i8,i8,i8,bool)
+      1) ldarg.1 [Arr<bool>]
+      2) ldc.i4.s [9]
+      1) ldelem.u1
+      5) brfalse [0]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [{i8,i8,bool,i8,i8,i8,i8}]
+      5) ldfld {i8,i8,bool,i8,i8,i8,i8}::_F0:i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [1]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldc.i4.3
+      1) conv.i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      2) ldc.i4.s [10]
+      1) ldelem.u1
+      5) brfalse [2]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [{i8,i8,bool,i8,i8,i8,i8}]
+      5) ldfld {i8,i8,bool,i8,i8,i8,i8}::_F1:i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+      5) br [3]
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [3]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      1) mul
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+  Label [3]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [4]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+      1) add
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F2:i8
+  Label [4]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brtrue [5]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldc.i4.3
+      1) conv.i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F3:i8
+  Label [5]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.4
+      1) ldelem.u1
+      5) brtrue [6]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F4:i8
+  Label [6]:
+      1) ldarg.1 [Arr<bool>]
+      2) ldc.i4.s [12]
+      1) ldelem.u1
+      5) brfalse [7]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [{i8,i8,bool,i8,i8,i8,i8}]
+      5) ldfld {i8,i8,bool,i8,i8,i8,i8}::_F5:i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+      5) br [8]
+  Label [7]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.5
+      1) ldelem.u1
+      5) brtrue [8]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F2:i8
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+  Label [8]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.6
+      1) ldelem.u1
+      5) brtrue [9]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+      1) mul
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F6:i8
+  Label [9]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.7
+      1) ldelem.u1
+      5) brtrue [10]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F6:i8
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+      1) add
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F7:i8
+  Label [10]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.8
+      1) ldelem.u1
+      5) brtrue [11]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F6:i8
+      2) ldc.i4.s [100]
+      1) conv.i8
+      2) cgt
+      1) ldc.i4.0
+      2) ceq
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F8:bool
+  Label [11]:
+      1) ldarg.2 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ret
+  Total Size: 288
+
+make_module_record(Arr<obj>, (i8,i8,i8,i8,i8,i8,i8,i8,bool)):{i8,i8,bool,i8,i8,i8,i8}
+      5) newobj {i8,i8,bool,i8,i8,i8,i8}()
+      1) dup
+      2) ldc.i4.s [127]
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F0:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F2:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F3:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F5:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F6:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F6:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F7:i8
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F4:i8
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      5) ldfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F8:bool
+      5) stfld {i8,i8,bool,i8,i8,i8,i8}::_F2:bool
+      1) ldloc.0 [{i8,i8,bool,i8,i8,i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 113
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>]
+      1) dup
+      2) ldc.i4.s [16]
+      5) newarr [bool]
+      5) newobj (i8,i8,i8,i8,i8,i8,i8,i8,bool)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>::Invoke(Arr<bool>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), {i8,i8,bool,i8,i8,i8,i8}):(i8,i8,i8,i8,i8,i8,i8,i8,bool)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>(Func<Arr<bool>,(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8}>, BndModuleNode)
+      1) ret
+  Total Size: 46
+
+Func sig: () to M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}
+Type: RuntimeModule<{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, Value: module symbols:
+  param A: 3
+  param B: 9
+  const K: 12
+  var X from 3 to 9 def 12
+  let Y: 144
+  msr M: 156
+  con C: false
+###
+> With(M : module { var X from Range(10); let N := X->Count() }, M.X)
+With(M : module { var X from Range(10); let N := X->Count() }, M.X) : i8*
+BndKind:GetField, Type:i8*, Bnd:(GetField(ModToRec(module[items[with:1] ]{ var X from Call(∂.Range(10:i8):i8*) def GetSlot(Scope(1), 0) opt; let N := Call(∂.Count(GetSlot(Scope(1), 1)):i8) }), X))
+// (<ctx>) : i8*
+set_module_items(Arr<obj>, Arr<bool>, (Seq<i8>,Seq<i8>,i8), {i8,Seq<i8>}):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [0]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F0:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brfalse [1]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.3 [{i8,Seq<i8>}]
+      5) ldfld {i8,Seq<i8>}::_F1:Seq<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      5) br [2]
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F0:Seq<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [3]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F2:i8
+  Label [3]:
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ret
+  Total Size: 102
+
+make_module_record(Arr<obj>, (Seq<i8>,Seq<i8>,i8)):{i8,Seq<i8>}
+      5) newobj {i8,Seq<i8>}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {i8,Seq<i8>}::_B0:u1
+      1) stloc.0 [{i8,Seq<i8>}]
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      5) stfld {i8,Seq<i8>}::_F1:Seq<i8>
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F2:i8
+      5) stfld {i8,Seq<i8>}::_F0:i8
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) dup
+      1) ldc.i4.5
+      5) newarr [bool]
+      5) newobj (Seq<i8>,Seq<i8>,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>::Invoke(Arr<bool>, (Seq<i8>,Seq<i8>,i8), {i8,Seq<i8>}):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, BndModuleNode)
+      5) callvirt RuntimeModule<{i8,Seq<i8>}>::GetRecord():{i8,Seq<i8>}
+      5) ldfld {i8,Seq<i8>}::_F1:Seq<i8>
+      1) ret
+  Total Size: 93
+
+Func sig: (<ctx>:x) to i8*
+Sequence: Seq<i8>
+ 0) 0
+ 1) 1
+ 2) 2
+ 3) 3
+ 4) 4
+ 5) 5
+ 6) 6
+ 7) 7
+ 8) 8
+ 9) 9
+*** Ctx ping count: 0
+###
+> With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N))
+With(M : module { var X from Range(10); let N := X->Count() }, (M.X, M.N)) : (i8*, i8)
+BndKind:Call, Type:(i8*, i8), Bnd:(Call(∂.With([with:2] module[items[with:1] ]{ var X from Call(∂.Range(10:i8):i8*) def GetSlot(Scope(1), 0) opt; let N := Call(∂.Count(GetSlot(Scope(1), 1)):i8) }, (GetField(ModToRec(Scope(2)), X), GetField(ModToRec(Scope(2)), N)):(i8*, i8)):(i8*, i8)))
+// (<ctx>) : (i8*, i8)
+set_module_items(Arr<obj>, Arr<bool>, (Seq<i8>,Seq<i8>,i8), {i8,Seq<i8>}):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [0]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F0:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brfalse [1]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.3 [{i8,Seq<i8>}]
+      5) ldfld {i8,Seq<i8>}::_F1:Seq<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      5) br [2]
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F0:Seq<i8>
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [3]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [ExecCtx]
+      1) ldc.i4.0
+      5) call static CountGen::Exec(Seq<i8>, ExecCtx, i4):i8
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F2:i8
+  Label [3]:
+      1) ldarg.2 [(Seq<i8>,Seq<i8>,i8)]
+      1) ret
+  Total Size: 102
+
+make_module_record(Arr<obj>, (Seq<i8>,Seq<i8>,i8)):{i8,Seq<i8>}
+      5) newobj {i8,Seq<i8>}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {i8,Seq<i8>}::_B0:u1
+      1) stloc.0 [{i8,Seq<i8>}]
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+      5) stfld {i8,Seq<i8>}::_F1:Seq<i8>
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,Seq<i8>,i8)::_F2:i8
+      5) stfld {i8,Seq<i8>}::_F0:i8
+      1) ldloc.0 [{i8,Seq<i8>}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.1 [Arr<obj>]
+      1) ldc.i4.0
+      1) ldelem.ref
+      5) call static CodeGenUtil::ToRef(obj):ExecCtx
+      1) stloc.0 [ExecCtx]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [MethodInfo]
+      5) ldtoken [Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>]
+      5) call static Type::GetTypeFromHandle(RuntimeTypeHandle):Type
+      1) ldc.i4.2
+      5) newarr [obj]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.0 [ExecCtx]
+      5) stelem [ExecCtx]
+      5) callvirt DynamicMethod::CreateDelegate(Type, obj):Delegate
+      1) dup
+      1) ldc.i4.5
+      5) newarr [bool]
+      5) newobj (Seq<i8>,Seq<i8>,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>::Invoke(Arr<bool>, (Seq<i8>,Seq<i8>,i8), {i8,Seq<i8>}):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, BndModuleNode)
+      1) stloc.1 [RuntimeModule<{i8,Seq<i8>}>]
+      5) newobj (Seq<i8>,i8)()
+      1) dup
+      1) ldloc.1 [RuntimeModule<{i8,Seq<i8>}>]
+      5) callvirt RuntimeModule<{i8,Seq<i8>}>::GetRecord():{i8,Seq<i8>}
+      5) ldfld {i8,Seq<i8>}::_F1:Seq<i8>
+      5) stfld (Seq<i8>,i8)::_F0:Seq<i8>
+      1) dup
+      1) ldloc.1 [RuntimeModule<{i8,Seq<i8>}>]
+      5) callvirt RuntimeModule<{i8,Seq<i8>}>::GetRecord():{i8,Seq<i8>}
+      5) ldfld {i8,Seq<i8>}::_F0:i8
+      5) stfld (Seq<i8>,i8)::_F1:i8
+      1) ret
+  Total Size: 123
+
+Func sig: (<ctx>:x) to (i8*, i8)
+Type: (Seq<i8>,i8), Value: (Sequence: Seq<i8>
+     0) 0
+     1) 1
+     2) 2
+     3) 3
+     4) 4
+     5) 5
+     6) 6
+     7) 7
+     8) 8
+     9) 9
+  , 10)
+*** Ctx ping count: 0
+###
+> With(
+    M1 : module { var X in Range(10) def 7; let Y := X * X },
+    M2 : module { var X := 17; let Y := X + 1 },
+    (M1, M2, [M1, M2]))
+With(M1 : module { var X in Range(10) def 7; let Y := X * X }, M2 : module { var X def 17; let Y := X + 1 }, (M1, M2, [M1, M2])) : (M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)
+BndKind:Call, Type:(M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*), Bnd:(Call(∂.With([with:2] module[items[with:1] ]{ var X in Call(∂.Range(10:i8):i8*) def 7:i8; let Y := Mul(GetSlot(Scope(1), 1), GetSlot(Scope(1), 1)) }, [with:4] module[items[with:3] ]{ var X def 17:i8; let Y := Add(GetSlot(Scope(3), 0), 1:i8) }, (Scope(2), Scope(4), [Scope(2), Scope(4)]:M{var X:i8, let Y:i8}*):(M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)):(M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)))
+// () : (M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)
+set_module_items(Arr<obj>, Arr<bool>, (Seq<i8>,i8,i8), {i8,i8}):(Seq<i8>,i8,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [0]
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) stfld (Seq<i8>,i8,i8)::_F0:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brfalse [1]
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      1) ldarg.3 [{i8,i8}]
+      5) ldfld {i8,i8}::_F0:i8
+      5) stfld (Seq<i8>,i8,i8)::_F1:i8
+      5) br [2]
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      1) ldc.i4.7
+      1) conv.i8
+      5) stfld (Seq<i8>,i8,i8)::_F1:i8
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [3]
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      5) ldfld (Seq<i8>,i8,i8)::_F1:i8
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      5) ldfld (Seq<i8>,i8,i8)::_F1:i8
+      1) mul
+      5) stfld (Seq<i8>,i8,i8)::_F2:i8
+  Label [3]:
+      1) ldarg.2 [(Seq<i8>,i8,i8)]
+      1) ret
+  Total Size: 92
+
+make_module_record(Arr<obj>, (Seq<i8>,i8,i8)):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(Seq<i8>,i8,i8)]
+      5) ldfld (Seq<i8>,i8,i8)::_F1:i8
+      5) stfld {i8,i8}::_F0:i8
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(Seq<i8>,i8,i8)]
+      5) ldfld (Seq<i8>,i8,i8)::_F2:i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+set_module_items(Arr<obj>, Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brfalse [0]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.3 [{i8,i8}]
+      5) ldfld {i8,i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [1]
+      1) ldarg.2 [(i8,i8)]
+      2) ldc.i4.s [17]
+      1) conv.i8
+      5) stfld (i8,i8)::_F0:i8
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) ldc.i4.1
+      1) conv.i8
+      1) add
+      5) stfld (i8,i8)::_F1:i8
+  Label [2]:
+      1) ldarg.2 [(i8,i8)]
+      1) ret
+  Total Size: 67
+
+make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      5) stfld {i8,i8}::_F0:i8
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F1:i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(Seq<i8>,i8,i8),{i8,i8},(Seq<i8>,i8,i8)>]
+      1) dup
+      1) ldc.i4.5
+      5) newarr [bool]
+      5) newobj (Seq<i8>,i8,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(Seq<i8>,i8,i8),{i8,i8},(Seq<i8>,i8,i8)>::Invoke(Arr<bool>, (Seq<i8>,i8,i8), {i8,i8}):(Seq<i8>,i8,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(Seq<i8>,i8,i8),{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8},(Seq<i8>,i8,i8)>(Func<Arr<bool>,(Seq<i8>,i8,i8),{i8,i8},(Seq<i8>,i8,i8)>, (Seq<i8>,i8,i8), Func<(Seq<i8>,i8,i8),{i8,i8}>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>]
+      1) dup
+      1) ldc.i4.4
+      5) newarr [bool]
+      5) newobj (i8,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>::Invoke(Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [Func<(i8,i8),{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.5
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      1) stloc.1 [RuntimeModule<{i8,i8}>]
+      5) newobj (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)()
+      1) dup
+      1) ldloc.0 [RuntimeModule<{i8,i8}>]
+      5) stfld (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)::_F0:RuntimeModule<{i8,i8}>
+      1) dup
+      1) ldloc.1 [RuntimeModule<{i8,i8}>]
+      5) stfld (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)::_F1:RuntimeModule<{i8,i8}>
+      1) dup
+      1) ldc.i4.2
+      5) newarr [RuntimeModule<{i8,i8}>]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [RuntimeModule<{i8,i8}>]
+      5) stelem [RuntimeModule<{i8,i8}>]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [RuntimeModule<{i8,i8}>]
+      5) stelem [RuntimeModule<{i8,i8}>]
+      5) stfld (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)::_F2:Seq<RuntimeModule<{i8,i8}>>
+      1) ret
+  Total Size: 138
+
+Func sig: () to (M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)
+Type: (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>), Value: (module symbols:
+      var X in Sequence: Seq<i8>
+         0) 0
+         1) 1
+         2) 2
+         3) 3
+         4) 4
+         5) 5
+         6) 6
+         7) 7
+         8) 8
+         9) 9
+         def 7
+      let Y: 49
+  , module symbols:
+      var X def 17
+      let Y: 18
+  , Sequence: Seq<RuntimeModule<{i8,i8}>>
+     0) module symbols:
+          var X in Sequence: Seq<i8>
+             0) 0
+             1) 1
+             2) 2
+             3) 3
+             4) 4
+             5) 5
+             6) 6
+             7) 7
+             8) 8
+             9) 9
+             def 7
+          let Y: 49
+     1) module symbols:
+          var X def 17
+          let Y: 18
+)
+###
+> With(
+    M : module { var X in Range(10) },
+    R : { X: 17 },
+    (M, R, [M, R]))
+With(M : module { var X in Range(10) }, R : { X : 17 }, (M, R, [M, R])) : (M{var X:i8}, {X:i8}, {X:i8}*)
+BndKind:Call, Type:(M{var X:i8}, {X:i8}, {X:i8}*), Bnd:(Call(∂.With([with:2] module[items[with:1] ]{ var X in Call(∂.Range(10:i8):i8*) def Call(∂.TakeOne(GetSlot(Scope(1), 0), [else] 0:i8):i8) }, [with:3] {X:17:i8}, (Scope(2), Scope(3), [ModToRec(Scope(2)), Scope(3)]:{X:i8}*):(M{var X:i8}, {X:i8}, {X:i8}*)):(M{var X:i8}, {X:i8}, {X:i8}*)))
+// () : (M{var X:i8}, {X:i8}, {X:i8}*)
+set_module_items(Arr<obj>, Arr<bool>, (Seq<i8>,i8), {i8}):(Seq<i8>,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [0]
+      1) ldarg.2 [(Seq<i8>,i8)]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) stfld (Seq<i8>,i8)::_F0:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brfalse [1]
+      1) ldarg.2 [(Seq<i8>,i8)]
+      1) ldarg.3 [{i8}]
+      5) ldfld {i8}::_F0:i8
+      5) stfld (Seq<i8>,i8)::_F1:i8
+      5) br [2]
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(Seq<i8>,i8)]
+      1) ldarg.2 [(Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,i8)::_F0:Seq<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static TakeOneGen::Exec(Seq<i8>, i8):i8
+      5) stfld (Seq<i8>,i8)::_F1:i8
+  Label [2]:
+      1) ldarg.2 [(Seq<i8>,i8)]
+      1) ret
+  Total Size: 76
+
+make_module_record(Arr<obj>, (Seq<i8>,i8)):{i8}
+      5) newobj {i8}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {i8}::_B0:u1
+      1) stloc.0 [{i8}]
+      1) ldloc.0 [{i8}]
+      1) ldarg.1 [(Seq<i8>,i8)]
+      5) ldfld (Seq<i8>,i8)::_F1:i8
+      5) stfld {i8}::_F0:i8
+      1) ldloc.0 [{i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 40
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(Seq<i8>,i8),{i8},(Seq<i8>,i8)>]
+      1) dup
+      1) ldc.i4.3
+      5) newarr [bool]
+      5) newobj (Seq<i8>,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(Seq<i8>,i8),{i8},(Seq<i8>,i8)>::Invoke(Arr<bool>, (Seq<i8>,i8), {i8}):(Seq<i8>,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(Seq<i8>,i8),{i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8},(Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,i8),{i8},(Seq<i8>,i8)>, (Seq<i8>,i8), Func<(Seq<i8>,i8),{i8}>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8}>]
+      5) newobj {i8}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {i8}::_B0:u1
+      1) stloc.1 [{i8}]
+      1) ldloc.1 [{i8}]
+      2) ldc.i4.s [17]
+      1) conv.i8
+      5) stfld {i8}::_F0:i8
+      1) ldloc.1 [{i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) stloc.1 [{i8}]
+      5) newobj (RuntimeModule<{i8}>,{i8},Seq<{i8}>)()
+      1) dup
+      1) ldloc.0 [RuntimeModule<{i8}>]
+      5) stfld (RuntimeModule<{i8}>,{i8},Seq<{i8}>)::_F0:RuntimeModule<{i8}>
+      1) dup
+      1) ldloc.1 [{i8}]
+      5) stfld (RuntimeModule<{i8}>,{i8},Seq<{i8}>)::_F1:{i8}
+      1) dup
+      1) ldc.i4.2
+      5) newarr [{i8}]
+      1) dup
+      1) ldc.i4.0
+      1) ldloc.0 [RuntimeModule<{i8}>]
+      5) callvirt RuntimeModule<{i8}>::GetRecord():{i8}
+      5) stelem [{i8}]
+      1) dup
+      1) ldc.i4.1
+      1) ldloc.1 [{i8}]
+      5) stelem [{i8}]
+      5) stfld (RuntimeModule<{i8}>,{i8},Seq<{i8}>)::_F2:Seq<{i8}>
+      1) ret
+  Total Size: 135
+
+Func sig: () to (M{var X:i8}, {X:i8}, {X:i8}*)
+Type: (RuntimeModule<{i8}>,{i8},Seq<{i8}>), Value: (module symbols:
+      var X in Sequence: Seq<i8>
+         0) 0
+         1) 1
+         2) 2
+         3) 3
+         4) 4
+         5) 5
+         6) 6
+         7) 7
+         8) 8
+         9) 9
+         def 0
+  , { X: 17 }, 
+  Sequence: Seq<{i8}>
+     0) { X: 0 }
+     1) { X: 17 }
+)
+###
+> With(
+    M : module { var X in Range(10); var Z from 0.0 to 100 },
+    R : { X: 17, Y: "Blah" },
+    (M, R, [M, R]))
+With(M : module { var X in Range(10); var Z from 0 to 100 }, R : { X : 17, Y : "Blah" }, (M, R, [M, R])) : (M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)
+BndKind:Call, Type:(M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*), Bnd:(Call(∂.With([with:2] module[items[with:1] ]{ var X in Call(∂.Range(10:i8):i8*) def Call(∂.TakeOne(GetSlot(Scope(1), 0), [else] 0:i8):i8); var Z from 0:r8 to 100:r8 def GetSlot(Scope(1), 2) }, [with:3] {X:17:i8, Y:str(Blah)}, [with:4] ModToRec(Scope(2)), (Scope(2), Scope(3), [{X:GetField(Scope(4), X), Y:str(<null>), Z:Opt<r8?>(GetField(Scope(4), Z))}, {X:GetField(Scope(3), X), Y:GetField(Scope(3), Y), Z:null:r8?}]:{X:i8, Y:s, Z:r8?}*):(M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)):(M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)))
+// () : (M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)
+set_module_items(Arr<obj>, Arr<bool>, (Seq<i8>,i8,r8,r8,r8), {i8,r8}):(Seq<i8>,i8,r8,r8,r8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [0]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      2) ldc.i4.s [10]
+      1) conv.i8
+      5) call static RangeGen::Exec(i8):ICachingEnumerable<i8>
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F0:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.5
+      1) ldelem.u1
+      5) brfalse [1]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.3 [{i8,r8}]
+      5) ldfld {i8,r8}::_F0:i8
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F1:i8
+      5) br [2]
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      5) ldfld (Seq<i8>,i8,r8,r8,r8)::_F0:Seq<i8>
+      1) ldc.i4.0
+      1) conv.i8
+      5) call static TakeOneGen::Exec(Seq<i8>, i8):i8
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F1:i8
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [3]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      9) ldc.r8 [0]
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F2:r8
+  Label [3]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brtrue [4]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      9) ldc.r8 [100]
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F3:r8
+  Label [4]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.6
+      1) ldelem.u1
+      5) brfalse [5]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.3 [{i8,r8}]
+      5) ldfld {i8,r8}::_F1:r8
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F4:r8
+      5) br [6]
+  Label [5]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.4
+      1) ldelem.u1
+      5) brtrue [6]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      5) ldfld (Seq<i8>,i8,r8,r8,r8)::_F2:r8
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F4:r8
+  Label [6]:
+      1) ldarg.2 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ret
+  Total Size: 167
+
+make_module_record(Arr<obj>, (Seq<i8>,i8,r8,r8,r8)):{i8,r8}
+      5) newobj {i8,r8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,r8}::_B0:u1
+      1) stloc.0 [{i8,r8}]
+      1) ldloc.0 [{i8,r8}]
+      1) ldarg.1 [(Seq<i8>,i8,r8,r8,r8)]
+      5) ldfld (Seq<i8>,i8,r8,r8,r8)::_F1:i8
+      5) stfld {i8,r8}::_F0:i8
+      1) ldloc.0 [{i8,r8}]
+      1) ldarg.1 [(Seq<i8>,i8,r8,r8,r8)]
+      5) ldfld (Seq<i8>,i8,r8,r8,r8)::_F4:r8
+      5) stfld {i8,r8}::_F1:r8
+      1) ldloc.0 [{i8,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(Seq<i8>,i8,r8,r8,r8),{i8,r8},(Seq<i8>,i8,r8,r8,r8)>]
+      1) dup
+      1) ldc.i4.7
+      5) newarr [bool]
+      5) newobj (Seq<i8>,i8,r8,r8,r8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(Seq<i8>,i8,r8,r8,r8),{i8,r8},(Seq<i8>,i8,r8,r8,r8)>::Invoke(Arr<bool>, (Seq<i8>,i8,r8,r8,r8), {i8,r8}):(Seq<i8>,i8,r8,r8,r8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(Seq<i8>,i8,r8,r8,r8),{i8,r8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,r8},(Seq<i8>,i8,r8,r8,r8)>(Func<Arr<bool>,(Seq<i8>,i8,r8,r8,r8),{i8,r8},(Seq<i8>,i8,r8,r8,r8)>, (Seq<i8>,i8,r8,r8,r8), Func<(Seq<i8>,i8,r8,r8,r8),{i8,r8}>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8,r8}>]
+      5) newobj {i8,str}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,str}::_B0:u1
+      1) stloc.1 [{i8,str}]
+      1) ldloc.1 [{i8,str}]
+      2) ldc.i4.s [17]
+      1) conv.i8
+      5) stfld {i8,str}::_F0:i8
+      1) ldloc.1 [{i8,str}]
+      5) ldstr [Blah]
+      5) stfld {i8,str}::_F1:str
+      1) ldloc.1 [{i8,str}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) stloc.1 [{i8,str}]
+      1) ldloc.0 [RuntimeModule<{i8,r8}>]
+      5) callvirt RuntimeModule<{i8,r8}>::GetRecord():{i8,r8}
+      1) stloc.2 [{i8,r8}]
+      5) newobj (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>)()
+      1) dup
+      1) ldloc.0 [RuntimeModule<{i8,r8}>]
+      5) stfld (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>)::_F0:RuntimeModule<{i8,r8}>
+      1) dup
+      1) ldloc.1 [{i8,str}]
+      5) stfld (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>)::_F1:{i8,str}
+      1) dup
+      1) ldc.i4.2
+      5) newarr [{i8,str,r8}]
+      1) dup
+      1) ldc.i4.0
+      5) newobj {i8,str,r8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,str,r8}::_B0:u1
+      1) stloc.3 [{i8,str,r8}]
+      1) ldloc.3 [{i8,str,r8}]
+      1) ldloc.2 [{i8,r8}]
+      5) ldfld {i8,r8}::_F0:i8
+      5) stfld {i8,str,r8}::_F0:i8
+      1) ldloc.3 [{i8,str,r8}]
+      1) ldloc.2 [{i8,r8}]
+      5) ldfld {i8,r8}::_F1:r8
+      5) stfld {i8,str,r8}::_F2:r8
+      1) ldloc.3 [{i8,str,r8}]
+      1) dup
+      5) ldfld {i8,str,r8}::_B0:u1
+      1) ldc.i4.4
+      1) or
+      5) stfld {i8,str,r8}::_B0:u1
+      1) ldloc.3 [{i8,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      5) stelem [{i8,str,r8}]
+      1) dup
+      1) ldc.i4.1
+      5) newobj {i8,str,r8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,str,r8}::_B0:u1
+      1) stloc.3 [{i8,str,r8}]
+      1) ldloc.3 [{i8,str,r8}]
+      1) ldloc.1 [{i8,str}]
+      5) ldfld {i8,str}::_F0:i8
+      5) stfld {i8,str,r8}::_F0:i8
+      1) ldloc.3 [{i8,str,r8}]
+      1) ldloc.1 [{i8,str}]
+      5) ldfld {i8,str}::_F1:str
+      5) stfld {i8,str,r8}::_F1:str
+      1) ldloc.3 [{i8,str,r8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      5) stelem [{i8,str,r8}]
+      5) stfld (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>)::_F2:Seq<{i8,str,r8}>
+      1) ret
+  Total Size: 262
+
+Func sig: () to (M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)
+Type: (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>), Value: (module symbols:
+      var X in Sequence: Seq<i8>
+         0) 0
+         1) 1
+         2) 2
+         3) 3
+         4) 4
+         5) 5
+         6) 6
+         7) 7
+         8) 8
+         9) 9
+         def 0
+      var Z from 0 to 100 def 0
+  , { X: 17, Y: Blah }, 
+  Sequence: Seq<{i8,str,r8}>
+     0) { X: 0, Y: <null>, Z: 0 }
+     1) { X: 17, Y: Blah, Z: <null> }
+)
+###
+> With(
+    M : module { param A := 3; const B := A * 2; },
+    M with { A: 17 })
+With(M : module { param A := 3; const B := A * 2 }, M=>{ A : 17 }) : M{param A:i8, const B:i8}
+BndKind:ModuleProjection, Type:M{param A:i8, const B:i8}, Bnd:(ModuleProjection([with:2] module[items[with:1] ]{ param A := 3:i8; const B := Mul(GetSlot(Scope(1), 0), 2:i8) }, {A:17:i8}))
+// () : M{param A:i8, const B:i8}
+set_module_items(Arr<obj>, Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brfalse [0]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.3 [{i8,i8}]
+      5) ldfld {i8,i8}::_F0:i8
+      5) stfld (i8,i8)::_F0:i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [1]
+      1) ldarg.2 [(i8,i8)]
+      1) ldc.i4.3
+      1) conv.i8
+      5) stfld (i8,i8)::_F0:i8
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(i8,i8)]
+      1) ldarg.2 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) mul
+      5) stfld (i8,i8)::_F1:i8
+  Label [2]:
+      1) ldarg.2 [(i8,i8)]
+      1) ret
+  Total Size: 66
+
+make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.0 [{i8,i8}]
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F0:i8
+      5) stfld {i8,i8}::_F0:i8
+      1) ldloc.0 [{i8,i8}]
+      1) ldarg.1 [(i8,i8)]
+      5) ldfld (i8,i8)::_F1:i8
+      5) stfld {i8,i8}::_F1:i8
+      1) ldloc.0 [{i8,i8}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 52
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>]
+      1) dup
+      1) ldc.i4.4
+      5) newarr [bool]
+      5) newobj (i8,i8)()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>::Invoke(Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(i8,i8),{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8,i8}>]
+      1) ldloc.0 [RuntimeModule<{i8,i8}>]
+      5) newobj {i8,i8}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8}::_B0:u1
+      1) stloc.1 [{i8,i8}]
+      1) ldloc.1 [{i8,i8}]
+      2) ldc.i4.s [17]
+      1) conv.i8
+      5) stfld {i8,i8}::_F0:i8
+      1) ldloc.1 [{i8,i8}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [HashSet<DName>]
+      5) callvirt RuntimeModule<{i8,i8}>::Update({i8,i8}, HashSet<DName>):RuntimeModule<{i8,i8}>
+      1) ret
+  Total Size: 82
+
+Func sig: () to M{param A:i8, const B:i8}
+Type: RuntimeModule<{i8,i8},(i8,i8)>, Value: module symbols:
+  param A: 17
+  const B: 34
+###
+> With(
+    M : module { param A := 3; const B := A * 2; param C := { X: true } },
+    M with { A: 17 })
+With(M : module { param A := 3; const B := A * 2; param C := { X : true } }, M=>{ A : 17 }) : M{param A:i8, const B:i8, param C:{X:b}}
+BndKind:ModuleProjection, Type:M{param A:i8, const B:i8, param C:{X:b}}, Bnd:(ModuleProjection([with:2] module[items[with:1] ]{ param A := 3:i8; const B := Mul(GetSlot(Scope(1), 0), 2:i8); param C := {X:true:b} }, {A:17:i8}))
+// () : M{param A:i8, const B:i8, param C:{X:b}}
+set_module_items(Arr<obj>, Arr<bool>, (i8,i8,{bool}), {i8,i8,{bool}}):(i8,i8,{bool})
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.3
+      1) ldelem.u1
+      5) brfalse [0]
+      1) ldarg.2 [(i8,i8,{bool})]
+      1) ldarg.3 [{i8,i8,{bool}}]
+      5) ldfld {i8,i8,{bool}}::_F0:i8
+      5) stfld (i8,i8,{bool})::_F0:i8
+      5) br [1]
+  Label [0]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.0
+      1) ldelem.u1
+      5) brtrue [1]
+      1) ldarg.2 [(i8,i8,{bool})]
+      1) ldc.i4.3
+      1) conv.i8
+      5) stfld (i8,i8,{bool})::_F0:i8
+  Label [1]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.1
+      1) ldelem.u1
+      5) brtrue [2]
+      1) ldarg.2 [(i8,i8,{bool})]
+      1) ldarg.2 [(i8,i8,{bool})]
+      5) ldfld (i8,i8,{bool})::_F0:i8
+      1) ldc.i4.2
+      1) conv.i8
+      1) mul
+      5) stfld (i8,i8,{bool})::_F1:i8
+  Label [2]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.5
+      1) ldelem.u1
+      5) brfalse [3]
+      1) ldarg.2 [(i8,i8,{bool})]
+      1) ldarg.3 [{i8,i8,{bool}}]
+      5) ldfld {i8,i8,{bool}}::_F2:{bool}
+      5) stfld (i8,i8,{bool})::_F2:{bool}
+      5) br [4]
+  Label [3]:
+      1) ldarg.1 [Arr<bool>]
+      1) ldc.i4.2
+      1) ldelem.u1
+      5) brtrue [4]
+      1) ldarg.2 [(i8,i8,{bool})]
+      5) newobj {bool}()
+      1) dup
+      1) ldc.i4.1
+      5) stfld {bool}::_B0:u1
+      1) stloc.0 [{bool}]
+      1) ldloc.0 [{bool}]
+      1) ldc.i4.1
+      5) stfld {bool}::_F0:bool
+      1) ldloc.0 [{bool}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      5) stfld (i8,i8,{bool})::_F2:{bool}
+  Label [4]:
+      1) ldarg.2 [(i8,i8,{bool})]
+      1) ret
+  Total Size: 139
+
+make_module_record(Arr<obj>, (i8,i8,{bool})):{i8,i8,{bool}}
+      5) newobj {i8,i8,{bool}}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8,{bool}}::_B0:u1
+      1) stloc.0 [{i8,i8,{bool}}]
+      1) ldloc.0 [{i8,i8,{bool}}]
+      1) ldarg.1 [(i8,i8,{bool})]
+      5) ldfld (i8,i8,{bool})::_F0:i8
+      5) stfld {i8,i8,{bool}}::_F0:i8
+      1) ldloc.0 [{i8,i8,{bool}}]
+      1) ldarg.1 [(i8,i8,{bool})]
+      5) ldfld (i8,i8,{bool})::_F1:i8
+      5) stfld {i8,i8,{bool}}::_F1:i8
+      1) ldloc.0 [{i8,i8,{bool}}]
+      1) ldarg.1 [(i8,i8,{bool})]
+      5) ldfld (i8,i8,{bool})::_F2:{bool}
+      1) dup
+      5) brfalse [0]
+      5) stfld {i8,i8,{bool}}::_F2:{bool}
+      1) ldloc.0 [{i8,i8,{bool}}]
+      1) dup
+      5) ldfld {i8,i8,{bool}}::_B0:u1
+      1) ldc.i4.4
+      1) or
+      5) stfld {i8,i8,{bool}}::_B0:u1
+      5) br [1]
+  Label [0]:
+      1) pop
+      1) pop
+  Label [1]:
+      1) ldloc.0 [{i8,i8,{bool}}]
+      1) dup
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [RecordRuntimeTypeInfo]
+      5) stfld {}::_rrti:RecordRuntimeTypeInfo
+      1) ret
+  Total Size: 91
+
+top(Arr<obj>, Arr<obj>):obj
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.0
+      5) ldelem [Func<Arr<bool>,(i8,i8,{bool}),{i8,i8,{bool}},(i8,i8,{bool})>]
+      1) dup
+      1) ldc.i4.6
+      5) newarr [bool]
+      5) newobj (i8,i8,{bool})()
+      1) ldnull
+      5) callvirt Func<Arr<bool>,(i8,i8,{bool}),{i8,i8,{bool}},(i8,i8,{bool})>::Invoke(Arr<bool>, (i8,i8,{bool}), {i8,i8,{bool}}):(i8,i8,{bool})
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.1
+      5) ldelem [Func<(i8,i8,{bool}),{i8,i8,{bool}}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.2
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8,{bool}},(i8,i8,{bool})>(Func<Arr<bool>,(i8,i8,{bool}),{i8,i8,{bool}},(i8,i8,{bool})>, (i8,i8,{bool}), Func<(i8,i8,{bool}),{i8,i8,{bool}}>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8,i8,{bool}}>]
+      1) ldloc.0 [RuntimeModule<{i8,i8,{bool}}>]
+      5) newobj {i8,i8,{bool}}()
+      1) dup
+      1) ldc.i4.3
+      5) stfld {i8,i8,{bool}}::_B0:u1
+      1) stloc.1 [{i8,i8,{bool}}]
+      1) ldloc.1 [{i8,i8,{bool}}]
+      2) ldc.i4.s [17]
+      1) conv.i8
+      5) stfld {i8,i8,{bool}}::_F0:i8
+      1) ldloc.1 [{i8,i8,{bool}}]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
+      5) ldelem [HashSet<DName>]
+      5) callvirt RuntimeModule<{i8,i8,{bool}}>::Update({i8,i8,{bool}}, HashSet<DName>):RuntimeModule<{i8,i8,{bool}}>
+      1) ret
+  Total Size: 82
+
+Func sig: () to M{param A:i8, const B:i8, param C:{X:b}}
+Type: RuntimeModule<{i8,i8,{bool}},(i8,i8,{bool})>, Value: module symbols:
+  param A: 17
+  const B: 34
+  param C: { X: true  }
+###

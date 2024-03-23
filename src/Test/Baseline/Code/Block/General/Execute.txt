@@ -1,0 +1,204 @@
+>>> *** Source:
+    code := "{ " & Range(5)->ToText()->ForEach("F" & it & ": " & it)->Concat(", ") & " };";
+    execute code;
+    execute "X := " & code;
+    // Code template where the field names and variable name are provided via "macros".
+    template := @"
+    $(V) := Range($(Rows))->{ $(F)1 : it, $(F)2: it^2, $(F)3: it^3 };
+    $(V);
+    $(V)->Sum($(F)1);
+    $(V)->Sum($(F)2);
+    $(V)->Sum($(F)3);
+    ";
+    code := template
+        ->Replace("$(V)", "Variable")
+        ->Replace("$(F)", "Field")
+        ->Replace("$(Rows)", "5");
+    execute code;
+    code := template
+        ->Replace("$(V)", "W")
+        ->Replace("$(F)", "G")
+        ->Replace("$(Rows)", "5");
+    execute code;
+    // Generalize the number of powers.
+    func MakeTemplate(N) := @"
+    $(V) := Range($(Rows))->{ " & Generate(N, With(txt: ToText(it + 1), "$(F)" & txt & " : it^" & txt))->Concat(",") & @" };
+    $(V);
+    " & Generate(N, @"$(V)->Sum($(F)" & ToText(it + 1) & @");
+    ")->Concat("");
+    code := MakeTemplate(4)
+        ->Replace("$(V)", "X")
+        ->Replace("$(F)", "H")
+        ->Replace("$(Rows)", "8");
+    execute code;
+
+>>> *** Instructions:
+   0) [0] Define code <- "{ " & Range(5)->ToText()->ForEach("F" & it & ": " & it)->Concat(", ") & " };"
+   1) [0] Execute: code
+   2) [0] Execute: "X := " & code
+   3) [0] Define template <- "\n$(V) := Range($(Rows))->{ $(F)1 : it, $(F)2: it^2, $(F)3: it^3 };\n$(V);\n$(V)->Sum($(F)1);\n$(V)->Sum($(F)2);\n$(V)->Sum($(F)3);\n"
+   4) [0] Define code <- template->Replace("$(V)", "Variable")->Replace("$(F)", "Field")->Replace("$(Rows)", "5")
+   5) [0] Execute: code
+   6) [0] Define code <- template->Replace("$(V)", "W")->Replace("$(F)", "G")->Replace("$(Rows)", "5")
+   7) [0] Execute: code
+   8) [0] DefineFunc MakeTemplate(N) <- "\n$(V) := Range($(Rows))->{ " & Generate(N, With(txt : ToText(it + 1), "$(F)" & txt & " : it^" & txt))->Concat(",") & " };\n$(V);\n" & Generate(N, "$(V)->Sum($(F)" & ToText(it + 1) & ");\n")->Concat("")
+   9) [0] Define code <- MakeTemplate(4)->Replace("$(V)", "X")->Replace("$(F)", "H")->Replace("$(Rows)", "8")
+  10) [0] Execute: code
+  11) [0] End
+
+>    0) [0] Define code <- "{ " & Range(5)->ToText()->ForEach("F" & it & ": " & it)->Concat(", ") & " };"
+Global 'code' has DType: s, SysType: str
+>    1) [0] Execute: code
+>>> *** Source:
+    { F0: 0, F1: 1, F2: 2, F3: 3, F4: 4 };
+
+>>> *** Instructions:
+   0) [0] Expr { F0 : 0, F1 : 1, F2 : 2, F3 : 3, F4 : 4 }
+   1) [0] End
+
+>    0) [0] Expr { F0 : 0, F1 : 1, F2 : 2, F3 : 3, F4 : 4 }
+{ F0: 0, F1: 1, F2: 2, F3: 3, F4: 4 }
+>    1) [0] End
+>    2) [0] Execute: "X := " & code
+>>> *** Source:
+    X := { F0: 0, F1: 1, F2: 2, F3: 3, F4: 4 };
+
+>>> *** Instructions:
+   0) [0] Define X <- { F0 : 0, F1 : 1, F2 : 2, F3 : 3, F4 : 4 }
+   1) [0] End
+
+>    0) [0] Define X <- { F0 : 0, F1 : 1, F2 : 2, F3 : 3, F4 : 4 }
+Global 'X' has DType: {F0:i8, F1:i8, F2:i8, F3:i8, F4:i8}, SysType: {i8,i8,i8,i8,i8}
+>    1) [0] End
+>    3) [0] Define template <- "\n$(V) := Range($(Rows))->{ $(F)1 : it, $(F)2: it^2, $(F)3: it^3 };\n$(V);\n$(V)->Sum($(F)1);\n$(V)->Sum($(F)2);\n$(V)->Sum($(F)3);\n"
+Global 'template' has DType: s, SysType: str
+>    4) [0] Define code <- template->Replace("$(V)", "Variable")->Replace("$(F)", "Field")->Replace("$(Rows)", "5")
+>    5) [0] Execute: code
+>>> *** Source:
+    Variable := Range(5)->{ Field1 : it, Field2: it^2, Field3: it^3 };
+    Variable;
+    Variable->Sum(Field1);
+    Variable->Sum(Field2);
+    Variable->Sum(Field3);
+
+>>> *** Instructions:
+   0) [0] Define Variable <- Range(5)->{ Field1 : it, Field2 : it^2, Field3 : it^3 }
+   1) [0] Expr Variable
+   2) [0] Expr Variable->Sum(Field1)
+   3) [0] Expr Variable->Sum(Field2)
+   4) [0] Expr Variable->Sum(Field3)
+   5) [0] End
+
+>    0) [0] Define Variable <- Range(5)->{ Field1 : it, Field2 : it^2, Field3 : it^3 }
+Global 'Variable' has DType: {Field1:i8, Field2:i8, Field3:i8}*, SysType: Seq<{i8,i8,i8}>
+>    1) [0] Expr Variable
+Seq<{i8,i8,i8}>
+   0) { Field1: 0, Field2: 0, Field3: 0 }
+   1) { Field1: 1, Field2: 1, Field3: 1 }
+   2) { Field1: 2, Field2: 4, Field3: 8 }
+   3) { Field1: 3, Field2: 9, Field3: 27 }
+   4) { Field1: 4, Field2: 16, Field3: 64 }
+>    2) [0] Expr Variable->Sum(Field1)
+10
+*** Ctx ping count: 6
+    [0](6): Sum(*1: Variable, *1.Field1)
+>    3) [0] Expr Variable->Sum(Field2)
+30
+*** Ctx ping count: 6
+    [0](6): Sum(*1: Variable, *1.Field2)
+>    4) [0] Expr Variable->Sum(Field3)
+100
+*** Ctx ping count: 6
+    [0](6): Sum(*1: Variable, *1.Field3)
+>    5) [0] End
+>    6) [0] Define code <- template->Replace("$(V)", "W")->Replace("$(F)", "G")->Replace("$(Rows)", "5")
+>    7) [0] Execute: code
+>>> *** Source:
+    W := Range(5)->{ G1 : it, G2: it^2, G3: it^3 };
+    W;
+    W->Sum(G1);
+    W->Sum(G2);
+    W->Sum(G3);
+
+>>> *** Instructions:
+   0) [0] Define W <- Range(5)->{ G1 : it, G2 : it^2, G3 : it^3 }
+   1) [0] Expr W
+   2) [0] Expr W->Sum(G1)
+   3) [0] Expr W->Sum(G2)
+   4) [0] Expr W->Sum(G3)
+   5) [0] End
+
+>    0) [0] Define W <- Range(5)->{ G1 : it, G2 : it^2, G3 : it^3 }
+Global 'W' has DType: {G1:i8, G2:i8, G3:i8}*, SysType: Seq<{i8,i8,i8}>
+>    1) [0] Expr W
+Seq<{i8,i8,i8}>
+   0) { G1: 0, G2: 0, G3: 0 }
+   1) { G1: 1, G2: 1, G3: 1 }
+   2) { G1: 2, G2: 4, G3: 8 }
+   3) { G1: 3, G2: 9, G3: 27 }
+   4) { G1: 4, G2: 16, G3: 64 }
+>    2) [0] Expr W->Sum(G1)
+10
+*** Ctx ping count: 6
+    [0](6): Sum(*1: W, *1.G1)
+>    3) [0] Expr W->Sum(G2)
+30
+*** Ctx ping count: 6
+    [0](6): Sum(*1: W, *1.G2)
+>    4) [0] Expr W->Sum(G3)
+100
+*** Ctx ping count: 6
+    [0](6): Sum(*1: W, *1.G3)
+>    5) [0] End
+>    8) [0] DefineFunc MakeTemplate(N) <- "\n$(V) := Range($(Rows))->{ " & Generate(N, With(txt : ToText(it + 1), "$(F)" & txt & " : it^" & txt))->Concat(",") & " };\n$(V);\n" & Generate(N, "$(V)->Sum($(F)" & ToText(it + 1) & ");\n")->Concat("")
+UDF 'MakeTemplate' has arity 1
+>    9) [0] Define code <- MakeTemplate(4)->Replace("$(V)", "X")->Replace("$(F)", "H")->Replace("$(Rows)", "8")
+>   10) [0] Execute: code
+>>> *** Source:
+    X := Range(8)->{ H1 : it^1,H2 : it^2,H3 : it^3,H4 : it^4 };
+    X;
+    X->Sum(H1);
+    X->Sum(H2);
+    X->Sum(H3);
+    X->Sum(H4);
+
+>>> *** Instructions:
+   0) [0] Define X <- Range(8)->{ H1 : it^1, H2 : it^2, H3 : it^3, H4 : it^4 }
+   1) [0] Expr X
+   2) [0] Expr X->Sum(H1)
+   3) [0] Expr X->Sum(H2)
+   4) [0] Expr X->Sum(H3)
+   5) [0] Expr X->Sum(H4)
+   6) [0] End
+
+>    0) [0] Define X <- Range(8)->{ H1 : it^1, H2 : it^2, H3 : it^3, H4 : it^4 }
+Global 'X' has (modified) DType: {H1:i8, H2:i8, H3:i8, H4:i8}*, SysType: Seq<{i8,i8,i8,i8}>
+>    1) [0] Expr X
+Seq<{i8,i8,i8,i8}>
+   0) { H1: 0, H2: 0, H3: 0, H4: 0 }
+   1) { H1: 1, H2: 1, H3: 1, H4: 1 }
+   2) { H1: 2, H2: 4, H3: 8, H4: 16 }
+   3) { H1: 3, H2: 9, H3: 27, H4: 81 }
+   4) { H1: 4, H2: 16, H3: 64, H4: 256 }
+   5) { H1: 5, H2: 25, H3: 125, H4: 625 }
+   6) { H1: 6, H2: 36, H3: 216, H4: 1296 }
+   7) { H1: 7, H2: 49, H3: 343, H4: 2401 }
+>    2) [0] Expr X->Sum(H1)
+28
+*** Ctx ping count: 9
+    [0](9): Sum(*1: X, *1.H1)
+>    3) [0] Expr X->Sum(H2)
+140
+*** Ctx ping count: 9
+    [0](9): Sum(*1: X, *1.H2)
+>    4) [0] Expr X->Sum(H3)
+784
+*** Ctx ping count: 9
+    [0](9): Sum(*1: X, *1.H3)
+>    5) [0] Expr X->Sum(H4)
+4676
+*** Ctx ping count: 9
+    [0](9): Sum(*1: X, *1.H4)
+>    6) [0] End
+>   11) [0] End
+

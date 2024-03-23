@@ -1,0 +1,84 @@
+﻿T1 := Range(20_000)->{ A: it, B: it * it, C: "Blah_" & ToText(it), D: it mod 3 = 0, };
+
+PC := "big.rbin";
+finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+"*** Wrote table to '" & WriterC.Link.Path & "' ***";
+(WriterC$State, WriterC$Finished, WriterC$Failed, WriterC$ResultNames);
+(WriterC.Size, WriterC.Compression);
+
+PU := "big-unchunked.rbin";
+finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+"*** Wrote table to '" & WriterU.Link.Path & "' ***";
+(WriterU$State, WriterU$Finished, WriterU$Failed, WriterU$ResultNames);
+(WriterU.Size, WriterU.Compression);
+
+finish ReaderC as ReadRbin(WriterC.Link);
+(ReaderC$State, ReaderC$Finished, ReaderC$Failed, ReaderC$ResultNames);
+"*** Read table from '" & ReaderC.Link.Path & "' ***";
+ReaderC.RowCount;
+T2 := ReaderC.Data;
+
+finish ReaderU as ReadRbin(WriterU.Link);
+(ReaderU$State, ReaderU$Finished, ReaderU$Failed, ReaderU$ResultNames);
+"*** Read table from '" & ReaderU.Link.Path & "' ***";
+ReaderU.RowCount;
+T3 := ReaderU.Data;
+
+(T1->Count(), T2->Count(), T3->Count());
+
+ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);
+
+// Again with a partial chunk.
+T1 := T1->Drop(5);
+
+PC := "big.rbin";
+finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+(WriterC.Size, WriterC.Compression);
+
+PU := "big-unchunked.rbin";
+finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+(WriterU.Size, WriterU.Compression);
+
+finish ReaderC as ReadRbin(WriterC.Link);
+ReaderC.RowCount;
+T2 := ReaderC.Data;
+
+finish ReaderU as ReadRbin(WriterU.Link);
+ReaderU.RowCount;
+T3 := ReaderU.Data;
+
+(T1->Count(), T2->Count(), T3->Count());
+
+ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);
+
+// Again with zero items.
+T1 := T1->TakeIf(A > 1_000_000_000);
+
+PC := "big.rbin";
+finish WriterC as WriteRbin(T1, "temp/" & PC, true, false);
+(WriterC.Size, WriterC.Compression);
+
+PU := "big-unchunked.rbin";
+finish WriterU as WriteRbin(T1, "temp/" & PU, false, false);
+(WriterU.Size, WriterU.Compression);
+
+finish ReaderC as ReadRbin(WriterC.Link);
+ReaderC.RowCount;
+T2 := ReaderC.Data;
+
+finish ReaderU as ReadRbin(WriterU.Link);
+ReaderU.RowCount;
+T3 := ReaderU.Data;
+
+(T1->Count(), T2->Count(), T3->Count());
+
+ForEach(a:T1, b:T2, c:T3, (#, a.A = b.A = c.A, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.B = b.B = c.B, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.C = b.C = c.C, a, b, c))->TakeIf(!it[1]);
+ForEach(a:T1, b:T2, c:T3, (#, a.D = b.D = c.D, a, b, c))->TakeIf(!it[1]);

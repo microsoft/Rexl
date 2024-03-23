@@ -1,0 +1,84 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+// WARNING: This .txt file is generated from the corresponding .tt file. DO NOT edit this .txt directly.
+
+// Limit of sequences in ForEach.
+
+// ForEach via lifting, explicit, and explicit with indexing.
+<#  const int lim = 18;#>
+<#  for(int num = 1; num < lim; num++) {#>
+<#      var ranges = string.Join(", ", Enumerable.Range(1, num).Select(i => $"s{i}:Range({i}, {i+10})"));#>
+<#      var sProd = string.Join(" * ", Enumerable.Range(1, num).Select(i => $"s{i}"));#>
+<#      var sInd = $"#s{Math.Max(1, num / 2)}";#>
+<#=     string.Join(" * ", Enumerable.Range(0, num).Select(i => $"Range({i+1}, {i+11})")) + (num > 16 ? " // Fails" : "")#>
+ForEach(<#= ranges #>, (<#= sProd #>,))<#=num > 16 ? " // Fails" : ""#>
+ForEach(<#= ranges #>, (<#= sInd #>, <#= sProd #>))<#=num > 15 ? " // Fails" : ""#>
+<#  }#>
+
+// In Sum.
+<#  for(int num = 2; num < lim; num++) {#>
+<#=     string.Join(" * ", Enumerable.Range(0, num).Select(i => $"Range({i+1}, {i+11})")) + " | Sum(_)" + (num > 16 ? " // Fails" : "")#>
+<#  }#>
+
+// ForEachIf and ForEach with [if].
+<#  for(int num = 1; num < lim; num++) {#>
+<#      var ranges = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}:Range({i}, {i+10})"));#>
+<#      var sAdd = string.Join("+", Enumerable.Range(0, num).Select(i => $"s{i}"));#>
+<#      var sTup = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}"));#>
+<#      var sInd = $"#s{num / 2}";#>
+ForEachIf(<#= ranges #>, (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sTup #>))<#=num > 16 ? " // Fails" : ""#>
+ForEach(<#= ranges #>, [if] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sTup #>))<#=num > 16 ? " // Fails" : ""#>
+ForEachIf(<#= ranges #>, (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sInd #>, <#= sTup #>))<#=num > 15 ? " // Fails" : ""#>
+ForEach(<#= ranges #>, [if] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sInd #>, <#= sTup #>))<#=num > 15 ? " // Fails" : ""#>
+<#  }#>
+
+// ForEachWhile and ForEach with [while].
+<#  for(int num = 1; num < lim; num++) {#>
+<#      var ranges = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}:Range({i}, {i+10})"));#>
+<#      var sAdd = string.Join("+", Enumerable.Range(0, num).Select(i => $"s{i}"));#>
+<#      var sTup = string.Join(", ", Enumerable.Range(0, num).Select(i => $"s{i}"));#>
+<#      var sInd = $"#s{num / 2}";#>
+ForEachWhile(<#= ranges #>, (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sTup #>))<#=num > 16 ? " // Fails" : ""#>
+ForEachWhile(<#= ranges #>, [while] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> >= 0, (<#= sTup #>))<#=num > 16 ? " // Fails" : ""#>
+ForEach(<#= ranges #>, [while] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> < <#= num <= 2 ? 2 : num - 2 #>, (<#= sTup #>))<#=num > 16 ? " // Fails" : ""#>
+ForEachWhile(<#= ranges #>, (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> = 0, (<#= sInd #>, <#= sTup #>))<#=num > 15 ? " // Fails" : ""#>
+ForEachWhile(<#= ranges #>, [while] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> >= 0, (<#= sInd #>, <#= sTup #>))<#=num > 15 ? " // Fails" : ""#>
+ForEach(<#= ranges #>, [while] (<#= sAdd #>) mod <#= num <= 2 ? 3 : num - 1 #> < <#= num <= 2 ? 2 : num - 2 #>, (<#= sInd #>, <#= sTup #>))<#=num > 15 ? " // Fails" : ""#>
+<#  }#>
+
+// Null Checks
+``` e := [0]->TakeIf(false);
+
+<#  for (int num = 2; num < lim - 1; num++) {#>
+<#      for (int inull = 0; inull < num; inull++) {#>
+<#=         string.Join(" * ", Enumerable.Range(0, num).Select(i => i == inull ? "e" : $"Range({i+1}, {i+11})"))#>
+<#      }#>
+<#  }#>
+
+<#  for(int num = 1; num < lim - 1; num++) {#>
+<#      for (int inull = 0; inull < num; inull++) {#>
+<#          var ranges = string.Join(", ", Enumerable.Range(0, num).Select(i => i == inull ? $"s{i}:e" : $"s{i}:Range({i+1}, {i+11})"));#>
+<#          var sAdd = string.Join("+", Enumerable.Range(0, num).Select(i => $"s{i}"));#>
+<#          var sInd = $"#s{num / 2}";#>
+ForEach(<#= ranges #>, (<#= sAdd #>, "Should not appear"))
+<#          if (num < lim - 2) {#>
+ForEach(<#= ranges #>, (<#= sInd #>, <#= sAdd #>, "Should not appear"))
+<#          }#>
+ForEachIf(<#= ranges #>, (<#= sAdd #>) mod 10 = 0, "Should not appear")
+ForEach(<#= ranges #>, [if] (<#= sAdd #>) mod 10 = 0, "Should not appear")
+ForEachWhile(<#= ranges #>, (<#= sAdd #>) mod 10 = 0, "Should not appear")
+ForEachWhile(<#= ranges #>, [while] (<#= sAdd #>) mod 10 >= 0, "Should not appear")
+ForEach(<#= ranges #>, [while] (<#= sAdd #>) mod 10 < 5, "Should not appear")
+<#          if (num < lim - 2) {#>
+ForEachIf(<#= ranges #>, (<#= sAdd #>) mod 10 = 0, (<#= sInd #>, "Should not appear"))
+ForEach(<#= ranges #>, [if] (<#= sAdd #>) mod 10 = 0, (<#= sInd #>, "Should not appear"))
+ForEachWhile(<#= ranges #>, (<#= sAdd #>) mod 10 = 0, (<#= sInd #>, "Should not appear"))
+ForEachWhile(<#= ranges #>, [while] (<#= sAdd #>) mod 10 >= 0, (<#= sInd #>, "Should not appear"))
+ForEach(<#= ranges #>, [while] (<#= sAdd #>) mod 10 < 5, (<#= sInd #>, "Should not appear"))
+<#          }#>
+<#      }#>
+<#  }#>

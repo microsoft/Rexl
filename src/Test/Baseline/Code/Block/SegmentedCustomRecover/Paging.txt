@@ -1,0 +1,657 @@
+>>> *** Source:
+    X := 3;
+    __page__;
+    X;
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] Expr __page__
+   2) [0] Expr X
+   3) [0] End
+
+>    0) [0] Define X <- 3
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    1) [0] __page__
+>    2) [0] Expr X
+3
+>    3) [0] End
+###
+>>> *** Source:
+    X := 3;
+    __abort__;
+    X;
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] Expr __abort__
+   2) [0] Expr X
+   3) [0] End
+
+>    0) [0] Define X <- 3
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] __abort__
+
+*** Aborted ***
+###
+>>> *** Source:
+    X := 3;
+    Y := 7;
+    this := X * Y;
+    __page__;
+    (X, Y, this);
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] Define Y <- 7
+   2) [0] Define this <- X * Y
+   3) [0] Expr __page__
+   4) [0] Expr (X, Y, this)
+   5) [0] End
+
+>    0) [0] Define X <- 3
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] Define Y <- 7
+Global 'Y' has DType: i8, SysType: i8
+>    2) [0] Define this <- X * Y
+this has DType: i8, SysType: i8
+>    3) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    3) [0] __page__
+>    4) [0] Expr (X, Y, this)
+(3, 7, 21)
+>    5) [0] End
+###
+>>> *** Source:
+    execute "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);";
+    (2, X, Y, this);
+
+>>> *** Instructions:
+   0) [0] Execute: "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);"
+   1) [0] Expr (2, X, Y, this)
+   2) [0] End
+
+>    0) [0] Execute: "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);"
+>>> *** Source:
+    X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] Define Y <- 7
+   2) [0] Define this <- X * Y
+   3) [0] Expr __page__
+   4) [0] Expr (1, X, Y, this)
+   5) [0] End
+
+>    0) [0] Define X <- 3
+Global 'X' has DType: i8, SysType: i8
+>    1) [0] Define Y <- 7
+Global 'Y' has DType: i8, SysType: i8
+>    2) [0] Define this <- X * Y
+this has DType: i8, SysType: i8
+>    3) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    3) [0] __page__
+>    4) [0] Expr (1, X, Y, this)
+(1, 3, 7, 21)
+>    5) [0] End
+>    1) [0] Expr (2, X, Y, this)
+(2, 3, 7, 21)
+>    2) [0] End
+###
+>>> *** Source:
+    execute "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);" in namespace N;
+    with N;
+    (2, X, Y, this);
+    __page__;
+    (3, X, Y, this);
+
+>>> *** Instructions:
+   0) [0] Execute in N: "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);"
+   1) [0] With N
+   2) [0] Expr (2, X, Y, this)
+   3) [0] Expr __page__
+   4) [0] Expr (3, X, Y, this)
+   5) [0] End
+
+>    0) [0] Execute in N: "X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);"
+>>> *** Source:
+    X := 3; Y := 7; this := X * Y; __page__; (1, X, Y, this);
+
+>>> *** Instructions:
+   0) [0] Define X <- 3
+   1) [0] Define Y <- 7
+   2) [0] Define this <- X * Y
+   3) [0] Expr __page__
+   4) [0] Expr (1, X, Y, this)
+   5) [0] End
+
+>    0) [0] Define X <- 3
+Global 'N.X' has DType: i8, SysType: i8
+>    1) [0] Define Y <- 7
+Global 'N.Y' has DType: i8, SysType: i8
+>    2) [0] Define this <- X * Y
+this has DType: i8, SysType: i8
+>    3) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    3) [0] __page__
+>    4) [0] Expr (1, X, Y, this)
+(1, 3, 7, 21)
+>    5) [0] End
+>    1) [0] With N
+>    2) [0] Expr (2, X, Y, this)
+(2, 3, 7, 21)
+>    3) [0] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    3) [0] __page__
+>    4) [0] Expr (3, X, Y, this)
+(3, 3, 7, 21)
+>    5) [0] End
+###
+>>> *** Source:
+    X := "@X";
+    M.X := "@M.X";
+    M.Z := "@M.Z";
+    (@X, X);
+    namespace N {
+        X := "@N.X";
+        Y := "@N.Y";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N {
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N, M {
+        (@X, X, Y, Z);
+        __page__;
+        (@X, X, Y, Z);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Define X <- "@X"
+   1) [0] Define M.X <- "@M.X"
+   2) [0] Define M.Z <- "@M.Z"
+   3) [0] Expr (@X, X)
+   4) [0] Enter (0=>1) N
+   5) [1] Define X <- "@N.X"
+   6) [1] Define Y <- "@N.Y"
+   7) [1] Expr (@X, X, Y)
+   8) [1] Expr __page__
+   9) [1] Expr (@X, X, Y)
+  10) [1] Leave (1=>0)
+  11) [0] Expr (@X, X)
+  12) [0] Enter (0=>1)
+  13) [1] With N
+  14) [1] Expr (@X, X, Y)
+  15) [1] Expr __page__
+  16) [1] Expr (@X, X, Y)
+  17) [1] Leave (1=>0)
+  18) [0] Expr (@X, X)
+  19) [0] Enter (0=>1)
+  20) [1] With N, M
+  21) [1] Expr (@X, X, Y, Z)
+  22) [1] Expr __page__
+  23) [1] Expr (@X, X, Y, Z)
+  24) [1] Leave (1=>0)
+  25) [0] Expr (@X, X)
+  26) [0] End
+
+>    0) [0] Define X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define M.X <- "@M.X"
+Global 'M.X' has DType: s, SysType: str
+>    2) [0] Define M.Z <- "@M.Z"
+Global 'M.Z' has DType: s, SysType: str
+>    3) [0] Expr (@X, X)
+(@X, @X)
+>    4) [0] Enter (0=>1) N
+>    5) [1] Define X <- "@N.X"
+Global 'N.X' has DType: s, SysType: str
+>    6) [1] Define Y <- "@N.Y"
+Global 'N.Y' has DType: s, SysType: str
+>    7) [1] Expr (@X, X, Y)
+(@X, @N.X, @N.Y)
+>    8) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [1] __page__
+>    9) [1] Expr (@X, X, Y)
+(@X, @N.X, @N.Y)
+>   10) [1] Leave (1=>0)
+>   11) [0] Expr (@X, X)
+(@X, @X)
+>   12) [0] Enter (0=>1)
+>   13) [1] With N
+>   14) [1] Expr (@X, X, Y)
+(@X, @N.X, @N.Y)
+>   15) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   15) [1] __page__
+>   16) [1] Expr (@X, X, Y)
+(@X, @N.X, @N.Y)
+>   17) [1] Leave (1=>0)
+>   18) [0] Expr (@X, X)
+(@X, @X)
+>   19) [0] Enter (0=>1)
+>   20) [1] With N, M
+>   21) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.Y, @M.Z)
+>   22) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   22) [1] __page__
+>   23) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.Y, @M.Z)
+>   24) [1] Leave (1=>0)
+>   25) [0] Expr (@X, X)
+(@X, @X)
+>   26) [0] End
+###
+>>> *** Source:
+    X := "@X";
+    M.X := "@M.X";
+    M.Z := "@M.Z";
+    (@X, X);
+    namespace N.P {
+        X := "@N.P.X";
+        Y := "@N.P.Y";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N.P {
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N.P, M {
+        (@X, X, Y, Z);
+        __page__;
+        (@X, X, Y, Z);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Define X <- "@X"
+   1) [0] Define M.X <- "@M.X"
+   2) [0] Define M.Z <- "@M.Z"
+   3) [0] Expr (@X, X)
+   4) [0] Enter (0=>1) N.P
+   5) [1] Define X <- "@N.P.X"
+   6) [1] Define Y <- "@N.P.Y"
+   7) [1] Expr (@X, X, Y)
+   8) [1] Expr __page__
+   9) [1] Expr (@X, X, Y)
+  10) [1] Leave (1=>0)
+  11) [0] Expr (@X, X)
+  12) [0] Enter (0=>1)
+  13) [1] With N.P
+  14) [1] Expr (@X, X, Y)
+  15) [1] Expr __page__
+  16) [1] Expr (@X, X, Y)
+  17) [1] Leave (1=>0)
+  18) [0] Expr (@X, X)
+  19) [0] Enter (0=>1)
+  20) [1] With N.P, M
+  21) [1] Expr (@X, X, Y, Z)
+  22) [1] Expr __page__
+  23) [1] Expr (@X, X, Y, Z)
+  24) [1] Leave (1=>0)
+  25) [0] Expr (@X, X)
+  26) [0] End
+
+>    0) [0] Define X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define M.X <- "@M.X"
+Global 'M.X' has DType: s, SysType: str
+>    2) [0] Define M.Z <- "@M.Z"
+Global 'M.Z' has DType: s, SysType: str
+>    3) [0] Expr (@X, X)
+(@X, @X)
+>    4) [0] Enter (0=>1) N.P
+>    5) [1] Define X <- "@N.P.X"
+Global 'N.P.X' has DType: s, SysType: str
+>    6) [1] Define Y <- "@N.P.Y"
+Global 'N.P.Y' has DType: s, SysType: str
+>    7) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>    8) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    8) [1] __page__
+>    9) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>   10) [1] Leave (1=>0)
+>   11) [0] Expr (@X, X)
+(@X, @X)
+>   12) [0] Enter (0=>1)
+>   13) [1] With N.P
+>   14) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>   15) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   15) [1] __page__
+>   16) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>   17) [1] Leave (1=>0)
+>   18) [0] Expr (@X, X)
+(@X, @X)
+>   19) [0] Enter (0=>1)
+>   20) [1] With N.P, M
+>   21) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Y, @M.Z)
+>   22) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   22) [1] __page__
+>   23) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Y, @M.Z)
+>   24) [1] Leave (1=>0)
+>   25) [0] Expr (@X, X)
+(@X, @X)
+>   26) [0] End
+###
+>>> *** Source:
+    X := "@X";
+    M.X := "@M.X";
+    M.Z := "@M.Z";
+    execute @"
+    (@X, X);
+    namespace N.P {
+        X := ""@N.P.X"";
+        Y := ""@N.P.Y"";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    ";
+    with N.P {
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N.P, M {
+        (@X, X, Y, Z);
+        __page__;
+        (@X, X, Y, Z);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Define X <- "@X"
+   1) [0] Define M.X <- "@M.X"
+   2) [0] Define M.Z <- "@M.Z"
+   3) [0] Execute: "\n(@X, X);\nnamespace N.P {\n    X := \"@N.P.X\";\n    Y := \"@N.P.Y\";\n\n    (@X, X, Y);\n    __page__;\n    (@X, X, Y);\n}\n(@X, X);\n"
+   4) [0] Enter (0=>1)
+   5) [1] With N.P
+   6) [1] Expr (@X, X, Y)
+   7) [1] Expr __page__
+   8) [1] Expr (@X, X, Y)
+   9) [1] Leave (1=>0)
+  10) [0] Expr (@X, X)
+  11) [0] Enter (0=>1)
+  12) [1] With N.P, M
+  13) [1] Expr (@X, X, Y, Z)
+  14) [1] Expr __page__
+  15) [1] Expr (@X, X, Y, Z)
+  16) [1] Leave (1=>0)
+  17) [0] Expr (@X, X)
+  18) [0] End
+
+>    0) [0] Define X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define M.X <- "@M.X"
+Global 'M.X' has DType: s, SysType: str
+>    2) [0] Define M.Z <- "@M.Z"
+Global 'M.Z' has DType: s, SysType: str
+>    3) [0] Execute: "\n(@X, X);\nnamespace N.P {\n    X := \"@N.P.X\";\n    Y := \"@N.P.Y\";\n\n    (@X, X, Y);\n    __page__;\n    (@X, X, Y);\n}\n(@X, X);\n"
+>>> *** Source:
+    (@X, X);
+    namespace N.P {
+        X := "@N.P.X";
+        Y := "@N.P.Y";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Expr (@X, X)
+   1) [0] Enter (0=>1) N.P
+   2) [1] Define X <- "@N.P.X"
+   3) [1] Define Y <- "@N.P.Y"
+   4) [1] Expr (@X, X, Y)
+   5) [1] Expr __page__
+   6) [1] Expr (@X, X, Y)
+   7) [1] Leave (1=>0)
+   8) [0] Expr (@X, X)
+   9) [0] End
+
+>    0) [0] Expr (@X, X)
+(@X, @X)
+>    1) [0] Enter (0=>1) N.P
+>    2) [1] Define X <- "@N.P.X"
+Global 'N.P.X' has DType: s, SysType: str
+>    3) [1] Define Y <- "@N.P.Y"
+Global 'N.P.Y' has DType: s, SysType: str
+>    4) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>    5) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    5) [1] __page__
+>    6) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>    7) [1] Leave (1=>0)
+>    8) [0] Expr (@X, X)
+(@X, @X)
+>    9) [0] End
+>    4) [0] Enter (0=>1)
+>    5) [1] With N.P
+>    6) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>    7) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    7) [1] __page__
+>    8) [1] Expr (@X, X, Y)
+(@X, @N.P.X, @N.P.Y)
+>    9) [1] Leave (1=>0)
+>   10) [0] Expr (@X, X)
+(@X, @X)
+>   11) [0] Enter (0=>1)
+>   12) [1] With N.P, M
+>   13) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Y, @M.Z)
+>   14) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   14) [1] __page__
+>   15) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Y, @M.Z)
+>   16) [1] Leave (1=>0)
+>   17) [0] Expr (@X, X)
+(@X, @X)
+>   18) [0] End
+###
+>>> *** Source:
+    X := "@X";
+    M.X := "@M.X";
+    M.Z := "@M.Z";
+    execute @"
+    (@X, X);
+    namespace N.P.Q {
+        X := ""@N.P.Q.X"";
+        Y := ""@N.P.Q.Y"";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    ";
+    with N.P.Q {
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+    with N.P.Q, M {
+        (@X, X, Y, Z);
+        __page__;
+        (@X, X, Y, Z);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Define X <- "@X"
+   1) [0] Define M.X <- "@M.X"
+   2) [0] Define M.Z <- "@M.Z"
+   3) [0] Execute: "\n(@X, X);\nnamespace N.P.Q {\n    X := \"@N.P.Q.X\";\n    Y := \"@N.P.Q.Y\";\n\n    (@X, X, Y);\n    __page__;\n    (@X, X, Y);\n}\n(@X, X);\n"
+   4) [0] Enter (0=>1)
+   5) [1] With N.P.Q
+   6) [1] Expr (@X, X, Y)
+   7) [1] Expr __page__
+   8) [1] Expr (@X, X, Y)
+   9) [1] Leave (1=>0)
+  10) [0] Expr (@X, X)
+  11) [0] Enter (0=>1)
+  12) [1] With N.P.Q, M
+  13) [1] Expr (@X, X, Y, Z)
+  14) [1] Expr __page__
+  15) [1] Expr (@X, X, Y, Z)
+  16) [1] Leave (1=>0)
+  17) [0] Expr (@X, X)
+  18) [0] End
+
+>    0) [0] Define X <- "@X"
+Global 'X' has DType: s, SysType: str
+>    1) [0] Define M.X <- "@M.X"
+Global 'M.X' has DType: s, SysType: str
+>    2) [0] Define M.Z <- "@M.Z"
+Global 'M.Z' has DType: s, SysType: str
+>    3) [0] Execute: "\n(@X, X);\nnamespace N.P.Q {\n    X := \"@N.P.Q.X\";\n    Y := \"@N.P.Q.Y\";\n\n    (@X, X, Y);\n    __page__;\n    (@X, X, Y);\n}\n(@X, X);\n"
+>>> *** Source:
+    (@X, X);
+    namespace N.P.Q {
+        X := "@N.P.Q.X";
+        Y := "@N.P.Q.Y";
+        (@X, X, Y);
+        __page__;
+        (@X, X, Y);
+    }
+    (@X, X);
+
+>>> *** Instructions:
+   0) [0] Expr (@X, X)
+   1) [0] Enter (0=>1) N.P.Q
+   2) [1] Define X <- "@N.P.Q.X"
+   3) [1] Define Y <- "@N.P.Q.Y"
+   4) [1] Expr (@X, X, Y)
+   5) [1] Expr __page__
+   6) [1] Expr (@X, X, Y)
+   7) [1] Leave (1=>0)
+   8) [0] Expr (@X, X)
+   9) [0] End
+
+>    0) [0] Expr (@X, X)
+(@X, @X)
+>    1) [0] Enter (0=>1) N.P.Q
+>    2) [1] Define X <- "@N.P.Q.X"
+Global 'N.P.Q.X' has DType: s, SysType: str
+>    3) [1] Define Y <- "@N.P.Q.Y"
+Global 'N.P.Q.Y' has DType: s, SysType: str
+>    4) [1] Expr (@X, X, Y)
+(@X, @N.P.Q.X, @N.P.Q.Y)
+>    5) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    5) [1] __page__
+>    6) [1] Expr (@X, X, Y)
+(@X, @N.P.Q.X, @N.P.Q.Y)
+>    7) [1] Leave (1=>0)
+>    8) [0] Expr (@X, X)
+(@X, @X)
+>    9) [0] End
+>    4) [0] Enter (0=>1)
+>    5) [1] With N.P.Q
+>    6) [1] Expr (@X, X, Y)
+(@X, @N.P.Q.X, @N.P.Q.Y)
+>    7) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>    7) [1] __page__
+>    8) [1] Expr (@X, X, Y)
+(@X, @N.P.Q.X, @N.P.Q.Y)
+>    9) [1] Leave (1=>0)
+>   10) [0] Expr (@X, X)
+(@X, @X)
+>   11) [0] Enter (0=>1)
+>   12) [1] With N.P.Q, M
+>   13) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Q.Y, @M.Z)
+>   14) [1] __page__
+
+*** Suspended ***
+
+*** Resumed ***
+>   14) [1] __page__
+>   15) [1] Expr (@X, X, Y, Z)
+(@X, @M.X, @N.P.Q.Y, @M.Z)
+>   16) [1] Leave (1=>0)
+>   17) [0] Expr (@X, X)
+(@X, @X)
+>   18) [0] End
+###
+

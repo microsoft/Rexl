@@ -1,0 +1,41 @@
+﻿:: {g:g, o:o, s:s, b:b, qb:b?, n:n, qn:n?, r8:r8, qr8:r8?, r4:r4, qr4:r4?, i:i, qi:i?, i8:i8, qi8:i8?, i4:i4, qi4:i4?, i2:i2, qi2:i2?, i1:i1, qi1:i1?, u8:u8, qu8:u8?, u4:u4, qu4:u4?, u2:u2, qu2:u2?, u1:u1, qu1:u1?, T:{A:n, B:b, C:i4, D:d, E:s, F:r4, G:g, H:{X:i, Y:n}, I:i}*}
+
+7 | _ + 3
+i1 | 3 + _
+i1 | 3 + _ * _ // Error.
+i1 | With(x: _, 3 + x * x)
+Wrap(i1) | With(x: _, 3 + x * x)
+
+i1 -> Wrap()
+i1 -> Wrap() -> Wrap()
+i1 -> Wrap() | Wrap(_)
+i1 | Wrap(_) -> Wrap()
+i1 -> Wrap() -> Wrap() | Wrap(_)
+i1 | Wrap(_) -> Wrap() | Wrap(_)
+
+i1 -> GuardMap(3+it)
+i1 -> GuardMap(3+it) -> With(5+it)
+i1 -> GuardMap(3+it) | With(_, 5+it)
+i1 | GuardMap(_,3+it) -> With(5+it)
+i1 -> GuardMap(3+it) -> With(5+it) | WithMap(_,7+it)
+i1 | GuardMap(_,3+it) -> With(5+it) | WithMap(_,7+it)
+
+i1 -> Wrap() -> With(3+it)
+i1 -> Wrap() | With(_, 3+it)
+i1 | Wrap(_) -> With(3+it)
+
+T -> GroupBy(A, Nested)
+With(x:i4, x -> Div(i4))
+
+// T should not form an implicit name.
+T -> Guard(T)
+
+// Errors.
+i1 | i2
+_ + 3
+i1 -> i2
+i1 -> F()
+i1 -> Div()
+i1 -> Div(i1,i1)
+[] -> Map()
+[] -> Map([], it+1)

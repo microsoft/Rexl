@@ -1,0 +1,14 @@
+[Range(1 * 1 * 4)->CastU1()->Tensor.From(1, 1, 4)]
+[Range(3 * 2 * 4)->CastU1()->Tensor.From(3, 2, 4)]
+[Range(10 * 20 * 4)->CastU1()->Tensor.From(10, 20, 4)]
+
+[(Range(1 * 1) * 4)->ForEach(as a, ((a band 0xFF) bor ((a + 1 band 0xFF) shl 8) bor ((a + 2 band 0xFF) shl 16) bor ((a + 3 band 0xFF) shl 24))->CastU4())->Tensor.From(1, 1)]
+[(Range(3 * 2) * 4)->ForEach(as a, ((a band 0xFF) bor ((a + 1 band 0xFF) shl 8) bor ((a + 2 band 0xFF) shl 16) bor ((a + 3 band 0xFF) shl 24))->CastU4())->Tensor.From(3, 2)]
+[(Range(10 * 20) * 4)->ForEach(as a, ((a band 0xFF) bor ((a + 1 band 0xFF) shl 8) bor ((a + 2 band 0xFF) shl 16) bor ((a + 3 band 0xFF) shl 24))->CastU4())->Tensor.From(10, 20)]
+
+// Invalid pixels
+[1u1->Tensor.Fill(0, 20, 4)]
+[1u1->Tensor.Fill(10, 0, 4)]
+[Range(2 * 4 * 3)->CastU1()->Tensor.From(2, 4, 3)]
+[1u4->Tensor.Fill(10, 0)]
+[1u4->Tensor.Fill(0, 20)]

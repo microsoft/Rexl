@@ -1,0 +1,472 @@
+**** New globals: {T:{I:i8, QI:i8?, QR:r8?, R:r8}*, b:b, i:i8, r:r8, s:s, si:i8*, sqi:i8?*, sqr:r8?*, sr:r8*, ssi:i8**, ssqi:i8?**, ssqr:r8?**, ssr:r8**}
+
+> TTest.OneSample(sr)
+TTest.OneSample(sr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sr)
+###
+> TTest.OneSample(sqr)
+TTest.OneSample(sqr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sqr)
+###
+> TTest.OneSample(ssr)
+TTest.OneSample(ssr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssr, TTest.OneSample(*1))
+###
+> TTest.OneSample(ssqr)
+TTest.OneSample(ssqr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssqr, TTest.OneSample(*1))
+###
+> TTest.OneSample(sr, r)
+TTest.OneSample(sr, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sr, r)
+###
+> TTest.OneSample(sqr, r)
+TTest.OneSample(sqr, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sqr, r)
+###
+> TTest.OneSample(ssr, r)
+TTest.OneSample(ssr, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssr, TTest.OneSample(*1, r))
+###
+> TTest.OneSample(ssqr, r)
+TTest.OneSample(ssqr, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssqr, TTest.OneSample(*1, r))
+###
+> TTest.OneSample(sr, i)
+TTest.OneSample(sr, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sr, Num<r8>(i))
+###
+> TTest.OneSample(sqr, i)
+TTest.OneSample(sqr, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(sqr, Num<r8>(i))
+###
+> TTest.OneSample(ssr, i)
+TTest.OneSample(ssr, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssr, TTest.OneSample(*1, Num<r8>(i)))
+###
+> TTest.OneSample(ssqr, i)
+TTest.OneSample(ssqr, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssqr, TTest.OneSample(*1, Num<r8>(i)))
+###
+> TTest.OneSample(si, i)
+TTest.OneSample(si, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(ForEach(*1: si, Num<r8>(*1)), Num<r8>(i))
+###
+> TTest.OneSample(sqi, i)
+TTest.OneSample(sqi, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.OneSample(ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), Num<r8>(i))
+###
+> TTest.OneSample(ssi, i)
+TTest.OneSample(ssi, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssi, TTest.OneSample(ForEach(*2: *1, Num<r8>(*2)), Num<r8>(i)))
+###
+> TTest.OneSample(ssqi, i)
+TTest.OneSample(ssqi, i) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssqi, TTest.OneSample(ForEach(*2: *1, Guard(?3: *2, Num<r8>(?3))), Num<r8>(i)))
+###
+> TTest.TwoSample(sr, sr)
+TTest.TwoSample(sr, sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, sr)
+###
+> TTest.TwoSample(sr, ssr)
+TTest.TwoSample(sr, ssr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(sr, *1))
+###
+> TTest.TwoSample(sr, ssqr)
+TTest.TwoSample(sr, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(sr, *1))
+###
+> TTest.TwoSample(si, sr)
+TTest.TwoSample(si, sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(ForEach(*1: si, Num<r8>(*1)), sr)
+###
+> TTest.TwoSample(sr, si)
+TTest.TwoSample(sr, si) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, ForEach(*1: si, Num<r8>(*1)))
+###
+> TTest.TwoSample(sqr, sr)
+TTest.TwoSample(sqr, sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, sr)
+###
+> TTest.TwoSample(sqr, ssr)
+TTest.TwoSample(sqr, ssr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(sqr, *1))
+###
+> TTest.TwoSample(sqr, ssqr)
+TTest.TwoSample(sqr, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(sqr, *1))
+###
+> TTest.TwoSample(sqi, ssr)
+TTest.TwoSample(sqi, ssr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(ForEach(*2: sqi, Guard(?3: *2, Num<r8>(?3))), *1))
+Hoister: With(!3: ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), ForEach(*4: ssr, TTest.TwoSample(!3, *4)))
+###
+> TTest.TwoSample(ssr, sqi)
+TTest.TwoSample(ssr, sqi) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, ForEach(*2: sqi, Guard(?3: *2, Num<r8>(?3)))))
+Hoister: With(!3: ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), ForEach(*4: ssr, TTest.TwoSample(*4, !3)))
+###
+> TTest.TwoSample(ssr, sr)
+TTest.TwoSample(ssr, sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, sr))
+###
+> TTest.TwoSample(ssr, ssr)
+TTest.TwoSample(ssr, ssr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, *2: ssr, TTest.TwoSample(*1, *2))
+Reducer: ForEach(*1: ssr, TTest.TwoSample(*1, *1))
+###
+> TTest.TwoSample(ssr, ssqr)
+TTest.TwoSample(ssr, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, *2: ssqr, TTest.TwoSample(*1, *2))
+###
+> TTest.TwoSample(ssi, ssqr)
+TTest.TwoSample(ssi, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssi, *2: ssqr, TTest.TwoSample(ForEach(*3: *1, Num<r8>(*3)), *2))
+###
+> TTest.TwoSample(ssr, ssqi)
+TTest.TwoSample(ssr, ssqi) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, *2: ssqi, TTest.TwoSample(*1, ForEach(*3: *2, Guard(?4: *3, Num<r8>(?4)))))
+###
+> TTest.TwoSample(ssqr, sr)
+TTest.TwoSample(ssqr, sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, sr))
+###
+> TTest.TwoSample(ssqr, ssr)
+TTest.TwoSample(ssqr, ssr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, *2: ssr, TTest.TwoSample(*1, *2))
+###
+> TTest.TwoSample(ssqr, ssqr)
+TTest.TwoSample(ssqr, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, *2: ssqr, TTest.TwoSample(*1, *2))
+Reducer: ForEach(*1: ssqr, TTest.TwoSample(*1, *1))
+###
+> TTest.TwoSample(ssqi, ssqr)
+TTest.TwoSample(ssqi, ssqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqi, *2: ssqr, TTest.TwoSample(ForEach(*3: *1, Guard(?4: *3, Num<r8>(?4))), *2))
+###
+> TTest.TwoSample(ssqr, ssqi)
+TTest.TwoSample(ssqr, ssqi) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, *2: ssqi, TTest.TwoSample(*1, ForEach(*3: *2, Guard(?4: *3, Num<r8>(?4)))))
+###
+> TTest.TwoSample(sr, sqr)
+TTest.TwoSample(sr, sqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, sqr)
+###
+> TTest.TwoSample(sqr, sqr)
+TTest.TwoSample(sqr, sqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, sqr)
+###
+> TTest.TwoSample(ssr, sqr)
+TTest.TwoSample(ssr, sqr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, sqr))
+###
+> TTest.TwoSample(sr, sqr, false)
+TTest.TwoSample(sr, sqr, false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, sqr, false)
+###
+> TTest.TwoSample(sqr, sqr, equal_var: false)
+TTest.TwoSample(sqr, sqr, equal_var : false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, sqr, equal_var : false)
+###
+> TTest.TwoSample(sqi, sqr, equal_var: false)
+TTest.TwoSample(sqi, sqr, equal_var : false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), sqr, equal_var : false)
+###
+> TTest.TwoSample(sqr, sqi, equal_var: false)
+TTest.TwoSample(sqr, sqi, equal_var : false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), equal_var : false)
+###
+> TTest.TwoSample(ssr, sqr, false)
+TTest.TwoSample(ssr, sqr, false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, sqr, false))
+###
+> TTest.TwoSample(ssqr, sqr, false)
+TTest.TwoSample(ssqr, sqr, false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, sqr, false))
+###
+> TTest.TwoSample(ssqi, sqr, false)
+TTest.TwoSample(ssqi, sqr, false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqi, TTest.TwoSample(ForEach(*2: *1, Guard(?3: *2, Num<r8>(?3))), sqr, false))
+###
+> TTest.TwoSample(ssqr, sqi, false)
+TTest.TwoSample(ssqr, sqi, false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, ForEach(*2: sqi, Guard(?3: *2, Num<r8>(?3))), false))
+Hoister: With(!3: ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), ForEach(*4: ssqr, TTest.TwoSample(*4, !3, false)))
+###
+> TTest.TwoSample(sr, sqr, true)
+TTest.TwoSample(sr, sqr, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, sqr, true)
+###
+> TTest.TwoSample(sqr, sqr, equal_var: true)
+TTest.TwoSample(sqr, sqr, equal_var : true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, sqr, equal_var : true)
+###
+> TTest.TwoSample(sqr, sqi, equal_var: true)
+TTest.TwoSample(sqr, sqi, equal_var : true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), equal_var : true)
+###
+> TTest.TwoSample(sqi, sqr, equal_var: true)
+TTest.TwoSample(sqi, sqr, equal_var : true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), sqr, equal_var : true)
+###
+> TTest.TwoSample(ssr, sqr, true)
+TTest.TwoSample(ssr, sqr, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, sqr, true))
+###
+> TTest.TwoSample(ssqr, sqr, true)
+TTest.TwoSample(ssqr, sqr, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, sqr, true))
+###
+> TTest.TwoSample(ssqi, sqr, true)
+TTest.TwoSample(ssqi, sqr, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqi, TTest.TwoSample(ForEach(*2: *1, Guard(?3: *2, Num<r8>(?3))), sqr, true))
+###
+> TTest.TwoSample(ssqr, sqi, true)
+TTest.TwoSample(ssqr, sqi, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, ForEach(*2: sqi, Guard(?3: *2, Num<r8>(?3))), true))
+Hoister: With(!3: ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), ForEach(*4: ssqr, TTest.TwoSample(*4, !3, true)))
+###
+> TTest.TwoSample(ssqr, ssqr, true)
+TTest.TwoSample(ssqr, ssqr, true) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, *2: ssqr, TTest.TwoSample(*1, *2, true))
+Reducer: ForEach(*1: ssqr, TTest.TwoSample(*1, *1, true))
+###
+> TTest.TwoSample(sr, ssqr, equal_var: false)
+TTest.TwoSample(sr, ssqr, equal_var : false) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(sr, *1, equal_var : false))
+###
+> TTest.TwoSample(sr, sqr, b)
+TTest.TwoSample(sr, sqr, b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, sqr, b)
+###
+> TTest.TwoSample(si, sqr, b)
+TTest.TwoSample(si, sqr, b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(ForEach(*1: si, Num<r8>(*1)), sqr, b)
+###
+> TTest.TwoSample(sr, sqi, b)
+TTest.TwoSample(sr, sqi, b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sr, ForEach(*1: sqi, Guard(?2: *1, Num<r8>(?2))), b)
+###
+> TTest.TwoSample(sqr, sqr, b)
+TTest.TwoSample(sqr, sqr, b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+Binder : TTest.TwoSample(sqr, sqr, b)
+###
+> TTest.TwoSample(ssr, sqr, equal_var: b)
+TTest.TwoSample(ssr, sqr, equal_var : b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, sqr, equal_var : b))
+###
+> TTest.TwoSample(ssqr, sqr, b)
+TTest.TwoSample(ssqr, sqr, b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+Binder : ForEach(*1: ssqr, TTest.TwoSample(*1, sqr, b))
+###
+> TTest.Paired(sr, sr)
+TTest.Paired(sr, sr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(sr, sr)
+###
+> TTest.Paired(ssr, sr)
+TTest.Paired(ssr, sr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssr, TTest.Paired(*1, sr))
+###
+> TTest.Paired(ssr, Max(it), Max(it))
+TTest.Paired(ssr, Max(it), Max(it)) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: ssr, Max(*1), Max(*1))
+###
+> TTest.Paired(si, si)
+TTest.Paired(si, si) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(ForEach(*1: si, Num<r8>(*1)), ForEach(*2: si, Num<r8>(*2)))
+###
+> TTest.Paired(ssi, si)
+TTest.Paired(ssi, si) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}*
+Binder : ForEach(*1: ssi, TTest.Paired(ForEach(*2: *1, Num<r8>(*2)), ForEach(*3: si, Num<r8>(*3))))
+Hoister: With(!2: ForEach(*1: si, Num<r8>(*1)), ForEach(*3: ssi, TTest.Paired(ForEach(*4: *3, Num<r8>(*4)), !2)))
+###
+> TTest.Paired(sr, it, it)
+TTest.Paired(sr, it, it) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: sr, *1, *1)
+###
+> TTest.Paired(sqr, it, it)
+TTest.Paired(sqr, it, it) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: sqr, *1, *1)
+###
+> TTest.Paired(T, R, R)
+TTest.Paired(T, R, R) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, *1.R, *1.R)
+###
+> TTest.Paired(T, R, QR)
+TTest.Paired(T, R, QR) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, *1.R, *1.QR)
+###
+> TTest.Paired(T, QR, R)
+TTest.Paired(T, QR, R) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, *1.QR, *1.R)
+###
+> TTest.Paired(T, QR, QR)
+TTest.Paired(T, QR, QR) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, *1.QR, *1.QR)
+###
+> TTest.Paired(T, I, I)
+TTest.Paired(T, I, I) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Num<r8>(*1.I), Num<r8>(*1.I))
+###
+> TTest.Paired(a: T, a.I, a.I)
+TTest.Paired(a : T, a.I, a.I) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Num<r8>(*1.I), Num<r8>(*1.I))
+###
+> TTest.Paired(T, I, QI)
+TTest.Paired(T, I, QI) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Num<r8>(*1.I), Guard(?2: *1.QI, Num<r8>(?2)))
+###
+> TTest.Paired(T, QI, I + 1)
+TTest.Paired(T, QI, I + 1) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Guard(?2: *1.QI, Num<r8>(?2)), Num<r8>(Add(*1.I, 1)))
+###
+> TTest.Paired(T, QI, QI)
+TTest.Paired(T, QI, QI) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Guard(?2: *1.QI, Num<r8>(?2)), Guard(?3: *1.QI, Num<r8>(?3)))
+###
+> TTest.Paired(T, I, R if R > 0.5 else null)
+TTest.Paired(T, I, R if R $> 0.5 else null) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Num<r8>(*1.I), If(*1.R $> 0.5, Opt<r8?>(*1.R), null))
+###
+> TTest.Paired(T, QI, R)
+TTest.Paired(T, QI, R) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+Binder : TTest.Paired(*1: T, Guard(?2: *1.QI, Num<r8>(?2)), *1.R)
+###
+> TTest.OneSample(r) // Error.
+TTest.OneSample(r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : TTest.OneSample(Error(ErrBadType_Src_Dst))
+###
+> TTest.OneSample(r, r) // Error.
+TTest.OneSample(r, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : TTest.OneSample(Error(ErrBadType_Src_Dst), r)
+###
+> TTest.OneSample(i, r) // Error.
+TTest.OneSample(i, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: i, Message: Invalid operand type: cannot convert type 'i8' to 'r8*'
+Binder : TTest.OneSample(Error(ErrBadType_Src_Dst), r)
+###
+> TTest.OneSample(b, r) // Error.
+TTest.OneSample(b, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: b, Message: Invalid operand type: cannot convert type 'b' to 'r8*'
+Binder : TTest.OneSample(Error(ErrBadType_Src_Dst), r)
+###
+> TTest.OneSample(sr, [<] r) // Error.
+TTest.OneSample(sr, [<] r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (20,23) Node: [<] r, Tok: '[<]', Message: Unexpected directive
+Binder : TTest.OneSample(sr, r)
+###
+> TTest.OneSample(x: sr, r) // Error.
+TTest.OneSample(x : sr, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: x : sr, Tok: 'x', Message: Unexpected name
+Binder : TTest.OneSample(sr, r)
+###
+> TTest.TwoSample(r) // Error.
+TTest.TwoSample(r) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (15,16) Node: TTest.TwoSample(r), Message: Too few arguments for TTest.TwoSample, expected 1 additional
+*** Error: (16,17) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : TTest.TwoSample(Error(ErrBadType_Src_Dst), Unit<r8*>(<missing>))
+Reducer: TTest.TwoSample(Error(ErrBadType_Src_Dst), null)
+###
+> TTest.TwoSample(r, r) // Error.
+TTest.TwoSample(r, r) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (16,17) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+*** Error: (19,20) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : TTest.TwoSample(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> TTest.TwoSample(sr) // Error.
+TTest.TwoSample(sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (15,16) Node: TTest.TwoSample(sr), Message: Too few arguments for TTest.TwoSample, expected 1 additional
+Binder : TTest.TwoSample(sr, Unit<r8*>(<missing>))
+Reducer: TTest.TwoSample(sr, null)
+###
+> TTest.TwoSample(ssr, r) // Error.
+TTest.TwoSample(ssr, r) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}*
+*** Error: (21,22) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : ForEach(*1: ssr, TTest.TwoSample(*1, Error(ErrBadType_Src_Dst)))
+###
+> TTest.TwoSample(sr, [<] sr) // Error.
+TTest.TwoSample(sr, [<] sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (20,23) Node: [<] sr, Tok: '[<]', Message: Unexpected directive
+Binder : TTest.TwoSample(sr, sr)
+###
+> TTest.TwoSample(x: sr, y: sr) // Error.
+TTest.TwoSample(x : sr, y : sr) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (16,17) Node: x : sr, Tok: 'x', Message: Unexpected name
+*** Error: (23,24) Node: y : sr, Tok: 'y', Message: Unexpected name
+Binder : TTest.TwoSample(sr, sr)
+###
+> TTest.TwoSample(sr, sr, r) // Error.
+TTest.TwoSample(sr, sr, r) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,25) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'b'
+Binder : TTest.TwoSample(sr, sr, Error(ErrBadType_Src_Dst))
+###
+> TTest.TwoSample(sr, sr, foo: b) // Error.
+Corrected by binder: [TTest.TwoSample(sr, sr, equal_var: b) // Error.]
+TTest.TwoSample(sr, sr, foo : b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,27) Node: foo : b, Tok: 'foo', Message: Unexpected name, did you intend 'equal_var'?
+Binder : TTest.TwoSample(sr, sr, foo : b)
+###
+> TTest.TwoSample(sr, sr, equalVar: b) // Error.
+Corrected by binder: [TTest.TwoSample(sr, sr, equal_var: b) // Error.]
+TTest.TwoSample(sr, sr, equalVar : b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,32) Node: equalVar : b, Tok: 'equalVar', Message: Unexpected name, did you intend 'equal_var'?
+Binder : TTest.TwoSample(sr, sr, equalVar : b)
+###
+> TTest.TwoSample(sr, sr, Equal_var: b) // Error.
+Corrected by binder: [TTest.TwoSample(sr, sr, equal_var: b) // Error.]
+TTest.TwoSample(sr, sr, Equal_var : b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,33) Node: Equal_var : b, Tok: 'Equal_var', Message: Unexpected name, did you intend 'equal_var'?
+Binder : TTest.TwoSample(sr, sr, Equal_var : b)
+###
+> TTest.TwoSample(sr, sr, welch: b) // Error. REVIEW: Should we allow multiple "valid" names?
+Corrected by binder: [TTest.TwoSample(sr, sr, equal_var: b) // Error. REVIEW: Should we allow multiple "valid" names?]
+TTest.TwoSample(sr, sr, welch : b) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,29) Node: welch : b, Tok: 'welch', Message: Unexpected name, did you intend 'equal_var'?
+Binder : TTest.TwoSample(sr, sr, welch : b)
+###
+> TTest.TwoSample(sr, sr, { equal_var: b }) // Error.
+TTest.TwoSample(sr, sr, { equal_var : b }) : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,25) Node: { equal_var : b }, Message: Invalid operand type: cannot convert type '{equal_var:b}' to 'b'
+Binder : TTest.TwoSample(sr, sr, Error(ErrBadType_Src_Dst))
+###
+> TTest.TwoSample(sr, sr, "welch") // Error.
+TTest.TwoSample(sr, sr, "welch") : {CountX:i8, CountY:i8, Dof:r8, MeanX:r8, MeanY:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, VarX:r8, VarY:r8}
+*** Error: (24,31) Node: "welch", Message: Invalid operand type: cannot convert type 's' to 'b'
+Binder : TTest.TwoSample(sr, sr, Error(ErrBadType_Src_Dst))
+###
+> TTest.Paired(r, r) // Error.
+TTest.Paired(r, r) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (13,14) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+*** Error: (16,17) Node: r, Message: Invalid operand type: cannot convert type 'r8' to 'r8*'
+Binder : TTest.Paired(Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> TTest.Paired(ssr, it, it) // Error.
+TTest.Paired(ssr, it, it) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (18,20) Node: it, Message: Invalid operand type: cannot convert type 'r8*' to 'r8?'
+*** Error: (22,24) Node: it, Message: Invalid operand type: cannot convert type 'r8*' to 'r8?'
+Binder : TTest.Paired(*1: ssr, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> TTest.Paired(T, s, I) // Error.
+TTest.Paired(T, s, I) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8?'
+Binder : TTest.Paired(*1: T, Error(ErrBadType_Src_Dst), Num<r8>(*1.I))
+###
+> TTest.Paired(T, s, s) // Error.
+TTest.Paired(T, s, s) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (16,17) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8?'
+*** Error: (19,20) Node: s, Message: Invalid operand type: cannot convert type 's' to 'r8?'
+Binder : TTest.Paired(*1: T, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+###
+> TTest.Paired(T, With(a: I, a), a) // Error.
+TTest.Paired(T, With(a : I, a), a) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (31,32) Node: a, Message: Name does not exist in the current context
+Binder : TTest.Paired(*1: T, Num<r8>(With(!2: *1.I, !2)), Unit<r8>(Error(ErrNameDoesNotExist)))
+Reducer: TTest.Paired(*1: T, Num<r8>(*1.I), 0)
+###
+> TTest.Paired(sr, [<] sr) // Error.
+TTest.Paired(sr, [<] sr) : {Count:i8, Dof:r8, Mean:r8, P2:r8, PL:r8, PR:r8, Stderr:r8, T:r8, Var:r8}
+*** Error: (17,20) Node: [<] sr, Tok: '[<]', Message: Unexpected directive
+Binder : TTest.Paired(sr, sr)
+###

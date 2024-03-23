@@ -1,0 +1,608 @@
+**** New globals: {A:i8, B:i8, C:i8, M:M{param P:i8, msr S:i8}, QA:i8?, T:{A:i8}, Txt:s, si8:i8*, si8_2:i8*}
+
+> ForEach(With (s: Wrap(si8), s ++ s), it^3)
+ForEach(With(s : Wrap(si8), s ++ s), it^3) : i8*
+Binder : ForEach(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Power(*2, 3))
+Reducer: With(!1: Test.Wrap(si8), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)))
+Tupled : (ForEach(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Power(*2, 3)), ForEach(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Power(*2, 3)))
+Reducer: With(!1: Test.Wrap(si8), (ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3))))
+###
+> ForEach(Guard(s: Wrap(si8), s ++ s), it^3)
+ForEach(Guard(s : Wrap(si8), s ++ s), it^3) : i8*
+Binder : ForEach(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Power(*2, 3))
+Reducer: Guard(?1: Test.Wrap(si8), ForEach(*2: SeqConcat(?1, ?1), Power(*2, 3)))
+Tupled : (ForEach(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Power(*2, 3)), ForEach(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Power(*2, 3)))
+Reducer: (Guard(?1: Test.Wrap(si8), ForEach(*2: SeqConcat(?1, ?1), Power(*2, 3))), Guard(?1: Test.Wrap(si8), ForEach(*2: SeqConcat(?1, ?1), Power(*2, 3))))
+###
+> ForEach(With (s: si8 ++ Range(2), s ++ s), it^3)
+ForEach(With(s : si8 ++ Range(2), s ++ s), it^3) : i8*
+Binder : ForEach(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Power(*2, 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)))
+Tupled : (ForEach(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Power(*2, 3)), ForEach(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Power(*2, 3)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3))))
+###
+> ForEach(Guard(s: si8 ++ Range(2), s ++ s), it^3)
+ForEach(Guard(s : si8 ++ Range(2), s ++ s), it^3) : i8*
+Binder : ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Power(*2, 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)))
+Tupled : (ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Power(*2, 3)), ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Power(*2, 3)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3))))
+###
+> Sort(With (s: Wrap(si8), s ++ s), -it)
+Sort(With(s : Wrap(si8), s ++ s), -it) : i8*
+Binder : Sort(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Add([-] *2))
+Reducer: With(!1: Test.Wrap(si8), Sort(*2: SeqConcat(!1, !1), Add([-] *2)))
+Tupled : (Sort(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Add([-] *2)), Sort(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Add([-] *2)))
+Reducer: With(!1: Test.Wrap(si8), (Sort(*2: SeqConcat(!1, !1), Add([-] *2)), Sort(*2: SeqConcat(!1, !1), Add([-] *2))))
+###
+> Sort(Guard(s: Wrap(si8), s ++ s), -it)
+Sort(Guard(s : Wrap(si8), s ++ s), -it) : i8*
+Binder : Sort(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Add([-] *2))
+Reducer: Guard(?1: Test.Wrap(si8), Sort(*2: SeqConcat(?1, ?1), Add([-] *2)))
+Tupled : (Sort(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Add([-] *2)), Sort(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Add([-] *2)))
+Reducer: (Guard(?1: Test.Wrap(si8), Sort(*2: SeqConcat(?1, ?1), Add([-] *2))), Guard(?1: Test.Wrap(si8), Sort(*2: SeqConcat(?1, ?1), Add([-] *2))))
+###
+> Sort(With (s: si8 ++ Range(2), s ++ s), -it)
+Sort(With(s : si8 ++ Range(2), s ++ s), -it) : i8*
+Binder : Sort(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Add([-] *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Sort(*2: SeqConcat(!1, !1), Add([-] *2)))
+Tupled : (Sort(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Add([-] *2)), Sort(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Add([-] *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Sort(*2: SeqConcat(!1, !1), Add([-] *2)), Sort(*2: SeqConcat(!1, !1), Add([-] *2))))
+###
+> Sort(Guard(s: si8 ++ Range(2), s ++ s), -it)
+Sort(Guard(s : si8 ++ Range(2), s ++ s), -it) : i8*
+Binder : Sort(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Add([-] *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Sort(*2: SeqConcat(!1, !1), Add([-] *2)))
+Tupled : (Sort(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Add([-] *2)), Sort(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Add([-] *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Sort(*2: SeqConcat(!1, !1), Add([-] *2)), Sort(*2: SeqConcat(!1, !1), Add([-] *2))))
+###
+> ChainMap(With (s: Wrap(si8), s ++ s), Range(it^3))
+ChainMap(With(s : Wrap(si8), s ++ s), Range(it^3)) : i8*
+Binder : ChainMap(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Range(Power(*2, 3)))
+Reducer: With(!1: Test.Wrap(si8), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))))
+Tupled : (ChainMap(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Range(Power(*2, 3))), ChainMap(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), Range(Power(*2, 3))))
+Reducer: With(!1: Test.Wrap(si8), (ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3)))))
+###
+> ChainMap(Guard(s: Wrap(si8), s ++ s), Range(it^3))
+ChainMap(Guard(s : Wrap(si8), s ++ s), Range(it^3)) : i8*
+Binder : ChainMap(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Range(Power(*2, 3)))
+Reducer: Guard(?1: Test.Wrap(si8), ChainMap(*2: SeqConcat(?1, ?1), Range(Power(*2, 3))))
+Tupled : (ChainMap(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Range(Power(*2, 3))), ChainMap(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), Range(Power(*2, 3))))
+Reducer: (Guard(?1: Test.Wrap(si8), ChainMap(*2: SeqConcat(?1, ?1), Range(Power(*2, 3)))), Guard(?1: Test.Wrap(si8), ChainMap(*2: SeqConcat(?1, ?1), Range(Power(*2, 3)))))
+###
+> ChainMap(With (s: si8 ++ Range(2), s ++ s), Range(it^3))
+ChainMap(With(s : si8 ++ Range(2), s ++ s), Range(it^3)) : i8*
+Binder : ChainMap(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Range(Power(*2, 3)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))))
+Tupled : (ChainMap(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Range(Power(*2, 3))), ChainMap(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), Range(Power(*2, 3))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3)))))
+###
+> ChainMap(Guard(s: si8 ++ Range(2), s ++ s), Range(it^3))
+ChainMap(Guard(s : si8 ++ Range(2), s ++ s), Range(it^3)) : i8*
+Binder : ChainMap(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Range(Power(*2, 3)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))))
+Tupled : (ChainMap(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Range(Power(*2, 3))), ChainMap(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Range(Power(*2, 3))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3))), ChainMap(*2: SeqConcat(!1, !1), Range(Power(*2, 3)))))
+###
+> TakeIf(With (s: Wrap(si8), s ++ s), it > 3)
+TakeIf(With(s : Wrap(si8), s ++ s), it $> 3) : i8*
+Binder : TakeIf*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: Test.Wrap(si8), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3))
+Tupled : (TakeIf*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3), TakeIf*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: Test.Wrap(si8), (Take(*2: SeqConcat(!1, !1), [if] *2 @> 3), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3)))
+###
+> TakeIf(Guard(s: Wrap(si8), s ++ s), it > 3)
+TakeIf(Guard(s : Wrap(si8), s ++ s), it $> 3) : i8*
+Binder : TakeIf*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: Guard(?1: Test.Wrap(si8), Take(*2: SeqConcat(?1, ?1), [if] *2 @> 3))
+Tupled : (TakeIf*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3), TakeIf*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: (Guard(?1: Test.Wrap(si8), Take(*2: SeqConcat(?1, ?1), [if] *2 @> 3)), Guard(?1: Test.Wrap(si8), Take(*2: SeqConcat(?1, ?1), [if] *2 @> 3)))
+###
+> TakeIf(With (s: si8 ++ Range(2), s ++ s), it > 3)
+TakeIf(With(s : si8 ++ Range(2), s ++ s), it $> 3) : i8*
+Binder : TakeIf*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3))
+Tupled : (TakeIf*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3), TakeIf*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Take(*2: SeqConcat(!1, !1), [if] *2 @> 3), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3)))
+###
+> TakeIf(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+TakeIf(Guard(s : si8 ++ Range(2), s ++ s), it $> 3) : i8*
+Binder : TakeIf*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3))
+Tupled : (TakeIf*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3), TakeIf*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Take(*2: SeqConcat(!1, !1), [if] *2 @> 3), Take(*2: SeqConcat(!1, !1), [if] *2 @> 3)))
+###
+> Take(With (s: Wrap(si8), s ++ s), 5)
+Take(With(s : Wrap(si8), s ++ s), 5) : i8*
+Binder : Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), 5)
+Reducer: With(!1: Test.Wrap(si8), Take(SeqConcat(!1, !1), 5))
+Tupled : (Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), 5), Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), 5))
+Reducer: With(!1: Test.Wrap(si8), (Take(SeqConcat(!1, !1), 5), Take(SeqConcat(!1, !1), 5)))
+###
+> Take(Guard(s: Wrap(si8), s ++ s), 5)
+Take(Guard(s : Wrap(si8), s ++ s), 5) : i8*
+Binder : Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), 5)
+Reducer: Guard(?1: Test.Wrap(si8), Take(SeqConcat(?1, ?1), 5))
+Tupled : (Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), 5), Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), 5))
+Reducer: (Guard(?1: Test.Wrap(si8), Take(SeqConcat(?1, ?1), 5)), Guard(?1: Test.Wrap(si8), Take(SeqConcat(?1, ?1), 5)))
+###
+> Take(With (s: si8 ++ Range(2), s ++ s), 5)
+Take(With(s : si8 ++ Range(2), s ++ s), 5) : i8*
+Binder : Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), 5)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Take(SeqConcat(!1, !1), 5))
+Tupled : (Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), 5), Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), 5))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Take(SeqConcat(!1, !1), 5), Take(SeqConcat(!1, !1), 5)))
+###
+> Take(Guard(s: si8 ++ Range(2), s ++ s), 5)
+Take(Guard(s : si8 ++ Range(2), s ++ s), 5) : i8*
+Binder : Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), 5)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Take(SeqConcat(!1, !1), 5))
+Tupled : (Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), 5), Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), 5))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Take(SeqConcat(!1, !1), 5), Take(SeqConcat(!1, !1), 5)))
+###
+> Take(si8, With(n: A * 3, n * n))
+Take(si8, With(n : A * 3, n * n)) : i8*
+Binder : Take(si8, With(!1: Mul(A, 3), Mul(!1, !1)))
+Reducer: With(!1: Mul(A, 3), Take(si8, Mul(!1, !1)))
+Tupled : (Take(si8, With(!1: Mul(A, 3), Mul(!1, !1))), Take(si8, With(!1: Mul(A, 3), Mul(!1, !1))))
+Reducer: With(!1: Mul(A, 3), (Take(si8, Mul(!1, !1)), Take(si8, Mul(!1, !1))))
+###
+> Take(si8, With(n: A * 3, n * n))
+Take(si8, With(n : A * 3, n * n)) : i8*
+Binder : Take(si8, With(!1: Mul(A, 3), Mul(!1, !1)))
+Reducer: With(!1: Mul(A, 3), Take(si8, Mul(!1, !1)))
+Tupled : (Take(si8, With(!1: Mul(A, 3), Mul(!1, !1))), Take(si8, With(!1: Mul(A, 3), Mul(!1, !1))))
+Reducer: With(!1: Mul(A, 3), (Take(si8, Mul(!1, !1)), Take(si8, Mul(!1, !1))))
+###
+> Take(With (s: Wrap(si8), s ++ s), With(n: A * 3, n * n))
+Take(With(s : Wrap(si8), s ++ s), With(n : A * 3, n * n)) : i8*
+Binder : Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2)))
+Reducer: With(!1: Test.Wrap(si8), !2: Mul(A, 3), Take(SeqConcat(!1, !1), Mul(!2, !2)))
+Tupled : (Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))), Take(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))))
+Reducer: With(!1: Test.Wrap(si8), !2: Mul(A, 3), (Take(SeqConcat(!1, !1), Mul(!2, !2)), Take(SeqConcat(!1, !1), Mul(!2, !2))))
+###
+> Take(Guard(s: Wrap(si8), s ++ s), With(n: A * 3, n * n))
+Take(Guard(s : Wrap(si8), s ++ s), With(n : A * 3, n * n)) : i8*
+Binder : Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2)))
+Reducer: Guard(?1: Test.Wrap(si8), !2: Mul(A, 3), Take(SeqConcat(?1, ?1), Mul(!2, !2)))
+Tupled : (Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2))), Take(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2))))
+Reducer: With(!1: Mul(A, 3), (Guard(?2: Test.Wrap(si8), Take(SeqConcat(?2, ?2), Mul(!1, !1))), Guard(?2: Test.Wrap(si8), Take(SeqConcat(?2, ?2), Mul(!1, !1)))))
+###
+> Take(With (s: si8 ++ Range(2), s ++ s), With(n: A * 3, n * n))
+Take(With(s : si8 ++ Range(2), s ++ s), With(n : A * 3, n * n)) : i8*
+Binder : Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), !2: Mul(A, 3), Take(SeqConcat(!1, !1), Mul(!2, !2)))
+Tupled : (Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))), Take(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), !2: Mul(A, 3), (Take(SeqConcat(!1, !1), Mul(!2, !2)), Take(SeqConcat(!1, !1), Mul(!2, !2))))
+###
+> Take(Guard(s: si8 ++ Range(2), s ++ s), With(n: A * 3, n * n))
+Take(Guard(s : si8 ++ Range(2), s ++ s), With(n : A * 3, n * n)) : i8*
+Binder : Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), !2: Mul(A, 3), Take(SeqConcat(!1, !1), Mul(!2, !2)))
+Tupled : (Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2))), Take(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), With(!2: Mul(A, 3), Mul(!2, !2))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), !2: Mul(A, 3), (Take(SeqConcat(!1, !1), Mul(!2, !2)), Take(SeqConcat(!1, !1), Mul(!2, !2))))
+###
+> TakeOne(With (s: Wrap(si8), s ++ s), it > 3)
+TakeOne(With(s : Wrap(si8), s ++ s), it $> 3) : i8
+Binder : TakeOne(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: Test.Wrap(si8), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3))
+Tupled : (TakeOne(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3), TakeOne(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: Test.Wrap(si8), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3)))
+###
+> TakeOne(Guard(s: Wrap(si8), s ++ s), it > 3)
+TakeOne(Guard(s : Wrap(si8), s ++ s), it $> 3) : i8
+Binder : TakeOne(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3)
+Tupled : (TakeOne(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3), TakeOne(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3))
+###
+> TakeOne(With (s: si8 ++ Range(2), s ++ s), it > 3)
+TakeOne(With(s : si8 ++ Range(2), s ++ s), it $> 3) : i8
+Binder : TakeOne(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3))
+Tupled : (TakeOne(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3), TakeOne(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3)))
+###
+> TakeOne(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+TakeOne(Guard(s : si8 ++ Range(2), s ++ s), it $> 3) : i8
+Binder : TakeOne(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3))
+Tupled : (TakeOne(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3), TakeOne(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3)))
+###
+> First(With (s: Wrap(si8), s ++ s), it > 3)
+First(With(s : Wrap(si8), s ++ s), it $> 3) : i8?
+Binder : First*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: Test.Wrap(si8), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null))
+Tupled : (First*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3), First*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: Test.Wrap(si8), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null)))
+###
+> First(Guard(s: Wrap(si8), s ++ s), it > 3)
+First(Guard(s : Wrap(si8), s ++ s), it $> 3) : i8?
+Binder : First*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: Guard(?1: Test.Wrap(si8), TakeOne(*2: SeqConcat(?1, ?1), *2 @> 3, [else] null))
+Tupled : (First*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3), First*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: (Guard(?1: Test.Wrap(si8), TakeOne(*2: SeqConcat(?1, ?1), *2 @> 3, [else] null)), Guard(?1: Test.Wrap(si8), TakeOne(*2: SeqConcat(?1, ?1), *2 @> 3, [else] null)))
+###
+> First(With (s: si8 ++ Range(2), s ++ s), it > 3)
+First(With(s : si8 ++ Range(2), s ++ s), it $> 3) : i8?
+Binder : First*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null))
+Tupled : (First*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3), First*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null)))
+###
+> First(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+First(Guard(s : si8 ++ Range(2), s ++ s), it $> 3) : i8?
+Binder : First*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null))
+Tupled : (First*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3), First*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null), TakeOne(*2: SeqConcat(!1, !1), *2 @> 3, [else] null)))
+###
+> Distinct(With (s: Wrap(si8), s ++ s))
+Distinct(With(s : Wrap(si8), s ++ s)) : i8*
+Binder : Distinct(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)))
+Reducer: With(!1: Test.Wrap(si8), Distinct(SeqConcat(!1, !1)))
+Tupled : (Distinct(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))), Distinct(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))))
+Reducer: With(!1: Test.Wrap(si8), (Distinct(SeqConcat(!1, !1)), Distinct(SeqConcat(!1, !1))))
+###
+> Distinct(Guard(s: Wrap(si8), s ++ s))
+Distinct(Guard(s : Wrap(si8), s ++ s)) : i8*
+Binder : Distinct(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)))
+Reducer: Guard(?1: Test.Wrap(si8), Distinct(SeqConcat(?1, ?1)))
+Tupled : (Distinct(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))), Distinct(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))))
+Reducer: (Guard(?1: Test.Wrap(si8), Distinct(SeqConcat(?1, ?1))), Guard(?1: Test.Wrap(si8), Distinct(SeqConcat(?1, ?1))))
+###
+> Distinct(With (s: si8 ++ Range(2), s ++ s))
+Distinct(With(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : Distinct(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Distinct(SeqConcat(!1, !1)))
+Tupled : (Distinct(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))), Distinct(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Distinct(SeqConcat(!1, !1)), Distinct(SeqConcat(!1, !1))))
+###
+> Distinct(Guard(s: si8 ++ Range(2), s ++ s))
+Distinct(Guard(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : Distinct(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Distinct(SeqConcat(!1, !1)))
+Tupled : (Distinct(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))), Distinct(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Distinct(SeqConcat(!1, !1)), Distinct(SeqConcat(!1, !1))))
+###
+> ScanZ(v: With (s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanZ(v : With(s : Wrap(si8), s ++ s), t : 0, t + v) : i8*
+Binder : ScanZ(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: Test.Wrap(si8), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanZ(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)), ScanZ(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: Test.Wrap(si8), (ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanZ(v: Guard(s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanZ(v : Guard(s : Wrap(si8), s ++ s), t : 0, t + v) : i8*
+Binder : ScanZ(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2))
+Reducer: Guard(?1: Test.Wrap(si8), ScanZ(*2: SeqConcat(?1, ?1), %3: 0, Add(%3, *2)))
+Tupled : (ScanZ(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)), ScanZ(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)))
+Reducer: (Guard(?1: Test.Wrap(si8), ScanZ(*2: SeqConcat(?1, ?1), %3: 0, Add(%3, *2))), Guard(?1: Test.Wrap(si8), ScanZ(*2: SeqConcat(?1, ?1), %3: 0, Add(%3, *2))))
+###
+> ScanZ(v: With (s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanZ(v : With(s : si8 ++ Range(2), s ++ s), t : 0, t + v) : i8*
+Binder : ScanZ(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanZ(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)), ScanZ(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanZ(v: Guard(s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanZ(v : Guard(s : si8 ++ Range(2), s ++ s), t : 0, t + v) : i8*
+Binder : ScanZ(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanZ(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)), ScanZ(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanZ(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanZ(v: si8, t: With(a: A * 3, a * a), t + v)
+ScanZ(v : si8, t : With(a : A * 3, a * a), t + v) : i8*
+Binder : ScanZ(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2))
+Reducer: With(!1: Mul(A, 3), ScanZ(*2: si8, %3: Mul(!1, !1), Add(%3, *2)))
+Tupled : (ScanZ(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2)), ScanZ(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2)))
+Reducer: With(!1: Mul(A, 3), (ScanZ(*2: si8, %3: Mul(!1, !1), Add(%3, *2)), ScanZ(*2: si8, %3: Mul(!1, !1), Add(%3, *2))))
+###
+> ScanZ(v: si8, t: Guard(a: QA * 3, a * a), t + v)
+ScanZ(v : si8, t : Guard(a : QA * 3, a * a), t + v) : i8?*
+Binder : ScanZ(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3)))
+Reducer: ScanZ(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3)))
+Tupled : (ScanZ(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3))), ScanZ(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3))))
+Reducer: (ScanZ(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3))), ScanZ(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3))))
+###
+> ScanX(v: With (s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanX(v : With(s : Wrap(si8), s ++ s), t : 0, t + v) : i8*
+Binder : ScanX(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: Test.Wrap(si8), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanX(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)), ScanX(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: Test.Wrap(si8), (ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanX(v: Guard(s: Wrap(si8), s ++ s), t: 0, t + v)
+ScanX(v : Guard(s : Wrap(si8), s ++ s), t : 0, t + v) : i8*
+Binder : ScanX(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2))
+Tupled : (ScanX(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)), ScanX(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)))
+###
+> ScanX(v: With (s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanX(v : With(s : si8 ++ Range(2), s ++ s), t : 0, t + v) : i8*
+Binder : ScanX(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanX(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)), ScanX(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanX(v: Guard(s: si8 ++ Range(2), s ++ s), t: 0, t + v)
+ScanX(v : Guard(s : si8 ++ Range(2), s ++ s), t : 0, t + v) : i8*
+Binder : ScanX(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2))
+Reducer: With(!1: SeqConcat(si8, Range(2)), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)))
+Tupled : (ScanX(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)), ScanX(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), %3: 0, Add(%3, *2)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2)), ScanX(*2: SeqConcat(!1, !1), %3: 0, Add(%3, *2))))
+###
+> ScanX(v: si8, t: With(a: A * 3, a * a), t + v)
+ScanX(v : si8, t : With(a : A * 3, a * a), t + v) : i8*
+Binder : ScanX(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2))
+Reducer: With(!1: Mul(A, 3), ScanX(*2: si8, %3: Mul(!1, !1), Add(%3, *2)))
+Tupled : (ScanX(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2)), ScanX(*2: si8, %3: With(!1: Mul(A, 3), Mul(!1, !1)), Add(%3, *2)))
+Reducer: With(!1: Mul(A, 3), (ScanX(*2: si8, %3: Mul(!1, !1), Add(%3, *2)), ScanX(*2: si8, %3: Mul(!1, !1), Add(%3, *2))))
+###
+> ScanX(v: si8, t: Guard(a: QA * 3, a * a), t + v)
+ScanX(v : si8, t : Guard(a : QA * 3, a * a), t + v) : i8?*
+Binder : ScanX(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3)))
+Reducer: ScanX(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3)))
+Tupled : (ScanX(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3))), ScanX(*3: si8, %4: Guard(?2: Guard(?1: QA, Mul(?1, 3)), Mul(?2, ?2)), Guard(?5: %4, Add(?5, *3))))
+Reducer: (ScanX(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3))), ScanX(*3: si8, %4: Guard(?1: QA, !2: Mul(?1, 3), Mul(!2, !2)), Guard(?5: %4, Add(?5, *3))))
+###
+> If(With(a:A * 3, a * a > 5), B, C)
+If(With(a : A * 3, a * a $> 5), B, C) : i8
+Binder : If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), B, C)
+Reducer: With(!1: Mul(A, 3), If(Mul(!1, !1) @> 5, B, C))
+Tupled : (If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), B, C), If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), B, C))
+Reducer: With(!1: Mul(A, 3), (If(Mul(!1, !1) @> 5, B, C), If(Mul(!1, !1) @> 5, B, C)))
+###
+> If(A > 5, With(b:B * 3, b * b), With(c:C * 3, c + c))
+If(A $> 5, With(b : B * 3, b * b), With(c : C * 3, c + c)) : i8
+Binder : If*(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2)))
+Reducer: If(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2)))
+Tupled : (If*(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2))), If*(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2))))
+Reducer: (If(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2))), If(A @> 5, With(!1: Mul(B, 3), Mul(!1, !1)), With(!2: Mul(C, 3), Add(!2, !2))))
+###
+> If(With(a:A * 3, a * a > 5), With(b:B * 3, b * b), With(c:C * 3, c + c))
+If(With(a : A * 3, a * a $> 5), With(b : B * 3, b * b), With(c : C * 3, c + c)) : i8
+Binder : If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3)))
+Reducer: With(!1: Mul(A, 3), If(Mul(!1, !1) @> 5, With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3))))
+Tupled : (If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3))), If*(With(!1: Mul(A, 3), Mul(!1, !1) @> 5), With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3))))
+Reducer: With(!1: Mul(A, 3), (If(Mul(!1, !1) @> 5, With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3))), If(Mul(!1, !1) @> 5, With(!2: Mul(B, 3), Mul(!2, !2)), With(!3: Mul(C, 3), Add(!3, !3)))))
+###
+> ToI8(With(s: Txt & "000", s & s))
+ToI8(With(s : Txt & "000", s & s)) : i8?
+Binder : ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1)))
+Reducer: With(!1: StrConcat(Txt, "000"), ToI8(StrConcat(!1, !1)))
+Tupled : (ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1))), ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1))))
+Reducer: With(!1: StrConcat(Txt, "000"), (ToI8(StrConcat(!1, !1)), ToI8(StrConcat(!1, !1))))
+###
+> ToI8(Txt, With(a: A * 3, a * a))
+ToI8(Txt, With(a : A * 3, a * a)) : i8
+Binder : ToI8(Txt, With(!1: Mul(A, 3), Mul(!1, !1)))
+Tupled : (ToI8(Txt, With(!1: Mul(A, 3), Mul(!1, !1))), ToI8(Txt, With(!1: Mul(A, 3), Mul(!1, !1))))
+###
+> ToI8(With(s: Txt & "000", s & s), With(a: A * 3, a * a))
+ToI8(With(s : Txt & "000", s & s), With(a : A * 3, a * a)) : i8
+Binder : ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2)))
+Reducer: With(!1: StrConcat(Txt, "000"), ToI8(StrConcat(!1, !1), With(!2: Mul(A, 3), Mul(!2, !2))))
+Tupled : (ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))), ToI8(With(!1: StrConcat(Txt, "000"), StrConcat(!1, !1)), With(!2: Mul(A, 3), Mul(!2, !2))))
+Reducer: With(!1: StrConcat(Txt, "000"), (ToI8(StrConcat(!1, !1), With(!2: Mul(A, 3), Mul(!2, !2))), ToI8(StrConcat(!1, !1), With(!2: Mul(A, 3), Mul(!2, !2)))))
+###
+> DropOne(With (s: Wrap(si8), s ++ s))
+DropOne(With(s : Wrap(si8), s ++ s)) : i8*
+Binder : DropOne*(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)))
+Reducer: With(!1: Test.Wrap(si8), Drop(SeqConcat(!1, !1), 1))
+Tupled : (DropOne*(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))), DropOne*(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))))
+Reducer: With(!1: Test.Wrap(si8), (Drop(SeqConcat(!1, !1), 1), Drop(SeqConcat(!1, !1), 1)))
+###
+> DropOne(Guard(s: Wrap(si8), s ++ s))
+DropOne(Guard(s : Wrap(si8), s ++ s)) : i8*
+Binder : DropOne*(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)))
+Reducer: Guard(?1: Test.Wrap(si8), Drop(SeqConcat(?1, ?1), 1))
+Tupled : (DropOne*(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))), DropOne*(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))))
+Reducer: (Guard(?1: Test.Wrap(si8), Drop(SeqConcat(?1, ?1), 1)), Guard(?1: Test.Wrap(si8), Drop(SeqConcat(?1, ?1), 1)))
+###
+> DropOne(With (s: si8 ++ Range(2), s ++ s))
+DropOne(With(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : DropOne*(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Drop(SeqConcat(!1, !1), 1))
+Tupled : (DropOne*(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))), DropOne*(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Drop(SeqConcat(!1, !1), 1), Drop(SeqConcat(!1, !1), 1)))
+###
+> DropOne(Guard(s: si8 ++ Range(2), s ++ s))
+DropOne(Guard(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : DropOne*(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Drop(SeqConcat(!1, !1), 1))
+Tupled : (DropOne*(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))), DropOne*(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Drop(SeqConcat(!1, !1), 1), Drop(SeqConcat(!1, !1), 1)))
+###
+> DropOne(With (s: Wrap(si8), s ++ s), it > 3)
+DropOne(With(s : Wrap(si8), s ++ s), it $> 3) : i8*
+Binder : DropOne*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: Test.Wrap(si8), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3))
+Tupled : (DropOne*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3), DropOne*(*2: With(!1: Test.Wrap(si8), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: Test.Wrap(si8), (Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3)))
+###
+> DropOne(Guard(s: Wrap(si8), s ++ s), it > 3)
+DropOne(Guard(s : Wrap(si8), s ++ s), it $> 3) : i8*
+Binder : DropOne*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: Guard(?1: Test.Wrap(si8), Drop(*2: SeqConcat(?1, ?1), 1, *2 @> 3))
+Tupled : (DropOne*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3), DropOne*(*2: Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: (Guard(?1: Test.Wrap(si8), Drop(*2: SeqConcat(?1, ?1), 1, *2 @> 3)), Guard(?1: Test.Wrap(si8), Drop(*2: SeqConcat(?1, ?1), 1, *2 @> 3)))
+###
+> DropOne(With (s: si8 ++ Range(2), s ++ s), it > 3)
+DropOne(With(s : si8 ++ Range(2), s ++ s), it $> 3) : i8*
+Binder : DropOne*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3))
+Tupled : (DropOne*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3), DropOne*(*2: With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3)))
+###
+> DropOne(Guard(s: si8 ++ Range(2), s ++ s), it > 3)
+DropOne(Guard(s : si8 ++ Range(2), s ++ s), it $> 3) : i8*
+Binder : DropOne*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3)
+Reducer: With(!1: SeqConcat(si8, Range(2)), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3))
+Tupled : (DropOne*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3), DropOne*(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), *2 @> 3))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3), Drop(*2: SeqConcat(!1, !1), 1, *2 @> 3)))
+###
+> TakeOne(With (s: Wrap(si8), t: s ++ s, t ++ t), it > 3)
+TakeOne(With(s : Wrap(si8), t : s ++ s, t ++ t), it $> 3) : i8
+Binder : TakeOne(*3: With(!1: Test.Wrap(si8), !2: SeqConcat(!1, !1), SeqConcat(!2, !2)), *3 @> 3)
+Reducer: With(!1: Test.Wrap(si8), !2: SeqConcat(!1, !1), TakeOne(*3: SeqConcat(!2, !2), *3 @> 3))
+Tupled : (TakeOne(*3: With(!1: Test.Wrap(si8), !2: SeqConcat(!1, !1), SeqConcat(!2, !2)), *3 @> 3), TakeOne(*3: With(!1: Test.Wrap(si8), !2: SeqConcat(!1, !1), SeqConcat(!2, !2)), *3 @> 3))
+Reducer: With(!1: Test.Wrap(si8), !2: SeqConcat(!1, !1), (TakeOne(*3: SeqConcat(!2, !2), *3 @> 3), TakeOne(*3: SeqConcat(!2, !2), *3 @> 3)))
+###
+> TakeOne(Guard(s: Wrap(si8), [with] t: s ++ s, t ++ t), it > 3)
+TakeOne(Guard(s : Wrap(si8), [with] t : s ++ s, t ++ t), it $> 3) : i8
+Binder : TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3)
+Tupled : (TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3), TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3))
+###
+> TakeOne(Guard(s: Wrap(si8), With(t: s ++ s, t ++ t)), it > 3)
+TakeOne(Guard(s : Wrap(si8), With(t : s ++ s, t ++ t)), it $> 3) : i8
+Binder : TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: SeqConcat(?1, ?1), SeqConcat(!2, !2))), *3 @> 3)
+Reducer: TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3)
+Tupled : (TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: SeqConcat(?1, ?1), SeqConcat(!2, !2))), *3 @> 3), TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: SeqConcat(?1, ?1), SeqConcat(!2, !2))), *3 @> 3))
+Reducer: (TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3), TakeOne(*3: Guard(?1: Test.Wrap(si8), !2: SeqConcat(?1, ?1), SeqConcat(!2, !2)), *3 @> 3))
+###
+> TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), s ++ t ++ s ++ t)), it > 3)
+TakeOne(Guard(s : Wrap(si8), With(t : Wrap(si8_2), s ++ t ++ s ++ t)), it $> 3) : i8
+Binder : TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), SeqConcat(?1, !2, ?1, !2))), *3 @> 3)
+Reducer: With(!1: Test.Wrap(si8_2), TakeOne(*3: Guard(?2: Test.Wrap(si8), SeqConcat(?2, !1, ?2, !1)), *3 @> 3))
+Tupled : (TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), SeqConcat(?1, !2, ?1, !2))), *3 @> 3), TakeOne(*3: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), SeqConcat(?1, !2, ?1, !2))), *3 @> 3))
+Reducer: With(!1: Test.Wrap(si8_2), (TakeOne(*3: Guard(?2: Test.Wrap(si8), SeqConcat(?2, !1, ?2, !1)), *3 @> 3), TakeOne(*3: Guard(?2: Test.Wrap(si8), SeqConcat(?2, !1, ?2, !1)), *3 @> 3)))
+###
+> TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), u: s ++ s, t ++ u ++ t ++ u)), it > 3)
+TakeOne(Guard(s : Wrap(si8), With(t : Wrap(si8_2), u : s ++ s, t ++ u ++ t ++ u)), it $> 3) : i8
+Binder : TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(?1, ?1), SeqConcat(!2, !3, !2, !3))), *4 @> 3)
+Reducer: With(!1: Test.Wrap(si8_2), TakeOne(*4: Guard(?2: Test.Wrap(si8), !3: SeqConcat(?2, ?2), SeqConcat(!1, !3, !1, !3)), *4 @> 3))
+Tupled : (TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(?1, ?1), SeqConcat(!2, !3, !2, !3))), *4 @> 3), TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(?1, ?1), SeqConcat(!2, !3, !2, !3))), *4 @> 3))
+Reducer: With(!1: Test.Wrap(si8_2), (TakeOne(*4: Guard(?2: Test.Wrap(si8), !3: SeqConcat(?2, ?2), SeqConcat(!1, !3, !1, !3)), *4 @> 3), TakeOne(*4: Guard(?2: Test.Wrap(si8), !3: SeqConcat(?2, ?2), SeqConcat(!1, !3, !1, !3)), *4 @> 3)))
+###
+> TakeOne(Guard(s: Wrap(si8), With(t: Wrap(si8_2), u: t ++ t, s ++ u ++ s ++ u)), it > 3)
+TakeOne(Guard(s : Wrap(si8), With(t : Wrap(si8_2), u : t ++ t, s ++ u ++ s ++ u)), it $> 3) : i8
+Binder : TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(!2, !2), SeqConcat(?1, !3, ?1, !3))), *4 @> 3)
+Reducer: With(!1: Test.Wrap(si8_2), !2: SeqConcat(!1, !1), TakeOne(*4: Guard(?3: Test.Wrap(si8), SeqConcat(?3, !2, ?3, !2)), *4 @> 3))
+Tupled : (TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(!2, !2), SeqConcat(?1, !3, ?1, !3))), *4 @> 3), TakeOne(*4: Guard(?1: Test.Wrap(si8), With(!2: Test.Wrap(si8_2), !3: SeqConcat(!2, !2), SeqConcat(?1, !3, ?1, !3))), *4 @> 3))
+Reducer: With(!1: Test.Wrap(si8_2), !2: SeqConcat(!1, !1), (TakeOne(*4: Guard(?3: Test.Wrap(si8), SeqConcat(?3, !2, ?3, !2)), *4 @> 3), TakeOne(*4: Guard(?3: Test.Wrap(si8), SeqConcat(?3, !2, ?3, !2)), *4 @> 3)))
+###
+> T+>{ B: With(s: Range(A * 3), s ++ s) }
+T+>{ B : With(s : Range(A * 3), s ++ s) } : {A:i8, B:i8*}
+Binder : SetFields(!1: T, B : With(!2: Range(Mul(!1.A, 3)), SeqConcat(!2, !2)))
+Tupled : (SetFields(!1: T, B : With(!2: Range(Mul(!1.A, 3)), SeqConcat(!2, !2))), SetFields(!1: T, B : With(!2: Range(Mul(!1.A, 3)), SeqConcat(!2, !2))))
+###
+> T+>{ B: With(s: Range(@A * 3), s ++ s) }
+T+>{ B : With(s : Range(@A * 3), s ++ s) } : {A:i8, B:i8*}
+Binder : SetFields(!1: T, B : With(!2: Range(Mul(A, 3)), SeqConcat(!2, !2)))
+Reducer: With(!1: Range(Mul(A, 3)), SetFields(!2: T, B : SeqConcat(!1, !1)))
+Tupled : (SetFields(!1: T, B : With(!2: Range(Mul(A, 3)), SeqConcat(!2, !2))), SetFields(!1: T, B : With(!2: Range(Mul(A, 3)), SeqConcat(!2, !2))))
+Reducer: With(!1: Range(Mul(A, 3)), (SetFields(!2: T, B : SeqConcat(!1, !1)), SetFields(!2: T, B : SeqConcat(!1, !1))))
+###
+> T+>{ B: With(a: @A * 3, s: Range(a + A + a + A), s ++ s) }
+T+>{ B : With(a : @A * 3, s : Range(a + A + a + A), s ++ s) } : {A:i8, B:i8*}
+Binder : SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Range(Add(!2, !1.A, !2, !1.A)), SeqConcat(!3, !3)))
+Reducer: With(!1: Mul(A, 3), SetFields(!2: T, B : With(!3: Range(Add(!1, !2.A, !1, !2.A)), SeqConcat(!3, !3))))
+Tupled : (SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Range(Add(!2, !1.A, !2, !1.A)), SeqConcat(!3, !3))), SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Range(Add(!2, !1.A, !2, !1.A)), SeqConcat(!3, !3))))
+Reducer: With(!1: Mul(A, 3), (SetFields(!2: T, B : With(!3: Range(Add(!1, !2.A, !1, !2.A)), SeqConcat(!3, !3))), SetFields(!2: T, B : With(!3: Range(Add(!1, !2.A, !1, !2.A)), SeqConcat(!3, !3)))))
+###
+> T+>{ B: With(a: @A * 3, b: A * 3, s: Range(a + b + a + b), s ++ s) }
+T+>{ B : With(a : @A * 3, b : A * 3, s : Range(a + b + a + b), s ++ s) } : {A:i8, B:i8*}
+Binder : SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Add(!2, !3, !2, !3)), SeqConcat(!4, !4)))
+Reducer: With(!1: Mul(A, 3), SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4))))
+Tupled : (SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Add(!2, !3, !2, !3)), SeqConcat(!4, !4))), SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Add(!2, !3, !2, !3)), SeqConcat(!4, !4))))
+Reducer: With(!1: Mul(A, 3), (SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4))), SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4)))))
+###
+> Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
+Module.Maximize(With(r : { P : 3 }, M=>(r)=>(r)), S) : M{param P:i8, msr S:i8}?
+Binder : Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S)
+Reducer: With(!1: {P:3}, Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true))
+Tupled : (Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S), Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S))
+Reducer: With(!1: {P:3}, (Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true), Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true)))
+###
+> M->Maximize(With(x:Wrap(A), x * x * S))
+M->Maximize(With(x : Wrap(A), x * x * S)) : M{param P:i8, msr S:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S)))
+Tupled : (Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S))), Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S))))
+###
+> M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
+M->Optimize(S, With(x : Wrap(A), x * x * x $> 100)) : M{param P:i8, msr S:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100))
+Reducer: With(!1: Test.Wrap(A), Module.Opt(M, "S", Mul(!1, !1, !1) @> 100))
+Tupled : (Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100)), Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100)))
+Reducer: With(!1: Test.Wrap(A), (Module.Opt(M, "S", Mul(!1, !1, !1) @> 100), Module.Opt(M, "S", Mul(!1, !1, !1) @> 100)))
+###
+> M->Maximize(S, With(x:ToText(A), x & x & x))
+M->Maximize(S, With(x : ToText(A), x & x & x)) : M{param P:i8, msr S:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2)))
+Reducer: With(!1: ToText(A), Module.Opt(M, "S", true, StrConcat(!1, !1, !1)))
+Tupled : (Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2))), Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2))))
+Reducer: With(!1: ToText(A), (Module.Opt(M, "S", true, StrConcat(!1, !1, !1)), Module.Opt(M, "S", true, StrConcat(!1, !1, !1))))
+###
+> { A: Guard([with]  s: si8 ++ si8, [with]  t: s ++ s, [with]  u: [t, t, s], u ++ u) }
+{ A : Guard([with] s : si8 ++ si8, [with] t : s ++ s, [with] u : [t, t, s], u ++ u) } : {A:i8**}
+Binder : {A:Guard(!1: SeqConcat(si8, si8), !2: SeqConcat(!1, !1), !3: [!2, !2, !1], SeqConcat(!3, !3))}
+Reducer: With(!1: SeqConcat(si8, si8), !2: SeqConcat(!1, !1), !3: [!2, !2, !1], {A:SeqConcat(!3, !3)})
+Tupled : ({A:Guard(!1: SeqConcat(si8, si8), !2: SeqConcat(!1, !1), !3: [!2, !2, !1], SeqConcat(!3, !3))}, {A:Guard(!1: SeqConcat(si8, si8), !2: SeqConcat(!1, !1), !3: [!2, !2, !1], SeqConcat(!3, !3))})
+Reducer: With(!1: SeqConcat(si8, si8), !2: SeqConcat(!1, !1), !3: [!2, !2, !1], ({A:SeqConcat(!3, !3)}, {A:SeqConcat(!3, !3)}))
+###
+> { A: Guard([with]  s: si8 ++ si8, [guard] t: s ++ s, [with]  u: [t, t, s], u ++ u) }
+{ A : Guard([with] s : si8 ++ si8, [guard] t : s ++ s, [with] u : [t, t, s], u ++ u) } : {A:i8**}
+Binder : {A:Guard(!1: SeqConcat(si8, si8), ?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))}
+Reducer: With(!1: SeqConcat(si8, si8), {A:Guard(?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))})
+Tupled : ({A:Guard(!1: SeqConcat(si8, si8), ?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))}, {A:Guard(!1: SeqConcat(si8, si8), ?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))})
+Reducer: With(!1: SeqConcat(si8, si8), ({A:Guard(?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))}, {A:Guard(?2: SeqConcat(!1, !1), !3: [?2, ?2, !1], SeqConcat(!3, !3))}))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B), x * x), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B), x * x), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !3: With(!2: Test.Wrap(B), Mul(!2, !2)), Mul(!1, !3))
+Reducer: With(!1: Test.Wrap(B), Test.With*(!2: Test.Wrap(A), !3: Mul(!1, !1), Mul(!2, !3)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !3: With(!2: Test.Wrap(B), Mul(!2, !2)), Mul(!1, !3)), Test.With*(!1: Test.Wrap(A), !3: With(!2: Test.Wrap(B), Mul(!2, !2)), Mul(!1, !3)))
+Reducer: With(!1: Test.Wrap(B), (Test.With*(!2: Test.Wrap(A), !3: Mul(!1, !1), Mul(!2, !3)), Test.With*(!2: Test.Wrap(A), !3: Mul(!1, !1), Mul(!2, !3))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B), y: Wrap(C), x * x * y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B), y : Wrap(C), x * x * y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4))
+Reducer: With(!1: Test.Wrap(B), !2: Test.Wrap(C), Test.With*(!3: Test.Wrap(A), !4: Mul(!1, !1, !2, !2), Mul(!3, !4)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4)))
+Reducer: With(!1: Test.Wrap(B), !2: Test.Wrap(C), (Test.With*(!3: Test.Wrap(A), !4: Mul(!1, !1, !2, !2), Mul(!3, !4)), Test.With*(!3: Test.Wrap(A), !4: Mul(!1, !1, !2, !2), Mul(!3, !4))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: Wrap(C), x * x * y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B) + a, y : Wrap(C), x * x * y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4))
+Reducer: With(!1: Test.Wrap(C), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(B), !2), Mul(!3, !3, !1, !1)), Mul(!2, !4)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Test.Wrap(C), Mul(!2, !2, !3, !3)), Mul(!1, !4)))
+Reducer: With(!1: Test.Wrap(C), (Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(B), !2), Mul(!3, !3, !1, !1)), Mul(!2, !4)), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(B), !2), Mul(!3, !3, !1, !1)), Mul(!2, !4))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B), y: Wrap(C) + a, x * x * y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B), y : Wrap(C) + a, x * x * y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4))
+Reducer: With(!1: Test.Wrap(B), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(C), !2), Mul(!1, !1, !3, !3)), Mul(!2, !4)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4)))
+Reducer: With(!1: Test.Wrap(B), (Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(C), !2), Mul(!1, !1, !3, !3)), Mul(!2, !4)), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Test.Wrap(C), !2), Mul(!1, !1, !3, !3)), Mul(!2, !4))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: Wrap(C) + a, x * x * y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B) + a, y : Wrap(C) + a, x * x * y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Test.Wrap(C), !1), Mul(!2, !2, !3, !3)), Mul(!1, !4)))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B), y: x * x, y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B), y : x * x, y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4))
+Reducer: With(!1: Test.Wrap(B), !2: Mul(!1, !1), Test.With*(!3: Test.Wrap(A), !4: Mul(!2, !2), Mul(!3, !4)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4)))
+Reducer: With(!1: Test.Wrap(B), !2: Mul(!1, !1), (Test.With*(!3: Test.Wrap(A), !4: Mul(!2, !2), Mul(!3, !4)), Test.With*(!3: Test.Wrap(A), !4: Mul(!2, !2), Mul(!3, !4))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B), y: x * x + a, y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B), y : x * x + a, y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4))
+Reducer: With(!1: Test.Wrap(B), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Mul(!1, !1), !2), Mul(!3, !3)), Mul(!2, !4)))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Test.Wrap(B), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4)))
+Reducer: With(!1: Test.Wrap(B), (Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Mul(!1, !1), !2), Mul(!3, !3)), Mul(!2, !4)), Test.With*(!2: Test.Wrap(A), !4: With(!3: Add(Mul(!1, !1), !2), Mul(!3, !3)), Mul(!2, !4))))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: x * x, y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B) + a, y : x * x, y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Mul(!2, !2), Mul(!3, !3)), Mul(!1, !4)))
+###
+> Test.With(a: Wrap(A), b: With(x: Wrap(B) + a, y: x * x + a, y * y), a * b)
+Test.With(a : Wrap(A), b : With(x : Wrap(B) + a, y : x * x + a, y * y), a * b) : i8
+Binder : Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4))
+Tupled : (Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4)), Test.With*(!1: Test.Wrap(A), !4: With(!2: Add(Test.Wrap(B), !1), !3: Add(Mul(!2, !2), !1), Mul(!3, !3)), Mul(!1, !4)))
+###

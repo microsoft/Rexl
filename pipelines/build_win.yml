@@ -1,0 +1,127 @@
+# The windows core pipeline definition for Rexl build pipeline. 
+# Publishes the built artifacts to the artifact store
+# if the `publishArtifacts` parameter is set to `true`.
+
+parameters:
+- name: buildConfig
+  displayName: The build configuration
+  type: string
+  default: Release
+- name: buildPlatform
+  displayName: Build platform
+  type: string
+- name: poolName
+  displayName: Pool name
+  type: string
+- name: workFolder
+  displayName: Work folder
+  type: string
+- name: publishArtifacts
+  displayName: Publish artifacts
+  type: boolean
+  default: true
+
+jobs:
+- job: Build_Win_${{ parameters.buildConfig }}
+  displayName: Build Rexl Windows - ${{ parameters.buildConfig }}
+  timeoutInMinutes: 20
+  pool:
+    name: ${{ parameters.poolName }}
+
+  steps:
+  - checkout: self
+    clean: true
+    lfs: true
+
+  - task: CredScan@3
+    displayName: Credentials scan
+    inputs:
+      outputFormat: 'csv'
+      toolVersion: 'Latest'
+
+  - task: AntiMalware@4
+    inputs:
+      InputType: 'Basic'
+      ScanType: 'CustomScan'
+      FileDirPath: '$(Build.StagingDirectory)'
+      TreatSignatureUpdateFailureAs: 'Warning'
+      SignatureFreshness: 'UpToDate'
+      TreatStaleSignatureAs: 'Error'
+
+  - task: NuGetToolInstaller@1
+    displayName: Use NuGet 6.4.0
+    inputs:
+      versionSpec: 6.4.0
+ 
+  - task: NuGetCommand@2
+    displayName: NuGet restore Rexl.sln
+    env:
+      NUGET_RESTORE_MSBUILD_ARGS: /p:Configuration=${{ parameters.buildConfig }}
+    inputs:
+      solution: src/Rexl.sln
+      feedsToUse: config 
+      nugetConfigPath : nuget.config
+
+  - task: VSBuild@1
+    displayName: Build Rexl.sln
+    inputs:
+      solution: $(Build.SourcesDirectory)/src/Rexl.sln
+      msbuildArgs: /p:Deterministic=true /p:PathMap=$(Agent.BuildDirectory)=C:\ /t:build -m
+      platform: ${{ parameters.buildPlatform }}
+      configuration: ${{ parameters.buildConfig }}
+      msbuildArchitecture: ${{ parameters.buildPlatform }}
+      vsVersion: '17.0'
+
+  - task: PowerShell@2
+    displayName: Check for modifications to checked-in files
+    inputs:
+      targetType: inline
+      pwsh: true
+      script: |
+        $modified = git status --porcelain
+        $diff = git diff
+        if (![string]::IsNullOrWhiteSpace($modified))
+        {
+          Write-Host "There are files in the working directory or the staging area:"
+          $modified | Write-Host
+          $diff | Write-Host
+          exit 1
+        }
+        else
+        {
+          Write-Host "Git Status returns clean."
+        }
+
+  - task: VSTest@2
+    displayName: Run tests
+    timeoutInMinutes: 5
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: '$(Build.SourcesDirectory)/src/xout/bin/Rexl.*.Test/x64/${{ parameters.buildConfig }}/net6.0/Rexl.*.Test.dll'
+      platform: ${{ parameters.buildPlatform }}
+      configuration: ${{ parameters.buildConfig }}
+      codeCoverageEnabled: true
+
+  - ${{ if eq(parameters.publishArtifacts, true) }}:
+    - task: DotNetCoreCLI@2
+      displayName: 'Create Nuget packages'
+      inputs:
+        command: 'pack'
+        packagesToPack: '$(Build.SourcesDirectory)/src/Core/Rexl.Base/Rexl.Base.csproj;$(Build.SourcesDirectory)/src/Core/Rexl.Bind/Rexl.Bind.csproj;$(Build.SourcesDirectory)/src/Core/Rexl.Code/Rexl.Code.csproj;$(Build.SourcesDirectory)/src/Core/Rexl.Flow/Rexl.Flow.csproj;$(Build.SourcesDirectory)/src/Core/Rexl.Harness/Rexl.Harness.csproj;$(Build.SourcesDirectory)/src/Apps/Kernel/RexlKernel.Base/RexlKernel.Base.csproj'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages/nuget'
+        nobuild: true
+        configuration: '${{ parameters.buildConfig }}'
+        versioningScheme: 'off'
+        buildProperties: 'VersionSuffix="$(Build.BuildNumber)"'
+
+    - publish: '$(Build.ArtifactStagingDirectory)/packages/nuget'
+      displayName: 'Publish Artifact: $(ArtifactNuGetName)'
+      artifact: 'packages-nuget-${{ parameters.buildConfig }}'
+
+    - task: DotNetCoreCLI@2
+      displayName: "Publish nuget packages to internal feed"
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/nuget/*.nupkg;$(Build.ArtifactStagingDirectory)/packages/nuget/*.snupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'fcbe1b83-ec9e-498e-bcab-3f7876614e18/ScienceEngine_PublicPackages'
