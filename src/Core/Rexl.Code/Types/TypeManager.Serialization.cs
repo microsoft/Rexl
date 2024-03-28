@@ -974,7 +974,7 @@ public abstract partial class TypeManager
         // The current version number. This should be changed when the format changes.
         // History:
         // * 0x00010001: initial
-        // * 0x00010002: uri/link representation changed (in RC).
+        // * 0x00010002: uri/link representation changed.
         // * 0x00010003: sequnce mapping added.
         // * 0x00010004: added extra version numbers, changed seq count to long, removed SeqItem.
         // * 0x00010005: uri serialization improved and moved to base type manager.

@@ -4,7 +4,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace RexlBench;
+namespace Microsoft.Rexl.RexlBench;
 
 static class Program
 {

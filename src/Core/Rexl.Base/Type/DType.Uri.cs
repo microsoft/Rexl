@@ -31,7 +31,8 @@ partial struct DType
 
     /// <summary>
     /// This removes "Flavor" suffixes from all elements of a flavor path.
-    /// REVIEW: This is likely a temporary hack to help RC transition to uri paths that don't use "Flavor" as a suffix.
+    /// REVIEW: This is a temporary hack to help client code transition to uri paths that don't use "Flavor"
+    /// as a suffix. When should it be removed?
     /// </summary>
     private static NPath CleanseFlavor(NPath flavor)
     {

@@ -74,7 +74,7 @@ internal static class TestUtils
                 return false;
             }
 
-            // REVIEW: Support RC test-only functions if any.
+            // REVIEW: Should this be generalized?
             info = TestOperations.Instance.GetInfo(name);
             return info != null;
         }

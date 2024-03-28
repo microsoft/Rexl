@@ -51,7 +51,7 @@ public abstract partial class RexlScript
     }
 
     /// <summary>
-    /// Research Canvas expression language parser.
+    /// Research expression language parser.
     /// Note: logically, this should "have a" <see cref="TokenCursor"/> rather than "be a"
     /// <see cref="TokenCursor"/>, but it's simply more efficient to "be a". If this class
     /// ever needs to be more broadly visible, this should change, or the members of

@@ -15,7 +15,7 @@ using Integer = System.Numerics.BigInteger;
 using TokenTuple = Immutable.Array<Token>;
 
 /// <summary>
-/// Lexer for the Research Canvas expression language.
+/// Lexer for the research expression language.
 /// </summary>
 public sealed class RexlLexer
 {
