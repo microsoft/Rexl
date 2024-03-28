@@ -1652,8 +1652,8 @@ public abstract partial class RexlScript
         }
 
         /// <summary>
-        /// Returns the token index that would result from a call to <see cref="ParseIdentifier(bool)"/> at the given token position.
-        /// This should be in sync with the implementation of ParseIdentifier.
+        /// Returns the token index that would result from a call to <see cref="ParseIdentifier(bool)"/> at the
+        /// given token position. This should be in sync with the implementation of ParseIdentifier.
         /// </summary>
         private int PosFromIdent(int itok)
         {
