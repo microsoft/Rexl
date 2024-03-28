@@ -684,7 +684,6 @@ public sealed class TensorBuildGen : TensorGen<TensorBuildFunc>
                 break;
             var cur = ator.Current;
             long index = 0;
-            long prev = 1;
             for (int d = 0; ; d++)
             {
                 if (d >= rank)
@@ -694,9 +693,10 @@ public sealed class TensorBuildGen : TensorGen<TensorBuildFunc>
                     break;
                 }
                 long iv = fnInds[d](cur);
-                index = index * prev + iv;
-                if ((ulong)iv >= (ulong)(prev = shape[d]))
+                long dim = shape[d];
+                if ((ulong)iv >= (ulong)dim)
                     break;
+                index = index * dim + iv;
             }
         }
     }
@@ -759,7 +759,6 @@ public sealed class TensorBuildGen : TensorGen<TensorBuildFunc>
                 break;
             var cur = ator.Current;
             long index = 0;
-            long prev = 1;
             for (int d = 0; ; d++)
             {
                 if (d >= rank)
@@ -769,9 +768,10 @@ public sealed class TensorBuildGen : TensorGen<TensorBuildFunc>
                     break;
                 }
                 long iv = fnInds[d](idx, cur);
-                index = index * prev + iv;
-                if ((ulong)iv >= (ulong)(prev = shape[d]))
+                long dim = shape[d];
+                if ((ulong)iv >= (ulong)dim)
                     break;
+                index = index * dim + iv;
             }
         }
     }
