@@ -11,7 +11,7 @@ using Microsoft.Rexl.Parse;
 using Microsoft.Rexl.Private;
 using Microsoft.Rexl.Sink;
 
-namespace RexlBench;
+namespace Microsoft.Rexl.RexlBench;
 
 using Context = MainForm.Context;
 

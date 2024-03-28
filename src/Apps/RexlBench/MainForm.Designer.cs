@@ -1,4 +1,4 @@
-﻿namespace RexlBench
+﻿namespace Microsoft.Rexl.RexlBench
 {
     partial class MainForm
     {

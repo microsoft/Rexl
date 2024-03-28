@@ -15,7 +15,7 @@ using Microsoft.Rexl.Private;
 using Microsoft.Rexl.Sink;
 using Microsoft.Rexl.Harness;
 
-namespace RexlBench;
+namespace Microsoft.Rexl.RexlBench;
 
 public partial class MainForm : Form
 {
