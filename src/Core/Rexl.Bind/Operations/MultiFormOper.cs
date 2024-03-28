@@ -104,7 +104,7 @@ public abstract partial class MultiFormOper<TCookie> : RexlOper
     protected MultiFormOper(
             bool isFunc, DName name, NPath ns, int arityMin, int arityMax,
             Immutable.Array<InvocationForm> forms, string version)
-        // REVIEW: The "union: false" is temporary to avoid breaks with RC recommendation service. Fix asap.
+        // REVIEW: Should "union: false" be changed to default to true?
         : base(isFunc, name, ns, union: false, arityMin, arityMax, version)
     {
         Validation.BugCheckParam(forms.Length > 0, nameof(forms));
@@ -418,8 +418,7 @@ public abstract partial class MultiFormOper<TCookie> : RexlOper
     }
 
     // Use union except for the direct forms (1 and 2).
-    // REVIEW: This is a (hopefully) temporary behavior to not change single-arg and record-field
-    // invocation as it relates to RC's recommendation services, etc. It should be addressed asap.
+    // REVIEW: Should this change to always use union?
     private static bool Union(InvocationForm form) => !(form is SimpleFormBase || form is RecFieldForm);
 
     /// <summary>

@@ -305,9 +305,8 @@ partial class BoundFormula
                 Outer = outer;
                 Nest = Outer.Nest + 1;
 
-                // REVIEW: Need to figure out how to update this once the module is finished. For now, it
-                // shouldn't matter since this info is used for flow graph and intellisense and modules won't be
-                // usable in RC in the short term. Note that when this is fixed, both module symbol references
+                // REVIEW: Need to figure out how to update this Info once the module is finished. It will matter for
+                // flow graph analysis and intellisense. Note that when this is fixed, both module symbol references
                 // and globals used in module construction will need to be considered. The former are represented
                 // as slot accesses in the module's items tuple and the latter as slot accesses in the module's
                 // "externals" tuple.

@@ -282,9 +282,6 @@ public static class TextSinkUtil
     /// <summary>
     /// Maps an args array to a new one, using the given <paramref name="argMap"/>. If <paramref name="argMap"/>
     /// is null, uses <see cref="DefaultArgMapper"/>.
-    /// REVIEW: The current functionality in RC uses <see cref="IFormatProvider"/>. Should we use that
-    /// here? The fill-ins currently don't use any format specification, so not sure if using that mechanism
-    /// is justified for this.
     /// </summary>
     public static object?[] MapArgs(object?[] args, Func<object?, object?>? argMap)
     {

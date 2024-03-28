@@ -750,8 +750,8 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
 
         Link linkFull = LinkFromHeadTail(pathHead, pathTail, options);
 
-        // REVIEW: Perhaps do what we're doing in RC - use caching when there are nested sequences
-        // and otherwise just wrap at the global level. We need to change HarnessBase to do that.
+        // REVIEW: Perhaps use caching when there are nested sequences and otherwise just wrap at the global
+        // level. We need to change HarnessBase to do that.
         var codeGen = new CodeGenerator(new TestEnumTypeManager(), TestGenerators.Instance);
 
         var harness = TestHarness.Create(this, TestOperations.Instance, codeGen,
