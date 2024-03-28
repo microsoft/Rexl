@@ -1,0 +1,329 @@
+﻿P010 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := A <= X <= B;
+    con CS := Range(A, B)->(X <= it)->Take(0); // Empty
+    msr M := X;
+};
+Module.Maximize(P010, M);
+Module.Maximize(P010 with { B: 2 }, M); // Always false constraint.
+
+P020 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := X <= B;
+    con C2 := A <= B;
+    msr M := X;
+};
+P020->Maximize(M); // C2 is an always true constraint.
+P020 with { B: 2 }->Maximize(M); // C2 is an always false constraint.
+
+P030 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := X <= A or X >= B;
+    msr M := X;
+};
+P030->Maximize(M); // Can't handle "or" in a constraint.
+
+P040 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := X <= 100 and (X <= A or X >= B);
+    msr M := X;
+};
+P040->Maximize(M); // Can't handle "or" in a constraint.
+
+P050 := plan {
+    var X from 0;
+    con C1 := 3 <= X * X <= 5; // Not linear.
+    msr M := X;
+};
+P050->Maximize(M);
+
+P060 := plan {
+    var X from 0;
+    con C1 := 7 <= X <= 5; // Always false.
+    msr M := X;
+};
+P060->Maximize(M);
+
+P070 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := A <= X <= B <= 10 * A <= 9 * X <= 8 * B;
+    msr M := X;
+};
+P070->Maximize(M);
+
+P080 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := B >= X >= A;
+    msr M := X;
+};
+P080->Maximize(M);
+
+P090 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := A < X < B;
+    msr M := X;
+};
+P090->Maximize(M);
+
+P100 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0.0;
+    con C1 := A < X < B; // Bad operator for non-int.
+    msr M := X;
+};
+P100->Maximize(M);
+
+P110 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0.0;
+    con C1 := A < X; // Bad operator for non-int.
+    msr M := X;
+};
+P110->Maximize(M);
+
+P120 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0.0;
+    con C1 := B > X; // Bad operator for non-int.
+    msr M := X;
+};
+P120->Maximize(M);
+
+P130 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := B > 2 * X > A;
+    msr M := X;
+};
+P130->Maximize(M);
+
+P140 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0.0;
+    con C1 := B > 2 * X > A; // Bad operator for non-int.
+    msr M := X;
+};
+P140->Maximize(M);
+
+P150 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    let L1 := 2 * X;
+    con C1 := B > L1 > A;
+    msr M := X;
+};
+P150->Maximize(M);
+
+P160 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    let L1 := X * X; // Not linear.
+    con C1 := B > L1 > A;
+    msr M := X;
+};
+P160->Maximize(M);
+
+P170 := plan {
+    param A := 3;
+    param B := 10;
+    param D := 2.0;
+    var X from 0.0;
+    con C1 := A <= X / D <= B;
+    msr M := X;
+};
+P170->Maximize(M);
+
+// This form works.
+P200 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    const R := Range(7, 10);
+    con C1 := X < R;
+    msr M := X;
+};
+P200->Maximize(M);
+
+// REVIEW: ForEach is NOT expanded in these so they all fail.
+P210 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    let L := X < Range(7, 10);
+    con C1 := L;
+    msr M := X;
+};
+P210->Maximize(M);
+
+P220 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := Range(7, 10)->(X < it);
+    msr M := X;
+};
+P220->Maximize(M);
+
+P230 := plan {
+    param A := 3;
+    param B := 10;
+    var X from 0;
+    con C1 := A < X < B;
+    con C2 := Range(3)->(true);
+    msr M := X;
+};
+P230->Maximize(M);
+
+P300 := plan {
+    param A := 3;
+    param B := 10;
+    param F := 1.0;
+    param D := 1.0;
+    param G := 1.0;
+    var X from 0.0;
+    con C1 := A <= X * F / D + X * X * G + F * (D + X * G) <= B;
+    msr M := X;
+};
+P300->Maximize(M);
+P300 with { F: 2.0, G: 0.0 }->Maximize(M);
+P300 with { F: 1 / 0, G: 0.0 }->Maximize(M);
+P300 with { D: 0.0, G: 0.0 }->Maximize(M);
+
+P400 := plan {
+    param A := 1;
+    param B := 4;
+    param K := 100;
+    const F := B - A if A < B else null;
+    var X from Range(A, B)->Take(K min (F ?? 0));
+    msr M := Sum(X);
+};
+P400->Maximize(M);
+P400 with { B: 0 }->Maximize(M);
+P400 with { K: 0 }->Maximize(M);
+
+P500 := plan {
+    var X from 0 to 3;
+    var Y from 1 to 5;
+    msr M := X + Y;
+};
+P500->Maximize(M, "glpk");
+P500->Maximize(M, "highs");
+
+// Unbounded.
+P510 := plan {
+    var X from 0.0;
+    var Y from 1.0;
+    msr M := X + Y;
+};
+P510->Maximize(M, "glpk");
+P510->Maximize(M, "highs");
+
+// Integer vs floating point.
+P520 := plan {
+    var X from 0 to 3;
+    var Y from 0 to 5;
+    var Z from 0 to 7;
+    con C := 2*X + 4*Y + 5*Z <= 19;
+    msr M := X + Y;
+};
+P520->Maximize(M, "glpk");
+P520->Maximize(M, "highs");
+
+P530 := plan {
+    var X from 0.0 to 3;
+    var Y from 0.0 to 5;
+    var Z from 0.0 to 7;
+    con C := 2*X + 4*Y + 5*Z <= 19;
+    msr M := X + Y;
+};
+P530->Maximize(M, "glpk");
+P530->Maximize(M, "highs");
+
+// Infeasible as integers.
+P540 := plan {
+    var X from 0 to 3;
+    var Y from 0 to 5;
+    con C := 1 <= 4*X + 4*Y <= 3;
+    msr M := X + Y;
+};
+P540->Maximize(M, "glpk");
+P540->Maximize(M, "highs");
+
+P550 := plan {
+    var X from 0.0 to 3;
+    var Y from 0.0 to 5;
+    con C := 1 <= 4*X + 4*Y <= 3;
+    msr M := X + Y;
+};
+P550->Maximize(M, "glpk");
+P550->Maximize(M, "highs");
+
+// Infeasible relaxation.
+P560 := plan {
+    var X from 1 to 3;
+    var Y from 1 to 5;
+    con C := 1 <= 4*X + 4*Y <= 3;
+    msr M := X + Y;
+};
+P560->Maximize(M, "glpk");
+P560->Maximize(M, "highs");
+
+P570 := plan {
+    var X from 1.0 to 3;
+    var Y from 1.0 to 5;
+    con C := 1 <= 4*X + 4*Y <= 3;
+    msr M := X + Y;
+};
+P570->Maximize(M, "glpk");
+P570->Maximize(M, "highs");
+
+P600 := plan {
+    param N := 6;
+    var X from 0.0 to N;
+    var T from Tensor.Fill(0.0, N) to Tensor.Fill(N * 3 / 2, N);
+    var Y from 0.0 to N;
+
+    // REVIEW: Should be able to linearize these.
+    msr M := X + Sum(Range(N), (it + 1) * T[it]) + Y;
+    con C := Sum(Range(N), T[it] * (3 - it mod 3)) <= 2 * N;
+
+    con C2 := X <= Y;
+    con C3 := X + 2*Y <= 9;
+};
+P600->Maximize(M);
+
+P610 := plan {
+    const N := 6;
+    var X from 0.0 to N;
+    var T from Tensor.Fill(0.0, N) to Tensor.Fill(N * 3 / 2, N);
+    var Y from 0.0 to N;
+
+    msr M := X + T[0] + 2*T[1] + 3*T[2] + 4*T[3] + 5*T[4] + 6*T[5] + Y;
+    con C := 3*T[0] + 2*T[1] + T[2] + 3*T[3] + 2*T[4] + T[5] <= 2 * N;
+
+    con C2 := X <= Y;
+    con C3 := X + 2*Y <= 9;
+};
+P610->Maximize(M, "glpk");
+P610->Maximize(M, "highs");

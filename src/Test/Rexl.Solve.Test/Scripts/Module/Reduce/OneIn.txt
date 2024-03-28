@@ -1,0 +1,55 @@
+﻿plan {
+    param Set := Range(10);
+    param Def := 7;
+    var One in Set def Def;
+};
+
+plan {
+    param Set := Range(5);
+    param Def := 7;
+    var One in Set def Def opt;
+};
+
+// No default.
+plan { var One in Range(3, 10); };
+
+// Empty.
+plan {
+    param Set := Range(0);
+    param Def := 7;
+    var One in Set def Def;
+};
+
+// Opt.
+// REVIEW: Should the default be null rather than the first item?
+plan { var One in Range(3, 10) opt; };
+
+plan {
+  param Widgets := [
+    { Id: 0, Value:  2, Cost:  3 },
+    { Id: 1, Value:  8, Cost:  5 },
+    { Id: 2, Value:  7, Cost:  3 },
+    { Id: 3, Value:  6, Cost:  2 },
+    { Id: 4, Value:  9, Cost:  7 },
+    { Id: 5, Value:  8, Cost:  7 },
+  ];
+  param Gizmos := [
+    { Id: 0, Value:  2, Cost:  3 },
+    { Id: 1, Value:  8, Cost:  5 },
+    { Id: 2, Value:  7, Cost:  4 },
+  ];
+
+  param ValPerCost := 1.0;
+  param MinValue := 10;
+  param MaxCost  := 19;
+
+  // Need one of each.
+  var Widget in Widgets req;
+  var Gizmo  in Gizmos  req;
+
+  msr Value := Widget.Value + Gizmo.Value;
+  msr Cost  := Widget.Cost  + Gizmo.Cost;
+  msr Score := Value - ValPerCost * Cost;
+
+  con Cons := [ Value >= MinValue, Cost <= MaxCost ];
+};

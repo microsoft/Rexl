@@ -1,0 +1,168 @@
+>>> *** Source:
+    func TopN(scores, labels, n) := ForEach(Score:scores.Values, Label:labels.Values, {Score, Label})->Sort(Score)->Take(n);
+    DogBytes := ReadBytes(_DATA_ & "dog.jpeg");
+    Dog := DogBytes->GetPixels();
+    Cat := ReadPixels(_DATA_ & "kitten.jpg");
+    Dog->ResNet()->TopN(ResNet(), 10);
+    Dog->ResNet()->SoftMax()->TopN(ResNet(), 10);
+    Dog->EfficientNet()->TopN(EfficientNet(), 10);
+    Cat->ResNet()->TopN(ResNet(), 10);
+    Cat->ResNet()->SoftMax()->TopN(ResNet(), 10);
+    Cat->EfficientNet()->TopN(EfficientNet(), 10);
+    // Raw mode.
+    Cat.Shape;
+    Cat
+        ->ResizePixels(256)
+        ->(it[(it.Shape[0] - 224) div 2 : *224, (it.Shape[1] - 224) div 2 : *224, 0:3])
+        ->((it - 127.0) / 128.0)
+        ->CastR4()
+        ->EfficientNet()
+        ->TopN(EfficientNet(), 10);
+    Cat2 := ReadPixelsU4(_DATA_ & "kitten.jpg");
+    // REVIEW: Should make these work.
+    Cat2->ResNet()->TopN(ResNet(), 10);
+    Cat2->ResNet()->SoftMax()->TopN(ResNet(), 10);
+    Cat2->EfficientNet()->TopN(EfficientNet(), 10);
+
+>>> *** Instructions:
+   0) [0] DefineFunc TopN(scores, labels, n) <- ForEach(Score : scores.Values, Label : labels.Values, { Score, Label })->Sort(Score)->Take(n)
+   1) [0] Define DogBytes <- ReadBytes(_DATA_ & "dog.jpeg")
+   2) [0] Define Dog <- DogBytes->GetPixels()
+   3) [0] Define Cat <- ReadPixels(_DATA_ & "kitten.jpg")
+   4) [0] Expr Dog->ResNet()->TopN(ResNet(), 10)
+   5) [0] Expr Dog->ResNet()->SoftMax()->TopN(ResNet(), 10)
+   6) [0] Expr Dog->EfficientNet()->TopN(EfficientNet(), 10)
+   7) [0] Expr Cat->ResNet()->TopN(ResNet(), 10)
+   8) [0] Expr Cat->ResNet()->SoftMax()->TopN(ResNet(), 10)
+   9) [0] Expr Cat->EfficientNet()->TopN(EfficientNet(), 10)
+  10) [0] Expr Cat.Shape
+  11) [0] Expr Cat->ResizePixels(256)->(it[(it.Shape[0] - 224) div 2:*224, (it.Shape[1] - 224) div 2:*224, 0:3])->((it - 127) / 128)->CastR4()->EfficientNet()->TopN(EfficientNet(), 10)
+  12) [0] Define Cat2 <- ReadPixelsU4(_DATA_ & "kitten.jpg")
+  13) [0] Expr Cat2->ResNet()->TopN(ResNet(), 10)
+  14) [0] Expr Cat2->ResNet()->SoftMax()->TopN(ResNet(), 10)
+  15) [0] Expr Cat2->EfficientNet()->TopN(EfficientNet(), 10)
+  16) [0] End
+
+>    0) [0] DefineFunc TopN(scores, labels, n) <- ForEach(Score : scores.Values, Label : labels.Values, { Score, Label })->Sort(Score)->Take(n)
+UDF 'TopN' has arity 3
+>    1) [0] Define DogBytes <- ReadBytes(_DATA_ & "dog.jpeg")
+Global 'DogBytes' has DType: u1[*], SysType: Ten<u1>
+<Anonymous task> now playing
+<Anonymous task> finished
+>    2) [0] Define Dog <- DogBytes->GetPixels()
+Global 'Dog' has DType: u1[*,*,*]?, SysType: Ten<u1>
+>    3) [0] Define Cat <- ReadPixels(_DATA_ & "kitten.jpg")
+Global 'Cat' has DType: u1[*,*,*]?, SysType: Ten<u1>
+>    4) [0] Expr Dog->ResNet()->TopN(ResNet(), 10)
+Seq<{str,r4}>
+   0) { Label: Golden Retriever, Score: 12.280985 }
+   1) { Label: Kuvasz, Score: 10.807381 }
+   2) { Label: Otterhound, Score: 8.429423 }
+   3) { Label: Clumber Spaniel, Score: 8.102105 }
+   4) { Label: Saluki, Score: 7.6371207 }
+   5) { Label: Labrador Retriever, Score: 7.4995656 }
+   6) { Label: Sussex Spaniel, Score: 7.4333906 }
+   7) { Label: Tibetan Terrier, Score: 7.3310003 }
+   8) { Label: Pyrenean Mountain Dog, Score: 7.3025208 }
+   9) { Label: Curly-coated Retriever, Score: 6.7066755 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(?1x), *3: Tensor.Values(ResNet()), {Label:*3, Score:*2}), *4.Score)
+>    5) [0] Expr Dog->ResNet()->SoftMax()->TopN(ResNet(), 10)
+Seq<{str,r4}>
+   0) { Label: Golden Retriever, Score: 0.73373526 }
+   1) { Label: Kuvasz, Score: 0.16809748 }
+   2) { Label: Otterhound, Score: 0.015589331 }
+   3) { Label: Clumber Spaniel, Score: 0.011237637 }
+   4) { Label: Saluki, Score: 0.007058864 }
+   5) { Label: Labrador Retriever, Score: 0.006151703 }
+   6) { Label: Sussex Spaniel, Score: 0.0057577924 }
+   7) { Label: Tibetan Terrier, Score: 0.0051974272 }
+   8) { Label: Pyrenean Mountain Dog, Score: 0.0050514946 }
+   9) { Label: Curly-coated Retriever, Score: 0.0027838615 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(Tensor.SoftMax(?1x)), *3: Tensor.Values(ResNet()), {Label:*3, Score:*2}), *4.Score)
+>    6) [0] Expr Dog->EfficientNet()->TopN(EfficientNet(), 10)
+Seq<{str,r4}>
+   0) { Label: Golden Retriever, Score: 0.99821436 }
+   1) { Label: Kuvasz, Score: 0.0014741083 }
+   2) { Label: Labrador Retriever, Score: 9.128046E-05 }
+   3) { Label: English Setter, Score: 5.0686613E-05 }
+   4) { Label: Otterhound, Score: 3.7808386E-05 }
+   5) { Label: Tibetan Terrier, Score: 1.856172E-05 }
+   6) { Label: Tibetan Mastiff, Score: 1.48424515E-05 }
+   7) { Label: Saluki, Score: 1.4343767E-05 }
+   8) { Label: Pyrenean Mountain Dog, Score: 1.376894E-05 }
+   9) { Label: Clumber Spaniel, Score: 9.023736E-06 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(?1x), *3: Tensor.Values(EfficientNet()), {Label:*3, Score:*2}), *4.Score)
+>    7) [0] Expr Cat->ResNet()->TopN(ResNet(), 10)
+Seq<{str,r4}>
+   0) { Label: tabby cat, Score: 13.254783 }
+   1) { Label: tiger cat, Score: 12.2163 }
+   2) { Label: Egyptian Mau, Score: 10.297877 }
+   3) { Label: tiger, Score: 8.155732 }
+   4) { Label: radiator, Score: 6.622149 }
+   5) { Label: doormat, Score: 6.144388 }
+   6) { Label: ping-pong ball, Score: 5.512406 }
+   7) { Label: lynx, Score: 5.4439726 }
+   8) { Label: plastic bag, Score: 5.120289 }
+   9) { Label: Persian cat, Score: 4.8107133 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(?1x), *3: Tensor.Values(ResNet()), {Label:*3, Score:*2}), *4.Score)
+>    8) [0] Expr Cat->ResNet()->SoftMax()->TopN(ResNet(), 10)
+Seq<{str,r4}>
+   0) { Label: tabby cat, Score: 0.7032638 }
+   1) { Label: tiger cat, Score: 0.24894933 }
+   2) { Label: Egyptian Mau, Score: 0.03655532 }
+   3) { Label: tiger, Score: 0.004291694 }
+   4) { Label: radiator, Score: 0.000925981 }
+   5) { Label: doormat, Score: 0.0005742661 }
+   6) { Label: ping-pong ball, Score: 0.0003052437 }
+   7) { Label: lynx, Score: 0.00028505363 }
+   8) { Label: plastic bag, Score: 0.00020623031 }
+   9) { Label: Persian cat, Score: 0.00015132329 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(Tensor.SoftMax(?1x)), *3: Tensor.Values(ResNet()), {Label:*3, Score:*2}), *4.Score)
+>    9) [0] Expr Cat->EfficientNet()->TopN(EfficientNet(), 10)
+Seq<{str,r4}>
+   0) { Label: tiger cat, Score: 0.6478616 }
+   1) { Label: tabby cat, Score: 0.34993136 }
+   2) { Label: Egyptian Mau, Score: 0.0021702838 }
+   3) { Label: lens cap, Score: 3.399291E-06 }
+   4) { Label: garter snake, Score: 1.9118695E-06 }
+   5) { Label: plastic bag, Score: 1.1685731E-06 }
+   6) { Label: lynx, Score: 1.111968E-06 }
+   7) { Label: carton, Score: 1.1008677E-06 }
+   8) { Label: tiger, Score: 9.653219E-07 }
+   9) { Label: crossword, Score: 8.070413E-07 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(?1x), *3: Tensor.Values(EfficientNet()), {Label:*3, Score:*2}), *4.Score)
+>   10) [0] Expr Cat.Shape
+(720, 720, 4)
+>   11) [0] Expr Cat->ResizePixels(256)->(it[(it.Shape[0] - 224) div 2:*224, (it.Shape[1] - 224) div 2:*224, 0:3])->((it - 127) / 128)->CastR4()->EfficientNet()->TopN(EfficientNet(), 10)
+Seq<{str,r4}>
+   0) { Label: tiger cat, Score: 0.6478616 }
+   1) { Label: tabby cat, Score: 0.34993136 }
+   2) { Label: Egyptian Mau, Score: 0.0021702838 }
+   3) { Label: lens cap, Score: 3.399291E-06 }
+   4) { Label: garter snake, Score: 1.9118695E-06 }
+   5) { Label: plastic bag, Score: 1.1685731E-06 }
+   6) { Label: lynx, Score: 1.111968E-06 }
+   7) { Label: carton, Score: 1.1008677E-06 }
+   8) { Label: tiger, Score: 9.653219E-07 }
+   9) { Label: crossword, Score: 8.070413E-07 }
+*** Ctx ping count: 1001
+    [0](1001): Sort(*4: ForEach(*2: Tensor.Values(?1x), *3: Tensor.Values(EfficientNet()), {Label:*3, Score:*2}), *4.Score)
+>   12) [0] Define Cat2 <- ReadPixelsU4(_DATA_ & "kitten.jpg")
+Global 'Cat2' has DType: u4[*,*]?, SysType: Ten<u4>
+>   13) [0] Expr Cat2->ResNet()->TopN(ResNet(), 10)
+*** Bind diagnostics:
+  [ImageNet.txt] Error: (811,815) Node: Cat2, Message: Invalid operand type: cannot convert type 'u4[*,*]' to 'u1[*,*,*]'
+>   14) [0] Expr Cat2->ResNet()->SoftMax()->TopN(ResNet(), 10)
+*** Bind diagnostics:
+  [ImageNet.txt] Error: (847,851) Node: Cat2, Message: Invalid operand type: cannot convert type 'u4[*,*]' to 'u1[*,*,*]'
+>   15) [0] Expr Cat2->EfficientNet()->TopN(EfficientNet(), 10)
+*** Bind diagnostics:
+  [ImageNet.txt] Error: (894,898) Node: Cat2, Message: Invalid operand type: cannot convert type 'u4[*,*]' to 'u1[*,*,*]'
+>   16) [0] End
+

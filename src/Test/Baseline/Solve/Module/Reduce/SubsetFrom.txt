@@ -1,0 +1,55 @@
+>>> *** Source:
+    P := plan {
+        param Set := Range(10);
+        param Def := Set->TakeIf(it mod 3 = 0);
+        var Some from Set def Def;
+    };
+    P;
+    P with { Set: Range(5) };
+    P with { Set: Range(0) };
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param Set := Range(10); param Def := Set->TakeIf(it mod 3 @= 0); var Some from Set def Def }
+   1) [0] Expr P
+   2) [0] Expr P=>{ Set : Range(5) }
+   3) [0] Expr P=>{ Set : Range(0) }
+   4) [0] End
+
+>    0) [0] Define P <- module { param Set := Range(10); param Def := Set->TakeIf(it mod 3 @= 0); var Some from Set def Def }
+Global 'P' has DType: M{param Def:i8*, param Set:i8*, var Some:i8*}, SysType: RuntimeModule<{Seq<i8>,Seq<i8>,Seq<i8>},(Seq<i8>,Seq<i8>,Seq<i8>,Seq<i8>)>
+>    1) [0] Expr P
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: Compound<i8*>
+
+  Some src: !1x.3
+  Some dst: SelectSeq*([$0, $1, $2, $3, $4, $5, $6, $7, $8, $9], Compound<i8*>)
+
+>    2) [0] Expr P=>{ Set : Range(5) }
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: Compound<i8*>
+
+  Some src: !1x.3
+  Some dst: SelectSeq*([$0, $1, $2, $3, $4], Compound<i8*>)
+
+>    3) [0] Expr P=>{ Set : Range(0) }
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: Compound<i8*>
+
+Domain sequence for 'Some' is empty: !1x.0
+  Some src: !1x.3
+  Some dst: !1x.3
+
+>    4) [0] End
+

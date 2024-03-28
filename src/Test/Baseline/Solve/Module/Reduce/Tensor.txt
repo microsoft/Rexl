@@ -1,0 +1,268 @@
+>>> *** Source:
+    plan {
+        // ******* Parameters *******
+        // The product profit per unit (P rows).
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0 },
+        ];
+        // The resource quantities that we have (R rows).
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        // The amount of each resource required for each product unit (R x P rows).
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        // ******* Computed Constants *******
+        const NumProds := Count(Products);
+        // Indexed products.
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        // Resource amount information, eg, amt we have, and amt need for each kind of product.
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        // ******* Free Variables *******
+        // How much of each product to make (P slots in a tensor).
+        var Make from Tensor.Fill(0.0, NumProds) def Tensor.From(IndexedProducts.Want);
+        // ******* Computed Variables *******
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        let ProdAmts := IndexedProducts+>{ Make: Make[Index] };
+        // ******* Measures *******
+        // Total profit.
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        // ******* Constraints *******
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    // Zero size tensor.
+    plan {
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+        ]->Take(0);
+        var Make from Tensor.Fill(0.0, Products->Count()) def Tensor.From(Products.Want);
+        msr Profit := Sum(Products, Profit * Make[Index]);
+    };
+    plan {
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+        ]->Take(0);
+        var Make def Tensor.From(Products.Want);
+        msr Profit := Sum(Products, Profit * Make[Index]);
+    };
+    plan {
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+        ]->Take(0);
+        var Make to Tensor.From(Products.Want);
+        msr Profit := Sum(Products, Profit * Make[Index]);
+    };
+    // Shape mismatch.
+    plan {
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+            { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+        ];
+        var Make from Tensor.Fill(0.0, Products->Count() + 1) to Tensor.From(Products.Want);
+        var Make2 from Tensor.Fill(0.0, Products->Count() + 1) def Tensor.From(Products.Want);
+        msr Profit := Sum(Products, Profit * Make[Index]);
+    };
+    // All tensors null.
+    P := plan {
+        param UseNull := false;
+        var Make from (null if UseNull else Tensor.From(Range(5)));
+    };
+    P;
+    P with { UseNull: true };
+    // Rank zero not supported.
+    plan { var Make from Tensor.Fill(0.0); };
+    plan { var Make to Tensor.Fill(0.0); };
+    plan { var Make def Tensor.Fill(0.0); };
+    // Reduce indexing into Tensor.From on a sequence.
+    plan {
+        var X from 3 to 7;
+        let T1 := Tensor.From([3, X, 8]);
+        let T2 := Tensor.From([3, X, 8, X, 1, -2], 2, 3);
+        msr M1_1 := T1[1];
+        msr M1_2 := T1[-1];
+        msr M2_1 := T2[1, 1];
+        msr M2_2 := T2[1, -1];
+        msr M2_3 := T2[1, -5];
+    };
+
+>>> *** Instructions:
+   0) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const NumProds := Count(Products); const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, NumProds) def Tensor.From(IndexedProducts.Want); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; let ProdAmts := IndexedProducts+>{ Make : Make[Index] }; msr Profit := Sum(IndexedProducts, Profit * Make[Index]); con ResCons := ResAmts.Need $<= ResAmts.Have }
+   1) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make from Tensor.Fill(0, Products->Count()) def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+   2) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+   3) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make to Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+   4) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]; var Make from Tensor.Fill(0, Products->Count() + 1) to Tensor.From(Products.Want); var Make2 from Tensor.Fill(0, Products->Count() + 1) def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+   5) [0] Define P <- module { param UseNull := false; var Make from null if UseNull else Tensor.From(Range(5)) }
+   6) [0] Expr P
+   7) [0] Expr P=>{ UseNull : true }
+   8) [0] Expr module { var Make from Tensor.Fill(0) }
+   9) [0] Expr module { var Make to Tensor.Fill(0) }
+  10) [0] Expr module { var Make def Tensor.Fill(0) }
+  11) [0] Expr module { var X from 3 to 7; let T1 := Tensor.From([3, X, 8]); let T2 := Tensor.From([3, X, 8, X, 1, -2], 2, 3); msr M1_1 := T1[1]; msr M1_2 := T1[-1]; msr M2_1 := T2[1, 1]; msr M2_2 := T2[1, -1]; msr M2_3 := T2[1, -5] }
+  12) [0] End
+
+>    0) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const NumProds := Count(Products); const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, NumProds) def Tensor.From(IndexedProducts.Want); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; let ProdAmts := IndexedProducts+>{ Make : Make[Index] }; msr Profit := Sum(IndexedProducts, Profit * Make[Index]); con ResCons := ResAmts.Need $<= ResAmts.Have }
+*** Reduction ***
+  Products src: !1x.0
+  Products dst: Compound<{PID:s, Profit:r8, Want:r8}*>
+
+  Resources src: !1x.1
+  Resources dst: Compound<{Have:i8, RID:s}*>
+
+  R_Per_P src: !1x.2
+  R_Per_P dst: Compound<{Need:r8, PID:s, RID:s}*>
+
+  NumProds src: !1x.3
+  NumProds dst: 2
+
+  IndexedProducts src: !1x.4
+  IndexedProducts dst: Compound<{Index:i8, PID:s, Profit:r8, Want:r8}*>
+
+  ResAmtInfo src: !1x.5
+  ResAmtInfo dst: Compound<{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*>
+
+  Make src: !1x.7
+  Make dst: [! $0, $1 !]:r8[2]
+
+  ResAmts src: ForEach(*2: !1x.5, {Have:*2.Have, Need:Sum(*3: *2.Needs, Mul(*3.Need, !1x.7[*3.Index])), RID:*2.RID})
+  ResAmts dst: ForEach(*1: Compound<i8*>, *2: Compound<{Index:i8, Need:r8, RID:s}**>, *3: Compound<s*>, {Have:*1, Need:Sum(*4: *2, Mul(*4.Need, [! $0, $1 !]:r8[2][*4.Index])), RID:*3})
+  ResAmts fin: [{Have:20, Need:Add($0, Mul(3, $1)), RID:"R0"}, {Have:35, Need:Add(Mul(2, $0), Mul(2, $1)), RID:"R1"}]
+
+  ProdAmts src: ForEach(*2: !1x.4, SetFields(!3: *2, Make : !1x.7[!3.Index]))
+  ProdAmts dst: ForEach(*1: Compound<{Index:i8, PID:s, Profit:r8, Want:r8}*>, SetFields(!2: *1, Make : [! $0, $1 !]:r8[2][!2.Index]))
+  ProdAmts fin: [SetFields(!1: Compound<{Index:i8, PID:s, Profit:r8, Want:r8}>, Make : $0), SetFields(!1: Compound<{Index:i8, PID:s, Profit:r8, Want:r8}>, Make : $1)]
+
+  Profit src: Sum(*2: !1x.4, Mul(*2.Profit, !1x.7[*2.Index]))
+  Profit dst: Sum(ForEach(*1: Compound<i8*>, *2: Compound<r8*>, Mul(*2, [! $0, $1 !]:r8[2][*1])))
+  Profit fin: Add(Mul(12, $0), Mul(15, $1))
+
+  ResCons src: ForEach(*2: !1x.8, *2.Need $<= Num<r8>(*2.Have))
+  ResCons dst: ForEach(*1: Compound<i8*>, *2: Compound<{Index:i8, Need:r8, RID:s}**>, Sum(*3: *2, Mul(*3.Need, [! $0, $1 !]:r8[2][*3.Index])) $<= Num<r8>(*1))
+  ResCons fin: [Add($0, Mul(3, $1)) $<= 20, Add(Mul(2, $0), Mul(2, $1)) $<= 35]
+
+>    1) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make from Tensor.Fill(0, Products->Count()) def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+*** Reduction ***
+  Products src: !1x.0
+  Products dst: null
+
+  Make src: !1x.2
+  Make dst: [!  !]:r8[0]
+
+  Profit src: Sum(*2: !1x.0, Mul(*2.Profit, !1x.2[*2.Index]))
+  Profit dst: 0
+
+>    2) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+*** Reduction ***
+  Products src: !1x.0
+  Products dst: null
+
+  Make src: !1x.1
+  Make dst: [!  !]:r8[0]
+
+  Profit src: Sum(*2: !1x.0, Mul(*2.Profit, !1x.1[*2.Index]))
+  Profit dst: 0
+
+>    3) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]->Take(0); var Make to Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+*** Reduction ***
+  Products src: !1x.0
+  Products dst: null
+
+  Make src: !1x.2
+  Make dst: [!  !]:r8[0]
+
+  Profit src: Sum(*2: !1x.0, Mul(*2.Profit, !1x.2[*2.Index]))
+  Profit dst: 0
+
+>    4) [0] Expr module { param Products := [{ PID : "P0", Profit : 12, Want : 7, Index : 0 }, { PID : "P1", Profit : 15, Want : 10, Index : 1 }]; var Make from Tensor.Fill(0, Products->Count() + 1) to Tensor.From(Products.Want); var Make2 from Tensor.Fill(0, Products->Count() + 1) def Tensor.From(Products.Want); msr Profit := Sum(Products, Profit * Make[Index]) }
+*** Reduction ***
+  Products src: !1x.0
+  Products dst: Compound<{Index:i8, PID:s, Profit:r8, Want:r8}*>
+
+Adding module symbol 'Make' failed
+  Make src: !1x.3
+  Make dst: !1x.3
+
+Adding module symbol 'Make2' failed
+  Make2 src: !1x.5
+  Make2 dst: !1x.5
+
+  Profit src: Sum(*2: !1x.0, Mul(*2.Profit, !1x.3[*2.Index]))
+  Profit dst: Sum(ForEach(*1: Compound<i8*>, *2: Compound<r8*>, Mul(*2, !3x.3[*1])))
+  Profit fin: Add(Mul(12, !1x.3[0]), Mul(15, !1x.3[1]))
+
+>    5) [0] Define P <- module { param UseNull := false; var Make from null if UseNull else Tensor.From(Range(5)) }
+Global 'P' has DType: M{var Make:i8[*]?, param UseNull:b}, SysType: RuntimeModule<{Ten<i8>,bool},(bool,Ten<i8>,Ten<i8>)>
+>    6) [0] Expr P
+*** Reduction ***
+  UseNull src: !1x.0
+  UseNull dst: false
+
+  Make src: !1x.2
+  Make dst: Ref<i8[*]?>([! $0, $1, $2, $3, $4 !]:i8[5])
+
+>    7) [0] Expr P=>{ UseNull : true }
+*** Reduction ***
+  UseNull src: !1x.0
+  UseNull dst: true
+
+Adding module symbol 'Make' failed
+  Make src: !1x.2
+  Make dst: !1x.2
+
+>    8) [0] Expr module { var Make from Tensor.Fill(0) }
+*** Reduction ***
+Adding module symbol 'Make' failed
+  Make src: !1x.1
+  Make dst: !1x.1
+
+>    9) [0] Expr module { var Make to Tensor.Fill(0) }
+*** Reduction ***
+Adding module symbol 'Make' failed
+  Make src: !1x.1
+  Make dst: !1x.1
+
+>   10) [0] Expr module { var Make def Tensor.Fill(0) }
+*** Reduction ***
+Adding module symbol 'Make' failed
+  Make src: !1x.0
+  Make dst: !1x.0
+
+>   11) [0] Expr module { var X from 3 to 7; let T1 := Tensor.From([3, X, 8]); let T2 := Tensor.From([3, X, 8, X, 1, -2], 2, 3); msr M1_1 := T1[1]; msr M1_2 := T1[-1]; msr M2_1 := T2[1, 1]; msr M2_2 := T2[1, -1]; msr M2_3 := T2[1, -5] }
+*** Reduction ***
+  X src: !1x.2
+  X dst: $0
+
+  T1 src: [! 3, !1x.2, 8 !]:i8[3]
+  T1 dst: [! 3, $0, 8 !]:i8[3]
+
+  T2 src: [! 3, !1x.2, 8, !1x.2, 1, -2 !]:i8[2,3]
+  T2 dst: [! 3, $0, 8, $0, 1, -2 !]:i8[2,3]
+
+  M1_1 src: !1x.3[1]
+  M1_1 dst: $0
+
+  M1_2 src: !1x.3[-1]
+  M1_2 dst: 8
+
+  M2_1 src: !1x.4[1, 1]
+  M2_1 dst: 1
+
+  M2_2 src: !1x.4[1, -1]
+  M2_2 dst: -2
+
+Reduce warning: Tensor index out of range, this will produce the item type's default value
+  M2_3 src: !1x.4[1, -5]
+  M2_3 dst: 0
+
+>   12) [0] End
+

@@ -1,0 +1,154 @@
+﻿// R8 with lower bound.
+P := plan {
+    const Zero := 0.0;
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+        { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+    ];
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want);
+
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+P->Maximize(Profit);
+
+// I8 with lower bound.
+P := plan {
+    const Zero := 0;
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+        { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+    ];
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want);
+
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+P->Maximize(Profit);
+
+// R8 with upper bound.
+P := plan {
+    const Zero := 0.0;
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+        { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+    ];
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    var Make to Tensor.From(IndexedProducts.Want);
+
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+P->Maximize(Profit);
+
+// I8 with upper bound.
+P := plan {
+    const Zero := 0;
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+        { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+    ];
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    var Make to Tensor.From(IndexedProducts.Want);
+
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+P->Maximize(Profit);
+
+// I4 with lower bound (NYI).
+P := plan {
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7 },
+        { PID: "P1", Profit: 15.0, Want: 10 },
+    ];
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    var Make from Tensor.Fill(0i4, Count(Products));
+
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+P->Maximize(Profit, "glpk");
+P->Maximize(Profit, "highs");

@@ -1,0 +1,123 @@
+>>> *** Source:
+    N := 6;
+    M := module {
+        var X from 0;
+        var Y from 0;
+        msr S := X + Y;
+        con C1 := X + 2 * Y <= N;
+        con C2 := 2 * X + Y <= N;
+    };
+    M;
+    M->Maximize(S);
+    Range(10)->ForEach(as n,
+        module {
+            var X from 0;
+            var Y from 0;
+            msr S := 4 * X + 5 * Y;
+            con C1 := X + 2 * Y <= n;
+            con C2 := 2 * X + Y <= n;
+        }->Maximize(S));
+
+>>> *** Instructions:
+   0) [0] Define N <- 6
+   1) [0] Define M <- module { var X from 0; var Y from 0; msr S := X + Y; con C1 := X + 2 * Y $<= N; con C2 := 2 * X + Y $<= N }
+   2) [0] Expr M
+   3) [0] Expr M->Maximize(S)
+   4) [0] Expr Range(10)->ForEach(as n, module { var X from 0; var Y from 0; msr S := 4 * X + 5 * Y; con C1 := X + 2 * Y $<= n; con C2 := 2 * X + Y $<= n }->Maximize(S))
+   5) [0] End
+
+>    0) [0] Define N <- 6
+Global 'N' has DType: i8, SysType: i8
+>    1) [0] Define M <- module { var X from 0; var Y from 0; msr S := X + Y; con C1 := X + 2 * Y $<= N; con C2 := 2 * X + Y $<= N }
+Global 'M' has DType: M{con C1:b, con C2:b, msr S:i8, var X:i8, var Y:i8}, SysType: RuntimeModule<{bool,bool,i8,i8,i8},(i8,i8,i8,i8,i8,bool,bool),(i8)>
+>    2) [0] Expr M
+module symbols:
+  var X: 0
+  var Y: 0
+  msr S: 0
+  con C1: true
+  con C2: true
+>    3) [0] Expr M->Maximize(S)
+Solver: GLPK
+module symbols:
+  var X: 2
+  var Y: 2
+  msr S: 4
+  con C1: true
+  con C2: true
+*** Ctx ping count: 0
+>    4) [0] Expr Range(10)->ForEach(as n, module { var X from 0; var Y from 0; msr S := 4 * X + 5 * Y; con C1 := X + 2 * Y $<= n; con C2 := 2 * X + Y $<= n }->Maximize(S))
+Seq<RuntimeModule<{bool,bool,i8,i8,i8}>>
+Solver: GLPK
+   0) module symbols:
+        var X: 0
+        var Y: 0
+        msr S: 0
+        con C1: true
+        con C2: true
+Solver: GLPK
+   1) module symbols:
+        var X: 0
+        var Y: 0
+        msr S: 0
+        con C1: true
+        con C2: true
+Solver: GLPK
+   2) module symbols:
+        var X: 0
+        var Y: 1
+        msr S: 5
+        con C1: true
+        con C2: true
+Solver: GLPK
+   3) module symbols:
+        var X: 1
+        var Y: 1
+        msr S: 9
+        con C1: true
+        con C2: true
+Solver: GLPK
+   4) module symbols:
+        var X: 0
+        var Y: 2
+        msr S: 10
+        con C1: true
+        con C2: true
+Solver: GLPK
+   5) module symbols:
+        var X: 1
+        var Y: 2
+        msr S: 14
+        con C1: true
+        con C2: true
+Solver: GLPK
+   6) module symbols:
+        var X: 2
+        var Y: 2
+        msr S: 18
+        con C1: true
+        con C2: true
+Solver: GLPK
+   7) module symbols:
+        var X: 1
+        var Y: 3
+        msr S: 19
+        con C1: true
+        con C2: true
+Solver: GLPK
+   8) module symbols:
+        var X: 2
+        var Y: 3
+        msr S: 23
+        con C1: true
+        con C2: true
+Solver: GLPK
+   9) module symbols:
+        var X: 3
+        var Y: 3
+        msr S: 27
+        con C1: true
+        con C2: true
+*** Ctx ping count: 0
+>    5) [0] End
+

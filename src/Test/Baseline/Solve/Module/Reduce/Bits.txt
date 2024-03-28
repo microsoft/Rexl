@@ -1,0 +1,104 @@
+>>> *** Source:
+    BitPlan := plan {
+      param Domain := Range(10)->(1 shl it);
+      param N := 19;
+      var Bits from Domain def [];
+      msr Num := Count(Bits);
+      msr Sum := Sum(Bits);
+      msr Dif := N - Sum;
+      msr Neg := Sum - N;
+      con Limit := Sum <= N;
+    };
+    BitPlan;
+    BitPlan with { N: 13 };
+    BitPlan with { Domain: [ 1, 2, 3, 5 ] };
+
+>>> *** Instructions:
+   0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+   1) [0] Expr BitPlan
+   2) [0] Expr BitPlan=>{ N : 13 }
+   3) [0] Expr BitPlan=>{ Domain : [1, 2, 3, 5] }
+   4) [0] End
+
+>    0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+Global 'BitPlan' has DType: M{var Bits:i8*, msr Dif:i8, param Domain:i8*, con Limit:b, param N:i8, msr Neg:i8, msr Num:i8, msr Sum:i8}, SysType: RuntimeModule<{Seq<i8>,i8,Seq<i8>,bool,i8,i8,i8,i8},(Seq<i8>,i8,Seq<i8>,Seq<i8>,i8,i8,i8,i8,bool)>
+>    1) [0] Expr BitPlan
+*** Reduction ***
+  Domain src: !1x.0
+  Domain dst: Compound<i8*>
+
+  N src: !1x.1
+  N dst: 19
+
+  Bits src: !1x.3
+  Bits dst: SelectSeq*([$0, $1, $2, $3, $4, $5, $6, $7, $8, $9], Compound<i8*>)
+
+  Num src: Count(!1x.3)
+  Num dst: Add(Num<i8>($0), Num<i8>($1), Num<i8>($2), Num<i8>($3), Num<i8>($4), Num<i8>($5), Num<i8>($6), Num<i8>($7), Num<i8>($8), Num<i8>($9))
+
+  Sum src: Sum(!1x.3)
+  Sum dst: Add(Num<i8>($0), Mul(Num<i8>($1), 2), Mul(Num<i8>($2), 4), Mul(Num<i8>($3), 8), Mul(Num<i8>($4), 16), Mul(Num<i8>($5), 32), Mul(Num<i8>($6), 64), Mul(Num<i8>($7), 128), Mul(Num<i8>($8), 256), Mul(Num<i8>($9), 512))
+
+  Dif src: Add(!1x.1, [-] !1x.5)
+  Dif dst: Add([-] $10, 19)
+
+  Neg src: Add(!1x.5, [-] !1x.1)
+  Neg dst: Add($10, [-] 19)
+
+  Limit src: !1x.5 @<= !1x.1
+  Limit dst: $10 @<= 19
+
+>    2) [0] Expr BitPlan=>{ N : 13 }
+*** Reduction ***
+  Domain src: !1x.0
+  Domain dst: Compound<i8*>
+
+  N src: !1x.1
+  N dst: 13
+
+  Bits src: !1x.3
+  Bits dst: SelectSeq*([$0, $1, $2, $3, $4, $5, $6, $7, $8, $9], Compound<i8*>)
+
+  Num src: Count(!1x.3)
+  Num dst: Add(Num<i8>($0), Num<i8>($1), Num<i8>($2), Num<i8>($3), Num<i8>($4), Num<i8>($5), Num<i8>($6), Num<i8>($7), Num<i8>($8), Num<i8>($9))
+
+  Sum src: Sum(!1x.3)
+  Sum dst: Add(Num<i8>($0), Mul(Num<i8>($1), 2), Mul(Num<i8>($2), 4), Mul(Num<i8>($3), 8), Mul(Num<i8>($4), 16), Mul(Num<i8>($5), 32), Mul(Num<i8>($6), 64), Mul(Num<i8>($7), 128), Mul(Num<i8>($8), 256), Mul(Num<i8>($9), 512))
+
+  Dif src: Add(!1x.1, [-] !1x.5)
+  Dif dst: Add([-] $10, 13)
+
+  Neg src: Add(!1x.5, [-] !1x.1)
+  Neg dst: Add($10, [-] 13)
+
+  Limit src: !1x.5 @<= !1x.1
+  Limit dst: $10 @<= 13
+
+>    3) [0] Expr BitPlan=>{ Domain : [1, 2, 3, 5] }
+*** Reduction ***
+  Domain src: !1x.0
+  Domain dst: Compound<i8*>
+
+  N src: !1x.1
+  N dst: 19
+
+  Bits src: !1x.3
+  Bits dst: SelectSeq*([$0, $1, $2, $3], Compound<i8*>)
+
+  Num src: Count(!1x.3)
+  Num dst: Add(Num<i8>($0), Num<i8>($1), Num<i8>($2), Num<i8>($3))
+
+  Sum src: Sum(!1x.3)
+  Sum dst: Add(Num<i8>($0), Mul(Num<i8>($1), 2), Mul(Num<i8>($2), 3), Mul(Num<i8>($3), 5))
+
+  Dif src: Add(!1x.1, [-] !1x.5)
+  Dif dst: Add([-] $4, 19)
+
+  Neg src: Add(!1x.5, [-] !1x.1)
+  Neg dst: Add($4, [-] 19)
+
+  Limit src: !1x.5 @<= !1x.1
+  Limit dst: $4 @<= 19
+
+>    4) [0] End
+

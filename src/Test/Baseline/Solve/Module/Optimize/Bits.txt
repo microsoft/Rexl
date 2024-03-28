@@ -1,0 +1,529 @@
+>>> *** Source:
+    BitPlan := plan {
+      param Domain := Range(10)->(1 shl it);
+      param N := 19;
+      var Bits from Domain def [];
+      msr Num := Count(Bits);
+      msr Sum := Sum(Bits);
+      msr Dif := N - Sum;
+      msr Neg := Sum - N;
+      con Limit := Sum <= N;
+    };
+    "*** Symbols ***";
+    BitPlan.Domain;
+    BitPlan.N;
+    BitPlan.Bits;
+    BitPlan.Sum;
+    BitPlan.Num;
+    BitPlan.Limit;
+    "*** Evals ***";
+    BitPlan;
+    BitPlan with { N: 13 };
+    "*** Maximize ***";
+    BitPlan->Maximize(Sum);
+    BitPlan->Maximize(Sum, "glpk");
+    BitPlan->Maximize(Sum, "highs");
+    BitPlan with { N: 13 }->Maximize(Sum);
+    BitPlan with { N: 2000 }->Maximize(Sum);
+    "*** Minimize ***";
+    BitPlan->Minimize(Dif);
+    BitPlan with { N: 13 }->Minimize(Dif);
+    BitPlan with { N: 2000 }->Minimize(Dif);
+    "*** Maximize Neg ***";
+    BitPlan->Maximize(Neg);
+    BitPlan with { N: 13 }->Maximize(Neg);
+    BitPlan with { N: 2000 }->Maximize(Neg);
+    "*** Maximize Num ***";
+    BitPlan->Maximize(Num);
+    BitPlan with { N: 13 }->Maximize(Num);
+    BitPlan with { N: 2000 }->Maximize(Num);
+
+>>> *** Instructions:
+   0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+   1) [0] Expr "*** Symbols ***"
+   2) [0] Expr BitPlan.Domain
+   3) [0] Expr BitPlan.N
+   4) [0] Expr BitPlan.Bits
+   5) [0] Expr BitPlan.Sum
+   6) [0] Expr BitPlan.Num
+   7) [0] Expr BitPlan.Limit
+   8) [0] Expr "*** Evals ***"
+   9) [0] Expr BitPlan
+  10) [0] Expr BitPlan=>{ N : 13 }
+  11) [0] Expr "*** Maximize ***"
+  12) [0] Expr BitPlan->Maximize(Sum)
+  13) [0] Expr BitPlan->Maximize(Sum, "glpk")
+  14) [0] Expr BitPlan->Maximize(Sum, "highs")
+  15) [0] Expr BitPlan=>{ N : 13 }->Maximize(Sum)
+  16) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Sum)
+  17) [0] Expr "*** Minimize ***"
+  18) [0] Expr BitPlan->Minimize(Dif)
+  19) [0] Expr BitPlan=>{ N : 13 }->Minimize(Dif)
+  20) [0] Expr BitPlan=>{ N : 2000 }->Minimize(Dif)
+  21) [0] Expr "*** Maximize Neg ***"
+  22) [0] Expr BitPlan->Maximize(Neg)
+  23) [0] Expr BitPlan=>{ N : 13 }->Maximize(Neg)
+  24) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Neg)
+  25) [0] Expr "*** Maximize Num ***"
+  26) [0] Expr BitPlan->Maximize(Num)
+  27) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num)
+  28) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
+  29) [0] End
+
+>    0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
+Global 'BitPlan' has DType: M{var Bits:i8*, msr Dif:i8, param Domain:i8*, con Limit:b, param N:i8, msr Neg:i8, msr Num:i8, msr Sum:i8}, SysType: RuntimeModule<{Seq<i8>,i8,Seq<i8>,bool,i8,i8,i8,i8},(Seq<i8>,i8,Seq<i8>,Seq<i8>,i8,i8,i8,i8,bool)>
+>    1) [0] Expr "*** Symbols ***"
+*** Symbols ***
+>    2) [0] Expr BitPlan.Domain
+Seq<i8>
+   0) 1
+   1) 2
+   2) 4
+   3) 8
+   4) 16
+   5) 32
+   6) 64
+   7) 128
+   8) 256
+   9) 512
+>    3) [0] Expr BitPlan.N
+19
+>    4) [0] Expr BitPlan.Bits
+<null>
+>    5) [0] Expr BitPlan.Sum
+0
+>    6) [0] Expr BitPlan.Num
+0
+>    7) [0] Expr BitPlan.Limit
+true
+>    8) [0] Expr "*** Evals ***"
+*** Evals ***
+>    9) [0] Expr BitPlan
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: <null>
+  msr Num: 0
+  msr Sum: 0
+  msr Dif: 19
+  msr Neg: -19
+  con Limit: true
+>   10) [0] Expr BitPlan=>{ N : 13 }
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: <null>
+  msr Num: 0
+  msr Sum: 0
+  msr Dif: 13
+  msr Neg: -13
+  con Limit: true
+>   11) [0] Expr "*** Maximize ***"
+*** Maximize ***
+>   12) [0] Expr BitPlan->Maximize(Sum)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 16
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   13) [0] Expr BitPlan->Maximize(Sum, "glpk")
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 16
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   14) [0] Expr BitPlan->Maximize(Sum, "highs")
+Solver: HiGHS
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 16
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   15) [0] Expr BitPlan=>{ N : 13 }->Maximize(Sum)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 1
+       1) 4
+       2) 8
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   16) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Sum)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 2000
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: 977
+  msr Neg: -977
+  con Limit: true
+*** Ctx ping count: 0
+>   17) [0] Expr "*** Minimize ***"
+*** Minimize ***
+>   18) [0] Expr BitPlan->Minimize(Dif)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 16
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   19) [0] Expr BitPlan=>{ N : 13 }->Minimize(Dif)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 1
+       1) 4
+       2) 8
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   20) [0] Expr BitPlan=>{ N : 2000 }->Minimize(Dif)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 2000
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: 977
+  msr Neg: -977
+  con Limit: true
+*** Ctx ping count: 0
+>   21) [0] Expr "*** Maximize Neg ***"
+*** Maximize Neg ***
+>   22) [0] Expr BitPlan->Maximize(Neg)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 16
+  msr Num: 3
+  msr Sum: 19
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   23) [0] Expr BitPlan=>{ N : 13 }->Maximize(Neg)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 1
+       1) 4
+       2) 8
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   24) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Neg)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 2000
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: 977
+  msr Neg: -977
+  con Limit: true
+*** Ctx ping count: 0
+>   25) [0] Expr "*** Maximize Num ***"
+*** Maximize Num ***
+>   26) [0] Expr BitPlan->Maximize(Num)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+  msr Num: 4
+  msr Sum: 15
+  msr Dif: 4
+  msr Neg: -4
+  con Limit: true
+*** Ctx ping count: 0
+>   27) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 1
+       1) 4
+       2) 8
+  msr Num: 3
+  msr Sum: 13
+  msr Dif: 0
+  msr Neg: 0
+  con Limit: true
+*** Ctx ping count: 0
+>   28) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
+Solver: GLPK
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 2000
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  msr Num: 10
+  msr Sum: 1023
+  msr Dif: 977
+  msr Neg: -977
+  con Limit: true
+*** Ctx ping count: 0
+>   29) [0] End
+

@@ -1,0 +1,280 @@
+>>> *** Source:
+    Knap := plan {
+      param Items := [
+        { Id: 0, V:  2, W:  3 },
+        { Id: 1, V:  8, W:  5 },
+        { Id: 2, V:  7, W:  8 },
+        { Id: 3, V:  6, W: 10 },
+        { Id: 4, V:  9, W: 12 },
+        { Id: 5, V:  8, W: 13 },
+      ];
+      param MaxWeight := 19;
+      const Empty := [ ] if true else [ 0 ];
+      param Exclude := Empty;
+      param Include := Empty;
+      const NumInc := Count(Include);
+      const ItemsEx := Items+>{ V2: Abs(V - 8) + 1, NumX: CastI4(Id in Exclude), NumI: CastI4(Id in Include) };
+      var Use from ItemsEx;
+      msr Weight := Sum(Use, W);
+      msr Value  := Sum(Use, V);
+      msr Value2 := Sum(Use, V2);
+      con ConWeight := Weight <= MaxWeight;
+      let NumX := Sum(Use, NumX);
+      let NumI := Sum(Use, NumI);
+      con ConExclude := NumX = 0;
+      con ConInclude := NumI = NumInc;
+    };
+    Knap;
+    Knap with { Exclude: [ 3 ] };
+    "*** Maximize Value2 ***";
+    Knap->Maximize(Value2);
+    "*** Maximize Value2 with Exclude: [3] ***";
+    Knap with { Exclude: [ 3 ] }->Maximize(Value2);
+    "*** Maximize Value2 with Exclude: [3], Include: [1] ***";
+    Knap=>{ Exclude: [ 3 ], Include: [ 1 ] }->Maximize(Value2);
+    "*** Maximize Value2 with Include: [1,5] ***";
+    Knap=>{ Include: [ 1, 5 ] }->Maximize(Value2);
+
+>>> *** Instructions:
+   0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 2, W : 3 }, { Id : 1, V : 8, W : 5 }, { Id : 2, V : 7, W : 8 }, { Id : 3, V : 6, W : 10 }, { Id : 4, V : 9, W : 12 }, { Id : 5, V : 8, W : 13 }]; param MaxWeight := 19; const Empty := [] if true else [0]; param Exclude := Empty; param Include := Empty; const NumInc := Count(Include); const ItemsEx := Items+>{ V2 : Abs(V - 8) + 1, NumX : CastI4(Id in Exclude), NumI : CastI4(Id in Include) }; var Use from ItemsEx; msr Weight := Sum(Use, W); msr Value := Sum(Use, V); msr Value2 := Sum(Use, V2); con ConWeight := Weight $<= MaxWeight; let NumX := Sum(Use, NumX); let NumI := Sum(Use, NumI); con ConExclude := NumX @= 0; con ConInclude := NumI @= NumInc }
+   1) [0] Expr Knap
+   2) [0] Expr Knap=>{ Exclude : [3] }
+   3) [0] Expr "*** Maximize Value2 ***"
+   4) [0] Expr Knap->Maximize(Value2)
+   5) [0] Expr "*** Maximize Value2 with Exclude: [3] ***"
+   6) [0] Expr Knap=>{ Exclude : [3] }->Maximize(Value2)
+   7) [0] Expr "*** Maximize Value2 with Exclude: [3], Include: [1] ***"
+   8) [0] Expr Knap=>{ Exclude : [3], Include : [1] }->Maximize(Value2)
+   9) [0] Expr "*** Maximize Value2 with Include: [1,5] ***"
+  10) [0] Expr Knap=>{ Include : [1, 5] }->Maximize(Value2)
+  11) [0] End
+
+>    0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 2, W : 3 }, { Id : 1, V : 8, W : 5 }, { Id : 2, V : 7, W : 8 }, { Id : 3, V : 6, W : 10 }, { Id : 4, V : 9, W : 12 }, { Id : 5, V : 8, W : 13 }]; param MaxWeight := 19; const Empty := [] if true else [0]; param Exclude := Empty; param Include := Empty; const NumInc := Count(Include); const ItemsEx := Items+>{ V2 : Abs(V - 8) + 1, NumX : CastI4(Id in Exclude), NumI : CastI4(Id in Include) }; var Use from ItemsEx; msr Weight := Sum(Use, W); msr Value := Sum(Use, V); msr Value2 := Sum(Use, V2); con ConWeight := Weight $<= MaxWeight; let NumX := Sum(Use, NumX); let NumI := Sum(Use, NumI); con ConExclude := NumX @= 0; con ConInclude := NumI @= NumInc }
+Global 'Knap' has DType: M{con ConExclude:b, con ConInclude:b, con ConWeight:b, const Empty:i8*, param Exclude:i8*, param Include:i8*, param Items:{Id:i8, V:i8, W:i8}*, const ItemsEx:{Id:i8, NumI:i4, NumX:i4, V:i8, V2:i8, W:i8}*, param MaxWeight:i8, let NumI:i8, const NumInc:i8, let NumX:i8, var Use:{Id:i8, NumI:i4, NumX:i4, V:i8, V2:i8, W:i8}*, msr Value:i8, msr Value2:i8, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,bool,Seq<i8>,Seq<i8>,Seq<i8>,Seq<{i8,i8,i8}>,Seq<{i8,i4,i4,i8,i8,i8}>,i8,i8,i8,i8,Seq<{i8,i4,i4,i8,i8,i8}>,i8,i8,i8},(Seq<{i8,i8,i8}>,i8,Seq<i8>,Seq<i8>,Seq<i8>,i8,Seq<{i8,i4,i4,i8,i8,i8}>,Seq<{i8,i4,i4,i8,i8,i8}>,Seq<{i8,i4,i4,i8,i8,i8}>,i8,i8,i8,bool,i8,i8,bool,bool)>
+>    1) [0] Expr Knap
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: <null>
+  param Include: <null>
+  const NumInc: 0
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 0, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 0, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  msr Weight: 51
+  msr Value: 40
+  msr Value2: 16
+  con ConWeight: false
+  let NumX: 0
+  let NumI: 0
+  con ConExclude: true
+  con ConInclude: true
+>    2) [0] Expr Knap=>{ Exclude : [3] }
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: Seq<i8>
+       0) 3
+  param Include: <null>
+  const NumInc: 0
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 1, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 1, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  msr Weight: 51
+  msr Value: 40
+  msr Value2: 16
+  con ConWeight: false
+  let NumX: 1
+  let NumI: 0
+  con ConExclude: false
+  con ConInclude: true
+>    3) [0] Expr "*** Maximize Value2 ***"
+*** Maximize Value2 ***
+>    4) [0] Expr Knap->Maximize(Value2)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: <null>
+  param Include: <null>
+  const NumInc: 0
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 0, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 3, NumI: 0, NumX: 0, V: 6, V2: 3, W: 10 }
+  msr Weight: 18
+  msr Value: 16
+  msr Value2: 11
+  con ConWeight: true
+  let NumX: 0
+  let NumI: 0
+  con ConExclude: true
+  con ConInclude: true
+*** Ctx ping count: 0
+>    5) [0] Expr "*** Maximize Value2 with Exclude: [3] ***"
+*** Maximize Value2 with Exclude: [3] ***
+>    6) [0] Expr Knap=>{ Exclude : [3] }->Maximize(Value2)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: Seq<i8>
+       0) 3
+  param Include: <null>
+  const NumInc: 0
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 1, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 0, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+  msr Weight: 16
+  msr Value: 17
+  msr Value2: 10
+  con ConWeight: true
+  let NumX: 0
+  let NumI: 0
+  con ConExclude: true
+  con ConInclude: true
+*** Ctx ping count: 0
+>    7) [0] Expr "*** Maximize Value2 with Exclude: [3], Include: [1] ***"
+*** Maximize Value2 with Exclude: [3], Include: [1] ***
+>    8) [0] Expr Knap=>{ Exclude : [3], Include : [1] }->Maximize(Value2)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: Seq<i8>
+       0) 3
+  param Include: Seq<i8>
+       0) 1
+  const NumInc: 1
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 1, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 1, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 0, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 1, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+  msr Weight: 16
+  msr Value: 17
+  msr Value2: 10
+  con ConWeight: true
+  let NumX: 0
+  let NumI: 1
+  con ConExclude: true
+  con ConInclude: true
+*** Ctx ping count: 0
+>    9) [0] Expr "*** Maximize Value2 with Include: [1,5] ***"
+*** Maximize Value2 with Include: [1,5] ***
+>   10) [0] Expr Knap=>{ Include : [1, 5] }->Maximize(Value2)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 2, W: 3 }
+       1) { Id: 1, V: 8, W: 5 }
+       2) { Id: 2, V: 7, W: 8 }
+       3) { Id: 3, V: 6, W: 10 }
+       4) { Id: 4, V: 9, W: 12 }
+       5) { Id: 5, V: 8, W: 13 }
+  param MaxWeight: 19
+  const Empty: <null>
+  param Exclude: <null>
+  param Include: Seq<i8>
+       0) 1
+       1) 5
+  const NumInc: 2
+  const ItemsEx: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 0, NumI: 0, NumX: 0, V: 2, V2: 7, W: 3 }
+       1) { Id: 1, NumI: 1, NumX: 0, V: 8, V2: 1, W: 5 }
+       2) { Id: 2, NumI: 0, NumX: 0, V: 7, V2: 2, W: 8 }
+       3) { Id: 3, NumI: 0, NumX: 0, V: 6, V2: 3, W: 10 }
+       4) { Id: 4, NumI: 0, NumX: 0, V: 9, V2: 2, W: 12 }
+       5) { Id: 5, NumI: 1, NumX: 0, V: 8, V2: 1, W: 13 }
+  var Use: Seq<{i8,i4,i4,i8,i8,i8}>
+       0) { Id: 1, NumI: 1, NumX: 0, V: 8, V2: 1, W: 5 }
+       1) { Id: 5, NumI: 1, NumX: 0, V: 8, V2: 1, W: 13 }
+  msr Weight: 18
+  msr Value: 16
+  msr Value2: 2
+  con ConWeight: true
+  let NumX: 0
+  let NumI: 2
+  con ConExclude: true
+  con ConInclude: true
+*** Ctx ping count: 0
+>   11) [0] End
+

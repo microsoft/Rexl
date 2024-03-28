@@ -1,0 +1,115 @@
+>>> *** Source:
+    Menu := [
+      { Item: "PlainBagel",      Cost: 2.0, Prot: 3.0, Fat: 1.0, Grp: "Bagel" },
+      { Item: "OnionBagel",      Cost: 3.0, Prot: 4.0, Fat: 2.0, Grp: "Bagel" },
+      { Item: "EverythingBagel", Cost: 3.0, Prot: 3.5, Fat: 1.0, Grp: "Bagel" },
+      { Item: "BoiledEgg",       Cost: 3.0, Prot: 5.0, Fat: 4.0, Grp: "Egg" },
+      { Item: "FriedEgg",        Cost: 4.0, Prot: 5.0, Fat: 4.5, Grp: "Egg" },
+      { Item: "GrilledVeggies",  Cost: 5.0, Prot: 3.0, Fat: 2.0, Grp: "Veggies" },
+      { Item: "CarrotVeggies",   Cost: 4.0, Prot: 2.0, Fat: 1.0, Grp: "Veggies" },
+      { Item: "MangoJuice",      Cost: 4.0, Prot: 1.5, Fat: 0.6, Grp: "Juice" },
+      { Item: "PineappleJuice",  Cost: 5.0, Prot: 2.0, Fat: 0.3, Grp: "Juice" },
+      { Item: "BerryJuice",      Cost: 3.0, Prot: 1.0, Fat: 0.5, Grp: "Juice" },
+    ];
+    Meal := module {
+      param Menu default @Menu;
+      param BagelChoices  default Menu->Filter(Grp = "Bagel");
+      param EggChoices    default Menu->Filter(Grp = "Egg");
+      param VeggieChoices default Menu->Filter(Grp = "Veggies");
+      param JuiceChoices  default Menu->Filter(Grp = "Juice");
+      param CostMax default 100.0;
+      param FatMax  default 100.0;
+      param ProtMin default 0.0;
+      var Bagel  in BagelChoices;
+      var Egg    in EggChoices;
+      var Veggie in VeggieChoices;
+      var Juice  in JuiceChoices;
+      msr Cost := Bagel.Cost + Egg.Cost + Veggie.Cost + Juice.Cost;
+      msr Fat  := Bagel.Fat  + Egg.Fat  + Veggie.Fat  + Juice.Fat;
+      msr Prot := Bagel.Prot + Egg.Prot + Veggie.Prot + Juice.Prot;
+      con CostCon := Cost <= CostMax;
+      con FatCon  := Fat <= FatMax;
+      con ProtCon := Prot >= ProtMin;
+      
+      let Summary := { Cost, Prot, XItems: [Bagel, Egg, Veggie, Juice] };
+    };
+    Meal;
+    A := Meal->Minimize(Cost);
+    A.Cost;
+    A.Summary;
+
+>>> *** Instructions:
+   0) [0] Define Menu <- [{ Item : "PlainBagel", Cost : 2, Prot : 3, Fat : 1, Grp : "Bagel" }, { Item : "OnionBagel", Cost : 3, Prot : 4, Fat : 2, Grp : "Bagel" }, { Item : "EverythingBagel", Cost : 3, Prot : 3.5, Fat : 1, Grp : "Bagel" }, { Item : "BoiledEgg", Cost : 3, Prot : 5, Fat : 4, Grp : "Egg" }, { Item : "FriedEgg", Cost : 4, Prot : 5, Fat : 4.5, Grp : "Egg" }, { Item : "GrilledVeggies", Cost : 5, Prot : 3, Fat : 2, Grp : "Veggies" }, { Item : "CarrotVeggies", Cost : 4, Prot : 2, Fat : 1, Grp : "Veggies" }, { Item : "MangoJuice", Cost : 4, Prot : 1.5, Fat : 0.6, Grp : "Juice" }, { Item : "PineappleJuice", Cost : 5, Prot : 2, Fat : 0.3, Grp : "Juice" }, { Item : "BerryJuice", Cost : 3, Prot : 1, Fat : 0.5, Grp : "Juice" }]
+   1) [0] Define Meal <- module { param Menu := @Menu; param BagelChoices := Menu->Filter(Grp @= "Bagel"); param EggChoices := Menu->Filter(Grp @= "Egg"); param VeggieChoices := Menu->Filter(Grp @= "Veggies"); param JuiceChoices := Menu->Filter(Grp @= "Juice"); param CostMax := 100; param FatMax := 100; param ProtMin := 0; var Bagel in BagelChoices; var Egg in EggChoices; var Veggie in VeggieChoices; var Juice in JuiceChoices; msr Cost := Bagel.Cost + Egg.Cost + Veggie.Cost + Juice.Cost; msr Fat := Bagel.Fat + Egg.Fat + Veggie.Fat + Juice.Fat; msr Prot := Bagel.Prot + Egg.Prot + Veggie.Prot + Juice.Prot; con CostCon := Cost $<= CostMax; con FatCon := Fat $<= FatMax; con ProtCon := Prot $>= ProtMin; let Summary := { Cost, Prot, XItems : [Bagel, Egg, Veggie, Juice] } }
+   2) [0] Expr Meal
+   3) [0] Define A <- Meal->Minimize(Cost)
+   4) [0] Expr A.Cost
+   5) [0] Expr A.Summary
+   6) [0] End
+
+>    0) [0] Define Menu <- [{ Item : "PlainBagel", Cost : 2, Prot : 3, Fat : 1, Grp : "Bagel" }, { Item : "OnionBagel", Cost : 3, Prot : 4, Fat : 2, Grp : "Bagel" }, { Item : "EverythingBagel", Cost : 3, Prot : 3.5, Fat : 1, Grp : "Bagel" }, { Item : "BoiledEgg", Cost : 3, Prot : 5, Fat : 4, Grp : "Egg" }, { Item : "FriedEgg", Cost : 4, Prot : 5, Fat : 4.5, Grp : "Egg" }, { Item : "GrilledVeggies", Cost : 5, Prot : 3, Fat : 2, Grp : "Veggies" }, { Item : "CarrotVeggies", Cost : 4, Prot : 2, Fat : 1, Grp : "Veggies" }, { Item : "MangoJuice", Cost : 4, Prot : 1.5, Fat : 0.6, Grp : "Juice" }, { Item : "PineappleJuice", Cost : 5, Prot : 2, Fat : 0.3, Grp : "Juice" }, { Item : "BerryJuice", Cost : 3, Prot : 1, Fat : 0.5, Grp : "Juice" }]
+Global 'Menu' has DType: {Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, SysType: Seq<{r8,r8,str,str,r8}>
+>    1) [0] Define Meal <- module { param Menu := @Menu; param BagelChoices := Menu->Filter(Grp @= "Bagel"); param EggChoices := Menu->Filter(Grp @= "Egg"); param VeggieChoices := Menu->Filter(Grp @= "Veggies"); param JuiceChoices := Menu->Filter(Grp @= "Juice"); param CostMax := 100; param FatMax := 100; param ProtMin := 0; var Bagel in BagelChoices; var Egg in EggChoices; var Veggie in VeggieChoices; var Juice in JuiceChoices; msr Cost := Bagel.Cost + Egg.Cost + Veggie.Cost + Juice.Cost; msr Fat := Bagel.Fat + Egg.Fat + Veggie.Fat + Juice.Fat; msr Prot := Bagel.Prot + Egg.Prot + Veggie.Prot + Juice.Prot; con CostCon := Cost $<= CostMax; con FatCon := Fat $<= FatMax; con ProtCon := Prot $>= ProtMin; let Summary := { Cost, Prot, XItems : [Bagel, Egg, Veggie, Juice] } }
+Global 'Meal' has DType: M{var Bagel:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param BagelChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Cost:r8, con CostCon:b, param CostMax:r8, var Egg:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param EggChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Fat:r8, con FatCon:b, param FatMax:r8, var Juice:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param JuiceChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, param Menu:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Prot:r8, con ProtCon:b, param ProtMin:r8, let Summary:{Cost:r8, Prot:r8, XItems:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*}, var Veggie:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param VeggieChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*}, SysType: RuntimeModule<{{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,Seq<{r8,r8,str,str,r8}>},{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>},(Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,r8,r8,r8,Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},r8,r8,r8,bool,...),(Seq<{r8,r8,str,str,r8}>)>
+>    2) [0] Expr Meal
+module symbols:
+  param Menu: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 2, Fat: 1, Grp: Bagel, Item: PlainBagel, Prot: 3 }
+       1) { Cost: 3, Fat: 2, Grp: Bagel, Item: OnionBagel, Prot: 4 }
+       2) { Cost: 3, Fat: 1, Grp: Bagel, Item: EverythingBagel, Prot: 3.5 }
+       3) { Cost: 3, Fat: 4, Grp: Egg, Item: BoiledEgg, Prot: 5 }
+       4) { Cost: 4, Fat: 4.5, Grp: Egg, Item: FriedEgg, Prot: 5 }
+       5) { Cost: 5, Fat: 2, Grp: Veggies, Item: GrilledVeggies, Prot: 3 }
+       6) { Cost: 4, Fat: 1, Grp: Veggies, Item: CarrotVeggies, Prot: 2 }
+       7) { Cost: 4, Fat: 0.6, Grp: Juice, Item: MangoJuice, Prot: 1.5 }
+       8) { Cost: 5, Fat: 0.3, Grp: Juice, Item: PineappleJuice, Prot: 2 }
+       9) { Cost: 3, Fat: 0.5, Grp: Juice, Item: BerryJuice, Prot: 1 }
+  param BagelChoices: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 2, Fat: 1, Grp: Bagel, Item: PlainBagel, Prot: 3 }
+       1) { Cost: 3, Fat: 2, Grp: Bagel, Item: OnionBagel, Prot: 4 }
+       2) { Cost: 3, Fat: 1, Grp: Bagel, Item: EverythingBagel, Prot: 3.5 }
+  param EggChoices: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 3, Fat: 4, Grp: Egg, Item: BoiledEgg, Prot: 5 }
+       1) { Cost: 4, Fat: 4.5, Grp: Egg, Item: FriedEgg, Prot: 5 }
+  param VeggieChoices: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 5, Fat: 2, Grp: Veggies, Item: GrilledVeggies, Prot: 3 }
+       1) { Cost: 4, Fat: 1, Grp: Veggies, Item: CarrotVeggies, Prot: 2 }
+  param JuiceChoices: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 4, Fat: 0.6, Grp: Juice, Item: MangoJuice, Prot: 1.5 }
+       1) { Cost: 5, Fat: 0.3, Grp: Juice, Item: PineappleJuice, Prot: 2 }
+       2) { Cost: 3, Fat: 0.5, Grp: Juice, Item: BerryJuice, Prot: 1 }
+  param CostMax: 100
+  param FatMax: 100
+  param ProtMin: 0
+  var Bagel: { Cost: 2, Fat: 1, Grp: Bagel, Item: PlainBagel, Prot: 3 }
+  var Egg: { Cost: 3, Fat: 4, Grp: Egg, Item: BoiledEgg, Prot: 5 }
+  var Veggie: { Cost: 5, Fat: 2, Grp: Veggies, Item: GrilledVeggies, Prot: 3 }
+  var Juice: { Cost: 4, Fat: 0.6, Grp: Juice, Item: MangoJuice, Prot: 1.5 }
+  msr Cost: 14
+  msr Fat: 7.6
+  msr Prot: 12.5
+  con CostCon: true
+  con FatCon: true
+  con ProtCon: true
+  let Summary: { Cost: 14, Prot: 12.5, 
+      XItems: Seq<{r8,r8,str,str,r8}>
+           0) { Cost: 2, Fat: 1, Grp: Bagel, Item: PlainBagel, Prot: 3 }
+           1) { Cost: 3, Fat: 4, Grp: Egg, Item: BoiledEgg, Prot: 5 }
+           2) { Cost: 5, Fat: 2, Grp: Veggies, Item: GrilledVeggies, Prot: 3 }
+           3) { Cost: 4, Fat: 0.6, Grp: Juice, Item: MangoJuice, Prot: 1.5 }
+    }
+>    3) [0] Define A <- Meal->Minimize(Cost)
+Solver: GLPK
+Global 'A' has DType: M{var Bagel:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param BagelChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Cost:r8, con CostCon:b, param CostMax:r8, var Egg:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param EggChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Fat:r8, con FatCon:b, param FatMax:r8, var Juice:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param JuiceChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, param Menu:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*, msr Prot:r8, con ProtCon:b, param ProtMin:r8, let Summary:{Cost:r8, Prot:r8, XItems:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*}, var Veggie:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}, param VeggieChoices:{Cost:r8, Fat:r8, Grp:s, Item:s, Prot:r8}*}?, SysType: RuntimeModule<{{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,r8,bool,r8,{r8,r8,Seq<{r8,r8,str,str,r8}>},{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>},(Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,Seq<{r8,r8,str,str,r8}>,r8,r8,r8,Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},Seq<{r8,r8,str,str,r8}>,{r8,r8,str,str,r8},r8,r8,r8,bool,...),(Seq<{r8,r8,str,str,r8}>)>
+>    4) [0] Expr A.Cost
+12
+>    5) [0] Expr A.Summary
+{ Cost: 12, Prot: 11, 
+  XItems: Seq<{r8,r8,str,str,r8}>
+       0) { Cost: 2, Fat: 1, Grp: Bagel, Item: PlainBagel, Prot: 3 }
+       1) { Cost: 3, Fat: 4, Grp: Egg, Item: BoiledEgg, Prot: 5 }
+       2) { Cost: 4, Fat: 1, Grp: Veggies, Item: CarrotVeggies, Prot: 2 }
+       3) { Cost: 3, Fat: 0.5, Grp: Juice, Item: BerryJuice, Prot: 1 }
+}
+>    6) [0] End
+

@@ -1,0 +1,89 @@
+﻿Simple := plan {
+    // ******* Parameters *******
+
+    param Have_A def 20;
+    param Have_B def 30;
+
+    param Need_APerX := 1;
+    param Need_BPerX := 2;
+    param Need_APerY := 3;
+    param Need_BPerY := 2;
+
+    param Profit_PerX := 12.0;
+    param Profit_PerY := 15.0;
+
+    // ******* Variables *******
+
+    var Make_X from 0.0 def 100.0;
+    var Make_Y from 0.0 def 100.0;
+
+    let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y;
+    let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y;
+
+    // ******* Measures *******
+
+    // Profit.
+    msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y;
+
+    // ******* Constraints *******
+
+    // Production constraints.
+    let Surplus_A := Have_A - Use_A;
+    let Surplus_B := Have_B - Use_B;
+    con Capacity_A := Surplus_A >= 0;
+    con Capacity_B := Surplus_B >= 0;
+};
+
+Simple;
+
+Simple.Use_A;
+Simple.Make_X;
+Simple.Surplus_A;
+
+Simple with { Have_A : 1000, Have_B : 100, Make_Y : 40.0, Make_X : 30.0 };
+
+Simple->Maximize(Profit);
+Best := Simple->Maximize(Profit);
+Best;
+
+// Tweak of Simple to use integer quantities to produce.
+SimpleInt := plan {
+    // ******* Parameters *******
+
+    param Have_A def 20;
+    param Have_B def 30;
+
+    param Need_APerX := 1;
+    param Need_BPerX := 2;
+    param Need_APerY := 3;
+    param Need_BPerY := 2;
+
+    param Profit_PerX := 12.0;
+    param Profit_PerY := 15.0;
+
+    // ******* Variables *******
+
+    // Use 0 (int) rather than 0.0 (float).
+    var Make_X from 0 def 100;
+    var Make_Y from 0 def 100;
+
+    let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y;
+    let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y;
+
+    // ******* Measures *******
+
+    // Profit.
+    msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y;
+
+    // ******* Constraints *******
+
+    // Production constraints.
+    let Surplus_A := Have_A - Use_A;
+    let Surplus_B := Have_B - Use_B;
+    con Capacity_A := Surplus_A >= 0;
+    con Capacity_B := Surplus_B >= 0;
+};
+
+SimpleInt;
+BestInt := SimpleInt->Maximize(Profit);
+BestInt;

@@ -1,0 +1,161 @@
+>>> *** Source:
+    Pack := plan {
+      param Items := [ 3, 5, 8, 10, 12, 13 ];
+      param MaxWeight := 19;
+      param MinNumber := 0;
+      param MaxNumber := 1000;
+      var Use from Items;
+      msr Weight := Sum(Use);
+      msr Number := Count(Use);
+      con ConWeight := Weight <= MaxWeight;
+      con ConNumber := MinNumber <= Number <= MaxNumber;
+    };
+    Pack;
+    "*** Maximize Weight ***";
+    Pack->Maximize(Weight);
+    "*** Maximize Number ***";
+    Pack->Maximize(Number);
+    "*** Maximize Weight with MinNumber: 3 ***";
+    Pack with { MinNumber: 3 }->Maximize(Weight);
+    "*** Maximize Weight with Items = bits ***";
+    Pack with { Items: Range(10)->(1 shl it), MaxWeight: 21 }->Maximize(Weight);
+
+>>> *** Instructions:
+   0) [0] Define Pack <- module { param Items := [3, 5, 8, 10, 12, 13]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Items; msr Weight := Sum(Use); msr Number := Count(Use); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+   1) [0] Expr Pack
+   2) [0] Expr "*** Maximize Weight ***"
+   3) [0] Expr Pack->Maximize(Weight)
+   4) [0] Expr "*** Maximize Number ***"
+   5) [0] Expr Pack->Maximize(Number)
+   6) [0] Expr "*** Maximize Weight with MinNumber: 3 ***"
+   7) [0] Expr Pack=>{ MinNumber : 3 }->Maximize(Weight)
+   8) [0] Expr "*** Maximize Weight with Items = bits ***"
+   9) [0] Expr Pack=>{ Items : Range(10)->(1 shl it), MaxWeight : 21 }->Maximize(Weight)
+  10) [0] End
+
+>    0) [0] Define Pack <- module { param Items := [3, 5, 8, 10, 12, 13]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Items; msr Weight := Sum(Use); msr Number := Count(Use); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+Global 'Pack' has DType: M{con ConNumber:b, con ConWeight:b, param Items:i8*, param MaxNumber:i8, param MaxWeight:i8, param MinNumber:i8, msr Number:i8, var Use:i8*, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,Seq<i8>,i8,i8,i8,i8,Seq<i8>,i8},(Seq<i8>,i8,i8,i8,Seq<i8>,Seq<i8>,i8,i8,bool,bool)>
+>    1) [0] Expr Pack
+module symbols:
+  param Items: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+       3) 10
+       4) 12
+       5) 13
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+       3) 10
+       4) 12
+       5) 13
+  msr Weight: 51
+  msr Number: 6
+  con ConWeight: false
+  con ConNumber: true
+>    2) [0] Expr "*** Maximize Weight ***"
+*** Maximize Weight ***
+>    3) [0] Expr Pack->Maximize(Weight)
+Solver: GLPK
+module symbols:
+  param Items: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+       3) 10
+       4) 12
+       5) 13
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<i8>
+       0) 8
+       1) 10
+  msr Weight: 18
+  msr Number: 2
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    4) [0] Expr "*** Maximize Number ***"
+*** Maximize Number ***
+>    5) [0] Expr Pack->Maximize(Number)
+Solver: GLPK
+module symbols:
+  param Items: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+       3) 10
+       4) 12
+       5) 13
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+  msr Weight: 16
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    6) [0] Expr "*** Maximize Weight with MinNumber: 3 ***"
+*** Maximize Weight with MinNumber: 3 ***
+>    7) [0] Expr Pack=>{ MinNumber : 3 }->Maximize(Weight)
+Solver: GLPK
+module symbols:
+  param Items: Seq<i8>
+       0) 3
+       1) 5
+       2) 8
+       3) 10
+       4) 12
+       5) 13
+  param MaxWeight: 19
+  param MinNumber: 3
+  param MaxNumber: 1000
+  var Use: Seq<i8>
+       0) 3
+       1) 5
+       2) 10
+  msr Weight: 18
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    8) [0] Expr "*** Maximize Weight with Items = bits ***"
+*** Maximize Weight with Items = bits ***
+>    9) [0] Expr Pack=>{ Items : Range(10)->(1 shl it), MaxWeight : 21 }->Maximize(Weight)
+Solver: GLPK
+module symbols:
+  param Items: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param MaxWeight: 21
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<i8>
+       0) 1
+       1) 4
+       2) 16
+  msr Weight: 21
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>   10) [0] End
+

@@ -1,0 +1,20 @@
+﻿N := 6;
+M := module {
+    var X from 0;
+    var Y from 0;
+    msr S := X + Y;
+    con C1 := X + 2 * Y <= N;
+    con C2 := 2 * X + Y <= N;
+};
+
+M;
+M->Maximize(S);
+
+Range(10)->ForEach(as n,
+    module {
+        var X from 0;
+        var Y from 0;
+        msr S := 4 * X + 5 * Y;
+        con C1 := X + 2 * Y <= n;
+        con C2 := 2 * X + Y <= n;
+    }->Maximize(S));

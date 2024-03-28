@@ -1,0 +1,67 @@
+﻿P := module {
+    param G := true;
+    param S := Range(3, 7) if G else null;
+    const F := S->First();
+    const Res := F * F;
+    var X from S;
+};
+P;
+P with { S: Range(0) };
+P with { G: false };
+
+P := module {
+    param N := 3;
+    var X from 0;
+    var Y from 0;
+    var Z from Tensor.Fill(0, N);
+
+    msr M := X + Y - Sum(Range(N), Z[it]);
+};
+P; // REVIEW: Should reduce M more fully.
+P with { N: 0 };
+
+P := module {
+    param N := 3;
+    const Inds := Range(N);
+
+    var X from 0;
+    var Y from 0;
+    var Z from Tensor.Fill(0, N);
+
+    msr M := X + Y - Sum(Inds, Z[it]);
+};
+P;
+P with { N: 0 };
+
+P := module {
+    param N := 4;
+    const M := 4;
+    const Num := M * N;
+
+    const Lines := Range(Num)->GroupBy(it div N + it mod N);
+    const Segs := Lines->ChainMap(as line,
+        CrossJoin(
+            a:line, b:line, a < b,
+            { A: a, B: b, Mids: line->TakeIf(a < it < b) }
+        )
+    );
+
+    var X from Tensor.Fill(0, Num);
+    var Y from Tensor.Fill(0, Num);
+
+    con Need := Segs->(X[A] + X[B] - Sum(Mids, Y[it]) <= 1);
+};
+P;
+
+P := module {
+    param R := { B:true };
+    var X from 0 to 3;
+
+    // Reduction of BndGetFieldNode
+    con C := (R & {A:X}).A < 10;
+};
+P;
+
+M := 3;
+N := 17;
+module { var A := N; let B := A * N; let C := B + N; let D := M + C; }

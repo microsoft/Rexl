@@ -1,0 +1,58 @@
+>>> *** Source:
+    plan {
+        param A := 3;
+        const B := A * A;
+        var X from A to B def 2 * A;
+    };
+    plan {
+        param A := 3;
+        var X from A to A * A def 2 * A opt;
+    };
+    plan { var X to 7 opt; };
+    plan { var X def 7 opt; };
+    plan { var X from "hello"; };
+
+>>> *** Instructions:
+   0) [0] Expr module { param A := 3; const B := A * A; var X from A to B def 2 * A }
+   1) [0] Expr module { param A := 3; var X from A to A * A def 2 * A opt }
+   2) [0] Expr module { var X to 7 opt }
+   3) [0] Expr module { var X def 7 opt }
+   4) [0] Expr module { var X from "hello" }
+   5) [0] End
+
+>    0) [0] Expr module { param A := 3; const B := A * A; var X from A to B def 2 * A }
+*** Reduction ***
+  A src: !1x.0
+  A dst: 3
+
+  B src: !1x.1
+  B dst: 9
+
+  X src: !1x.4
+  X dst: $0
+
+>    1) [0] Expr module { param A := 3; var X from A to A * A def 2 * A opt }
+*** Reduction ***
+  A src: !1x.0
+  A dst: 3
+
+  X src: !1x.3
+  X dst: $0
+
+>    2) [0] Expr module { var X to 7 opt }
+*** Reduction ***
+  X src: !1x.1
+  X dst: $0
+
+>    3) [0] Expr module { var X def 7 opt }
+*** Reduction ***
+  X src: !1x.0
+  X dst: $0
+
+>    4) [0] Expr module { var X from "hello" }
+*** Reduction ***
+  X src: !1x.1
+  X dst: $0
+
+>    5) [0] End
+

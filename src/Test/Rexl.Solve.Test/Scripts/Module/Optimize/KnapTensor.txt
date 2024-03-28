@@ -1,0 +1,86 @@
+﻿Knap := plan {
+  param Items := [
+    { Id: 0, V:  20, W:  3 },
+    { Id: 1, V:  80, W:  5 },
+    { Id: 2, V:  71, W:  8 },
+    { Id: 3, V:  60, W: 10 },
+    { Id: 4, V:  90, W: 12 },
+    { Id: 5, V:  80, W: 13 },
+  ];
+  param MaxWeight := 19;
+  param MinNumber := 0;
+  param MaxNumber := 1000;
+
+  var Use from Tensor.Fill(false, Count(Items));
+
+  msr Weight := Sum(Items, Use[Id] * W);
+  msr Value  := Sum(Items, Use[Id] * V);
+  msr Number := Sum(Items, Use[Id]);
+
+  con ConWeight := Weight <= MaxWeight;
+  con ConNumber := MinNumber <= Number <= MaxNumber;
+};
+
+"*** Maximize Value ***";
+Knap->Maximize(Value);
+
+"*** Maximize Value with MaxNumber: 2 ***";
+Knap with { MaxNumber: 2 }->Maximize(Value);
+
+Knap := plan {
+  param Items := [
+    { Id: 0, V:  20, W:  3 },
+    { Id: 1, V:  80, W:  5 },
+    { Id: 2, V:  71, W:  8 },
+    { Id: 3, V:  60, W: 10 },
+    { Id: 4, V:  90, W: 12 },
+    { Id: 5, V:  80, W: 13 },
+  ];
+  param MaxWeight := 19;
+  param MinNumber := 0;
+  param MaxNumber := 1000;
+
+  var Use to Tensor.Fill(true, Count(Items));
+
+  msr Weight := Sum(Items, Use[Id] * W);
+  msr Value  := Sum(Items, Use[Id] * V);
+  msr Number := Sum(Items, Use[Id]);
+
+  con ConWeight := Weight <= MaxWeight;
+  con ConNumber := MinNumber <= Number <= MaxNumber;
+};
+
+"*** Maximize Value ***";
+Knap->Maximize(Value);
+
+"*** Maximize Value with MaxNumber: 2 ***";
+Knap with { MaxNumber: 2 }->Maximize(Value);
+
+Knap := plan {
+  param Items := [
+    { Id: 0, V:  20, W:  3, Force: false, Allow: true  },
+    { Id: 1, V:  80, W:  5, Force: false, Allow: true  },
+    { Id: 2, V:  71, W:  8, Force: false, Allow: true  },
+    { Id: 3, V:  60, W: 10, Force: true , Allow: true  },
+    { Id: 4, V:  90, W: 12, Force: false, Allow: false },
+    { Id: 5, V:  80, W: 13, Force: false, Allow: true  },
+  ];
+  param MaxWeight := 19;
+  param MinNumber := 0;
+  param MaxNumber := 1000;
+
+  var Use from Tensor.From(Items.Force) to Tensor.From(Items.Allow);
+
+  msr Weight := Sum(Items, Use[Id] * W);
+  msr Value  := Sum(Items, Use[Id] * V);
+  msr Number := Sum(Items, Use[Id]);
+
+  con ConWeight := Weight <= MaxWeight;
+  con ConNumber := MinNumber <= Number <= MaxNumber;
+};
+
+"*** Maximize Value ***";
+Knap->Maximize(Value);
+
+"*** Maximize Value with MaxNumber: 2 ***";
+Knap with { MaxNumber: 2 }->Maximize(Value);

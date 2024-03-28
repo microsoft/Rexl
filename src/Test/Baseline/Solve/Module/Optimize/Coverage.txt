@@ -1,0 +1,811 @@
+>>> *** Source:
+    P010 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := A <= X <= B;
+        con CS := Range(A, B)->(X <= it)->Take(0); // Empty
+        msr M := X;
+    };
+    Module.Maximize(P010, M);
+    Module.Maximize(P010 with { B: 2 }, M); // Always false constraint.
+    P020 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := X <= B;
+        con C2 := A <= B;
+        msr M := X;
+    };
+    P020->Maximize(M); // C2 is an always true constraint.
+    P020 with { B: 2 }->Maximize(M); // C2 is an always false constraint.
+    P030 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := X <= A or X >= B;
+        msr M := X;
+    };
+    P030->Maximize(M); // Can't handle "or" in a constraint.
+    P040 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := X <= 100 and (X <= A or X >= B);
+        msr M := X;
+    };
+    P040->Maximize(M); // Can't handle "or" in a constraint.
+    P050 := plan {
+        var X from 0;
+        con C1 := 3 <= X * X <= 5; // Not linear.
+        msr M := X;
+    };
+    P050->Maximize(M);
+    P060 := plan {
+        var X from 0;
+        con C1 := 7 <= X <= 5; // Always false.
+        msr M := X;
+    };
+    P060->Maximize(M);
+    P070 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := A <= X <= B <= 10 * A <= 9 * X <= 8 * B;
+        msr M := X;
+    };
+    P070->Maximize(M);
+    P080 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := B >= X >= A;
+        msr M := X;
+    };
+    P080->Maximize(M);
+    P090 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := A < X < B;
+        msr M := X;
+    };
+    P090->Maximize(M);
+    P100 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0.0;
+        con C1 := A < X < B; // Bad operator for non-int.
+        msr M := X;
+    };
+    P100->Maximize(M);
+    P110 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0.0;
+        con C1 := A < X; // Bad operator for non-int.
+        msr M := X;
+    };
+    P110->Maximize(M);
+    P120 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0.0;
+        con C1 := B > X; // Bad operator for non-int.
+        msr M := X;
+    };
+    P120->Maximize(M);
+    P130 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := B > 2 * X > A;
+        msr M := X;
+    };
+    P130->Maximize(M);
+    P140 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0.0;
+        con C1 := B > 2 * X > A; // Bad operator for non-int.
+        msr M := X;
+    };
+    P140->Maximize(M);
+    P150 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        let L1 := 2 * X;
+        con C1 := B > L1 > A;
+        msr M := X;
+    };
+    P150->Maximize(M);
+    P160 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        let L1 := X * X; // Not linear.
+        con C1 := B > L1 > A;
+        msr M := X;
+    };
+    P160->Maximize(M);
+    P170 := plan {
+        param A := 3;
+        param B := 10;
+        param D := 2.0;
+        var X from 0.0;
+        con C1 := A <= X / D <= B;
+        msr M := X;
+    };
+    P170->Maximize(M);
+    // This form works.
+    P200 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        const R := Range(7, 10);
+        con C1 := X < R;
+        msr M := X;
+    };
+    P200->Maximize(M);
+    // REVIEW: ForEach is NOT expanded in these so they all fail.
+    P210 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        let L := X < Range(7, 10);
+        con C1 := L;
+        msr M := X;
+    };
+    P210->Maximize(M);
+    P220 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := Range(7, 10)->(X < it);
+        msr M := X;
+    };
+    P220->Maximize(M);
+    P230 := plan {
+        param A := 3;
+        param B := 10;
+        var X from 0;
+        con C1 := A < X < B;
+        con C2 := Range(3)->(true);
+        msr M := X;
+    };
+    P230->Maximize(M);
+    P300 := plan {
+        param A := 3;
+        param B := 10;
+        param F := 1.0;
+        param D := 1.0;
+        param G := 1.0;
+        var X from 0.0;
+        con C1 := A <= X * F / D + X * X * G + F * (D + X * G) <= B;
+        msr M := X;
+    };
+    P300->Maximize(M);
+    P300 with { F: 2.0, G: 0.0 }->Maximize(M);
+    P300 with { F: 1 / 0, G: 0.0 }->Maximize(M);
+    P300 with { D: 0.0, G: 0.0 }->Maximize(M);
+    P400 := plan {
+        param A := 1;
+        param B := 4;
+        param K := 100;
+        const F := B - A if A < B else null;
+        var X from Range(A, B)->Take(K min (F ?? 0));
+        msr M := Sum(X);
+    };
+    P400->Maximize(M);
+    P400 with { B: 0 }->Maximize(M);
+    P400 with { K: 0 }->Maximize(M);
+    P500 := plan {
+        var X from 0 to 3;
+        var Y from 1 to 5;
+        msr M := X + Y;
+    };
+    P500->Maximize(M, "glpk");
+    P500->Maximize(M, "highs");
+    // Unbounded.
+    P510 := plan {
+        var X from 0.0;
+        var Y from 1.0;
+        msr M := X + Y;
+    };
+    P510->Maximize(M, "glpk");
+    P510->Maximize(M, "highs");
+    // Integer vs floating point.
+    P520 := plan {
+        var X from 0 to 3;
+        var Y from 0 to 5;
+        var Z from 0 to 7;
+        con C := 2*X + 4*Y + 5*Z <= 19;
+        msr M := X + Y;
+    };
+    P520->Maximize(M, "glpk");
+    P520->Maximize(M, "highs");
+    P530 := plan {
+        var X from 0.0 to 3;
+        var Y from 0.0 to 5;
+        var Z from 0.0 to 7;
+        con C := 2*X + 4*Y + 5*Z <= 19;
+        msr M := X + Y;
+    };
+    P530->Maximize(M, "glpk");
+    P530->Maximize(M, "highs");
+    // Infeasible as integers.
+    P540 := plan {
+        var X from 0 to 3;
+        var Y from 0 to 5;
+        con C := 1 <= 4*X + 4*Y <= 3;
+        msr M := X + Y;
+    };
+    P540->Maximize(M, "glpk");
+    P540->Maximize(M, "highs");
+    P550 := plan {
+        var X from 0.0 to 3;
+        var Y from 0.0 to 5;
+        con C := 1 <= 4*X + 4*Y <= 3;
+        msr M := X + Y;
+    };
+    P550->Maximize(M, "glpk");
+    P550->Maximize(M, "highs");
+    // Infeasible relaxation.
+    P560 := plan {
+        var X from 1 to 3;
+        var Y from 1 to 5;
+        con C := 1 <= 4*X + 4*Y <= 3;
+        msr M := X + Y;
+    };
+    P560->Maximize(M, "glpk");
+    P560->Maximize(M, "highs");
+    P570 := plan {
+        var X from 1.0 to 3;
+        var Y from 1.0 to 5;
+        con C := 1 <= 4*X + 4*Y <= 3;
+        msr M := X + Y;
+    };
+    P570->Maximize(M, "glpk");
+    P570->Maximize(M, "highs");
+    P600 := plan {
+        param N := 6;
+        var X from 0.0 to N;
+        var T from Tensor.Fill(0.0, N) to Tensor.Fill(N * 3 / 2, N);
+        var Y from 0.0 to N;
+        // REVIEW: Should be able to linearize these.
+        msr M := X + Sum(Range(N), (it + 1) * T[it]) + Y;
+        con C := Sum(Range(N), T[it] * (3 - it mod 3)) <= 2 * N;
+        con C2 := X <= Y;
+        con C3 := X + 2*Y <= 9;
+    };
+    P600->Maximize(M);
+    P610 := plan {
+        const N := 6;
+        var X from 0.0 to N;
+        var T from Tensor.Fill(0.0, N) to Tensor.Fill(N * 3 / 2, N);
+        var Y from 0.0 to N;
+        msr M := X + T[0] + 2*T[1] + 3*T[2] + 4*T[3] + 5*T[4] + 6*T[5] + Y;
+        con C := 3*T[0] + 2*T[1] + T[2] + 3*T[3] + 2*T[4] + T[5] <= 2 * N;
+        con C2 := X <= Y;
+        con C3 := X + 2*Y <= 9;
+    };
+    P610->Maximize(M, "glpk");
+    P610->Maximize(M, "highs");
+
+>>> *** Instructions:
+   0) [0] Define P010 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B; con CS := Range(A, B)->(X $<= it)->Take(0); msr M := X }
+   1) [0] Expr Module.Maximize(P010, M)
+   2) [0] Expr Module.Maximize(P010=>{ B : 2 }, M)
+   3) [0] Define P020 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= B; con C2 := A $<= B; msr M := X }
+   4) [0] Expr P020->Maximize(M)
+   5) [0] Expr P020=>{ B : 2 }->Maximize(M)
+   6) [0] Define P030 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= A or X $>= B; msr M := X }
+   7) [0] Expr P030->Maximize(M)
+   8) [0] Define P040 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= 100 and (X $<= A or X $>= B); msr M := X }
+   9) [0] Expr P040->Maximize(M)
+  10) [0] Define P050 <- module { var X from 0; con C1 := 3 $<= X * X $<= 5; msr M := X }
+  11) [0] Expr P050->Maximize(M)
+  12) [0] Define P060 <- module { var X from 0; con C1 := 7 $<= X $<= 5; msr M := X }
+  13) [0] Expr P060->Maximize(M)
+  14) [0] Define P070 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B $<= 10 * A $<= 9 * X $<= 8 * B; msr M := X }
+  15) [0] Expr P070->Maximize(M)
+  16) [0] Define P080 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $>= X $>= A; msr M := X }
+  17) [0] Expr P080->Maximize(M)
+  18) [0] Define P090 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; msr M := X }
+  19) [0] Expr P090->Maximize(M)
+  20) [0] Define P100 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; msr M := X }
+  21) [0] Expr P100->Maximize(M)
+  22) [0] Define P110 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X; msr M := X }
+  23) [0] Expr P110->Maximize(M)
+  24) [0] Define P120 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> X; msr M := X }
+  25) [0] Expr P120->Maximize(M)
+  26) [0] Define P130 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> 2 * X $> A; msr M := X }
+  27) [0] Expr P130->Maximize(M)
+  28) [0] Define P140 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> 2 * X $> A; msr M := X }
+  29) [0] Expr P140->Maximize(M)
+  30) [0] Define P150 <- module { param A := 3; param B := 10; var X from 0; let L1 := 2 * X; con C1 := B $> L1 $> A; msr M := X }
+  31) [0] Expr P150->Maximize(M)
+  32) [0] Define P160 <- module { param A := 3; param B := 10; var X from 0; let L1 := X * X; con C1 := B $> L1 $> A; msr M := X }
+  33) [0] Expr P160->Maximize(M)
+  34) [0] Define P170 <- module { param A := 3; param B := 10; param D := 2; var X from 0; con C1 := A $<= X / D $<= B; msr M := X }
+  35) [0] Expr P170->Maximize(M)
+  36) [0] Define P200 <- module { param A := 3; param B := 10; var X from 0; const R := Range(7, 10); con C1 := X $< R; msr M := X }
+  37) [0] Expr P200->Maximize(M)
+  38) [0] Define P210 <- module { param A := 3; param B := 10; var X from 0; let L := X $< Range(7, 10); con C1 := L; msr M := X }
+  39) [0] Expr P210->Maximize(M)
+  40) [0] Define P220 <- module { param A := 3; param B := 10; var X from 0; con C1 := Range(7, 10)->(X $< it); msr M := X }
+  41) [0] Expr P220->Maximize(M)
+  42) [0] Define P230 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; con C2 := Range(3)->(true); msr M := X }
+  43) [0] Expr P230->Maximize(M)
+  44) [0] Define P300 <- module { param A := 3; param B := 10; param F := 1; param D := 1; param G := 1; var X from 0; con C1 := A $<= X * F / D + X * X * G + F * (D + X * G) $<= B; msr M := X }
+  45) [0] Expr P300->Maximize(M)
+  46) [0] Expr P300=>{ F : 2, G : 0 }->Maximize(M)
+  47) [0] Expr P300=>{ F : 1 / 0, G : 0 }->Maximize(M)
+  48) [0] Expr P300=>{ D : 0, G : 0 }->Maximize(M)
+  49) [0] Define P400 <- module { param A := 1; param B := 4; param K := 100; const F := B - A if A $< B else null; var X from Range(A, B)->Take(K min (F ?? 0)); msr M := Sum(X) }
+  50) [0] Expr P400->Maximize(M)
+  51) [0] Expr P400=>{ B : 0 }->Maximize(M)
+  52) [0] Expr P400=>{ K : 0 }->Maximize(M)
+  53) [0] Define P500 <- module { var X from 0 to 3; var Y from 1 to 5; msr M := X + Y }
+  54) [0] Expr P500->Maximize(M, "glpk")
+  55) [0] Expr P500->Maximize(M, "highs")
+  56) [0] Define P510 <- module { var X from 0; var Y from 1; msr M := X + Y }
+  57) [0] Expr P510->Maximize(M, "glpk")
+  58) [0] Expr P510->Maximize(M, "highs")
+  59) [0] Define P520 <- module { var X from 0 to 3; var Y from 0 to 5; var Z from 0 to 7; con C := 2 * X + 4 * Y + 5 * Z $<= 19; msr M := X + Y }
+  60) [0] Expr P520->Maximize(M, "glpk")
+  61) [0] Expr P520->Maximize(M, "highs")
+  62) [0] Define P530 <- module { var X from 0 to 3; var Y from 0 to 5; var Z from 0 to 7; con C := 2 * X + 4 * Y + 5 * Z $<= 19; msr M := X + Y }
+  63) [0] Expr P530->Maximize(M, "glpk")
+  64) [0] Expr P530->Maximize(M, "highs")
+  65) [0] Define P540 <- module { var X from 0 to 3; var Y from 0 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+  66) [0] Expr P540->Maximize(M, "glpk")
+  67) [0] Expr P540->Maximize(M, "highs")
+  68) [0] Define P550 <- module { var X from 0 to 3; var Y from 0 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+  69) [0] Expr P550->Maximize(M, "glpk")
+  70) [0] Expr P550->Maximize(M, "highs")
+  71) [0] Define P560 <- module { var X from 1 to 3; var Y from 1 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+  72) [0] Expr P560->Maximize(M, "glpk")
+  73) [0] Expr P560->Maximize(M, "highs")
+  74) [0] Define P570 <- module { var X from 1 to 3; var Y from 1 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+  75) [0] Expr P570->Maximize(M, "glpk")
+  76) [0] Expr P570->Maximize(M, "highs")
+  77) [0] Define P600 <- module { param N := 6; var X from 0 to N; var T from Tensor.Fill(0, N) to Tensor.Fill(N * 3 / 2, N); var Y from 0 to N; msr M := X + Sum(Range(N), (it + 1) * T[it]) + Y; con C := Sum(Range(N), T[it] * (3 - it mod 3)) $<= 2 * N; con C2 := X $<= Y; con C3 := X + 2 * Y $<= 9 }
+  78) [0] Expr P600->Maximize(M)
+  79) [0] Define P610 <- module { const N := 6; var X from 0 to N; var T from Tensor.Fill(0, N) to Tensor.Fill(N * 3 / 2, N); var Y from 0 to N; msr M := X + T[0] + 2 * T[1] + 3 * T[2] + 4 * T[3] + 5 * T[4] + 6 * T[5] + Y; con C := 3 * T[0] + 2 * T[1] + T[2] + 3 * T[3] + 2 * T[4] + T[5] $<= 2 * N; con C2 := X $<= Y; con C3 := X + 2 * Y $<= 9 }
+  80) [0] Expr P610->Maximize(M, "glpk")
+  81) [0] Expr P610->Maximize(M, "highs")
+  82) [0] End
+
+>    0) [0] Define P010 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B; con CS := Range(A, B)->(X $<= it)->Take(0); msr M := X }
+Global 'P010' has DType: M{param A:i8, param B:i8, con C1:b, con CS:b*, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,Seq<bool>,i8,i8},(i8,i8,i8,i8,bool,Seq<bool>,i8)>
+>    1) [0] Expr Module.Maximize(P010, M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 10
+  con C1: true
+  con CS: <null>
+  msr M: 10
+*** Ctx ping count: 0
+>    2) [0] Expr Module.Maximize(P010=>{ B : 2 }, M)
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>    3) [0] Define P020 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= B; con C2 := A $<= B; msr M := X }
+Global 'P020' has DType: M{param A:i8, param B:i8, con C1:b, con C2:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,bool,i8,i8},(i8,i8,i8,i8,bool,bool,i8)>
+>    4) [0] Expr P020->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 10
+  con C1: true
+  con C2: true
+  msr M: 10
+*** Ctx ping count: 0
+>    5) [0] Expr P020=>{ B : 2 }->Maximize(M)
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>    6) [0] Define P030 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= A or X $>= B; msr M := X }
+Global 'P030' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>    7) [0] Expr P030->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: Or($0 @<= 3, $0 @>= 10)
+<null>
+*** Ctx ping count: 0
+>    8) [0] Define P040 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= 100 and (X $<= A or X $>= B); msr M := X }
+Global 'P040' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>    9) [0] Expr P040->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: And($0 @<= 100, Or($0 @<= 3, $0 @>= 10))
+<null>
+*** Ctx ping count: 0
+>   10) [0] Define P050 <- module { var X from 0; con C1 := 3 $<= X * X $<= 5; msr M := X }
+Global 'P050' has DType: M{con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{bool,i8,i8},(i8,i8,bool,i8)>
+>   11) [0] Expr P050->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 @<= Mul($0, $0) @<= 5
+<null>
+*** Ctx ping count: 0
+>   12) [0] Define P060 <- module { var X from 0; con C1 := 7 $<= X $<= 5; msr M := X }
+Global 'P060' has DType: M{con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{bool,i8,i8},(i8,i8,bool,i8)>
+>   13) [0] Expr P060->Maximize(M)
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   14) [0] Define P070 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B $<= 10 * A $<= 9 * X $<= 8 * B; msr M := X }
+Global 'P070' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>   15) [0] Expr P070->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 8
+  con C1: true
+  msr M: 8
+*** Ctx ping count: 0
+>   16) [0] Define P080 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $>= X $>= A; msr M := X }
+Global 'P080' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>   17) [0] Expr P080->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 10
+  con C1: true
+  msr M: 10
+*** Ctx ping count: 0
+>   18) [0] Define P090 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; msr M := X }
+Global 'P090' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>   19) [0] Expr P090->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 9
+  con C1: true
+  msr M: 9
+*** Ctx ping count: 0
+>   20) [0] Define P100 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; msr M := X }
+Global 'P100' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8},(i8,i8,r8,r8,bool,r8)>
+>   21) [0] Expr P100->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 $< $0 $< 10
+<null>
+*** Ctx ping count: 0
+>   22) [0] Define P110 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X; msr M := X }
+Global 'P110' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8},(i8,i8,r8,r8,bool,r8)>
+>   23) [0] Expr P110->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 $< $0
+<null>
+*** Ctx ping count: 0
+>   24) [0] Define P120 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> X; msr M := X }
+Global 'P120' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8},(i8,i8,r8,r8,bool,r8)>
+>   25) [0] Expr P120->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 10 $> $0
+<null>
+*** Ctx ping count: 0
+>   26) [0] Define P130 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> 2 * X $> A; msr M := X }
+Global 'P130' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
+>   27) [0] Expr P130->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 4
+  con C1: true
+  msr M: 4
+*** Ctx ping count: 0
+>   28) [0] Define P140 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> 2 * X $> A; msr M := X }
+Global 'P140' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8},(i8,i8,r8,r8,bool,r8)>
+>   29) [0] Expr P140->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 10 $> Mul(2, $0) $> 3
+<null>
+*** Ctx ping count: 0
+>   30) [0] Define P150 <- module { param A := 3; param B := 10; var X from 0; let L1 := 2 * X; con C1 := B $> L1 $> A; msr M := X }
+Global 'P150' has DType: M{param A:i8, param B:i8, con C1:b, let L1:i8, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8,i8},(i8,i8,i8,i8,i8,bool,i8)>
+>   31) [0] Expr P150->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 4
+  let L1: 8
+  con C1: true
+  msr M: 4
+*** Ctx ping count: 0
+>   32) [0] Define P160 <- module { param A := 3; param B := 10; var X from 0; let L1 := X * X; con C1 := B $> L1 $> A; msr M := X }
+Global 'P160' has DType: M{param A:i8, param B:i8, con C1:b, let L1:i8, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8,i8},(i8,i8,i8,i8,i8,bool,i8)>
+>   33) [0] Expr P160->Maximize(M)
+*** Solver diagnostics:
+  Error: Definition 'L1' is not linear: Mul($0, $0)
+<null>
+*** Ctx ping count: 0
+>   34) [0] Define P170 <- module { param A := 3; param B := 10; param D := 2; var X from 0; con C1 := A $<= X / D $<= B; msr M := X }
+Global 'P170' has DType: M{param A:i8, param B:i8, con C1:b, param D:r8, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8,r8},(i8,i8,r8,r8,r8,bool,r8)>
+>   35) [0] Expr P170->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  param D: 2
+  var X: 20
+  con C1: true
+  msr M: 20
+*** Ctx ping count: 0
+>   36) [0] Define P200 <- module { param A := 3; param B := 10; var X from 0; const R := Range(7, 10); con C1 := X $< R; msr M := X }
+Global 'P200' has DType: M{param A:i8, param B:i8, con C1:b*, msr M:i8, const R:i8*, var X:i8}, SysType: RuntimeModule<{i8,i8,Seq<bool>,i8,Seq<i8>,i8},(i8,i8,i8,i8,Seq<i8>,Seq<bool>,i8)>
+>   37) [0] Expr P200->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  var X: 6
+  const R: Seq<i8>
+       0) 7
+       1) 8
+       2) 9
+  con C1: Seq<bool>
+       0) true
+       1) true
+       2) true
+  msr M: 6
+*** Ctx ping count: 0
+>   38) [0] Define P210 <- module { param A := 3; param B := 10; var X from 0; let L := X $< Range(7, 10); con C1 := L; msr M := X }
+Global 'P210' has DType: M{param A:i8, param B:i8, con C1:b*, let L:b*, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,Seq<bool>,Seq<bool>,i8,i8},(i8,i8,i8,i8,Seq<bool>,Seq<bool>,i8)>
+>   39) [0] Expr P210->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: ForEach(*1: Range(7, 10), $0 @< *1)
+<null>
+*** Ctx ping count: 0
+>   40) [0] Define P220 <- module { param A := 3; param B := 10; var X from 0; con C1 := Range(7, 10)->(X $< it); msr M := X }
+Global 'P220' has DType: M{param A:i8, param B:i8, con C1:b*, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,Seq<bool>,i8,i8},(i8,i8,i8,i8,Seq<bool>,i8)>
+>   41) [0] Expr P220->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: ForEach(*1: Range(7, 10), $0 @< *1)
+<null>
+*** Ctx ping count: 0
+>   42) [0] Define P230 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; con C2 := Range(3)->(true); msr M := X }
+Global 'P230' has DType: M{param A:i8, param B:i8, con C1:b, con C2:b*, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,Seq<bool>,i8,i8},(i8,i8,i8,i8,bool,Seq<bool>,i8)>
+>   43) [0] Expr P230->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C2' is not linear: Repeat(true, 3)
+<null>
+*** Ctx ping count: 0
+>   44) [0] Define P300 <- module { param A := 3; param B := 10; param F := 1; param D := 1; param G := 1; var X from 0; con C1 := A $<= X * F / D + X * X * G + F * (D + X * G) $<= B; msr M := X }
+Global 'P300' has DType: M{param A:i8, param B:i8, con C1:b, param D:r8, param F:r8, param G:r8, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8,r8,r8,r8},(i8,i8,r8,r8,r8,r8,r8,bool,r8)>
+>   45) [0] Expr P300->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 $<= Add($0, Mul($0, $0), Add(1, $0)) $<= 10
+<null>
+*** Ctx ping count: 0
+>   46) [0] Expr P300=>{ F : 2, G : 0 }->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 3
+  param B: 10
+  param F: 2
+  param D: 1
+  param G: 0
+  var X: 4
+  con C1: true
+  msr M: 4
+*** Ctx ping count: 0
+>   47) [0] Expr P300=>{ F : 1 / 0, G : 0 }->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 $<= Add(Mul($0, ∞), Mul($0, $0, 0), Mul(∞, Add(1, Mul($0, 0)))) $<= 10
+<null>
+*** Ctx ping count: 0
+>   48) [0] Expr P300=>{ D : 0, G : 0 }->Maximize(M)
+*** Solver diagnostics:
+  Error: Constraint 'C1' is not linear: 3 $<= Add(Mul($0, [/] 0), Mul($0, $0, 0), Add(0, Mul($0, 0))) $<= 10
+<null>
+*** Ctx ping count: 0
+>   49) [0] Define P400 <- module { param A := 1; param B := 4; param K := 100; const F := B - A if A $< B else null; var X from Range(A, B)->Take(K min (F ?? 0)); msr M := Sum(X) }
+Global 'P400' has DType: M{param A:i8, param B:i8, const F:i8?, param K:i8, msr M:i8, var X:i8*}, SysType: RuntimeModule<{i8,i8,i8,i8,i8,Seq<i8>},(i8,i8,i8,Opt<i8>,Seq<i8>,Seq<i8>,i8)>
+>   50) [0] Expr P400->Maximize(M)
+Solver: GLPK
+module symbols:
+  param A: 1
+  param B: 4
+  param K: 100
+  const F: 3
+  var X: Seq<i8>
+       0) 1
+       1) 2
+       2) 3
+  msr M: 6
+*** Ctx ping count: 0
+>   51) [0] Expr P400=>{ B : 0 }->Maximize(M)
+*** Solver diagnostics:
+  Error: Domain sequence for 'X' is empty: Take(Range(!1x.0, !1x.1), Min(!1x.2, Coalesce(!1x.3, 0)))
+<null>
+*** Ctx ping count: 0
+>   52) [0] Expr P400=>{ K : 0 }->Maximize(M)
+*** Solver diagnostics:
+  Error: Domain sequence for 'X' is empty: Take(Range(!1x.0, !1x.1), Min(!1x.2, Coalesce(!1x.3, 0)))
+<null>
+*** Ctx ping count: 0
+>   53) [0] Define P500 <- module { var X from 0 to 3; var Y from 1 to 5; msr M := X + Y }
+Global 'P500' has DType: M{msr M:i8, var X:i8, var Y:i8}, SysType: RuntimeModule<{i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8)>
+>   54) [0] Expr P500->Maximize(M, "glpk")
+Solver: GLPK
+module symbols:
+  var X: 3
+  var Y: 5
+  msr M: 8
+*** Ctx ping count: 0
+>   55) [0] Expr P500->Maximize(M, "highs")
+Solver: HiGHS
+module symbols:
+  var X: 3
+  var Y: 5
+  msr M: 8
+*** Ctx ping count: 0
+>   56) [0] Define P510 <- module { var X from 0; var Y from 1; msr M := X + Y }
+Global 'P510' has DType: M{msr M:r8, var X:r8, var Y:r8}, SysType: RuntimeModule<{r8,r8,r8},(r8,r8,r8,r8,r8)>
+>   57) [0] Expr P510->Maximize(M, "glpk")
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   58) [0] Expr P510->Maximize(M, "highs")
+Solver: HiGHS
+*** Solver diagnostics:
+  Error: Unbounded: possible missing constraints
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   59) [0] Define P520 <- module { var X from 0 to 3; var Y from 0 to 5; var Z from 0 to 7; con C := 2 * X + 4 * Y + 5 * Z $<= 19; msr M := X + Y }
+Global 'P520' has DType: M{con C:b, msr M:i8, var X:i8, var Y:i8, var Z:i8}, SysType: RuntimeModule<{bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,i8,bool,i8)>
+>   60) [0] Expr P520->Maximize(M, "glpk")
+Solver: GLPK
+module symbols:
+  var X: 3
+  var Y: 3
+  var Z: 0
+  con C: true
+  msr M: 6
+*** Ctx ping count: 0
+>   61) [0] Expr P520->Maximize(M, "highs")
+Solver: HiGHS
+module symbols:
+  var X: 3
+  var Y: 3
+  var Z: 0
+  con C: true
+  msr M: 6
+*** Ctx ping count: 0
+>   62) [0] Define P530 <- module { var X from 0 to 3; var Y from 0 to 5; var Z from 0 to 7; con C := 2 * X + 4 * Y + 5 * Z $<= 19; msr M := X + Y }
+Global 'P530' has DType: M{con C:b, msr M:r8, var X:r8, var Y:r8, var Z:r8}, SysType: RuntimeModule<{bool,r8,r8,r8,r8},(r8,r8,r8,r8,r8,r8,r8,r8,r8,bool,r8)>
+>   63) [0] Expr P530->Maximize(M, "glpk")
+Solver: GLPK
+module symbols:
+  var X: 3
+  var Y: 3.25
+  var Z: 0
+  con C: true
+  msr M: 6.25
+*** Ctx ping count: 0
+>   64) [0] Expr P530->Maximize(M, "highs")
+Solver: HiGHS
+module symbols:
+  var X: 3
+  var Y: 3.25
+  var Z: 0
+  con C: true
+  msr M: 6.25
+*** Ctx ping count: 0
+>   65) [0] Define P540 <- module { var X from 0 to 3; var Y from 0 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+Global 'P540' has DType: M{con C:b, msr M:i8, var X:i8, var Y:i8}, SysType: RuntimeModule<{bool,i8,i8,i8},(i8,i8,i8,i8,i8,i8,bool,i8)>
+>   66) [0] Expr P540->Maximize(M, "glpk")
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   67) [0] Expr P540->Maximize(M, "highs")
+Solver: HiGHS
+*** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   68) [0] Define P550 <- module { var X from 0 to 3; var Y from 0 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+Global 'P550' has DType: M{con C:b, msr M:r8, var X:r8, var Y:r8}, SysType: RuntimeModule<{bool,r8,r8,r8},(r8,r8,r8,r8,r8,r8,bool,r8)>
+>   69) [0] Expr P550->Maximize(M, "glpk")
+Solver: GLPK
+module symbols:
+  var X: 0.75
+  var Y: 0
+  con C: true
+  msr M: 0.75
+*** Ctx ping count: 0
+>   70) [0] Expr P550->Maximize(M, "highs")
+Solver: HiGHS
+module symbols:
+  var X: 0.75
+  var Y: 0
+  con C: true
+  msr M: 0.75
+*** Ctx ping count: 0
+>   71) [0] Define P560 <- module { var X from 1 to 3; var Y from 1 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+Global 'P560' has DType: M{con C:b, msr M:i8, var X:i8, var Y:i8}, SysType: RuntimeModule<{bool,i8,i8,i8},(i8,i8,i8,i8,i8,i8,bool,i8)>
+>   72) [0] Expr P560->Maximize(M, "glpk")
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   73) [0] Expr P560->Maximize(M, "highs")
+Solver: HiGHS
+*** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   74) [0] Define P570 <- module { var X from 1 to 3; var Y from 1 to 5; con C := 1 $<= 4 * X + 4 * Y $<= 3; msr M := X + Y }
+Global 'P570' has DType: M{con C:b, msr M:r8, var X:r8, var Y:r8}, SysType: RuntimeModule<{bool,r8,r8,r8},(r8,r8,r8,r8,r8,r8,bool,r8)>
+>   75) [0] Expr P570->Maximize(M, "glpk")
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   76) [0] Expr P570->Maximize(M, "highs")
+Solver: HiGHS
+*** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   77) [0] Define P600 <- module { param N := 6; var X from 0 to N; var T from Tensor.Fill(0, N) to Tensor.Fill(N * 3 / 2, N); var Y from 0 to N; msr M := X + Sum(Range(N), (it + 1) * T[it]) + Y; con C := Sum(Range(N), T[it] * (3 - it mod 3)) $<= 2 * N; con C2 := X $<= Y; con C3 := X + 2 * Y $<= 9 }
+Global 'P600' has DType: M{con C:b, con C2:b, con C3:b, msr M:r8, param N:i8, var T:r8[*], var X:r8, var Y:r8}, SysType: RuntimeModule<{bool,bool,bool,r8,i8,Ten<r8>,r8,r8},(i8,r8,r8,r8,Ten<r8>,Ten<r8>,Ten<r8>,r8,r8,r8,r8,bool,bool,bool)>
+>   78) [0] Expr P600->Maximize(M)
+*** Solver diagnostics:
+  Error: Definition 'M' is not linear: Add($0, Sum(*1: Range(6), Mul(Num<r8>(Add(*1, 1)), [! $1, $2, $3, $4, $5, $6 !]:r8[6][*1])), $7)
+  Error: Constraint 'C' is not linear: Sum(*1: Range(6), Mul([! $1, $2, $3, $4, $5, $6 !]:r8[6][*1], Num<r8>(Add([-] IntMod(*1, 3), 3)))) $<= 12
+<null>
+*** Ctx ping count: 0
+>   79) [0] Define P610 <- module { const N := 6; var X from 0 to N; var T from Tensor.Fill(0, N) to Tensor.Fill(N * 3 / 2, N); var Y from 0 to N; msr M := X + T[0] + 2 * T[1] + 3 * T[2] + 4 * T[3] + 5 * T[4] + 6 * T[5] + Y; con C := 3 * T[0] + 2 * T[1] + T[2] + 3 * T[3] + 2 * T[4] + T[5] $<= 2 * N; con C2 := X $<= Y; con C3 := X + 2 * Y $<= 9 }
+Global 'P610' has DType: M{con C:b, con C2:b, con C3:b, msr M:r8, const N:i8, var T:r8[*], var X:r8, var Y:r8}, SysType: RuntimeModule<{bool,bool,bool,r8,i8,Ten<r8>,r8,r8},(i8,r8,r8,r8,Ten<r8>,Ten<r8>,Ten<r8>,r8,r8,r8,r8,bool,bool,bool)>
+>   80) [0] Expr P610->Maximize(M, "glpk")
+Solver: GLPK
+module symbols:
+  const N: 6
+  var X: 3
+  var T: Ten<r8>(6) [0, 0, 3, 0, 0, 9]
+  var Y: 3
+  msr M: 69
+  con C: true
+  con C2: true
+  con C3: true
+*** Ctx ping count: 0
+>   81) [0] Expr P610->Maximize(M, "highs")
+Solver: HiGHS
+module symbols:
+  const N: 6
+  var X: 3
+  var T: Ten<r8>(6) [0, 0, 3, 0, 0, 9]
+  var Y: 3
+  msr M: 69
+  con C: true
+  con C2: true
+  con C3: true
+*** Ctx ping count: 0
+>   82) [0] End
+

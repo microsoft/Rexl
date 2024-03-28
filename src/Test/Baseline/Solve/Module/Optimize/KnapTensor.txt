@@ -1,0 +1,228 @@
+>>> *** Source:
+    Knap := plan {
+      param Items := [
+        { Id: 0, V:  20, W:  3 },
+        { Id: 1, V:  80, W:  5 },
+        { Id: 2, V:  71, W:  8 },
+        { Id: 3, V:  60, W: 10 },
+        { Id: 4, V:  90, W: 12 },
+        { Id: 5, V:  80, W: 13 },
+      ];
+      param MaxWeight := 19;
+      param MinNumber := 0;
+      param MaxNumber := 1000;
+      var Use from Tensor.Fill(false, Count(Items));
+      msr Weight := Sum(Items, Use[Id] * W);
+      msr Value  := Sum(Items, Use[Id] * V);
+      msr Number := Sum(Items, Use[Id]);
+      con ConWeight := Weight <= MaxWeight;
+      con ConNumber := MinNumber <= Number <= MaxNumber;
+    };
+    "*** Maximize Value ***";
+    Knap->Maximize(Value);
+    "*** Maximize Value with MaxNumber: 2 ***";
+    Knap with { MaxNumber: 2 }->Maximize(Value);
+    Knap := plan {
+      param Items := [
+        { Id: 0, V:  20, W:  3 },
+        { Id: 1, V:  80, W:  5 },
+        { Id: 2, V:  71, W:  8 },
+        { Id: 3, V:  60, W: 10 },
+        { Id: 4, V:  90, W: 12 },
+        { Id: 5, V:  80, W: 13 },
+      ];
+      param MaxWeight := 19;
+      param MinNumber := 0;
+      param MaxNumber := 1000;
+      var Use to Tensor.Fill(true, Count(Items));
+      msr Weight := Sum(Items, Use[Id] * W);
+      msr Value  := Sum(Items, Use[Id] * V);
+      msr Number := Sum(Items, Use[Id]);
+      con ConWeight := Weight <= MaxWeight;
+      con ConNumber := MinNumber <= Number <= MaxNumber;
+    };
+    "*** Maximize Value ***";
+    Knap->Maximize(Value);
+    "*** Maximize Value with MaxNumber: 2 ***";
+    Knap with { MaxNumber: 2 }->Maximize(Value);
+    Knap := plan {
+      param Items := [
+        { Id: 0, V:  20, W:  3, Force: false, Allow: true  },
+        { Id: 1, V:  80, W:  5, Force: false, Allow: true  },
+        { Id: 2, V:  71, W:  8, Force: false, Allow: true  },
+        { Id: 3, V:  60, W: 10, Force: true , Allow: true  },
+        { Id: 4, V:  90, W: 12, Force: false, Allow: false },
+        { Id: 5, V:  80, W: 13, Force: false, Allow: true  },
+      ];
+      param MaxWeight := 19;
+      param MinNumber := 0;
+      param MaxNumber := 1000;
+      var Use from Tensor.From(Items.Force) to Tensor.From(Items.Allow);
+      msr Weight := Sum(Items, Use[Id] * W);
+      msr Value  := Sum(Items, Use[Id] * V);
+      msr Number := Sum(Items, Use[Id]);
+      con ConWeight := Weight <= MaxWeight;
+      con ConNumber := MinNumber <= Number <= MaxNumber;
+    };
+    "*** Maximize Value ***";
+    Knap->Maximize(Value);
+    "*** Maximize Value with MaxNumber: 2 ***";
+    Knap with { MaxNumber: 2 }->Maximize(Value);
+
+>>> *** Instructions:
+   0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Tensor.Fill(false, Count(Items)); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+   1) [0] Expr "*** Maximize Value ***"
+   2) [0] Expr Knap->Maximize(Value)
+   3) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+   4) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+   5) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use to Tensor.Fill(true, Count(Items)); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+   6) [0] Expr "*** Maximize Value ***"
+   7) [0] Expr Knap->Maximize(Value)
+   8) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+   9) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+  10) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3, Force : false, Allow : true }, { Id : 1, V : 80, W : 5, Force : false, Allow : true }, { Id : 2, V : 71, W : 8, Force : false, Allow : true }, { Id : 3, V : 60, W : 10, Force : true, Allow : true }, { Id : 4, V : 90, W : 12, Force : false, Allow : false }, { Id : 5, V : 80, W : 13, Force : false, Allow : true }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Tensor.From(Items.Force) to Tensor.From(Items.Allow); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+  11) [0] Expr "*** Maximize Value ***"
+  12) [0] Expr Knap->Maximize(Value)
+  13) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+  14) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+  15) [0] End
+
+>    0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Tensor.Fill(false, Count(Items)); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+Global 'Knap' has DType: M{con ConNumber:b, con ConWeight:b, param Items:{Id:i8, V:i8, W:i8}*, param MaxNumber:i8, param MaxWeight:i8, param MinNumber:i8, msr Number:i8, var Use:b[*], msr Value:i8, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,Seq<{i8,i8,i8}>,i8,i8,i8,i8,Ten<bool>,i8,i8},(Seq<{i8,i8,i8}>,i8,i8,i8,Ten<bool>,Ten<bool>,i8,i8,i8,bool,bool)>
+>    1) [0] Expr "*** Maximize Value ***"
+*** Maximize Value ***
+>    2) [0] Expr Knap->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Ten<bool>(6) [true, true, true, false, false, false]
+  msr Weight: 16
+  msr Value: 171
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    3) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+*** Maximize Value with MaxNumber: 2 ***
+>    4) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 2
+  var Use: Ten<bool>(6) [false, true, false, false, true, false]
+  msr Weight: 17
+  msr Value: 170
+  msr Number: 2
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    5) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use to Tensor.Fill(true, Count(Items)); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+>    6) [0] Expr "*** Maximize Value ***"
+*** Maximize Value ***
+>    7) [0] Expr Knap->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Ten<bool>(6) [true, true, true, false, false, false]
+  msr Weight: 16
+  msr Value: 171
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    8) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+*** Maximize Value with MaxNumber: 2 ***
+>    9) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 2
+  var Use: Ten<bool>(6) [false, true, false, false, true, false]
+  msr Weight: 17
+  msr Value: 170
+  msr Number: 2
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>   10) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3, Force : false, Allow : true }, { Id : 1, V : 80, W : 5, Force : false, Allow : true }, { Id : 2, V : 71, W : 8, Force : false, Allow : true }, { Id : 3, V : 60, W : 10, Force : true, Allow : true }, { Id : 4, V : 90, W : 12, Force : false, Allow : false }, { Id : 5, V : 80, W : 13, Force : false, Allow : true }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Tensor.From(Items.Force) to Tensor.From(Items.Allow); msr Weight := Sum(Items, Use[Id] * W); msr Value := Sum(Items, Use[Id] * V); msr Number := Sum(Items, Use[Id]); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+Global 'Knap' has (modified) DType: M{con ConNumber:b, con ConWeight:b, param Items:{Allow:b, Force:b, Id:i8, V:i8, W:i8}*, param MaxNumber:i8, param MaxWeight:i8, param MinNumber:i8, msr Number:i8, var Use:b[*], msr Value:i8, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,Seq<{bool,bool,i8,i8,i8}>,i8,i8,i8,i8,Ten<bool>,i8,i8},(Seq<{bool,bool,i8,i8,i8}>,i8,i8,i8,Ten<bool>,Ten<bool>,Ten<bool>,i8,i8,i8,bool,bool)>
+>   11) [0] Expr "*** Maximize Value ***"
+*** Maximize Value ***
+>   12) [0] Expr Knap->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{bool,bool,i8,i8,i8}>
+       0) { Allow: true, Force: false, Id: 0, V: 20, W: 3 }
+       1) { Allow: true, Force: false, Id: 1, V: 80, W: 5 }
+       2) { Allow: true, Force: false, Id: 2, V: 71, W: 8 }
+       3) { Allow: true, Force: true, Id: 3, V: 60, W: 10 }
+       4) { Allow: false, Force: false, Id: 4, V: 90, W: 12 }
+       5) { Allow: true, Force: false, Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Ten<bool>(6) [true, true, false, true, false, false]
+  msr Weight: 18
+  msr Value: 160
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>   13) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+*** Maximize Value with MaxNumber: 2 ***
+>   14) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{bool,bool,i8,i8,i8}>
+       0) { Allow: true, Force: false, Id: 0, V: 20, W: 3 }
+       1) { Allow: true, Force: false, Id: 1, V: 80, W: 5 }
+       2) { Allow: true, Force: false, Id: 2, V: 71, W: 8 }
+       3) { Allow: true, Force: true, Id: 3, V: 60, W: 10 }
+       4) { Allow: false, Force: false, Id: 4, V: 90, W: 12 }
+       5) { Allow: true, Force: false, Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 2
+  var Use: Ten<bool>(6) [false, true, false, true, false, false]
+  msr Weight: 15
+  msr Value: 140
+  msr Number: 2
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>   15) [0] End
+

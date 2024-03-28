@@ -1,0 +1,28 @@
+﻿Pack := plan {
+  param Items := [ 3, 5, 8, 10, 12, 13 ];
+  param MaxWeight := 19;
+  param MinNumber := 0;
+  param MaxNumber := 1000;
+
+  var Use from Items;
+
+  msr Weight := Sum(Use);
+  msr Number := Count(Use);
+
+  con ConWeight := Weight <= MaxWeight;
+  con ConNumber := MinNumber <= Number <= MaxNumber;
+};
+
+Pack;
+
+"*** Maximize Weight ***";
+Pack->Maximize(Weight);
+
+"*** Maximize Number ***";
+Pack->Maximize(Number);
+
+"*** Maximize Weight with MinNumber: 3 ***";
+Pack with { MinNumber: 3 }->Maximize(Weight);
+
+"*** Maximize Weight with Items = bits ***";
+Pack with { Items: Range(10)->(1 shl it), MaxWeight: 21 }->Maximize(Weight);

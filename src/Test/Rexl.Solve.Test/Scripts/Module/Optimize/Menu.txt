@@ -1,0 +1,46 @@
+﻿Menu := [
+  { Item: "PlainBagel",      Cost: 2.0, Prot: 3.0, Fat: 1.0, Grp: "Bagel" },
+  { Item: "OnionBagel",      Cost: 3.0, Prot: 4.0, Fat: 2.0, Grp: "Bagel" },
+  { Item: "EverythingBagel", Cost: 3.0, Prot: 3.5, Fat: 1.0, Grp: "Bagel" },
+  { Item: "BoiledEgg",       Cost: 3.0, Prot: 5.0, Fat: 4.0, Grp: "Egg" },
+  { Item: "FriedEgg",        Cost: 4.0, Prot: 5.0, Fat: 4.5, Grp: "Egg" },
+  { Item: "GrilledVeggies",  Cost: 5.0, Prot: 3.0, Fat: 2.0, Grp: "Veggies" },
+  { Item: "CarrotVeggies",   Cost: 4.0, Prot: 2.0, Fat: 1.0, Grp: "Veggies" },
+  { Item: "MangoJuice",      Cost: 4.0, Prot: 1.5, Fat: 0.6, Grp: "Juice" },
+  { Item: "PineappleJuice",  Cost: 5.0, Prot: 2.0, Fat: 0.3, Grp: "Juice" },
+  { Item: "BerryJuice",      Cost: 3.0, Prot: 1.0, Fat: 0.5, Grp: "Juice" },
+];
+
+Meal := module {
+  param Menu default @Menu;
+
+  param BagelChoices  default Menu->Filter(Grp = "Bagel");
+  param EggChoices    default Menu->Filter(Grp = "Egg");
+  param VeggieChoices default Menu->Filter(Grp = "Veggies");
+  param JuiceChoices  default Menu->Filter(Grp = "Juice");
+
+  param CostMax default 100.0;
+  param FatMax  default 100.0;
+  param ProtMin default 0.0;
+
+  var Bagel  in BagelChoices;
+  var Egg    in EggChoices;
+  var Veggie in VeggieChoices;
+  var Juice  in JuiceChoices;
+
+  msr Cost := Bagel.Cost + Egg.Cost + Veggie.Cost + Juice.Cost;
+  msr Fat  := Bagel.Fat  + Egg.Fat  + Veggie.Fat  + Juice.Fat;
+  msr Prot := Bagel.Prot + Egg.Prot + Veggie.Prot + Juice.Prot;
+
+  con CostCon := Cost <= CostMax;
+  con FatCon  := Fat <= FatMax;
+  con ProtCon := Prot >= ProtMin;
+  
+  let Summary := { Cost, Prot, XItems: [Bagel, Egg, Veggie, Juice] };
+};
+
+Meal;
+
+A := Meal->Minimize(Cost);
+A.Cost;
+A.Summary;
