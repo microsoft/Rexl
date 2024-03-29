@@ -117,11 +117,3 @@ jobs:
     - publish: '$(Build.ArtifactStagingDirectory)/packages/nuget'
       displayName: 'Publish Artifact: $(ArtifactNuGetName)'
       artifact: 'packages-nuget-${{ parameters.buildConfig }}'
-
-    - task: DotNetCoreCLI@2
-      displayName: "Publish nuget packages to internal feed"
-      inputs:
-        command: 'push'
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/packages/nuget/*.nupkg;$(Build.ArtifactStagingDirectory)/packages/nuget/*.snupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'fcbe1b83-ec9e-498e-bcab-3f7876614e18/ScienceEngine_PublicPackages'
