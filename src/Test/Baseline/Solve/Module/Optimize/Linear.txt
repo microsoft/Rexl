@@ -1,0 +1,215 @@
+>>> *** Source:
+    Simple := plan {
+        // ******* Parameters *******
+        param Have_A def 20;
+        param Have_B def 30;
+        param Need_APerX := 1;
+        param Need_BPerX := 2;
+        param Need_APerY := 3;
+        param Need_BPerY := 2;
+        param Profit_PerX := 12.0;
+        param Profit_PerY := 15.0;
+        // ******* Variables *******
+        var Make_X from 0.0 def 100.0;
+        var Make_Y from 0.0 def 100.0;
+        let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y;
+        let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y;
+        // ******* Measures *******
+        // Profit.
+        msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y;
+        // ******* Constraints *******
+        // Production constraints.
+        let Surplus_A := Have_A - Use_A;
+        let Surplus_B := Have_B - Use_B;
+        con Capacity_A := Surplus_A >= 0;
+        con Capacity_B := Surplus_B >= 0;
+    };
+    Simple;
+    Simple.Use_A;
+    Simple.Make_X;
+    Simple.Surplus_A;
+    Simple with { Have_A : 1000, Have_B : 100, Make_Y : 40.0, Make_X : 30.0 };
+    Simple->Maximize(Profit);
+    Best := Simple->Maximize(Profit);
+    Best;
+    // Tweak of Simple to use integer quantities to produce.
+    SimpleInt := plan {
+        // ******* Parameters *******
+        param Have_A def 20;
+        param Have_B def 30;
+        param Need_APerX := 1;
+        param Need_BPerX := 2;
+        param Need_APerY := 3;
+        param Need_BPerY := 2;
+        param Profit_PerX := 12.0;
+        param Profit_PerY := 15.0;
+        // ******* Variables *******
+        // Use 0 (int) rather than 0.0 (float).
+        var Make_X from 0 def 100;
+        var Make_Y from 0 def 100;
+        let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y;
+        let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y;
+        // ******* Measures *******
+        // Profit.
+        msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y;
+        // ******* Constraints *******
+        // Production constraints.
+        let Surplus_A := Have_A - Use_A;
+        let Surplus_B := Have_B - Use_B;
+        con Capacity_A := Surplus_A >= 0;
+        con Capacity_B := Surplus_B >= 0;
+    };
+    SimpleInt;
+    BestInt := SimpleInt->Maximize(Profit);
+    BestInt;
+
+>>> *** Instructions:
+   0) [0] Define Simple <- module { param Have_A := 20; param Have_B := 30; param Need_APerX := 1; param Need_BPerX := 2; param Need_APerY := 3; param Need_BPerY := 2; param Profit_PerX := 12; param Profit_PerY := 15; var Make_X from 0 def 100; var Make_Y from 0 def 100; let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y; let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y; msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y; let Surplus_A := Have_A - Use_A; let Surplus_B := Have_B - Use_B; con Capacity_A := Surplus_A $>= 0; con Capacity_B := Surplus_B $>= 0 }
+   1) [0] Expr Simple
+   2) [0] Expr Simple.Use_A
+   3) [0] Expr Simple.Make_X
+   4) [0] Expr Simple.Surplus_A
+   5) [0] Expr Simple=>{ Have_A : 1000, Have_B : 100, Make_Y : 40, Make_X : 30 }
+   6) [0] Expr Simple->Maximize(Profit)
+   7) [0] Define Best <- Simple->Maximize(Profit)
+   8) [0] Expr Best
+   9) [0] Define SimpleInt <- module { param Have_A := 20; param Have_B := 30; param Need_APerX := 1; param Need_BPerX := 2; param Need_APerY := 3; param Need_BPerY := 2; param Profit_PerX := 12; param Profit_PerY := 15; var Make_X from 0 def 100; var Make_Y from 0 def 100; let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y; let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y; msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y; let Surplus_A := Have_A - Use_A; let Surplus_B := Have_B - Use_B; con Capacity_A := Surplus_A $>= 0; con Capacity_B := Surplus_B $>= 0 }
+  10) [0] Expr SimpleInt
+  11) [0] Define BestInt <- SimpleInt->Maximize(Profit)
+  12) [0] Expr BestInt
+  13) [0] End
+
+>    0) [0] Define Simple <- module { param Have_A := 20; param Have_B := 30; param Need_APerX := 1; param Need_BPerX := 2; param Need_APerY := 3; param Need_BPerY := 2; param Profit_PerX := 12; param Profit_PerY := 15; var Make_X from 0 def 100; var Make_Y from 0 def 100; let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y; let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y; msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y; let Surplus_A := Have_A - Use_A; let Surplus_B := Have_B - Use_B; con Capacity_A := Surplus_A $>= 0; con Capacity_B := Surplus_B $>= 0 }
+Global 'Simple' has DType: M{con Capacity_A:b, con Capacity_B:b, param Have_A:i8, param Have_B:i8, var Make_X:r8, var Make_Y:r8, param Need_APerX:i8, param Need_APerY:i8, param Need_BPerX:i8, param Need_BPerY:i8, msr Profit:r8, param Profit_PerX:r8, param Profit_PerY:r8, let Surplus_A:r8, let Surplus_B:r8, let Use_A:r8, let Use_B:r8}, SysType: RuntimeModule<{bool,bool,i8,i8,r8,r8,i8,i8,i8,i8,r8,r8,r8,r8,r8,r8,r8},(i8,i8,i8,i8,i8,i8,r8,r8,r8,r8,r8,r8,r8,r8,r8,r8,r8,bool,bool)>
+>    1) [0] Expr Simple
+module symbols:
+  param Have_A: 20
+  param Have_B: 30
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 100
+  var Make_Y: 100
+  let Use_A: 400
+  let Use_B: 400
+  msr Profit: 2700
+  let Surplus_A: -380
+  let Surplus_B: -370
+  con Capacity_A: false
+  con Capacity_B: false
+>    2) [0] Expr Simple.Use_A
+400
+>    3) [0] Expr Simple.Make_X
+100
+>    4) [0] Expr Simple.Surplus_A
+-380
+>    5) [0] Expr Simple=>{ Have_A : 1000, Have_B : 100, Make_Y : 40, Make_X : 30 }
+module symbols:
+  param Have_A: 1000
+  param Have_B: 100
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 30
+  var Make_Y: 40
+  let Use_A: 150
+  let Use_B: 140
+  msr Profit: 960
+  let Surplus_A: 850
+  let Surplus_B: -40
+  con Capacity_A: true
+  con Capacity_B: false
+>    6) [0] Expr Simple->Maximize(Profit)
+Solver: GLPK
+module symbols:
+  param Have_A: 20
+  param Have_B: 30
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 12.5
+  var Make_Y: 2.5
+  let Use_A: 20
+  let Use_B: 30
+  msr Profit: 187.5
+  let Surplus_A: 0
+  let Surplus_B: 0
+  con Capacity_A: true
+  con Capacity_B: true
+*** Ctx ping count: 0
+>    7) [0] Define Best <- Simple->Maximize(Profit)
+Solver: GLPK
+Global 'Best' has DType: M{con Capacity_A:b, con Capacity_B:b, param Have_A:i8, param Have_B:i8, var Make_X:r8, var Make_Y:r8, param Need_APerX:i8, param Need_APerY:i8, param Need_BPerX:i8, param Need_BPerY:i8, msr Profit:r8, param Profit_PerX:r8, param Profit_PerY:r8, let Surplus_A:r8, let Surplus_B:r8, let Use_A:r8, let Use_B:r8}?, SysType: RuntimeModule<{bool,bool,i8,i8,r8,r8,i8,i8,i8,i8,r8,r8,r8,r8,r8,r8,r8},(i8,i8,i8,i8,i8,i8,r8,r8,r8,r8,r8,r8,r8,r8,r8,r8,r8,bool,bool)>
+>    8) [0] Expr Best
+module symbols:
+  param Have_A: 20
+  param Have_B: 30
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 12.5
+  var Make_Y: 2.5
+  let Use_A: 20
+  let Use_B: 30
+  msr Profit: 187.5
+  let Surplus_A: 0
+  let Surplus_B: 0
+  con Capacity_A: true
+  con Capacity_B: true
+>    9) [0] Define SimpleInt <- module { param Have_A := 20; param Have_B := 30; param Need_APerX := 1; param Need_BPerX := 2; param Need_APerY := 3; param Need_BPerY := 2; param Profit_PerX := 12; param Profit_PerY := 15; var Make_X from 0 def 100; var Make_Y from 0 def 100; let Use_A := Need_APerX * Make_X + Need_APerY * Make_Y; let Use_B := Need_BPerX * Make_X + Need_BPerY * Make_Y; msr Profit := Profit_PerX * Make_X + Profit_PerY * Make_Y; let Surplus_A := Have_A - Use_A; let Surplus_B := Have_B - Use_B; con Capacity_A := Surplus_A $>= 0; con Capacity_B := Surplus_B $>= 0 }
+Global 'SimpleInt' has DType: M{con Capacity_A:b, con Capacity_B:b, param Have_A:i8, param Have_B:i8, var Make_X:i8, var Make_Y:i8, param Need_APerX:i8, param Need_APerY:i8, param Need_BPerX:i8, param Need_BPerY:i8, msr Profit:r8, param Profit_PerX:r8, param Profit_PerY:r8, let Surplus_A:i8, let Surplus_B:i8, let Use_A:i8, let Use_B:i8}, SysType: RuntimeModule<{bool,bool,i8,i8,i8,i8,i8,i8,i8,i8,r8,r8,r8,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,r8,r8,i8,i8,i8,i8,i8,i8,r8,i8,i8,bool,bool)>
+>   10) [0] Expr SimpleInt
+module symbols:
+  param Have_A: 20
+  param Have_B: 30
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 100
+  var Make_Y: 100
+  let Use_A: 400
+  let Use_B: 400
+  msr Profit: 2700
+  let Surplus_A: -380
+  let Surplus_B: -370
+  con Capacity_A: false
+  con Capacity_B: false
+>   11) [0] Define BestInt <- SimpleInt->Maximize(Profit)
+Solver: GLPK
+Global 'BestInt' has DType: M{con Capacity_A:b, con Capacity_B:b, param Have_A:i8, param Have_B:i8, var Make_X:i8, var Make_Y:i8, param Need_APerX:i8, param Need_APerY:i8, param Need_BPerX:i8, param Need_BPerY:i8, msr Profit:r8, param Profit_PerX:r8, param Profit_PerY:r8, let Surplus_A:i8, let Surplus_B:i8, let Use_A:i8, let Use_B:i8}?, SysType: RuntimeModule<{bool,bool,i8,i8,i8,i8,i8,i8,i8,i8,r8,r8,r8,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,r8,r8,i8,i8,i8,i8,i8,i8,r8,i8,i8,bool,bool)>
+>   12) [0] Expr BestInt
+module symbols:
+  param Have_A: 20
+  param Have_B: 30
+  param Need_APerX: 1
+  param Need_BPerX: 2
+  param Need_APerY: 3
+  param Need_BPerY: 2
+  param Profit_PerX: 12
+  param Profit_PerY: 15
+  var Make_X: 13
+  var Make_Y: 2
+  let Use_A: 19
+  let Use_B: 30
+  msr Profit: 186
+  let Surplus_A: 1
+  let Surplus_B: 0
+  con Capacity_A: true
+  con Capacity_B: true
+>   13) [0] End
+

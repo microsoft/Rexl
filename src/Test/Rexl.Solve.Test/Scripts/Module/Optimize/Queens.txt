@@ -1,0 +1,65 @@
+﻿Queens := plan {
+  param N := 4;
+  const NumCells := N * N;
+
+  const Cells := Range(NumCells)->{
+    Id: it,
+    Row: it div N,
+    Col: it mod N,
+    Add: it div N + it mod N,
+    Sub: it div N - it mod N,
+  };
+  // const Sln := Cells->Filter(Id in [1, 7, 8, 14 ]);
+  const Sln := Cells->Filter(Id in [2, 4, 11, 13 ]);
+
+  var Q from Cells def Sln;
+
+  let RowCounts := Q->GroupBy(Row, [group] XNum: Count(group))->Sort(Row);
+  let ColCounts := Q->GroupBy(Col, [group] XNum: Count(group))->Sort(Col);
+  let AddCounts := Q->GroupBy(Add, [group] XNum: Count(group))->Sort(Add);
+  let SubCounts := Q->GroupBy(Sub, [group] XNum: Count(group))->Sort(Sub);
+
+  con AtMostOnePerRow := All(RowCounts, XNum <= 1);
+  con AtMostOnePerCol := All(ColCounts, XNum <= 1);
+  con AtMostOnePerAdd := All(AddCounts, XNum <= 1);
+  con AtMostOnePerSub := All(SubCounts, XNum <= 1);
+
+  msr NumPlaced := Count(Q);
+};
+
+// Can't linearize!
+// REVIEW: Fix this.
+Sln := Queens->Maximize(NumPlaced);
+
+Queens := plan {
+  param N := 4;
+  const NumCells := N * N;
+
+  const Cells := Range(NumCells)->{
+    Id: it,
+    Row: it div N,
+    Col: it mod N,
+    Add: it div N + it mod N,
+    Sub: it div N - it mod N,
+  };
+  // const Sln := Cells->Filter(Id in [1, 7, 8, 14 ]);
+  const Sln := Cells->Filter(Id in [2, 4, 11, 13 ]);
+
+  var Q from Cells def Sln;
+
+  let Rows := Q->GroupBy(_: Row);
+  let Cols := Q->GroupBy(_: Col);
+  let Adds := Q->GroupBy(_: Add);
+  let Subs := Q->GroupBy(_: Sub);
+
+  con AtMostOnePerRow := All(Rows, Count(it) <= 1);
+  con AtMostOnePerCol := All(Cols, Count(it) <= 1);
+  con AtMostOnePerAdd := All(Adds, Count(it) <= 1);
+  con AtMostOnePerSub := All(Subs, Count(it) <= 1);
+
+  msr NumPlaced := Count(Q);
+};
+
+// This one works.
+Sln := Queens->Maximize(NumPlaced);
+Sln.NumPlaced;

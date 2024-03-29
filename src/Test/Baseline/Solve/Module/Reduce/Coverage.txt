@@ -1,0 +1,273 @@
+>>> *** Source:
+    P := module {
+        param G := true;
+        param S := Range(3, 7) if G else null;
+        const F := S->First();
+        const Res := F * F;
+        var X from S;
+    };
+    P;
+    P with { S: Range(0) };
+    P with { G: false };
+    P := module {
+        param N := 3;
+        var X from 0;
+        var Y from 0;
+        var Z from Tensor.Fill(0, N);
+        msr M := X + Y - Sum(Range(N), Z[it]);
+    };
+    P; // REVIEW: Should reduce M more fully.
+    P with { N: 0 };
+    P := module {
+        param N := 3;
+        const Inds := Range(N);
+        var X from 0;
+        var Y from 0;
+        var Z from Tensor.Fill(0, N);
+        msr M := X + Y - Sum(Inds, Z[it]);
+    };
+    P;
+    P with { N: 0 };
+    P := module {
+        param N := 4;
+        const M := 4;
+        const Num := M * N;
+        const Lines := Range(Num)->GroupBy(it div N + it mod N);
+        const Segs := Lines->ChainMap(as line,
+            CrossJoin(
+                a:line, b:line, a < b,
+                { A: a, B: b, Mids: line->TakeIf(a < it < b) }
+            )
+        );
+        var X from Tensor.Fill(0, Num);
+        var Y from Tensor.Fill(0, Num);
+        con Need := Segs->(X[A] + X[B] - Sum(Mids, Y[it]) <= 1);
+    };
+    P;
+    P := module {
+        param R := { B:true };
+        var X from 0 to 3;
+        // Reduction of BndGetFieldNode
+        con C := (R & {A:X}).A < 10;
+    };
+    P;
+    M := 3;
+    N := 17;
+    module { var A := N; let B := A * N; let C := B + N; let D := M + C; }
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param G := true; param S := Range(3, 7) if G else null; const F := S->First(); const Res := F * F; var X from S }
+   1) [0] Expr P
+   2) [0] Expr P=>{ S : Range(0) }
+   3) [0] Expr P=>{ G : false }
+   4) [0] Define P <- module { param N := 3; var X from 0; var Y from 0; var Z from Tensor.Fill(0, N); msr M := X + Y - Sum(Range(N), Z[it]) }
+   5) [0] Expr P
+   6) [0] Expr P=>{ N : 0 }
+   7) [0] Define P <- module { param N := 3; const Inds := Range(N); var X from 0; var Y from 0; var Z from Tensor.Fill(0, N); msr M := X + Y - Sum(Inds, Z[it]) }
+   8) [0] Expr P
+   9) [0] Expr P=>{ N : 0 }
+  10) [0] Define P <- module { param N := 4; const M := 4; const Num := M * N; const Lines := Range(Num)->GroupBy(it div N + it mod N); const Segs := Lines->ChainMap(as line, CrossJoin(a : line, b : line, a $< b, { A : a, B : b, Mids : line->TakeIf(a $< it $< b) })); var X from Tensor.Fill(0, Num); var Y from Tensor.Fill(0, Num); con Need := Segs->(X[A] + X[B] - Sum(Mids, Y[it]) $<= 1) }
+  11) [0] Expr P
+  12) [0] Define P <- module { param R := { B : true }; var X from 0 to 3; con C := (R & { A : X }).A $< 10 }
+  13) [0] Expr P
+  14) [0] Define M <- 3
+  15) [0] Define N <- 17
+  16) [0] Expr module { var A def N; let B := A * N; let C := B + N; let D := M + C }
+  17) [0] End
+
+>    0) [0] Define P <- module { param G := true; param S := Range(3, 7) if G else null; const F := S->First(); const Res := F * F; var X from S }
+Global 'P' has DType: M{const F:i8?, param G:b, const Res:i8?, param S:i8*, var X:i8*}, SysType: RuntimeModule<{i8,bool,i8,Seq<i8>,Seq<i8>},(bool,Seq<i8>,Opt<i8>,Opt<i8>,Seq<i8>,Seq<i8>)>
+>    1) [0] Expr P
+*** Reduction ***
+  G src: !1x.0
+  G dst: true
+
+  S src: !1x.1
+  S dst: Compound<i8*>
+
+  F src: !1x.2
+  F dst: Opt<i8?>(3)
+
+  Res src: !1x.3
+  Res dst: Opt<i8?>(9)
+
+  X src: !1x.5
+  X dst: SelectSeq*([$0, $1, $2, $3], Compound<i8*>)
+
+>    2) [0] Expr P=>{ S : Range(0) }
+*** Reduction ***
+  G src: !1x.0
+  G dst: true
+
+  S src: !1x.1
+  S dst: Compound<i8*>
+
+  F src: !1x.2
+  F dst: null
+
+  Res src: !1x.3
+  Res dst: null
+
+Domain sequence for 'X' is empty: !1x.1
+  X src: !1x.5
+  X dst: !1x.5
+
+>    3) [0] Expr P=>{ G : false }
+*** Reduction ***
+  G src: !1x.0
+  G dst: false
+
+  S src: !1x.1
+  S dst: null
+
+  F src: !1x.2
+  F dst: null
+
+  Res src: !1x.3
+  Res dst: null
+
+Domain sequence for 'X' is empty: !1x.1
+  X src: !1x.5
+  X dst: !1x.5
+
+>    4) [0] Define P <- module { param N := 3; var X from 0; var Y from 0; var Z from Tensor.Fill(0, N); msr M := X + Y - Sum(Range(N), Z[it]) }
+Global 'P' has (modified) DType: M{msr M:i8, param N:i8, var X:i8, var Y:i8, var Z:i8[*]}, SysType: RuntimeModule<{i8,i8,i8,i8,Ten<i8>},(i8,i8,i8,i8,i8,Ten<i8>,Ten<i8>,i8)>
+>    5) [0] Expr P
+*** Reduction ***
+  N src: !1x.0
+  N dst: 3
+
+  X src: !1x.2
+  X dst: $0
+
+  Y src: !1x.4
+  Y dst: $1
+
+  Z src: !1x.6
+  Z dst: [! $2, $3, $4 !]:i8[3]
+
+  M src: Add(!1x.2, !1x.4, [-] Sum(*2: Range(!1x.0), !1x.6[*2]))
+  M dst: Add($0, $1, [-] Sum(*1: Range(3), [! $2, $3, $4 !]:i8[3][*1]))
+
+>    6) [0] Expr P=>{ N : 0 }
+*** Reduction ***
+  N src: !1x.0
+  N dst: 0
+
+  X src: !1x.2
+  X dst: $0
+
+  Y src: !1x.4
+  Y dst: $1
+
+  Z src: !1x.6
+  Z dst: [!  !]:i8[0]
+
+  M src: Add(!1x.2, !1x.4, [-] Sum(*2: Range(!1x.0), !1x.6[*2]))
+  M dst: Add($0, $1)
+
+>    7) [0] Define P <- module { param N := 3; const Inds := Range(N); var X from 0; var Y from 0; var Z from Tensor.Fill(0, N); msr M := X + Y - Sum(Inds, Z[it]) }
+Global 'P' has (modified) DType: M{const Inds:i8*, msr M:i8, param N:i8, var X:i8, var Y:i8, var Z:i8[*]}, SysType: RuntimeModule<{Seq<i8>,i8,i8,i8,i8,Ten<i8>},(i8,Seq<i8>,i8,i8,i8,i8,Ten<i8>,Ten<i8>,i8)>
+>    8) [0] Expr P
+*** Reduction ***
+  N src: !1x.0
+  N dst: 3
+
+  Inds src: !1x.1
+  Inds dst: Compound<i8*>
+
+  X src: !1x.3
+  X dst: $0
+
+  Y src: !1x.5
+  Y dst: $1
+
+  Z src: !1x.7
+  Z dst: [! $2, $3, $4 !]:i8[3]
+
+  M src: Add(!1x.3, !1x.5, [-] Sum(*2: !1x.1, !1x.7[*2]))
+  M dst: Add($0, $1, [-] Sum(*1: Compound<i8*>, [! $2, $3, $4 !]:i8[3][*1]))
+  M fin: Add($0, $1, [-] $2, [-] $3, [-] $4)
+
+>    9) [0] Expr P=>{ N : 0 }
+*** Reduction ***
+  N src: !1x.0
+  N dst: 0
+
+  Inds src: !1x.1
+  Inds dst: Compound<i8*>
+
+  X src: !1x.3
+  X dst: $0
+
+  Y src: !1x.5
+  Y dst: $1
+
+  Z src: !1x.7
+  Z dst: [!  !]:i8[0]
+
+  M src: Add(!1x.3, !1x.5, [-] Sum(*2: !1x.1, !1x.7[*2]))
+  M dst: Add($0, $1)
+
+>   10) [0] Define P <- module { param N := 4; const M := 4; const Num := M * N; const Lines := Range(Num)->GroupBy(it div N + it mod N); const Segs := Lines->ChainMap(as line, CrossJoin(a : line, b : line, a $< b, { A : a, B : b, Mids : line->TakeIf(a $< it $< b) })); var X from Tensor.Fill(0, Num); var Y from Tensor.Fill(0, Num); con Need := Segs->(X[A] + X[B] - Sum(Mids, Y[it]) $<= 1) }
+Global 'P' has (modified) DType: M{const Lines:i8**, const M:i8, param N:i8, con Need:b*, const Num:i8, const Segs:{A:i8, B:i8, Mids:i8*}*, var X:i8[*], var Y:i8[*]}, SysType: RuntimeModule<{Seq<Seq<i8>>,i8,i8,Seq<bool>,i8,Seq<{i8,i8,Seq<i8>}>,Ten<i8>,Ten<i8>},(i8,i8,i8,Seq<Seq<i8>>,Seq<{i8,i8,Seq<i8>}>,Ten<i8>,Ten<i8>,Ten<i8>,Ten<i8>,Seq<bool>)>
+>   11) [0] Expr P
+*** Reduction ***
+  N src: !1x.0
+  N dst: 4
+
+  M src: !1x.1
+  M dst: 4
+
+  Num src: !1x.2
+  Num dst: 16
+
+  Lines src: !1x.3
+  Lines dst: Compound<i8**>
+
+  Segs src: !1x.4
+  Segs dst: Compound<{A:i8, B:i8, Mids:i8*}*>
+
+  X src: !1x.6
+  X dst: [! $0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15 !]:i8[16]
+
+  Y src: !1x.8
+  Y dst: [! $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31 !]:i8[16]
+
+  Need src: ForEach(*2: !1x.4, Add(!1x.6[*2.A], !1x.6[*2.B], [-] Sum(*3: *2.Mids, !1x.8[*3])) @<= 1)
+  Need dst: ForEach(*1: Compound<i8*>, *2: Compound<i8*>, *3: Compound<i8**>, Add([! $0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15 !]:i8[16][*1], [! $0, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15 !]:i8[16][*2], [-] Sum(*4: *3, [! $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31 !]:i8[16][*4])) @<= 1)
+  Need fin: [Add($1, $4) @<= 1, Add($2, $5) @<= 1, Add($2, $8, [-] $21) @<= 1, Add($5, $8) @<= 1, Add($3, $6) @<= 1, Add($3, $9, [-] $22) @<= 1, Add($3, $12, [-] $22, [-] $25) @<= 1, Add($6, $9) @<= 1, Add($6, $12, [-] $25) @<= 1, Add($9, $12) @<= 1, Add($7, $10) @<= 1, Add($7, $13, [-] $26) @<= 1, Add($10, $13) @<= 1, Add($11, $14) @<= 1]
+
+>   12) [0] Define P <- module { param R := { B : true }; var X from 0 to 3; con C := (R & { A : X }).A $< 10 }
+Global 'P' has (modified) DType: M{con C:b, param R:{B:b}, var X:i8}, SysType: RuntimeModule<{bool,{bool},i8},({bool},i8,i8,i8,bool)>
+>   13) [0] Expr P
+*** Reduction ***
+  R src: !1x.0
+  R dst: Compound<{B:b}>
+
+  X src: !1x.3
+  X dst: $0
+
+  C src: RecordConcat(!1x.0, {A:!1x.3}).A @< 10
+  C dst: RecordConcat(Compound<{B:b}>, {A:$0}).A @< 10
+
+>   14) [0] Define M <- 3
+Global 'M' has DType: i8, SysType: i8
+>   15) [0] Define N <- 17
+Global 'N' has DType: i8, SysType: i8
+>   16) [0] Expr module { var A def N; let B := A * N; let C := B + N; let D := M + C }
+*** Reduction ***
+  A src: !1x.0
+  A dst: $0
+
+  B src: Mul(!1x.0, !2x.0)
+  B dst: Mul($0, 17)
+
+  C src: Add(!1x.1, !2x.0)
+  C dst: Add($1, 17)
+
+  D src: Add(!1x.1, !2x.2)
+  D dst: Add($2, 3)
+
+>   17) [0] End
+

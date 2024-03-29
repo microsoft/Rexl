@@ -1,0 +1,46 @@
+BitPlan := plan {
+  param Domain := Range(10)->(1 shl it);
+  param N := 19;
+
+  var Bits from Domain def [];
+  msr Num := Count(Bits);
+  msr Sum := Sum(Bits);
+  msr Dif := N - Sum;
+  msr Neg := Sum - N;
+
+  con Limit := Sum <= N;
+};
+
+"*** Symbols ***";
+BitPlan.Domain;
+BitPlan.N;
+BitPlan.Bits;
+BitPlan.Sum;
+BitPlan.Num;
+BitPlan.Limit;
+
+"*** Evals ***";
+BitPlan;
+BitPlan with { N: 13 };
+
+"*** Maximize ***";
+BitPlan->Maximize(Sum);
+BitPlan->Maximize(Sum, "glpk");
+BitPlan->Maximize(Sum, "highs");
+BitPlan with { N: 13 }->Maximize(Sum);
+BitPlan with { N: 2000 }->Maximize(Sum);
+
+"*** Minimize ***";
+BitPlan->Minimize(Dif);
+BitPlan with { N: 13 }->Minimize(Dif);
+BitPlan with { N: 2000 }->Minimize(Dif);
+
+"*** Maximize Neg ***";
+BitPlan->Maximize(Neg);
+BitPlan with { N: 13 }->Maximize(Neg);
+BitPlan with { N: 2000 }->Maximize(Neg);
+
+"*** Maximize Num ***";
+BitPlan->Maximize(Num);
+BitPlan with { N: 13 }->Maximize(Num);
+BitPlan with { N: 2000 }->Maximize(Num);

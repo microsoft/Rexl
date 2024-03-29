@@ -1,0 +1,118 @@
+﻿plan {
+    // ******* Parameters *******
+
+    // The product profit per unit (P rows).
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7.0 },
+        { PID: "P1", Profit: 15.0, Want: 10.0 },
+    ];
+
+    // The resource quantities that we have (R rows).
+    param Resources := [
+        { RID: "R0", Have: 20 },
+        { RID: "R1", Have: 35 },
+    ];
+
+    // The amount of each resource required for each product unit (R x P rows).
+    param R_Per_P := [
+        { PID: "P0", RID: "R0", Need: 1.0 },
+        { PID: "P0", RID: "R1", Need: 2.0 },
+        { PID: "P1", RID: "R0", Need: 3.0 },
+        { PID: "P1", RID: "R1", Need: 2.0 },
+    ];
+
+    // ******* Computed Constants *******
+
+    const NumProds := Count(Products);
+
+    // Indexed products.
+    const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+
+    // Resource amount information, eg, amt we have, and amt need for each kind of product.
+    const ResAmtInfo := R_Per_P
+        ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+        ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+
+    // ******* Free Variables *******
+
+    // How much of each product to make (P slots in a tensor).
+    var Make from Tensor.Fill(0.0, NumProds) def Tensor.From(IndexedProducts.Want);
+
+    // ******* Computed Variables *******
+
+    let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+    let ProdAmts := IndexedProducts+>{ Make: Make[Index] };
+
+    // ******* Measures *******
+
+    // Total profit.
+    msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+
+    // ******* Constraints *******
+
+    con ResCons := ResAmts.Need <= ResAmts.Have;
+};
+
+// Zero size tensor.
+plan {
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+        { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+    ]->Take(0);
+    var Make from Tensor.Fill(0.0, Products->Count()) def Tensor.From(Products.Want);
+    msr Profit := Sum(Products, Profit * Make[Index]);
+};
+
+plan {
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+        { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+    ]->Take(0);
+    var Make def Tensor.From(Products.Want);
+    msr Profit := Sum(Products, Profit * Make[Index]);
+};
+
+plan {
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+        { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+    ]->Take(0);
+    var Make to Tensor.From(Products.Want);
+    msr Profit := Sum(Products, Profit * Make[Index]);
+};
+
+// Shape mismatch.
+plan {
+    param Products := [
+        { PID: "P0", Profit: 12.0, Want:  7.0, Index: 0 },
+        { PID: "P1", Profit: 15.0, Want: 10.0, Index: 1 },
+    ];
+    var Make from Tensor.Fill(0.0, Products->Count() + 1) to Tensor.From(Products.Want);
+    var Make2 from Tensor.Fill(0.0, Products->Count() + 1) def Tensor.From(Products.Want);
+    msr Profit := Sum(Products, Profit * Make[Index]);
+};
+
+// All tensors null.
+P := plan {
+    param UseNull := false;
+    var Make from (null if UseNull else Tensor.From(Range(5)));
+};
+P;
+P with { UseNull: true };
+
+// Rank zero not supported.
+plan { var Make from Tensor.Fill(0.0); };
+plan { var Make to Tensor.Fill(0.0); };
+plan { var Make def Tensor.Fill(0.0); };
+
+// Reduce indexing into Tensor.From on a sequence.
+plan {
+    var X from 3 to 7;
+    let T1 := Tensor.From([3, X, 8]);
+    let T2 := Tensor.From([3, X, 8, X, 1, -2], 2, 3);
+    msr M1_1 := T1[1];
+    msr M1_2 := T1[-1];
+    msr M2_1 := T2[1, 1];
+    msr M2_2 := T2[1, -1];
+    msr M2_3 := T2[1, -5];
+};

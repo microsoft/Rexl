@@ -1,0 +1,328 @@
+>>> *** Source:
+    P := plan {
+        const Zero := 0.0;
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+            { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+        ];
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want);
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P->Maximize(Profit);
+    // I8 with lower bound.
+    P := plan {
+        const Zero := 0;
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+            { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+        ];
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want);
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P->Maximize(Profit);
+    // R8 with upper bound.
+    P := plan {
+        const Zero := 0.0;
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+            { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+        ];
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        var Make to Tensor.From(IndexedProducts.Want);
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P->Maximize(Profit);
+    // I8 with upper bound.
+    P := plan {
+        const Zero := 0;
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7 + Zero },
+            { PID: "P1", Profit: 15.0, Want: 10 + Zero },
+        ];
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        var Make to Tensor.From(IndexedProducts.Want);
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P->Maximize(Profit);
+    // I4 with lower bound (NYI).
+    P := plan {
+        param Products := [
+            { PID: "P0", Profit: 12.0, Want:  7 },
+            { PID: "P1", Profit: 15.0, Want: 10 },
+        ];
+        param Resources := [
+            { RID: "R0", Have: 20 },
+            { RID: "R1", Have: 35 },
+        ];
+        param R_Per_P := [
+            { PID: "P0", RID: "R0", Need: 1.0 },
+            { PID: "P0", RID: "R1", Need: 2.0 },
+            { PID: "P1", RID: "R0", Need: 3.0 },
+            { PID: "P1", RID: "R1", Need: 2.0 },
+        ];
+        const IndexedProducts := ForEach(p: Products, p+>{ Index: # });
+        const ResAmtInfo := R_Per_P
+            ->GroupBy([key] RID, [group] Needs: group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))
+            ->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have });
+        var Make from Tensor.Fill(0i4, Count(Products));
+        msr Profit := Sum(IndexedProducts, Profit * Make[Index]);
+        let ResAmts := ResAmtInfo->{ RID, Have, Need: Sum(Needs, Need * Make[Index]) };
+        con ResCons := ResAmts.Need <= ResAmts.Have;
+    };
+    P->Maximize(Profit, "glpk");
+    P->Maximize(Profit, "highs");
+
+>>> *** Instructions:
+   0) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+   1) [0] Expr P->Maximize(Profit)
+   2) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+   3) [0] Expr P->Maximize(Profit)
+   4) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make to Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+   5) [0] Expr P->Maximize(Profit)
+   6) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make to Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+   7) [0] Expr P->Maximize(Profit)
+   8) [0] Define P <- module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, Count(Products)); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+   9) [0] Expr P->Maximize(Profit, "glpk")
+  10) [0] Expr P->Maximize(Profit, "highs")
+  11) [0] End
+
+>    0) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:r8}*, var Make:r8[*], param Products:{PID:s, Profit:r8, Want:r8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*, const Zero:r8}, SysType: RuntimeModule<{Seq<{i8,str,r8,r8}>,Ten<r8>,Seq<{str,r8,r8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>,r8},(r8,Seq<{str,r8,r8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,Seq<{i8,str,r8,r8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<r8>,Ten<r8>,r8,Seq<{i8,r8,str}>,Seq<bool>)>
+>    1) [0] Expr P->Maximize(Profit)
+Solver: GLPK
+module symbols:
+  const Zero: 0
+  param Products: Seq<{str,r8,r8}>
+       0) { PID: P0, Profit: 12, Want: 7 }
+       1) { PID: P1, Profit: 15, Want: 10 }
+  param Resources: Seq<{i8,str}>
+       0) { Have: 20, RID: R0 }
+       1) { Have: 35, RID: R1 }
+  param R_Per_P: Seq<{r8,str,str}>
+       0) { Need: 1, PID: P0, RID: R0 }
+       1) { Need: 2, PID: P0, RID: R1 }
+       2) { Need: 3, PID: P1, RID: R0 }
+       3) { Need: 2, PID: P1, RID: R1 }
+  const IndexedProducts: Seq<{i8,str,r8,r8}>
+       0) { Index: 0, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, PID: P1, Profit: 15, Want: 10 }
+  const ResAmtInfo: Seq<{i8,Seq<{i8,r8,str}>,str}>
+       0) { Have: 20, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 1, RID: R0 }
+                 1) { Index: 1, Need: 3, RID: R0 }
+            RID: R0 }
+       1) { Have: 35, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 2, RID: R1 }
+                 1) { Index: 1, Need: 2, RID: R1 }
+            RID: R1 }
+  var Make: Ten<r8>(2) [16.25, 1.25]
+  msr Profit: 213.75
+  let ResAmts: Seq<{i8,r8,str}>
+       0) { Have: 20, Need: 20, RID: R0 }
+       1) { Have: 35, Need: 35, RID: R1 }
+  con ResCons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    2) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(Zero, Count(Products)) def Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has (modified) DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:i8}*, var Make:i8[*], param Products:{PID:s, Profit:r8, Want:i8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*, const Zero:i8}, SysType: RuntimeModule<{Seq<{i8,str,r8,i8}>,Ten<i8>,Seq<{str,r8,i8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>,i8},(i8,Seq<{str,r8,i8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,Seq<{i8,str,r8,i8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<i8>,Ten<i8>,r8,Seq<{i8,r8,str}>,Seq<bool>)>
+>    3) [0] Expr P->Maximize(Profit)
+Solver: GLPK
+module symbols:
+  const Zero: 0
+  param Products: Seq<{str,r8,i8}>
+       0) { PID: P0, Profit: 12, Want: 7 }
+       1) { PID: P1, Profit: 15, Want: 10 }
+  param Resources: Seq<{i8,str}>
+       0) { Have: 20, RID: R0 }
+       1) { Have: 35, RID: R1 }
+  param R_Per_P: Seq<{r8,str,str}>
+       0) { Need: 1, PID: P0, RID: R0 }
+       1) { Need: 2, PID: P0, RID: R1 }
+       2) { Need: 3, PID: P1, RID: R0 }
+       3) { Need: 2, PID: P1, RID: R1 }
+  const IndexedProducts: Seq<{i8,str,r8,i8}>
+       0) { Index: 0, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, PID: P1, Profit: 15, Want: 10 }
+  const ResAmtInfo: Seq<{i8,Seq<{i8,r8,str}>,str}>
+       0) { Have: 20, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 1, RID: R0 }
+                 1) { Index: 1, Need: 3, RID: R0 }
+            RID: R0 }
+       1) { Have: 35, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 2, RID: R1 }
+                 1) { Index: 1, Need: 2, RID: R1 }
+            RID: R1 }
+  var Make: Ten<i8>(2) [16, 1]
+  msr Profit: 207
+  let ResAmts: Seq<{i8,r8,str}>
+       0) { Have: 20, Need: 19, RID: R0 }
+       1) { Have: 35, Need: 34, RID: R1 }
+  con ResCons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    4) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make to Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has (modified) DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:r8}*, var Make:r8[*], param Products:{PID:s, Profit:r8, Want:r8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*, const Zero:r8}, SysType: RuntimeModule<{Seq<{i8,str,r8,r8}>,Ten<r8>,Seq<{str,r8,r8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>,r8},(r8,Seq<{str,r8,r8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,Seq<{i8,str,r8,r8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<r8>,Ten<r8>,r8,Seq<{i8,r8,str}>,Seq<bool>)>
+>    5) [0] Expr P->Maximize(Profit)
+Solver: GLPK
+module symbols:
+  const Zero: 0
+  param Products: Seq<{str,r8,r8}>
+       0) { PID: P0, Profit: 12, Want: 7 }
+       1) { PID: P1, Profit: 15, Want: 10 }
+  param Resources: Seq<{i8,str}>
+       0) { Have: 20, RID: R0 }
+       1) { Have: 35, RID: R1 }
+  param R_Per_P: Seq<{r8,str,str}>
+       0) { Need: 1, PID: P0, RID: R0 }
+       1) { Need: 2, PID: P0, RID: R1 }
+       2) { Need: 3, PID: P1, RID: R0 }
+       3) { Need: 2, PID: P1, RID: R1 }
+  const IndexedProducts: Seq<{i8,str,r8,r8}>
+       0) { Index: 0, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, PID: P1, Profit: 15, Want: 10 }
+  const ResAmtInfo: Seq<{i8,Seq<{i8,r8,str}>,str}>
+       0) { Have: 20, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 1, RID: R0 }
+                 1) { Index: 1, Need: 3, RID: R0 }
+            RID: R0 }
+       1) { Have: 35, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 2, RID: R1 }
+                 1) { Index: 1, Need: 2, RID: R1 }
+            RID: R1 }
+  var Make: Ten<r8>(2) [7, 4.333333333333333]
+  msr Profit: 149
+  let ResAmts: Seq<{i8,r8,str}>
+       0) { Have: 20, Need: 20, RID: R0 }
+       1) { Have: 35, Need: 22.666666666666664, RID: R1 }
+  con ResCons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    6) [0] Define P <- module { const Zero := 0; param Products := [{ PID : "P0", Profit : 12, Want : 7 + Zero }, { PID : "P1", Profit : 15, Want : 10 + Zero }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make to Tensor.From(IndexedProducts.Want); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has (modified) DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:i8}*, var Make:i8[*], param Products:{PID:s, Profit:r8, Want:i8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*, const Zero:i8}, SysType: RuntimeModule<{Seq<{i8,str,r8,i8}>,Ten<i8>,Seq<{str,r8,i8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>,i8},(i8,Seq<{str,r8,i8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,Seq<{i8,str,r8,i8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<i8>,Ten<i8>,r8,Seq<{i8,r8,str}>,Seq<bool>)>
+>    7) [0] Expr P->Maximize(Profit)
+Solver: GLPK
+module symbols:
+  const Zero: 0
+  param Products: Seq<{str,r8,i8}>
+       0) { PID: P0, Profit: 12, Want: 7 }
+       1) { PID: P1, Profit: 15, Want: 10 }
+  param Resources: Seq<{i8,str}>
+       0) { Have: 20, RID: R0 }
+       1) { Have: 35, RID: R1 }
+  param R_Per_P: Seq<{r8,str,str}>
+       0) { Need: 1, PID: P0, RID: R0 }
+       1) { Need: 2, PID: P0, RID: R1 }
+       2) { Need: 3, PID: P1, RID: R0 }
+       3) { Need: 2, PID: P1, RID: R1 }
+  const IndexedProducts: Seq<{i8,str,r8,i8}>
+       0) { Index: 0, PID: P0, Profit: 12, Want: 7 }
+       1) { Index: 1, PID: P1, Profit: 15, Want: 10 }
+  const ResAmtInfo: Seq<{i8,Seq<{i8,r8,str}>,str}>
+       0) { Have: 20, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 1, RID: R0 }
+                 1) { Index: 1, Need: 3, RID: R0 }
+            RID: R0 }
+       1) { Have: 35, 
+            Needs: Seq<{i8,r8,str}>
+                 0) { Index: 0, Need: 2, RID: R1 }
+                 1) { Index: 1, Need: 2, RID: R1 }
+            RID: R1 }
+  var Make: Ten<i8>(2) [7, 4]
+  msr Profit: 144
+  let ResAmts: Seq<{i8,r8,str}>
+       0) { Have: 20, Need: 19, RID: R0 }
+       1) { Have: 35, Need: 22, RID: R1 }
+  con ResCons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    8) [0] Define P <- module { param Products := [{ PID : "P0", Profit : 12, Want : 7 }, { PID : "P1", Profit : 15, Want : 10 }]; param Resources := [{ RID : "R0", Have : 20 }, { RID : "R1", Have : 35 }]; param R_Per_P := [{ PID : "P0", RID : "R0", Need : 1 }, { PID : "P0", RID : "R1", Need : 2 }, { PID : "P1", RID : "R0", Need : 3 }, { PID : "P1", RID : "R1", Need : 2 }]; const IndexedProducts := ForEach(p : Products, p+>{ Index : # }); const ResAmtInfo := R_Per_P->GroupBy([key] RID, [agg] Needs : group->KeyJoin(IndexedProducts, PID, PID, { Index, RID, Need }))->KeyJoin(as rn, Resources, RID, RID, rn+>{ Have }); var Make from Tensor.Fill(0, Count(Products)); msr Profit := Sum(IndexedProducts, Profit * Make[Index]); let ResAmts := ResAmtInfo->{ RID, Have, Need : Sum(Needs, Need * Make[Index]) }; con ResCons := ResAmts.Need $<= ResAmts.Have }
+Global 'P' has (modified) DType: M{const IndexedProducts:{Index:i8, PID:s, Profit:r8, Want:i8}*, var Make:i4[*], param Products:{PID:s, Profit:r8, Want:i8}*, msr Profit:r8, param R_Per_P:{Need:r8, PID:s, RID:s}*, const ResAmtInfo:{Have:i8, Needs:{Index:i8, Need:r8, RID:s}*, RID:s}*, let ResAmts:{Have:i8, Need:r8, RID:s}*, con ResCons:b*, param Resources:{Have:i8, RID:s}*}, SysType: RuntimeModule<{Seq<{i8,str,r8,i8}>,Ten<i4>,Seq<{str,r8,i8}>,r8,Seq<{r8,str,str}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Seq<{i8,r8,str}>,Seq<bool>,Seq<{i8,str}>},(Seq<{str,r8,i8}>,Seq<{i8,str}>,Seq<{r8,str,str}>,Seq<{i8,str,r8,i8}>,Seq<{i8,Seq<{i8,r8,str}>,str}>,Ten<i4>,Ten<i4>,r8,Seq<{i8,r8,str}>,Seq<bool>)>
+>    9) [0] Expr P->Maximize(Profit, "glpk")
+Solver: GLPK
+*** Solver diagnostics:
+  Error: Tensor variable 'Make' with unhandled item type: i4
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   10) [0] Expr P->Maximize(Profit, "highs")
+Solver: HiGHS
+*** Solver diagnostics:
+  Error: Tensor variable 'Make' with unhandled item type: i4
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>   11) [0] End
+

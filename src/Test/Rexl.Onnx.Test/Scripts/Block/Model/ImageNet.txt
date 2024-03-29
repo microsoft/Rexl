@@ -1,0 +1,29 @@
+func TopN(scores, labels, n) := ForEach(Score:scores.Values, Label:labels.Values, {Score, Label})->Sort(Score)->Take(n);
+
+DogBytes := ReadBytes(_DATA_ & "dog.jpeg");
+Dog := DogBytes->GetPixels();
+Cat := ReadPixels(_DATA_ & "kitten.jpg");
+
+Dog->ResNet()->TopN(ResNet(), 10);
+Dog->ResNet()->SoftMax()->TopN(ResNet(), 10);
+Dog->EfficientNet()->TopN(EfficientNet(), 10);
+Cat->ResNet()->TopN(ResNet(), 10);
+Cat->ResNet()->SoftMax()->TopN(ResNet(), 10);
+Cat->EfficientNet()->TopN(EfficientNet(), 10);
+
+// Raw mode.
+Cat.Shape;
+Cat
+    ->ResizePixels(256)
+    ->(it[(it.Shape[0] - 224) div 2 : *224, (it.Shape[1] - 224) div 2 : *224, 0:3])
+    ->((it - 127.0) / 128.0)
+    ->CastR4()
+    ->EfficientNet()
+    ->TopN(EfficientNet(), 10);
+
+Cat2 := ReadPixelsU4(_DATA_ & "kitten.jpg");
+
+// REVIEW: Should make these work.
+Cat2->ResNet()->TopN(ResNet(), 10);
+Cat2->ResNet()->SoftMax()->TopN(ResNet(), 10);
+Cat2->EfficientNet()->TopN(EfficientNet(), 10);

@@ -1,0 +1,123 @@
+>>> *** Source:
+    Knap := plan {
+      param Items := [
+        { Id: 0, V:  20, W:  3 },
+        { Id: 1, V:  80, W:  5 },
+        { Id: 2, V:  71, W:  8 },
+        { Id: 3, V:  60, W: 10 },
+        { Id: 4, V:  90, W: 12 },
+        { Id: 5, V:  80, W: 13 },
+      ];
+      param MaxWeight := 19;
+      param MinNumber := 0;
+      param MaxNumber := 1000;
+      var Use from Items;
+      msr Weight := Sum(Use, W);
+      msr Value  := Sum(Use, V);
+      msr Number := Count(Use);
+      con ConWeight := Weight <= MaxWeight;
+      con ConNumber := MinNumber <= Number <= MaxNumber;
+    };
+    "*** Maximize Value ***";
+    Knap->Maximize(Value);
+    "*** Maximize Value with MaxNumber: 2 ***";
+    Knap=>{ MaxNumber: 2 }->Maximize(Value);
+    "*** Bits from Knap ***";
+    Bits := Knap with { Items: Range(10)->{ Id: it, V: 1 shl it, W: 1 shl it }, };
+    Bits=>{ MaxWeight: 21 }->Maximize(Value);
+
+>>> *** Instructions:
+   0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Items; msr Weight := Sum(Use, W); msr Value := Sum(Use, V); msr Number := Count(Use); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+   1) [0] Expr "*** Maximize Value ***"
+   2) [0] Expr Knap->Maximize(Value)
+   3) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+   4) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+   5) [0] Expr "*** Bits from Knap ***"
+   6) [0] Define Bits <- Knap=>{ Items : Range(10)->{ Id : it, V : 1 shl it, W : 1 shl it } }
+   7) [0] Expr Bits=>{ MaxWeight : 21 }->Maximize(Value)
+   8) [0] End
+
+>    0) [0] Define Knap <- module { param Items := [{ Id : 0, V : 20, W : 3 }, { Id : 1, V : 80, W : 5 }, { Id : 2, V : 71, W : 8 }, { Id : 3, V : 60, W : 10 }, { Id : 4, V : 90, W : 12 }, { Id : 5, V : 80, W : 13 }]; param MaxWeight := 19; param MinNumber := 0; param MaxNumber := 1000; var Use from Items; msr Weight := Sum(Use, W); msr Value := Sum(Use, V); msr Number := Count(Use); con ConWeight := Weight $<= MaxWeight; con ConNumber := MinNumber $<= Number $<= MaxNumber }
+Global 'Knap' has DType: M{con ConNumber:b, con ConWeight:b, param Items:{Id:i8, V:i8, W:i8}*, param MaxNumber:i8, param MaxWeight:i8, param MinNumber:i8, msr Number:i8, var Use:{Id:i8, V:i8, W:i8}*, msr Value:i8, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,Seq<{i8,i8,i8}>,i8,i8,i8,i8,Seq<{i8,i8,i8}>,i8,i8},(Seq<{i8,i8,i8}>,i8,i8,i8,Seq<{i8,i8,i8}>,Seq<{i8,i8,i8}>,i8,i8,i8,bool,bool)>
+>    1) [0] Expr "*** Maximize Value ***"
+*** Maximize Value ***
+>    2) [0] Expr Knap->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+  msr Weight: 16
+  msr Value: 171
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    3) [0] Expr "*** Maximize Value with MaxNumber: 2 ***"
+*** Maximize Value with MaxNumber: 2 ***
+>    4) [0] Expr Knap=>{ MaxNumber : 2 }->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 20, W: 3 }
+       1) { Id: 1, V: 80, W: 5 }
+       2) { Id: 2, V: 71, W: 8 }
+       3) { Id: 3, V: 60, W: 10 }
+       4) { Id: 4, V: 90, W: 12 }
+       5) { Id: 5, V: 80, W: 13 }
+  param MaxWeight: 19
+  param MinNumber: 0
+  param MaxNumber: 2
+  var Use: Seq<{i8,i8,i8}>
+       0) { Id: 1, V: 80, W: 5 }
+       1) { Id: 4, V: 90, W: 12 }
+  msr Weight: 17
+  msr Value: 170
+  msr Number: 2
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    5) [0] Expr "*** Bits from Knap ***"
+*** Bits from Knap ***
+>    6) [0] Define Bits <- Knap=>{ Items : Range(10)->{ Id : it, V : 1 shl it, W : 1 shl it } }
+Global 'Bits' has DType: M{con ConNumber:b, con ConWeight:b, param Items:{Id:i8, V:i8, W:i8}*, param MaxNumber:i8, param MaxWeight:i8, param MinNumber:i8, msr Number:i8, var Use:{Id:i8, V:i8, W:i8}*, msr Value:i8, msr Weight:i8}, SysType: RuntimeModule<{bool,bool,Seq<{i8,i8,i8}>,i8,i8,i8,i8,Seq<{i8,i8,i8}>,i8,i8},(Seq<{i8,i8,i8}>,i8,i8,i8,Seq<{i8,i8,i8}>,Seq<{i8,i8,i8}>,i8,i8,i8,bool,bool)>
+>    7) [0] Expr Bits=>{ MaxWeight : 21 }->Maximize(Value)
+Solver: GLPK
+module symbols:
+  param Items: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 1, W: 1 }
+       1) { Id: 1, V: 2, W: 2 }
+       2) { Id: 2, V: 4, W: 4 }
+       3) { Id: 3, V: 8, W: 8 }
+       4) { Id: 4, V: 16, W: 16 }
+       5) { Id: 5, V: 32, W: 32 }
+       6) { Id: 6, V: 64, W: 64 }
+       7) { Id: 7, V: 128, W: 128 }
+       8) { Id: 8, V: 256, W: 256 }
+       9) { Id: 9, V: 512, W: 512 }
+  param MaxWeight: 21
+  param MinNumber: 0
+  param MaxNumber: 1000
+  var Use: Seq<{i8,i8,i8}>
+       0) { Id: 0, V: 1, W: 1 }
+       1) { Id: 2, V: 4, W: 4 }
+       2) { Id: 4, V: 16, W: 16 }
+  msr Weight: 21
+  msr Value: 21
+  msr Number: 3
+  con ConWeight: true
+  con ConNumber: true
+*** Ctx ping count: 0
+>    8) [0] End
+

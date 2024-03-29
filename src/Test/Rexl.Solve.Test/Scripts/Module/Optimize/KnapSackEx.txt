@@ -1,0 +1,48 @@
+﻿// Includes support for Exclude/Include.
+Knap := plan {
+  param Items := [
+    { Id: 0, V:  2, W:  3 },
+    { Id: 1, V:  8, W:  5 },
+    { Id: 2, V:  7, W:  8 },
+    { Id: 3, V:  6, W: 10 },
+    { Id: 4, V:  9, W: 12 },
+    { Id: 5, V:  8, W: 13 },
+  ];
+  param MaxWeight := 19;
+
+  const Empty := [ ] if true else [ 0 ];
+  param Exclude := Empty;
+  param Include := Empty;
+
+  const NumInc := Count(Include);
+  const ItemsEx := Items+>{ V2: Abs(V - 8) + 1, NumX: CastI4(Id in Exclude), NumI: CastI4(Id in Include) };
+
+  var Use from ItemsEx;
+
+  msr Weight := Sum(Use, W);
+  msr Value  := Sum(Use, V);
+  msr Value2 := Sum(Use, V2);
+
+  con ConWeight := Weight <= MaxWeight;
+
+  let NumX := Sum(Use, NumX);
+  let NumI := Sum(Use, NumI);
+  con ConExclude := NumX = 0;
+  con ConInclude := NumI = NumInc;
+};
+
+Knap;
+
+Knap with { Exclude: [ 3 ] };
+
+"*** Maximize Value2 ***";
+Knap->Maximize(Value2);
+
+"*** Maximize Value2 with Exclude: [3] ***";
+Knap with { Exclude: [ 3 ] }->Maximize(Value2);
+
+"*** Maximize Value2 with Exclude: [3], Include: [1] ***";
+Knap=>{ Exclude: [ 3 ], Include: [ 1 ] }->Maximize(Value2);
+
+"*** Maximize Value2 with Include: [1,5] ***";
+Knap=>{ Include: [ 1, 5 ] }->Maximize(Value2);

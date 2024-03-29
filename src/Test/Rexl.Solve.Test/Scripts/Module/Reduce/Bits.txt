@@ -1,0 +1,16 @@
+BitPlan := plan {
+  param Domain := Range(10)->(1 shl it);
+  param N := 19;
+
+  var Bits from Domain def [];
+  msr Num := Count(Bits);
+  msr Sum := Sum(Bits);
+  msr Dif := N - Sum;
+  msr Neg := Sum - N;
+
+  con Limit := Sum <= N;
+};
+
+BitPlan;
+BitPlan with { N: 13 };
+BitPlan with { Domain: [ 1, 2, 3, 5 ] };

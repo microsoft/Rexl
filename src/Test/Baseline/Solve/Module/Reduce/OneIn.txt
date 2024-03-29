@@ -1,0 +1,142 @@
+>>> *** Source:
+    plan {
+        param Set := Range(10);
+        param Def := 7;
+        var One in Set def Def;
+    };
+    plan {
+        param Set := Range(5);
+        param Def := 7;
+        var One in Set def Def opt;
+    };
+    // No default.
+    plan { var One in Range(3, 10); };
+    // Empty.
+    plan {
+        param Set := Range(0);
+        param Def := 7;
+        var One in Set def Def;
+    };
+    // Opt.
+    // REVIEW: Should the default be null rather than the first item?
+    plan { var One in Range(3, 10) opt; };
+    plan {
+      param Widgets := [
+        { Id: 0, Value:  2, Cost:  3 },
+        { Id: 1, Value:  8, Cost:  5 },
+        { Id: 2, Value:  7, Cost:  3 },
+        { Id: 3, Value:  6, Cost:  2 },
+        { Id: 4, Value:  9, Cost:  7 },
+        { Id: 5, Value:  8, Cost:  7 },
+      ];
+      param Gizmos := [
+        { Id: 0, Value:  2, Cost:  3 },
+        { Id: 1, Value:  8, Cost:  5 },
+        { Id: 2, Value:  7, Cost:  4 },
+      ];
+      param ValPerCost := 1.0;
+      param MinValue := 10;
+      param MaxCost  := 19;
+      // Need one of each.
+      var Widget in Widgets req;
+      var Gizmo  in Gizmos  req;
+      msr Value := Widget.Value + Gizmo.Value;
+      msr Cost  := Widget.Cost  + Gizmo.Cost;
+      msr Score := Value - ValPerCost * Cost;
+      con Cons := [ Value >= MinValue, Cost <= MaxCost ];
+    };
+
+>>> *** Instructions:
+   0) [0] Expr module { param Set := Range(10); param Def := 7; var One in Set def Def }
+   1) [0] Expr module { param Set := Range(5); param Def := 7; var One in Set def Def opt }
+   2) [0] Expr module { var One in Range(3, 10) }
+   3) [0] Expr module { param Set := Range(0); param Def := 7; var One in Set def Def }
+   4) [0] Expr module { var One in Range(3, 10) opt }
+   5) [0] Expr module { param Widgets := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 3 }, { Id : 3, Value : 6, Cost : 2 }, { Id : 4, Value : 9, Cost : 7 }, { Id : 5, Value : 8, Cost : 7 }]; param Gizmos := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 4 }]; param ValPerCost := 1; param MinValue := 10; param MaxCost := 19; var Widget in Widgets req; var Gizmo in Gizmos req; msr Value := Widget.Value + Gizmo.Value; msr Cost := Widget.Cost + Gizmo.Cost; msr Score := Value - ValPerCost * Cost; con Cons := [Value $>= MinValue, Cost $<= MaxCost] }
+   6) [0] End
+
+>    0) [0] Expr module { param Set := Range(10); param Def := 7; var One in Set def Def }
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: 7
+
+  One src: !1x.3
+  One dst: SelectOne*([$0, $1, $2, $3, $4, $5, $6, $7, $8, $9], Compound<i8*>)
+  One fin: Add(Num<i8>($1), Mul(Num<i8>($2), 2), Mul(Num<i8>($3), 3), Mul(Num<i8>($4), 4), Mul(Num<i8>($5), 5), Mul(Num<i8>($6), 6), Mul(Num<i8>($7), 7), Mul(Num<i8>($8), 8), Mul(Num<i8>($9), 9))
+
+>    1) [0] Expr module { param Set := Range(5); param Def := 7; var One in Set def Def opt }
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: 7
+
+  One src: !1x.3
+  One dst: SelectOpt*([$0, $1, $2, $3, $4], Compound<i8*>)
+
+>    2) [0] Expr module { var One in Range(3, 10) }
+*** Reduction ***
+  One src: !1x.1
+  One dst: SelectOne*([$0, $1, $2, $3, $4, $5, $6], Compound<i8*>)
+  One fin: Add(Mul(Num<i8>($0), 3), Mul(Num<i8>($1), 4), Mul(Num<i8>($2), 5), Mul(Num<i8>($3), 6), Mul(Num<i8>($4), 7), Mul(Num<i8>($5), 8), Mul(Num<i8>($6), 9))
+
+>    3) [0] Expr module { param Set := Range(0); param Def := 7; var One in Set def Def }
+*** Reduction ***
+  Set src: !1x.0
+  Set dst: Compound<i8*>
+
+  Def src: !1x.1
+  Def dst: 7
+
+Domain sequence for 'One' is empty: !1x.0
+  One src: !1x.3
+  One dst: !1x.3
+
+>    4) [0] Expr module { var One in Range(3, 10) opt }
+*** Reduction ***
+  One src: !1x.1
+  One dst: SelectOpt*([$0, $1, $2, $3, $4, $5, $6], Compound<i8*>)
+
+>    5) [0] Expr module { param Widgets := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 3 }, { Id : 3, Value : 6, Cost : 2 }, { Id : 4, Value : 9, Cost : 7 }, { Id : 5, Value : 8, Cost : 7 }]; param Gizmos := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 4 }]; param ValPerCost := 1; param MinValue := 10; param MaxCost := 19; var Widget in Widgets req; var Gizmo in Gizmos req; msr Value := Widget.Value + Gizmo.Value; msr Cost := Widget.Cost + Gizmo.Cost; msr Score := Value - ValPerCost * Cost; con Cons := [Value $>= MinValue, Cost $<= MaxCost] }
+*** Reduction ***
+  Widgets src: !1x.0
+  Widgets dst: Compound<{Cost:i8, Id:i8, Value:i8}*>
+
+  Gizmos src: !1x.1
+  Gizmos dst: Compound<{Cost:i8, Id:i8, Value:i8}*>
+
+  ValPerCost src: !1x.2
+  ValPerCost dst: 1
+
+  MinValue src: !1x.3
+  MinValue dst: 10
+
+  MaxCost src: !1x.4
+  MaxCost dst: 19
+
+  Widget src: !1x.6
+  Widget dst: SelectOne*([$0, $1, $2, $3, $4, $5], Compound<{Cost:i8, Id:i8, Value:i8}*>)
+
+  Gizmo src: !1x.8
+  Gizmo dst: SelectOne*([$6, $7, $8], Compound<{Cost:i8, Id:i8, Value:i8}*>)
+
+  Value src: Add(!1x.6.Value, !1x.8.Value)
+  Value dst: Add(SelectOne*([$0, $1, $2, $3, $4, $5], Compound<i8*>), SelectOne*([$6, $7, $8], Compound<i8*>))
+  Value fin: Add(Mul(Num<i8>($0), 2), Mul(Num<i8>($1), 8), Mul(Num<i8>($2), 7), Mul(Num<i8>($3), 6), Mul(Num<i8>($4), 9), Mul(Num<i8>($5), 8), Mul(Num<i8>($6), 2), Mul(Num<i8>($7), 8), Mul(Num<i8>($8), 7))
+
+  Cost src: Add(!1x.6.Cost, !1x.8.Cost)
+  Cost dst: Add(SelectOne*([$0, $1, $2, $3, $4, $5], Compound<i8*>), SelectOne*([$6, $7, $8], Compound<i8*>))
+  Cost fin: Add(Mul(Num<i8>($0), 3), Mul(Num<i8>($1), 5), Mul(Num<i8>($2), 3), Mul(Num<i8>($3), 2), Mul(Num<i8>($4), 7), Mul(Num<i8>($5), 7), Mul(Num<i8>($6), 3), Mul(Num<i8>($7), 5), Mul(Num<i8>($8), 4))
+
+  Score src: Add(Num<r8>(!1x.9), [-] Mul(!1x.2, Num<r8>(!1x.10)))
+  Score dst: Add(Num<r8>($9), [-] Num<r8>($10))
+
+  Cons src: [!1x.9 @>= !1x.3, !1x.10 @<= !1x.4]
+  Cons dst: [$9 @>= 10, $10 @<= 19]
+
+>    6) [0] End
+

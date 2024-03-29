@@ -1,0 +1,274 @@
+>>> *** Source:
+    P := plan {
+      param Widgets := [
+        { Id: 0, Value:  2, Cost:  3 },
+        { Id: 1, Value:  8, Cost:  5 },
+        { Id: 2, Value:  7, Cost:  3 },
+        { Id: 3, Value:  6, Cost:  2 },
+        { Id: 4, Value:  9, Cost:  7 },
+        { Id: 5, Value:  8, Cost:  7 },
+      ];
+      param Gizmos := [
+        { Id: 0, Value:  2, Cost:  3 },
+        { Id: 1, Value:  8, Cost:  5 },
+        { Id: 2, Value:  7, Cost:  4 },
+      ];
+      param ValPerCost := 1.0;
+      param MinValue := 10;
+      param MaxCost  := 19;
+      // Need one of each.
+      var Widget in Widgets req;
+      var Gizmo  in Gizmos  req;
+      msr Value := Widget.Value + Gizmo.Value;
+      msr Cost  := Widget.Cost  + Gizmo.Cost;
+      msr Score := Value - ValPerCost * Cost;
+      con Cons := [ Value >= MinValue, Cost <= MaxCost ];
+    };
+    P->Maximize(Value, "GLPK");
+    P->Maximize(Value, "HiGHS");
+    P->Maximize(Value, "Gurobi"); // Should fail.
+    P->Minimize(Cost , "Glpk");
+    P->Minimize(Cost , "Highs");
+    P->Maximize(Score, "glpk");
+    P->Maximize(Score, "highs");
+    P with { ValPerCost: 0.5, MaxCost: 100000000000, MinValue: 0 }->Maximize(Score);
+    P := plan {
+      param Vs := Range(5);
+      var X in Vs required;
+      var Y in Vs optional;
+      msr MX := X;
+      msr MY := Y;
+    };
+    P->Maximize(MX);
+    P->Maximize(MY);
+
+>>> *** Instructions:
+   0) [0] Define P <- module { param Widgets := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 3 }, { Id : 3, Value : 6, Cost : 2 }, { Id : 4, Value : 9, Cost : 7 }, { Id : 5, Value : 8, Cost : 7 }]; param Gizmos := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 4 }]; param ValPerCost := 1; param MinValue := 10; param MaxCost := 19; var Widget in Widgets req; var Gizmo in Gizmos req; msr Value := Widget.Value + Gizmo.Value; msr Cost := Widget.Cost + Gizmo.Cost; msr Score := Value - ValPerCost * Cost; con Cons := [Value $>= MinValue, Cost $<= MaxCost] }
+   1) [0] Expr P->Maximize(Value, "GLPK")
+   2) [0] Expr P->Maximize(Value, "HiGHS")
+   3) [0] Expr P->Maximize(Value, "Gurobi")
+   4) [0] Expr P->Minimize(Cost, "Glpk")
+   5) [0] Expr P->Minimize(Cost, "Highs")
+   6) [0] Expr P->Maximize(Score, "glpk")
+   7) [0] Expr P->Maximize(Score, "highs")
+   8) [0] Expr P=>{ ValPerCost : 0.5, MaxCost : 100000000000, MinValue : 0 }->Maximize(Score)
+   9) [0] Define P <- module { param Vs := Range(5); var X in Vs req; var Y in Vs opt; msr MX := X; msr MY := Y }
+  10) [0] Expr P->Maximize(MX)
+  11) [0] Expr P->Maximize(MY)
+  12) [0] End
+
+>    0) [0] Define P <- module { param Widgets := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 3 }, { Id : 3, Value : 6, Cost : 2 }, { Id : 4, Value : 9, Cost : 7 }, { Id : 5, Value : 8, Cost : 7 }]; param Gizmos := [{ Id : 0, Value : 2, Cost : 3 }, { Id : 1, Value : 8, Cost : 5 }, { Id : 2, Value : 7, Cost : 4 }]; param ValPerCost := 1; param MinValue := 10; param MaxCost := 19; var Widget in Widgets req; var Gizmo in Gizmos req; msr Value := Widget.Value + Gizmo.Value; msr Cost := Widget.Cost + Gizmo.Cost; msr Score := Value - ValPerCost * Cost; con Cons := [Value $>= MinValue, Cost $<= MaxCost] }
+Global 'P' has DType: M{con Cons:b*, msr Cost:i8, var Gizmo:{Cost:i8, Id:i8, Value:i8}, param Gizmos:{Cost:i8, Id:i8, Value:i8}*, param MaxCost:i8, param MinValue:i8, msr Score:r8, param ValPerCost:r8, msr Value:i8, var Widget:{Cost:i8, Id:i8, Value:i8}, param Widgets:{Cost:i8, Id:i8, Value:i8}*}, SysType: RuntimeModule<{Seq<bool>,i8,{i8,i8,i8},Seq<{i8,i8,i8}>,i8,i8,r8,r8,i8,{i8,i8,i8},Seq<{i8,i8,i8}>},(Seq<{i8,i8,i8}>,Seq<{i8,i8,i8}>,r8,i8,i8,Seq<{i8,i8,i8}>,{i8,i8,i8},Seq<{i8,i8,i8}>,{i8,i8,i8},i8,i8,r8,Seq<bool>)>
+>    1) [0] Expr P->Maximize(Value, "GLPK")
+Solver: GLPK
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 7, Id: 4, Value: 9 }
+  var Gizmo: { Cost: 5, Id: 1, Value: 8 }
+  msr Value: 17
+  msr Cost: 12
+  msr Score: 5
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    2) [0] Expr P->Maximize(Value, "HiGHS")
+Solver: HiGHS
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 7, Id: 4, Value: 9 }
+  var Gizmo: { Cost: 5, Id: 1, Value: 8 }
+  msr Value: 17
+  msr Cost: 12
+  msr Score: 5
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    3) [0] Expr P->Maximize(Value, "Gurobi")
+Solver: Gurobi
+*** Solver diagnostics:
+  Error: Failed to start solver: 'Gurobi'
+    Exception (GRBException): No Gurobi license found!
+  Error: Solving failed!
+<null>
+*** Ctx ping count: 0
+>    4) [0] Expr P->Minimize(Cost, "Glpk")
+Solver: GLPK
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 2, Id: 3, Value: 6 }
+  var Gizmo: { Cost: 4, Id: 2, Value: 7 }
+  msr Value: 13
+  msr Cost: 6
+  msr Score: 7
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    5) [0] Expr P->Minimize(Cost, "Highs")
+Solver: HiGHS
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 2, Id: 3, Value: 6 }
+  var Gizmo: { Cost: 4, Id: 2, Value: 7 }
+  msr Value: 13
+  msr Cost: 6
+  msr Score: 7
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    6) [0] Expr P->Maximize(Score, "glpk")
+Solver: GLPK
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 3, Id: 2, Value: 7 }
+  var Gizmo: { Cost: 4, Id: 2, Value: 7 }
+  msr Value: 14
+  msr Cost: 7
+  msr Score: 7
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    7) [0] Expr P->Maximize(Score, "highs")
+Solver: HiGHS
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 1
+  param MinValue: 10
+  param MaxCost: 19
+  var Widget: { Cost: 2, Id: 3, Value: 6 }
+  var Gizmo: { Cost: 4, Id: 2, Value: 7 }
+  msr Value: 13
+  msr Cost: 6
+  msr Score: 7
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    8) [0] Expr P=>{ ValPerCost : 0.5, MaxCost : 100000000000, MinValue : 0 }->Maximize(Score)
+Solver: GLPK
+module symbols:
+  param Widgets: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 3, Id: 2, Value: 7 }
+       3) { Cost: 2, Id: 3, Value: 6 }
+       4) { Cost: 7, Id: 4, Value: 9 }
+       5) { Cost: 7, Id: 5, Value: 8 }
+  param Gizmos: Seq<{i8,i8,i8}>
+       0) { Cost: 3, Id: 0, Value: 2 }
+       1) { Cost: 5, Id: 1, Value: 8 }
+       2) { Cost: 4, Id: 2, Value: 7 }
+  param ValPerCost: 0.5
+  param MinValue: 0
+  param MaxCost: 100000000000
+  var Widget: { Cost: 5, Id: 1, Value: 8 }
+  var Gizmo: { Cost: 5, Id: 1, Value: 8 }
+  msr Value: 16
+  msr Cost: 10
+  msr Score: 11
+  con Cons: Seq<bool>
+       0) true
+       1) true
+*** Ctx ping count: 0
+>    9) [0] Define P <- module { param Vs := Range(5); var X in Vs req; var Y in Vs opt; msr MX := X; msr MY := Y }
+Global 'P' has (modified) DType: M{msr MX:i8, msr MY:i8?, param Vs:i8*, var X:i8, var Y:i8?}, SysType: RuntimeModule<{i8,i8,Seq<i8>,i8,i8},(Seq<i8>,Seq<i8>,i8,Seq<i8>,Opt<i8>,i8,Opt<i8>)>
+>   10) [0] Expr P->Maximize(MX)
+Solver: GLPK
+module symbols:
+  param Vs: Seq<i8>
+       0) 0
+       1) 1
+       2) 2
+       3) 3
+       4) 4
+  var X: 4
+  var Y: 0
+  msr MX: 4
+  msr MY: 0
+*** Ctx ping count: 0
+>   11) [0] Expr P->Maximize(MY)
+*** Solver diagnostics:
+  Error: Definition 'MY' is not linear: SelectOpt*([$0, $1, $2, $3, $4], Compound<i8*>)
+<null>
+*** Ctx ping count: 0
+>   12) [0] End
+

@@ -1,0 +1,110 @@
+﻿Sudoku := plan {
+  const M := 3;
+  const N := M * M;
+  const NumCells := N * N;
+  const NumMoves := NumCells * N;
+
+  // All possible "moves" where "move" means "place a value in a cell".
+  const Moves := Range(NumMoves)->{
+    Id: it,
+    XRow: it div N div N,
+    XCol: it div N mod N,
+    YGrp: it div N div M mod M + it div N div (M * N) * M,
+    ZVal: it mod N,
+  };
+
+  const Symbols := "_123456789";
+  param Fixed :=
+    "    2  7 " &
+    "    34   " &
+    "358      " &
+    "5 48     " &
+    "   1   89" &
+    "  2     6" &
+    "24    7  " &
+    " 9   52  " &
+    "    671  ";
+
+  // Process Fixed.
+  const ImposedIds :=
+    Range(N * N)
+      ->Map(With(cell: it, ch: Text.Part(Fixed, cell, cell + 1), { cell, value: Text.IndexOf(Symbols, ch) - 1 }))
+      ->Filter(0 <= value < N)
+      ->Map(N * cell + value);
+  const Imposed := Moves->Filter(Id in ImposedIds);
+  const NumImposed := Count(Imposed);
+
+  // The moves that fill the main diagonal with corresponding values.
+  const Diag  := Moves->Filter(XRow = XCol = ZVal);
+
+  // These are the moves that have been made.
+  var Made from Moves def Imposed;
+
+  // Want to maximize the number of moves made without violating constraints.
+  msr NumMade := Count(Made);
+  msr NumForced := Sum(Made, 1 if Id in ImposedIds else 0);
+
+  let MadeByRowCol := Made->GroupBy([key] _:XRow, [key] _:XCol);
+  let MadeByValRow := Made->GroupBy([key] _:ZVal, [key] _:XRow);
+  let MadeByValCol := Made->GroupBy([key] _:ZVal, [key] _:XCol);
+  let MadeByValGrp := Made->GroupBy([key] _:ZVal, [key] _:YGrp);
+
+  con OnePerRowCol := All(MadeByRowCol, Count(it) <= 1);
+  con OnePerValRow := All(MadeByValRow, Count(it) <= 1);
+  con OnePerValCol := All(MadeByValCol, Count(it) <= 1);
+  con OnePerValGrp := All(MadeByValGrp, Count(it) <= 1);
+  con NeedImposed  := NumForced = NumImposed;
+
+  let Board :=
+    Made
+      ->SortUp(XRow, XCol)
+      ->GroupBy(_:XRow)
+      ->ForEach(With(row: it, i: ForEach(c: Range(N), First(row, XCol = c).ZVal + 1 ?? 0), Text.Part(Symbols, i, i + 1)))
+      ->ForEach(it->Text.Concat("|"));
+};
+
+"Number of hints: " & ToText(Sudoku.NumMade);
+Sudoku.Board;
+
+Sln := Sudoku->Maximize(NumMade);
+Sln.Board;
+
+Hardest := Sudoku with {
+  Fixed:
+    "1    7 9 " &
+    " 3  2   8" &
+    "  96  5  " &
+    "  53  9  " &
+    " 1  8   2" &
+    "6    4   " &
+    "3      1 " &
+    " 4      7" &
+    "  7   3  "
+};
+
+"Number of hints: " & ToText(Hardest.NumMade);
+Hardest.Board;
+
+Sln := Hardest->Maximize(NumMade);
+Sln.Board;
+
+Bad := Sudoku with {
+  Fixed:
+    "1    7 94" &
+    " 3  2   8" &
+    "  96  5  " &
+    "  53  9  " &
+    " 1  8   2" &
+    "6    4   " &
+    "3      1 " &
+    " 4      7" &
+    "  7   3  "
+};
+
+"Number of hints: " & ToText(Bad.NumMade);
+Bad.Board;
+
+Sln := Bad->Maximize(NumMade);
+// The board isn't stable/unique, so omit from baseline.
+// Sln.Board;
+Sln.NumMade;

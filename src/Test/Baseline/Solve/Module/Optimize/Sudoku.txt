@@ -1,0 +1,191 @@
+>>> *** Source:
+    Sudoku := plan {
+      const M := 3;
+      const N := M * M;
+      const NumCells := N * N;
+      const NumMoves := NumCells * N;
+      // All possible "moves" where "move" means "place a value in a cell".
+      const Moves := Range(NumMoves)->{
+        Id: it,
+        XRow: it div N div N,
+        XCol: it div N mod N,
+        YGrp: it div N div M mod M + it div N div (M * N) * M,
+        ZVal: it mod N,
+      };
+      const Symbols := "_123456789";
+      param Fixed :=
+        "    2  7 " &
+        "    34   " &
+        "358      " &
+        "5 48     " &
+        "   1   89" &
+        "  2     6" &
+        "24    7  " &
+        " 9   52  " &
+        "    671  ";
+      // Process Fixed.
+      const ImposedIds :=
+        Range(N * N)
+          ->Map(With(cell: it, ch: Text.Part(Fixed, cell, cell + 1), { cell, value: Text.IndexOf(Symbols, ch) - 1 }))
+          ->Filter(0 <= value < N)
+          ->Map(N * cell + value);
+      const Imposed := Moves->Filter(Id in ImposedIds);
+      const NumImposed := Count(Imposed);
+      // The moves that fill the main diagonal with corresponding values.
+      const Diag  := Moves->Filter(XRow = XCol = ZVal);
+      // These are the moves that have been made.
+      var Made from Moves def Imposed;
+      // Want to maximize the number of moves made without violating constraints.
+      msr NumMade := Count(Made);
+      msr NumForced := Sum(Made, 1 if Id in ImposedIds else 0);
+      let MadeByRowCol := Made->GroupBy([key] _:XRow, [key] _:XCol);
+      let MadeByValRow := Made->GroupBy([key] _:ZVal, [key] _:XRow);
+      let MadeByValCol := Made->GroupBy([key] _:ZVal, [key] _:XCol);
+      let MadeByValGrp := Made->GroupBy([key] _:ZVal, [key] _:YGrp);
+      con OnePerRowCol := All(MadeByRowCol, Count(it) <= 1);
+      con OnePerValRow := All(MadeByValRow, Count(it) <= 1);
+      con OnePerValCol := All(MadeByValCol, Count(it) <= 1);
+      con OnePerValGrp := All(MadeByValGrp, Count(it) <= 1);
+      con NeedImposed  := NumForced = NumImposed;
+      let Board :=
+        Made
+          ->SortUp(XRow, XCol)
+          ->GroupBy(_:XRow)
+          ->ForEach(With(row: it, i: ForEach(c: Range(N), First(row, XCol = c).ZVal + 1 ?? 0), Text.Part(Symbols, i, i + 1)))
+          ->ForEach(it->Text.Concat("|"));
+    };
+    "Number of hints: " & ToText(Sudoku.NumMade);
+    Sudoku.Board;
+    Sln := Sudoku->Maximize(NumMade);
+    Sln.Board;
+    Hardest := Sudoku with {
+      Fixed:
+        "1    7 9 " &
+        " 3  2   8" &
+        "  96  5  " &
+        "  53  9  " &
+        " 1  8   2" &
+        "6    4   " &
+        "3      1 " &
+        " 4      7" &
+        "  7   3  "
+    };
+    "Number of hints: " & ToText(Hardest.NumMade);
+    Hardest.Board;
+    Sln := Hardest->Maximize(NumMade);
+    Sln.Board;
+    Bad := Sudoku with {
+      Fixed:
+        "1    7 94" &
+        " 3  2   8" &
+        "  96  5  " &
+        "  53  9  " &
+        " 1  8   2" &
+        "6    4   " &
+        "3      1 " &
+        " 4      7" &
+        "  7   3  "
+    };
+    "Number of hints: " & ToText(Bad.NumMade);
+    Bad.Board;
+    Sln := Bad->Maximize(NumMade);
+    // The board isn't stable/unique, so omit from baseline.
+    // Sln.Board;
+    Sln.NumMade;
+
+>>> *** Instructions:
+   0) [0] Define Sudoku <- module { const M := 3; const N := M * M; const NumCells := N * N; const NumMoves := NumCells * N; const Moves := Range(NumMoves)->{ Id : it, XRow : it div N div N, XCol : it div N mod N, YGrp : it div N div M mod M + it div N div (M * N) * M, ZVal : it mod N }; const Symbols := "_123456789"; param Fixed := "    2  7 " & "    34   " & "358      " & "5 48     " & "   1   89" & "  2     6" & "24    7  " & " 9   52  " & "    671  "; const ImposedIds := Range(N * N)->Map(With(cell : it, ch : Text.Part(Fixed, cell, cell + 1), { cell, value : Text.IndexOf(Symbols, ch) - 1 }))->Filter(0 $<= value $< N)->Map(N * cell + value); const Imposed := Moves->Filter(Id in ImposedIds); const NumImposed := Count(Imposed); const Diag := Moves->Filter(XRow @= XCol @= ZVal); var Made from Moves def Imposed; msr NumMade := Count(Made); msr NumForced := Sum(Made, 1 if Id in ImposedIds else 0); let MadeByRowCol := Made->GroupBy([key] _ : XRow, [key] _ : XCol); let MadeByValRow := Made->GroupBy([key] _ : ZVal, [key] _ : XRow); let MadeByValCol := Made->GroupBy([key] _ : ZVal, [key] _ : XCol); let MadeByValGrp := Made->GroupBy([key] _ : ZVal, [key] _ : YGrp); con OnePerRowCol := All(MadeByRowCol, Count(it) $<= 1); con OnePerValRow := All(MadeByValRow, Count(it) $<= 1); con OnePerValCol := All(MadeByValCol, Count(it) $<= 1); con OnePerValGrp := All(MadeByValGrp, Count(it) $<= 1); con NeedImposed := NumForced @= NumImposed; let Board := Made->SortUp(XRow, XCol)->GroupBy(_ : XRow)->ForEach(With(row : it, i : ForEach(c : Range(N), First(row, XCol @= c).ZVal + 1 ?? 0), Text.Part(Symbols, i, i + 1)))->ForEach(it->Text.Concat("|")) }
+   1) [0] Expr "Number of hints: " & ToText(Sudoku.NumMade)
+   2) [0] Expr Sudoku.Board
+   3) [0] Define Sln <- Sudoku->Maximize(NumMade)
+   4) [0] Expr Sln.Board
+   5) [0] Define Hardest <- Sudoku=>{ Fixed : "1    7 9 " & " 3  2   8" & "  96  5  " & "  53  9  " & " 1  8   2" & "6    4   " & "3      1 " & " 4      7" & "  7   3  " }
+   6) [0] Expr "Number of hints: " & ToText(Hardest.NumMade)
+   7) [0] Expr Hardest.Board
+   8) [0] Define Sln <- Hardest->Maximize(NumMade)
+   9) [0] Expr Sln.Board
+  10) [0] Define Bad <- Sudoku=>{ Fixed : "1    7 94" & " 3  2   8" & "  96  5  " & "  53  9  " & " 1  8   2" & "6    4   " & "3      1 " & " 4      7" & "  7   3  " }
+  11) [0] Expr "Number of hints: " & ToText(Bad.NumMade)
+  12) [0] Expr Bad.Board
+  13) [0] Define Sln <- Bad->Maximize(NumMade)
+  14) [0] Expr Sln.NumMade
+  15) [0] End
+
+>    0) [0] Define Sudoku <- module { const M := 3; const N := M * M; const NumCells := N * N; const NumMoves := NumCells * N; const Moves := Range(NumMoves)->{ Id : it, XRow : it div N div N, XCol : it div N mod N, YGrp : it div N div M mod M + it div N div (M * N) * M, ZVal : it mod N }; const Symbols := "_123456789"; param Fixed := "    2  7 " & "    34   " & "358      " & "5 48     " & "   1   89" & "  2     6" & "24    7  " & " 9   52  " & "    671  "; const ImposedIds := Range(N * N)->Map(With(cell : it, ch : Text.Part(Fixed, cell, cell + 1), { cell, value : Text.IndexOf(Symbols, ch) - 1 }))->Filter(0 $<= value $< N)->Map(N * cell + value); const Imposed := Moves->Filter(Id in ImposedIds); const NumImposed := Count(Imposed); const Diag := Moves->Filter(XRow @= XCol @= ZVal); var Made from Moves def Imposed; msr NumMade := Count(Made); msr NumForced := Sum(Made, 1 if Id in ImposedIds else 0); let MadeByRowCol := Made->GroupBy([key] _ : XRow, [key] _ : XCol); let MadeByValRow := Made->GroupBy([key] _ : ZVal, [key] _ : XRow); let MadeByValCol := Made->GroupBy([key] _ : ZVal, [key] _ : XCol); let MadeByValGrp := Made->GroupBy([key] _ : ZVal, [key] _ : YGrp); con OnePerRowCol := All(MadeByRowCol, Count(it) $<= 1); con OnePerValRow := All(MadeByValRow, Count(it) $<= 1); con OnePerValCol := All(MadeByValCol, Count(it) $<= 1); con OnePerValGrp := All(MadeByValGrp, Count(it) $<= 1); con NeedImposed := NumForced @= NumImposed; let Board := Made->SortUp(XRow, XCol)->GroupBy(_ : XRow)->ForEach(With(row : it, i : ForEach(c : Range(N), First(row, XCol @= c).ZVal + 1 ?? 0), Text.Part(Symbols, i, i + 1)))->ForEach(it->Text.Concat("|")) }
+Global 'Sudoku' has DType: M{let Board:s*, const Diag:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, param Fixed:s, const Imposed:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const ImposedIds:i8*, const M:i8, var Made:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, let MadeByRowCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValGrp:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValRow:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, const Moves:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const N:i8, con NeedImposed:b, const NumCells:i8, msr NumForced:i8, const NumImposed:i8, msr NumMade:i8, const NumMoves:i8, con OnePerRowCol:b, con OnePerValCol:b, con OnePerValGrp:b, con OnePerValRow:b, const Symbols:s}, SysType: RuntimeModule<{Seq<str>,Seq<{i8,i8,i8,i8,i8}>,str,Seq<{i8,i8,i8,i8,i8}>,Seq<i8>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<{i8,i8,i8,i8,i8}>,i8,bool,i8,i8,i8,i8,i8,bool,...},(i8,i8,i8,i8,Seq<{i8,i8,i8,i8,i8}>,str,str,Seq<i8>,Seq<{i8,i8,i8,i8,i8}>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,i8,i8,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,bool,...)>
+>    1) [0] Expr "Number of hints: " & ToText(Sudoku.NumMade)
+Number of hints: 24
+>    2) [0] Expr Sudoku.Board
+Seq<str>
+   0) _|_|_|_|2|_|_|7|_
+   1) _|_|_|_|3|4|_|_|_
+   2) 3|5|8|_|_|_|_|_|_
+   3) 5|_|4|8|_|_|_|_|_
+   4) _|_|_|1|_|_|_|8|9
+   5) _|_|2|_|_|_|_|_|6
+   6) 2|4|_|_|_|_|7|_|_
+   7) _|9|_|_|_|5|2|_|_
+   8) _|_|_|_|6|7|1|_|_
+>    3) [0] Define Sln <- Sudoku->Maximize(NumMade)
+Solver: GLPK
+Global 'Sln' has DType: M{let Board:s*, const Diag:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, param Fixed:s, const Imposed:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const ImposedIds:i8*, const M:i8, var Made:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, let MadeByRowCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValGrp:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValRow:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, const Moves:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const N:i8, con NeedImposed:b, const NumCells:i8, msr NumForced:i8, const NumImposed:i8, msr NumMade:i8, const NumMoves:i8, con OnePerRowCol:b, con OnePerValCol:b, con OnePerValGrp:b, con OnePerValRow:b, const Symbols:s}?, SysType: RuntimeModule<{Seq<str>,Seq<{i8,i8,i8,i8,i8}>,str,Seq<{i8,i8,i8,i8,i8}>,Seq<i8>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<{i8,i8,i8,i8,i8}>,i8,bool,i8,i8,i8,i8,i8,bool,...},(i8,i8,i8,i8,Seq<{i8,i8,i8,i8,i8}>,str,str,Seq<i8>,Seq<{i8,i8,i8,i8,i8}>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,i8,i8,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,bool,...)>
+>    4) [0] Expr Sln.Board
+Seq<str>
+   0) 4|6|1|5|2|8|9|7|3
+   1) 7|2|9|6|3|4|8|5|1
+   2) 3|5|8|7|1|9|6|4|2
+   3) 5|1|4|8|9|6|3|2|7
+   4) 6|7|3|1|5|2|4|8|9
+   5) 9|8|2|4|7|3|5|1|6
+   6) 2|4|6|9|8|1|7|3|5
+   7) 1|9|7|3|4|5|2|6|8
+   8) 8|3|5|2|6|7|1|9|4
+>    5) [0] Define Hardest <- Sudoku=>{ Fixed : "1    7 9 " & " 3  2   8" & "  96  5  " & "  53  9  " & " 1  8   2" & "6    4   " & "3      1 " & " 4      7" & "  7   3  " }
+Global 'Hardest' has DType: M{let Board:s*, const Diag:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, param Fixed:s, const Imposed:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const ImposedIds:i8*, const M:i8, var Made:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, let MadeByRowCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValGrp:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValRow:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, const Moves:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const N:i8, con NeedImposed:b, const NumCells:i8, msr NumForced:i8, const NumImposed:i8, msr NumMade:i8, const NumMoves:i8, con OnePerRowCol:b, con OnePerValCol:b, con OnePerValGrp:b, con OnePerValRow:b, const Symbols:s}, SysType: RuntimeModule<{Seq<str>,Seq<{i8,i8,i8,i8,i8}>,str,Seq<{i8,i8,i8,i8,i8}>,Seq<i8>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<{i8,i8,i8,i8,i8}>,i8,bool,i8,i8,i8,i8,i8,bool,...},(i8,i8,i8,i8,Seq<{i8,i8,i8,i8,i8}>,str,str,Seq<i8>,Seq<{i8,i8,i8,i8,i8}>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,i8,i8,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,bool,...)>
+>    6) [0] Expr "Number of hints: " & ToText(Hardest.NumMade)
+Number of hints: 23
+>    7) [0] Expr Hardest.Board
+Seq<str>
+   0) 1|_|_|_|_|7|_|9|_
+   1) _|3|_|_|2|_|_|_|8
+   2) _|_|9|6|_|_|5|_|_
+   3) _|_|5|3|_|_|9|_|_
+   4) _|1|_|_|8|_|_|_|2
+   5) 6|_|_|_|_|4|_|_|_
+   6) 3|_|_|_|_|_|_|1|_
+   7) _|4|_|_|_|_|_|_|7
+   8) _|_|7|_|_|_|3|_|_
+>    8) [0] Define Sln <- Hardest->Maximize(NumMade)
+Solver: GLPK
+>    9) [0] Expr Sln.Board
+Seq<str>
+   0) 1|6|2|8|5|7|4|9|3
+   1) 5|3|4|1|2|9|6|7|8
+   2) 7|8|9|6|4|3|5|2|1
+   3) 4|7|5|3|1|2|9|8|6
+   4) 9|1|3|5|8|6|7|4|2
+   5) 6|2|8|7|9|4|1|3|5
+   6) 3|5|6|4|7|8|2|1|9
+   7) 2|4|1|9|3|5|8|6|7
+   8) 8|9|7|2|6|1|3|5|4
+>   10) [0] Define Bad <- Sudoku=>{ Fixed : "1    7 94" & " 3  2   8" & "  96  5  " & "  53  9  " & " 1  8   2" & "6    4   " & "3      1 " & " 4      7" & "  7   3  " }
+Global 'Bad' has DType: M{let Board:s*, const Diag:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, param Fixed:s, const Imposed:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const ImposedIds:i8*, const M:i8, var Made:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, let MadeByRowCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValCol:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValGrp:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, let MadeByValRow:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}**, const Moves:{Id:i8, XCol:i8, XRow:i8, YGrp:i8, ZVal:i8}*, const N:i8, con NeedImposed:b, const NumCells:i8, msr NumForced:i8, const NumImposed:i8, msr NumMade:i8, const NumMoves:i8, con OnePerRowCol:b, con OnePerValCol:b, con OnePerValGrp:b, con OnePerValRow:b, const Symbols:s}, SysType: RuntimeModule<{Seq<str>,Seq<{i8,i8,i8,i8,i8}>,str,Seq<{i8,i8,i8,i8,i8}>,Seq<i8>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<{i8,i8,i8,i8,i8}>,i8,bool,i8,i8,i8,i8,i8,bool,...},(i8,i8,i8,i8,Seq<{i8,i8,i8,i8,i8}>,str,str,Seq<i8>,Seq<{i8,i8,i8,i8,i8}>,i8,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,Seq<{i8,i8,i8,i8,i8}>,i8,i8,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,Seq<Seq<{i8,i8,i8,i8,i8}>>,bool,...)>
+>   11) [0] Expr "Number of hints: " & ToText(Bad.NumMade)
+Number of hints: 24
+>   12) [0] Expr Bad.Board
+Seq<str>
+   0) 1|_|_|_|_|7|_|9|4
+   1) _|3|_|_|2|_|_|_|8
+   2) _|_|9|6|_|_|5|_|_
+   3) _|_|5|3|_|_|9|_|_
+   4) _|1|_|_|8|_|_|_|2
+   5) 6|_|_|_|_|4|_|_|_
+   6) 3|_|_|_|_|_|_|1|_
+   7) _|4|_|_|_|_|_|_|7
+   8) _|_|7|_|_|_|3|_|_
+>   13) [0] Define Sln <- Bad->Maximize(NumMade)
+Solver: GLPK
+>   14) [0] Expr Sln.NumMade
+79
+>   15) [0] End
+
