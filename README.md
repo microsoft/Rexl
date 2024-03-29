@@ -31,11 +31,21 @@ This repository contains:
 
 ## Overview
 
-Core Rexl is a pure functional expression language. It consists of the following projects:
+Rexl is a pure functional expression language. It is statically typed. Types are inferred, not directly
+declared by the expression. Expressions are compiled to a semantic representation known as bound nodes.
+Bound nodes can be compiled to CIL (the instruction set of the .Net runtime) and evaluated. We may also
+implement a bound node interpreter at some point. Another possible improvement is to delegate
+operations to "smart" data sources such as SQL Server.
+
+There is a larger language called RexlScript. RexlScript is interpreted, not compiled. RexlScript supports
+control flow as well as declaration and execution of parallel tasks. RexlScript is supported by the Jupyter
+Notebook kernel, the sample applications RexlBench and RexlRun, and is used by some test suites.
+
+Core Rexl consists of the following projects:
 * [Rexl.Base](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Base): type system, name handling and
   other utilities.
 * [Rexl.Bind](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Bind): Contains the lexer, parser,
-  and binder, as well as parse tree and semantic (bound) tree representations.
+  and binder, as well as parse tree and semantic (bound) tree representations. This includes parsing of RexlScript.
 * [Rexl.Code](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Code): Contains MSIL/CIL code
   generation and type manager functionality. A type manager is responsible for mapping from Rexl type
   (known as `DType`) to .Net `System.Type`.
@@ -60,6 +70,11 @@ prompt:
 * Run `dotnet build Rexl.sln -c Debug` to build the debug configuration.
 * Run `dotnet build Rexl.sln -c Release` to build the release configuration.
 
+To build in Linux and WSL (Windows Subsystem for Linux):
+* `cd` to the `src` directory.
+* Run `dotnet build Rexl.sln -c Debug -p:EnableWindowsTargeting=true` to build the debug configuration.
+* Run `dotnet build Rexl.sln -c Release -p:EnableWindowsTargeting=true` to build the release configuration.
+
 ### Running Tests
 
 Similarly the tests can be run in the standard ways using Microsoft Visual Studio or the `dotnet`
@@ -67,6 +82,8 @@ command line application:
 * `cd` to the `src` directory.
 * Run `dotnet test Rexl.sln -c Debug` to run the tests for the debug configuration.
 * Run `dotnet test Rexl.sln -c Release` to run the tests for the release configuration.
+
+To run tests under Linux or WSL, include the `-p:EnableWindowsTargeting=true` option.
 
 ### Running Jupyter
 
@@ -76,11 +93,12 @@ To run RexlScript in a Jupyter notebook:
 * Register the Jupyter kernel by running `RegisterKernel.cmd Debug` or `RegisterKernel.cmd Release`.
 * `cd` to the directory where you want to create notebooks.
 * Run `jupyter lab` or `jupyter notebook`.
+* Create a Rexl notebook.
 
 ### Running Sample Applications
 
 To run the other sample applications, `RexlBench`, `RexlRun`, or `DocBench` simply run the corresponding
-`.exe` from with Visual Studio, from the command line, or from windows explorer.
+`.exe` from within Visual Studio, from the command line, or from windows explorer.
 
 ## Packages
 
