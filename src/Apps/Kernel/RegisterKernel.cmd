@@ -7,7 +7,7 @@ if "%BLD%"=="" (
     set BLD=Debug
 )
 
-set EDIR=%~dp0../xout/bin/RexlKernel/x64/%BLD%/net6.0/
+set EDIR=%~dp0../../xout/bin/RexlKernel/x64/%BLD%/net6.0/
 set EDIR=%EDIR:\=/%
 
 echo EDIR: %EDIR%
