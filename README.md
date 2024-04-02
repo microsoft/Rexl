@@ -13,7 +13,7 @@ This repository contains:
 * Statement Rexl, also known as RexlScript.
 * Harness functionality for embedding RexlScript in an application.
 * Some sample applications, including:
-    * A Jupyter Notebook kernel usable with both [Jupyter Lab/Notebook](https://jupyter.org/).
+    * A Jupyter Notebook kernel usable with both [Jupyter Lab and Jupyter Notebook](https://jupyter.org/).
     * RexlBench, a GUI application for editing and running RexlScript.
     * RexlRun, a command line application for running RexlScript.
     * DocBench, a GUI application for editing and evaluating flow graphs.
@@ -25,6 +25,7 @@ This repository contains:
 * [Overview](#overview)
 * [Building](#building)
 * [Packages](#packages)
+* [Documentation](#documentation)
 * [Samples](#samples)
 * [Contributing](#contributing)
 * [Trademarks](#trademarks)
@@ -42,28 +43,28 @@ control flow as well as declaration and execution of parallel tasks. RexlScript 
 Notebook kernel, the sample applications RexlBench and RexlRun, and is used by some test suites.
 
 Core Rexl consists of the following projects:
-* [Rexl.Base](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Base): type system, name handling and
+* [Rexl.Base](/src/Core/Rexl.Base): type system, name handling and
   other utilities.
-* [Rexl.Bind](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Bind): Contains the lexer, parser,
+* [Rexl.Bind](/src/Core/Rexl.Bind): Contains the lexer, parser,
   and binder, as well as parse tree and semantic (bound) tree representations. This includes parsing of RexlScript.
-* [Rexl.Code](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Code): Contains MSIL/CIL code
+* [Rexl.Code](/src/Core/Rexl.Code): Contains MSIL/CIL code
   generation and type manager functionality. A type manager is responsible for mapping from Rexl type
   (known as `DType`) to .Net `System.Type`.
 
 Other projects include:
-* [Rexl.Flow](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Code): Contains the flow graph
+* [Rexl.Flow](/src/Core/Rexl.Code): Contains the flow graph
   functionality.
-* [Rexl.Onnx](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Onnx): Contains basic
+* [Rexl.Onnx](/src/Core/Rexl.Onnx): Contains basic
   [ONNX runtime](https://github.com/microsoft/onnxruntime) integration including sample functions wrapping
   models from the [ONNX Model Zoo](https://github.com/onnx/models).
-* [Rexl.Solve](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Solve): Contains support for
+* [Rexl.Solve](/src/Core/Rexl.Solve): Contains support for
   invoking a SAT solver and several linear MIP solvers.
-* [Rexl.Harness](https://github.com/microsoft/Rexl/tree/main/src/Core/Rexl.Harness): Contains harness
+* [Rexl.Harness](/src/Core/Rexl.Harness): Contains harness
   functionality for executing RexlScript. This includes support for RexlScript's task concept.
 
 ## Building
 
-The [Rexl.sln](https://github.com/microsoft/Rexl/tree/main/src) file can be built in the standard ways
+The [Rexl.sln](/src) file can be built in the standard ways
 using Microsoft Visual Studio or the `dotnet` command line application. For example, from a command
 prompt:
 * `cd` to the `src` directory.
@@ -91,9 +92,9 @@ To run RexlScript in a Jupyter notebook:
 * Build `Debug` or `Release`.
 * `cd` to the `src\Apps\Kernel` directory.
 * Register the Jupyter kernel by running `RegisterKernel.cmd Debug` or `RegisterKernel.cmd Release`.
-* `cd` to the directory where you want to create notebooks.
+* `cd` to the directory where you have notebooks or want to create notebooks.
 * Run `jupyter lab` or `jupyter notebook`.
-* Create a Rexl notebook.
+* Create or open a Rexl notebook.
 
 ### Running Sample Applications
 
@@ -104,10 +105,21 @@ To run the other sample applications, `RexlBench`, `RexlRun`, or `DocBench` simp
 
 We will be publishing nuget packages soon.
 
+## Documentation
+
+Documentation of the Rexl and RexlScript languages are in the [docs](/docs) directory. More will be added
+over time.
+
 ## Samples
 
-We will be adding samples soon. Until then, the test scripts contain many examples of Rexl and RexlScript.
-For example, see [`src/Test/Rexl.Code.Test/Scripts/Block/General/Basic.txt`](https://github.com/microsoft/Rexl/blob/main/src/Test/Rexl.Code.Test/Scripts/Block/General/Basic.txt) for some sample RexlScript.
+There is a [samples](/samples) directory containing sample data, scripts,
+and notebooks. More will be added over time. To run sample scripts, use either `RexlBench` or `RexlRun`. To run
+notebooks, follow the instructions in [Running Jupyter](#running-jupyter). We hope to add Jupyter kernel installer
+functionality soon, to simplify the process.
+
+Another source of samples is the many test scripts containing examples of Rexl and RexlScript.
+For example, see [`src/Test/Rexl.Code.Test/Scripts/Block/General/Basic.txt`](/src/Test/Rexl.Code.Test/Scripts/Block/General/Basic.txt)
+for some sample RexlScript.
 
 ## Contributing
 
