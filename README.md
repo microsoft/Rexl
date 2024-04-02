@@ -107,8 +107,7 @@ We will be publishing nuget packages soon.
 
 ## Documentation
 
-Documentation of the Rexl and RexlScript languages are in the [docs](/docs) directory. More will be added
-over time.
+Documentation for this project is in the [docs](/docs) directory.
 
 ## Samples
 
