@@ -61,7 +61,8 @@ types. These include:
   columns named `A` and `B`, with types `I8` and **_text_**.
 * A [**_tensor_**](#tensor-types) type is an advanced type used in scientific applications. Like sequence types, tensor types 
   have an associated **_item type_**. They also have an associated **_rank_**, indicating the number of **_dimensions_**.
-* A [**_module_**](#module-types) type is an advanced type that represents a collection of names symbols.
+* A [**_module_**](#module-types) type is an advanced type that represents a collection of named symbols.
+  Documentation for modules will be added soon.
 
 ## Special Types
 
@@ -155,7 +156,7 @@ The kind column contains **_float_** for floating-point types, **_signed_** for 
 negative values), and **_unsigned_** for the unsigned integer types (that cannot contain negative values).
 
 |**Name**|**Kind**|**Size**|**Precision**|  **Minimum Value**       |**Maximum Value**         |
-|--------|--------|--------|-------------|--------------------------|--------------------------|
+|:------:|:------:|:------:|:-----------:|:------------------------:|:------------------------:|
 |  `R8`  | float  |8 bytes | 53 bits     |-1.79769313486232e308     |1.79769313486232e308      |
 |  `R4`  | float  |4 bytes | 24 bits     |-3.4028235e38             |3.4028235e38              |
 |  `IA`  | signed |variable| variable    |no minimum                |no maximum                |
@@ -207,20 +208,6 @@ Numeric literals may use the underscore character as a digit separator, as in `1
 written in hexadecimal (base sixteen) using the `0x` prefix or in binary (base two) using the `0b` prefix. For 
 example, the integer `100` can be written as `0x64` or `0b0110_0100`.
 
-### Major Numeric Types
-
-The major numeric types are `R8`, `IA`, `I8`, and `U8`. Generally, the arithmetic operations of addition, subtraction,
-multiplication, division, and modulus always use one of these types. These operators select one of the major
-numeric types, convert both operands to that type and perform the operation within that type.
-
-When the selected type is `R8` and the mathematical result requires more than `53` bits of precision, the result is
-rounded to the closest value representable by `R8`.
-
-When the selected type is `I8` or `U8` and the mathematical result is outside the range of that type, the result is
-reduced modulo $2^{64}$ to a value within the selected type. When this happens, we say the computation
-overflowed. For example, multiplying one trillion times itself, `1_000_000_000_000 * 1_000_000_000_000`,
-overflows `I8` to produce `2_003_764_205_206_896_640`, which is $10^{24}$ reduced modulo $2^{64}$.
-
 ### Standard Numeric Conversions
 
 There are various **_standard numeric conversions_** that allow using a value of one numeric type, the source type,
@@ -245,22 +232,64 @@ The standard numeric conversions consist of:
 * To a fixed-sized unsigned integer type from a fixed-sized unsigned integer type with smaller size. These
   conversions do not lose information.
 
-For example, when an `I4` is added to a `U2` value using the `+` operator, both operands are converted to `I8`
-before being added (see [addition operator](04-Operators.md#addition-subtraction-multiplication)).
-Similarly, when a `U8` value is divided by an `IA` value using the `/` operator, both operands are converted
-to `R8` before being divided (see [division operator](04-Operators.md#floating-point-division)).
+### Major Numeric Types
+
+The major numeric types are `R8`, `IA`, `I8`, and `U8`.
+
+Generally, the [**_numeric arithmetic operators_**](04-Operators.md#numeric-arithmetic-operators) (addition,
+subtraction, multiplication, division, modulus, negation, exponentiation) always use one of these types.
+These operators select one of the major numeric types, convert both operands to that type and perform the
+operation within that type. The type that is selected depends on the operator and possibly on the types of
+the operands. For example, [floating-point division `/`](04-Operators.md#floating-point-division) always
+uses `R8`. [Exponentiation](04-Operators.md#exponentiation) selects one of the **_fixed-sized_** major numeric
+types (not `IA`). The [integer division and modulus operators](04-Operators.md#integer-division-and-modulus)
+select one of the **_integer_** major numeric types (not `R8`). In all cases, the selected type must have
+[standard numeric conversions](#standard-numeric-conversions) from the operand types. When multiple
+supported types have such conversions, the selected type is the first such type from the ordered list
+`U8`, `I8`, `IA`, `R8`.
+
+For example:
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and a `U4` value
+  with the `+` or `-` operator selects the `U8` type.
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and an `I1` value
+  with the `+` or `-` operator selects the `I8` type.
+* [Dividing or moding](04-Operators.md#integer-division-and-modulus) a `U8` value by an `IA` value using the
+  `div` or `mod` operator selects the `IA` type.
+* [Dividing](04-Operators.md#floating-point-division) a `U8` value by an `IA` value using the `/` operator
+  selects the `R8` type.
+
+When the selected type is `R8` and the mathematical result requires more than `53` bits of precision, the result is
+rounded to the closest value representable by `R8`.
+
+When the selected type is `I8` or `U8` and the mathematical result is outside the range of that type, the result is
+reduced modulo $2^{64}$ to a value within the selected type. When this happens, we say the computation
+overflowed. For example, multiplying one trillion times itself, `1_000_000_000_000 * 1_000_000_000_000`,
+overflows `I8` to produce `2_003_764_205_206_896_640`, which is $10^{24}$ reduced modulo $2^{64}$.
 
 ## Chrono Types
 
 Rexl supports a **_date_** type and a **_time_** type, known collectively as **_chrono types_**.
 
 A **_date_** value represents a day in an idealized Gregorian calendar as well as a time value within that day. The
-resolution of the time value is 100 nanoseconds.
+resolution of the time value is 100 nanoseconds (0.0000001 second). The smallest (earliest) possible date value is
+the beginning of year one. This smallest value is also the **_default value_** for the date type.
+The largest (latest) possible date value is the final representable instant in year `9999`, that is 0.0000001 second
+before the beginning of year `10000`.
 
 A **_time_** value represents a time interval consisting of a number of days, hours, minutes, seconds, and fractions 
-of a second. Time values can be positive, zero, or negative. The resolution of a time value is 100 nanoseconds.
+of a second. Time values can be positive, zero, or negative. The resolution of a time value is 100 nanoseconds
+(0.0000001 second). A time value is represented as a number of **_ticks_** (positive, zero, or negative), where each
+tick is 100 nanoseconds. This number of ticks must fit in the [`I8` integer type](#numeric-types). That is, the
+smallest time value has tick count equal to the smallest value of the `I8` type and the largest time value has tick
+count equal to the largest value of the `I8` type. A time value is often rendered with as `[s]D.H:M:S.F` where
+`[s]` is an optional `-` or `+` sign, `D` is a number of (24 hour) days, `H` is a number of hours, `M` is a
+number of minutes, `S` is a number of seconds, and `F` is the fractional part. Note that `.` is used to separate
+the number of days from the time components and also to support the fractional part of a second from the whole
+seconds. A `:` is used to separate the hours from minutes and minutes from seconds. With this notation,
+the largest time value is `10675199.02:48:05.4775807` and the smallest time value is
+`-10675199.02:48:05.4775808`. The default time value is zero, rendered `0.0:0:0.0`.
 
-Some of the arithmetic operators apply to chrono values [chrono operators](04-Operators.md#date-and-time-arithmetic-operators).
+Some of the [arithmetic operators](04-Operators.md#date-and-time-arithmetic-operators) apply to chrono values.
 For example, two date values can be subtracted to get a time value. Similarly, a date value and time value
 can be added to get a new date value.
 
@@ -414,7 +443,7 @@ x[1, 0] // 0
 x[1, 1] // 3
 x[1, 2] // -2
 ```
-For a rank-two tensor like this, we’ll often display values in a two dimensional layout such as
+For a rank-two tensor like this, we'll often display values in a two dimensional layout such as
 ```
  1 -1  2
  0  3 -2
