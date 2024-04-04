@@ -173,9 +173,9 @@ above to:
 ForEach(Item:MyTable, { Item, Name, Age:Item.Age, Addr:Item.HomeAddr })
 ```
 
-Similarly, in the field specification `Age:Item.Age`, the value expression is a dotted name with the last simple 
-name matching the field name. In this situation, the field name and colon may also be omitted, shortening this 
-further to:
+Similarly, in the field specification `Age:Item.Age`, the value expression is a dotted expression with the final
+simple name matching the field name. In this situation, the field name and colon may also be omitted, shortening
+this further to:
 ```
 ForEach(Item:MyTable, { Item, Name, Item.Age, Addr:Item.HomeAddr })
 ```

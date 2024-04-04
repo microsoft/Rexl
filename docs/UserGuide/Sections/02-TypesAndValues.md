@@ -1,4 +1,4 @@
-# Type and Values
+# Types and Values
 
 Every value in Rexl has a **_type_**. The type of a value determines the kinds of operations that can be performed
 with the value. For example, the multiplication operator `*` can be applied to numeric values but not to text
@@ -17,6 +17,13 @@ two types with distinct names can have identical structure. For example, in C# o
 classes named `Person` and `Wine`, both containing only fields `Name` of type string and `Age` of type int. In Rexl,
 both would be represented by the same record type, namely that with two fields, `Name` of type text and `Age` of
 type `I4`.
+
+## Default Values
+
+Every Rexl type except [**_vacuous_**](#special-types) has a **_default value_**.
+The `null` value is the default value of any type that includes `null`. The zero value
+is the default value of any numeric type. The default value of the bool type is `false`.
+The default values of other types are documented in their respective sections.
 
 ## Primitive Types
 
@@ -89,6 +96,9 @@ There is no way in Rexl to materialize a value of the vacuous type. However, the
 expression `[]` has type **_sequence of vacuous_**. Similarly, the **_local name_** `x` in the expression
 `ForEach(x:[], x)` has vacuous type.
 
+The **_default value_** of the general type is `null`. The vacuous type has no default value since it
+contains no values.
+
 ## Optional Types
 
 Rexl supports the concept of a **_missing value_** via the special value `null`. Users of SQL, other database
@@ -109,6 +119,8 @@ same values as well as the `null` value.
 
 Note that unnecessary use of optional types incurs additional computational cost, so data sources (such as 
 imported SQL tables and parquet files) should be constructed to use required types when possible.
+
+The **_default value_** of all optional types is `null`.
 
 ## Text Type
 
@@ -144,6 +156,8 @@ Rexl also supports a **_verbatim_** form of text literal where the `\` character
 
 The escape character `\` is used for many types of escaping, well beyond the two cases of `\"` and `\\` in the 
 examples above.
+
+Since text is an optional type, its **_default value_** is `null`.
 
 ## Numeric Types
 
@@ -191,6 +205,9 @@ of precision for the type.
 
 For the signed integer types with finite precision, the minimum is $-2^{N-1}$ and the maximum is $2^{N-1} - 1$,
 where $N$ is the number of bits of precision.
+
+The **_default value_** of all numeric types is the value `0` in that type. For the bool type, the default value
+is the `false` value, which is the `0` value of that type.
 
 ### Numeric Literals
 
@@ -244,15 +261,27 @@ the operands. For example, [floating-point division `/`](04-Operators.md#floatin
 uses `R8`. [Exponentiation](04-Operators.md#exponentiation) selects one of the **_fixed-sized_** major numeric
 types (not `IA`). The [integer division and modulus operators](04-Operators.md#integer-division-and-modulus)
 select one of the **_integer_** major numeric types (not `R8`). In all cases, the selected type must have
-[standard numeric conversions](#standard-numeric-conversions) from the operand types. When multiple
-supported types have such conversions, the selected type is the first such type from the ordered list
-`U8`, `I8`, `IA`, `R8`.
+[standard numeric conversions](#standard-numeric-conversions) from the operand types.
+
+Generally, when multiple supported types have such conversions and are allowed by the operator, the selected
+type is determined by:
+* If either operand type is floating-point, the selected type is `R8`.
+* Otherwise, if either operand type is `IA`, the selected type is `IA`.
+* Otherwise, if either operand type is `U8` and the other is also an unsigned integer type,
+  the selected type is `U8`.
+* Otherwise, the selected type is `I8`.
 
 For example:
-* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and a `U4` value
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and a `U8` value
   with the `+` or `-` operator selects the `U8` type.
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and a `U4` value
+  with the `+` or `-` operator selects the `I8` type. Note that the selected type is signed.
 * [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and an `I1` value
   with the `+` or `-` operator selects the `I8` type.
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and an `R4` value
+  with the `+` or `-` operator selects the `R8` type.
+* [Adding or subtracting](04-Operators.md#addition-subtraction-multiplication) a `U2` value and an `IA` value
+  with the `+` or `-` operator selects the `IA` type.
 * [Dividing or moding](04-Operators.md#integer-division-and-modulus) a `U8` value by an `IA` value using the
   `div` or `mod` operator selects the `IA` type.
 * [Dividing](04-Operators.md#floating-point-division) a `U8` value by an `IA` value using the `/` operator
@@ -343,6 +372,8 @@ produce sequences equivalent to
 [ 3, 5, 17, 0, 1, 2, 3, 4 ]
 ```
 
+Since sequence types are optional (contain `null`), their **_default value_** is `null`.
+
 ## Tuple Types
 
 As explained in [constructed types](#constructed-types), a tuple type has an **_arity_**, which is the
@@ -362,20 +393,36 @@ For higher arity tuples, the values may be followed by a trailing comma. For exa
 ```
 produce the same arity-three tuple value.
 
+The **_default value_** of a tuple type is the tuple whose slot values are the default values of the
+corresponding slot types. For example, a tuple type of arity 3 with slot types `I8`, text, and bool
+has default value `(0, null, false)`.
+
 ## Record Types
 
 As explained in [constructed types](#constructed-types), a record type has an associated set of **_fields_** with
-each field having a **_name_** and **_type_**. To construct a record value, specify names and values between
-curly braces as in
+each field having a **_name_** and **_type_**. To construct a record value, enclose **_field specifications_**
+between curly braces as in
 ```
 { First: "Sally", Last: "Ng", Age: 27, FullTime: true }
 ```
-The order of the fields has no effect on the resulting value or type. The order that the fields are displayed in a
-host application is determined entirely by the host. A host may use the field order written in a formula to determine
-a desired display order.
+The order of the field specifications has no effect on the resulting value or type. Moreover, the order that fields
+are displayed by a host application is determined entirely by the host. A host _may_ use the field order written in
+a record construction to determine a desired display order.
 
-One may use [**_implicit names_**](01-AboutRexl.md#names) within a record construction when a field value is just a
-(dotted) name and the field name matches the last name of the dotted name. For example
+A field specification may consist of a [**_simple name_**](01-AboutRexl.md#names)
+([**_identifier_**](/docs/Grammars.md#productions-for-identifier))
+followed by a colon `:` followed by the field value. An alternate form is the field value followed by `as`
+and then the [**_simple name_**](01-AboutRexl.md#names).
+
+There are two additional forms of **_field specification_**, where the name is
+[**_implicit_**](01-AboutRexl.md#names). One is where the field specification consists just of a
+[**_simple name_**](01-AboutRexl.md#names). In this case, the simple name is used as both the name and value
+for the field. The other form is where the field specification consists just of a
+[**_dotted-expr_**](/docs/Grammars.md#productions-for-dotted-expr) as described in the
+[**_dot_** operator](04-Operators.md#dot-operator) section. In this case, the name for the field is the
+final [**_simple name_**](01-AboutRexl.md#names) ([**_identifier_**](/docs/Grammars.md#productions-for-identifier))
+of the **_dotted-expr_** and the entire **_dotted-expr_** is evaluated as the value of the field.
+For example
 ```
 ForEach(Item:MyTable, { Item:Item, Name:Name, Age:Item.Age, Addr:Item.HomeAddr })
 ```
@@ -383,8 +430,16 @@ may be shortened to
 ```
 ForEach(Item:MyTable, { Item, Name, Item.Age, Addr:Item.HomeAddr })
 ```
-where the field names `Item`, `Name`, and `Age` are **_implicit_**. The name `Addr` must be specified explicitly since it 
-differs from `HomeAddr`.
+where the field names `Item`, `Name`, and `Age` are **_implicit_**. The name `Addr` must be specified explicitly
+since it differs from `HomeAddr`.
+
+This could also be written sing the `as` form for the final field specification,
+```
+ForEach(Item:MyTable, { Item, Name, Item.Age, Item.HomeAddr as Addr })
+```
+
+The **_default value_** of a record type is the record whose field values are the default values
+of the corresponding field types.
 
 ## Table Types
 
@@ -462,6 +517,9 @@ results in another tensor with shape `(2, 3)` with values
 Similarly, if `x` and `y` are two tensors with the same shape, `x + y` produces the **_item-wise_**
 (or **_cell-wise_**) sum of those tensors. Similarly, `x * y` produces the item-wise product
 (also known as the Hadamard product).
+
+The **_default value_** of a tensor type is the tensor of the correct rank whose dimensions
+are all zero.
 
 ## Module Types
 

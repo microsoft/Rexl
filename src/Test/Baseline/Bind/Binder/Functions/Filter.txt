@@ -188,9 +188,19 @@ TakeOne([]) : v
 Binder : TakeOne(null)
 Reducer: dflt<v>
 ###
+> First  ([])
+First([]) : o
+Binder : First*(null)
+Reducer: null
+###
 > TakeOne([], [else] null)
 TakeOne([], [else] null) : o
 Binder : TakeOne(null, [else] null)
+Reducer: null
+###
+> First  ([], [else] null)
+First([], [else] null) : o
+Binder : First*(null, [else] null)
 Reducer: null
 ###
 > TakeOne(Range(0))
@@ -198,9 +208,19 @@ TakeOne(Range(0)) : i8
 Binder : TakeOne(Range(0))
 Reducer: 0
 ###
+> First  (Range(0))
+First(Range(0)) : i8?
+Binder : First*(Range(0))
+Reducer: null
+###
 > TakeOne(Range(0), [else] null)
 TakeOne(Range(0), [else] null) : i8?
 Binder : TakeOne(Range(0), [else] null)
+Reducer: null
+###
+> First  (Range(0), [else] null)
+First(Range(0), [else] null) : i8?
+Binder : First*(Range(0), [else] null)
 Reducer: null
 ###
 > TakeOne(Range(0), [else] -1)
@@ -208,22 +228,47 @@ TakeOne(Range(0), [else] -1) : i8
 Binder : TakeOne(Range(0), [else] -1)
 Reducer: -1
 ###
+> First  (Range(0), [else] -1)
+First(Range(0), [else] -1) : i8
+Binder : First*(Range(0), [else] -1)
+Reducer: -1
+###
 > TakeOne(Range(4, 7))
 TakeOne(Range(4, 7)) : i8
 Binder : TakeOne(Range(4, 7))
 ###
+> First  (Range(4, 7))
+First(Range(4, 7)) : i8?
+Binder : First*(Range(4, 7))
+Reducer: TakeOne(Range(4, 7), [else] null)
+###
 > TakeOne(Range(4, 7), [else] null)
 TakeOne(Range(4, 7), [else] null) : i8?
 Binder : TakeOne(Range(4, 7), [else] null)
+###
+> First  (Range(4, 7), [else] null)
+First(Range(4, 7), [else] null) : i8?
+Binder : First*(Range(4, 7), [else] null)
+Reducer: TakeOne(Range(4, 7), [else] null)
 ###
 > TakeOne([4, 5, 6])
 TakeOne([4, 5, 6]) : i8
 Binder : TakeOne([4, 5, 6])
 Reducer: 4
 ###
+> First  ([4, 5, 6])
+First([4, 5, 6]) : i8?
+Binder : First*([4, 5, 6])
+Reducer: Opt<i8?>(4)
+###
 > TakeOne([4, 5, 6], [else] null)
 TakeOne([4, 5, 6], [else] null) : i8?
 Binder : TakeOne([4, 5, 6], [else] null)
+Reducer: Opt<i8?>(4)
+###
+> First  ([4, 5, 6], [else] null)
+First([4, 5, 6], [else] null) : i8?
+Binder : First*([4, 5, 6], [else] null)
 Reducer: Opt<i8?>(4)
 ###
 > TakeOne([], b)
@@ -231,35 +276,75 @@ TakeOne([], b) : v
 Binder : TakeOne(*1: null, b)
 Reducer: dflt<v>
 ###
+> First  ([], b)
+First([], b) : o
+Binder : First*(*1: null, b)
+Reducer: null
+###
 > TakeOne(A)
 TakeOne(A) : i8
 Binder : TakeOne(A)
+###
+> First  (A)
+First(A) : i8?
+Binder : First*(A)
+Reducer: TakeOne(A, [else] null)
 ###
 > TakeOne(A, [if] true)
 TakeOne(A, [if] true) : i8
 Binder : TakeOne(*1: A, [if] true)
 Reducer: TakeOne(A)
 ###
+> First  (A, [if] true)
+First(A, [if] true) : i8?
+Binder : First*(*1: A, [if] true)
+Reducer: TakeOne(A, [else] null)
+###
 > TakeOne(A, [if] false)
 TakeOne(A, [if] false) : i8
 Binder : TakeOne(*1: A, [if] false)
 Reducer: 0
 ###
+> First  (A, [if] false)
+First(A, [if] false) : i8?
+Binder : First*(*1: A, [if] false)
+Reducer: null
+###
 > TakeOne(A, [else] 0)
 TakeOne(A, [else] 0) : i8
 Binder : TakeOne(A, [else] 0)
+###
+> First  (A, [else] 0)
+First(A, [else] 0) : i8
+Binder : First*(A, [else] 0)
+Reducer: TakeOne(A, [else] 0)
 ###
 > TakeOne(A, [else] -1)
 TakeOne(A, [else] -1) : i8
 Binder : TakeOne(A, [else] -1)
 ###
+> First  (A, [else] -1)
+First(A, [else] -1) : i8
+Binder : First*(A, [else] -1)
+Reducer: TakeOne(A, [else] -1)
+###
 > TakeOne(A, [else] null)
 TakeOne(A, [else] null) : i8?
 Binder : TakeOne(A, [else] null)
 ###
+> First  (A, [else] null)
+First(A, [else] null) : i8?
+Binder : First*(A, [else] null)
+Reducer: TakeOne(A, [else] null)
+###
 > TakeOne(A, [if] true, [else] 0)
 TakeOne(A, [if] true, [else] 0) : i8
 Binder : TakeOne(*1: A, [if] true, [else] 0)
+Reducer: TakeOne(A, [else] 0)
+###
+> First  (A, [if] true, [else] 0)
+First(A, [if] true, [else] 0) : i8
+Binder : First*(*1: A, [if] true, [else] 0)
 Reducer: TakeOne(A, [else] 0)
 ###
 > TakeOne(A, [if] true, [else] -1)
@@ -267,9 +352,19 @@ TakeOne(A, [if] true, [else] -1) : i8
 Binder : TakeOne(*1: A, [if] true, [else] -1)
 Reducer: TakeOne(A, [else] -1)
 ###
+> First  (A, [if] true, [else] -1)
+First(A, [if] true, [else] -1) : i8
+Binder : First*(*1: A, [if] true, [else] -1)
+Reducer: TakeOne(A, [else] -1)
+###
 > TakeOne(A, true, -1)
 TakeOne(A, true, -1) : i8
 Binder : TakeOne(*1: A, true, -1)
+Reducer: TakeOne(A, [else] -1)
+###
+> First  (A, true, -1)
+First(A, true, -1) : i8
+Binder : First*(*1: A, true, -1)
 Reducer: TakeOne(A, [else] -1)
 ###
 > TakeOne(A, true, null)
@@ -277,9 +372,19 @@ TakeOne(A, true, null) : i8?
 Binder : TakeOne(*1: A, true, null)
 Reducer: TakeOne(A, [else] null)
 ###
+> First  (A, true, null)
+First(A, true, null) : i8?
+Binder : First*(*1: A, true, null)
+Reducer: TakeOne(A, [else] null)
+###
 > TakeOne(A, [if] false, [else] 0)
 TakeOne(A, [if] false, [else] 0) : i8
 Binder : TakeOne(*1: A, [if] false, [else] 0)
+Reducer: 0
+###
+> First  (A, [if] false, [else] 0)
+First(A, [if] false, [else] 0) : i8
+Binder : First*(*1: A, [if] false, [else] 0)
 Reducer: 0
 ###
 > TakeOne(A, [if] true, [else] null)
@@ -287,27 +392,57 @@ TakeOne(A, [if] true, [else] null) : i8?
 Binder : TakeOne(*1: A, [if] true, [else] null)
 Reducer: TakeOne(A, [else] null)
 ###
+> First  (A, [if] true, [else] null)
+First(A, [if] true, [else] null) : i8?
+Binder : First*(*1: A, [if] true, [else] null)
+Reducer: TakeOne(A, [else] null)
+###
 > TakeOne(A, [if] false, [else] null)
 TakeOne(A, [if] false, [else] null) : i8?
 Binder : TakeOne(*1: A, [if] false, [else] null)
+Reducer: null
+###
+> First  (A, [if] false, [else] null)
+First(A, [if] false, [else] null) : i8?
+Binder : First*(*1: A, [if] false, [else] null)
 Reducer: null
 ###
 > TakeOne(R)
 TakeOne(R) : {S:{X:i4}*, X:i4, Y:i2}
 Binder : TakeOne(R)
 ###
+> First  (R)
+First(R) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(R)
+Reducer: TakeOne(R, [else] null)
+###
 > TakeOne(R.S)
 TakeOne(R.S) : {X:i4}*
 Binder : TakeOne(ForEach(*1: R, *1.S))
+###
+> First  (R.S)
+First(R.S) : {X:i4}*
+Binder : First*(ForEach(*1: R, *1.S))
+Reducer: TakeOne(ForEach(*1: R, *1.S))
 ###
 > TakeOne(R, [if] true)
 TakeOne(R, [if] true) : {S:{X:i4}*, X:i4, Y:i2}
 Binder : TakeOne(*1: R, [if] true)
 Reducer: TakeOne(R)
 ###
+> First  (R, [if] true)
+First(R, [if] true) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(*1: R, [if] true)
+Reducer: TakeOne(R, [else] null)
+###
 > TakeOne(R.S, [if] true)
 TakeOne(R.S, [if] true) : {X:i4}*
 Binder : TakeOne(*2: ForEach(*1: R, *1.S), [if] true)
+Reducer: TakeOne(ForEach(*1: R, *1.S))
+###
+> First  (R.S, [if] true)
+First(R.S, [if] true) : {X:i4}*
+Binder : First*(*2: ForEach(*1: R, *1.S), [if] true)
 Reducer: TakeOne(ForEach(*1: R, *1.S))
 ###
 > TakeOne(R, [if] false)
@@ -315,22 +450,47 @@ TakeOne(R, [if] false) : {S:{X:i4}*, X:i4, Y:i2}
 Binder : TakeOne(*1: R, [if] false)
 Reducer: dflt<{S:{X:i4}*, X:i4, Y:i2}>
 ###
+> First  (R, [if] false)
+First(R, [if] false) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(*1: R, [if] false)
+Reducer: null
+###
 > TakeOne(R.S, [if] false)
 TakeOne(R.S, [if] false) : {X:i4}*
 Binder : TakeOne(*2: ForEach(*1: R, *1.S), [if] false)
+Reducer: null
+###
+> First  (R.S, [if] false)
+First(R.S, [if] false) : {X:i4}*
+Binder : First*(*2: ForEach(*1: R, *1.S), [if] false)
 Reducer: null
 ###
 > TakeOne(R, [else] null)
 TakeOne(R, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : TakeOne(R, [else] null)
 ###
+> First  (R, [else] null)
+First(R, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(R, [else] null)
+Reducer: TakeOne(R, [else] null)
+###
 > TakeOne(R.S, [else] null)
 TakeOne(R.S, [else] null) : {X:i4}*
 Binder : TakeOne(ForEach(*1: R, *1.S), [else] null)
 ###
+> First  (R.S, [else] null)
+First(R.S, [else] null) : {X:i4}*
+Binder : First*(ForEach(*1: R, *1.S), [else] null)
+Reducer: TakeOne(ForEach(*1: R, *1.S), [else] null)
+###
 > TakeOne(R, true, null)
 TakeOne(R, true, null) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : TakeOne(*1: R, true, null)
+Reducer: TakeOne(R, [else] null)
+###
+> First  (R, true, null)
+First(R, true, null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(*1: R, true, null)
 Reducer: TakeOne(R, [else] null)
 ###
 > TakeOne(R.S, true, null)
@@ -338,9 +498,19 @@ TakeOne(R.S, true, null) : {X:i4}*
 Binder : TakeOne(*2: ForEach(*1: R, *1.S), true, null)
 Reducer: TakeOne(ForEach(*1: R, *1.S), [else] null)
 ###
+> First  (R.S, true, null)
+First(R.S, true, null) : {X:i4}*
+Binder : First*(*2: ForEach(*1: R, *1.S), true, null)
+Reducer: TakeOne(ForEach(*1: R, *1.S), [else] null)
+###
 > TakeOne(R, [if] true, [else] null)
 TakeOne(R, [if] true, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : TakeOne(*1: R, [if] true, [else] null)
+Reducer: TakeOne(R, [else] null)
+###
+> First  (R, [if] true, [else] null)
+First(R, [if] true, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(*1: R, [if] true, [else] null)
 Reducer: TakeOne(R, [else] null)
 ###
 > TakeOne(R.S, [if] true, [else] null)
@@ -348,9 +518,19 @@ TakeOne(R.S, [if] true, [else] null) : {X:i4}*
 Binder : TakeOne(*2: ForEach(*1: R, *1.S), [if] true, [else] null)
 Reducer: TakeOne(ForEach(*1: R, *1.S), [else] null)
 ###
+> First  (R.S, [if] true, [else] null)
+First(R.S, [if] true, [else] null) : {X:i4}*
+Binder : First*(*2: ForEach(*1: R, *1.S), [if] true, [else] null)
+Reducer: TakeOne(ForEach(*1: R, *1.S), [else] null)
+###
 > TakeOne(R, [if] false, [else] null)
 TakeOne(R, [if] false, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : TakeOne(*1: R, [if] false, [else] null)
+Reducer: null
+###
+> First  (R, [if] false, [else] null)
+First(R, [if] false, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(*1: R, [if] false, [else] null)
 Reducer: null
 ###
 > TakeOne(R.S, [if] false, [else] null)
@@ -358,10 +538,10 @@ TakeOne(R.S, [if] false, [else] null) : {X:i4}*
 Binder : TakeOne(*2: ForEach(*1: R, *1.S), [if] false, [else] null)
 Reducer: null
 ###
-> First(A)
-First(A) : i8?
-Binder : First*(A)
-Reducer: TakeOne(A, [else] null)
+> First  (R.S, [if] false, [else] null)
+First(R.S, [if] false, [else] null) : {X:i4}*
+Binder : First*(*2: ForEach(*1: R, *1.S), [if] false, [else] null)
+Reducer: null
 ###
 > DropOne(A)
 DropOne(A) : i8*
@@ -371,19 +551,31 @@ Reducer: Drop(A, 1)
 > TakeOne(a : A, [if] a > 100)
 TakeOne(a : A, [if] a $> 100) : i8
 Binder : TakeOne(*1: A, [if] *1 @> 100)
+Reducer: TakeOne(*1: A, *1 @> 100)
+###
+> First  (a : A, [if] a > 100)
+First(a : A, [if] a $> 100) : i8?
+Binder : First*(*1: A, [if] *1 @> 100)
+Reducer: TakeOne(*1: A, *1 @> 100, null)
 ###
 > TakeOne(a : A, a > 100, [else] 0)
 TakeOne(a : A, a $> 100, [else] 0) : i8
 Binder : TakeOne(*1: A, *1 @> 100, [else] 0)
+Reducer: TakeOne(*1: A, *1 @> 100, 0)
+###
+> First  (a : A, a > 100, [else] 0)
+First(a : A, a $> 100, [else] 0) : i8
+Binder : First*(*1: A, *1 @> 100, [else] 0)
+Reducer: TakeOne(*1: A, *1 @> 100, 0)
 ###
 > TakeOne(a : A, a > 100, null)
 TakeOne(a : A, a $> 100, null) : i8?
 Binder : TakeOne(*1: A, *1 @> 100, null)
 ###
-> First(a : A, a > 100)
-First(a : A, a $> 100) : i8?
-Binder : First*(*1: A, *1 @> 100)
-Reducer: TakeOne(*1: A, *1 @> 100, [else] null)
+> First  (a : A, a > 100, null)
+First(a : A, a $> 100, null) : i8?
+Binder : First*(*1: A, *1 @> 100, null)
+Reducer: TakeOne(*1: A, *1 @> 100, null)
 ###
 > DropOne(a : A, a > 100)
 DropOne(a : A, a $> 100) : i8*
@@ -400,6 +592,12 @@ TakeOne(a : A, [while] a $> 100) : i8
 *** Error: (15,22) Node: [while] a $> 100, Tok: '[while]', Message: Unexpected directive
 Binder : TakeOne(*1: A, *1 @> 100)
 ###
+> First  (a : A, [while] a > 100) // Error.
+First(a : A, [while] a $> 100) : i8?
+*** Error: (15,22) Node: [while] a $> 100, Tok: '[while]', Message: Unexpected directive
+Binder : First*(*1: A, *1 @> 100)
+Reducer: TakeOne(*1: A, *1 @> 100, null)
+###
 > DropOne(a : A, [while] a > 100) // Error.
 DropOne(a : A, [while] a $> 100) : i8*
 *** Error: (15,22) Node: [while] a $> 100, Tok: '[while]', Message: Unexpected directive
@@ -410,6 +608,12 @@ Reducer: Drop(*1: A, 1, *1 @> 100)
 TakeOne([if] a : A, a $> 100) : i8
 *** Error: (8,12) Node: [if] a : A, Tok: '[if]', Message: Unexpected directive
 Binder : TakeOne(*1: A, *1 @> 100)
+###
+> First  ([if] a : A, a > 100) // Error.
+First([if] a : A, a $> 100) : i8?
+*** Error: (8,12) Node: [if] a : A, Tok: '[if]', Message: Unexpected directive
+Binder : First*(*1: A, *1 @> 100)
+Reducer: TakeOne(*1: A, *1 @> 100, null)
 ###
 > DropOne([if] a : A, a > 100) // Error.
 DropOne([if] a : A, a $> 100) : i8*
@@ -427,23 +631,22 @@ TakeOne(a : A, [else] -1, [if] a $> 100) : i8?
 *** Error: (33,34) Node: a $> 100, Message: Invalid operand type: cannot convert type 'b*' to 'i8?'
 Binder : TakeOne(*1: A, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
 ###
-> First(a : A, [while] a > 100) // Error.
-First(a : A, [while] a $> 100) : i8?
-*** Error: (13,20) Node: [while] a $> 100, Tok: '[while]', Message: Unexpected directive
-Binder : First*(*1: A, *1 @> 100)
-Reducer: TakeOne(*1: A, *1 @> 100, [else] null)
-###
-> First([if] a : A, a > 100) // Error.
-First([if] a : A, a $> 100) : i8?
-*** Error: (6,10) Node: [if] a : A, Tok: '[if]', Message: Unexpected directive
-Binder : First*(*1: A, *1 @> 100)
-Reducer: TakeOne(*1: A, *1 @> 100, [else] null)
+> First  (a : A, [else] -1, [if] a > 100) // Error.
+Corrected by binder: [First  (a : A, [else] -1, [if] A > 100) // Error.]
+First(a : A, [else] -1, [if] a $> 100) : i8?
+*** Error: (15,21) Node: [else] -1, Tok: '[else]', Message: Unexpected directive
+*** Error: (31,32) Node: a, Message: Name does not exist in the current context, did you intend 'A'?
+*** Error: (26,30) Node: [if] a $> 100, Tok: '[if]', Message: Unexpected directive
+*** Error: (22,23) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to 'b'
+*** Error: (33,34) Node: a $> 100, Message: Invalid operand type: cannot convert type 'b*' to 'i8?'
+Binder : First*(*1: A, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(*1: A, Error(ErrBadType_Src_Dst), Error(ErrBadType_Src_Dst))
 ###
 > TakeOne(B)
 TakeOne(B) : i8?
 Binder : TakeOne(B)
 ###
-> First(B)
+> First  (B)
 First(B) : i8?
 Binder : First*(B)
 Reducer: TakeOne(B)
@@ -452,7 +655,7 @@ Reducer: TakeOne(B)
 TakeOne(b : B, b $> 100) : i8?
 Binder : TakeOne(*1: B, *1 $> 100)
 ###
-> First(b : B, [if] b > 100)
+> First  (b : B, [if] b > 100)
 First(b : B, [if] b $> 100) : i8?
 Binder : First*(*1: B, [if] *1 $> 100)
 Reducer: TakeOne(*1: B, *1 $> 100)
@@ -461,49 +664,65 @@ Reducer: TakeOne(*1: B, *1 $> 100)
 TakeOne(R) : {S:{X:i4}*, X:i4, Y:i2}
 Binder : TakeOne(R)
 ###
-> TakeOne(R, [else] null)
-TakeOne(R, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
-Binder : TakeOne(R, [else] null)
-###
-> First(R)
+> First  (R)
 First(R) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : First*(R)
 Reducer: TakeOne(R, [else] null)
 ###
-> TakeOne(R, X > Y)
-TakeOne(R, X $> Y) : {S:{X:i4}*, X:i4, Y:i2}
-Binder : TakeOne(*1: R, *1.X @> Num<i4>(*1.Y))
+> TakeOne(R, [else] null)
+TakeOne(R, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : TakeOne(R, [else] null)
 ###
-> TakeOne(R, X > Y, null)
-TakeOne(R, X $> Y, null) : {S:{X:i4}*, X:i4, Y:i2}?
-Binder : TakeOne(*1: R, *1.X @> Num<i4>(*1.Y), null)
+> First  (R, [else] null)
+First(R, [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(R, [else] null)
+Reducer: TakeOne(R, [else] null)
 ###
-> First(R, [if] X > Y)
+> TakeOne(R, [if] X > Y)
+TakeOne(R, [if] X $> Y) : {S:{X:i4}*, X:i4, Y:i2}
+Binder : TakeOne(*1: R, [if] *1.X @> Num<i4>(*1.Y))
+Reducer: TakeOne(*1: R, *1.X @> Num<i4>(*1.Y))
+###
+> First  (R, [if] X > Y)
 First(R, [if] X $> Y) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : First*(*1: R, [if] *1.X @> Num<i4>(*1.Y))
-Reducer: TakeOne(*1: R, *1.X @> Num<i4>(*1.Y), [else] null)
+Reducer: TakeOne(*1: R, *1.X @> Num<i4>(*1.Y), null)
 ###
-> First(r : R, r.X > r.Y)
+> TakeOne(r : R, r.X > r.Y)
+TakeOne(r : R, r.X $> r.Y) : {S:{X:i4}*, X:i4, Y:i2}
+Binder : TakeOne(*1: R, *1.X @> Num<i4>(*1.Y))
+###
+> First  (r : R, r.X > r.Y)
 First(r : R, r.X $> r.Y) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : First*(*1: R, *1.X @> Num<i4>(*1.Y))
-Reducer: TakeOne(*1: R, *1.X @> Num<i4>(*1.Y), [else] null)
+Reducer: TakeOne(*1: R, *1.X @> Num<i4>(*1.Y), null)
 ###
 > TakeOne(Filter(R, X > Y)) // REVIEW: Optimize to just TakeOne(R, X > Y).
 TakeOne(Filter(R, X $> Y)) : {S:{X:i4}*, X:i4, Y:i2}
 Binder : TakeOne(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)))
 Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)))
 ###
+> First  (Filter(R, X > Y)) // REVIEW: Optimize to just First  (R, X > Y).
+First(Filter(R, X $> Y)) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)))
+Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)), [else] null)
+###
 > TakeOne(Filter(R, X > Y), [else] null) // REVIEW: Optimize to just TakeOne(R, X > Y, null).
 TakeOne(Filter(R, X $> Y), [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : TakeOne(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)), [else] null)
 Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)), [else] null)
 ###
-> First(Filter(R, X > Y)) // REVIEW: Optimize to just First(R, X > Y).
-First(Filter(R, X $> Y)) : {S:{X:i4}*, X:i4, Y:i2}?
-Binder : First*(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)))
+> First  (Filter(R, X > Y), [else] null) // REVIEW: Optimize to just First  (R, X > Y, null).
+First(Filter(R, X $> Y), [else] null) : {S:{X:i4}*, X:i4, Y:i2}?
+Binder : First*(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)), [else] null)
 Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)), [else] null)
 ###
-> First(Filter(r : R, r.X > r.Y))
+> TakeOne(Filter(r : R, r.X > r.Y))
+TakeOne(Filter(r : R, r.X $> r.Y)) : {S:{X:i4}*, X:i4, Y:i2}
+Binder : TakeOne(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)))
+Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)))
+###
+> First  (Filter(r : R, r.X > r.Y))
 First(Filter(r : R, r.X $> r.Y)) : {S:{X:i4}*, X:i4, Y:i2}?
 Binder : First*(TakeIf*(*1: R, *1.X @> Num<i4>(*1.Y)))
 Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)), [else] null)
@@ -512,22 +731,37 @@ Reducer: TakeOne(Take(*1: R, [if] *1.X @> Num<i4>(*1.Y)), [else] null)
 TakeOne(SV) : v
 Binder : TakeOne(SV)
 ###
-> First(SV)
+> First  (SV)
 First(SV) : o
 Binder : First*(SV)
 Reducer: TakeOne(SV, [else] null)
 ###
-> First(Range(0))
+> TakeOne(Range(0))
+TakeOne(Range(0)) : i8
+Binder : TakeOne(Range(0))
+Reducer: 0
+###
+> First  (Range(0))
 First(Range(0)) : i8?
 Binder : First*(Range(0))
 Reducer: null
 ###
-> First(null)
+> TakeOne(null)
+TakeOne(null) : o
+Binder : TakeOne(null)
+Reducer: null
+###
+> First  (null)
 First(null) : o
 Binder : First*(null)
 Reducer: null
 ###
-> First(["A", "B", "C"])
+> TakeOne(["A", "B", "C"])
+TakeOne(["A", "B", "C"]) : s
+Binder : TakeOne(["A", "B", "C"])
+Reducer: "A"
+###
+> First  (["A", "B", "C"])
 First(["A", "B", "C"]) : s
 Binder : First*(["A", "B", "C"])
 Reducer: "A"
@@ -592,6 +826,72 @@ Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
 TakeOne(R, [if] true, [else] -1) : {S:{X:i4}*, X:i4, Y:i2}
 *** Error: (29,30) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
 Binder : TakeOne(*1: R, [if] true, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
+###
+> First  ([], [else] -1) // Error.
+First([], [else] -1) : v
+*** Error: (19,20) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to 'v'
+Binder : First*(null, [else] Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> First  ([], [else] "hi") // Error.
+First([], [else] "hi") : o
+*** Error: (19,23) Node: "hi", Message: Invalid operand type: cannot convert type 's' to 'o'
+Binder : First*(null, [else] Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> First  ([], [else] true) // Error.
+First([], [else] true) : v
+*** Error: (19,23) Node: true, Message: Invalid operand type: cannot convert type 'b' to 'v'
+Binder : First*(null, [else] Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> First  (A, [else] 3.5) // Error.
+First(A, [else] 3.5) : i8
+*** Error: (18,21) Node: 3.5, Message: Invalid operand type: cannot convert type 'r8' to 'i8'
+Binder : First*(A, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(A, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (A, [else] "hello") // Error.
+First(A, [else] "hello") : i8?
+*** Error: (18,25) Node: "hello", Message: Invalid operand type: cannot convert type 's' to 'i8?'
+Binder : First*(A, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(A, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (R, [else] 0) // Error.
+First(R, [else] 0) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (18,19) Node: 0, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(R, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (R, [else] -1) // Error.
+First(R, [else] -1) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (18,19) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(R, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (R, true, -1) // Error.
+First(R, true, -1) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (17,18) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(*1: R, true, Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (R, [if] false, [else] 0) // Error.
+First(R, [if] false, [else] 0) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (30,31) Node: 0, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(*1: R, [if] false, [else] Error(ErrBadType_Src_Dst))
+Reducer: Error(ErrBadType_Src_Dst)
+###
+> First  (R, [if] true, [else] 0) // Error.
+First(R, [if] true, [else] 0) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (29,30) Node: 0, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(*1: R, [if] true, [else] Error(ErrBadType_Src_Dst))
+Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
+###
+> First  (R, [if] true, [else] -1) // Error.
+First(R, [if] true, [else] -1) : {S:{X:i4}*, X:i4, Y:i2}
+*** Error: (29,30) Node: -1, Message: Invalid operand type: cannot convert type 'i8' to '{S:{X:i4}*, X:i4, Y:i2}'
+Binder : First*(*1: R, [if] true, [else] Error(ErrBadType_Src_Dst))
 Reducer: TakeOne(R, [else] Error(ErrBadType_Src_Dst))
 ###
 > TakeAt(Range(5), 0)

@@ -51,86 +51,131 @@ Map(r : R, Filter(S, X > r.X)) // REVIEW: No way without cursor over R.
 Map(r : R, Filter(s : S, s.X > r.X))
 
 TakeOne([])
+First  ([])
 TakeOne([], [else] null)
+First  ([], [else] null)
 TakeOne(Range(0))
+First  (Range(0))
 TakeOne(Range(0), [else] null)
+First  (Range(0), [else] null)
 TakeOne(Range(0), [else] -1)
+First  (Range(0), [else] -1)
 TakeOne(Range(4, 7))
+First  (Range(4, 7))
 TakeOne(Range(4, 7), [else] null)
+First  (Range(4, 7), [else] null)
 TakeOne([4, 5, 6])
+First  ([4, 5, 6])
 TakeOne([4, 5, 6], [else] null)
+First  ([4, 5, 6], [else] null)
 TakeOne([], b)
+First  ([], b)
 TakeOne(A)
+First  (A)
 TakeOne(A, [if] true)
+First  (A, [if] true)
 TakeOne(A, [if] false)
+First  (A, [if] false)
 TakeOne(A, [else] 0)
+First  (A, [else] 0)
 TakeOne(A, [else] -1)
+First  (A, [else] -1)
 TakeOne(A, [else] null)
+First  (A, [else] null)
 TakeOne(A, [if] true, [else] 0)
+First  (A, [if] true, [else] 0)
 TakeOne(A, [if] true, [else] -1)
+First  (A, [if] true, [else] -1)
 TakeOne(A, true, -1)
+First  (A, true, -1)
 TakeOne(A, true, null)
+First  (A, true, null)
 TakeOne(A, [if] false, [else] 0)
+First  (A, [if] false, [else] 0)
 TakeOne(A, [if] true, [else] null)
+First  (A, [if] true, [else] null)
 TakeOne(A, [if] false, [else] null)
+First  (A, [if] false, [else] null)
 TakeOne(R)
+First  (R)
 TakeOne(R.S)
+First  (R.S)
 TakeOne(R, [if] true)
+First  (R, [if] true)
 TakeOne(R.S, [if] true)
+First  (R.S, [if] true)
 TakeOne(R, [if] false)
+First  (R, [if] false)
 TakeOne(R.S, [if] false)
+First  (R.S, [if] false)
 TakeOne(R, [else] null)
+First  (R, [else] null)
 TakeOne(R.S, [else] null)
+First  (R.S, [else] null)
 TakeOne(R, true, null)
+First  (R, true, null)
 TakeOne(R.S, true, null)
+First  (R.S, true, null)
 TakeOne(R, [if] true, [else] null)
+First  (R, [if] true, [else] null)
 TakeOne(R.S, [if] true, [else] null)
+First  (R.S, [if] true, [else] null)
 TakeOne(R, [if] false, [else] null)
+First  (R, [if] false, [else] null)
 TakeOne(R.S, [if] false, [else] null)
-First(A)
+First  (R.S, [if] false, [else] null)
 DropOne(A)
 
 TakeOne(a : A, [if] a > 100)
+First  (a : A, [if] a > 100)
 TakeOne(a : A, a > 100, [else] 0)
+First  (a : A, a > 100, [else] 0)
 TakeOne(a : A, a > 100, null)
-First(a : A, a > 100)
+First  (a : A, a > 100, null)
 DropOne(a : A, a > 100)
 DropOne(a : A, [if] a > 100)
 
 TakeOne(a : A, [while] a > 100) // Error.
+First  (a : A, [while] a > 100) // Error.
 DropOne(a : A, [while] a > 100) // Error.
 TakeOne([if] a : A, a > 100) // Error.
+First  ([if] a : A, a > 100) // Error.
 DropOne([if] a : A, a > 100) // Error.
 TakeOne(a : A, [else] -1, [if] a > 100) // Error.
-First(a : A, [while] a > 100) // Error.
-First([if] a : A, a > 100) // Error.
+First  (a : A, [else] -1, [if] a > 100) // Error.
 
 TakeOne(B)
-First(B)
+First  (B)
 
 TakeOne(b : B, b > 100)
-First(b : B, [if] b > 100)
+First  (b : B, [if] b > 100)
 
 TakeOne(R)
+First  (R)
 TakeOne(R, [else] null)
-First(R)
+First  (R, [else] null)
 
-TakeOne(R, X > Y)
-TakeOne(R, X > Y, null)
-First(R, [if] X > Y)
-First(r : R, r.X > r.Y)
+TakeOne(R, [if] X > Y)
+First  (R, [if] X > Y)
+TakeOne(r : R, r.X > r.Y)
+First  (r : R, r.X > r.Y)
 
 TakeOne(Filter(R, X > Y)) // REVIEW: Optimize to just TakeOne(R, X > Y).
+First  (Filter(R, X > Y)) // REVIEW: Optimize to just First  (R, X > Y).
 TakeOne(Filter(R, X > Y), [else] null) // REVIEW: Optimize to just TakeOne(R, X > Y, null).
-First(Filter(R, X > Y)) // REVIEW: Optimize to just First(R, X > Y).
-First(Filter(r : R, r.X > r.Y))
+First  (Filter(R, X > Y), [else] null) // REVIEW: Optimize to just First  (R, X > Y, null).
+TakeOne(Filter(r : R, r.X > r.Y))
+First  (Filter(r : R, r.X > r.Y))
 
 TakeOne(SV)
-First(SV)
+First  (SV)
 
-First(Range(0))
-First(null)
-First(["A", "B", "C"])
+TakeOne(Range(0))
+First  (Range(0))
+TakeOne(null)
+First  (null)
+TakeOne(["A", "B", "C"])
+First  (["A", "B", "C"])
 
 // REVIEW: Should support selectors and use the common super-type.
 TakeOne([], [else] -1) // Error.
@@ -144,6 +189,17 @@ TakeOne(R, true, -1) // Error.
 TakeOne(R, [if] false, [else] 0) // Error.
 TakeOne(R, [if] true, [else] 0) // Error.
 TakeOne(R, [if] true, [else] -1) // Error.
+First  ([], [else] -1) // Error.
+First  ([], [else] "hi") // Error.
+First  ([], [else] true) // Error.
+First  (A, [else] 3.5) // Error.
+First  (A, [else] "hello") // Error.
+First  (R, [else] 0) // Error.
+First  (R, [else] -1) // Error.
+First  (R, true, -1) // Error.
+First  (R, [if] false, [else] 0) // Error.
+First  (R, [if] true, [else] 0) // Error.
+First  (R, [if] true, [else] -1) // Error.
 
 TakeAt(Range(5), 0)
 TakeAt(Range(5), 0, null)

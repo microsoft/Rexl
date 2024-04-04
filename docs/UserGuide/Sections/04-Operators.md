@@ -822,8 +822,8 @@ of the tuple. The result type of the index operation is the type of the selected
 
 For a **_homogeneous_** indexable type (text, tensor, or homogeneous tuple), the value in an index specification
 may be a more general expression than an integer literal, and the resulting index need not be in bounds. When
-the resulting index is not in bounds, the result is the **_default value_** of the item type. For example,
-if `src` is homogeneous and rank-one (text, homogeneous tuple, or rank-one tensor),
+the resulting index is not in bounds, the result is the [**_default value_**](02-TypesAndValues.md#default-values)
+of the item type. For example, if `src` is homogeneous and rank-one (text, homogeneous tuple, or rank-one tensor),
 ```
 ForEach(i:Range(5), src[i - 1])
 ```
