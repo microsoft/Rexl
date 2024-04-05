@@ -100,6 +100,16 @@ internal sealed class Executor : SimpleHarnessWithSinkStack
         _pub.PublishData(msg, text);
     }
 
+    private void PublishHtml(ExecuteMessage msg, string html)
+    {
+        Validation.AssertValue(msg);
+
+        if (string.IsNullOrEmpty(html))
+            return;
+
+        _pub.PublishData(msg, null, html);
+    }
+
     private record struct DiagInfo(DiagSource src, BaseDiagnostic diag, RexlNode nodeCtx);
 
     private void PublishDiags(ExecuteMessage msg, List<DiagInfo> diagsRaw)
@@ -293,7 +303,58 @@ internal sealed class Executor : SimpleHarnessWithSinkStack
 
         protected override void PostValueCore(DType type, object? value)
         {
+            Validation.Assert(type.IsValid);
+
+            DType typeTen;
+            if (value is not null &&
+                (typeTen = type.ItemTypeOrThis).IsTensorXxx &&
+                TensorUtil.IsPixTypeReq(typeTen.ToReq()))
+            {
+                if (!type.IsSequence)
+                {
+                    var ten = value as Tensor;
+                    Validation.Assert(ten is not null);
+                    if (ten is not null && TryWriteImage(ten))
+                        return;
+                }
+                else
+                {
+                    var tens = value as IEnumerable<Tensor>;
+                    int count = 0;
+                    foreach (var ten in tens)
+                    {
+                        if (count >= 10)
+                        {
+                            _parent.PublishText(_msg, "<...>");
+                            break;
+                        }
+                        if (ten is null || !TryWriteImage(ten))
+                        {
+                            if (count == 0)
+                                break;
+                            Flush();
+                            _parent.PublishText(_msg, "<Bad image tensor>");
+                        }
+                        count++;
+                    }
+
+                    if (count > 0)
+                        return;
+                }
+            }
             WriteValue(type, value, max: 1000);
+        }
+
+        private bool TryWriteImage(Tensor ten)
+        {
+            Validation.AssertValue(ten);
+
+            if (!Tensor.TryGetPngFromPixels(ten, out var bytes) || !Tensor.TryGetBase64(bytes, out var b64))
+                return false;
+
+            Flush();
+            _parent.PublishHtml(_msg, $"<img src=\"data:image/png;base64,{b64}\" alt=\"byte-tensor image\" />");
+            return true;
         }
 
         protected override void WriteValueCore(DType type, object? value, int max)
