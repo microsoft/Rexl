@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Rexl.Private;
@@ -20,8 +21,26 @@ partial class SimpleHarnessBase
     /// </summary>
     public abstract class Storage
     {
+        // REVIEW: Should Storage implement IDisposable to dispose of this?
+        private HttpClient _http;
+
         protected Storage()
         {
+        }
+
+        protected HttpClient EnsureHttp()
+        {
+            if (_http is null)
+            {
+                var http = new HttpClient();
+                // Some web servers fail if the user agent isn't acceptable. This particular
+                // value works with sites we've tried (eg, wikimedia).
+                http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; Rexl/1.0)");
+
+                if (Interlocked.CompareExchange(ref _http, http, null) is not null)
+                    http.Dispose();
+            }
+            return _http;
         }
 
         /// <summary>
@@ -30,7 +49,33 @@ partial class SimpleHarnessBase
         /// The returned <see cref="Link"/> value is the resolved "full path" link.
         /// Throws an exception (typically an <see cref="IOException"/>) on failure.
         /// </summary>
-        public abstract (Link full, Stream stream) LoadStream(Link linkCtx, Link link);
+        public virtual (Link full, Stream stream) LoadStream(Link linkCtx, Link link)
+        {
+            Validation.CheckValueOrNull(linkCtx);
+            Validation.CheckValue(link, nameof(link));
+
+            switch (link.Kind)
+            {
+            case LinkKind.Http:
+                using (var request = new HttpRequestMessage(HttpMethod.Get, link.Path))
+                {
+                    var response = EnsureHttp().Send(request);
+                    try
+                    {
+                        // Wrap the stream and response so the response gets disposed after the stream.
+                        var res = new DisposingStream(response.Content.ReadAsStream(), response);
+                        response = null;
+                        return (link, res);
+                    }
+                    finally
+                    {
+                        response?.Dispose();
+                    }
+                }
+            }
+
+            throw new NotSupportedException("Link kind not supported");
+        }
 
         /// <summary>
         /// Open a data stream from a <see cref="Link"/>.
@@ -38,9 +83,21 @@ partial class SimpleHarnessBase
         /// The returned <see cref="Link"/> value is the resolved "full path" link.
         /// Throws an exception (typically an <see cref="IOException"/>) on failure.
         /// </summary>
-        public virtual Task<(Link full, Stream stream)> LoadStreamAsync(Link linkCtx, Link link)
+        public virtual async Task<(Link full, Stream stream)> LoadStreamAsync(Link linkCtx, Link link)
         {
-            return Task.FromResult(LoadStream(linkCtx, link));
+            Validation.CheckValueOrNull(linkCtx);
+            Validation.CheckValue(link, nameof(link));
+
+            switch (link.Kind)
+            {
+            case LinkKind.Http:
+                {
+                    var stream = await EnsureHttp().GetStreamAsync(link.Path);
+                    return (link, stream);
+                }
+            }
+
+            return LoadStream(linkCtx, link);
         }
 
         /// <summary>
@@ -66,12 +123,9 @@ partial class SimpleHarnessBase
     /// </summary>
     public abstract class LocalFileStorage : Storage
     {
-        private readonly HttpClient _http;
-
         protected LocalFileStorage()
+            : base()
         {
-            _http = new HttpClient();
-            _http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; Rexl/1.0)");
         }
 
         /// <summary>
@@ -299,27 +353,9 @@ partial class SimpleHarnessBase
                         Link.CreateGeneric(full) : link;
                     return (linkFull, stream);
                 }
-
-            case LinkKind.Http:
-                using (var request = new HttpRequestMessage(HttpMethod.Get, link.Path))
-                {
-                    var response = _http.Send(request);
-                    try
-                    {
-                        // Wrap the stream and response so the response gets disposed after the stream.
-                        var res = new DisposingStream(response.Content.ReadAsStream(), response);
-                        response = null;
-                        return (link, res);
-                    }
-                    finally
-                    {
-                        response?.Dispose();
-                    }
-                }
-
-            default:
-                throw new NotSupportedException("Link kind not supported");
             }
+
+            return base.LoadStream(linkCtx, link);
         }
 
         /// <summary>
