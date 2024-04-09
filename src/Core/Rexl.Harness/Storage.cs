@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Rexl;
+
 using Microsoft.Rexl.Private;
 
 namespace Microsoft.Rexl.Harness;
@@ -61,12 +62,16 @@ partial class SimpleHarnessBase
 
     /// <summary>
     /// Storage abstraction providing default methods to read/write file streams
-    /// from/to the local file system.
+    /// from/to the local file system and http.
     /// </summary>
     public abstract class LocalFileStorage : Storage
     {
+        private readonly HttpClient _http;
+
         protected LocalFileStorage()
         {
+            _http = new HttpClient();
+            _http.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; Rexl/1.0)");
         }
 
         /// <summary>
@@ -293,6 +298,23 @@ partial class SimpleHarnessBase
                     Link linkFull = full != link.Path && !string.IsNullOrEmpty(full) ?
                         Link.CreateGeneric(full) : link;
                     return (linkFull, stream);
+                }
+
+            case LinkKind.Http:
+                using (var request = new HttpRequestMessage(HttpMethod.Get, link.Path))
+                {
+                    var response = _http.Send(request);
+                    try
+                    {
+                        // Wrap the stream and response so the response gets disposed after the stream.
+                        var res = new DisposingStream(response.Content.ReadAsStream(), response);
+                        response = null;
+                        return (link, res);
+                    }
+                    finally
+                    {
+                        response?.Dispose();
+                    }
                 }
 
             default:
