@@ -41,6 +41,8 @@ public static class LinkHelpers
     {
         if (string.IsNullOrWhiteSpace(path))
             return null;
+        if (path.StartsWith("http://") || path.StartsWith("https://"))
+            return Link.CreateHttp(path);
         return Link.CreateGeneric(path);
     }
 }
