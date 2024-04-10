@@ -433,7 +433,7 @@ ForEach(Item:MyTable, { Item, Name, Item.Age, Addr:Item.HomeAddr })
 where the field names `Item`, `Name`, and `Age` are **_implicit_**. The name `Addr` must be specified explicitly
 since it differs from `HomeAddr`.
 
-This could also be written sing the `as` form for the final field specification,
+This could also be written using the `as` form for the final field specification,
 ```
 ForEach(Item:MyTable, { Item, Name, Item.Age, Item.HomeAddr as Addr })
 ```
