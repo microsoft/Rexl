@@ -253,6 +253,8 @@ public static class SymbolReducer
                 dst = ReduceAll(call);
             else if (call.Oper == KeyJoinFunc.Instance)
                 dst = ReduceKeyJoin(call);
+            else if (call.Oper == TensorValuesFunc.Instance)
+                dst = ReduceTensorValues(call);
 
             Validation.Assert(dst != null);
             Validation.Assert(dst.Type == call.Type);
@@ -414,6 +416,19 @@ public static class SymbolReducer
             if (!TryComposeSum(bsn, typeItem, vals.Items, out var sum))
                 return call;
             return sum;
+        }
+
+        private BoundNode ReduceTensorValues(BndCallNode call)
+        {
+            Validation.Assert(TensorValuesFunc.Instance.IsValidCall(call));
+
+            var arg = call.Args[0];
+
+            // REVIEW: Also handle BndTenConstNode when needed.
+            if (arg is BndTensorNode btn)
+                return BndSequenceNode.Create(btn.Type.GetTensorItemType().ToSequence(), btn.Items);
+
+            return call;
         }
 
         private BoundNode ReduceForEach(BndCallNode call)
@@ -767,6 +782,9 @@ public static class SymbolReducer
                 return call;
             }
 
+            var typeSum = call.Type;
+            Validation.Assert(typeSum.IsNumericReq);
+
             if (call.Args.Length == 1)
             {
                 var typeItem = call.Args[0].Type.ItemTypeOrThis;
@@ -800,10 +818,14 @@ public static class SymbolReducer
                     return call;
                 }
 
+                // REVIEW: Can we assert that typeNew == typeSum?
+                if (typeNew != typeSum)
+                    return call;
+
                 if (typeNew != typeItem)
                 {
                     var scope = ArgScope.Create(ScopeKind.SeqItem, typeItem);
-                    call = BndCallNode.Create(call.Oper, typeNew.ToSequence(),
+                    call = BndCallNode.Create(call.Oper, typeNew,
                         ArgTuple.Create(call.Args[0], BndCastNumNode.Create(BndScopeRefNode.Create(scope), typeNew)),
                         ScopeTuple.Create(scope));
                 }
@@ -817,7 +839,7 @@ public static class SymbolReducer
             if (call.Args.Length < 2)
             {
                 // REVIEW: Handle count variation?
-                if (call.Type != seq.Type.ItemTypeOrThis)
+                if (typeSum != seq.Type.ItemTypeOrThis)
                     return call;
                 selSum = null;
             }
@@ -832,12 +854,31 @@ public static class SymbolReducer
                     return call;
 
                 // REVIEW: Handle count variation?
-                if (call.Type != selSum.Type)
+                if (typeSum != selSum.Type)
                     return call;
             }
 
             var bop = BinaryOp.Mul;
-            if (TryGetIndsAndValues(seq, out var vars, out var vals))
+            BndArrConstNode vals;
+            if (seq is BndSequenceNode bsn)
+            {
+                if (selSum is null)
+                    return BndVariadicOpNode.Create(typeSum, BinaryOp.Add, bsn.Items, default);
+
+                if (selSum is BndCastNumNode bcnn && bcnn.Type == typeSum &&
+                    bcnn.Child is BndScopeRefNode bsrn && bsrn.Scope == call.Scopes[0])
+                {
+                    // Apply the cast to the values.
+                    var bldr = bsn.Items.ToBuilder();
+                    for (int i = 0; i < bldr.Count; i++)
+                        bldr[i] = BndCastNumNode.Create(bldr[i], typeSum);
+                    return BndVariadicOpNode.Create(typeSum, BinaryOp.Add, bldr.ToImmutable(), default);
+                }
+
+                return call;
+            }
+
+            if (TryGetIndsAndValues(seq, out var vars, out vals))
             {
                 // Apply the sum selector to the values.
                 if (selSum != null && !TryMapSeq(ref vals, selSum, call.Scopes[0]))

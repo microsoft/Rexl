@@ -77,6 +77,16 @@ partial class MipSolver
 
         switch (bnd)
         {
+        case BndFreeVarNode free:
+            {
+                int vid = free.Id;
+                if ((uint)vid >= (uint)_symMap.VarCount)
+                    break;
+                if (_symMap.GetVariable(vid) != free)
+                    break;
+                Util.Add(ref _lcons, LinearConstraint.Create(LinComb.Create(vid, 1), 1, 1));
+            }
+            return true;
         case BndCompareNode cmp:
             return TryMapConCmp(cmp);
         case BndVariadicOpNode bvon:

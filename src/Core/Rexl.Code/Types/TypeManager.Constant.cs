@@ -383,6 +383,8 @@ public sealed class BndTenConstNode : BndTmConstNode
     {
         Validation.Assert(type.IsTensorReq);
         Validation.AssertValue(ten);
+        Validation.Assert(ten.Rank == type.TensorRank);
+
         Tensor = ten;
     }
 
@@ -392,6 +394,7 @@ public sealed class BndTenConstNode : BndTmConstNode
         Validation.BugCheckParam(type.IsTensorReq, nameof(type));
         Validation.BugCheckParam(tm.TryEnsureSysType(type, out Type st), nameof(type));
         Validation.BugCheckParam(ten != null && st.IsAssignableFrom(ten.GetType()), nameof(ten));
+        Validation.BugCheckParam(ten.Rank == type.TensorRank, nameof(ten));
 
         return new BndTenConstNode(tm, type, st, ten);
     }
