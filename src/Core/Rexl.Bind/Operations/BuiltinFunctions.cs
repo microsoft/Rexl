@@ -95,15 +95,6 @@ public class BuiltinFunctions : OperationRegistry
                     rep10)));
         AddOneDep(ChainMapFunc.Instance, "GlueMap"); // Deprecated at the end of 9.1.
 
-        // REVIEW: Should be deprecated in favor of TakeOne. But first the deprecation
-        // diagnostics need a way to indicate TakeOne does not have identical behavior.
-        AddOne(FirstFunc.Instance,
-            new Sig(S.AboutFirst,
-                Args.Create(
-                    A.Create(S.ArgSource, S.AboutFirst_Source),
-                    A.Create(S.ArgPredicate, S.AboutFirst_Predicate)),
-                opt12));
-
         AddOne(TakeAtFunc.Instance,
             new Sig(S.AboutTakeAt,
                 Args.Create(
@@ -111,8 +102,15 @@ public class BuiltinFunctions : OperationRegistry
                     A.Create(S.ArgIndex, S.AboutTakeAt_Index),
                     A.Create(S.ArgElse, S.AboutTakeAt_Else)),
                 opt23));
-        AddOne(TakeOneFunc.Instance,
+        AddOne(TakeOneFunc.TakeOne,
             new Sig(S.AboutTakeOne,
+                Args.Create(
+                    srcSeq,
+                    A.Create(S.ArgPredicate, S.AboutArgPredicate),
+                    A.Create(S.ArgElse, S.AboutTakeOne_Else)),
+                Opt.Create(1, 3)));
+        AddOne(TakeOneFunc.First,
+            new Sig(S.AboutFirst,
                 Args.Create(
                     srcSeq,
                     A.Create(S.ArgPredicate, S.AboutArgPredicate),

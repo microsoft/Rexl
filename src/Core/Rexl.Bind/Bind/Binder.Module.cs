@@ -205,7 +205,7 @@ partial class BoundFormula
                         if (bndDef is null)
                         {
                             ArgTuple args = ArgTuple.Create(bldr.GetItemRef(ifmaIn), BndDefaultNode.Create(typeVar));
-                            bndDef = BndCallNode.Create(TakeOneFunc.Instance, typeVar, args,
+                            bndDef = BndCallNode.Create(TakeOneFunc.TakeOne, typeVar, args,
                                 DirTuple.Create(default, Directive.Else));
                         }
                         Validation.Assert(bndDef.Type == typeVar);

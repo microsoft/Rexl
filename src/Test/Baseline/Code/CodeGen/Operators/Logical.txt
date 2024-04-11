@@ -484,12 +484,12 @@ Sequence: Seq<Opt<bool>>
 ###
 > [[true, false, true], [false, true], [true]] | Map(_, First(it$0, not it$0) or Count(it$0) > 2)
 [[true, false, true], [false, true], [true]] | Map(_, First(it, not it) or Count(it) $> 2) : b?*
-BndKind:Call, Type:b?*, Bnd:(Call(∂.ForEach([map:1] [[true:b, false:b, true:b]:b*, [false:b, true:b]:b*, [true:b]:b*]:b**, Or(Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), [else] null:b?):b?), Cmp(Call(∂.Count(Scope(1)):i8) @> 2:i8))):b?*))
+BndKind:Call, Type:b?*, Bnd:(Call(∂.ForEach([map:1] [[true:b, false:b, true:b]:b*, [false:b, true:b]:b*, [true:b]:b*]:b**, Or(Call(∂.TakeOne([map:2] Scope(1), Xor(Scope(2), true:b), null:b?):b?), Cmp(Call(∂.Count(Scope(1)):i8) @> 2:i8))):b?*))
 Func sig: (<ctx>:x) to b?*
 Sequence: Seq<Opt<bool>>
  0) true 
  1) false
  2) <null>
 *** Ctx ping count: 1
-    [1](1): TakeOne(*2: *1x, Xor(*2, true), [else] null)
+    [1](1): TakeOne(*2: *1x, Xor(*2, true), null)
 ###

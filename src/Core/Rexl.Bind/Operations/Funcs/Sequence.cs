@@ -538,112 +538,6 @@ public sealed partial class ChainMapFunc : RexlOper
 }
 
 /// <summary>
-/// Produces the first item in the sequence (that satisfies the optional predicate) or null.
-/// </summary>
-public sealed class FirstFunc : RexlOper
-{
-    public static readonly FirstFunc Instance = new FirstFunc();
-
-    private FirstFunc()
-        : base(isFunc: true, new DName("First"), 1, 2)
-    {
-    }
-
-    protected override ArgTraits GetArgTraitsCore(int carg)
-    {
-        Validation.Assert(ArityMin == 1 & ArityMax == 2);
-        Validation.BugCheckParam(SupportsArity(carg), nameof(carg));
-        if (carg == 1)
-            return ArgTraitsSimple.Create(this, eager: true, carg);
-        return ArgTraitsZip.Create(this, indexed: true, eager: true, carg, seqCount: 1);
-    }
-
-    protected override bool SupportsDirectiveCore(ArgTraits traits, int slot, Directive dir)
-    {
-        Validation.AssertValue(traits);
-        Validation.Assert(traits.Oper == this);
-        Validation.AssertIndex(slot, traits.SlotCount);
-        Validation.Assert(dir != Directive.None);
-
-        if (slot != 1)
-            return false;
-        if (dir != Directive.If)
-            return false;
-        return true;
-    }
-
-    protected override (DType, Immutable.Array<DType>) SpecializeTypesCore(InvocationInfo info)
-    {
-        Validation.AssertValue(info);
-        Validation.Assert(SupportsArity(info.Arity));
-
-        var type = info.Args[0].Type;
-        EnsureTypeSeq(ref type);
-        DType typeRet = type.ItemTypeOrThis.ToOpt();
-
-        if (info.Arity == 1)
-            return (typeRet, Immutable.Array.Create(type));
-        return (typeRet, Immutable.Array.Create(type, DType.BitReq));
-    }
-
-    protected override bool CertifyCore(BndCallNode call, ref bool full)
-    {
-        var type = call.Type;
-        if (!type.IsOpt)
-            return false;
-        var args = call.Args;
-        var typeSeq = args[0].Type;
-        if (!typeSeq.IsSequence)
-            return false;
-        var typeItem = typeSeq.ItemTypeOrThis;
-        if (typeItem.ToOpt() != type)
-            return false;
-        if (args.Length == 2 && args[1].Type != DType.BitReq)
-            return false;
-
-        // Reducible to TakeOne.
-        full = false;
-        return true;
-    }
-
-    protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
-    {
-        Validation.AssertValue(reducer);
-        Validation.Assert(IsValidCall(call));
-
-        // Reduce to TakeOne.
-        Immutable.Array<BoundNode> args;
-        Immutable.Array<Directive> dirs;
-        var typeItem = call.Args[0].Type.ItemTypeOrThis;
-        if (typeItem.IsOpt)
-        {
-            args = call.Args;
-            dirs = default;
-        }
-        else
-        {
-            int arity = call.Args.Length;
-            var bldrDirs = Immutable.Array<Directive>.CreateBuilder(arity + 1, init: true);
-            bldrDirs[arity] = Directive.Else;
-
-            args = call.Args.Add(BndNullNode.Create(call.Type));
-            dirs = bldrDirs.ToImmutable();
-        }
-
-        return reducer.Reduce(BndCallNode.Create(
-            TakeOneFunc.Instance, call.Type, args, call.Scopes, call.Indices, dirs, call.Names));
-    }
-
-    protected override PullWithFlags GetPullWithFlagsCore(BndCallNode call, int iarg)
-    {
-        Validation.Assert(IsValidCall(call));
-        Validation.Assert(!call.Traits.IsRepeated(iarg));
-        Validation.Assert(iarg == 0);
-        return PullWithFlags.Both;
-    }
-}
-
-/// <summary>
 /// Produces the item in the sequence at the given index, or a default value,
 /// which may be implicit or explicit.
 ///
@@ -771,7 +665,7 @@ public sealed partial class TakeAtFunc : RexlOper
             if (index == 0)
             {
                 var dirs = args.Length == 3 ? Immutable.Array<Directive>.Create(Directive.None, Directive.Else) : default;
-                return BndCallNode.Create(TakeOneFunc.Instance, call.Type, call.Args.RemoveAt(1),
+                return BndCallNode.Create(TakeOneFunc.TakeOne, call.Type, call.Args.RemoveAt(1),
                     Immutable.Array<ArgScope>.Empty, Immutable.Array<ArgScope>.Empty, dirs, default);
             }
 

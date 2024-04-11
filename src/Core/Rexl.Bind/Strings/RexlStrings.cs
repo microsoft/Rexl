@@ -72,8 +72,6 @@ static partial class RexlStrings
     public static readonly StringId AboutChainMap_Selector = new(nameof(AboutChainMap_Selector), "The sequence selector to apply on the sequence to flatten.");
 
     public static readonly StringId AboutFirst = new(nameof(AboutFirst), "Gets the first item contained in the sequence that satisfies the optional predicate. Otherwise returns null.");
-    public static readonly StringId AboutFirst_Source = new(nameof(AboutFirst_Source), "The sequence from which to extract an item.");
-    public static readonly StringId AboutFirst_Predicate = new(nameof(AboutFirst_Predicate), "The condition with which to test an item.");
 
     public static readonly StringId AboutTakeAt = new(nameof(AboutTakeAt), "Returns the item in the source sequence at the given index. If the index is invalid, returns a default value.");
     public static readonly StringId AboutTakeAt_Index = new(nameof(AboutTakeAt_Index), "The index of the desired item. Negative values index from the end of the sequence.");

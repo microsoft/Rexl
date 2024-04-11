@@ -129,11 +129,15 @@ public sealed class TakeDropCondFunc : RexlOper
 /// </summary>
 public sealed partial class TakeOneFunc : RexlOper
 {
-    public static readonly TakeOneFunc Instance = new TakeOneFunc();
+    public static readonly TakeOneFunc TakeOne = new TakeOneFunc(defNull: false);
+    public static readonly TakeOneFunc First = new TakeOneFunc(defNull: true);
 
-    private TakeOneFunc()
-        : base(isFunc: true, new DName("TakeOne"), 1, 3)
+    private readonly bool _defNull;
+
+    private TakeOneFunc(bool defNull)
+        : base(isFunc: true, new DName(defNull ? "First" : "TakeOne"), 1, 3)
     {
+        _defNull = defNull;
     }
 
     protected override ArgTraits GetArgTraitsCore(int carg, Immutable.Array<DName> names, BitSet implicitNames, Immutable.Array<Directive> dirs)
@@ -210,11 +214,15 @@ public sealed partial class TakeOneFunc : RexlOper
         var typeRet = typeItem;
         if (iargElse > 0)
         {
-            // REVIEW: Use super-type.
+            // REVIEW: Use super-type instead?
             if (types[iargElse].IsOpt && !typeRet.IsOpt)
                 typeRet = typeRet.ToOpt();
             types[iargElse] = typeRet;
         }
+        else if (_defNull)
+            typeRet = typeRet.ToOpt();
+        Validation.Assert(typeRet == typeItem | typeRet == typeItem.ToOpt());
+
         return (typeRet, types.ToImmutable());
     }
 
@@ -241,7 +249,30 @@ public sealed partial class TakeOneFunc : RexlOper
                 return false;
             Validation.Assert(iarg == carg);
         }
+        if (_defNull)
+            full = false;
         return true;
+    }
+
+    protected override PullWithFlags GetPullWithFlagsCore(BndCallNode call, int iarg)
+    {
+        Validation.Assert(IsValidCall(call));
+        Validation.Assert(!call.Traits.IsRepeated(iarg));
+
+        if (iarg == 0)
+        {
+            BoundNode argElse = null;
+            if (call.Args.Length == 3)
+                argElse = call.Args[2];
+            else if (call.Args.Length == 2 && call.GetDirective(1) == Directive.Else)
+                argElse = call.Args[1];
+            if (argElse is not null && argElse.IsKnownNull)
+                return PullWithFlags.Both;
+            return PullWithFlags.With;
+        }
+
+        Validation.Assert(iarg == 2 | iarg == 1 & call.GetDirective(1) == Directive.Else);
+        return PullWithFlags.With;
     }
 
     protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
@@ -364,15 +395,54 @@ public sealed partial class TakeOneFunc : RexlOper
         }
 
     LBase:
+        var dirs = call.Directives;
+        if (iargPred > 0)
+        {
+            Validation.Assert(iargPred == 1);
+            dirs = default;
+        }
+        if (_defNull)
+        {
+            Validation.Assert(call.Type.IsOpt | iargElse > 0);
+            if (iargElse < 0 && !args[0].Type.ItemTypeOrThis.IsOpt)
+            {
+                args = args.Add(BndNullNode.Create(call.Type));
+                if (iargPred < 0)
+                {
+                    Validation.Assert(args.Length == 2);
+                    Validation.Assert(dirs.IsDefaultOrEmpty);
+                    dirs = Immutable.Array<Directive>.Create(default, Directive.Else);
+                }
+            }
+        }
+        if (_defNull || !dirs.AreIdentical(call.Directives) ||
+            !args.AreIdentical(call.Args) || !call.Names.IsDefaultOrEmpty)
+        {
+            return reducer.Reduce(BndCallNode.Create(TakeOne, call.Type, args, call.Scopes, call.Indices, dirs, default));
+        }
         return base.ReduceCore(reducer, call);
     LDefault:
         return iargElse > 0 ? args[iargElse] : BndDefaultNode.Create(call.Type);
     LDropPred:
+        Validation.Assert(iargPred == 1);
         // If there is an "else" arg, it needs a directive.
         if (iargElse < 0)
-            return BndCallNode.Create(this, call.Type, Immutable.Array<BoundNode>.Create(args[0]));
-        return BndCallNode.Create(this, call.Type, args.RemoveAt(iargPred), Immutable.Array<ArgScope>.Empty,
-            Immutable.Array<ArgScope>.Empty, Immutable.Array<Directive>.Create(Directive.None, Directive.Else), default);
+        {
+            if (_defNull && !args[0].Type.ItemTypeOrThis.IsOpt)
+            {
+                Validation.Assert(call.Type.IsOpt);
+                args = args.SetItem(1, BndNullNode.Create(call.Type));
+                dirs = Immutable.Array<Directive>.Create(default, Directive.Else);
+            }
+            else
+            {
+                args = args.RemoveTail(1);
+                dirs = default;
+            }
+            return reducer.Reduce(BndCallNode.Create(TakeOne, call.Type, args, dirs));
+        }
+        return reducer.Reduce(BndCallNode.Create(TakeOne, call.Type, args.RemoveAt(iargPred), Immutable.Array<ArgScope>.Empty,
+            Immutable.Array<ArgScope>.Empty, Immutable.Array<Directive>.Create(Directive.None, Directive.Else), default));
     }
 
     protected override bool IsUnboundedCore(BndCallNode call)
