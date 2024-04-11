@@ -1019,6 +1019,7 @@ Take(seq, count, [while] predicate)
 Drop(seq, count, [while] predicate)
 
 TakeIf(seq, predicate)
+Filter(seq, predicate)
 DropIf(seq, predicate)
 
 TakeWhile(seq, predicate)
@@ -1064,6 +1065,7 @@ That is,
 Invocations of a function with suffix (`If`, `While`, or `One`) are equivalent to an invocation of
 `Take` or `Drop`. In particular:
 * `TakeIf(seq, predicate)` is equivalent to `Take(seq, [if] predicate)`.
+* `Filter` is identical to (an alias of) `TakeIf`.
 * `DropIf(seq, predicate)` is equivalent to `Drop(seq, [if] predicate)`.
 * `TakeWhile(seq, predicate)` is equivalent to `Take(seq, [while] predicate)`.
 * `DropWhile(seq, predicate)` is equivalent to `Drop(seq, [while] predicate)`.
