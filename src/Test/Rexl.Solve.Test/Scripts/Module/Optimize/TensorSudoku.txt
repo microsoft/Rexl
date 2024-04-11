@@ -1,0 +1,78 @@
+func ToDigit(ch) :=
+  ch - "1"[0] if "1"[0] <= ch <= "9"[0] else
+  -1;
+
+Sudoku := module {
+    const M := 3;
+    const N := M * M;
+    const NumCells := N * N;
+    const NumMoves := NumCells * N;
+
+    const Moves := Range(NumMoves)
+        ->ForEach(as Id,
+            With(cell: Id div N, row: cell div N, col: cell mod N,
+                { Id, XRow: row, XCol: col, YBlk: row div M * M + col div M, ZVal: Id mod N }));
+
+    const MovesByRowCol := Moves->GroupBy([key] _:XRow, [key] _:XCol);
+    const MovesByValRow := Moves->GroupBy([key] _:ZVal, [key] _:XRow);
+    const MovesByValCol := Moves->GroupBy([key] _:ZVal, [key] _:XCol);
+    const MovesByValBlk := Moves->GroupBy([key] _:ZVal, [key] _:YBlk);
+
+    param Fixed :=
+        "    2  7 " &
+        "    34   " &
+        "358      " &
+        "5 48     " &
+        "   1   89" &
+        "  2     6" &
+        "24    7  " &
+        " 9   52  " &
+        "    671  ";
+
+    const ImposedIds :=
+        Range(NumCells)
+        ->{ cell: it, value: Fixed[it]->ToDigit() }
+        ->TakeIf(0 <= value < N)
+        ->Map(N * cell + value);
+    const NumImposed := ImposedIds->Count();
+    const ImposedFlags := Tensor.From(Range(NumMoves)->(it in ImposedIds));
+
+    // Define a variable (tensor of flags) for the moves that have been made.
+    var Flags from Tensor.Fill(false, NumMoves) def ImposedFlags;
+
+    // Need to maximize the number of moves made without violating constraints.
+    // REVIEW: This should be linearizable!
+    // msr NumMade := Sum(m:Range(NumMoves), Flags[m]);
+    msr NumMade := Flags.Values->Sum();
+
+    // REVIEW: All of these should work!
+    // con NeedImposed  := Flags.Values >= ImposedFlags.Values;
+    // con NeedImposed  := ForEach(a:Flags.Values, b:ImposedFlags.Values, a >= b);
+    // con NeedImposed  := ForEach(m:Moves, Flags[Id] >= ImposedFlags[Id]);
+    con NeedImposed := ForEach(id:ImposedIds, Flags[id]);
+    // con NeedImposed := ForEach(id:ImposedIds, Flags[id] = 1);
+
+    con OnePerRowCol := ForEach(c:MovesByRowCol, Sum(c, Flags[Id]) <= 1);
+    con OnePerValRow := ForEach(c:MovesByValRow, Sum(c, Flags[Id]) <= 1);
+    con OnePerValCol := ForEach(c:MovesByValCol, Sum(c, Flags[Id]) <= 1);
+    con OnePerValBlk := ForEach(c:MovesByValBlk, Sum(c, Flags[Id]) <= 1);
+
+    const Symbols := "_123456789";
+    let Board :=
+        Moves
+        ->TakeIf(Flags[Id])
+        ->SortUp(XRow, XCol)
+        ->GroupBy(_:XRow)
+        ->ForEach(With(row: it,
+            ForEach(c: Range(N), With(i: First(row, XCol = c).ZVal + 1 ?? 0, Symbols[i:*1])))
+            ->Text.Concat("|"));
+};
+
+// Display the (initial) board.
+Sudoku.NumMade;
+Sudoku.Board;
+
+// Solve.
+Sln := Sudoku->Maximize(NumMade);
+Sln.NumMade;
+Sln.Board;

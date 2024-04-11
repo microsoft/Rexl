@@ -202,6 +202,20 @@ partial class MipSolver
         }
 
         HighsSolution sln = solver.getSolution();
+        Validation.Assert(sln.colvalue.Length >= cvar);
+        for (int i = 0; i < cvar; i++)
+        {
+            if (highs_integrality[i] != 0)
+            {
+                var raw = sln.colvalue[i];
+                long v = (long)raw;
+                if (v != raw)
+                {
+                    v = (long)Math.Round(raw);
+                    sln.colvalue[i] = v;
+                }
+            }
+        }
 
         if (sln.colvalue == null)
         {
