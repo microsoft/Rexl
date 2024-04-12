@@ -15,22 +15,4 @@ if [ ! -d "$EDIR" ]; then
     exit 1
 fi
 
-DDIR="$SCRIPT_DIR/.krn-spec-$BLD"
-# echo "DDIR: $DDIR"
-
-DST="$DDIR/kernel.json"
-# echo "DST: $DST"
-
-mkdir "$DDIR" -p
-
-echo { > "$DST"
-echo     \"argv\": [\"$EDIR/Microsoft.RexlKernel\", \"{connection_file}\"], >> "$DST"
-echo     \"display_name\": \"Rexl\", >> "$DST"
-echo     \"language\": \"Rexl\" >> "$DST"
-echo } >> "$DST"
-
-# cat "$DST"
-
-jupyter kernelspec install --user "$DDIR" --name=rexl
-
-jupyter kernelspec list --json
+"$EDIR/Microsoft.RexlKernel" register
