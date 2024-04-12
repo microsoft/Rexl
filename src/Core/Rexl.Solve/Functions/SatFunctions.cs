@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Microsoft.Rexl;
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Code;
 using Microsoft.Rexl.Private;
@@ -263,12 +262,13 @@ public sealed partial class SatNotFunc : RexlOper
             Validation.AssertValue(codeGen);
             Validation.Assert(IsValidCall(call, true));
             Validation.Assert(sts.Length == call.Args.Length);
+            Validation.Assert(sts[0] == typeof(long));
 
             codeGen.Writer
                 .Ldc_I8(1)
                 .Xor();
 
-            stRet = typeof(int);
+            stRet = typeof(long);
             return true;
         }
     }

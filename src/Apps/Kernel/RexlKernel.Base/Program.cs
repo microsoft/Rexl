@@ -40,7 +40,7 @@ public abstract partial class Program : ChannelHost
     public sealed override Logger Logger => _logger;
     public sealed override SignatureHandler Sig => _sig;
 
-    protected Program(string[] args, LogLevel lvl = LogLevel.All)
+    protected Program(ReadOnlySpan<string> args, LogLevel lvl = LogLevel.All)
         : base()
     {
         _session = Guid.NewGuid().ToString();
@@ -88,7 +88,7 @@ public abstract partial class Program : ChannelHost
         _worker = Task.Run(HandleExecuteRequests);
     }
 
-    private void LogArgs(string[] args)
+    private void LogArgs(ReadOnlySpan<string> args)
     {
         _logger.LogLow("Command line args ({0}):", args.Length);
         for (int i = 0; i < args.Length; i++)

@@ -273,6 +273,17 @@ public sealed class KernelInfoRequest : RequestContent
 }
 
 /// <summary>
+/// Used in <see cref="KernelInfoReply"/>.
+/// </summary>
+public class WebLink
+{
+    [JsonPropertyName("text")]
+    public string Text { get; set; }
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
+}
+
+/// <summary>
 /// Content for a kernel information reply.
 /// </summary>
 public class KernelInfoReply : ReplyContent
@@ -300,11 +311,11 @@ public class KernelInfoReply : ReplyContent
     public bool Debugger { get; }
 
     [JsonPropertyName("help_links")]
-    public IReadOnlyList<Link> HelpLinks { get; }
+    public IReadOnlyList<WebLink> HelpLinks { get; }
 
     public KernelInfoReply(
         string protocolVersion, string implementation, string implementationVersion, LanguageInfo languageInfo,
-        string banner = null, IReadOnlyList<Link> helpLinks = null)
+        string banner = null, IReadOnlyList<WebLink> helpLinks = null)
     {
         Validation.BugCheckNonEmpty(protocolVersion, nameof(protocolVersion));
         Validation.BugCheckNonEmpty(implementation, nameof(implementation));
@@ -317,7 +328,7 @@ public class KernelInfoReply : ReplyContent
         LanguageInfo = languageInfo;
         Banner = banner;
         Debugger = false;
-        HelpLinks = helpLinks ?? new List<Link>();
+        HelpLinks = helpLinks ?? new List<WebLink>();
     }
 
     public override string GetKind() => Names.KernInfoReply;
