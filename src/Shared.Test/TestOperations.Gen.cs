@@ -1041,6 +1041,8 @@ internal sealed class TestWrapCollFuncGen : RexlOperationGenerator<TestWrapCollF
                 return true;
             }
 
+            public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
             public bool MoveNext() => MoveTo(_index + 1);
 
             public void Reset() => throw new InvalidOperationException();

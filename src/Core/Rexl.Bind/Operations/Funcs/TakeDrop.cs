@@ -693,16 +693,41 @@ public sealed partial class TakeDropFunc : RexlOper
             hasPred = false;
         }
 
-        if (hasCount && call.Args[1].TryGetI8(out long num))
+        if (hasCount)
         {
-            if (num <= 0)
-                return IsTake ? (0, 0) : (min, max);
-            if (IsTake)
-                return (!hasPred ? Math.Min(min, num) : 0, Math.Min(max, num));
-            if (!hasPred && max < long.MaxValue)
-                max = Math.Max(0, max - num);
-            return (Math.Max(0, min - num), max);
+            var count = call.Args[1];
+            if (count.TryGetI8(out long num))
+            {
+                if (num <= 0)
+                    return IsTake ? (0, 0) : (min, max);
+                if (IsTake)
+                    return (!hasPred ? Math.Min(min, num) : 0, Math.Min(max, num));
+                if (!hasPred && max < long.MaxValue)
+                    max = Math.Max(0, max - num);
+                return (Math.Max(0, min - num), max);
+            }
+            else if (IsTake && count is BndCastNumNode bcnn)
+            {
+                var typeNum = bcnn.Child.Type;
+                Validation.Assert(typeNum.IsIntegralReq);
+
+                long hi;
+                switch (typeNum.Kind)
+                {
+                case DKind.Bit: hi = 1; break;
+                case DKind.I1: hi = sbyte.MaxValue; break;
+                case DKind.I2: hi = short.MaxValue; break;
+                case DKind.I4: hi = int.MaxValue; break;
+                case DKind.U1: hi = byte.MaxValue; break;
+                case DKind.U2: hi = ushort.MaxValue; break;
+                case DKind.U4: hi = uint.MaxValue; break;
+                default: hi = long.MaxValue; break;
+                }
+
+                return (0, Math.Min(hi, max));
+            }
         }
+
         // We don't know the number to keep/drop. We only know that the result is a subsequence.
         return (0, max);
     }

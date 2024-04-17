@@ -14,6 +14,8 @@ public sealed class BuiltinGenerators : GeneratorRegistry
     {
         Add(ForEachGen.Instance);
 
+        Add(ReverseGen.Instance);
+
         Add(CrossJoinGen.Instance);
         Add(KeyJoinGen.Instance);
         Add(DistinctGen.Instance);

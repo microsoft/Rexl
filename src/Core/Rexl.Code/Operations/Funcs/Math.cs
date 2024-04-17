@@ -1547,10 +1547,9 @@ public sealed class RangeGen : MethArityGen<RangeFunc>
                 return true;
             }
 
-            public void Reset()
-            {
-                throw new InvalidOperationException();
-            }
+            public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
+            public void Reset() => throw new InvalidOperationException();
         }
     }
 }
@@ -1896,10 +1895,9 @@ public sealed class SequenceGen : RexlOperationGenerator<SequenceFunc>
                 return true;
             }
 
-            public void Reset()
-            {
-                throw new InvalidOperationException();
-            }
+            public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
+            public void Reset() => throw new InvalidOperationException();
         }
     }
 }

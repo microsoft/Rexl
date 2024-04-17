@@ -46,14 +46,17 @@ public interface ICursorable<out T> : ICursorable, ICachingEnumerable<T>
 /// <summary>
 /// For iterating over non-generic items in a dictated order.
 /// </summary>
-public interface ICursor : IEnumerator
+public interface ICursor : IEnumerator, IDisposable
 {
     /// <summary>
     /// Advance to the indicated item, blocking until it is available.
-    /// REVIEW: Does this need to accept a callback?
-    /// e.g. Pinging an ExecCtx. Could be optional.
     /// </summary>
     bool MoveTo(long index);
+
+    /// <summary>
+    /// Advance to the indicated item, blocking until it is available.
+    /// </summary>
+    bool MoveTo(long index, Action? callback);
 
     /// <summary>
     /// The current non-generic value.

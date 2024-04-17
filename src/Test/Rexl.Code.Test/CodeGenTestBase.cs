@@ -516,6 +516,36 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
             Config.LazyOrder = lazyOrder;
             Config.ShowTensorStrides = showStrides;
         }
+
+        if (type.IsSequence)
+        {
+            long count = -1;
+            if (val is ICanCount counter)
+            {
+                if (counter.TryGetCount(out count))
+                {
+                    long numPing = 0;
+                    var num = counter.GetCount(() => numPing++);
+                    if (numPing != 0)
+                        Sink.WriteLine("***!!! BUG! BUG! BUG! GetCount() used callback: {0}", numPing);
+                    if (num != count)
+                        Sink.WriteLine("***!!! BUG! BUG! BUG! GetCount() discrepancy: {0} vs {1}", num, count);
+                }
+                else
+                    count = -1;
+            }
+
+            if (val is ICursorable cursable)
+            {
+                using var cursor = cursable.GetCursor();
+                if (!cursor.MoveTo(0) && count > 0)
+                    Sink.WriteLine("***!!! BUG! BUG! BUG! Cursor.MoveTo(0) failed");
+                if (0 <= count && count <= 100 && cursor.MoveTo(count))
+                    Sink.WriteLine("***!!! BUG! BUG! BUG! Cursor.MoveTo(count) succeeded");
+                if (count > 0 && !cursor.MoveTo(Math.Min(100, count) - 1))
+                    Sink.WriteLine("***!!! BUG! BUG! BUG! Cursor.MoveTo(Min(100, count) - 1) failed");
+            }
+        }
     }
 
     private void WritePingCounts(TestExecCtx tctx, IdBndMap idBndMap)

@@ -83,6 +83,8 @@ public class BuiltinFunctions : OperationRegistry
             AddOne(SortFunc.SortDown, Sigs.Create(new Sig(S.AboutSortDown, argOne), new Sig(S.AboutSortDown, argsTwo, rep11)));
         }
 
+        AddOne(ReverseFunc.Instance, Sigs.Create(new Sig(S.AboutReverse, A.Create(S.ArgSource, S.AboutReverse_Source))));
+
         AddOne(ChainFunc.Instance,
             new Sig(S.AboutChain, A.Create(S.ArgSource, S.AboutChain_Source), rep10));
         AddOne(ChainMapFunc.Instance,

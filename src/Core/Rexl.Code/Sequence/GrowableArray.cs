@@ -151,6 +151,10 @@ public abstract class GrowableArray<T> : IEnumerable<T>, ICursorable<T>, ICanCou
             return MoveToCore(index);
         }
 
+        // Since GrowableArray doesn't permit simultaneous growing and reading,
+        // the callback is ignored.
+        public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
         private bool MoveToCore(long index)
         {
             Validation.Assert(index >= 0);

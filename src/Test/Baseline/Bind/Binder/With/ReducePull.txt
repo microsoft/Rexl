@@ -1,4 +1,4 @@
-**** New globals: {A:i8, B:i8, C:i8, M:M{param P:i8, msr S:i8}, QA:i8?, T:{A:i8}, Txt:s, si8:i8*, si8_2:i8*}
+**** New globals: {A:i8, B:i8, C:i8, M:M{param P:i8, msr S:i8}, QA:i8?, T:{A:i8}, Txt:s, b:b, si8:i8*, si8_2:i8*}
 
 > ForEach(With (s: Wrap(si8), s ++ s), it^3)
 ForEach(With(s : Wrap(si8), s ++ s), it^3) : i8*
@@ -27,6 +27,83 @@ Binder : ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Pow
 Reducer: With(!1: SeqConcat(si8, Range(2)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)))
 Tupled : (ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Power(*2, 3)), ForEach(*2: Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)), Power(*2, 3)))
 Reducer: With(!1: SeqConcat(si8, Range(2)), (ForEach(*2: SeqConcat(!1, !1), Power(*2, 3)), ForEach(*2: SeqConcat(!1, !1), Power(*2, 3))))
+###
+> Reverse(With (s: Wrap(si8), s ++ s))
+Reverse(With(s : Wrap(si8), s ++ s)) : i8*
+Binder : Reverse(With(!1: Test.Wrap(si8), SeqConcat(!1, !1)))
+Reducer: With(!1: Test.Wrap(si8), Reverse(SeqConcat(!1, !1)))
+Tupled : (Reverse(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))), Reverse(With(!1: Test.Wrap(si8), SeqConcat(!1, !1))))
+Reducer: With(!1: Test.Wrap(si8), (Reverse(SeqConcat(!1, !1)), Reverse(SeqConcat(!1, !1))))
+###
+> Reverse(Guard(s: Wrap(si8), s ++ s))
+Reverse(Guard(s : Wrap(si8), s ++ s)) : i8*
+Binder : Reverse(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1)))
+Reducer: Guard(?1: Test.Wrap(si8), Reverse(SeqConcat(?1, ?1)))
+Tupled : (Reverse(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))), Reverse(Guard(?1: Test.Wrap(si8), SeqConcat(?1, ?1))))
+Reducer: (Guard(?1: Test.Wrap(si8), Reverse(SeqConcat(?1, ?1))), Guard(?1: Test.Wrap(si8), Reverse(SeqConcat(?1, ?1))))
+###
+> Reverse(With (s: si8 ++ Range(2), s ++ s))
+Reverse(With(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : Reverse(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Reverse(SeqConcat(!1, !1)))
+Tupled : (Reverse(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))), Reverse(With(!1: SeqConcat(si8, Range(2)), SeqConcat(!1, !1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Reverse(SeqConcat(!1, !1)), Reverse(SeqConcat(!1, !1))))
+###
+> Reverse(Guard(s: si8 ++ Range(2), s ++ s))
+Reverse(Guard(s : si8 ++ Range(2), s ++ s)) : i8*
+Binder : Reverse(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1)))
+Reducer: With(!1: SeqConcat(si8, Range(2)), Reverse(SeqConcat(!1, !1)))
+Tupled : (Reverse(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))), Reverse(Guard(?1: SeqConcat(si8, Range(2)), SeqConcat(?1, ?1))))
+Reducer: With(!1: SeqConcat(si8, Range(2)), (Reverse(SeqConcat(!1, !1)), Reverse(SeqConcat(!1, !1))))
+###
+> Reverse(With (s: si8, s->Take(0) ++ s->Take(0)))
+Reverse(With(s : si8, s->Take(0) ++ s->Take(0))) : i8*
+Binder : Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 0))))
+Reducer: null
+Tupled : (Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 0)))), Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 0)))))
+Reducer: (null, null)
+###
+> Reverse(With (s: si8, s->Take(1) ++ s->Take(0)))
+Reverse(With(s : si8, s->Take(1) ++ s->Take(0))) : i8*
+Binder : Reverse(With(!1: si8, SeqConcat(Take(!1, 1), Take(!1, 0))))
+Reducer: Take(si8, 1)
+Tupled : (Reverse(With(!1: si8, SeqConcat(Take(!1, 1), Take(!1, 0)))), Reverse(With(!1: si8, SeqConcat(Take(!1, 1), Take(!1, 0)))))
+Reducer: (Take(si8, 1), Take(si8, 1))
+###
+> Reverse(With (s: si8, s->Take(0) ++ s->Take(1)))
+Reverse(With(s : si8, s->Take(0) ++ s->Take(1))) : i8*
+Binder : Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 1))))
+Reducer: Take(si8, 1)
+Tupled : (Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 1)))), Reverse(With(!1: si8, SeqConcat(Take(!1, 0), Take(!1, 1)))))
+Reducer: (Take(si8, 1), Take(si8, 1))
+###
+> Reverse(With (s: si8->Take(1), s ++ s->Take(0)))
+Reverse(With(s : si8->Take(1), s ++ s->Take(0))) : i8*
+Binder : Reverse(With(!1: Take(si8, 1), SeqConcat(!1, Take(!1, 0))))
+Reducer: Take(si8, 1)
+Tupled : (Reverse(With(!1: Take(si8, 1), SeqConcat(!1, Take(!1, 0)))), Reverse(With(!1: Take(si8, 1), SeqConcat(!1, Take(!1, 0)))))
+Reducer: (Take(si8, 1), Take(si8, 1))
+###
+> Reverse(With (s: si8->Take(1), s->Take(0) ++ s))
+Reverse(With(s : si8->Take(1), s->Take(0) ++ s)) : i8*
+Binder : Reverse(With(!1: Take(si8, 1), SeqConcat(Take(!1, 0), !1)))
+Reducer: Take(si8, 1)
+Tupled : (Reverse(With(!1: Take(si8, 1), SeqConcat(Take(!1, 0), !1))), Reverse(With(!1: Take(si8, 1), SeqConcat(Take(!1, 0), !1))))
+Reducer: (Take(si8, 1), Take(si8, 1))
+###
+> Reverse(With (s: si8->Take(b), s ++ s->Take(0)))
+Reverse(With(s : si8->Take(b), s ++ s->Take(0))) : i8*
+Binder : Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(!1, Take(!1, 0))))
+Reducer: Take(si8, Num<i8>(b))
+Tupled : (Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(!1, Take(!1, 0)))), Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(!1, Take(!1, 0)))))
+Reducer: (Take(si8, Num<i8>(b)), Take(si8, Num<i8>(b)))
+###
+> Reverse(With (s: si8->Take(b), s->Take(0) ++ s))
+Reverse(With(s : si8->Take(b), s->Take(0) ++ s)) : i8*
+Binder : Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(Take(!1, 0), !1)))
+Reducer: Take(si8, Num<i8>(b))
+Tupled : (Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(Take(!1, 0), !1))), Reverse(With(!1: Take(si8, Num<i8>(b)), SeqConcat(Take(!1, 0), !1))))
+Reducer: (Take(si8, Num<i8>(b)), Take(si8, Num<i8>(b)))
 ###
 > Sort(With (s: Wrap(si8), s ++ s), -it)
 Sort(With(s : Wrap(si8), s ++ s), -it) : i8*

@@ -246,6 +246,94 @@ public sealed partial class SortFunc : RexlOper
 }
 
 /// <summary>
+/// Sort sequence function.
+/// </summary>
+public sealed partial class ReverseFunc : RexlOper
+{
+    public static readonly ReverseFunc Instance = new ReverseFunc();
+
+    private ReverseFunc()
+        : base(isFunc: true, new DName("Reverse"), 1, 1)
+    {
+    }
+
+    protected override ArgTraits GetArgTraitsCore(int carg)
+    {
+        Validation.BugCheckParam(SupportsArity(carg), nameof(carg));
+        return ArgTraitsSimple.Create(this, eager: false, carg);
+    }
+
+    protected override (DType, Immutable.Array<DType>) SpecializeTypesCore(InvocationInfo info)
+    {
+        Validation.AssertValue(info);
+
+        var type = info.Args[0].Type;
+
+        EnsureTypeSeq(ref type);
+        return (type, Immutable.Array<DType>.Create(type));
+    }
+
+    protected override bool CertifyCore(BndCallNode call, ref bool full)
+    {
+        var type = call.Type;
+        var args = call.Args;
+
+        if (!type.IsSequence)
+            return false;
+        if (args[0].Type != type)
+            return false;
+        return true;
+    }
+
+    protected override (long min, long max) GetItemCountRangeCore(BndCallNode call)
+    {
+        Validation.Assert(IsValidCall(call));
+
+        return call.Args[0].GetItemCountRange();
+    }
+
+    protected override PullWithFlags GetPullWithFlagsCore(BndCallNode call, int iarg)
+    {
+        Validation.Assert(IsValidCall(call));
+        Validation.Assert(!call.Traits.IsRepeated(iarg));
+        Validation.Assert(iarg == 0);
+        return PullWithFlags.Both;
+    }
+
+    protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
+    {
+        Validation.AssertValue(reducer);
+        Validation.AssertValue(call);
+
+        var arg = call.Args[0];
+        if (arg.IsKnownNull)
+            return arg;
+
+        var (min, max) = arg.GetItemCountRange();
+        if (max <= 1)
+            return arg;
+
+        if (arg is BndSequenceNode bsn)
+            return BndSequenceNode.Create(bsn.Type, bsn.Items.Reverse());
+        if (arg is BndCallNode inner)
+        {
+            if (inner.Oper == this)
+                return inner.Args[0];
+            if (inner.Oper is RepeatFunc)
+                return arg;
+        }
+
+        return call;
+    }
+
+    protected override bool IsUnboundedCore(BndCallNode call)
+    {
+        Validation.Assert(IsValidCall(call));
+        return true;
+    }
+}
+
+/// <summary>
 /// Distinct sequence function.
 /// </summary>
 public sealed partial class DistinctFunc : RexlOper

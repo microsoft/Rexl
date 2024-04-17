@@ -160,10 +160,7 @@ public abstract class FlatteningSequence<T> : IEnumerable<T>
             return true;
         }
 
-        public void Reset()
-        {
-            throw new NotSupportedException();
-        }
+        public void Reset() => throw new InvalidOperationException();
     }
 
     /// <summary>
