@@ -1373,28 +1373,1375 @@ of `MinMaxC`.
 
 ### Fold, Scan, and Generate Functions
 
+The `Fold` function performs general aggregation over a sequence. It has the forms
+```
+Fold(seq, init_value, new_value)
 
+Fold(seq, init_value, new_value, result)
+```
+`Fold` is very powerful. In fact, it is possible (though not necessarily easy) to use `Fold` to produce the
+results of any other aggregation function, such as `Sum`, `Mean`, or `MinMaxC`.
 
+`Fold` iteratively computes values, starting with the provided `init_value`, by evaluating `new_value` in the
+context of both the **_current value_** and the **_current item_** of the sequence. In the first form, the
+final value is the result. In the second form, the final value is provided to the `result` argument to produce
+the result. Since the current item of `seq` is provided to the `new_value` argument, the `seq` argument may
+include a local name specification. Similarly, the **_current value_** is provided to the `new_value`
+argument. Since the first current value is the `init_value` argument, that argument may include a local name
+specification, which is used as the name of the current value when evaluating `new_value`.
+
+For example, suppose `Events` is a table of event outcomes, each occurring with a certain probability,
+specified in a column named `Probability`. If these events are independent, then the probability that
+all of them occur simultaneously is the product of the values in the `Probability` column. The expression
+```
+Fold(Events as evt, 1.0 as prob, evt.Probability * prob)
+```
+computes the product of the probabilities. Similarly,
+```
+Fold(k: Sequence(30), cur: 1ia, cur * k)
+```
+computes `30` factorial (the product of the first `30` positive integers) as 
+```
+265_252_859_812_191_058_636_308_480_000_000ia
+```
+Note that we specified `1ia` as the initial value, causing the computation to use the `IA`
+(arbitrary precision integer) type to avoid overflow. Without it,
+```
+Fold(k: Sequence(30), cur: 1, cur * k)
+```
+Evaluates to the `I8` value `-8_764_578_968_847_253_504`, which is the correct answer reduced
+modulo $2^{64}$.
+
+We could instead use floating-point to get an approximate value, as in
+```
+Fold(k: Sequence(30), cur: 1.0, cur * k)
+```
+which evaluates to `2.6525285981219103E+32`.
+
+As a more complex example, the sequence of prime numbers up to one hundred may be computed using
+```
+Fold(n: Range(2, 100), cur: [], cur if cur->Any(n mod it = 0) else cur ++ [n])
+```
+This produces the sequence
+```
+[
+   2,  3,  5,  7, 11,
+  13, 17, 19, 23, 29,
+  31, 37, 41, 43, 47,
+  53, 59, 61, 67, 71,
+  73, 79, 83, 89, 97,
+]
+```
+The **_Fibonacci sequence_** is an example of a linear recurrence, where the next item is a prescribed linear
+combination of some previous items. In the case of the Fibonacci sequence, the next item is defined to be the
+sum of the previous two items. The $0^{th}$ and $1^{st}$ item are defined to be `0` and `1`, respectively. To
+compute the $100^{th}$ item, we will need to perform `99` addition operations on the previous two items.
+We will start with a pair of items and then, at each step, we will produce a new pair. The `seq` parameter is
+used only to prescribe the number of steps, `99` in this case:
+```
+Fold(Range(99), cur: (0ia, 1ia), (cur[1], cur[1] + cur[0]))
+```
+The result is the final two values, as a tuple, namely
+```
+(218922995834555169026, 354224848179261915075)
+```
+Note that we used the `IA` type, as in the factorial example, to avoid overflow.
+
+The second form of `Fold`,
+```
+Fold(seq, init_value, new_value, result)
+```
+allows computing a desired `result` value from the final aggregation value. In the case of Fibonacci,
+we want the result to be only the _last value_, not the last _pair of values_. Since `cur` is the
+pair of values, using `cur[1]` for the `result` parameter achieves the desired result. That is,
+```
+Fold(Range(99), cur: (0ia, 1ia), (cur[1], cur[1] + cur[0]), cur[1])
+```
+produces the result `354224848179261915075`.
+
+The `ScanX` and `ScanZ` functions are similar to `Fold` except they produce a sequence of results rather
+than just a final result. These have forms similar to those of `Fold`, namely
+```
+ScanX(seq, init_value, new_value)
+ScanX(seq, init_value, new_value, result)
+
+ScanZ(seq, init_value, new_value)
+ScanZ(seq, init_value, new_value, result)
+```
+For example,
+```
+ScanX(k: Sequence(100), cur: 1ia, cur * k)
+```
+produces the sequence of factorials for `0` through `100`, namely
+```
+[ 1, 1, 2, 6, 24, 120, 720, ...]
+```
+Note that the resulting sequence contains `101` values, one for the initial value, and one for each
+value of the sequence `Sequence(100)`. In contrast, the result of `ScanZ` has the same number of
+items as the `seq` argument, so
+```
+ScanZ(k: Sequence(100), cur: 1ia, cur * k)
+```
+produces the sequence of factorials for `1` through `100`, namely
+```
+[ 1, 2, 6, 24, 120, 720, ...]
+```
+A good way to remember the distinction between `ScanX` and `ScanZ` is that the `X` version produces
+an _extra_ value, corresponding to the `init_value`, while the `Z` version _zips_ the input sequence,
+producing one value for each item of `seq` and no more.
+
+Both `ScanX` and `ScanZ` have a form with a final `result` argument. For `ScanZ`, this result argument
+is provided both the **_current value_** and the **_current item_** of `seq`. Consequently
+```
+ScanZ(k: Sequence(100), cur: 1ia, cur * k, { K:k, KFact:cur })
+```
+produces a table equivalent to
+```
+[
+  { K: 1, KFact: 1 },
+  { K: 2, KFact: 2 },
+  { K: 3, KFact: 6 },
+  { K: 4, KFact: 24 },
+  { K: 5, KFact: 120 },
+  { K: 6, KFact: 720 },
+  ...
+]
+```
+In contrast, for `ScanX`, the result argument is provided the **_current value_** but not the
+**_current item_** of `seq`. The result argument is evaluated for each output item, including for the
+`init_value`. For the initial value, there is no corresponding sequence item. Consequently,
+```
+ScanX(k: Sequence(100), cur: 1ia, cur * k, { K: k, KFact: cur })
+```
+is an error since `k` is not available in the `result` argument. Getting the desired output requires a bit
+more complexity, namely
+```
+ScanX(k:Sequence(100), cur:(0,1ia), (k,cur[1]*k), {K:cur[0], KFact:cur[1]})
+```
+or, without a final `result` argument,
+```
+ScanX(k:Sequence(100), cur:{K:0, KFact:1ia}, {K:k, KFact:KFact*k})
+```
+These produce a table equivalent to
+```
+[
+  { K: 0, KFact: 1 },
+  { K: 1, KFact: 1 },
+  { K: 2, KFact: 2 },
+  { K: 3, KFact: 6 },
+  { K: 4, KFact: 24 },
+  { K: 5, KFact: 120 },
+  { K: 6, KFact: 720 },
+  ...
+]
+```
+The `Generate` function is driven by a `count` rather than a sequence. It has the forms
+```
+Generate(count, selector)
+
+Generate(count, init_value, new_value)
+
+Generate(count, init_value, new_value, result)
+```
+The first form is essentially shorthand for `ForEach(Range(count), selector)`.
+The other forms are essentially shorthand for
+```
+ScanX(Range(count), init_value, new_value)
+
+ScanX(Range(count), init_value, new_value, result)
+```
+For example, the factorial table generation above can be accomplished with
+```
+Generate(k: 100, cur: { K: 0, KFact: 1ia }, { K: k+1, KFact: KFact*(k+1) })
+```
+Note that the count variable `k` starts at `0`, so we have to add `1` to it in this situation.
 
 ## Sort, Join and Group Functions
 
 ### Sort, SortUp, SortDown
 
+The `Sort` functions reorder items in a sequence. The items are ordered by one or more **_key_** values and
+associated **_direction_** or **_sort order_**. The key values must be of a **_sortable type_**, that is,
+of **_text_**, **_numeric_**, **_date_**, or **_time_** type, or the optional form of one of these types.
+The **_sortable types_** are exactly the same as the **_comparable types_** defined in the
+[Comparison Operators](04-Operators.md#comparison-operators) section.
+
+The **_up_** direction puts smaller items before larger items. The **_down_** direction does the opposite.
+A `null` key value is considered to be smaller than a non-`null` key value. A floating-point `NaN` is
+considered to be smaller than all other (non-`null`) floating-point values. Note that this ordering
+is consistent with the
+[**_total comparison operators_**](04-Operators.md#strict-and-total-comparison-modifiers).
+
+The three sort functions differ in their **_default sort order_**. The `SortUp` function uses **_up_**
+ordering, the `SortDown` function uses **_down_** ordering, and the `Sort` function uses **_up_** for
+text keys and **_down_** for other key types. To override (or to emphasize) these defaults, a
+**_sort directive_** is specified. The **_up directive_** is `[<]` and the **_down directive_** is `[>]`.
+
+For text, sort order is also classified as **_case-sensitive_** or **_case-insensitive_**. By default,
+the sort functions use case-sensitive sorting. For case-insensitive sorting, a case-insensitive sort
+directive must be specified. These are `[~]`, `[~<]`, and `[~>]`, indicating case-insensitive using
+the default direction, case-insensitive up, and case-insensitive down, respectively.
+
+The sort functions have one-parameter forms
+```
+Sort(dir seq)
+
+SortUp(dir seq)
+
+SortDown(dir seq)
+```
+where `dir` is an optional sort order directive and `seq` is a sequence. In these forms, there is one
+sort key, namely the item of the sequence. Consequently, these forms require the item type of `seq` to
+be text, numeric, date, or time, or the optional form of one of these types.
+
+For example, if `S` is the sequence `[ 1, 3,-2, null ]`,
+```
+Sort(S)
+
+SortUp(S)
+
+SortDown(S)
+```
+result in sequences equivalent to
+```
+[ 3, 1,-2, null ]
+
+[ null,-2, 1, 3 ]
+
+[ 3, 1,-2, null ]
+```
+respectively. Note that since `I8` is not the text type, `Sort` defaults to down order (largest first).
+
+When a directive is included, it overrides the default sort order. For example,
+```
+Sort([<] S)
+
+SortUp([<] S)
+
+SortDown([<] S)
+```
+all result in a sequence equivalent to `[ null,-2, 1, 3 ]`. Note that the `[<]` directive in `SortUp`
+merely emphasizes the sort order, since that directive matches the default sort order.
+
+In the case of the `[~]` directive, the default sort order applies, but is modified to be case insensitive.
+For  example, if T is the sequence `[ "A", "b", "B", "a", null ]`,
+```
+Sort(T)
+
+SortUp(T)
+
+SortDown(T)
+```
+result in sequences equivalent to
+```
+[ null, "a", "A", "b", "B" ]
+
+[ null, "a", "A", "b", "B" ]
+
+[ "B", "b", "A", "a", null ]
+```
+respectively. When the `[~]` directive is used,
+```
+Sort([~] T)
+
+SortUp([~] T)
+
+SortDown([~] T)
+```
+result in sequences equivalent to
+```
+[ null, "A", "a", "b", "B" ]
+
+[ null, "A", "a", "b", "B" ]
+
+[ "b", "B", "A", "a", null ]
+```
+Note that when the direction is up (for `Sort` and `SortUp`), `"a"` is moved before both `"B"` and `"b"`,
+but not before `"A"`, while the order of the values `"b"` and `"B"` is left unchanged.
+
+Similarly, when the order is down (for `SortDown`), `"A"` is moved after both `"b"` and `"B"`, but not
+after `"a"`, while the order of the values `"b"` and `"B"` is left unchanged.
+
+This example also demonstrates that reversing the sort order does _not_ necessarily reverse the items
+in the result. To reverse a sort order, in addition to the given keys, use a final additional sort key
+of `[>] #`, as explained below.
+
+The `Sort` functions also have multi-parameter **_keyed_** forms
+```
+Sort(seq, dir_1 key_1, dir_2 key_2, ..., dir_n key_n)
+
+SortUp(seq, dir_1 key_1, dir_2 key_2, ..., dir_n key_n)
+
+SortDown(seq, dir_1 key_1, dir_2 key_2, ..., dir_n key_n)
+```
+where `seq` is a sequence, each `dir_k` is an optional sort order directive, and each `key_k` is a key value.
+In these forms, `seq` may have any item type. The current item of `seq` is provided to each `key_k`,
+that is, the current item is in scope in the keys, as described in the
+[Argument Names and Scoping](#argument-names-and-scoping) section. Consequently, a local name may be
+specified as part of the `seq` argument. Each key expression must be of a **_sortable_** type.
+
+For example, if `S` is the sequence above, namely `[ 1, 3,-2, null ]`,
+```
+SortUp(S, it * it)
+
+SortUp(S as s, s * s)
+```
+each result in a sequence equivalent to `[ null, 1,-2, 3 ]`. Note that the key expression does not
+affect the item values in the result sequence. It only impacts how the values are ordered. In this
+case, `-2` is placed after `1` but before `3` because `(-2)*(-2)` falls between `1*1` and `3*3`.
+
+When there are multiple key expressions, the items of `seq` are ordered primarily according to the first
+sort key (and direction). When two items in `seq` have equivalent first keys, then the second sort key
+(and direction) is used to **_break the tie_**. If an item has equivalent first and second keys, then
+the next sort key is used, and so on. That is, the keys after the first are only used to **_break ties_**.
+
+For example, if `T` is the sequence above, namely `[ "A", "b", "B", "a", null ]`,
+```
+Sort(T, [~] it, [>] it)
+
+Sort(T as t, [~] t, [>] t)
+```
+each result in a sequence equivalent to `[ null, "A", "a", "B", "b" ]`. The first key uses case-insensitive
+up, while the second key breaks ties (when values differ only in case) using the down direction, which
+places upper case before lower case. Note that this second key is only used on values that match according
+to the first key. In particular, the second key is not used to determine the order of "A" and "B" since
+the first key determined that they must occur in that order.
+
+As explained above, reversing the direction of all sort keys does not necessarily reverse the resulting
+the sequence. In particular, when multiple values are equivalent according to the specified sort keys,
+the relative order of those items is not changed. For example, if `Employees` is the following table,
+```
+[
+  { LastName: "Mason", FirstName: "Amber", Id:101 },
+  { LastName: "Smith", FirstName: "Sally", Id:123 },
+  { LastName: "Mason", FirstName: "Sally", Id:215 },
+  { LastName: "Smith", FirstName: "Amber", Id:357 },
+]
+```
+then `Sort(Employess, [<] LastName)` produces
+```
+[
+  { LastName: "Mason", FirstName: "Amber", Id:101 },
+  { LastName: "Mason", FirstName: "Sally", Id:215 },
+  { LastName: "Smith", FirstName: "Sally", Id:123 },
+  { LastName: "Smith", FirstName: "Amber", Id:357 },
+]
+```
+and `Sort(Employess, [>] LastName)` produces
+```
+[
+  { LastName: "Smith", FirstName: "Sally", Id:123 },
+  { LastName: "Smith", FirstName: "Amber", Id:357 },
+  { LastName: "Mason", FirstName: "Amber", Id:101 },
+  { LastName: "Mason", FirstName: "Sally", Id:215 },
+]
+```
+There are _not_ in opposite orders since there are items that share equivalent key values
+(`LastName` in this example). To produce the reverse of the first sorting, we can use
+the [_index_ of the item](#auto-indexing) as a tie breaker. That is,
+```
+Sort(Employees, [>] LastName, [>] #)
+```
+produces the reversed result:
+```
+[
+  { LastName: "Smith", FirstName: "Amber", Id:357 },
+  { LastName: "Smith", FirstName: "Sally", Id:123 },
+  { LastName: "Mason", FirstName: "Sally", Id:215 },
+  { LastName: "Mason", FirstName: "Amber", Id:101 },
+]
+```
+
 ### KeyJoin
+
+The `KeyJoin` function combines two sequences into a single result sequence by **_matching_** items from the
+two sequences. The `KeyJoin` function has the forms
+```
+KeyJoin(seq_1, seq_2, key_1, key_2, selector)
+
+KeyJoin(seq_1, seq_2, key_1, key_2, selector, left_selector)
+
+KeyJoin(seq_1, seq_2, key_1, key_2, selector, left_selector, right_selector)
+```
+The `seq_1` and `seq_2` parameters are the sequences to join. Each of these arguments provides item values
+to some of the remaining arguments, so each may include a local name for the current item. The `key_1` and
+`key_2` parameters specify key values, computed from the corresponding current sequence item. The current
+item of `seq_1` is provides to `key_1` and the current item of `seq_2` is provided to `key_2`. When an
+item from `seq_1` and an item from `seq_2` result in equivalent key values, those items **_match_** and
+are provided to the `selector` argument. The result of the `selector` is then added to the
+**_result sequence_**.
+
+The **_key type_** is the type of the `key` arguments (or a common super type of these when they are
+different). The key type must be a [**_groupable type_**](#groupby).
+The groupable types include **_text_**, **_numeric_**, **_date_**, and **_time_** types and their
+optional forms. Moreover, a (required or optional) tuple type is groupable when all of its slot types
+are groupable, and a (required or optional) record type is groupable when all of its field types are
+groupable. The **_groupable types_** are exactly the same as the **_equatable types_** defined in the
+[Comparison Operators](04-Operators.md#comparison-operators) section.
+
+When matching should be on multiple keys, those keys can be combined into a single tuple or record.
+
+The key arguments may include the `[key]` directive. This can enhance readability of the expression by
+emphasizing that those are the key arguments.
+
+The first form of `KeyJoin`,
+```
+KeyJoin(seq_1, seq_2, key_1, key_2, selector)
+```
+is known as **_inner join_**. Its result sequence contains items corresponding
+to matched pairs of items. For example, if Orders is a table (sequence of records) equivalent to
+```
+[
+  { Customer: "Sally", Amt:  3, Price: 25 },
+  { Customer: "Bob",   Amt:  7, Price: 21 },
+  { Customer: "Ahmad", Amt:  2, Price: 26 },
+  { Customer: "Bob",   Amt:  8, Price: 21 },
+  { Customer: "Sally", Amt:  4, Price: 25 },
+  { Customer: "Ahmad", Amt: 23, Price: 17 },
+  { Customer: "Sally", Amt:  1, Price: 25 },
+]
+```
+and `Customers` is a table equivalent to
+```
+[ { Name: "Alice", State: "WA" },
+  { Name: "Bob",   State: "ID" },
+  { Name: "Ahmad", State: "MT" }, ]
+```
+then the expression
+```
+KeyJoin(o: Orders, c: Customers, o.Customer, c.Name,
+    { State: c.State, Value: o.Amt * o.Price })
+```
+produces a table equivalent to
+```
+[ { State: "ID", Value: 147 },
+  { State: "MT", Value:  52 },
+  { State: "ID", Value: 168 },
+  { State: "MT", Value: 391 }, ]
+```
+Note that the item names (`o` and `c`) may be omitted and the `State` field name may be omitted,
+shortening the expression to
+```
+KeyJoin(Orders, Customers, Customer, Name, { State, Value: Amt * Price })
+```
+When the tables are specified in the opposite order as in
+```
+KeyJoin(Customers, Orders, Name, Customer, { State, Value: Amt * Price })
+```
+the order of the results changes to a table equivalent to
+```
+[ { State: "ID", Value: 147 },
+  { State: "ID", Value: 168 },
+  { State: "MT", Value:  52 },
+  { State: "MT", Value: 391 }, ]
+```
+Note that this contains the same records as above but in a different order.
+
+The second form of `KeyJoin`,
+```
+KeyJoin(seq_1, seq_2, key_1, key_2, selector, left_selector)
+```
+is known as **_left-outer join_**. When an item in `seq_1` has no match in `seq_2`, that item is
+provided to the `left_selector` argument, and the result of that is added to the **_result sequence_**.
+For example, the two expressions
+```
+KeyJoin(Orders, Customers, Customer, Name,
+    { State, Value: Amt * Price }, { Value: Amt * Price })
+
+KeyJoin(Customers, Orders, Name, Customer,
+    { State, Value: Amt * Price }, { State })
+```
+result in tables equivalent to, respectively,
+```
+[
+  { State: null, Value:  75 },
+  { State: "ID", Value: 147 },
+  { State: "MT", Value:  52 },
+  { State: "ID", Value: 168 },
+  { State: null, Value: 100 },
+  { State: "MT", Value: 391 },
+  { State: null, Value:  25 },
+]
+
+[
+  { State: "WA", Value: null },
+  { State: "ID", Value:  147 },
+  { State: "ID", Value:  168 },
+  { State: "MT", Value:   52 },
+  { State: "MT", Value:  391 },
+]
+```
+In the first, the orders for Sally result in records with `null` value for `State` since Sally is missing
+from the `Customers` table. In the second, the customer `Alice` (with state `WA`) has no corresponding
+orders, so the result record with `State: "WA"` contains `null` for the Value field.
+
+The third form of `KeyJoin`
+```
+KeyJoin(seq_1, seq_2, key_1, key_2, selector, left_selector, right_selector)
+```
+is known as **_full-outer join_**. When an item from `seq_2` has no match in `seq_1`, that item
+is provided to the `right_selector` argument, and the result of that is added to the **_result sequence_**.
+For example, the expressions
+```
+KeyJoin(Orders, Customers, Customer, Name,
+    { State, Value: Amt * Price }, { Value: Amt * Price }, { State })
+
+KeyJoin(Customers, Orders, Name, Customer,
+    { State, Value: Amt * Price }, { State }, { Value: Amt * Price })
+```
+result in tables equivalent to, respectively,
+```
+[
+  { State: null, Value:   75 },
+  { State: "ID", Value:  147 },
+  { State: "MT", Value:   52 },
+  { State: "ID", Value:  168 },
+  { State: null, Value:  100 },
+  { State: "MT", Value:  391 },
+  { State: null, Value:   25 },
+  { State: "WA", Value: null },
+]
+
+[
+  { State: "WA", Value: null },
+  { State: "ID", Value:  147 },
+  { State: "ID", Value:  168 },
+  { State: "MT", Value:   52 },
+  { State: "MT", Value:  391 },
+  { State: null, Value:   75 },
+  { State: null, Value:  100 },
+  { State: null, Value:   25 },
+]
+```
+Note that these are basically the union of the result tables of the two left-outer joins and that these
+two tables differ only in the order of their items.
+
+When a key value is `null` or `NaN`, it will not match any item. For example, if `S` is the sequence
+```
+[ 1.0, 3.0,-2.0, 3.0, null, 0.0/0.0 ]
+```
+then
+```
+KeyJoin(a:S, b:S, a, b, a)
+```
+results in the sequence
+```
+[ 1.0, 3.0, 3.0,-2.0, 3.0, 3.0 ]
+```
+Note that this contains no `null` or `NaN` values. Also notice that it contains the value `3.0` a total
+of four times. This is because `S` contains two occurrences of `3.0` and each occurrence matches with
+each occurrence, for a total of four matchings.
+
+This illustrates that `KeyJoin` (by default) uses
+[**_strict equality_**](04-Operators.md#strict-and-total-comparison-modifiers) when determining a match.
+If one or both of the `key` arguments has the equality directive `[=]`,
+[**_total equality_**](04-Operators.md#strict-and-total-comparison-modifiers) is used instead.
+Consequently, these expressions
+```
+KeyJoin(a:S, b:S, [=] a,       b, a)
+
+KeyJoin(a:S, b:S,     a,  [=]  b, a)
+
+KeyJoin(a:S, b:S, [=] a,  [=]  b, a)
+
+KeyJoin(a:S, b:S, [=] a, [key] b, a)
+```
+all produce the sequence
+```
+[ 1.0, 3.0, 3.0, -2.0, 3.0, 3.0, null, 0/0 ]
+```
+
+When matching should be done using multiple key values, those values may be combined into a tuple
+or record. For example, if the `Orders` table also had a `State` column then a tuple-valued key could
+match on both customer name and state, as in
+```
+KeyJoin(Customers, Orders, (Name, State), (Customer, State), { ... })
+```
 
 ### CrossJoin
 
+The `CrossJoin` function combines two sequences into a single **_result sequence_** by **_matching_** items
+from the two sequences. While [`KeyJoin`](#keyjoin) evaluates two **_key_** expressions to determine a match,
+the `CrossJoin` function evaluates a single **_predicate_** expression for each possible pair of items
+(one from each sequence). Generally, `KeyJoin` is more efficient and should be used when applicable.
+Rexl will automatically reduce some invocations of `CrossJoin` to an equivalent invocation of `KeyJoin`.
+For example, with the tables used in the [`KeyJoin`](#keyjoin) section,
+```
+CrossJoin(o: Orders, c: Customers, o.Customer = c.Name, ...)
+```
+is reduced to
+```
+KeyJoin(o: Orders, c: Customers, o.Customer, c.Name, ...)
+```
+
+The `CrossJoin` function has the forms
+```
+CrossJoin(seq_1, seq_2, predicate, selector)
+
+CrossJoin(seq_1, seq_2, predicate, selector, left_selector)
+
+CrossJoin(seq_1, seq_2, predicate, selector, left_selector, right_selector)
+```
+The `seq_1` and `seq_2` parameters are the sequences to join. Each of these arguments provides item values
+to some of the remaining arguments, so each may include a local name for the current item. The `predicate`
+parameter is a bool-valued expression computed from a pair of sequence items (one from each sequence).
+When the `predicate` produces `true`, the items **_match_** and are provided to the selector argument.
+The result of the `selector` is then added to the **_result sequence_**.
+
+As with [`KeyJoin`](#keyjoin), the three forms of `CrossJoin` are known as **_inner join_**,
+**_left-outer join_**, and **_full-outer join_**, respectively.
+
+When the examples in the [`KeyJoin`](#keyjoin) section are changed to use `CrossJoin` with the
+`key` arguments replaced with the `predicate` expression `key_1 $= key_2`, the results will be identical.
+Note the use of [**_strict equality_**](04-Operators.md#strict-and-total-comparison-modifiers),
+which is the default for [`KeyJoin`](#keyjoin). For the examples that use the `[=]` directive,
+the equivalent predicate with `CrossJoin` is just `key_1 = key_2` or `key_1 @= key_2` instead,
+using [**_total equality_**](04-Operators.md#strict-and-total-comparison-modifiers). In fact,
+any use of `KeyJoin` can be translated to use `CrossJoin`, but it is best to avoid doing so.
+
+To emphasize, if the `predicate` for `CrossJoin` is of the form `a = b` then it is likely that
+`KeyJoin` is a better choice than `CrossJoin` and Rexl will, when possible, translate to use
+`KeyJoin`.
+
+The real power of `CrossJoin` comes from the fact that the predicate is not restricted to comparing
+for equality. For example, if `Trucks` is a table with a column named `Capacity` and `Loads` is a table
+with a column named `Weight`, then
+```
+CrossJoin(Trucks as Truck, Loads as Load, Weight <= Capacity, { Load, Truck })
+```
+produces a table of all possible pairings of a load with a truck that has sufficient capacity
+for the load.
+
+As another example, suppose `Pets` is a sequence of animal names, such as,
+```
+[ "dog", "cat", "rabbit", "python", "turtle" ]
+```
+You are considering getting two pets of different kinds from this sequence. What are all the
+possible pairs of pets you could choose? The expression
+```
+CrossJoin(a:S, b:S, #a < #b, (a, b))
+```
+produces the ten possible pairs
+```
+[
+  ("dog", "cat"),
+  ("dog", "rabbit"),
+  ("dog", "python"),
+  ("dog", "turtle"),
+  ("cat", "rabbit"),
+  ("cat", "python"),
+  ("cat", "turtle"),
+  ("rabbit", "python"),
+  ("rabbit", "turtle"),
+  ("python", "turtle"),
+]
+```
+
 ### GroupBy
+
+The `GroupBy` function gathers items of a **_source sequence_** into **_groups_**. Each **_group_** results
+in an item in the **_result sequence_**. The groups are determined by one or more **_key_** arguments.
+The result item for a group is determined by the remaining arguments. The `GroupBy` function is very
+flexible. It supports many variations. This discussion includes many examples to demonstrate common
+variations.
+
+`GroupBy` has the form
+```
+GroupBy(seq, arg_1, arg_2, ..., arg_n)
+```
+The `seq` argument is the **_source sequence_** of items to group. The `seq` argument may include a local
+name for the current item, as described in the [Argument Names and Scoping](#argument-names-and-scoping)
+section.
+
+Each `arg_k` is a **_selector_** of a particular **_kind_**. The selector kinds are **_key_**,
+**_group-map_**, **_item-map_**, and **_auto_**. Each selector may include a directive specifying the kind.
+The directives are `[key]`, `[group]`, `[item]`, and `[auto]`, respectively. When a selector does not
+include a directive, it is a **_key_** selector unless there are at least two selectors, and it is the
+last selector. When there are at least two selectors, and the last selector does not include a directive,
+it is an **_auto_** selector if is consists of only a single identifier and it is an **_item-map_**
+selector otherwise. From this,
+* A **_key_** selector need not include a directive if it is not last or if there is only one selector.
+* A **_group-map_** selector must include a directive.
+* An **_item-map_** selector need not include a directive if it is last and does not consist of only a single
+  [**_identifier_** (simple name)](01-AboutRexl.md#names).
+* An **_auto_** selector need not include a directive if it is last.
+
+There must be at least one **_key_** selector. The **_key_** selectors specify how items are grouped.
+Each **_key type_** must be a **_groupable type_**.
+The groupable types include **_text_**, **_numeric_**, **_date_**, and **_time_** types and their
+optional forms. Moreover, a (required or optional) tuple type is groupable when all of its slot types
+are groupable, and a (required or optional) record type is groupable when all of its field types are
+groupable. The **_groupable types_** are exactly the same as the **_equatable types_** defined in the
+[Comparison Operators](04-Operators.md#comparison-operators) section.
+
+Each **_group_** consists of the source items for which all the key arguments **_match_**. For example,
+the invocations
+```
+GroupBy(n: Range(10), n mod 3)
+
+GroupBy(n: Range(10), [key] n mod 3)
+```
+are equivalent since the [key] directive is optional in this case. These invocations group the integers from
+`0` through `9` by their remainder modulo `3`. The result is the sequence of groups. Each group is itself a
+sequence of `I8`, so the result of these is equivalent to
+```
+[
+  [ 0, 3, 6, 9 ],
+  [ 1, 4, 7 ],
+  [ 2, 5, 8 ]
+]
+```
+Similarly, with two keys,
+```
+GroupBy(n: Range(10), [key] n mod 3, [key] n mod 2)
+```
+the result is a sequence of sequence of `I8` equivalent to
+```
+[
+  [ 0, 6 ],
+  [ 1, 7 ],
+  [ 2, 8 ],
+  [ 3, 9 ],
+  [ 4 ],
+  [ 5 ]
+]
+```
+The items in each group share the same remainder module `3` and the same remainder modulo `2`.
+
+The result item type is determined by which kinds of selectors are used and whether they include
+local name specifications. The preceding example demonstrates that when there are only key selectors with no
+names, the result item type is the same as the source sequence type. Each result item represents one group as
+the sequence of source items in that group. Adding names changes things. For example,
+```
+GroupBy(n: Range(10), [key] Mod3: n mod 3, [key] Mod2: n mod 2)
+```
+produces a table equivalent to
+```
+[
+  { Mod2: 0, Mod3: 0 },
+  { Mod2: 1, Mod3: 1 },
+  { Mod2: 0, Mod3: 2 },
+  { Mod2: 1, Mod3: 0 },
+  { Mod2: 0, Mod3: 1 },
+  { Mod2: 1, Mod3: 2 },
+]
+```
+Since some of the selectors specify names, the result is forced to be a sequence of records (table). The 
+selectors with names become columns of that table. If a key doesn't include a name (explicitly or
+implicitly), that key is not in the result table. For example,
+```
+GroupBy(n: Range(10), [key] Mod3: n mod 3, [key] n mod 2)
+```
+produces a table equivalent to
+```
+[
+  { Mod3: 0 },
+  { Mod3: 1 },
+  { Mod3: 2 },
+  { Mod3: 0 },
+  { Mod3: 1 },
+  { Mod3: 2 },
+]
+```
+To emphasize that a key is not in the result table, one may use `_` for its name. For example,
+```
+GroupBy(n: Range(10), [key] Mod3: n mod 3, [key] _: n mod 2)
+```
+produces an equivalent table, that is, with only the `Mod3` column.
+
+To include the items that make up a group, one may use an **_auto_** selector. The auto selector consists
+of just a name, with no expression. That name is the field name in the resulting records. For example,
+```
+GroupBy(n: Range(10), [key] Mod3: n mod 3, [auto] Items)
+```
+produces a table equivalent to:
+```
+[
+  { Mod3: 0, Items: [ 0, 3, 6, 9 ] },
+  { Mod3: 1, Items: [ 1, 4, 7 ] },
+  { Mod3: 2, Items: [ 2, 5, 8 ] },
+]
+```
+The `Items` field is of type sequence of `I8` and contains the source items that are in the group.
+
+In this particular example, the last selector is **_auto_**, and the other selector is a **_key_**,
+so the directives may be omitted. That is,
+```
+GroupBy(n: Range(10), Mod3: n mod 3, Items)
+```
+produces the same table.
+
+It is very common for the source sequence to be a table (sequence of records) and the keys to be fields of the 
+records. For example, if `Orders` is a table equivalent to
+```
+[
+  { Customer: "Sally", Amt: 3, Price: 25 },
+  { Customer: "Bob",   Amt: 7, Price: 21 },
+  { Customer: "Ahmad", Amt: 2, Price: 26 },
+  { Customer: "Bob",   Amt: 8, Price: 21 },
+  { Customer: "Sally", Amt: 4, Price: 25 },
+  { Customer: "Ahmad", Amt: 23, Price: 17 },
+  { Customer: "Sally", Amt: 1, Price: 25 },
+]
+```
+then
+```
+GroupBy(Orders, Customer, Items)
+```
+produces a table equivalent to
+```
+[
+  {Customer:"Sally", Items:[{Amt:3,Price:25}, {Amt: 4,Price:25}, {Amt:1,Price:25}]},
+  {Customer:"Bob",   Items:[{Amt:7,Price:21}, {Amt: 8,Price:21}]},
+  {Customer:"Ahmad", Items:[{Amt:2,Price:26}, {Amt:23,Price:17}]},
+]
+```
+Note that the `Items` field is from an auto selector. The values in this field are themselves (nested)
+tables. These tables have two fields, `Amt` and `Price`, but not `Customer`. Since `Customer` is used as
+a key with an implicit field name, that field is dropped from `Items`. This is another purpose of **_auto_**,
+to drop key fields in the nested table.
+
+In contrast
+```
+GroupBy(Orders, _: Customer, Items)
+```
+produces a table equivalent to
+```
+[
+  {Items:[
+    {Customer:"Sally", Amt: 3, Price:25},
+    {Customer:"Sally", Amt: 4, Price:25},
+    {Customer:"Sally", Amt: 1, Price:25}]},
+  {Items:[
+    {Customer:"Bob",   Amt: 7, Price:21},
+    {Customer:"Bob",   Amt: 8, Price:21}]},
+  {Items:[
+    {Customer:"Ahmad", Amt: 2,Price:26},
+    {Customer:"Ahmad", Amt:23,Price:17}]},
+]
+```
+where each group record does not have a `Customer` field, but instead `Items` has the `Customer`
+field.
+
+When the source sequence is a table, a key need not be a field of the table. For example
+```
+GroupBy(Orders, Customer, Big: Amt > 3, Items)
+```
+produces a table equivalent to
+```
+[
+  {Customer:"Sally", Big: false,
+   Items:[{Amt:3,Price:25}, {Amt:1,Price:25}]},
+  {Customer:"Bob", Big: true,
+   Items:[{Amt:7,Price:21}, {Amt:8,Price:21}]},
+  {Customer:"Ahmad", Big: false,
+   Items:[{Amt:2,Price:26}]},
+  {Customer:"Sally", Big: true,
+   Items:[{Amt:4,Price:25}]},
+  {Customer:"Ahmad", Big: true,
+   Items:[{Amt:23,Price:17}]},
+]
+```
+The orders are grouped by both the customer's name and whether the order has `Amt > 3`.
+
+The remaining selector kinds, **_group-map_** and **_item-map_** are used to include additional
+computed information for the groups. In the case of **_group-map_**, the selector is provided the
+group of source items as a sequence with the name `group`. For example,
+```
+GroupBy(Orders, Customer, [group] Total: Sum(group, Amt * Price))
+```
+produces a table equivalent to
+```
+[
+  { Customer: "Sally", Total: 200 },
+  { Customer: "Bob",   Total: 315 },
+  { Customer: "Ahmad", Total: 443 },
+]
+```
+The selector `Sum(group, Amt * Price)` sums the product of `Amt` and `Price` over the records in the group.
+That sum is the value of the `Total` field.
+
+In the case of **_item-map_**, the selector is provided a source **_item_** of the group with the name `item`.
+The result is then a _sequence_ of result items. For example,
+```
+GroupBy(Orders, Customer, [item] Amts: item.Amt)
+```
+produces a table equivalent to
+```
+[
+  { Customer: "Sally", Amts: [ 3,  4, 1 ] },
+  { Customer: "Bob",   Amts: [ 7,  8 ] },
+  { Customer: "Ahmad", Amts: [ 2, 23 ] },
+]
+```
+Since the **_item-map_** selector is last, the directive isn't needed. Moreover, since the items are records,
+`item` and the dot may be omitted. Consequently, this may be abbreviated to
+```
+GroupBy(Orders, Customer, Amts: Amt)
+```
+If the sequence argument includes a name, then that name, rather than `item`, is used to reference the current 
+item of the group. For example,
+```
+GroupBy(order: Orders, Customer, [item] Amts: order.Amt)
+```
+is equivalent.
+
+Note that an **_item-map_** selector is shorthand for using **_ForEach_** in a **_group-map_** selector.
+For example, the expressions
+```
+GroupBy(Orders, Customer, Amts: Amt)
+
+GroupBy(Orders, Customer, [group] Amts: ForEach(group, Amt))
+
+GroupBy(Orders, Customer, [group] Amts: group.Amt)
+
+GroupBy(Orders, Customer, [group] Amts: Amt)
+```
+all produce tables equivalent to that shown above. The last two of these use the fact that the dot operator 
+extends to sequence.
 
 ### Distinct
 
+The `Distinct` function has the forms
+```
+Distinct(seq)
 
+Distinct(seq, key)
+```
+where `seq` is a sequence and `key` is an optional selector. The first form is equivalent to
+```
+Distinct(seq, it)
+```
+The `key` type must be a [**_groupable type_**](#groupby).
+The groupable types include **_text_**, **_numeric_**, **_date_**, and **_time_** types and their
+optional forms. Moreover, a (required or optional) tuple type is groupable when all of its slot types
+are groupable, and a (required or optional) record type is groupable when all of its field types are
+groupable. The **_groupable types_** are exactly the same as the **_equatable types_** defined in the
+[Comparison Operators](04-Operators.md#comparison-operators) section.
+
+This produces a sequence consisting of the same values as in `seq` but where all but the first
+occurrence of each key value is removed. For example,
+```
+Distinct([ 1, 0, 1, 1, -2, 0, 1, 2, -2 ])
+```
+produces a sequence equivalent to `[ 1, 0, -2, 2 ]`. Similarly,
+```
+Distinct([ 1, 0, 1, 1, -2, 0, 1, 2, -2 ], Abs(it))
+```
+produces `[ 1, 0, -2 ]`. Since `-2` and `2` have the same absolute value, only the first
+occurrence of those is kept.
+
+In general, `Distinct(seq, key)` is equivalent to (but often more efficent than)
+```
+GroupBy(seq, [key] _: key, [group] _: TakeOne(group))
+```
+
+## Math Functions
+
+Rexl includes many mathematical functions. These all extend to
+[optional](03-ExtendedOperatorsAndFunctions.md#extending-to-optional),
+[sequence](03-ExtendedOperatorsAndFunctions.md#extending-to-sequence), and
+[tensor](03-ExtendedOperatorsAndFunctions.md#extending-to-tensor).
+
+### Abs
+
+The `Abs` function takes one parameter of any numeric type and produces the absolute value of that parameter
+(of the same numeric type).
+
+**Caution**: The fixed-sized signed integer types, `I1`, `I2`, `I4`, and `I8` all contain one more negative
+value than positive value. This smallest negative value is $-2^{n-1}$, where $n$ is the number of bits
+(8 times the number of bytes) in the numeric type. Taking the absolute value of such a value overflows
+back to the same value. For example,
+```
+Abs(-128i1)
+```
+produces `-128` of type `I1`. The problem is that when the true mathematical value, `128` is reduced
+module $2^8$ to a value in the `I1` type, the result is `-128`. This is the same issues as when
+the [negation operator](04-Operators.md#negation-and-posation) is appled to the smallest `I8` value,
+as discussed there.
+
+This is not a problem unique to Rexl, but is inherent with these fixed-sized signed integer types.
+For example, the same phenomenon occurs with the `numpy` integer types in Python. The following
+Python
+```
+import numpy as np
+x = np.int8(-128)
+abs(x)
+```
+results in
+```
+RuntimeWarning: overflow encountered in scalar absolute
+-128
+```
+
+### Sqrt
+
+The `Sqrt` function takes one parameter of floating-point type `R8` and produces the square root of that
+parameter (of the same type). When the argument is negative, the result is NaN.
+
+### Angle and Trigonometric
+
+The angle and trigonometric functions all take a single parameter of floating-point type `R8` and produce a value
+of that same type.
+
+There are two angle conversion functions, `Radians` and `Degrees`, that convert from degrees to radians and
+from radians to degrees, respectively. For example, `Radians(180)` produces an approximation of $\pi$.
+
+The trigonometric functions have both radian and degree forms. These functions include `Sin`, `Cos`, `Tan`,
+`Csc`, `Sec`, and `Cot`, for angles in radians, and `SinD`, `CosD`, `TanD`, `CscD`, `SecD`, and `CotD`, for
+angles in degrees. When the angle is non-finite (positive infinity, negative infinity, or `NaN`), these
+produce `NaN`.
+
+There are three inverse trigonometric functions, namely `Asin`, `Acos`, and `Atan`. These take a value and
+produce an angle measured in radians. The `Asin` and `Atan` functions produce angles within $-\pi/2$ to
+$\pi/2$. The `Acos` function produces an angle within $0$ to $\pi$. When the argument is not within
+$-1.0$ to $1.0$, the `Asin` and `Acos` functions produce `NaN`.
+
+### Exponential and Logarithmic
+
+The exponential and logarithmic functions all take a single parameter of floating-point type `R8` and
+produce a value of that same type.
+
+The `Exp(x)` function produces (an approximation to) $e^{x}$, where $e$ is the base of the natural
+logarithm.
+
+The `Ln` and `Log10` functions produce the natural logarithm and base-ten logarithm, respectively.
+
+The standard hyperbolic trigonometric functions are `Sinh`, `Cosh`, `Tanh`, `Csch`, `Sech`, and `Coth`.
+These are all defined in terms of $e^x$ in the standard way.
+
+### Rounding
+
+The rounding functions take one parameter of floating-point type `R8` and produce a value of that same type.
+These functions differ in the direction of rounding. When the parameter is any of the non-finite values
+(positive infinity, negative infinity, or `NaN`), the result is that same value. Otherwise, the result is
+an integer value (but still of floating-point type) that is "close to" the argument value.
+
+The `Round` function rounds to the closest integer value. When a value is halfway between two integer values,
+as in `2.5` or `3.5`, the result is the closest _even_ integer. This is called **_unbiased_** or
+**_banker's_** rounding. For example,
+```
+Round(2.5)
+
+Round(3.5)
+```
+result in `2.0` and `4.0` respectively.
+
+`RoundUp` rounds toward positive infinity and `RoundDown` rounds toward negative infinity. `RoundIn` rounds
+toward zero and `RoundOut` rounds away from zero. `RoundUp` corresponds to what is commonly called
+**_ceiling_** and `RoundDown` corresponds to **_floor_**. `RoundIn` corresponds to what some languages call
+**_trunc_** or **_truncate_**.
+
+Note that `RoundIn` is the same as `RoundDown` for positive values and the same as `RoundUp` for negative
+values. Similarly, `RoundOut` is the same as `RoundUp` for positive values and the same as `RoundDown` for
+negative values.
+
+Here are some example inputs and the corresponding results from each of the round functions.
+
+|  x  | Round(x) | RoundUp(x) | RoundDown(x) | RoundIn(x) | RoundOut(x) |
+|:---:|:--------:|:----------:|:------------:|:----------:|:-----------:|
+| 1.1 |    1.0   |     2.0    |      1.0     |     1.0    |     2.0     |
+|-1.1 |   -1.0   |    -1.0    |     -2.0     |    -1.0    |    -2.0     |
+| 1.9 |    2.0   |     2.0    |      1.0     |     1.0    |     2.0     |
+|-1.9 |   -2.0   |    -1.0    |     -2.0     |    -1.0    |    -2.0     |
+| 1.5 |    2.0   |     2.0    |      1.0     |     1.0    |     2.0     |
+|-1.5 |   -2.0   |    -1.0    |     -2.0     |    -1.0    |    -2.0     |
+| 2.5 |    2.0   |     3.0    |      2.0     |     2.0    |     3.0     |
+|-2.5 |   -2.0   |    -2.0    |     -3.0     |    -2.0    |    -3.0     |
+
+## Text Functions
+
+The text functions are all in the `Text` namespace, that is, their full names start with `Text`, and are
+written with a dot between `Text` and the rest of their name. For example, `Text.Len` is the function that
+produces the length of a text value. Some of the text functions may also be used as properties on text
+values, as described in the [Dot Operator](04-Operators.md#dot-operator) section.
+
+When these functions are used with the
+[Function Projection Operator](04-Operators.md#function-projection), the namespace `Text`
+may be omitted.
+
+### Text Length
+
+The `Text.Len` function takes a single parameter of type text and produces the length of that value. The
+length of the `null` text value is zero. The length of the empty text value is also zero. `Text.Len` may
+be used as a property on text values. The expressions
+```
+Text.Len("Hello")
+
+"Hello"->Text.Len()
+
+"Hello"->Len()
+
+"Hello".Len
+```
+are equivalent and produce the value `5`.
+
+### Text Case Mapping
+
+The `Text.Lower` function takes a single parameter of type text and produces the text value containing the
+lower-case forms of the original characters. Similarly, `Text.Upper` produces the text value containing the
+upper-case forms of the original characters. For example,
+```
+Text.Lower("Sally")
+
+Text.Upper("Sally")
+```
+produce
+```
+"sally"
+
+"SALLY"
+```
+respectively. These functions may be used as properties on text values, so these examples may be written
+```
+"Sally".Lower
+
+"Sally".Upper
+```
+respectively.
+
+### Text Trimming
+
+The `Text.Trim`, `Text.TrimStart`, and `Text.TrimEnd` functions all take a single parameter of type text.
+These produce the text value containing characters in the original value, with leading and/or trailing white
+space characters removed. `Text.Trim` removes both leading and trailing white space characters, while
+`Text.TrimStart` removes only leading white space characters, and `Text.TrimEnd` removes only trailing white
+space characters. These may be used as properties on text values. For example,
+```
+"  X  ".Trim
+
+"  X  ".TrimStart
+
+"  X  ".TrimEnd
+```
+produce the equivalent of
+```
+"X"
+
+"X  "
+
+"  X"
+```
+respectively.
+
+### Text Extraction
+
+The `Text.Part` function produces the portion of given `source` text indicated by the `start` and
+(optional) `end` indices. It has the following forms:
+```
+Text.Part(source, start)
+
+Text.Part(source, start, stop)
+```
+where `source` is a text value, `start` is an `I8` (signed integer) value, and `stop` is an optional `I8`
+value.
+
+If the source value is `null`, then the result is also `null`.
+
+The `start` and `stop` values specify indices. An index value `0` means the beginning of `source` and an
+index value that is greater than or equal to `Text.Len(source)` means the end of `source`. When `stop` is
+omitted, the stop position is the end of `source`. When an index value is negative, the value `Text.Len(source)`
+is added to it to get the position. Effectively, a negative index value is interpreted as an offset from the
+end of the text. When a position value is (still) negative, it means the beginning of `source`.
+
+If the stop position is at or before the start position, the result is the empty text value. Otherwise,
+the result is the text value consisting of the characters between the start and stop positions. For example,
+the following invocations produce the values indicated in the corresponding comment:
+```
+Text.Part("ABCDE",  2) // "CDE"
+
+Text.Part("ABCDE", -3) // "CDE"
+
+Text.Part("ABCDE",  0) // "ABCDE"
+
+Text.Part("ABCDE", -7) // "ABCDE"
+
+Text.Part("ABCDE",  5) // ""
+
+Text.Part("ABCDE",  7) // ""
+
+Text.Part("ABCDE",  2,  4) // "CD"
+
+Text.Part("ABCDE", -3,  4) // "CD"
+
+Text.Part("ABCDE",  2, -1) // "CD"
+
+Text.Part("ABCDE",  0,  2) // "AB"
+
+Text.Part("ABCDE", -5,  2) // "AB"
+
+Text.Part("ABCDE", -4,  2) // "B"
+
+Text.Part("ABCDE", 4,  2) // ""
+```
+
+### Text Concatenation
+
+The `Text.Concat` function has the form
+```
+Text.Concat(seq, separator)
+```
+where `seq` is a sequence of text and `separator` is a text value. The result is a single text value consisting
+of the concatenation of the items from `seq`, separated by the characters in `separator`. For example,
+```
+Text.Concat([ "Sally", "Bob", "Ahmad" ], "/")
+```
+produces the text value equivalent to
+```
+"Sally/Bob/Ahmad"
+```
+
+### Text Searching
+
+The `Text.IndexOf` function has the two forms
+```
+Text.IndexOf(source, lookup)
+
+Text.IndexOf(source, lookup, start_index)
+```
+The `source` and `lookup` parameters are text values and the optional `start_index` parameter is an `I8`
+(signed integer) value. When `start_index` is omitted, zero is used. When `start_index` is negative, the
+value `Text.Len(source)` is added to it to get the start position. Effectively, a negative index value is
+interpreted as an offset from the end of the text. If that sum is still negative, the start position is
+the beginning of the source text.
+
+This function searches the text in `source` for the text in `lookup` from the start position toward the
+end of `source`. If the `lookup` text is not found, this produces `-1`. If the `lookup` text is found,
+this produces the starting index in `source` of the text in `lookup`. This treats `null` the same as the
+empty text value.
+
+Note that if the start position is beyond `source.Len - lookup.Len`, or if this quantity is negative,
+the result will be `-1`. Otherwise, if lookup is `null` or empty, the result will be the start position.
+
+These examples produce the values indicated in the corresponding comments:
+```
+Text.IndexOf("ABCABC", "B")  //  1
+
+Text.IndexOf("ABCABC", "D")  // -1
+
+Text.IndexOf("ABCABC", "")   //  0
+
+Text.IndexOf("ABCABC", null) // 0
+
+Text.IndexOf("ABCABC", "B", 2) //  4
+
+Text.IndexOf("ABCABC", "B", 5) // -1
+
+Text.IndexOf("ABCABC", "",  3) //  3
+
+Text.IndexOf("ABCABC", "",  6) //  6
+
+Text.IndexOf("ABCABC", "",  7) // -1
+```
 
 ## Date and Time Functions
 
+The date and time functions can be used to construct date and time values as well as to extract components of 
+these values.
+
+The Rexl **_date_** type, introduced in [Chrono Types](02-TypesAndValues.md#chrono-types) and further explained
+in [Chrono Operators](04-Operators.md#date-and-time-arithmetic-operators), represents a date within an idealized
+Gregorian calendar, together with a time within that date. This type is also called the **_date-time_** type to
+emphasize that it represents both a date and a time within that date.
+
+The idealized Gregorian calendar starts at the beginning of the day (midnight) on January `1` of year `1` and
+extends to the end of the day December `31` of year `9999`. Each non-leap year contains the standard `365`
+days, while leap years contain an extra day, namely February `29`. A year is a leap year if it is divisible
+by `4` but not divisible by `100` unless it is also divisible by `400`. For example, `2024` is a leap year
+while `2100`, `2200`, and `2300` are not leap years, but `2400` is a leap year. The minimum value, midnight
+of January 1 of year 1 is called the default value of the date type. When an operation results in a value
+outside the range of the date type, this default value is produced instead.
+
+The Rexl **_time_** type, introduced in [Chrono Types](02-TypesAndValues.md#chrono-types) and further explained
+in [Chrono Operators](04-Operators.md#date-and-time-arithmetic-operators), represents an amount of time, which
+may be positive, zero, or negative. A time value can be thought of as the difference between two **_date_**
+values. This type is also called the **_time-span_** type to emphasize that it represents an amount of time
+and _not_ a particular time of day.
+
+The resolution of both the date and time types is `0.0000001` second, which is equivalent to `0.1`
+microseconds or `100` nanoseconds. This resolution unit is called a **_tick_**. That is, one tick is
+`100` nanoseconds. Equivalently, there are `10` million ticks in a second.
+
+The time component of a date (date-time) value consists of a number of ticks, at least zero and less than
+`864000000000`, which is the number of ticks in `24` hours. The date type does _not_ include any indication
+of time zone. When needed, a time-zone offset should be tracked separately as a time (time-span) value.
+
+The time (time-span) type represents an integer number of ticks. The number of ticks that can be represented 
+is the same as the range of the `I8` signed integer type.
+
 ### Date Construction
 
+The `Date` function constructs a date value from components. It has the full form:
+```
+Date(year, month, day, hour, minute, second, millisecond, tick)
+```
+It also has the abbreviated forms:
+```
+Date(year, month, day, hour, minute, second, millisecond)
+
+Date(year, month, day, hour, minute, second)
+
+Date(year, month, day, hour, minute)
+
+Date(year, month, day, hour)
+
+Date(year, month, day)
+```
+That is, the parameters from `hour` onward are optional. When any of these is omitted, the corresponding 
+argument value is zero.
+
+All of the parameters of the `Date` function are `I8` (signed integer) values. They each have an
+acceptable range. If any of the arguments is outside the acceptable range, the result is the **_default_**
+date value.
+* The `year` argument must be from `1` to `9999`, inclusive.
+* The `month` argument must be from `1` to `12`, inclusive.
+* The `day` argument must be from `1` to the number of days in the indicated month, inclusive.
+* The `hour` argument must be from `0` to `23` inclusive.
+* The `minute` argument must be from `0` to `59` inclusive.
+* The `second` argument must be from `0` to `59` inclusive.
+* The `millisecond` argument must be from `0` to `999` inclusive.
+* The `tick` argument must be from 0 to `9999` inclusive.
+
+For example,
+```
+Date(2022, 5, 11, 8, 11, 52)
+```
+evaluates to the 5th of May in the year 2022, at 8:11:52 in the morning. Note that there is no AM/PM
+parameter. To specify a time component after noon, add 12 to the hour component as in
+```
+Date(2022, 5, 11, 20, 11, 52)
+```
+
 ### Time Construction
+
+The `Time` function constructs a time value from components. It has the full form:
+```
+Time(days, hours, minutes, seconds, milliseconds, ticks)
+```
+It also has the abbreviated forms:
+```
+Time(days, hours, minutes, seconds, milliseconds)
+
+Time(days, hours, minutes, seconds)
+
+Time(days, hours, minutes)
+
+Time(days, hours)
+
+Time(days)
+```
+That is, the parameters from `hours` onward are optional. When any of these is omitted, the corresponding
+argument value is zero.
+
+All of the parameters of the `Time` function are `I8` (signed integer) values. Unlike with the `Date`
+function, these values do not have explicitly acceptable ranges. Each can be any `I8` value. However, if
+the incremental computation of the total number of ticks overflows, the result is the **_default_** time
+value, which is equivalent to zero total ticks.
+
+For example, `Time(15)` represents the amount of time in `15` complete days, while `Time(15, -1)` represents
+one hour less than that. Furthermore, `Time(10_000_000)` represents the amount of time in 10 million days.
+Note that `Time(11_000_000)` results in the default (zero) time value, since the total number of ticks in
+11 million days exceeds the maximum `I8` value.
 
 ### Date Parts
 
