@@ -17,4 +17,4 @@ if not exist "%EDIR%" (
 
 @echo on
 
-%EDIR%/Microsoft.RexlKernel register
+%EDIR%RexlKernel register
