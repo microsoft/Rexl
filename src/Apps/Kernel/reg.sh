@@ -15,4 +15,4 @@ if [ ! -d "$EDIR" ]; then
     exit 1
 fi
 
-"$EDIR/Microsoft.RexlKernel" register
+"$EDIR/RexlKernel" register

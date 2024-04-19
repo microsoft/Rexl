@@ -48,59 +48,39 @@ jobs:
       SignatureFreshness: 'UpToDate'
       TreatStaleSignatureAs: 'Error'
 
-  - task: NuGetToolInstaller@1
-    displayName: Use NuGet 6.4.0
-    inputs:
-      versionSpec: 6.4.0
- 
-  - task: NuGetCommand@2
-    displayName: NuGet restore Rexl.sln
-    env:
-      NUGET_RESTORE_MSBUILD_ARGS: /p:Configuration=${{ parameters.buildConfig }}
-    inputs:
-      solution: src/Rexl.sln
-      feedsToUse: config 
-      nugetConfigPath : nuget.config
-
-  - task: VSBuild@1
+  - task: DotNetCoreCLI@2
     displayName: Build Rexl.sln
     inputs:
-      solution: $(Build.SourcesDirectory)/src/Rexl.sln
-      msbuildArgs: /p:Deterministic=true /p:PathMap=$(Agent.BuildDirectory)=C:\ /t:build -m
-      platform: ${{ parameters.buildPlatform }}
-      configuration: ${{ parameters.buildConfig }}
-      msbuildArchitecture: ${{ parameters.buildPlatform }}
-      vsVersion: '17.0'
+      command: 'build'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      projects: '$(Build.SourcesDirectory)/src/Rexl.sln'
+      arguments: '-c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }}'
 
-  - task: PowerShell@2
-    displayName: Check for modifications to checked-in files
-    inputs:
-      targetType: inline
-      pwsh: true
-      script: |
-        $modified = git status --porcelain
-        $diff = git diff
-        if (![string]::IsNullOrWhiteSpace($modified))
-        {
-          Write-Host "There are files in the working directory or the staging area:"
-          $modified | Write-Host
-          $diff | Write-Host
-          exit 1
-        }
-        else
-        {
-          Write-Host "Git Status returns clean."
-        }
-
-  - task: VSTest@2
+  - task: DotNetCoreCLI@2
     displayName: Run tests
     timeoutInMinutes: 5
     inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: '$(Build.SourcesDirectory)/src/xout/bin/Rexl.*.Test/x64/${{ parameters.buildConfig }}/net6.0/Rexl.*.Test.dll'
-      platform: ${{ parameters.buildPlatform }}
-      configuration: ${{ parameters.buildConfig }}
-      codeCoverageEnabled: true
+      command: 'test'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      projects: '$(Build.SourcesDirectory)/src/Rexl.sln'
+      arguments: '--no-build -c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }}'
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish Self-Contained RexlKernel
+    inputs:
+      command: 'publish'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      projects: '$(Build.SourcesDirectory)/src/Apps/Kernel/RexlKernel/RexlKernel.csproj'
+      arguments: '--sc -c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }} -o $(Build.ArtifactStagingDirectory)/Kernel'
+      publishWebProjects: false
+      zipAfterPublish: true
+      modifyOutputPath: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish RexlKernel artifact'
+    inputs:
+      PathToPublish: '$(Build.ArtifactStagingDirectory)/Kernel'
+      ArtifactName: 'Win_${{ parameters.buildPlatform }}_${{ parameters.buildConfig }}_Kernel'
 
   - ${{ if eq(parameters.publishArtifacts, true) }}:
     - task: DotNetCoreCLI@2
