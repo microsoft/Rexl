@@ -246,7 +246,7 @@ public sealed partial class SortFunc : RexlOper
 }
 
 /// <summary>
-/// Sort sequence function.
+/// Function to reverse a sequence.
 /// </summary>
 public sealed partial class ReverseFunc : RexlOper
 {

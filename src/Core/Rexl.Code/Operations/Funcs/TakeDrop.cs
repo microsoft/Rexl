@@ -462,7 +462,7 @@ public sealed class TakeDropGen : RexlOperationGenerator<TakeDropFunc>
         if (n <= 0)
             return null;
 
-        if (src is ICollection<T> col)
+        if (src is IReadOnlyCollection<T> col)
         {
             if (col.Count <= n)
                 return src;

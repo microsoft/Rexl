@@ -628,7 +628,7 @@ public abstract class DataValueClipSeq<TItem> : DataValueClip<TItem>, ICanCount
 
         var cursorableSeq = seq as ICursorable<TItem>;
         long seqCount = -1;
-        if (seq is ICollection<TItem> col)
+        if (seq is IReadOnlyCollection<TItem> col)
             seqCount = col.Count;
         else if (seq is ICanCount countable && countable.TryGetCount(out var c))
             seqCount = c;
