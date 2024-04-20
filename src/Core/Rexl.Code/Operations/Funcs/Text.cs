@@ -289,7 +289,6 @@ public sealed class TextReplaceGen : GetMethGen<TextReplaceFunc>
         Validation.AssertValue(codeGen);
         Validation.Assert(IsValidCall(call, true));
 
-        var fn = GetOper(call);
         meth = _meth;
         return true;
     }

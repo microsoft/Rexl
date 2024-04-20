@@ -1,5 +1,10 @@
 # Extended Operators and Functions
 
+* [Extending to Optional](#extending-to-optional)
+* [Extending to Sequence](#extending-to-sequence)
+* [Extending to Tensor](#extending-to-tensor)
+* [Extending to Multiple](#extending-to-multiple)
+
 Many operators and functions of Rexl are defined on relatively simple types and then **_extended_** in a standard 
 way to apply to more complex types. There are three kinds of extending, namely **_optional_**, **_sequence_**, and 
 **_tensor_**. These are detailed in the following sections.

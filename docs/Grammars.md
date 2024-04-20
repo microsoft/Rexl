@@ -217,7 +217,7 @@ Integer division and modulo use the keywords `div` and `mod`, respectively.
 ### Productions for _prefix-unary-expr_
 
 The prefix unary operators are numeric negation, numeric posation, logical negation, and bitwise negation,
-using typical punctuators. Note that the the `!` and `~` operators  have different precedence
+using typical punctuators. Note that the `!` and `~` operators  have different precedence
 than the `not` and `bnot` operators. For example, `not x < y` is equivalent to `not (x < y)` while
 `! x < y` is equivalent to `(! x) < y`.
 

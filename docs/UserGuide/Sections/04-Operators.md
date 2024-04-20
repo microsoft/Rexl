@@ -1,5 +1,21 @@
 # Operators
 
+* [Precedence and Associativity](#precedence-and-associativity)
+* [Pipe Operator](#pipe-operator)
+* [If-Else Operator](#if-else-operator)
+* [Coalesce Operator](#coalesce-operator)
+* [Logical Operators](#logical-operators)
+* [Comparison Operators](#comparison-operators)
+* [In and Has Operators](#in-and-has-operators)
+* [Concatenation Operators](#concatenation-operators)
+* [Min and Max Operators](#min-and-max-operators)
+* [Bitwise Operators](#bitwise-operators)
+* [Shift Operators](#shift-operators)
+* [Arithmetic Operators](#arithmetic-operators)
+* [Dot Operator](#dot-operator)
+* [Indexing and Slicing](#indexing-and-slicing)
+* [Projection Operators](#projection-operators)
+
 Rexl includes a rich set of operators, exceeding those found in many other expression languages.
 
 The majority of Rexl operators are **_infix binary operators_**, meaning that they accept two operands with the
@@ -173,6 +189,13 @@ inherently operate on both required and optional bool values.
 
 ## Comparison Operators
 
+* [Root Comparison Operators](#root-comparison-operators)
+* [Comparison Modifiers](#comparison-modifiers)
+* [Comparison Chaining](#comparison-chaining)
+* [Extended Comparison Operators](#extended-comparison-operators)
+
+### Root Comparison Operators
+
 There are five **_root comparison operators_**, namely,
 ```
 =   <   >   <=   >=
@@ -201,6 +224,10 @@ is `true` if `=` applied to each pair of corresponding component values results 
 `(a, b) = (c, d)` is `true` if `a = c` and `b = d` are both true.
 
 ### Comparison Modifiers
+
+* [Inverse Comparison Modifiers](#inverse-comparison-modifiers)
+* [Case Insensitive Comparison Modifier](#case-insensitive-comparison-modifier)
+* [Strict and Total Comparison Modifiers](#strict-and-total-comparison-modifiers)
 
 There are five **_comparison-modifiers_**, namely,
 ```
@@ -539,6 +566,9 @@ These operators extend to optional, sequence, and tensor.
 
 ## Arithmetic Operators
 
+* [Numeric Arithmetic Operators](#numeric-arithmetic-operators)
+* [Chrono Arithmetic Operators](#chrono-arithmetic-operators)
+
 Rexl includes several **_arithmetic_** operators. All of these operate on numeric operands. Some can also be used
 with **_date_** and **_time_** operands.
 
@@ -564,9 +594,17 @@ All these operators extend to optional, sequence, and tensor.
 
 ### Numeric Arithmetic Operators
 
+* [Addition, Subtraction, Multiplication]()
+* [Floating-Point Division](#floating-point-division)
+* [Integer Division and Modulus](#integer-division-and-modulus)
+* [Exponentiation](#exponentiation)
+* [Negation and Posation](#negation-and-posation)
+* [Percent](#percent)
+
 This section defines the arithmetic operators applied to numeric types.
-[Another section](#date-and-time-arithmetic-operators) defines the  arithmetic operators applied to date
-and time types. If none of the operand types is the date or time type, the numeric form, specified here, applies.
+[Chrono Arithmetic Operators](#chrono-arithmetic-operators) defines the  arithmetic operators
+applied to date and time types. If none of the operand types is the date or time type, the numeric form,
+specified here, applies.
 
 Note that most arithmetic operators for floating-point involve rounding the result to the nearest representable 
 value.
@@ -643,40 +681,58 @@ to write `-1 if x < 0 else +1` to emphasize that the _else_ value is _positive_ 
 
 The percent operator divides its operand by `100`. The result is of type `R8`. For example, `25%` produces `0.25`.
 
-### Date and Time Arithmetic Operators
+### Chrono Arithmetic Operators
+
+* [Chrono Addition](#chrono-addition)
+* [Chrono Subtraction](#chrono-subtraction)
+* [Chrono Multiplication](#chrono-multiplication)
+* [Chrono Division and Modulus](#chrono-division-and-modulus)
+* [Chrono Negation](#chrono-negation)
 
 The date and time arithmetic operators, also called the **_chrono arithmetic operators_**, are arithmetic
-operators that apply to [date or time](02-TypesAndValues.md#chrono-types) values.
+operators that apply to the [Chrono Types](02-TypesAndValues.md#chrono-types), known as **_date_** and
+**_time_**.
 
-The chrono arithmetic operators are selected when at least one of the operands is of the date type or the time
-type. Otherwise, the numeric arithmetic operators are selected.
+The chrono arithmetic operators are selected when at least one of the operands is of a chrono type.
+Otherwise, the numeric arithmetic operators are selected.
 
-Recall that the date type encodes a moment in an idealized calendar, including year, month, day within the 
-month and time within the day, while the time type encodes a span (or amount) of time, whether positive,
-zero, or negative. These types are known as the **_chrono types_**. The resolution of the chrono types is a unit
-called **_tick_**, which represents `100` nanoseconds, or `0.0000001` of a second.
+Recall that the [date type](02-TypesAndValues.md#chrono-types) encodes a moment in an idealized calendar,
+including year, month, day within the month and time within the day, while the
+[time type](02-TypesAndValues.md#chrono-types) encodes a span (or amount) of time, whether positive,
+zero, or negative. The resolution of the chrono types is a unit called **_tick_**, which represents
+`100` nanoseconds, or `0.1` microseconds, or `0.0000001` seconds. That is, there are `10_000_000` ticks
+per second.
 
-The possible number of ticks that the time type can hold is exactly the possible values of the `I8` type,
-as described in the [chrono types](02-TypesAndValues.md#chrono-types) section. This number of ticks is called
-the **_tick count_** of the time value. Note that this tick count may be negative. Also note that for each tick
-count within the range of the `I8` type, there is a unique time value corresponding to that tick count. The
-time value with zero tick count is known as the **_default time_** value. The minimum and maximum time values
-can be constructed using the [`CastTime` function](05-Functions.md#casttime-and-totime) as
+The possible number of ticks that the **_time_** type can hold is exactly the possible values of the `I8` type,
+as described in the [Chrono Types](02-TypesAndValues.md#chrono-types) section. This number of ticks is called
+the **_total tick count_** (or just **_tick count_**) of the time value. Note that this tick count may
+be negative. Also note that for each tick count within the range of the `I8` type, there is a unique time
+value corresponding to that tick count. The time value with zero tick count is known as the
+**_default time_** value. The minimum and maximum time values can be constructed using the
+[`CastTime` function](05-Functions.md#casttime-and-totime) as
 ```
 CastTime(0x8000_0000_0000_0000i8)
 
 CastTime(0x7FFF_FFFF_FFFF_FFFFi8);
 ```
 
-The date type has a minimum and maximum value. The minimum date value is also known as the **_default date_**
-value and has a **_tick count_** of zero. In general, the **_tick count_** of a date value is the number of ticks
-from the the minimum to the date value. The tick count of the maximum date value is `3_155_378_975_999_999_999`.
-The maximum data value can be produced via the [`Date` function](05-Functions.md#date-construction) as
+The **_date_** type has a minimum and maximum value. The minimum date value is also known as the **_default date_**
+value and corresponds to the beginning of year `1`. The maximum date value is one tick before year `10_000`.
+The **_total tick count_** of a date value is the number of ticks from the minimum date value. The total tick
+count of the minimum value is `0` while the total tick count of the maximum value is `3_155_378_975_999_999_999`.
+
+The minimum and maximum date values can be produced via the
+[`Date` function](05-Functions.md#date-construction) as
 ```
+Date(1, 1, 1)
+
 Date(9999, 12, 31, 23, 59, 59, 999, 9999)
 ```
-It's total tick value can computed from this using the [`Date.TotalTicks` property](05-Functions.md#date-parts)
+Their total tick values can computed from these using the
+[`Date.TotalTicks` property](05-Functions.md#date-parts)
 ```
+Date(1, 1, 1).TotalTicks
+
 Date(9999, 12, 31, 23, 59, 59, 999, 9999).TotalTicks
 ```
 
@@ -753,6 +809,9 @@ ForEach(Employees, Age)
 ```
 
 ## Indexing and Slicing
+
+* [Indexing](#indexing)
+* [Slicing](#slicing)
 
 The **_indexable types_** include the **_text_** type, **_tuple_** types and **_tensor_** types.
 
@@ -1201,6 +1260,11 @@ With(r:(a, false, b, true, c), src[r])
 Note that a tuple-encoded range cannot include **_count modifier_** functionality.
 
 ## Projection Operators
+
+* [Function Projection](#function-projection)
+* [Value Projection](#value-projection)
+* [Record Projection](#record-projection)
+* [Tuple Projection](#tuple-projection)
 
 **_Projection operations_** generally take in one value and produce another. These operations accept a value on
 the left, use either `->` or `+>` as an operator, and produce a value indicated on the right.

@@ -1,5 +1,20 @@
 # Types and Values
 
+* [Default Values](#default-values)
+* [Primitive Types](#primitive-types)
+* [Constructed Types](#constructed-types)
+* [Special Types](#special-types)
+* [Optional Types](#optional-types)
+* [Text Type](#text-type)
+* [Numeric Types](#numeric-types)
+* [Chrono Types](#chrono-types)
+* [Sequence Types](#sequence-types)
+* [Tuple Types](#tuple-types)
+* [Record Types](#record-types)
+* [Table Types](#table-types)
+* [Tensor Types](#tensor-types)
+* [Module Types](#module-types)
+
 Every value in Rexl has a **_type_**. The type of a value determines the kinds of operations that can be performed
 with the value. For example, the multiplication operator `*` can be applied to numeric values but not to text
 values. When writing Rexl expressions it is important to understand the types of the values used in the
@@ -161,6 +176,10 @@ Since text is an optional type, its **_default value_** is `null`.
 
 ## Numeric Types
 
+* [Numeric Literals](#numeric-literals)
+* [Standard Numeric Conversions](#standard-numeric-conversions)
+* [Major Numeric Types](#major-numeric-types)
+
 Rexl currently includes twelve distinct numeric types. These vary in whether they are integer versus floating-point
 (capable of representing fractional values), whether they contain negative values, their size (number of
 bytes or bits used to represent them), and precision (the number of bits used for their mantissa). These types
@@ -299,26 +318,50 @@ overflows `I8` to produce `2_003_764_205_206_896_640`, which is $10^{24}$ reduce
 
 Rexl supports a **_date_** type and a **_time_** type, known collectively as **_chrono types_**.
 
-A **_date_** value represents a day in an idealized Gregorian calendar as well as a time value within that day. The
-resolution of the time value is 100 nanoseconds (0.0000001 second). The smallest (earliest) possible date value is
-the beginning of year one. This smallest value is also the **_default value_** for the date type.
-The largest (latest) possible date value is the final representable instant in year `9999`, that is 0.0000001 second
-before the beginning of year `10000`.
+The resolution of the chrono types is 100 nanoseconds, or 0.1 microseconds, or 0.0000001 seconds. This unit of
+time is called a **_tick_**. There are 10 million ticks per second.
 
-A **_time_** value represents a time interval consisting of a number of days, hours, minutes, seconds, and fractions 
-of a second. Time values can be positive, zero, or negative. The resolution of a time value is 100 nanoseconds
-(0.0000001 second). A time value is represented as a number of **_ticks_** (positive, zero, or negative), where each
-tick is 100 nanoseconds. This number of ticks must fit in the [`I8` integer type](#numeric-types). That is, the
-smallest time value has tick count equal to the smallest value of the `I8` type and the largest time value has tick
-count equal to the largest value of the `I8` type. A time value is often rendered with as `[s]D.H:M:S.F` where
-`[s]` is an optional `-` or `+` sign, `D` is a number of (24 hour) days, `H` is a number of hours, `M` is a
-number of minutes, `S` is a number of seconds, and `F` is the fractional part. Note that `.` is used to separate
-the number of days from the time components and also to support the fractional part of a second from the whole
-seconds. A `:` is used to separate the hours from minutes and minutes from seconds. With this notation,
-the largest time value is `10675199.02:48:05.4775807` and the smallest time value is
-`-10675199.02:48:05.4775808`. The default time value is zero, rendered `0.0:0:0.0`.
+A **_date_** value represents a day in an idealized Gregorian calendar as well as a time value within that day.
+In our idealized Gregorian calendar:
+* The minimum (earliest) date value is the beginning of year one.
+* A leap year is one that is divisible by `4` but not divisible by `100` unless it is also divisible by `400`.
+* Each leap year has `366` days while each leap year has `365` days.
+* Each day has `24` hours.
+* Each hour has `60` minutes.
+* Each minute has `60` seconds.
+* Each second has `10_000_000` ticks.
+* The maximum (latest) possible date value is the final representable instant in year `9999`, that is, one tick
+  (0.0000001 second) before the beginning of year `10_000`.
 
-Some of the [arithmetic operators](04-Operators.md#date-and-time-arithmetic-operators) apply to chrono values.
+Note that this system is _not_ based in history and does _not_ account for leap seconds or other adjustments
+typically made in a solar based time system.
+
+The minimum date value (the beginning of year `1`) is also the **_default value_** for the date type.
+
+The **_total tick count_** of a date value is the number of ticks between the minimum date value (the beginning of
+year 1) and the date value. The minimum date value has total tick count `0` and the maximum date value has total
+tick count `3_155_378_975_999_999_999`.
+
+The time of day portion of a date value consists of a number of ticks, at least zero and less than
+`864_000_000_000`, which is the number of ticks in `24` hours. The date type does _not_ include any indication
+of time zone. When needed, a time-zone offset should be tracked separately as a **_time_** value.
+
+A **_time_** value represents a time interval consisting of a number of days, hours, minutes, seconds,
+milliseconds (`1_000` per second) and ticks (`10_000` per millisecond). Time values can be positive, zero,
+or negative. A time value corresponds to a number of **_ticks_** (positive, zero, or negative). This number of
+ticks, called the **_total tick count_** of the time value, can be any number that fits in the
+[`I8` integer type](#numeric-types). That is, the smallest time value has total tick count equal to the
+smallest value of the `I8` type and the largest time value has total tick count equal to the largest value
+of the `I8` type.
+
+A time value is often rendered as `[s]D.H:M:S.F` where `[s]` is an optional `-` or `+` sign, `D` is a
+number of (24 hour) days, `H` is a number of hours, `M` is a number of minutes, `S` is a number of seconds,
+and `F` is the fractional part. Note that `.` is used to separate the number of days from the time components
+and also to separate the fractional part of a second from the whole seconds. A `:` is used to separate the hours
+from minutes and minutes from seconds. With this notation, the largest time value is `10675199.02:48:05.4775807`
+and the smallest time value is `-10675199.02:48:05.4775808`. The default time value is zero, rendered `0.0:0:0.0`.
+
+Some of the [arithmetic operators](04-Operators.md#chrono-arithmetic-operators) apply to chrono values.
 For example, two date values can be subtracted to get a time value. Similarly, a date value and time value
 can be added to get a new date value.
 

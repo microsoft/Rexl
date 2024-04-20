@@ -1,5 +1,18 @@
 # Functions
 
+* [Argument Names and Scoping](#argument-names-and-scoping)
+* [Auto Indexing](#auto-indexing)
+* [Directives](#directives)
+* [Core Functions](#core-functions)
+* [Record Functions](#record-functions)
+* [Sequence Functions](#sequence-functions)
+* [Math Functions](#math-functions)
+* [Text Functions](#text-functions)
+* [Chrono Functions](#chrono-functions)
+* [Conversion Functions](#conversion-functions)
+* [Tuple Functions](#tuple-functions)
+* [Tensor Functions](#tensor-functions)
+
 The Rexl language includes a library of standard functions. Note that AI models are also functions but are not
 documented here.
 
@@ -225,18 +238,20 @@ Orders+>{ Index: #0 }
 Orders+>{ Index: # }
 ```
 Many functions that have one or more sequence parameters support auto-indexing. These include:
-* [`Count`](#count)
 * [`ForEach`](#foreach-functions) and its variants
+* [`Count`](#count)
+* [`Any` and `All`](#any-and-all)
+* [`TakeOne` and `First`](#takeone-and-first)
+* [`Take` and `Drop`](#take-and-drop-functions) and their variants
+* [`ChainMap`](#chain-functions)
 * [`Sum`](#sum-functions) and its variants
 * [`Mean`](#mean-functions) and its variants
 * [`Min` and `Max`](#min-and-max-functions) and their variants
-* [`Any` and `All`](#any-and-all)
-* [`Fold`, `ScanZ` and `ScanX`](#fold-scan-and-generate-functions)
-* [`Take` and `Drop`](#take-and-drop-functions) and their variants
+* [`Fold`](#fold)
+* [`ScanX` and `ScanZ`](#scanx-and-scanz)
 * [`Sort`](#sort-sortup-sortdown) and its variants
 * [`KeyJoin`](#keyjoin) and [`CrossJoin`](#crossjoin)
 * [`GroupBy`](#groupby) and [`Distinct`](#distinct)
-* [`ChainMap`](#chain-functions)
 * [`Tensor.Build`](#tensorbuild)
 
 For example, if `seq` is a sequence
@@ -325,6 +340,10 @@ a new table-valued column containing all items in the group, but with `[key]` co
 Note that the `Detail` column is tabled-valued. That is, each group record contains a nested table named `Detail`.
 
 ## Core Functions
+
+* [IsNull and IsEmpty](#isnull-and-isempty)
+* [If](#if)
+* [With and Guard](#with-and-guard)
 
 ### IsNull and IsEmpty
 
@@ -521,6 +540,30 @@ produce these different record values, respectively
 ```
 
 ## Sequence Functions
+
+* [ForEach Functions](#foreach-functions)
+* [Repeat](#repeat)
+* [Range](#range)
+* [Sequence](#sequence)
+* [Count](#count)
+* [Any and All](#any-and-all)
+* [TakeOne and First](#takeone-and-first)
+* [Take and Drop Functions](#take-and-drop-functions)
+* [TakeAt](#takeat)
+* [Chain Functions](#chain-functions)
+* [Sum Functions](#sum-functions)
+* [Mean Functions](#mean-functions)
+* [Min and Max Functions](#min-and-max-functions)
+* [Fold](#fold)
+* [ScanX and ScanZ](#scanx-and-scanz)
+* [Reverse](#reverse)
+* [Sort, SortUp, SortDown](#sort-sortup-sortdown)
+* [KeyJoin](#keyjoin)
+* [CrossJoin](#crossjoin)
+* [GroupBy](#groupby)
+* [Distinct](#distinct)
+
+Many Rexl functions produce or operate on one or more sequences.
 
 ### ForEach Functions
 
@@ -1130,7 +1173,7 @@ which `predicate` is `false`.
 
 ### TakeAt
 
-
+REVIEW: Need documentation for `TakeAt`.
 
 ### Chain Functions
 
@@ -1241,8 +1284,6 @@ for example
 G->ChainMap(Items)->SortUp(N)
 ```
 puts the records in the order they appear in the original table `T`.
-
-## Aggregation Functions
 
 ### Sum Functions
 
@@ -1371,7 +1412,7 @@ The `MinC`, `MaxC`, and `MinMaxC` functions are like `Min`, `Max`, and `MinMax`,
 that they return a record with a `Count` field as well as a `Min` or `Max` field, or both in the case
 of `MinMaxC`.
 
-### Fold, Scan, and Generate Functions
+### Fold
 
 The `Fold` function performs general aggregation over a sequence. It has the forms
 ```
@@ -1458,6 +1499,8 @@ pair of values, using `cur[1]` for the `result` parameter achieves the desired r
 Fold(Range(99), cur: (0ia, 1ia), (cur[1], cur[1] + cur[0]), cur[1])
 ```
 produces the result `354224848179261915075`.
+
+### ScanX and ScanZ
 
 The `ScanX` and `ScanZ` functions are similar to `Fold` except they produce a sequence of results rather
 than just a final result. These have forms similar to those of `Fold`, namely
@@ -1556,7 +1599,24 @@ Generate(k: 100, cur: { K: 0, KFact: 1ia }, { K: k+1, KFact: KFact*(k+1) })
 ```
 Note that the count variable `k` starts at `0`, so we have to add `1` to it in this situation.
 
-## Sort, Join and Group Functions
+### Reverse
+
+The `Reverse` function reverses the order of items in a sequence. It has the form
+```
+Reverse(seq)
+```
+where `seq` is a sequence. `Reverse(seq)` is functionally equivalent to `SortDown(seq, #)`, but
+generally faster. That is, it is equivalent to sorting the sequence by item index from largest to
+smallest but the implementation is more efficient than sorting.
+
+For example,
+```
+Range(5)->Reverse()
+```
+produces
+```
+[4, 3, 2, 1, 0]
+```
 
 ### Sort, SortUp, SortDown
 
@@ -1708,7 +1768,7 @@ to the first key. In particular, the second key is not used to determine the ord
 the first key determined that they must occur in that order.
 
 As explained above, reversing the direction of all sort keys does not necessarily reverse the resulting
-the sequence. In particular, when multiple values are equivalent according to the specified sort keys,
+sequence. In particular, when multiple values are equivalent according to all the specified sort keys,
 the relative order of those items is not changed. For example, if `Employees` is the following table,
 ```
 [
@@ -1736,7 +1796,7 @@ and `Sort(Employess, [>] LastName)` produces
   { LastName: "Mason", FirstName: "Sally", Id:215 },
 ]
 ```
-There are _not_ in opposite orders since there are items that share equivalent key values
+These are _not_ in opposite orders since there are items that share equivalent key values
 (`LastName` in this example). To produce the reverse of the first sorting, we can use
 the [_index_ of the item](#auto-indexing) as a tie breaker. That is,
 ```
@@ -2338,6 +2398,12 @@ GroupBy(seq, [key] _: key, [group] _: TakeOne(group))
 
 ## Math Functions
 
+* [Abs](#abs)
+* [Sqrt](#sqrt)
+* [Angle and Trigonometric](#angle-and-trigonometric)
+* [Exponential and Logarithmic](#exponential-and-logarithmic)
+* [Rounding](#rounding)
+
 Rexl includes many mathematical functions. These all extend to
 [optional](03-ExtendedOperatorsAndFunctions.md#extending-to-optional),
 [sequence](03-ExtendedOperatorsAndFunctions.md#extending-to-sequence), and
@@ -2450,6 +2516,13 @@ Here are some example inputs and the corresponding results from each of the roun
 |-2.5 |   -2.0   |    -2.0    |     -3.0     |    -2.0    |    -3.0     |
 
 ## Text Functions
+
+* [Text Length](#text-length)
+* [Text Case Mapping](#text-case-mapping)
+* [Text Trimming](#text-trimming)
+* [Text Extraction](#text-extraction)
+* [Text Concatenation](#text-concatenation)
+* [Text Search and Replace](#text-search-and-replace)
 
 The text functions are all in the `Text` namespace, that is, their full names start with `Text`, and are
 written with a dot between `Text` and the rest of their name. For example, `Text.Len` is the function that
@@ -2591,7 +2664,13 @@ produces the text value equivalent to
 "Sally/Bob/Ahmad"
 ```
 
-### Text Searching
+### Text Search and Replace
+
+* [Text IndexOf and LastIndexOf](#text-indexof-and-lastindexof)
+* [Text StartsWith and EndsWith](#text-startswith-and-endswith)
+* [Text Replace](#text-replace)
+
+#### Text IndexOf and LastIndexOf
 
 The `Text.IndexOf` function has the two forms
 ```
@@ -2634,13 +2713,28 @@ Text.IndexOf("ABCABC", "",  6) //  6
 Text.IndexOf("ABCABC", "",  7) // -1
 ```
 
-## Date and Time Functions
+REVIEW: Need documentation for `Text.LastIndexOf`. Also, also document the ci directive.
 
-The date and time functions can be used to construct date and time values as well as to extract components of 
+#### Text StartsWith and EndsWith
+
+REVIEW: Need documentation for `Text.StartsWith` and `Text.EndsWith`.
+
+#### Text Replace
+
+REVIEW: Need documentation for `Text.Replace`.
+
+## Chrono Functions
+
+* [Date Construction](#date-construction)
+* [Time Construction](#time-construction)
+* [Date Parts](#date-parts)
+* [Time Parts](#time-parts)
+
+The chrono functions can be used to construct date and time values as well as to extract components of
 these values.
 
 The Rexl **_date_** type, introduced in [Chrono Types](02-TypesAndValues.md#chrono-types) and further explained
-in [Chrono Operators](04-Operators.md#date-and-time-arithmetic-operators), represents a date within an idealized
+in [Chrono Operators](04-Operators.md#chrono-arithmetic-operators), represents a date within an idealized
 Gregorian calendar, together with a time within that date. This type is also called the **_date-time_** type to
 emphasize that it represents both a date and a time within that date.
 
@@ -2653,14 +2747,14 @@ of January 1 of year 1 is called the default value of the date type. When an ope
 outside the range of the date type, this default value is produced instead.
 
 The Rexl **_time_** type, introduced in [Chrono Types](02-TypesAndValues.md#chrono-types) and further explained
-in [Chrono Operators](04-Operators.md#date-and-time-arithmetic-operators), represents an amount of time, which
+in [Chrono Operators](04-Operators.md#chrono-arithmetic-operators), represents an amount of time, which
 may be positive, zero, or negative. A time value can be thought of as the difference between two **_date_**
 values. This type is also called the **_time-span_** type to emphasize that it represents an amount of time
 and _not_ a particular time of day.
 
 The resolution of both the date and time types is `0.0000001` second, which is equivalent to `0.1`
 microseconds or `100` nanoseconds. This resolution unit is called a **_tick_**. That is, one tick is
-`100` nanoseconds. Equivalently, there are `10` million ticks in a second.
+`100` nanoseconds. Equivalently, there are `10` million ticks per second.
 
 The time component of a date (date-time) value consists of a number of ticks, at least zero and less than
 `864000000000`, which is the number of ticks in `24` hours. The date type does _not_ include any indication
@@ -2745,33 +2839,1055 @@ Note that `Time(11_000_000)` results in the default (zero) time value, since the
 
 ### Date Parts
 
+The date part functions are all in the `Date` namespace, that is, their full names start with `Date` followed by dot,
+followed by their specific name. These functions all accept a single parameter of date type. All of them may be
+used as properties on date values.
+
+The **_primitive date component_** functions all produce an `I4` value and produce the values that would be passed
+to the [`Date` function](#date-construction) to construct an equivalent date value. Some of these have a corresponding
+**_short name_**. These functions are:
+* `Date.Year` produces the year component of the date value, from `1` to `9999`, inclusive.
+* `Date.Month` produces the month component of the date value, from `1` to `12`, inclusive.
+* `Date.Day` produces the day of the month component of the date value, from `1` to `31`, inclusive.
+* `Date.Hour` produces the hour component of the date value, from `0` to `23`, inclusive. This has short
+  name `Date.Hr`.
+* `Date.Minute` produces the minute component of the date value, from `0` to `59`, inclusive. This has short
+  name `Date.Min`.
+* `Date.Second` produces the second component of the date value, from `0` to `59`, inclusive. This has short
+  name `Date.Sec`.
+* `Date.Millisecond` produces the millisecond component of the date value, from `0` to `999`, inclusive.
+  This has short name `Date.Ms`.
+* `Date.Tick` produces the tick component of the date value, from `0` to `9999`, inclusive.
+
+For example, if `d` is a date value, the expressions
+```
+Date.Millisecond(d)
+Date.Ms(d)
+
+d->Date.Millisecond()
+d->Date.Ms()
+
+d->Millisecond()
+d->Ms()
+
+d.Millisecond
+d.Ms
+```
+all produce the millisecond component of the date value as an integer between `0` and `999`, inclusive.
+
+There are also some specialty date part functions:
+* `Date.DayOfYear` produces the day number within the year of the date value, from `1` to `366`, inclusive,
+  as an `I4` value. Note that this is one-based, not zero-based.
+* `Date.DayOfWeek` produces the day number within the week of the date value, from `0` to `6`, inclusive,
+  as an `I4` value. Note that this is zero-based, with `0` representing Sunday.
+* `Date.StartOfYear` produces a date value representing the start of the year of the given date value.
+  The result type is the date type.
+* `Date.StartOfMonth` produces a date value representing the start of the month of the given date
+  value. The result type is the date type.
+* `Date.StartOfWeek` produces a date value representing the start of the week of the given date value.
+  The result type is the date type.
+* `Date.Date` produces a date value representing the start of the day of the given date value. That is, the
+  result has the same year, month, and day but with zero time components. The result type is the date type.
+  This has the alternate name `Date.StartOfDay`.
+* `Date.Time` produces a time value representing the amount of time since the beginning of the day. The
+  result type is the time type. This has alternate name `Date.TimeOfDay`. Note that adding the results of
+  `Date.Date` and `Date.Time` results in the original date value.
+
+For example, if `d` is a date value equivalent to the result of `Date(2022, 5, 11, 8, 11, 52)`,
+the expressions
+```
+d.DayOfYear
+
+d.DayOfWeek
+
+d.StartOfYear
+
+d.StartOfMonth
+
+d.StartOfWeek
+
+d.Date // or d.StartOfDay
+
+d.Time // or d.TimeOfDay
+```
+evaluate respectively to the equivalent of
+```
+131i4
+
+3i4
+
+Date(2022, 1, 1)
+
+Date(2022, 5, 1)
+
+Date(2022, 5, 8)
+
+Date(2022, 5, 11)
+
+Time(0, 8, 11, 52)
+```
+
 ### Time Parts
 
+The time part functions are all in the `Time` namespace, that is, their full names start with `Time` followed by dot,
+followed by their specific name. These function all accept a single parameter of time type. All of them may be
+used as properties on time values.
 
+The **_primitive time component_** functions all produce an `I4` value and produce values that could be passed to
+the [`Time` function](#time-construction) to construct an equivalent time value. If the time value is negative,
+then all of these produce values that are less than or equal to zero. Some of these have a corresponding
+**_short name_**. These functions are:
+* `Time.Day` produces the integer number of days of the time value.
+* `Time.Hour` produces the hour component of the time value, from `-23` to `23`, inclusive. This has short
+  name `Time.Hr`.
+* `Time.Minute` produces the minute component of the time value, from `-59` to `59`, inclusive. This has
+  short name `Time.Min`.
+* `Time.Second` produces the second component of the time value, from `-59` to `59`, inclusive. This has
+  short name `Time.Sec`.
+* `Time.Millisecond` produces the millisecond component of the time value, from `-999` to `999`,
+  inclusive. This has short name `Time.Ms`.
+* `Time.Tick` produces the tick component of the time value, from `-9999` to `9999`, inclusive.
+
+For example, if `t` is a time value representing 1 day plus 35 hours plus 105 minutes, then it is equivalent to
+`Time(1, 35, 105)`, which is also equivalent to `Time(2, 12, 45)`. Then the expressions
+```
+t.Day
+
+t.Hr
+
+t.Min
+
+t.Sec
+```
+evaluate respectively to the equivalent of
+```
+2i4
+
+12i4
+
+45i4
+
+0i4
+```
+
+As a more complex example, if `t` is a time value equivalent to 3 days in the past plus 35 hours plus 105
+minutes, then it is equivalent to `Time(-3, 35, 105)`, which is also equivalent to `Time(-2, 12, 45)`, which is
+also equivalent to `Time(-1, -11, -15)`. Then the expressions
+```
+t.Day
+
+t.Hr
+
+t.Min
+
+t.Sec
+```
+evaluate respectively to the equivalent of
+```
+-1i4
+
+-11i4
+
+-15i4
+
+0i4
+```
+
+There are also some total time functions. These effectively do unit conversion on the time value, representing
+the time value as a single number. For example, `Time.TotalHours` produces the time measured in hours. The
+result is of floating-point type `R8` since the time can include fractions of an hour. Similarly, all of the
+total time functions produce `R8` except for `TotalTicks`, which produces `I8`. The total time functions are:
+* `Time.TotalDays` produces the total number of days (including fractions of a day) in the time value.
+  This has short name `Time.TotDays`.
+* `Time.TotalHours` produces the total number of hours (including fractions of an hour) in the time value.
+  This has short name `Time.TotHrs`.
+* `Time.TotalMinutes` produces the total number of minutes (including fractions of a minute) in the time value.
+  This has short name `Time.TotMins`.
+* `Time.TotalSeconds` produces the total number of seconds (including fractions of a second) in the time value.
+  This has short name `Time.TotSecs`.
+* `Time.TotalMilliseconds` produces the total number of milliseconds (including fractions of a millisecond)
+  in the time value. This has short name `Time.TotMs`.
+* `Time.TotalTicks` produces the total number of ticks in the time value. Unlike the other total time
+  functions, the result is of type `I8`, since the time value is always an integral number of ticks. This has
+  short name `Time.TotTicks`.
+
+For example, if `t` is a time value representing 1 day plus 35 hours plus 105 minutes, then it is equivalent to
+`Time(1, 35, 105)`, which is also equivalent to `Time(2, 12, 45)`. Then the expressions
+```
+t.TotDays
+
+t.TotHrs
+
+t.TotMins
+
+t.TotSecs
+
+t.TotMs
+
+t.TotTicks
+```
+evaluate respectively to the equivalent of
+```
+2.53125
+
+60.75
+
+3645.0
+
+218700.0
+
+218700000.0
+
+2187000000000
+```
+Note that the last value is of type `I8`, while the others are of type `R8`.
 
 ## Conversion Functions
 
+* [Numeric CastX Functions](#numeric-castx-functions)
+* [Numeric ToX Functions](#numeric-tox-functions)
+* [CastDate and ToDate](#castdate-and-todate)
+* [CastTime and ToTime](#casttime-and-totime)
+* [To](#to)
+* [ToText](#totext)
+
+Conversion functions convert from one type of value to another type. A conversion function is identified by the
+type that it produces. That function handles all source types that are supported. For example, `CastI8` (also
+known as `CastInt`) converts to the `I8` type. It supports many different source types, but only the destination
+type `I8`.
+
+Conversion functions typically fall into two groups, the `CastX` functions and the `ToX` functions. Typically, a
+`CastX` function produces a required (non-optional) type. If a particular conversion doesn't make sense, the
+result is a **_default value_** of the destination type. In contrast, the corresponding `ToX` function produces
+`null` or a provided default value when the conversion doesn't make sense.
+
+For example,
+```
+CastI8("123")
+```
+produces `123` of type `I8`, but
+```
+CastI8("Hello")
+```
+doesn't make sense, so the result is the default `I8` value, namely `0`. In contrast,
+```
+ToI8("123")
+```
+produces `123` of type _optional_ `I8` and
+```
+ToI8("Hello")
+```
+produces `null` of type optional `I8`.
+
+The `ToI8` function may accept a second parameter to be used as the default value (rather than `null`). In
+particular,
+```
+ToI8("123", -1)
+```
+produces `123` of type `I8` (_not_ optional) and
+```
+ToI8("Hello", -1)
+```
+produces `-1` of type `I8` (not optional). This is similar to doing the more verbose
+```
+ToI8("Hello") ?? -1
+```
+
 ### Numeric CastX Functions
+
+The numeric `CastX` functions have the forms
+```
+CastReal(source)
+CastR8(source)
+CastR4(source)
+
+CastIA(source)
+
+CastInt(source)
+CastI8(source)
+CastShort(source)
+CastI4(source)
+CastI2(source)
+CastI1(source)
+
+CastU8(source)
+CastU4(source)
+CastU2(source)
+CastU1(source)
+```
+The `CastReal` function is an alias for `CastR8`. Similarly, `CastInt` is an alias for `CastI8` and `CastShort`
+is an alias for `CastI4`.
+
+The **_result type_** is the numeric type indicated by the function name. The `source` argument may be of
+**_numeric_** type, **_text_** type, **_date_** type, or **_time_** type. If the conversion fails, the result
+is `0` (of the destination type).
+
+When the source type is **_floating-point_** numeric and the destination type is an **_integer_** type, any
+fractional part of the source value is dropped. That is, only the integer part of the value is considered.
+This step is equivalent to applying the [`RoundIn`](#rounding) function. When the destination type is a
+fixed-sized integer type (not IA), then the remaining integer value is reduced modulo $2^N$ where $N$ is the
+number of bits in the destination type. If the source value is non-finite (positive infinity, negative infinity,
+or `NaN`), the result is `0` (of the destination type).
+
+For example,
+```
+CastI8(-500.5)
+
+CastI1(-500.5)
+```
+produce the equivalent of
+```
+-500
+
+12i1
+```
+respectively. To understand the I1 case, note that `-500 + 2*256 = -500 + 512 = 12` so `-500` is
+equivalent modulo $2^8$ (`256`) to `12`, which is a value within the `I1` type.
+
+When the source type is an **_integer_** type and the destination type is another **_integer_** type, there
+are two cases: the value **_fits_** in the destination type or does not fit. In the former case, that value is the
+result. In the latter case, the destination type is a fixed-sized integer type (not `IA`) and the result is
+the value reduced modulo $2^N$ where $N$ is the number of bits in the destination type.
+
+For example,
+```
+CastI4(-500)
+
+CastI1(-500)
+```
+produce the equivalent of
+```
+-500i4
+
+12i1
+```
+When the source type is **_numeric_** and the destination type is a **_floating-point_** type, the conversion
+is the standard one. Note that casting an `R8` value to `R4` may produce an infinite value even though the
+source value is finite. For example, `CastR4(1e100)` produces positive infinity of type `R4`.
+
+When the source type is **_text_** and the destination type is an **_integer_** type, the text value is parsed
+as an integer. If that parsing fails, the result is zero of the destination type. If that parsing succeeds,
+the integer value is cast to the destination integer type. Note that this may involve reducing module $2^N$
+where $N$ is the number of bits in the integer type. For example,
+```
+CastInt("Hello")
+
+CastInt("$150")
+
+CastInt("3.50")
+```
+all produce `0` of type `I8` since each of the text values is not a valid representation of an integer value.
+The expressions
+```
+CastInt("1234567890123456789")
+
+CastInt("12345678901234567890")
+```
+both succeed at parsing the value as an integer. However, the latter results in an integer value that is
+too large for `I8`, so the value is reduced modulo $2^{64}$ and the result of these is
+```
+1234567890123456789
+
+-6101065172474983726
+```
+respectively.
+
+When the source type is **_text_** and the destination type is a **_floating-point_** type, the text value
+is parsed as a floating-point number. If that parsing fails, the result is zero of the destination type.
+If that parsing succeeds, the value is cast to the destination floating-point type. Note that the result
+may be infinite if the parsed value doesn't fit in the destination type as a finite value. For example,
+`CastR4("1e100")` results in an infinite value and not zero.
+
+When the source type is **_time_**, the result is the same as applying the `Time.TotalTicks` function to
+get an `I8` value and then applying the `CastX` function to that `I8` value.
+
+When the source type is **_date_**, the result is the same as subtracting the default date value,
+`Date(1, 1, 1)`, to get a **_time_** value and then applying the `CastX` function to that time value.
 
 ### Numeric ToX Functions
 
+The numeric `ToX` functions have the single parameter forms
+```
+ToReal(source)
+ToR8(source)
+ToR4(source)
+
+ToIA(source)
+
+ToInt(source)
+ToI8(source)
+ToShort(source)
+ToI4(source)
+ToI2(source)
+ToI1(source)
+
+ToU8(source)
+ToU4(source)
+ToU2(source)
+ToU1(source)
+```
+These also have the two parameter forms
+```
+ToReal(source, default)
+ToR8(source, default)
+ToR4(source, default)
+
+ToIA(source, default)
+
+ToInt(source, default)
+ToI8(source, default)
+ToShort(source, default)
+ToI4(source, default)
+ToI2(source, default)
+ToI1(source, default)
+
+ToU8(source, default)
+ToU4(source, default)
+ToU2(source, default)
+ToU1(source, default)
+```
+The `ToReal` function is an alias for `ToR8`. Similarly, `ToInt` is an alias for `ToI8` and `ToShort` is
+an alias for `ToI4`.
+
+By **_destination type_**, we mean the numeric type indicated by the function name.
+
+The **_result type_** is either the **_required_** or **_optional_** form of the **_destination type_**.
+Whether the result type is required or optional depends on the source type as well as on whether a `default`
+is supplied and on the type of the default.
+
+The `source` argument may be of **_numeric_** type, **_text_** type, **_date_** type, or **_time_** type.
+The type of `default`, when provided, is either the **_required_** or **_optional_** form of the destination
+type.
+
+When there is a [standard numeric conversion](02-TypesAndValues.md#standard-numeric-conversions) from the
+source type to the destination type, then the result type is the **_required_** form of the destination type,
+and the result value will never be `null`. In this case, if `default` is specified, a warning is issued
+indicating that the `default` value is ignored.
+
+When there is _not_ a [standard numeric conversion](02-TypesAndValues.md#standard-numeric-conversions)
+from the source type to the destination type, then the one parameter form (when `default` is not provided)
+is equivalent to providing a `default` value of `null`. When `default` is specified and is of the **_required_**
+form of the destination type, the result type is also the required form of the destination type.
+
+When the source type is **_floating-point_** numeric and the destination type is an **_integer_** type, any
+fractional part of the source value is dropped. That is, only the integer part of the value is considered.
+This step is equivalent to applying the [`RoundIn`](#rounding) function. When the destination type is a
+fixed-sized integer type (not `IA`), then the remaining integer value may not fit in the integer type. When
+the value doesn't fit, the result is the `default` value (`null` if not specified). If the source value is
+non-finite (positive infinity, negative infinity, or `NaN`), the result is the default value.
+
+For example,
+```
+ToI8(-500.5)
+ToI8(-500.5, -1)
+
+ToI1(-500.5)
+ToI8(-500.5, -1i1)
+```
+produce the equivalent of
+```
+-500 // of type optional I8
+-500 // of type required I8
+
+null // of type optional I1
+-1i1 // of type required I1
+```
+respectively. The `I1` cases produce the `default` value, `null` or `-1i1`, because the value `-500` does
+not fit in type `I1`.
+
+When the source type is an **_integer_** type and the destination type is another **_integer_** type, there
+are two cases: the value **_fits_** in the destination type or does not fit. In the former case, that value
+is the result. In the latter case, the result is the `default` value (`null` if not specified).
+
+For example,
+```
+ToI4(-500)
+ToI4(-500, -1i4)
+
+ToI1(-500)
+ToI1(-500, -1i1)
+```
+produce the equivalent of
+```
+-500i4 // of type optional I4
+-500i4 // of type required I4
+
+null // of type optional I1
+-1i1 // of type required I1
+```
+When the source type is **_numeric_** and the destination type is a **_floating-point_** type, the conversion
+is the standard one and the result type is the required form of the floating-point type. Note that converting
+an `R8` value to `R4` may produce an infinite value even though the source value is finite. For example,
+`ToR4(1e100)` produces positive infinity of type `R4`.
+
+When the source type is **_text_** and the destination type is an **_integer_** type, the text value is parsed
+as an integer.  If that parsing fails, the result is the `default` value. If that parsing succeeds, but the
+integer value doesn't fit in the destination type, the result is the `default` value. Otherwise, the result
+is the parsed integer value of the destination type. For example,
+```
+ToInt("Hello")
+ToInt("Hello", -1)
+
+ToInt("$150")
+ToInt("$150", -1)
+
+ToInt("3.50")
+ToInt("3.50", -1)
+```
+all produce the `default` value since each of the text values is not a valid representation of an integer value.
+Specifically, these produce
+```
+null
+-1
+
+null
+-1
+
+null
+-1
+```
+respectively.
+
+In contrast, the expressions
+```
+ToInt("1234567890123456789")
+ToInt("1234567890123456789", -1)
+
+ToInt("12345678901234567890")
+ToInt("12345678901234567890", -1)
+```
+all succeed at parsing the value as an integer. However, the latter two result in an integer value that
+is too large for `I8`, so the result of these is
+```
+1234567890123456789
+1234567890123456789
+
+null
+-1
+```
+respectively.
+
+When the source type is **_text_** and the destination type is a **_floating-point_** type, the text value
+is parsed as a floating-point number. If that parsing fails, the result is the `default` value. If that
+parsing succeeds, the value is cast to the destination floating-point type. Note that the result may be
+infinite if the parsed value doesn't fit in the destination type as a finite value. For example,
+`ToR4("1e100")` results in an infinite value and not `null`.
+
+When the source type is **_time_**, the result is the same as applying the `Time.TotalTicks` function to
+get an `I8` value and then applying the `ToX` function to that `I8` value.
+
+When the source type is **_date_**, the result is the same as subtracting the default date value,
+`Date(1, 1, 1)`, to get a **_time_** value and then applying the `ToX` function to that time value.
+
 ### CastDate and ToDate
+
+The `CastDate` function has two forms
+```
+CastDate()
+
+CastDate(source)
+```
+The form with no parameters produces the **_default date value_**, namely the equivalent of `Date(1, 1, 1)`.
+
+In the single parameter form, `source` may be of numeric type or text type. The `source` value is converted
+to a date value. If the conversion fails, the result is the default value, `Date(1, 1, 1)`.
+
+For a numeric `source` value, the number is first converted to an integer (if it is floating-point). For this,
+non-finite floating-point values result in zero. The result is the date value with that integer as its
+**_total tick count_** as specified in [Chrono Types](02-TypesAndValues.md#chrono-types). If the number
+of ticks is out of range, the result is the default date value, `Date(1, 1, 1)`. For example,
+```
+CastDate(0)
+CastDate(1)
+CastDate(-1)
+
+CastDate(3155378975999999999)
+CastDate(3155378976000000000)
+```
+produce the equivalent of
+```
+Date(1, 1, 1)
+Date(1, 1, 1, 0, 0, 0, 0, 1)
+Date(1, 1, 1)
+
+Date(9999, 12, 31, 23, 59, 59, 999, 9999)
+Date(1, 1, 1)
+```
+Both `-1` and `3155378976000000000` are outside the tick range for the date type, so the corresponding result is
+the default date value. In contrast, 3155378975999999999 is the maximum tick value for the date type, so the
+result is the maximum date value.
+
+When the `source` parameter is of type text, the text is parsed as a date value. If that parsing fails, the
+result is the default date value. For example,
+```
+CastDate("5/14/2022 9:33 AM")
+CastDate("5/14/2022 9:33 PM")
+
+CastDate("Saturday May 14 2022 9:33 AM")
+CastDate("Friday May 14 2022 9:33 AM")
+```
+produce the equivalent of
+```
+Date(2022, 5, 14, 9, 33)
+Date(2022, 5, 14, 21, 33)
+
+Date(2022, 5, 14, 9, 33)
+Date(1, 1, 1)
+```
+The last value fails to convert since the indicated date is Saturday and not Friday, so the result is the
+default date value.
+
+The `ToDate` function has the form
+```
+ToDate(source)
+```
+It is similar to the `CastDate` function except that its result type is the optional date type and when the 
+conversion fails, the result is `null` rather than the default date value. For example,
+```
+ToDate(0)
+ToDate(1)
+ToDate(-1)
+
+ToDate(3155378975999999999)
+ToDate(3155378976000000000)
+```
+produce the equivalent of
+```
+Date(1, 1, 1)
+Date(1, 1, 1, 0, 0, 0, 0, 1)
+null
+
+Date(9999, 12, 31, 23, 59, 59, 999, 9999)
+null
+```
+as optional date values. Similarly, when source is text,
+```
+ToDate("5/14/2022 9:33 AM")
+ToDate("5/14/2022 9:33 PM")
+
+ToDate("Saturday May 14 2022 9:33 AM")
+ToDate("Friday May 14 2022 9:33 AM")
+```
+produce the equivalent of
+```
+Date(2022, 5, 14, 9, 33)
+Date(2022, 5, 14, 21, 33)
+
+Date(2022, 5, 14, 9, 33)
+null
+```
+as optional date values.
+Unlike the numeric `ToX` functions, `ToDate` does not have a two-parameter form.
 
 ### CastTime and ToTime
 
+The `CastTime` function has two forms
+```
+CastTime()
+
+CastTime(source)
+```
+The form with no parameters produces the default time value, namely the equivalent of `Time(0)`.
+
+In the single parameter form, `source` may be of numeric type or text type. The `source` value is
+converted to a time value. If the conversion fails, the result is the default value, `Time(0)`.
+
+For a numeric `source` value, the number is first converted to an integer (if it is floating-point). For
+this, non-finite floating-point values result in zero. The result is the time value with that integer
+as its **_total tick count_** as specified in [Chrono Types](02-TypesAndValues.md#chrono-types). If the
+number of ticks is out of range, the result is the default time value, `Time(0)`. For example,
+```
+CastTime( 0)
+CastTime( 1)
+CastTime(-1)
+
+CastTime( 0x7FFF_FFFF_FFFF_FFFFia)
+CastTime( 0x8000_0000_0000_0000ia) // too big
+CastTime(-0x8000_0000_0000_0000ia)
+CastTime(-0x8000_0000_0000_0001ia) // too small
+```
+produce the equivalent of
+```
+Time(0)
+Time(0, 0, 0, 0, 0,  1) //  1 tick
+Time(0, 0, 0, 0, 0, -1) // -1 tick
+
+Time( 10675199,  2,  48,  5,  477,  5807) // maximum time
+Time(0)
+Time(-10675199, -2, -48, -5, -477, -5808) // minimum time
+Time(0)
+```
+Both `0x8000_0000_0000_0000ia` and `0x8000_0000_0000_0001ia` are outside the tick range for the time
+type, so the corresponding result is the default (zero) time value. In contrast, `0x7FFF_FFFF_FFFF_FFFFia`
+and `-0x8000_0000_0000_0000ia` are the maximum and minimum tick values for the time type, so the results
+are the maximum and minimum time values.
+
+When the `source` parameter is of type text, the text is parsed as a time value. If that parsing fails,
+the result is the default time value. For example,
+```
+CastTime(" 0")
+CastTime(" 1")
+CastTime("-1")
+
+CastTime(" 0:00:00")
+CastTime(" 1:00:00")
+CastTime("-1:00:00")
+
+CastTime(" 1.23:00:00")
+CastTime(" 1.24:00:00") // bad number of hours
+CastTime("-1.23:00:00")
+
+CastTime(" 10675199.02:48:05.4775807")
+CastTime(" 10675199.02:48:05.4775808") // too big
+CastTime("-10675199.02:48:05.4775808")
+CastTime("-10675199.02:48:05.4775809") // too small
+```
+produce the equivalent of
+```
+Time( 0) //  0 days
+Time( 1) //  1 day
+Time(-1) // -1 day
+
+Time( 0,  0) //  0 hours
+Time( 0,  1) //  1 hour
+Time( 0, -1) // -1 hour
+
+Time( 1,  23) // 1 day and 23 hours
+Time(0)       // hours out of range
+Time(-1, -23) // negative 1 day and 23 hours
+
+Time( 10675199,  2,  48,  5,  477,  5807) // maximum time
+Time(0)                                   // out of range
+Time(-10675199, -2, -48, -5, -477, -5808) // minimum time
+Time(0)                                   // out of range
+```
+Note that text values that are outside the time tick range result in the default (zero) time.
+
+The `ToTime` function has the form
+```
+ToTime(source)
+```
+It is similar to the `CastTime` function except that its result type is the optional time type and when
+the conversion fails, the result is `null` rather than the default time value. For example,
+```
+ToTime( 0)
+ToTime( 1)
+ToTime(-1)
+
+ToTime( 0x7FFF_FFFF_FFFF_FFFFia)
+ToTime( 0x8000_0000_0000_0000ia) // too big
+ToTime(-0x8000_0000_0000_0000ia)
+ToTime(-0x8000_0000_0000_0001ia) // too small
+```
+produce the equivalent of
+```
+Time(0)
+Time(0, 0, 0, 0, 0,  1) //  1 tick
+Time(0, 0, 0, 0, 0, -1) // -1 tick
+
+Time( 10675199,  2,  48,  5,  477,  5807) // maximum time
+null
+Time(-10675199, -2, -48, -5, -477, -5808) // minimum time
+null
+```
+as optional time values. Similarly, when source is text,
+```
+ToTime(" 0")
+ToTime(" 1")
+ToTime("-1")
+
+ToTime(" 0:00:00")
+ToTime(" 1:00:00")
+ToTime("-1:00:00")
+
+ToTime(" 1.23:00:00")
+ToTime(" 1.24:00:00") // bad number of hours
+ToTime("-1.23:00:00")
+
+ToTime(" 10675199.02:48:05.4775807")
+ToTime(" 10675199.02:48:05.4775808") // too big
+ToTime("-10675199.02:48:05.4775808")
+ToTime("-10675199.02:48:05.4775809") // to small
+```
+Produce the equivalent of
+```
+Time( 0) //  0 days
+Time( 1) //  1 day
+Time(-1) // -1 day
+
+Time( 0,  0) //  0 hours
+Time( 0,  1) //  1 hour
+Time( 0, -1) // -1 hour
+
+Time( 1,  23) // 1 day and 23 hours
+null          // hours out of range
+Time(-1, -23) // negative 1 day and 23 hours
+
+Time( 10675199,  2,  48,  5,  477,  5807) // maximum time
+null                                      // out of range
+Time(-10675199, -2, -48, -5, -477, -5808) // minimum time
+null                                      // out of range
+```
+as optional time values.
+
+Unlike the numeric `ToX` functions, `ToTime` does not have a two-parameter form.
+
 ### To
+
+The `To` function has the form
+```
+To(source, default)
+```
+This is similar to the numeric `ToX` functions, except that the destination type is inferred from the
+type of the `default` argument rather than from the function name. More specifically, if the type of the
+`default` argument is the required or optional form of one of the numeric types for which there is a `ToX`
+function (which is all numeric types except bool), then the `To` function behaves like the two-parameter
+form of that `ToX` function. Otherwise, the `To` function behaves like the two-parameter form of `ToI8`.
+For example,
+```
+To("3.5", -1.0)
+
+To("3.5", -1  )
+
+To("3.5", null)
+```
+are equivalent to
+```
+ToR8("3.5", -1.0)
+
+ToI8("3.5", -1  )
+
+ToI8("3.5", null)
+```
+and produce values equivalent to
+```
+3.5r8 // of type required R8
+
+-1i8 // of type required I8
+
+null // of type optional I8
+```
+respectively.
 
 ### ToText
 
+* [Chrono Format Specifiers](#chrono-format-specifiers)
+
+The `ToText` function converts a `source` value to text. It has two forms:
+```
+ToText(source)
+
+ToText(source, format)
+```
+For the first form, the `source` type may be **_numeric_**, **_date_**, or **_time_**. For the
+two-parameter form, the `source` type may be **_date_** or **_time_** and the format should be a
+text value containing a [format specifier](#chrono-format-specifiers).
+
+For example,
+```
+ToText(0xFF)
+
+ToText(1.23e10)
+
+ToText(1.23e100)
+```
+produce text values equivalent to
+```
+"255"
+
+"12300000000"
+
+"1.23E+100"
+```
+Date and time values may be used with or without a [format specifier](#chrono-format-specifiers).
+For example,
+```
+ToText(Date(2022, 5, 11, 16, 28, 37, 123, 4567))
+
+ToText(Date(2022, 5, 11, 16, 28, 37, 123, 4567), "F")
+
+ToText(Date(2022, 5, 11, 16, 28, 37, 123, 4567), "O")
+
+ToText(Date(2022, 5, 11, 16, 28, 37, 123, 4567),
+    "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'FFFFFFF")
+```
+produce text values equivalent to
+```
+"05/11/2022 16:28:37"
+
+"Wednesday, 11 May 2022 16:28:37"
+
+"2022-05-11T16:28:37.1234567"
+
+"2022-05-11T16:28:37.1234567"
+```
+The last example uses custom component formatting, while the others use standard format specifiers.
+
 #### Chrono Format Specifiers
 
+When `source` is a [chrono value](02-TypesAndValues.md#chrono-types) (date or time), a format may also
+be specified. The format is a text value specifying how the chrono value should be converted to text.
+
+Chrono format specifiers are divided into **_standard_** specifiers and **_custom_** specifiers. The
+standard specifiers consist of a single letter, while custom specifiers are any other text value.
+A custom specifier encodes the desired constituent parts and may include literal text enclosed between
+single quotation characters. For example,
+```
+"'Year 'yyyy' was at its best in the hour 'HH"
+```
+is a custom date specifier that encodes some literal text (between ' characters) together with a four
+digit year, `yyyy`, and two digit hour, `HH`, in the range `00` to `23`, inclusive. The expression
+```
+ToText(Date(2022, 05, 11, 16), "'Year 'yyyy' was at its best in the hour 'HH")
+```
+produces the text value
+```
+"Year 2022 was at its best in the hour 16"
+```
+**_Technical note_**: The supported formats match those supported by the .Net libraries for the
+`System.DateTime` and `System.TimeSpan` types. Where the .Net documentation states that a format is
+culture sensitive, Rexl uses the invariant culture so the output is not dependent on current culture
+settings. The .Net documentation for these can be found via the following links:
+* Standard date format specifiers: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings.
+* Custom date format specifiers: https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings.
+* Standard time format specifiers: https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-timespan-format-strings.
+* Custom time format specifiers: https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-timespan-format-strings.
+
+The standard format specifiers for the date type are summarized in the following table. The example result is 
+when the source value is the date value `Date(2022, 8, 11, 16, 28, 37, 123, 4567)`.
+
+| **Format<br/>Specifier** | **Example**             | **Description** |
+|:------------------------:|:-----------------------:|:---------------:|
+| `"d"` | `"08/11/2022"`                             | Short date |
+| `"D"` | `"Thursday, 11 August 2022"`               | Long date |
+| `"f"` | `"Thursday, 11 August 2022 16:28"`         | Full date/time (short time) |
+| `"F"` | `"Thursday, 11 August 2022 16:28:37"`      | Full date/time (long time) |
+| `"g"` | `"08/11/2022 16:28"`                       | General date/time (short time) |
+| `"G"` | `"08/11/2022 16:28:37"`                    | General date/time (long time) |
+| `"M"` or `"m"` | `"August 11"`                     | Month/day |
+| `"O"` or `"o"` | `"2022-08-11T16:28:37.1234567"`   | Round-trip date/time |
+| `"R"` or `"r"` | `"Thu, 11 Aug 2022 16:28:37 GMT"` | RFC1123 |
+| `"s"` | `"2022-08-11T16:28:37"`                    | Sortable date/time |
+| `"t"` | `"16:28"`                                  | Short time |
+| `"T"` | `"16:28:37"`                               | Long time |
+| `"u"` | `"2022-08-11 16:28:37Z"`                   | Universal sortable date/time |
+| `"U"` | `"Thursday, 11 August 2022 23:28:37"`      | Universal full date/time |
+| `"Y"` or `"y"` | `"2022 August"`                   | Year month |
+| Other single<br/>character | `null`                | An unsupported format results in<br/>a `null` text value |
+
+
+The standard format specifiers for the time type are summarized in the following table. The example results
+are when the source value is `Time(5, 7, 28, 37, 123, 0)` and `Time(0, 7, 28, 37, 123, 0)`,
+respectively.
+
+| **Format<br/>Specifier** | Example               | Description |
+|:------------------------:|----------------------:|:-----------:|
+| "c" | `"5.07:28:37.1230000"`<br/>`"07:28:37.1230000"` | Constant short:<br/>uses `.` to separate days |
+| "g" | `"5:7:28:37.123"`<br/>`"7:28:37.123"` | General short:<br/>uses `:` to separate days,<br/>omit information when not needed |
+| "G" | `"5:07:28:37.1230000"`<br/>`"0:07:28:37.1230000"` | General long:<br/>uses `:` to separate days |
+
+The following table specifies some available encodings in custom date format specifiers.
+
+| Character | Description | Supported patterns |
+|:---------:|:-----------:|:------------------ |
+| `y` | Year | `y` and `yy` produce the year modulo `100` (without the century).<br/>`yy` always produces two digits, with a leading zero when needed.<br/>`yyy` and `yyyy` produce the full year with leading zeros when needed. |
+| `M` | Month | `M` and `MM` produce the month number in the range `1` to `12`, inclusive.<br/>`MM` always produces two digits, with a leading zero when needed.<br/>`MMM` produces a short month name, such as `Feb`, while `MMMM` produces a<br/>full month name, such as `February`. |
+| `d` | Day | `d` and `dd` produce the day number in the range `1` to `31`, inclusive.<br/>`dd` always produces two digits, with a leading zero when needed.<br/>`ddd` produces a short weekday name, such as `Wed`, while `dddd` produces<br/>a full weekday name, such as `Wednesday`. |
+| `h` or `H` | Hour | `h` and `hh` produce the hour in the range `1` to `12`, inclusive.<br/>`hh` always produces two digits, with a leading zero when needed.<br/>`H` and `HH` produce the hour in the range `0` to `23`, inclusive.<br/>`HH` always produces two digits, with a leading zero when needed. |
+| `t` | AM/PM | `t` produces the first character of the AM/PM designator.<br/>`tt` produces the full AM/PM designator. |
+| `m` | Minute | `m` and `mm` produce the minute of the hour in the range `0` to `59`, inclusive.<br/>`mm` always produces two digits, with a leading zero when needed. |
+| `s` | Second | `s` and `ss` produce the second in the minute in the range `0` to `59`, inclusive.<br/>`ss` always produces two digits, with a leading zero when needed. |
+| `f` or `F` | Fraction of a<br/>second | Up to seven consecutive `f` or `F` characters produces the fraction of a second.<br/>The number of characters determines the precision displayed.<br/>For example, `fff` produces the milliseconds, `ffffff` produces the<br/>microseconds, and so on. Using `F` suppresses trailing zeros. |
+
+The following table shows thee result of `ToText(Date(2022, 8, 11, 16, 28, 37, 123, 4567), fmt)` for 
+various values of `fmt`.
+
+| **Custom Format Specifier**                 | **Date string** |
+|:--------------------------------------------|:----------------|
+| `"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff"` | `2022-08-11T16:28:37.1234567` |
+| `"ddd, dd MMM yyyy HH':'mm':'ss 'PDT'"`     | `Thu, 11 Aug 2022 16:28:37 PDT` |
+| `"dddd, dd MMMM yyyy h':'mm':'ss tt"`       | `Thursday, 11 August 2022 4:28:37 PM` |
+| `"yyyy'-'MM'-'dd'T'HH':'mm':'ss"`           | `2022-08-11T16:28:37` |
+| `"yyyy'-'MM'-'dd HH':'mm':'ss'.'fffff"`     | `2022-08-11 16:28:37.12345` |
+
+
+The following table specifies some available encodings in custom time format specifiers.
+
+| **Character** | **Description** | **Supported patterns** |
+|:-------------:|:---------------:|:-----------------------|
+| `d` | Days | Any number of `d` characters in succession produces<br/>the day component using at least the indicated<br/>number of digits, with leading zeros when<bar/>needed. |
+| `h` | Hours | `h` and `hh` produce the hour in the range `0` to `23`, inclusive.<br/>`hh` always produces two digits, with a leading zero when needed.<br/>Unlike with date values, `H` is not legal. |
+| `m` | Minute | `m` and `mm` produce the minute of the hour in the range `0` to `59`, inclusive.<br/>`mm` always produces two digits, with a leading zero when needed. |
+| `s` | Second | `s` and `ss` produce the second in the minute in the range `0` to `59`, inclusive.<br/>`ss` always produces two digits, with a leading zero when needed. |
+| `f` or `F` | Fraction of a<br/>second | Up to seven consecutive `f` or `F` characters produces the fraction of a second.<br/>The number of characters determines the precision displayed.<br/>For example, `fff` produces the milliseconds, `ffffff` produces the<br/>microseconds, and so on. Using `F` suppresses trailing zeros. |
 
 
 ## Tuple Functions
 
+The ten tuple item functions take a tuple argument and produce the value from the indicated slot in the tuple.
+```
+Tuple.Item0(tuple)
+Tuple.Item1(tuple)
+Tuple.Item2(tuple)
+Tuple.Item3(tuple)
+Tuple.Item4(tuple)
+Tuple.Item5(tuple)
+Tuple.Item6(tuple)
+Tuple.Item7(tuple)
+Tuple.Item8(tuple)
+Tuple.Item9(tuple)
+```
+Tuple slot values can also be accessed using [tuple indexing](04-Operators.md#indexing), for example, `tuple[2]`.
+While there are tuple item functions only for slots zero through nine, tuple indexing can be used to access tuple
+slots beyond nine. The tuple item functions can be used with [function projection](04-Operators.md#function-projection)
+and also as [properties](04-Operators.md#dot-operator), so the following are equivalent:
+```
+tuple[2]
 
+Tuple.Item2(tuple)
+
+tuple->Tuple.Item2()
+
+tuple->Item2()
+
+tuple.Item2
+```
+These functions extend to [optional](03-ExtendedOperatorsAndFunctions.md#extending-to-optional),
+[sequence](03-ExtendedOperatorsAndFunctions.md#extending-to-sequence), and
+[tensor](03-ExtendedOperatorsAndFunctions.md#extending-to-tensor).
 
 ## Tensor Functions
+
+* [Shape Reconciliation](#shape-reconciliation)
+* [Tensor.Fill and Tensor.From](#tensorfill-and-tensorfrom)
+* [Tensor.Build](#tensorbuild)
+* [Tensor.Rank and Tensor.Shape](#tensorrank-and-tensorshape)
+* [Tensor.Reshape](#tensorreshape)
+* [Tensor.ExpandDims](#tensorexpanddims)
+* [Tensor.Transpose](#tensortranspose)
+* [Tensor.Dot](#tensordot)
+* [Tensor Arithmetic Functions](#tensor-arithmetic-functions)
+* [Tensor.ForEach](#tensorforeach)
+
+Recall that Rexl is a pure functional expression language. That is, all values are immutable. This includes tensor
+values. Other languages such as Python allow values within a tensor to change. Rexl does not allow this. When
+a value needs to be modified, a new value is created instead. Consequently, tensor functions and operators do
+not modify their input tensors, but instead produce new tensors. In some cases, the result tensor can share
+information with an input tensor. For example, the results of the `Tensor.Transpose` and `Tensor.ExpandDims`
+functions and the tensor slicing operator always share the cell buffer of their input. Similarly, `Tensor.Reshape`
+often shares the input buffer. Other functions may produce a result that shares an input buffer, depending on
+the circumstance.
+
+Recall that the [arithmetic operators](04-Operators.md#arithmetic-operators) and others
+[extend to tensor](03-ExtendedOperatorsAndFunctions.md#extending-to-tensor).
+For example, if `X` and `Y` are two tensors, the expression
+```
+X + Y
+```
+is shorthand for the invocation of [`Tensor.ForEach`](#tensorforeach)
+```
+Tensor.ForEach(x:X, y:Y, x + y)
+```
 
 ### Shape Reconciliation
 

@@ -13,7 +13,7 @@ namespace Microsoft.Rexl.Code;
 /// </summary>
 public abstract class AggBase
 {
-    // Max possible arity is limited by the the max numbers of type parameters and members in a class.
+    // Max possible arity is limited by the max numbers of type parameters and members in a class.
     // These seem to be 2^16 - 1. The precise limits don't seem to be documented.
     // However, generating the code for the `IEquatable<>` methods takes a very long time when the arity
     // is large, and there doesn't seem to be a compelling reason to support extremely large arities.

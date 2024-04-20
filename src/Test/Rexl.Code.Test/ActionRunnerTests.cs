@@ -273,7 +273,7 @@ public class ActionRunnerTests
         // Abort cases with abort delay.
 
         // RunCore has no delay. AbortCore has 100 ms delay. The main thread (AbortCore) should be the "nominated" thread,
-        // but the the task thread (RunCore) should sneak in and grab the lock and actually do the "playing".
+        // but the task thread (RunCore) should sneak in and grab the lock and actually do the "playing".
         var maker = GetMaker("SyncProc(Time(0), Time(0, 0, 0, 0, 100))");
 
         var runner = maker();
