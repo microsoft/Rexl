@@ -928,7 +928,7 @@ internal sealed partial class TestWrapSeqFunc : TestFunc
 /// and doesn't ever cache its count. This helps with coverage for <see cref="ICanCount.GetCount(Action)"/> when
 /// <see cref="ICanCount.TryGetCount(out long)"/> fails.</item>
 /// <item><see cref="WrapList"/>: Wraps a sequence in a wrapper that implements <see cref="IList{T}"/>.</item>
-/// <item><see cref="WrapColl"/>: Wraps a sequence in a wrapper that only implements <see cref="ICollection{T}"/>.</item>
+/// <item><see cref="WrapColl"/>: Wraps a sequence in a wrapper that only implements <see cref="IReadOnlyCollection{T}"/>.</item>
 /// <item><see cref="WrapArr"/>: Wraps a sequence in an array.</item>
 /// <item><see cref="WrapCurs"/>: Wraps a sequence in a wrapper that only implements <see cref="ICursorable{T}"/>.</item>
 /// </list>

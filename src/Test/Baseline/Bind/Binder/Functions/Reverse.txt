@@ -1,0 +1,49 @@
+**** New globals: {i8:i8, i8s:i8*, s:s, ss:s*}
+
+> Reverse(i8s)
+Reverse(i8s) : i8*
+Binder : Reverse(i8s)
+###
+> Reverse(i8)
+Reverse(i8) : i8*
+*** Error: (8,10) Node: i8, Message: Invalid operand type: cannot convert type 'i8' to 'i8*'
+Binder : Reverse(Error(ErrBadType_Src_Dst))
+###
+> Reverse(ss)
+Reverse(ss) : s*
+Binder : Reverse(ss)
+###
+> Reverse(s)
+Reverse(s) : s*
+*** Error: (8,9) Node: s, Message: Invalid operand type: cannot convert type 's' to 's*'
+Binder : Reverse(Error(ErrBadType_Src_Dst))
+###
+> Reverse(Range(10))
+Reverse(Range(10)) : i8*
+Binder : Reverse(Range(10))
+###
+> Reverse(Reverse(i8s))
+Reverse(Reverse(i8s)) : i8*
+Binder : Reverse(Reverse(i8s))
+Reducer: i8s
+###
+> Reverse(["a", "b", "c"])
+Reverse(["a", "b", "c"]) : s*
+Binder : Reverse(["a", "b", "c"])
+Reducer: ["c", "b", "a"]
+###
+> Reverse(Null(i8s))
+Reverse(Null(i8s)) : i8*
+Binder : Reverse(DefOpt*(i8s))
+Reducer: null
+###
+> Reverse(i8s->TakeIf(false))
+Reverse(i8s->TakeIf(false)) : i8*
+Binder : Reverse(TakeIf*(*1: i8s, false))
+Reducer: null
+###
+> Reverse(i8s->Take(1))
+Reverse(i8s->Take(1)) : i8*
+Binder : Reverse(Take(i8s, 1))
+Reducer: Take(i8s, 1)
+###

@@ -59,6 +59,9 @@ static partial class RexlStrings
     public static readonly StringId AboutSort_SourceOnly = new(nameof(AboutSort_SourceOnly), "The sequence to sort. May be prefixed with a sort directive: [up], [down], [<], [>], [~], [~up], [~down], [~<], [~>].");
     public static readonly StringId AboutSort_Selector = new(nameof(AboutSort_Selector), "A value to sort on. May be prefixed with a sort directive: [up], [down], [<], [>], [~], [~up], [~down], [~<], [~>].");
 
+    public static readonly StringId AboutReverse = new(nameof(AboutReverse), "Reverses the order of the items of the sequence.");
+    public static readonly StringId AboutReverse_Source = new(nameof(AboutReverse_Source), "The sequence to reverse.");
+
     public static readonly StringId AboutDistinct = new(nameof(AboutDistinct), "Gets the distinct items contained in the sequence in the original order of their first appearance.");
     public static readonly StringId AboutDistinct_Source = new(nameof(AboutDistinct_Source), "The sequence to remove duplicated items from.");
     public static readonly StringId AboutDistinct_Key = new(nameof(AboutDistinct_Key), "Optional key value to match by.");

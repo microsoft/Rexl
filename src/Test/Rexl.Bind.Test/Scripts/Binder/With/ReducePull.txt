@@ -1,10 +1,23 @@
-﻿:: { si8:i8*, si8_2:i8*, A:i8, B:i8, C:i8, Txt:s, QA:i8?, T:{A:i8}, M:M{P!P:i8, M!S:i8} }
+﻿:: { si8:i8*, si8_2:i8*, A:i8, B:i8, C:i8, Txt:s, QA:i8?, T:{A:i8}, M:M{P!P:i8, M!S:i8}, b:b }
 
 // ForEach.
 ForEach(With (s: Wrap(si8), s ++ s), it^3)
 ForEach(Guard(s: Wrap(si8), s ++ s), it^3)
 ForEach(With (s: si8 ++ Range(2), s ++ s), it^3)
 ForEach(Guard(s: si8 ++ Range(2), s ++ s), it^3)
+
+// Reverse.
+Reverse(With (s: Wrap(si8), s ++ s))
+Reverse(Guard(s: Wrap(si8), s ++ s))
+Reverse(With (s: si8 ++ Range(2), s ++ s))
+Reverse(Guard(s: si8 ++ Range(2), s ++ s))
+Reverse(With (s: si8, s->Take(0) ++ s->Take(0)))
+Reverse(With (s: si8, s->Take(1) ++ s->Take(0)))
+Reverse(With (s: si8, s->Take(0) ++ s->Take(1)))
+Reverse(With (s: si8->Take(1), s ++ s->Take(0)))
+Reverse(With (s: si8->Take(1), s->Take(0) ++ s))
+Reverse(With (s: si8->Take(b), s ++ s->Take(0)))
+Reverse(With (s: si8->Take(b), s->Take(0) ++ s))
 
 // Sort.
 Sort(With (s: Wrap(si8), s ++ s), -it)

@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Private;
 using Microsoft.Rexl.Sequence;
@@ -424,7 +424,7 @@ internal static class MultiFormFuncHelper
         long countAhead = -1;
         if (counter != null && counter.TryGetCount(out var count))
             countAhead = count;
-        else if (src2 is ICollection ic)
+        else if (src2 is IReadOnlyCollection<TIn2> ic)
             countAhead = ic.Count;
 
         // If src1 is an indexed enumerable and src2 is cursorable, then produce an indexed enumerable and

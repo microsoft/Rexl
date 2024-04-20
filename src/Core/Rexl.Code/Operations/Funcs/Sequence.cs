@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Parse;
@@ -18,6 +20,375 @@ using IE = IEnumerable<object>;
 using IV = IEnumerable<ushort>;
 using O = Object;
 using V = UInt16;
+
+public sealed class ReverseGen : RexlOperationGenerator<ReverseFunc>
+{
+    public static readonly ReverseGen Instance = new ReverseGen();
+
+    private readonly MethodInfo _meth;
+
+    private ReverseGen()
+    {
+        _meth = new Func<IE, ExecCtx, int, IE>(Exec).Method.GetGenericMethodDefinition();
+    }
+
+    protected override bool TryGenCodeCore(ICodeGen codeGen, BndCallNode call, ReadOnly.Array<Type> sts, out Type stRet)
+    {
+        Validation.AssertValue(codeGen);
+        Validation.Assert(IsValidCall(call, true));
+        Validation.Assert(sts.Length == call.Args.Length);
+
+        DType typeSeq = call.Type;
+        Validation.Assert(call.Args[0].Type == typeSeq);
+        DType typeItem = typeSeq.ItemTypeOrThis;
+        Type stItem = codeGen.GetSystemType(typeItem);
+
+        MethodInfo meth = _meth.MakeGenericMethod(stItem);
+        stRet = GenCallCtxId(codeGen, meth, sts, call);
+        return true;
+    }
+
+    private static IEnumerable<T> Exec<T>(IEnumerable<T> src, ExecCtx ctx, int id)
+    {
+        Validation.AssertValueOrNull(src);
+        Validation.AssertValue(ctx);
+
+        // This optimizes for various cases. For example, ICursorable or IReadOnlyList.
+
+        if (src is null)
+            return null;
+
+        if (src is RevImpl<T> rev)
+            return rev.GetForward();
+        if (src is FwdImpl<T> fwd)
+            return fwd.Rev;
+
+        long count = -1;
+        if (src is ICanCount can)
+        {
+            if (can.TryGetCount(out count))
+            {
+                switch (count)
+                {
+                case 0: return null;
+                case 1: return src;
+                }
+            }
+            else
+                count = -1;
+
+            if (src is ICursorable<T> cursable)
+                return new RevImplCurs<T>(cursable, can, ctx, id);
+        }
+        else if (src is IReadOnlyCollection<T> col)
+        {
+            count = col.Count;
+            switch (count)
+            {
+            case 0: return null;
+            case 1: return src;
+            }
+
+            if (src is IReadOnlyList<T> list)
+                return new RevImplList<T>(list);
+        }
+
+        var ce = count < 0 ? new CachingEnumerable<T>(src) : new CachingEnumerable<T>(count, src);
+        return new RevImplCurs<T>(ce, ce, ctx, id);
+    }
+
+    /// <summary>
+    /// A "forward" cursorable paired with a reverse cursorable. Returned when
+    /// `Reverse` is invoked on a <see cref="RevImpl{T}"/>.
+    /// </summary>
+    private sealed class FwdImpl<T> : ICursorable<T>, ICanCount
+    {
+        public readonly RevImpl<T> Rev;
+
+        public FwdImpl(RevImpl<T> rev)
+        {
+            Validation.AssertValue(rev);
+            Rev = rev;
+        }
+
+        public long GetCount(Action? callback) => Rev.GetCount(callback);
+        public bool TryGetCount(out long count) => Rev.TryGetCount(out count);
+
+        public ICursor<T> GetCursor() => Rev.GetFwdCursor();
+        public IEnumerator<T> GetEnumerator() => Rev.GetFwdEnumerator();
+
+        ICursor ICursorable.GetCursor() => GetCursor();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    /// <summary>
+    /// The implementation of a reversed sequence.
+    /// </summary>
+    private abstract class RevImpl<T> : ICursorable<T>, ICanCount
+    {
+        private volatile FwdImpl<T> _fwd;
+
+        protected RevImpl()
+        {
+        }
+
+        /// <summary>
+        /// Reversing this sequence produces a "forward" wrapper.
+        /// </summary>
+        public FwdImpl<T> GetForward()
+        {
+            var fwd = _fwd;
+            if (fwd is null)
+            {
+                Interlocked.CompareExchange(ref _fwd, new FwdImpl<T>(this), null);
+                fwd = _fwd;
+            }
+            return fwd;
+        }
+
+        public abstract bool TryGetCount(out long count);
+        public abstract long GetCount(Action? callback);
+
+        public abstract IEnumerator<T> GetEnumerator();
+        public abstract IEnumerator<T> GetFwdEnumerator();
+        public abstract ICursor<T> GetCursor();
+        public abstract ICursor<T> GetFwdCursor();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        ICursor ICursorable.GetCursor() => GetCursor();
+    }
+
+    /// <summary>
+    /// The implementation of a reversal of a cursorable sequence.
+    /// </summary>
+    private sealed class RevImplCurs<T> : RevImpl<T>
+    {
+        private readonly ExecCtx _ctx;
+        private readonly int _id;
+        private readonly Action _ping;
+
+        private readonly ICursorable<T> _src;
+        private readonly ICanCount _counter;
+
+        public RevImplCurs(ICursorable<T> src, ICanCount counter, ExecCtx ctx, int id)
+            : base()
+        {
+            Validation.AssertValue(src);
+            Validation.AssertValue(counter);
+            Validation.AssertValue(ctx);
+
+            _ctx = ctx;
+            _id = id;
+            _ping = Ping;
+
+            _src = src;
+            _counter = counter;
+        }
+
+        private void Ping() => _ctx.Ping(_id);
+
+        public override bool TryGetCount(out long count) => _counter.TryGetCount(out count);
+        public override long GetCount(Action? callback) => _counter.GetCount(callback);
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            if (!_counter.TryGetCount(out long count))
+                count = _counter.GetCount(_ping);
+
+            var curs = _src.GetCursor();
+            for (long i = count; --i >= 0;)
+            {
+                bool tmp = curs.MoveTo(i, _ping);
+                Validation.Assert(tmp);
+                yield return curs.Value;
+            }
+        }
+
+        public override IEnumerator<T> GetFwdEnumerator() => _src.GetEnumerator();
+
+        public override ICursor<T> GetCursor()
+        {
+            if (!_counter.TryGetCount(out long count))
+                count = _counter.GetCount(_ping);
+
+            return new CursorImpl(_src, _ping, count);
+        }
+
+        public override ICursor<T> GetFwdCursor() => _src.GetCursor();
+
+        private sealed class CursorImpl : ICursor<T>
+        {
+            private readonly Action _ping;
+            private readonly long _count;
+
+            private ICursor<T> _fwd;
+
+            private T _value;
+            private long _index;
+
+            public CursorImpl(ICursorable<T> cursable, Action ping, long count)
+            {
+                _ping = ping;
+                _fwd = cursable.GetCursor();
+                _count = count;
+            }
+
+            public T Value => _value;
+
+            public long Index => _index;
+
+            public T Current => _value;
+            object? ICursor.Value => _value;
+            object IEnumerator.Current => _value;
+
+            public void Dispose()
+            {
+                var fwd = Interlocked.Exchange(ref _fwd, null);
+                fwd?.Dispose();
+            }
+
+            public bool MoveNext()
+            {
+                var fwd = _fwd;
+                Validation.BugCheck(fwd != null);
+
+                var inext = _index + 1;
+                return MoveToCore(_index + 1, _ping);
+            }
+
+            public bool MoveTo(long index) => MoveTo(index, null);
+
+            public bool MoveTo(long index, Action? callback)
+            {
+                var fwd = _fwd;
+                Validation.BugCheck(fwd != null);
+                Validation.BugCheckParam(index >= 0, nameof(index));
+                Validation.BugCheckValueOrNull(callback);
+
+                return MoveToCore(index, callback);
+            }
+
+            private bool MoveToCore(long index, Action? callback)
+            {
+                var fwd = _fwd;
+                Validation.BugCheck(fwd != null);
+                Validation.Assert(index >= 0);
+                Validation.AssertValueOrNull(callback);
+
+                if (index == _index)
+                    return true;
+                if (index >= _count)
+                    return false;
+
+                bool tmp = fwd.MoveTo(_count - index - 1, callback);
+                Validation.Assert(tmp);
+
+                _value = fwd.Value;
+                _index = index;
+                return true;
+            }
+
+            public void Reset() => throw new InvalidOperationException();
+        }
+    }
+
+    /// <summary>
+    /// The implementation of a reversal of a readonly list.
+    /// </summary>
+    private sealed class RevImplList<T> : RevImpl<T>
+    {
+        private readonly IReadOnlyList<T> _items;
+        private readonly int _count;
+
+        public RevImplList(IReadOnlyList<T> items)
+            : base()
+        {
+            Validation.AssertValue(items);
+
+            _items = items;
+            _count = _items.Count;
+        }
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            for (int i = _count; --i >= 0;)
+                yield return _items[i];
+        }
+
+        public override IEnumerator<T> GetFwdEnumerator() => _items.GetEnumerator();
+
+        public override ICursor<T> GetCursor() => new CursorImpl(_items, _count, fwd: false);
+
+        public override ICursor<T> GetFwdCursor() => new CursorImpl(_items, _count, fwd: true);
+
+        public override bool TryGetCount(out long count)
+        {
+            count = _count;
+            return true;
+        }
+
+        public override long GetCount(Action? callback) => _count;
+
+        private sealed class CursorImpl : ICursor<T>
+        {
+            private readonly IReadOnlyList<T> _items;
+            private readonly int _count;
+            private readonly bool _fwd;
+
+            private T _value;
+            private long _index;
+
+            public CursorImpl(IReadOnlyList<T> items, int count, bool fwd)
+            {
+                Validation.AssertValue(items);
+                Validation.Assert(count >= 0);
+
+                _items = items;
+                _count = count;
+                _fwd = fwd;
+            }
+
+            public T Value => _value;
+
+            public long Index => _index;
+
+            public T Current => _value;
+            object? ICursor.Value => _value;
+            object IEnumerator.Current => _value;
+
+            public void Dispose()
+            {
+            }
+
+            public bool MoveNext() => MoveToCore(_index + 1);
+
+            public bool MoveTo(long index)
+            {
+                Validation.BugCheckParam(index >= 0, nameof(index));
+                return MoveToCore(index);
+            }
+
+            public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
+            private bool MoveToCore(long index)
+            {
+                Validation.Assert(index >= 0);
+
+                if (index == _index)
+                    return true;
+                if (index >= _count)
+                    return false;
+
+                long idx = _fwd ? index : (_count - 1 - index);
+                _value = _items[(int)idx];
+                _index = index;
+                return true;
+            }
+
+            public void Reset() => throw new InvalidOperationException();
+        }
+    }
+}
 
 public sealed class DistinctGen : RexlOperationGenerator<DistinctFunc>
 {
@@ -368,7 +739,7 @@ public sealed class TakeAtGen : RexlOperationGenerator<TakeAtFunc>
                 return false;
             }
         }
-        else if (src is ICollection<T> coll)
+        else if (src is IReadOnlyCollection<T> coll)
         {
             if (!TryNormIndex(ref index, coll.Count))
             {
@@ -380,7 +751,7 @@ public sealed class TakeAtGen : RexlOperationGenerator<TakeAtFunc>
         if (index >= 0 && src is ICursorable<T> cursorable)
         {
             using var cursor = cursorable.GetCursor();
-            if (!cursor.MoveTo(index))
+            if (!cursor.MoveTo(index, () => ctx.Ping(id)))
             {
                 res = default;
                 return false;
@@ -537,7 +908,7 @@ public sealed class CountGen : RexlOperationGenerator<CountFunc>
 
         if (src == null)
             return 0;
-        if (src is ICollection<T> col)
+        if (src is IReadOnlyCollection<T> col)
             return col.Count;
 
         long count;

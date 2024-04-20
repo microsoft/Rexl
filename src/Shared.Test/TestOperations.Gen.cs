@@ -963,7 +963,7 @@ internal sealed class TestWrapCollFuncGen : RexlOperationGenerator<TestWrapCollF
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    private sealed class CollectionImpl<T> : ICollection<T>
+    private sealed class CollectionImpl<T> : IReadOnlyCollection<T>
     {
         private readonly List<T> _list;
 
@@ -973,18 +973,6 @@ internal sealed class TestWrapCollFuncGen : RexlOperationGenerator<TestWrapCollF
         }
 
         public int Count => _list.Count;
-
-        public bool IsReadOnly => true;
-
-        public void Add(T item) => throw new NotSupportedException();
-
-        public bool Remove(T item) => throw new NotSupportedException();
-
-        public void Clear() => throw new NotSupportedException();
-
-        public bool Contains(T item) => _list.Contains(item);
-
-        public void CopyTo(T[] array, int arrayIndex) => _list.CopyTo(array, arrayIndex);
 
         public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
 
@@ -1040,6 +1028,8 @@ internal sealed class TestWrapCollFuncGen : RexlOperationGenerator<TestWrapCollF
                 _value = _list[(int)index];
                 return true;
             }
+
+            public bool MoveTo(long index, Action? callback) => MoveTo(index);
 
             public bool MoveNext() => MoveTo(_index + 1);
 

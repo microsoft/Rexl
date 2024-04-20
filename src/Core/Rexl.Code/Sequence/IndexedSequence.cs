@@ -588,7 +588,7 @@ public abstract class IndexedSequence<T> : IIndexedEnumerable<T>, ICanCount, ICa
 
     /// <summary>
     /// Called by enumerators before waiting to give this some time, if needed.
-    /// Generally, when using a builder, this does not. When using a source
+    /// Generally, when using a builder, this does nothing. When using a source
     /// enumerator, we pull another item.
     /// </summary>
     protected virtual void Slice(ManualResetEventSlim evt)
@@ -974,18 +974,23 @@ public abstract class IndexedSequence<T> : IIndexedEnumerable<T>, ICanCount, ICa
 
         public bool MoveNext()
         {
-            return MoveToCore(_index + 1);
+            return MoveToCore(_index + 1, null);
         }
 
-        public bool MoveTo(long index)
+        public bool MoveTo(long index) => MoveTo(index, null);
+
+        public bool MoveTo(long index, Action? callback)
         {
             Validation.BugCheckParam(index >= 0, nameof(index));
-            return MoveToCore(index);
+            Validation.BugCheckValueOrNull(callback);
+
+            return MoveToCore(index, callback);
         }
 
-        private bool MoveToCore(long index)
+        private bool MoveToCore(long index, Action? callback)
         {
             Validation.Assert(index >= 0);
+
             if (index == _index)
                 return true;
 
@@ -1029,11 +1034,13 @@ public abstract class IndexedSequence<T> : IIndexedEnumerable<T>, ICanCount, ICa
                     parent._lock.ExitReadLock();
                 }
 
+                callback?.Invoke();
+
                 // Let the parent do some work, if needed.
                 parent.Slice(_evt);
 
                 // Wait until something changes.
-                _evt.Wait();
+                _evt.Wait(100);
             }
         }
 
@@ -1129,10 +1136,9 @@ public abstract class IndexedSequence<T> : IIndexedEnumerable<T>, ICanCount, ICa
             return true;
         }
 
-        public void Reset()
-        {
-            throw new InvalidOperationException();
-        }
+        public bool MoveTo(long index, Action? callback) => MoveTo(index);
+
+        public void Reset() => throw new InvalidOperationException();
 
         public IEnumerable<T>? Snap() => this;
         IEnumerable? ICanSnap.Snap() => this;

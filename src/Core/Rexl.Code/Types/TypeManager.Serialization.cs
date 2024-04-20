@@ -1804,7 +1804,7 @@ public abstract partial class TypeManager
                 }
 
                 Write(sink, Code.SeqHead);
-                var col = value as ICollection<TItem>;
+                var col = value as IReadOnlyCollection<TItem>;
                 if (col != null || !sink.CanSeek)
                 {
                     // If the value is a collection, we can write the count
@@ -1980,7 +1980,7 @@ public abstract partial class TypeManager
                     Write(sink, Code.ChkTail);
                 }
 
-                Validation.Assert(value is not ICollection<TItem> col || countItemSeq == col.Count);
+                Validation.Assert(value is not IReadOnlyCollection<TItem> col || countItemSeq == col.Count);
                 var posTail = sink.Position;
                 sink.MoveTo(posCntSeq);
                 WriteFixed(sink, countItemSeq);

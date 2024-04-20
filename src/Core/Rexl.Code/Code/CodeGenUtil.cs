@@ -1043,7 +1043,7 @@ internal static partial class CodeGenUtil
         Validation.AssertValueOrNull(seq);
         if (seq is null)
             return null;
-        if (src is ICollection<TSrc> col)
+        if (src is IReadOnlyCollection<TSrc> col)
             return WrapWithCount.Create<TDst>(col.Count, seq);
         if (src is ICanCount can)
             return WrapWithCount.Create<TDst>(can, seq);
@@ -1069,7 +1069,7 @@ internal static partial class CodeGenUtil
         Validation.AssertValueOrNull(src);
         Validation.AssertValue(seq);
 
-        if (src is ICollection<TSrc> col)
+        if (src is IReadOnlyCollection<TSrc> col)
             return WrapWithCount.Create<TDst>(col.Count, seq, delta);
         if (src is ICanCount can)
             return WrapWithCount.Create<TDst>(can, seq, delta);

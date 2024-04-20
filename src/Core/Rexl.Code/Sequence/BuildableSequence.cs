@@ -536,19 +536,27 @@ partial class BuildableSequence<T>
 
         public bool MoveNext()
         {
-            return MoveToCore(_inner.Index + 1);
+            return MoveToCore(_inner.Index + 1, null);
         }
 
         public bool MoveTo(long index)
         {
             Validation.BugCheckParam(index >= 0, nameof(index));
-            return MoveToCore(index);
+            return MoveToCore(index, null);
+        }
+
+        public bool MoveTo(long index, Action? callback)
+        {
+            Validation.BugCheckParam(index >= 0, nameof(index));
+            Validation.BugCheckValueOrNull(callback);
+
+            return MoveToCore(index, callback);
         }
 
         /// <summary>
         /// This can block if the index is not yet available.
         /// </summary>
-        private bool MoveToCore(long index)
+        private bool MoveToCore(long index, Action callback)
         {
             Validation.Assert(index >= 0);
             if (index == _inner.Index)
@@ -572,6 +580,7 @@ partial class BuildableSequence<T>
 
                     if (index < parent._items.Count)
                     {
+                        // Don't need to pass the callback as this should be immediate.
                         inner.MoveTo(index);
                         return true;
                     }
@@ -588,8 +597,11 @@ partial class BuildableSequence<T>
                     parent._lock.ExitReadLock();
                 }
 
+                callback?.Invoke();
+
                 // Wait until something changes.
-                _evt.Wait();
+                // REVIEW: Should we use a timeout? If so, what value?
+                _evt.Wait(100);
             }
         }
 

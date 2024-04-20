@@ -128,7 +128,7 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
     {
         int index = 0;
         bool simple = false;
-        while (TryGetItem(ref simple, index, out var item))
+        while (TryGetItem(ref simple, index, null, out var item))
         {
             yield return item;
             index++;
@@ -209,8 +209,7 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
         bool simple = false;
         for (; ; )
         {
-            callback?.Invoke();
-            if (!TryGetItem(ref simple, index, out _))
+            if (!TryGetItem(ref simple, index, callback, out _))
                 break;
             index++;
             // This shouldn't overflow, since currently a List<T> can't grow as large as int.MaxValue.
@@ -240,7 +239,8 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
     /// <summary>
     /// Try to get the indicated item from the cache.
     /// </summary>
-    private bool TryGetItem(ref bool simple, int index, [MaybeNullWhen(false)] out T item)
+    private bool TryGetItem(ref bool simple, int index, Action? callback,
+        [MaybeNullWhen(false)] out T item)
     {
         Validation.Assert(!simple || _fullyCached);
         Validation.Assert(index >= 0);
@@ -271,6 +271,8 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
             {
                 _lock.ExitReadLock();
             }
+
+            callback?.Invoke();
 
             // Need to advance the ator so grab the ator lock.
             Validation.Assert(!simple);
@@ -389,7 +391,7 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
             var parent = _parent;
             Validation.BugCheck(parent != null);
 
-            if (!parent.TryGetItem(ref _simple, _index + 1, out var value))
+            if (!parent.TryGetItem(ref _simple, _index + 1, null, out var value))
                 return false;
 
             _value = value;
@@ -397,15 +399,18 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
             return true;
         }
 
-        public bool MoveTo(long index)
+        public bool MoveTo(long index) => MoveTo(index, null);
+
+        public bool MoveTo(long index, Action? callback)
         {
             var parent = _parent;
             Validation.BugCheck(parent != null);
             Validation.BugCheckParam(index >= 0, nameof(index));
+            Validation.BugCheckValueOrNull(callback);
 
             if (index > int.MaxValue)
                 return false;
-            if (!parent.TryGetItem(ref _simple, (int)index, out var value))
+            if (!parent.TryGetItem(ref _simple, (int)index, callback, out var value))
                 return false;
 
             _value = value;
@@ -413,9 +418,6 @@ public sealed class CachingEnumerable<T> : ICursorable<T>, ICanCount, IDisposabl
             return true;
         }
 
-        public void Reset()
-        {
-            throw new InvalidOperationException();
-        }
+        public void Reset() => throw new InvalidOperationException();
     }
 }
