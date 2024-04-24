@@ -1,5 +1,8 @@
 # About Rexl
 
+* [Heritage](#heritage)
+* [Concepts](#concepts)
+
 **Rexl**, also written **REXL** or **RExL**, stands for **_Research EXpression Language_**.
 Rexl is designed to be embedded in host applications. This document covers the language
 Rexl and how to use it. To learn about features of a particular host, refer to its
@@ -48,6 +51,10 @@ Differences between Rexl and the Excel language include:
   introduced in the first argument of the `With` function and used in the second argument.
 
 ## Concepts
+
+* [Formulas](#formulas)
+* [Names](#names)
+* [Evaluation and Errors](#evaluation-and-errors)
 
 ### Formulas
 

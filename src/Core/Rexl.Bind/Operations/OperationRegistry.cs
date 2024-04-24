@@ -283,7 +283,7 @@ public abstract class OperationRegistry : RegistryBase<OperationRegistry, NPath,
     }
 
     /// <summary>
-    /// Adds a symbol with its declared name in the the given namespace.
+    /// Adds a symbol with its declared name in the given namespace.
     /// This bug checks if the path has already been set by this registry, but not when it overrides
     /// one inherited from a parent.
     /// </summary>

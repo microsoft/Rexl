@@ -1,7 +1,12 @@
 # Rexl User Guide
 
-1. [About Rexl](Sections/01-AboutRexl.md)
-2. [Types and Values](Sections/02-TypesAndValues.md)
-3. [Extended Operators and Functions](Sections/03-ExtendedOperatorsAndFunctions.md)
-4. [Operators](Sections/04-Operators.md)
-5. [Functions](Sections/05-Functions.md)
+This guide documents core Rexl, not RexlScript. That is, this covers the _expression language_ and
+_not_ the statement constructs available in RexlScript hosts such as Jupyter.
+
+Each section that contains subsections starts with a bulleted list with links to the subsections.
+
+* [About Rexl](Sections/01-AboutRexl.md)
+* [Types and Values](Sections/02-TypesAndValues.md)
+* [Extended Operators and Functions](Sections/03-ExtendedOperatorsAndFunctions.md)
+* [Operators](Sections/04-Operators.md)
+* [Functions](Sections/05-Functions.md)

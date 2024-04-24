@@ -498,7 +498,7 @@ public abstract class RexlOperationGenerator
     }
 
     /// <summary>
-    /// Generate a call of the given static method info after pushing the the default value for the given
+    /// Generate a call of the given static method info after pushing the default value for the given
     /// <paramref name="type"/> and the exec ctx and an id for <paramref name="bnd"/>.
     /// Assert that the method is compatible with the given parameter types.
     /// </summary>

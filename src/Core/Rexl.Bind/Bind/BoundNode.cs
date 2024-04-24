@@ -4216,7 +4216,7 @@ public sealed class ArgScope
 
     /// <summary>
     /// Creates a module tuple scope, only to be used when constructing a module. This is
-    /// used for the the items and the externals.
+    /// used for the items and the externals.
     /// </summary>
     internal static ArgScope CreateModuleTupleScope(out Action<DType> updateType)
     {
