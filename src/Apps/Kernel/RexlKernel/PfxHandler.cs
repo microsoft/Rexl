@@ -125,11 +125,11 @@ public sealed partial class PfxHandler : Handler.Simple
 
         try
         {
-            await _semaphore.WaitAsync();
+            await _semaphore.WaitAsync().ConfigureAwait(false);
             try
             {
                 _counter++;
-                await DoCodeAsync(depth: 0, msg, code);
+                await DoCodeAsync(depth: 0, msg, code).ConfigureAwait(false);
             }
             finally
             {
@@ -170,22 +170,23 @@ public sealed partial class PfxHandler : Handler.Simple
             switch (kind)
             {
             case StmtKind.Set:
-                await DoSetAsync(name, expr, msg.Ct);
+                await DoSetAsync(name, expr, msg.Ct).ConfigureAwait(false);
                 break;
             case StmtKind.Formula:
-                await DoFmaAsync(name, expr, msg.Ct);
+                await DoFmaAsync(name, expr, msg.Ct).ConfigureAwait(false);
                 break;
             case StmtKind.Import:
                 Validation.Assert(name is null);
-                await DoImportAsync(depth, msg, expr);
+                await DoImportAsync(depth, msg, expr).ConfigureAwait(false);
                 break;
             case StmtKind.Help:
                 Validation.Assert(name is null);
-                await DoHelpAsync(msg);
+                await DoHelpAsync(msg).ConfigureAwait(false);
                 break;
 
             default:
-                await DoExprAsync(code[tokens[itokMin].Span.Min..tokens[itokLim - 1].Span.Lim], msg.Ct);
+                await DoExprAsync(code[tokens[itokMin].Span.Min..tokens[itokLim - 1].Span.Lim], msg.Ct)
+                    .ConfigureAwait(false);
                 break;
             }
 
@@ -197,7 +198,7 @@ public sealed partial class PfxHandler : Handler.Simple
     private async Task DoExprAsync(string expr, CancellationToken ct)
     {
         // Eval and print everything else
-        var res = await _engine.EvalAsync(expr, ct, options: _popts);
+        var res = await _engine.EvalAsync(expr, ct, options: _popts).ConfigureAwait(false);
 
         if (res is ErrorValue errorValue)
             _sbOut.Append("Error: ").Append(errorValue.Errors[0].Message);
@@ -210,7 +211,7 @@ public sealed partial class PfxHandler : Handler.Simple
         Validation.AssertNonEmpty(name);
         Validation.AssertNonEmpty(expr);
 
-        var res = await _engine.EvalAsync(expr, ct, options: _popts);
+        var res = await _engine.EvalAsync(expr, ct, options: _popts).ConfigureAwait(false);
         _engine.UpdateVariable(name, res);
     }
 
@@ -237,8 +238,8 @@ public sealed partial class PfxHandler : Handler.Simple
         string path = sv.Value;
 
         // REVIEW: Load file contents and call DoCode.
-        string code = await File.ReadAllTextAsync(path, msg.Ct);
-        await DoCodeAsync(depth, msg, code);
+        string code = await File.ReadAllTextAsync(path, msg.Ct).ConfigureAwait(false);
+        await DoCodeAsync(depth, msg, code).ConfigureAwait(false);
     }
 
     private StmtKind GetStmtKind(

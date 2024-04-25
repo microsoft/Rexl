@@ -92,7 +92,7 @@ partial class SimpleHarnessBase
             {
             case LinkKind.Http:
                 {
-                    var stream = await EnsureHttp().GetStreamAsync(link.Path);
+                    var stream = await EnsureHttp().GetStreamAsync(link.Path).ConfigureAwait(false);
                     return (link, stream);
                 }
             }

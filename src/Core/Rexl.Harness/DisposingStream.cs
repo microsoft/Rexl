@@ -55,7 +55,7 @@ public sealed class DisposingStream : Stream
     }
     public override async ValueTask DisposeAsync()
     {
-        await _inner.DisposeAsync();
+        await _inner.DisposeAsync().ConfigureAwait(false);
         _disp.Dispose();
         // Note that base.Dispose(bool) does nothing and there is no finalizer,
         // so these aren't necessary.

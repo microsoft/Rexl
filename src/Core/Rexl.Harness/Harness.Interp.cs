@@ -449,7 +449,7 @@ partial class HarnessBase
         Validation.AssertValue(bnd);
         Validation.Assert(bnd.IsProcCall);
 
-        var (res, runner, _) = await ExecProcAsync(fma, bnd, tek);
+        var (res, runner, _) = await ExecProcAsync(fma, bnd, tek).ConfigureAwait(false);
         Validation.Assert(runner != null || !res);
         res = ProcessTaskDefinition(!res, name, bnd, runner);
 
@@ -499,7 +499,7 @@ partial class HarnessBase
         }
 
         var runner = CreateBlockActionRunner(typeWith, with, _interp.FlowCur.StmtList, prime, body);
-        await RegisterRunner(runner, tek, taskDeps);
+        await RegisterRunnerAsync(runner, tek, taskDeps).ConfigureAwait(false);
         bool res = ProcessTaskBlockDefinition(name, runner);
 
         // REVIEW: Should this go before ProcessTaskBlockDefinition?

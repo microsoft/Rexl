@@ -110,18 +110,18 @@ public sealed class ModuleTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task ModuleReduceBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileReduce, @"Module/Reduce");
+        await DoBaselineTestsAsync(ProcessFileReduce, @"Module/Reduce").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ModuleReduceWipBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileReduce, @"Module/ReduceWip");
+        await DoBaselineTestsAsync(ProcessFileReduce, @"Module/ReduceWip").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ModuleOptimizeBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Optimize");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Optimize").ConfigureAwait(false);
     }
 }

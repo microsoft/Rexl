@@ -197,7 +197,7 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
             try
             {
                 SetMuted(false);
-                var (res, stateSuspend) = await base.RunAsync(source, resetBefore: true);
+                var (res, stateSuspend) = await base.RunAsync(source, resetBefore: true).ConfigureAwait(false);
                 SetMuted(false);
 
                 while (stateSuspend != null)
@@ -227,7 +227,7 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
                                     stateResume.Position = 0;
                                     _fuzzing = true;
 
-                                    var (tmp, sus) = await base.ResumeAsync(stateResume);
+                                    var (tmp, sus) = await base.ResumeAsync(stateResume).ConfigureAwait(false);
                                     SetMuted(false);
 
                                     Assert.IsNull(sus);
@@ -242,7 +242,7 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
                         _resuming = true;
                         stateResume.Position = 0;
 
-                        (res, stateSuspend) = await base.ResumeAsync(stateResume);
+                        (res, stateSuspend) = await base.ResumeAsync(stateResume).ConfigureAwait(false);
                     }
                     finally
                     {
@@ -262,7 +262,7 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
                 SetMuted(false);
 
                 // Call Reset to abort any tasks that haven't completed and to "forget" the runners.
-                await ResetAsync();
+                await ResetAsync().ConfigureAwait(false);
             }
         }
 
@@ -761,12 +761,14 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
             var segs = SplitHashBlocks(text);
             foreach (var seg in segs)
             {
-                await harness.RunTestScriptAsync(SourceContext.Create(linkFull, pathTail, seg), customRecover, fuzzSuspendState);
+                await harness.RunTestScriptAsync(SourceContext.Create(linkFull, pathTail, seg), customRecover, fuzzSuspendState)
+                    .ConfigureAwait(false);
                 Sink.WriteLine("###");
             }
         }
         else
-            await harness.RunTestScriptAsync(SourceContext.Create(linkFull, pathTail, text), customRecover, fuzzSuspendState);
+            await harness.RunTestScriptAsync(SourceContext.Create(linkFull, pathTail, text), customRecover, fuzzSuspendState)
+                .ConfigureAwait(false);
         Sink.WriteLine();
     }
 
@@ -784,7 +786,7 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
             if (block.StartsWith("// Evaluate"))
                 harness.TestEvaluateExpression(source);
             else
-                await harness.RunAsync(source, resetBefore: false);
+                await harness.RunAsync(source, resetBefore: false).ConfigureAwait(false);
             harness.Flush();
             Sink.WriteLine("###");
         }

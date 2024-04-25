@@ -16,24 +16,24 @@ public sealed class ModuleTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task ModuleBasicBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Basic");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Basic").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ModuleCornerBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Corner");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Corner").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ModuleWipBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Wip");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Wip").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ModuleOptimizeBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Optimize");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Optimize").ConfigureAwait(false);
     }
 }

@@ -405,7 +405,7 @@ partial class HarnessBase
 
             // Invoke the code-gen'ed delegate to create the action runner.
             var runner = resCodeGen.CreateRunnerFunc(args, CreateActionHost());
-            await RegisterRunner(runner, tek, taskDeps).ConfigureAwait(false);
+            await RegisterRunnerAsync(runner, tek, taskDeps).ConfigureAwait(false);
             return (true, runner, ctx);
         }
         catch (Exception exCur)
@@ -424,7 +424,7 @@ partial class HarnessBase
     /// Registers a new <see cref="ActionRunner"/>, including setting the task's state according to
     /// <paramref name="tek"/> and processing dependencies.
     /// </summary>
-    private async Task RegisterRunner(ActionRunner runner, TaskExecKind tek, List<ActionRunner> taskDeps)
+    private async Task RegisterRunnerAsync(ActionRunner runner, TaskExecKind tek, List<ActionRunner> taskDeps)
     {
         Validation.AssertValue(runner);
         Validation.Assert(tek != TaskExecKind.None);
