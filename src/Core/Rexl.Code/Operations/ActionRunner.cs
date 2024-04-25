@@ -1240,10 +1240,10 @@ public abstract class ThreadActionRunner : ActionRunner
     }
 
     /// <summary>
-    /// This is the core logic for state transitions for yielding. It is used by both <see cref="Yield"/>,
+    /// This is the core logic for state transitions for yielding. It is used by <see cref="Yield"/>,
     /// <see cref="YieldAsync"/>, and <see cref="YieldCoreAsync"/>. This returns <c>null</c> if the paused
     /// state was <i>not</i> entered. Otherwise, it returns a <see cref="TaskCompletionSource"/> that will
-    /// be completed when playing should resume (when the paused state is ended). The tcs is also also
+    /// be completed when playing should resume (when the paused state is ended). The tcs is also
     /// stored in the <see cref="_tcsPlay"/> field. A controlling thread can then complete this and set the
     /// field back to <c>null</c>. This returns a <see cref="TaskCompletionSource"/> rather than a
     /// <see cref="Task"/> mostly to avoid confusing this as a standard async method. It is not. Standard

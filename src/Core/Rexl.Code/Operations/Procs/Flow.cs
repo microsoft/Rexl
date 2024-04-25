@@ -459,7 +459,7 @@ public sealed partial class PipeProcGen : RexlOperationGenerator<PipeProc>
                     for (; ; )
                     {
                         // REVIEW: Ideally the Yield and MoveNext would be integrated.
-                        await YieldAsync();
+                        await YieldAsync().ConfigureAwait(false);
                         if (!ator0.MoveNext())
                         {
                             if (ator1 == null)
@@ -489,7 +489,7 @@ public sealed partial class PipeProcGen : RexlOperationGenerator<PipeProc>
                     {
                         var pokeCount = Interlocked.Read(ref _pokeCount);
                         if (pokeCount <= _count)
-                            await YieldAsync();
+                            await YieldAsync().ConfigureAwait(false);
 
                         // Refresh the pokeCount since Yield could have taken a long time.
                         pokeCount = Interlocked.Read(ref _pokeCount);

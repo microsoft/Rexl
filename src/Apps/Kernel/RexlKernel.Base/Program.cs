@@ -166,7 +166,7 @@ public abstract partial class Program : ChannelHost
                         {
                             _logger.LogTop(handling, exec.Code);
                             var msg = new ExecuteMessage(raw, exec, ++counter, ct);
-                            await DoOne(msg);
+                            await DoOne(msg).ConfigureAwait(false);
                         }
                     }
                 }

@@ -160,7 +160,7 @@ public abstract partial class BlockWriteStream : Stream
         if (Validation.IsInRange(_posCur, _block.Pos, posLim))
             return (int)(posLim - _posCur);
 
-        _block = await GetBlockAsync(_posCur, _block, ct);
+        _block = await GetBlockAsync(_posCur, _block, ct).ConfigureAwait(false);
         Validation.Assert(_block != null);
         posLim = _block.PosCap;
         Validation.AssertInRange(_posCur, _block.Pos, posLim);
@@ -267,7 +267,7 @@ public abstract partial class BlockWriteStream : Stream
         Validation.Assert(src.Length > 0);
         for (; ; )
         {
-            int cb = await EnsureSpaceAsync(ct);
+            int cb = await EnsureSpaceAsync(ct).ConfigureAwait(false);
             if (src.Length <= cb)
                 break;
             WriteToBlock(src.Slice(0, cb).Span);

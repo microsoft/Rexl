@@ -69,11 +69,11 @@ public class ActionRunnerTests
 
             var t = Task.Run(runner.Play);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             Assert.AreEqual(RunnerState.Done, runner.State);
 
             // Await the task as well, although we don't really need to.
-            await t;
+            await t.ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
             Assert.IsTrue(runner.WasSuccessful);
@@ -91,11 +91,11 @@ public class ActionRunnerTests
                 runner.Play();
             });
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             Assert.AreEqual(RunnerState.Done, runner.State);
 
             // Await the task as well, although we don't really need to.
-            await t;
+            await t.ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
             Assert.IsTrue(runner.WasSuccessful);
@@ -118,7 +118,7 @@ public class ActionRunnerTests
         {
             var runner = maker();
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.None, runner.State);
             Assert.IsFalse(runner.WasSuccessful);
@@ -139,7 +139,7 @@ public class ActionRunnerTests
 
             // We're no longer in the "None" state so signal pause. This waits so the runner
             // should be "Done" when this returns.
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
             Assert.IsTrue(runner.WasSuccessful);
@@ -159,9 +159,9 @@ public class ActionRunnerTests
 
             // This most likely happens before the runner starts playing. Either way, it has no
             // effect on the final result.
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
 
-            await t;
+            await t.ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
             Assert.IsTrue(runner.WasSuccessful);
@@ -208,7 +208,7 @@ public class ActionRunnerTests
             runner.BeginAbort();
 
             // Wait until the runner completes.
-            await t;
+            await t.ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
 
@@ -232,7 +232,7 @@ public class ActionRunnerTests
 
             // We're no longer in the "None" state so signal abort. Almost certainly, the test
             // should still be running so this should cause the runner to "fail".
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
 
@@ -254,7 +254,7 @@ public class ActionRunnerTests
             });
 
             runner.BeginAbort();
-            await t;
+            await t.ConfigureAwait(false);
 
             Assert.AreEqual(RunnerState.Done, runner.State);
             Assert.IsFalse(runner.WasSuccessful);
@@ -285,7 +285,7 @@ public class ActionRunnerTests
         });
 
         runner.BeginAbort();
-        await t;
+        await t.ConfigureAwait(false);
 
         Assert.AreEqual(RunnerState.Done, runner.State);
         Assert.IsTrue(runner.WasSuccessful);
@@ -362,7 +362,7 @@ public class ActionRunnerTests
             var runner = maker();
             VerifyThreadRunner(runner, lim, RunnerState.None);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
 
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
@@ -375,7 +375,7 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
 
@@ -391,11 +391,11 @@ public class ActionRunnerTests
                 VerifyThreadRunner(runner, lim);
             });
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
 
             // Await the task as well, although we don't really need to.
-            await t;
+            await t.ConfigureAwait(false);
 
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
@@ -413,10 +413,10 @@ public class ActionRunnerTests
             var runner = maker();
             VerifyThreadRunner(runner, lim, RunnerState.None);
 
-            await runner.PrimeAsync();
+            await runner.PrimeAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
 
@@ -428,13 +428,13 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PrimeAsync();
+            await runner.PrimeAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
 
-            await runner.PrimeAsync();
+            await runner.PrimeAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
     }
@@ -455,10 +455,10 @@ public class ActionRunnerTests
             var runner = maker();
             VerifyThreadRunner(runner, lim, RunnerState.None);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -470,10 +470,10 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -485,13 +485,13 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -503,12 +503,12 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
             runner.BeginAbort();
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -520,13 +520,13 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
             runner.BeginAbort();
             runner.BeginAbort();
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -538,16 +538,16 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -559,13 +559,13 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
     }
@@ -585,7 +585,7 @@ public class ActionRunnerTests
             var runner = maker();
             VerifyThreadRunner(runner, lim, RunnerState.None);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -597,7 +597,7 @@ public class ActionRunnerTests
             runner.BeginAbort();
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -609,7 +609,7 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -624,7 +624,7 @@ public class ActionRunnerTests
             runner.BeginAbort();
             VerifyThreadRunner(runner, lim);
 
-            await runner.WaitAsync();
+            await runner.WaitAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
 
@@ -636,10 +636,10 @@ public class ActionRunnerTests
             runner.Play();
             VerifyThreadRunner(runner, lim, RunnerState.Playing);
 
-            await runner.PauseAsync();
+            await runner.PauseAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.AbortAsync();
+            await runner.AbortAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
     }
@@ -660,7 +660,7 @@ public class ActionRunnerTests
             var t2 = runner.WaitAsync();
             Assert.AreSame(t1, t2);
 
-            await t2;
+            await t2.ConfigureAwait(false);
 
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
@@ -684,14 +684,14 @@ public class ActionRunnerTests
             Assert.AreNotSame(t1, t2);
             Assert.AreSame(t2, t3);
 
-            await t2;
+            await t2.ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
             var t4 = runner.PauseAsync();
             Assert.IsTrue(t4.IsCompletedSuccessfully);
 
             runner.Play();
 
-            await t1;
+            await t1.ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
     }
@@ -722,16 +722,16 @@ public class ActionRunnerTests
             // Trying to play should throw (until the pause is complete).
             Assert.ThrowsException<InvalidOperationException>(runner.Play);
 
-            await t1;
+            await t1.ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
-            await runner.PrimeAsync();
+            await runner.PrimeAsync().ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Paused);
 
             var t = runner.WaitAsync();
-            await runner.PrimeAsync();
+            await runner.PrimeAsync().ConfigureAwait(false);
 
-            await t;
+            await t.ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, true);
         }
     }
@@ -755,7 +755,7 @@ public class ActionRunnerTests
             runner.Play();
             while ((long)runner.GetResultValue(info) == count)
             {
-                await Task.Delay(0);
+                await Task.Delay(0).ConfigureAwait(false);
             }
 
             // Start pausing.
@@ -763,7 +763,7 @@ public class ActionRunnerTests
             // Signal abort.
             runner.BeginAbort();
 
-            await t1;
+            await t1.ConfigureAwait(false);
             VerifyThreadRunner(runner, lim, RunnerState.Done, false);
         }
     }

@@ -118,8 +118,8 @@ public abstract class RexlTestsBase<TSink, TOpts>
 
         var runner = new BaselineTestRunner(this, dirSrc, dirDst, subDirs);
         runner.CleanOuts();
-        await runner.GenerateOutsAsync(doOne, options);
-        await runner.CompareDirectoriesAsync();
+        await runner.GenerateOutsAsync(doOne, options).ConfigureAwait(false);
+        await runner.CompareDirectoriesAsync().ConfigureAwait(false);
 
         return runner.Count;
     }
@@ -240,8 +240,8 @@ public abstract class RexlTestsBase<TSink, TOpts>
                 _parent.Log("Processing script: {0}", pathSrc);
 
                 // Normalize line endings so character indices match in base lines.
-                var text = _parent.NormalizeLines(await File.ReadAllTextAsync(pathSrc));
-                await doOne(_pathSrcDir, fileName, text, options);
+                var text = _parent.NormalizeLines(await File.ReadAllTextAsync(pathSrc).ConfigureAwait(false));
+                await doOne(_pathSrcDir, fileName, text, options).ConfigureAwait(false);
                 var res = _parent.GetTextAndReset();
 
                 // Unfortunately, res might mix CRLF and LF. Normalize to Environment.NewLine.
@@ -250,7 +250,7 @@ public abstract class RexlTestsBase<TSink, TOpts>
                     res = res.Replace("\n", Environment.NewLine);
 
                 var pathDst = Path.Join(_pathOutDir, fileName);
-                await File.WriteAllTextAsync(pathDst, res);
+                await File.WriteAllTextAsync(pathDst, res).ConfigureAwait(false);
             }
         }
 
@@ -357,8 +357,8 @@ public abstract class RexlTestsBase<TSink, TOpts>
 
             var taskBsl = File.ReadAllTextAsync(pathBsl);
             var taskOut = File.ReadAllTextAsync(pathOut);
-            var textBsl = NormalizeLines(await taskBsl);
-            var textOut = NormalizeLines(await taskOut);
+            var textBsl = NormalizeLines(await taskBsl.ConfigureAwait(false));
+            var textOut = NormalizeLines(await taskOut.ConfigureAwait(false));
             if (textBsl != textOut)
             {
                 Log("*** Output and Baseline mismatch: '{0}' vs '{1}'", pathBsl, pathOut);

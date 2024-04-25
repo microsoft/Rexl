@@ -18,7 +18,8 @@ partial class UtilBaselineTests
     [TestMethod]
     public async Task BlockWriteAppendTest()
     {
-        int count = await DoBaselineTestsAsync(RunAsync, @"Util\BlockWriteAppend.txt");
+        int count = await DoBaselineTestsAsync(RunAsync, @"Util\BlockWriteAppend.txt")
+            .ConfigureAwait(false);
         Assert.AreEqual(1, count);
 
         async Task RunAsync(string pathHead, string pathTail, string text, bool options)
@@ -64,15 +65,15 @@ partial class UtilBaselineTests
                 writer.Write(buf.AsSpan(0, 0));
                 writer.Write(buf);
 
-                await writer.WriteAsync(buf, 0, 0);
-                await writer.WriteAsync(buf, 0, buf.Length);
-                await writer.WriteAsync(buf, 0, buf.Length);
-                await writer.WriteAsync(buf, 0, buf.Length);
-                await writer.FlushAsync();
-                await writer.WriteAsync(buf.AsMemory(0, 0));
-                await writer.WriteAsync(buf);
-                await writer.WriteAsync(buf);
-                await writer.WriteAsync(buf);
+                await writer.WriteAsync(buf, 0, 0).ConfigureAwait(false);
+                await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
+                await writer.WriteAsync(buf.AsMemory(0, 0)).ConfigureAwait(false);
+                await writer.WriteAsync(buf).ConfigureAwait(false);
+                await writer.WriteAsync(buf).ConfigureAwait(false);
+                await writer.WriteAsync(buf).ConfigureAwait(false);
             }
 
             var bytes = mem.GetBuffer().AsMemory(0, (int)mem.Length);
@@ -83,7 +84,7 @@ partial class UtilBaselineTests
     [TestMethod]
     public async Task BlockWriteSeekTest()
     {
-        int count = await DoBaselineTestsAsync(RunAsync, @"Util\BlockWriteSeek.txt");
+        int count = await DoBaselineTestsAsync(RunAsync, @"Util\BlockWriteSeek.txt").ConfigureAwait(false);
         Assert.AreEqual(1, count);
 
         async Task RunAsync(string pathHead, string pathTail, string text, bool options)
@@ -93,7 +94,7 @@ partial class UtilBaselineTests
                 buf[i] = (byte)(16 * (i + 1));
 
             using var mem = new MemoryStream();
-            await Fill(4, 16, mem, buf, Dump);
+            await Fill(4, 16, mem, buf, Dump).ConfigureAwait(false);
             var data = mem.ToArray();
 
             foreach (int cap in new[] { 8, 4, 2, 1, 5, 11, 256 })
@@ -101,7 +102,7 @@ partial class UtilBaselineTests
                 foreach (var cblk in new[] { 4, 1, 0, 100 })
                 {
                     using var mem2 = new MemoryStream();
-                    await Fill(cblk, cap, mem2, buf, null);
+                    await Fill(cblk, cap, mem2, buf, null).ConfigureAwait(false);
                     var data2 = mem2.ToArray();
 
                     int len = data.Length;
@@ -164,20 +165,20 @@ partial class UtilBaselineTests
                     writer.Write(buf.AsSpan(0, 0));
                     writer.Write(buf);
 
-                    await writer.WriteAsync(buf, 0, 0);
-                    await writer.WriteAsync(buf, 0, buf.Length);
-                    await writer.WriteAsync(buf, 0, buf.Length);
-                    await writer.WriteAsync(buf, 0, buf.Length);
-                    await writer.FlushAsync(force: false, default);
-                    await writer.FlushAsync(force: true, default);
-                    await writer.WriteAsync(buf.AsMemory(0, 0));
-                    await writer.WriteAsync(buf);
+                    await writer.WriteAsync(buf, 0, 0).ConfigureAwait(false);
+                    await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                    await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                    await writer.WriteAsync(buf, 0, buf.Length).ConfigureAwait(false);
+                    await writer.FlushAsync(force: false, default).ConfigureAwait(false);
+                    await writer.FlushAsync(force: true, default).ConfigureAwait(false);
+                    await writer.WriteAsync(buf.AsMemory(0, 0)).ConfigureAwait(false);
+                    await writer.WriteAsync(buf).ConfigureAwait(false);
                     writer.Flush(force: true);
-                    await writer.WriteAsync(buf);
-                    await writer.WriteAsync(buf);
+                    await writer.WriteAsync(buf).ConfigureAwait(false);
+                    await writer.WriteAsync(buf).ConfigureAwait(false);
 
-                    await writer.FlushAsync(force: true, default);
-                    await writer.FlushAsync(force: true, default);
+                    await writer.FlushAsync(force: true, default).ConfigureAwait(false);
+                    await writer.FlushAsync(force: true, default).ConfigureAwait(false);
                     dump?.Invoke(mem);
 
                     long posLim = writer.Length;
@@ -188,7 +189,7 @@ partial class UtilBaselineTests
                     {
                         writer.Seek(pos, SeekOrigin.Begin);
                         if (useAsync)
-                            await writer.WriteAsync(d);
+                            await writer.WriteAsync(d).ConfigureAwait(false);
                         else
                             writer.WriteByte(d[0]);
                         useAsync = !useAsync;

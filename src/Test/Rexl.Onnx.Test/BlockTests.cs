@@ -15,6 +15,6 @@ public sealed class BlockTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task ModelTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Model");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Model").ConfigureAwait(false);
     }
 }

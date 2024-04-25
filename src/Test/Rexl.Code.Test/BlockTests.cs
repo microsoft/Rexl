@@ -16,31 +16,33 @@ public sealed class BlockTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task SegmentedTests()
     {
-        await DoBaselineTestsAsync(ProcessFileSegmented, @"Block/Segmented");
+        await DoBaselineTestsAsync(ProcessFileSegmented, @"Block/Segmented").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task SegmentedCustomRecoverTests()
     {
-        await DoBaselineTestsAsync(ProcessFileSegmentedCustomRecover, @"Block/SegmentedCustomRecover");
+        await DoBaselineTestsAsync(ProcessFileSegmentedCustomRecover, @"Block/SegmentedCustomRecover")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task SegmentedFuzzingTests()
     {
-        await DoBaselineTestsAsync(ProcessFileSegmentedFuzzing, @"Block/SegmentedFuzzing");
+        await DoBaselineTestsAsync(ProcessFileSegmentedFuzzing, @"Block/SegmentedFuzzing")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task GeneralBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/General");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/General").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ContextualBaselineTests()
     {
-        int count = await DoBaselineTestsAsync(Run, @"Block/Contextual/Ktx.txt");
+        int count = await DoBaselineTestsAsync(Run, @"Block/Contextual/Ktx.txt").ConfigureAwait(false);
         Assert.AreEqual(1, count);
 
         Task Run(string pathHead, string pathTail, string text, bool options)
@@ -64,109 +66,113 @@ public sealed class BlockTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task UdfBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Udf");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Udf").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ScenarioBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Scenario");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Scenario").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcRbinTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Rbin");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Rbin").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcFileSysTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/FileSys.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/FileSys.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcNowTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Now.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Now.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcParquetTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Parquet.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Parquet.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcNonSeekableTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoILNonSeekableStreams, @"Block/Procedures/NonSeekable.txt");
+        await DoBaselineTestsAsync(ProcessFileNoILNonSeekableStreams, @"Block/Procedures/NonSeekable.txt")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcParquetErrorsTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/ParquetErrors.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/ParquetErrors.txt")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcParquetPauseTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/ParquetPause.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/ParquetPause.txt")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcBytesTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Bytes.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Bytes.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcTextTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Text.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Text.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcPipeSafetyTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/PipeSafety.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/PipeSafety.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcPipingTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Piping.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/Piping.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcStateTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/States.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/States.txt").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ProcMultiFormTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/MultiFormProc.txt");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Procedures/MultiFormProc.txt")
+            .ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task TaskTests()
     {
-        await DoBaselineTestsAsync(ProcessFileSegmented, @"Block/Task");
+        await DoBaselineTestsAsync(ProcessFileSegmented, @"Block/Task").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task SerializationTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Serialization");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Serialization").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task EvaluateExpressionBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileAndEvaluateAsync, @"Block/Evaluate");
+        await DoBaselineTestsAsync(ProcessFileAndEvaluateAsync, @"Block/Evaluate").ConfigureAwait(false);
     }
 
     /// <summary>
@@ -176,12 +182,12 @@ public sealed class BlockTests : BlockTestsBase<bool>
     [TestMethod]
     public async Task WipBaselineTests()
     {
-        await DoBaselineTestsAsync(ProcessFileWithIL, @"Block/Wip");
+        await DoBaselineTestsAsync(ProcessFileWithIL, @"Block/Wip").ConfigureAwait(false);
     }
 
     [TestMethod]
     public async Task ImageTests()
     {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Image");
+        await DoBaselineTestsAsync(ProcessFileNoIL, @"Block/Image").ConfigureAwait(false);
     }
 }
