@@ -448,20 +448,26 @@ partial class Tensor
         {
             // Isotropic with min dimension dy.
             int dsNew = (int)dy;
-            int ds = Math.Min(dySrc, dxSrc);
-            if (ds != dsNew)
+            if (dySrc < dxSrc)
             {
-                long dyNew = ((long)dySrc * dsNew + (ds >> 1)) / ds;
-                long dxNew = ((long)dxSrc * dsNew + (ds >> 1)) / ds;
-                Validation.Assert(dyNew == dsNew | dxNew == dsNew);
-                Validation.Assert(dyNew >= dsNew & dxNew >= dsNew);
-                if (dyNew > int.MaxValue)
-                    return false;
+                long dxNew = ((long)dxSrc * dsNew + (dySrc >> 1)) / dySrc;
+                Validation.Assert(dxNew >= dsNew);
                 if (dxNew > int.MaxValue)
                     return false;
-                dy = (int)dyNew;
+                dy = (int)dsNew;
                 dx = (int)dxNew;
             }
+            else if (dySrc > dxSrc)
+            {
+                long dyNew = ((long)dySrc * dsNew + (dxSrc >> 1)) / dxSrc;
+                Validation.Assert(dyNew >= dsNew);
+                if (dyNew > int.MaxValue)
+                    return false;
+                dy = (int)dyNew;
+                dx = (int)dsNew;
+            }
+            else
+                dy = dx = dsNew;
         }
         return true;
     }

@@ -37,10 +37,17 @@ public sealed partial class RexlProgram : Program
                 return;
 
             case "pre-register":
-                Register(full: false);
+                Register(full: false, rexl: true, pfx: true);
                 return;
             case "register":
-                Register(full: true);
+            case "register-rexl":
+                Register(full: true, rexl: true, pfx: false);
+                return;
+            case "register-pfx":
+                Register(full: true, rexl: false, pfx: true);
+                return;
+            case "register-all":
+                Register(full: true, rexl: true, pfx: true);
                 return;
             case "rexl":
             case "pfx":
@@ -69,37 +76,45 @@ public sealed partial class RexlProgram : Program
     where <cmd> is one of:
         help: Display this usage information.
         pre-register: Create the kernel spec directories (.krn-rexl and .krn-pfx).
-        register: Register this with Jupyter.
+        register: Register Rexl with Jupyter.
+        register-pfx: Register Power Fx with Jupyter.
+        register-all: Register Rexl and Power Fx with Jupyter.
         [rexl|pfx] <connection-file>: typically invoked by Jupyter, not directly.
 ");
     }
 
-    private static void Register(bool full)
+    private static void Register(bool full, bool rexl, bool pfx)
     {
         var loc = typeof(RexlProgram).Assembly.Location;
         var dirBase = Path.GetDirectoryName(loc);
         var app = Path.Combine(dirBase, Path.GetFileNameWithoutExtension(loc));
 
-        foreach (var (lang, disp) in new[] { ("Rexl", "Rexl"), ("Pfx", "Power Fx") })
-        {
-            var name = lang.ToLowerInvariant();
-            var dir = Path.Combine(dirBase, $".krn-{name}");
-            Directory.CreateDirectory(dir);
+        if (rexl)
+            RegisterCore(full, dirBase, app, "Rexl", "Rexl");
+        if (pfx)
+            RegisterCore(full, dirBase, app, "Pfx", "Power Fx");
+    }
 
-            var path = Path.Combine(dir, "kernel.json");
-            File.WriteAllText(path, $@"{{
+    private static void RegisterCore(bool full, string dirBase, string app, string lang, string disp)
+    {
+        var name = lang.ToLowerInvariant();
+        var dir = Path.Combine(dirBase, $".krn-{name}");
+        Directory.CreateDirectory(dir);
+
+        var path = Path.Combine(dir, "kernel.json");
+        File.WriteAllText(path, $@"{{
     ""argv"": [""{app.Replace('\\', '/')}"", ""{name}"", ""{{connection_file}}""],
     ""display_name"": ""{disp}"",
     ""language"": ""{lang}""
 }}
 ");
 
-            if (!full)
-                continue;
+        if (!full)
+            return;
 
-            var proc = new System.Diagnostics.Process()
-            {
-                StartInfo =
+        var proc = new System.Diagnostics.Process()
+        {
+            StartInfo =
                 {
                     FileName = "jupyter",
                     Arguments = $"kernelspec install \"{dir.Replace('\\', '/')}\" --user --name={name}",
@@ -107,11 +122,10 @@ public sealed partial class RexlProgram : Program
                     RedirectStandardOutput = false,
                     RedirectStandardInput = false,
                 }
-            };
+        };
 
-            proc.Start();
-            proc.WaitForExit();
-        }
+        proc.Start();
+        proc.WaitForExit();
     }
 
     private RexlProgram(string kernDef, ReadOnlySpan<string> args, LogLevel lvl = LogLevel.All)
