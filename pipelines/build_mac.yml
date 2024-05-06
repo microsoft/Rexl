@@ -1,0 +1,45 @@
+# Rexl build pipeline for mac.
+
+parameters:
+- name: buildConfig
+  displayName: The build configuration
+  type: string
+  default: Release
+- name: buildPlatform
+  displayName: Build platform
+  type: string
+- name: poolName
+  displayName: Pool name
+  type: string
+- name: workFolder
+  displayName: Work folder
+  type: string
+
+jobs:
+- job: Build_Mac_${{ parameters.buildConfig }}_${{ parameters.buildPlatform }}
+  displayName: Build Rexl Mac - ${{ parameters.buildConfig }}
+  timeoutInMinutes: 20
+  pool:
+    name: ${{ parameters.poolName }}
+
+  steps:
+  - checkout: self
+    clean: true
+    lfs: true
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish Self-Contained RexlKernel
+    inputs:
+      command: 'publish'
+      workingDirectory: $(Build.SourcesDirectory)/src
+      projects: '$(Build.SourcesDirectory)/src/Apps/Kernel/RexlKernel/RexlKernel.csproj'
+      arguments: '--sc -c ${{ parameters.buildConfig }} -p:Platform=${{ parameters.buildPlatform }} --runtime osx-${{ parameters.buildPlatform }} -o $(Build.ArtifactStagingDirectory)/Kernel'
+      publishWebProjects: false
+      zipAfterPublish: true
+      modifyOutputPath: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish RexlKernel artifact'
+    inputs:
+      PathToPublish: '$(Build.ArtifactStagingDirectory)/Kernel'
+      ArtifactName: 'Mac_${{ parameters.buildPlatform }}_${{ parameters.buildConfig }}_Kernel'
