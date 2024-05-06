@@ -34,8 +34,10 @@
     BitPlan with { N: 13 }->Maximize(Neg);
     BitPlan with { N: 2000 }->Maximize(Neg);
     "*** Maximize Num ***";
-    BitPlan->Maximize(Num);
-    BitPlan with { N: 13 }->Maximize(Num);
+    BitPlan->Maximize(Num, "glpk");
+    BitPlan->Maximize(Num, "highs");
+    BitPlan with { N: 13 }->Maximize(Num, "glpk");
+    BitPlan with { N: 13 }->Maximize(Num, "highs");
     BitPlan with { N: 2000 }->Maximize(Num);
 
 >>> *** Instructions:
@@ -65,10 +67,12 @@
   23) [0] Expr BitPlan=>{ N : 13 }->Maximize(Neg)
   24) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Neg)
   25) [0] Expr "*** Maximize Num ***"
-  26) [0] Expr BitPlan->Maximize(Num)
-  27) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num)
-  28) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
-  29) [0] End
+  26) [0] Expr BitPlan->Maximize(Num, "glpk")
+  27) [0] Expr BitPlan->Maximize(Num, "highs")
+  28) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num, "glpk")
+  29) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num, "highs")
+  30) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
+  31) [0] End
 
 >    0) [0] Define BitPlan <- module { param Domain := Range(10)->(1 shl it); param N := 19; var Bits from Domain def []; msr Num := Count(Bits); msr Sum := Sum(Bits); msr Dif := N - Sum; msr Neg := Sum - N; con Limit := Sum $<= N }
 Global 'BitPlan' has DType: M{var Bits:i8*, msr Dif:i8, param Domain:i8*, con Limit:b, param N:i8, msr Neg:i8, msr Num:i8, msr Sum:i8}, SysType: RuntimeModule<{Seq<i8>,i8,Seq<i8>,bool,i8,i8,i8,i8},(Seq<i8>,i8,Seq<i8>,Seq<i8>,i8,i8,i8,i8,bool)>
@@ -141,7 +145,7 @@ module symbols:
 >   11) [0] Expr "*** Maximize ***"
 *** Maximize ***
 >   12) [0] Expr BitPlan->Maximize(Sum)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -216,7 +220,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   15) [0] Expr BitPlan=>{ N : 13 }->Maximize(Sum)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -241,7 +245,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   16) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Sum)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -275,7 +279,7 @@ module symbols:
 >   17) [0] Expr "*** Minimize ***"
 *** Minimize ***
 >   18) [0] Expr BitPlan->Minimize(Dif)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -300,7 +304,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   19) [0] Expr BitPlan=>{ N : 13 }->Minimize(Dif)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -325,7 +329,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   20) [0] Expr BitPlan=>{ N : 2000 }->Minimize(Dif)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -359,7 +363,7 @@ module symbols:
 >   21) [0] Expr "*** Maximize Neg ***"
 *** Maximize Neg ***
 >   22) [0] Expr BitPlan->Maximize(Neg)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -384,7 +388,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   23) [0] Expr BitPlan=>{ N : 13 }->Maximize(Neg)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -409,7 +413,7 @@ module symbols:
   con Limit: true
 *** Ctx ping count: 0
 >   24) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Neg)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -442,7 +446,7 @@ module symbols:
 *** Ctx ping count: 0
 >   25) [0] Expr "*** Maximize Num ***"
 *** Maximize Num ***
->   26) [0] Expr BitPlan->Maximize(Num)
+>   26) [0] Expr BitPlan->Maximize(Num, "glpk")
 Solver: GLPK
 module symbols:
   param Domain: Seq<i8>
@@ -468,7 +472,33 @@ module symbols:
   msr Neg: -4
   con Limit: true
 *** Ctx ping count: 0
->   27) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num)
+>   27) [0] Expr BitPlan->Maximize(Num, "highs")
+Solver: HiGHS
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 19
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+  msr Num: 4
+  msr Sum: 15
+  msr Dif: 4
+  msr Neg: -4
+  con Limit: true
+*** Ctx ping count: 0
+>   28) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num, "glpk")
 Solver: GLPK
 module symbols:
   param Domain: Seq<i8>
@@ -493,8 +523,33 @@ module symbols:
   msr Neg: 0
   con Limit: true
 *** Ctx ping count: 0
->   28) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
-Solver: GLPK
+>   29) [0] Expr BitPlan=>{ N : 13 }->Maximize(Num, "highs")
+Solver: HiGHS
+module symbols:
+  param Domain: Seq<i8>
+       0) 1
+       1) 2
+       2) 4
+       3) 8
+       4) 16
+       5) 32
+       6) 64
+       7) 128
+       8) 256
+       9) 512
+  param N: 13
+  var Bits: Seq<i8>
+       0) 1
+       1) 2
+       2) 8
+  msr Num: 3
+  msr Sum: 11
+  msr Dif: 2
+  msr Neg: -2
+  con Limit: true
+*** Ctx ping count: 0
+>   30) [0] Expr BitPlan=>{ N : 2000 }->Maximize(Num)
+Solver: HiGHS
 module symbols:
   param Domain: Seq<i8>
        0) 1
@@ -525,5 +580,5 @@ module symbols:
   msr Neg: -977
   con Limit: true
 *** Ctx ping count: 0
->   29) [0] End
+>   31) [0] End
 

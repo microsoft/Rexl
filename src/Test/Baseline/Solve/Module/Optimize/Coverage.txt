@@ -381,7 +381,7 @@
 >    0) [0] Define P010 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B; con CS := Range(A, B)->(X $<= it)->Take(0); msr M := X }
 Global 'P010' has DType: M{param A:i8, param B:i8, con C1:b, con CS:b*, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,Seq<bool>,i8,i8},(i8,i8,i8,i8,bool,Seq<bool>,i8)>
 >    1) [0] Expr Module.Maximize(P010, M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -391,15 +391,16 @@ module symbols:
   msr M: 10
 *** Ctx ping count: 0
 >    2) [0] Expr Module.Maximize(P010=>{ B : 2 }, M)
-Solver: GLPK
+Solver: HiGHS
 *** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
   Error: Solving failed!
 <null>
 *** Ctx ping count: 0
 >    3) [0] Define P020 <- module { param A := 3; param B := 10; var X from 0; con C1 := X $<= B; con C2 := A $<= B; msr M := X }
 Global 'P020' has DType: M{param A:i8, param B:i8, con C1:b, con C2:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,bool,i8,i8},(i8,i8,i8,i8,bool,bool,i8)>
 >    4) [0] Expr P020->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -409,8 +410,9 @@ module symbols:
   msr M: 10
 *** Ctx ping count: 0
 >    5) [0] Expr P020=>{ B : 2 }->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 *** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
   Error: Solving failed!
 <null>
 *** Ctx ping count: 0
@@ -438,15 +440,16 @@ Global 'P050' has DType: M{con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule
 >   12) [0] Define P060 <- module { var X from 0; con C1 := 7 $<= X $<= 5; msr M := X }
 Global 'P060' has DType: M{con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{bool,i8,i8},(i8,i8,bool,i8)>
 >   13) [0] Expr P060->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 *** Solver diagnostics:
+  Error: Infeasible: contradictory constraints
   Error: Solving failed!
 <null>
 *** Ctx ping count: 0
 >   14) [0] Define P070 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $<= X $<= B $<= 10 * A $<= 9 * X $<= 8 * B; msr M := X }
 Global 'P070' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
 >   15) [0] Expr P070->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -457,7 +460,7 @@ module symbols:
 >   16) [0] Define P080 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $>= X $>= A; msr M := X }
 Global 'P080' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
 >   17) [0] Expr P080->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -468,7 +471,7 @@ module symbols:
 >   18) [0] Define P090 <- module { param A := 3; param B := 10; var X from 0; con C1 := A $< X $< B; msr M := X }
 Global 'P090' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
 >   19) [0] Expr P090->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -500,7 +503,7 @@ Global 'P120' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}
 >   26) [0] Define P130 <- module { param A := 3; param B := 10; var X from 0; con C1 := B $> 2 * X $> A; msr M := X }
 Global 'P130' has DType: M{param A:i8, param B:i8, con C1:b, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8},(i8,i8,i8,i8,bool,i8)>
 >   27) [0] Expr P130->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -518,7 +521,7 @@ Global 'P140' has DType: M{param A:i8, param B:i8, con C1:b, msr M:r8, var X:r8}
 >   30) [0] Define P150 <- module { param A := 3; param B := 10; var X from 0; let L1 := 2 * X; con C1 := B $> L1 $> A; msr M := X }
 Global 'P150' has DType: M{param A:i8, param B:i8, con C1:b, let L1:i8, msr M:i8, var X:i8}, SysType: RuntimeModule<{i8,i8,bool,i8,i8,i8},(i8,i8,i8,i8,i8,bool,i8)>
 >   31) [0] Expr P150->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -537,7 +540,7 @@ Global 'P160' has DType: M{param A:i8, param B:i8, con C1:b, let L1:i8, msr M:i8
 >   34) [0] Define P170 <- module { param A := 3; param B := 10; param D := 2; var X from 0; con C1 := A $<= X / D $<= B; msr M := X }
 Global 'P170' has DType: M{param A:i8, param B:i8, con C1:b, param D:r8, msr M:r8, var X:r8}, SysType: RuntimeModule<{i8,i8,bool,r8,r8,r8},(i8,i8,r8,r8,r8,bool,r8)>
 >   35) [0] Expr P170->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -549,7 +552,7 @@ module symbols:
 >   36) [0] Define P200 <- module { param A := 3; param B := 10; var X from 0; const R := Range(7, 10); con C1 := X $< R; msr M := X }
 Global 'P200' has DType: M{param A:i8, param B:i8, con C1:b*, msr M:i8, const R:i8*, var X:i8}, SysType: RuntimeModule<{i8,i8,Seq<bool>,i8,Seq<i8>,i8},(i8,i8,i8,i8,Seq<i8>,Seq<bool>,i8)>
 >   37) [0] Expr P200->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -593,7 +596,7 @@ Global 'P300' has DType: M{param A:i8, param B:i8, con C1:b, param D:r8, param F
 <null>
 *** Ctx ping count: 0
 >   46) [0] Expr P300=>{ F : 2, G : 0 }->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 3
   param B: 10
@@ -617,7 +620,7 @@ module symbols:
 >   49) [0] Define P400 <- module { param A := 1; param B := 4; param K := 100; const F := B - A if A $< B else null; var X from Range(A, B)->Take(K min (F ?? 0)); msr M := Sum(X) }
 Global 'P400' has DType: M{param A:i8, param B:i8, const F:i8?, param K:i8, msr M:i8, var X:i8*}, SysType: RuntimeModule<{i8,i8,i8,i8,i8,Seq<i8>},(i8,i8,i8,Opt<i8>,Seq<i8>,Seq<i8>,i8)>
 >   50) [0] Expr P400->Maximize(M)
-Solver: GLPK
+Solver: HiGHS
 module symbols:
   param A: 1
   param B: 4
