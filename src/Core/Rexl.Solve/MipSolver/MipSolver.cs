@@ -66,7 +66,7 @@ public sealed partial class MipSolver
 
         var impl = new MipSolver(output, codeGen, module, msr);
 
-        return impl.TryOptimizeCore(isMax, solver.ValueOrNull ?? "glpk", out score, out symValues);
+        return impl.TryOptimizeCore(isMax, solver.ValueOrNull ?? "highs", out score, out symValues);
     }
 
     private bool TryOptimizeCore(bool isMax, string solver,
