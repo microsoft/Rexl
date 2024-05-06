@@ -443,26 +443,59 @@ partial class Tensor
         if (dx != (int)dx)
             return false;
 
-        // If dx <= 0, we're doing isotropic scaling with the min dimension being dy.
-        if (dx <= 0)
+        if (dx > 0)
+            return true;
+
+        // We're doing isotropic scaling with the new min dimension given in dy.
+        int minNew = (int)dy;
+
+        if (dySrc == dxSrc)
         {
-            // Isotropic with min dimension dy.
-            int dsNew = (int)dy;
-            int ds = Math.Min(dySrc, dxSrc);
-            if (ds != dsNew)
-            {
-                long dyNew = ((long)dySrc * dsNew + (ds >> 1)) / ds;
-                long dxNew = ((long)dxSrc * dsNew + (ds >> 1)) / ds;
-                Validation.Assert(dyNew == dsNew | dxNew == dsNew);
-                Validation.Assert(dyNew >= dsNew & dxNew >= dsNew);
-                if (dyNew > int.MaxValue)
-                    return false;
-                if (dxNew > int.MaxValue)
-                    return false;
-                dy = (int)dyNew;
-                dx = (int)dxNew;
-            }
+            // Square.
+            dy = minNew;
+            dx = minNew;
+            return true;
         }
+
+        if (dySrc < dxSrc)
+        {
+            if (dySrc == minNew)
+            {
+                // No change.
+                dy = dySrc;
+                dx = dxSrc;
+                return true;
+            }
+
+            // Compute the new width.
+            long dxNew = ((long)dxSrc * minNew + (dySrc >> 1)) / dySrc;
+            Validation.Assert(dxNew >= minNew);
+            if (dxNew > int.MaxValue)
+                return false;
+            dy = minNew;
+            dx = (int)dxNew;
+        }
+        else
+        {
+            Validation.Assert(dySrc > dxSrc);
+
+            if (dxSrc == minNew)
+            {
+                // No change.
+                dy = dySrc;
+                dx = dxSrc;
+                return true;
+            }
+
+            // Compute the new height.
+            long dyNew = ((long)dySrc * minNew + (dxSrc >> 1)) / dxSrc;
+            Validation.Assert(dyNew >= minNew);
+            if (dyNew > int.MaxValue)
+                return false;
+            dy = (int)dyNew;
+            dx = minNew;
+        }
+
         return true;
     }
 
