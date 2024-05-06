@@ -1,6 +1,4 @@
 # Builds the Rexl projects and publish built artifacts to the internal artifact feed.
-# Note: If this pipeline is triggered for a Pull Request, no artifact is published, thus there will be nothing to deploy.
-# Note: The Debug and Release configurations will run in parallel.
 
 variables:
   PoolName: HostedAgent-Windows2022
@@ -55,5 +53,33 @@ jobs:
   parameters:
     buildConfig: Debug
     buildPlatform: $(BuildPlatform)
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+
+- template: ./build_mac.yml
+  parameters:
+    buildConfig: Release
+    buildPlatform: x64
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+
+- template: ./build_mac.yml
+  parameters:
+    buildConfig: Debug
+    buildPlatform: x64
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+
+- template: ./build_mac.yml
+  parameters:
+    buildConfig: Release
+    buildPlatform: arm64
+    poolName: $(PoolName)
+    workFolder: $(WorkFolder)
+
+- template: ./build_mac.yml
+  parameters:
+    buildConfig: Debug
+    buildPlatform: arm64
     poolName: $(PoolName)
     workFolder: $(WorkFolder)
