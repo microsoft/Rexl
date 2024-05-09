@@ -13,7 +13,7 @@ This repository contains:
 * Statement Rexl, also known as RexlScript.
 * Harness functionality for embedding RexlScript in an application.
 * Some sample applications, including:
-    * A Jupyter Notebook kernel usable with both [Jupyter Lab and Jupyter Notebook](https://jupyter.org/).
+    * A Jupyter Notebook kernel hosting RexlScript and usable with both [Jupyter Lab and Jupyter Notebook](https://jupyter.org/).
     * RexlBench, a GUI application for editing and running RexlScript.
     * RexlRun, a command line application for running RexlScript.
     * DocBench, a GUI application for editing and evaluating flow graphs.
@@ -25,6 +25,7 @@ This repository contains:
 * [Overview](#overview)
 * [Building](#building)
 * [Packages](#packages)
+* [Releases](#releases)
 * [Documentation](#documentation)
 * [Samples](#samples)
 * [Contributing](#contributing)
@@ -103,7 +104,34 @@ To run the other sample applications, `RexlBench`, `RexlRun`, or `DocBench` simp
 
 ## Packages
 
-We will be publishing nuget packages soon.
+Packages are published to [nuget.org](https://www.nuget.org/packages?q=Microsoft.Rexl).
+The published packages include:
+* `Microsoft.Rexl.Base`
+* `Microsoft.Rexl.Bind`
+* `Microsoft.Rexl.Code`
+* `Microsoft.Rexl.Flow`
+* `Microsoft.Rexl.Harness`
+* `Microsoft.RexlKernel.Base`
+
+There will be more in the future, for example, `Microsoft.Rexl.Onnx` and `Microsoft.Rexl.Solve`.
+
+## Releases
+
+We publish releases of `RexlKernel` here in GitHub. A release consists of `.zip` files for
+supported operating system / architecture configurations. Each zip is self-contained. To install
+and use:
+* Ensure that Python and Jupyter are installed. The latter can be accomplished with
+  `pip install jupyter`.
+* Download the appropiate `RexlKernel_<OS>_<Arch>_Release.zip` file.
+* Extract the contents of the `.zip` to a folder.
+* Open a command line shell and `cd` into the extracted folder.
+* Run `RexlKernel register`.
+* `cd` to where you would like to create notebook files.
+* Run `jupyter lab`.
+* In Jupyter Lab, you should see an icon for creating a `Rexl` notebook.
+
+The [samples](/samples) directory contents may be dowloaded and used as a launch directory for
+`jupyter lab`.
 
 ## Documentation
 
