@@ -106,12 +106,14 @@ To run the other sample applications, `RexlBench`, `RexlRun`, or `DocBench` simp
 
 Packages are published to [nuget.org](https://www.nuget.org/packages?q=Microsoft.Rexl).
 The published packages include:
-* `Microsoft.Rexl.Base`
-* `Microsoft.Rexl.Bind`
-* `Microsoft.Rexl.Code`
-* `Microsoft.Rexl.Flow`
-* `Microsoft.Rexl.Harness`
-* `Microsoft.RexlKernel.Base`
+| Name                                     | Released Package |
+|------------------------------------------|------------------|
+| `Microsoft.Rexl.Base`                  | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Base?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Base/) |
+| `Microsoft.Rexl.Bind`             | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Bind?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Bind/) |
+| `Microsoft.Rexl.Code`                  | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Code?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Code/) |
+| `Microsoft.Rexl.Flow`            | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Flow?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Flow/) |
+| `Microsoft.Rexl.Harness`            | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Harness?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Harness/) |
+| `Microsoft.RexlKernel.Base` | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.RexlKernel.Base?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.RexlKernel.Base/) |
 
 There will be more in the future, for example, `Microsoft.Rexl.Onnx` and `Microsoft.Rexl.Solve`.
 
