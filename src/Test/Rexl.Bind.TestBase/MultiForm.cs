@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Rexl;
-using Microsoft.Rexl.Bind;
-using Microsoft.Rexl.Parse;
-using Microsoft.Rexl.Private;
 
 namespace RexlTest;
 

@@ -19,10 +19,6 @@ public sealed partial class TestFunctions : OperationRegistry
     private TestFunctions()
         : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance, FlowProcs.Instance)
     {
-#if WITH_ONNX
-        AddParent(Microsoft.Rexl.Onnx.ModelFunctions.Instance);
-#endif
-
         AddBoth(CastGenFunc.Raw);
         AddBoth(CastGenFunc.Lift);
 

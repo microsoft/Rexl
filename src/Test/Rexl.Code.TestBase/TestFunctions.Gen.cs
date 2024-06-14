@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Microsoft.Rexl;
 using Microsoft.Rexl.Bind;
@@ -26,10 +25,6 @@ public sealed class TestGenerators : GeneratorRegistry
     private TestGenerators()
         : base(BuiltinGenerators.Instance)
     {
-#if WITH_ONNX
-        AddParent(Microsoft.Rexl.Onnx.ModelFuncGenerators.Instance);
-#endif
-
         Add(new CastGenFuncGen());
 
         Add(new WrapFuncGen());

@@ -20,14 +20,14 @@ using ScopeTuple = Immutable.Array<ArgScope>;
 [TestClass]
 public sealed class BinderTests : BinderTestBase
 {
-    private OperationRegistry _opers =
-        new AggregateOperationRegistry(TestFunctions.Instance, MultiFormOperations.Instance);
+    private OperationRegistry _opers;
 
     protected override OperationRegistry Operations => _opers;
 
     public BinderTests()
         : base()
     {
+        _opers = new AggregateOperationRegistry(TestFunctions.Instance, MultiFormOperations.Instance);
     }
 
     /// <summary>
