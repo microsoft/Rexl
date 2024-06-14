@@ -788,7 +788,7 @@ public class ActionRunnerTests
                 return false;
             }
 
-            info = TestOperations.Instance.GetInfo(name);
+            info = TestFunctions.Instance.GetInfo(name);
             Validation.Assert(info is null || info.Oper is not null);
             return info != null;
         }

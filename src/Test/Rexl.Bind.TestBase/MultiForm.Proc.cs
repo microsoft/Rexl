@@ -7,7 +7,7 @@ using Microsoft.Rexl;
 
 namespace RexlTest;
 
-internal sealed class TestMultiFormProc : TestMultiFormOper
+public sealed class TestMultiFormProc : TestMultiFormOper
 {
     // These names have the form Multi[D|_][G][S|s|R|r|f][M|_][A|B|C]... with:
     // * [D|_] indicating whether the direct simple form is supported: F(<arg>).

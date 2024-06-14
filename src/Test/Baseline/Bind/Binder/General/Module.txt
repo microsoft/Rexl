@@ -29,18 +29,18 @@ M=>{ A : 17 } : M{param A:i8, msr S:r8, var X:r8}
 Binder : ModuleProjection(!1: M, {A:17})
 ###
 > Module.Maximize(M, S)
-Module.Maximize(M, S) : M{param A:i8, msr S:r8, var X:r8}?
+Module.Maximize(M, S) : v
 *** Error: (16,17) Node: M, Message: Modules are not supported by this host
-*** Error: (19,20) Node: S, Message: Modules are not supported by this host
-Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
-Reducer: Module.Opt(M, "S", true)
+*** Error: (15,16) Node: Module.Maximize(M, S), Message: Invocation of unknown or unsupported function
+*** Error: (19,20) Node: S, Message: Name does not exist in the current context
+Binder : __err__.Unknown(M, Error(ErrNameDoesNotExist))
 ###
 > M->Maximize(S)
-M->Maximize(S) : M{param A:i8, msr S:r8, var X:r8}?
+M->Maximize(S) : v
 *** Error: (0,1) Node: M, Message: Modules are not supported by this host
-*** Error: (12,13) Node: S, Message: Modules are not supported by this host
-Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
-Reducer: Module.Opt(M, "S", true)
+*** Error: (1,3) Node: M->Maximize(S), Message: Invocation of unknown or unsupported function
+*** Error: (12,13) Node: S, Message: Name does not exist in the current context
+Binder : __err__.Unknown(M, Error(ErrNameDoesNotExist))
 ###
 > R
 R : {A:i8, M:M{param A:i8, msr S:r8, var X:r8}}

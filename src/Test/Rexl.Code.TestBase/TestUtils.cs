@@ -10,7 +10,7 @@ using Microsoft.Rexl.Private;
 
 namespace RexlTest;
 
-internal static class TestUtils
+public static class TestUtils
 {
     private readonly static EnumerableCodeGeneratorBase _codeGen =
         new CachingEnumerableCodeGenerator(new TestEnumTypeManager(), TestGenerators.Instance);
@@ -61,9 +61,13 @@ internal static class TestUtils
 
     private sealed class BindHostLonerWithBuiltinFuncs : MinBindHost
     {
+        private readonly OperationRegistry _opers;
+
         public BindHostLonerWithBuiltinFuncs()
             : base()
         {
+            // REVIEW: Should this be generalized?
+            _opers = TestFunctions.Instance;
         }
 
         public override bool TryGetOperInfoOne(NPath name, bool user, bool fuzzy, int arity, out OperInfo info)
@@ -74,8 +78,7 @@ internal static class TestUtils
                 return false;
             }
 
-            // REVIEW: Should this be generalized?
-            info = TestOperations.Instance.GetInfo(name);
+            info = _opers.GetInfo(name);
             return info != null;
         }
     }

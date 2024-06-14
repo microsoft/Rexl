@@ -656,8 +656,12 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
         }
     }
 
+    protected abstract OperationRegistry Operations { get; }
+
+    protected abstract GeneratorRegistry Generators { get; }
+
     protected BlockTestsBase()
-    : base()
+        : base()
     {
     }
 
@@ -752,9 +756,9 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
 
         // REVIEW: Perhaps use caching when there are nested sequences and otherwise just wrap at the global
         // level. We need to change HarnessBase to do that.
-        var codeGen = new CodeGenerator(new TestEnumTypeManager(), TestGenerators.Instance);
+        var codeGen = new CodeGenerator(new TestEnumTypeManager(), Generators);
 
-        var harness = TestHarness.Create(this, TestOperations.Instance, codeGen,
+        var harness = TestHarness.Create(this, Operations, codeGen,
             showIL: withIL, createSeekableStreams: createSeekableStreams, options);
         if (segmented)
         {
@@ -776,9 +780,9 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
     {
         Link linkFull = LinkFromHeadTail(pathHead, pathTail, options);
 
-        var codeGen = new CodeGenerator(new TestEnumTypeManager(), TestGenerators.Instance);
+        var codeGen = new CodeGenerator(new TestEnumTypeManager(), Generators);
 
-        var harness = TestHarness.Create(this, TestOperations.Instance, codeGen, false, false, options);
+        var harness = TestHarness.Create(this, Operations, codeGen, false, false, options);
         var blocks = SplitHashBlocks(text);
         foreach (var block in blocks)
         {

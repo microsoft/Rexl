@@ -20,9 +20,14 @@ using Integer = System.Numerics.BigInteger;
 [TestClass]
 public sealed class CodeGenTests : CodeGenTestBase
 {
+    private readonly OperationRegistry _opers;
+
+    protected override OperationRegistry Operations => _opers;
+
     public CodeGenTests()
-        : base(TestGenerators.Instance)
+        : base(new AggregateGeneratorRegistry(TestGenerators.Instance, MultiFormGenerators.Instance))
     {
+        _opers = new AggregateOperationRegistry(TestFunctions.Instance, MultiFormOperations.Instance);
     }
 
     [TestMethod]
@@ -34,7 +39,7 @@ public sealed class CodeGenTests : CodeGenTestBase
     [TestMethod]
     public void FunctionBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Functions", options: TestOptions.AllowGeneral);
+        DoBaselineTests(ProcessFile, @"CodeGen/Functions", options: TestCodeOptions.AllowGeneral);
     }
 
     [TestMethod]
@@ -46,71 +51,63 @@ public sealed class CodeGenTests : CodeGenTestBase
     [TestMethod]
     public void ILBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/IL", subDirs: false, options: TestOptions.WithIL);
+        DoBaselineTests(ProcessFile, @"CodeGen/IL", subDirs: false, options: TestCodeOptions.WithIL);
     }
 
     [TestMethod]
     public void CompareILBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/IL/Compare", subDirs: true, options: TestOptions.WithIL);
+        DoBaselineTests(ProcessFile, @"CodeGen/IL/Compare", subDirs: true, options: TestCodeOptions.WithIL);
     }
 
     [TestMethod]
     public void ModuleILTests()
     {
         DoBaselineTests(ProcessFile, @"CodeGen/Module/IL",
-            options: TestOptions.WithIL | TestOptions.SplitBlocks);
+            options: TestCodeOptions.WithIL | TestCodeOptions.SplitBlocks);
     }
 
     [TestMethod]
     public void SpecialBaselineTests()
     {
-        Host = TestHost.Instance;
-        try
-        {
-            DoBaselineTests(ProcessFile, @"CodeGen/Special", options: TestOptions.WithIL);
-        }
-        finally
-        {
-            Host = null;
-        }
+        DoBaselineTests(ProcessFile, @"CodeGen/Special", options: TestCodeOptions.WithIL);
     }
 
     [TestMethod]
     public void StreamingBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Streaming", options: TestOptions.Streaming);
+        DoBaselineTests(ProcessFile, @"CodeGen/Streaming", options: TestCodeOptions.Streaming);
     }
 
     [TestMethod]
     public void SerializationBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Serialization", options: TestOptions.WithBytes);
+        DoBaselineTests(ProcessFile, @"CodeGen/Serialization", options: TestCodeOptions.WithBytes);
     }
 
     [TestMethod]
     public void TensorBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Tensors", subDirs: true, options: TestOptions.TupNewLine);
+        DoBaselineTests(ProcessFile, @"CodeGen/Tensors", subDirs: true, options: TestCodeOptions.TupNewLine);
     }
 
     [TestMethod]
     public void TensorFuncsBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/TensorFuncs", subDirs: true, options: TestOptions.TupNewLine);
+        DoBaselineTests(ProcessFile, @"CodeGen/TensorFuncs", subDirs: true, options: TestCodeOptions.TupNewLine);
     }
 
     [TestMethod]
     public void ImageFuncsBaselineTests()
     {
         Config.ShowHex = true;
-        DoBaselineTests(ProcessFile, @"CodeGen/ImageFuncs", subDirs: true, options: TestOptions.TupNewLine);
+        DoBaselineTests(ProcessFile, @"CodeGen/ImageFuncs", subDirs: true, options: TestCodeOptions.TupNewLine);
     }
 
     [TestMethod]
     public void VolatileBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Volatile", options: TestOptions.ShowBndKinds | TestOptions.WithIL);
+        DoBaselineTests(ProcessFile, @"CodeGen/Volatile", options: TestCodeOptions.ShowBndKinds | TestCodeOptions.WithIL);
     }
 
     /// <summary>
@@ -120,7 +117,7 @@ public sealed class CodeGenTests : CodeGenTestBase
     [TestMethod]
     public void WipBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"CodeGen/Wip", options: TestOptions.WithIL);
+        DoBaselineTests(ProcessFile, @"CodeGen/Wip", options: TestCodeOptions.WithIL);
     }
 
     [TestMethod]
@@ -508,18 +505,4 @@ public sealed class CodeGenTests : CodeGenTestBase
     }
 
     #endregion Extra hand crafted tests for code coverage
-}
-
-internal sealed class TestHost : CodeGenHost, WrapCallSvcFromHostFunc.IService
-{
-    public static readonly TestHost Instance = new TestHost();
-
-    private TestHost()
-    {
-    }
-
-    public void Call<T>(T value, ExecCtx ctx, int id)
-    {
-        ctx.Log(id, "Called service from code gen host with value: {0}", value);
-    }
 }

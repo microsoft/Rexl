@@ -20,6 +20,16 @@ using ScopeTuple = Immutable.Array<ArgScope>;
 [TestClass]
 public sealed class BinderTests : BinderTestBase
 {
+    private OperationRegistry _opers;
+
+    protected override OperationRegistry Operations => _opers;
+
+    public BinderTests()
+        : base()
+    {
+        _opers = new AggregateOperationRegistry(TestFunctions.Instance, MultiFormOperations.Instance);
+    }
+
     /// <summary>
     /// This one is to separate out work in progress. Normally, when pushed to master,
     /// this directory will be empty.
@@ -34,14 +44,14 @@ public sealed class BinderTests : BinderTestBase
     [TestMethod]
     public void GeneralBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"Binder/General", options: TestOptions.ProhibitModule);
+        DoBaselineTests(ProcessFile, @"Binder/General", options: TestBindOptions.ProhibitModule);
     }
 
     [TestMethod]
     public void WithBaselineTests()
     {
         DoBaselineTests(ProcessFile, @"Binder/With",
-            options: TestOptions.Replicate | TestOptions.AllowVolatile);
+            options: TestBindOptions.Replicate | TestBindOptions.AllowVolatile);
     }
 
     [TestMethod]
@@ -65,7 +75,7 @@ public sealed class BinderTests : BinderTestBase
     [TestMethod]
     public void FunctionBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"Binder/Functions", options: TestOptions.AllowGeneral);
+        DoBaselineTests(ProcessFile, @"Binder/Functions", options: TestBindOptions.AllowGeneral);
     }
 
     [TestMethod]
@@ -79,7 +89,7 @@ public sealed class BinderTests : BinderTestBase
     public void ProcedureBaselineTests()
     {
         Verb = BndNodePrinter.Verbosity.Default;
-        DoBaselineTests(ProcessFile, @"Binder/Procedures", options: TestOptions.AllowProcedure);
+        DoBaselineTests(ProcessFile, @"Binder/Procedures", options: TestBindOptions.AllowProcedure);
     }
 
     [TestMethod]
@@ -103,14 +113,14 @@ public sealed class BinderTests : BinderTestBase
     [TestMethod]
     public void ModuleTests()
     {
-        DoBaselineTests(ProcessFile, @"Binder/Module", options: TestOptions.SplitBlocks);
+        DoBaselineTests(ProcessFile, @"Binder/Module", options: TestBindOptions.SplitBlocks);
     }
 
     [TestMethod]
     public void VolatileBaselineTests()
     {
         DoBaselineTests(ProcessFile, @"Binder/Volatile",
-            options: TestOptions.ShowBndKinds | TestOptions.AllowVolatile);
+            options: TestBindOptions.ShowBndKinds | TestBindOptions.AllowVolatile);
     }
 
     [TestMethod]
@@ -124,13 +134,13 @@ public sealed class BinderTests : BinderTestBase
     public void GetItemCountBaselineTests()
     {
         DoBaselineTests(ProcessFile, @"Binder/GetItemCount",
-            options: TestOptions.ShowItemCount | TestOptions.AllowVolatile);
+            options: TestBindOptions.ShowItemCount | TestBindOptions.AllowVolatile);
     }
 
     [TestMethod]
     public void StreamingBaselineTests()
     {
-        DoBaselineTests(ProcessFile, @"Binder/Streaming", options: TestOptions.Streaming);
+        DoBaselineTests(ProcessFile, @"Binder/Streaming", options: TestBindOptions.Streaming);
     }
 
     [TestMethod]
@@ -140,7 +150,7 @@ public sealed class BinderTests : BinderTestBase
         int count = DoBaselineTests(Run, @"Binder/Special/TensorConversion.txt");
         Assert.AreEqual(1, count);
 
-        void Run(string pathHead, string pathTail, string text, TestOptions options)
+        void Run(string pathHead, string pathTail, string text, TestBindOptions options)
         {
             var fma = RexlFormula.Create(SourceContext.Create("[ 3 + 5, 7 ]"));
             ValidateScript(fma);
@@ -215,7 +225,7 @@ public sealed class BinderTests : BinderTestBase
             ThrowsAll(msg, func, type, args, ScopeTuple.Empty, ScopeTuple.Empty, dirs, names);
         }
 
-        void Run(string pathHead, string pathTail, string text, TestOptions options)
+        void Run(string pathHead, string pathTail, string text, TestBindOptions options)
         {
             var A = new DName("A");
             var B = new DName("B");
@@ -323,7 +333,7 @@ public sealed class BinderTests : BinderTestBase
             Assert.IsTrue(caught);
         }
 
-        void Run(string pathHead, string pathTail, string text, TestOptions options)
+        void Run(string pathHead, string pathTail, string text, TestBindOptions options)
         {
             var A = new DName("A");
             var B = new DName("B");
@@ -384,7 +394,7 @@ public sealed class BinderTests : BinderTestBase
         int count = DoBaselineTests(Run, @"Binder/Special/PrintBadBnd.txt");
         Assert.AreEqual(1, count);
 
-        void Run(string pathHead, string pathTail, string text, TestOptions options)
+        void Run(string pathHead, string pathTail, string text, TestBindOptions options)
         {
             void Dump(BoundNode bnd)
             {
