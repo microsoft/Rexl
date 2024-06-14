@@ -38,7 +38,7 @@ public abstract class RexlLineTestsBase<TSink, TOpts> : RexlTestsBase<TSink, TOp
 
     protected abstract bool AnyOut { get; }
 
-    protected virtual OperationRegistry Opers => TestOperations.Instance;
+    protected abstract OperationRegistry Operations { get; }
 
     protected virtual void InitFile()
     {
@@ -617,7 +617,7 @@ public abstract class RexlLineTestsBase<TSink, TOpts> : RexlTestsBase<TSink, TOp
                 if (!user)
                 {
                     // REVIEW: Which should have priority? Builtin or UDO?
-                    info = _parent.Opers.GetInfo(name);
+                    info = _parent.Operations.GetInfo(name);
                     Validation.Assert(info is null || info.Oper is not null);
                     return info != null;
                 }
@@ -648,7 +648,7 @@ public abstract class RexlLineTestsBase<TSink, TOpts> : RexlTestsBase<TSink, TOp
                     if (map == null)
                     {
                         map = new Dictionary<string, OperInfo>();
-                        foreach (var item in _parent.Opers.GetInfos(includeHidden: true, includeDeprecated: true))
+                        foreach (var item in _parent.Operations.GetInfos(includeHidden: true, includeDeprecated: true))
                             map[item.Path.ToDottedSyntax().ToLowerInvariant()] = item;
                         _lowerPathToInfo = map;
                     }

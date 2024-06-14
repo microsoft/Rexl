@@ -20,6 +20,19 @@ namespace RexlTest;
 [TestClass]
 public sealed class ModuleTests : BlockTestsBase<bool>
 {
+    private readonly OperationRegistry _opers;
+    private readonly GeneratorRegistry _gens;
+
+    protected override OperationRegistry Operations => _opers;
+    protected override GeneratorRegistry Generators => _gens;
+
+    public ModuleTests()
+        : base()
+    {
+        _opers = new AggregateOperationRegistry(TestFunctions.Instance, SolverFunctions.Instance);
+        _gens = new AggregateGeneratorRegistry(TestGenerators.Instance, SolverGenerators.Instance);
+    }
+
     private Task ProcessFileReduce(string pathHead, string pathTail, string text, bool options)
     {
         return ProcessFileCoreAsync(pathHead, pathTail, text, withIL: false, options: true);

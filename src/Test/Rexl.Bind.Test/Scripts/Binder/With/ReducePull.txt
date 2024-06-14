@@ -1,4 +1,4 @@
-﻿:: { si8:i8*, si8_2:i8*, A:i8, B:i8, C:i8, Txt:s, QA:i8?, T:{A:i8}, M:M{P!P:i8, M!S:i8}, b:b }
+﻿:: { si8:i8*, si8_2:i8*, A:i8, B:i8, C:i8, Txt:s, QA:i8?, T:{A:i8}, b:b }
 
 // ForEach.
 ForEach(With (s: Wrap(si8), s ++ s), it^3)
@@ -116,12 +116,6 @@ T+>{ B: With(s: Range(A * 3), s ++ s) }
 T+>{ B: With(s: Range(@A * 3), s ++ s) }
 T+>{ B: With(a: @A * 3, s: Range(a + A + a + A), s ++ s) }
 T+>{ B: With(a: @A * 3, b: A * 3, s: Range(a + b + a + b), s ++ s) }
-
-// Module.Optimize.
-Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
-M->Maximize(With(x:Wrap(A), x * x * S))
-M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
-M->Maximize(S, With(x:ToText(A), x & x & x))
 
 // Multiple pulls.
 { A: Guard([with]  s: si8 ++ si8, [with]  t: s ++ s, [with]  u: [t, t, s], u ++ u) }

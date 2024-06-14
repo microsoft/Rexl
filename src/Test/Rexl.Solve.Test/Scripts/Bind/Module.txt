@@ -1,0 +1,33 @@
+﻿:: { M:M{param A:i8, const B:i8, var X:i8, msr S:i8, msr T:s}, QM:M{param A:i8, msr S:i8}?, R:{A:i8}, QR:{A:i8}?, b:b }
+
+Module.Maximize(M, S)
+M->Maximize(S)
+
+M->Minimize(S)
+QM->Minimize(S)
+Module.Optimize(M, S, b)
+QM->Optimize(S, b)
+
+Module.Maximize(M, s) // Error.
+Module.Maximize(M, A) // Error.
+M->Maximize(X) // Error.
+Module.Maximize(R, A) // Error.
+Module.Maximize(QR, A) // Error.
+M->Maximize(S, "GLPK")
+Module.Maximize(M, 0) // Error.
+Module.Maximize(M, 2 * S) // Error.
+Module.Minimize(M, -S) // Error.
+Module.Minimize(M, T) // Error.
+M->Optimize(S, A > 10) // Error.
+M->Optimize(S, b, "highs")
+
+// Hoisting out of optimize expression.
+Range(10)->ForEach(as n, Module.Maximize(M with { A : R.A * R.A * n }, S))
+
+:: { M:M{P!P:i8, M!S:i8}, A:i8 }
+
+// Reduce pull from With.
+Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
+M->Maximize(With(x:Wrap(A), x * x * S))
+M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
+M->Maximize(S, With(x:ToText(A), x & x & x))

@@ -3,6 +3,7 @@
 
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Rexl;
 using Microsoft.Rexl.Code;
 using Microsoft.Rexl.Lex;
 
@@ -13,6 +14,9 @@ namespace RexlTest;
 [TestClass]
 public sealed class ModuleTests : BlockTestsBase<bool>
 {
+    protected override OperationRegistry Operations => TestFunctions.Instance;
+    protected override GeneratorRegistry Generators => TestGenerators.Instance;
+
     [TestMethod]
     public async Task ModuleBasicBaselineTests()
     {
@@ -29,11 +33,5 @@ public sealed class ModuleTests : BlockTestsBase<bool>
     public async Task ModuleWipBaselineTests()
     {
         await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Wip").ConfigureAwait(false);
-    }
-
-    [TestMethod]
-    public async Task ModuleOptimizeBaselineTests()
-    {
-        await DoBaselineTestsAsync(ProcessFileNoIL, @"Module/Optimize").ConfigureAwait(false);
     }
 }
