@@ -679,6 +679,59 @@ public sealed partial class TextTrimFunc : TextFuncOne
     }
 }
 
+public sealed partial class TextPadLeftFunc: RexlOper
+{
+    public static readonly TextPadLeftFunc Instance = new TextPadLeftFunc();
+
+    private TextPadLeftFunc()
+        : base(isFunc: true, new DName("PadLeft"), BindUtil.TextNs, 1, 2)
+    {
+    }
+
+    protected override ArgTraits GetArgTraitsCore(int carg)
+    {
+        Validation.BugCheckParam(SupportsArity(carg), nameof(carg));
+        var maskAll = BitSet.GetMask(carg);
+        var maskOpt = maskAll.ClearBit(0);
+        return ArgTraitsLifting.Create(this, carg, maskLiftSeq: maskAll, maskLiftTen: maskAll);
+    }
+
+
+
+    protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
+    {
+        Validation.AssertValue(reducer);
+        Validation.Assert(IsValidCall(call));
+
+        var args = call.Args;
+        if (args[0].TryGetString(out var str))
+            return BndIntNode.CreateI8(Util.Size(str));
+
+        return call;
+    }
+
+    protected override bool CertifyCore(BndCallNode call, ref bool full)
+    {
+        if (call.Type != DType.Text)
+            return false;
+        var args = call.Args;
+        if (args[0].Type != DType.I8Req)
+            return false;
+        if (args[1].Type != DType.Text)
+            return false;
+        return true;
+    }
+
+    public static string Exec(string src, int padding_len, char padding_char = ' ')
+    {
+        if (string.IsNullOrEmpty(src))
+            return src;
+        if (padding_len == 0)
+            return src;
+        return src.PadLeft(padding_len, padding_char);
+    }
+}
+
 public sealed partial class TextReplaceFunc : RexlOper
 {
     public static readonly TextReplaceFunc Instance = new TextReplaceFunc();
