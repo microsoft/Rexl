@@ -23,7 +23,7 @@ using ArgTuple = Immutable.Array<BoundNode>;
 /// Baseline test options.
 /// </summary>
 [Flags]
-public enum TestOptions
+public enum TestBindOptions
 {
     None = 0x0000,
 
@@ -50,7 +50,7 @@ public enum TestOptions
 /// <summary>
 /// Base class for binder-level baseline tests.
 /// </summary>
-public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions>, IReducerHost
+public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestBindOptions>, IReducerHost
 {
     private readonly SinkImpl _sink;
 
@@ -94,22 +94,22 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         _sink = new SinkImpl(this);
     }
 
-    protected override bool UseBlock(TestOptions testOpts)
+    protected override bool UseBlock(TestBindOptions testOpts)
     {
-        return (testOpts & TestOptions.SplitBlocks) != 0;
+        return (testOpts & TestBindOptions.SplitBlocks) != 0;
     }
 
-    protected override BindOptions TestOptsToBindOpts(TestOptions testOpts)
+    protected override BindOptions TestOptsToBindOpts(TestBindOptions testOpts)
     {
         BindOptions options = default;
 
-        if ((testOpts & TestOptions.AllowVolatile) != 0)
+        if ((testOpts & TestBindOptions.AllowVolatile) != 0)
             options |= BindOptions.AllowVolatile;
-        if ((testOpts & TestOptions.AllowProcedure) != 0)
+        if ((testOpts & TestBindOptions.AllowProcedure) != 0)
             options |= BindOptions.AllowProc;
-        if ((testOpts & TestOptions.ProhibitModule) != 0)
+        if ((testOpts & TestBindOptions.ProhibitModule) != 0)
             options |= BindOptions.ProhibitModule;
-        if ((testOpts & TestOptions.AllowGeneral) != 0)
+        if ((testOpts & TestBindOptions.AllowGeneral) != 0)
             options |= BindOptions.AllowGeneral;
 
         return options;
@@ -189,7 +189,7 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         return base.GetGlobalType(full);
     }
 
-    protected override void ProcessScript(string script, TestOptions testOpts)
+    protected override void ProcessScript(string script, TestBindOptions testOpts)
     {
         Sink.WriteLine("> {0}", script);
 
@@ -206,9 +206,9 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         }
     }
 
-    protected void ProcessFma(RexlFormula fma, TestOptions testOpts)
+    protected void ProcessFma(RexlFormula fma, TestBindOptions testOpts)
     {
-        bool streaming = (testOpts & TestOptions.Streaming) != 0;
+        bool streaming = (testOpts & TestBindOptions.Streaming) != 0;
         var host = new BindHostImpl(this, streaming);
 
         // First show the bound formula before any reductions or optimizations.
@@ -246,7 +246,7 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         Sink.TWrite("Binder : ").WriteBndNode(res, testOpts).WriteLine();
         WriteReductions(res, testOpts);
 
-        if ((testOpts & TestOptions.Replicate) != 0)
+        if ((testOpts & TestBindOptions.Replicate) != 0)
         {
             res = BndTupleNode.Create(ArgTuple.Create(res, res));
             Sink.TWrite("Tupled : ").WriteBndNode(res, testOpts).WriteLine();
@@ -254,7 +254,7 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         }
     }
 
-    protected void WriteReductions(BoundNode res, TestOptions testOpts = default)
+    protected void WriteReductions(BoundNode res, TestBindOptions testOpts = default)
     {
         res = RunReduce(res, testOpts);
         var next = RunHoist(res, testOpts);
@@ -269,18 +269,18 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
         }
     }
 
-    protected BoundNode RunReduce(BoundNode res, TestOptions testOpts)
+    protected BoundNode RunReduce(BoundNode res, TestBindOptions testOpts)
     {
         return RunTreePassCore(res, Reducer.Run, "Reducer", "Reduced", testOpts);
     }
 
-    protected BoundNode RunHoist(BoundNode res, TestOptions testOpts)
+    protected BoundNode RunHoist(BoundNode res, TestBindOptions testOpts)
     {
         return RunTreePassCore(res, Optimizer.Run, "Hoister", "Hoisted", testOpts);
     }
 
     protected BoundNode RunTreePassCore(BoundNode res, Func<IReducerHost, BoundNode, BoundNode> func,
-        string src, string action, TestOptions testOpts)
+        string src, string action, TestBindOptions testOpts)
     {
         var next = func(this, res);
         if (next == res)
@@ -397,15 +397,15 @@ public abstract class BinderTestBase : RexlLineTestsBase<SbTypeSink, TestOptions
             return this.WriteBndNode(bnd);
         }
 
-        public SinkImpl WriteBndNode(BoundNode bnd, TestOptions testOpts = default)
+        public SinkImpl WriteBndNode(BoundNode bnd, TestBindOptions testOpts = default)
         {
             Validation.AssertValue(bnd);
-            if ((testOpts & TestOptions.ShowItemCount) != 0 && bnd.Type.IsSequence)
+            if ((testOpts & TestBindOptions.ShowItemCount) != 0 && bnd.Type.IsSequence)
             {
                 var (min, max) = bnd.GetItemCountRange();
                 this.TWrite("(").TWrite(min).TWrite(", ").TWrite(max == long.MaxValue ? "*" : max.ToString()).Write(") ");
             }
-            if ((testOpts & TestOptions.ShowBndKinds) != 0)
+            if ((testOpts & TestBindOptions.ShowBndKinds) != 0)
                 this.Write("[{0}] ", bnd.AllKinds.ToString().Replace(", ", "|", StringComparison.Ordinal));
             return this.TWrite(BndNodePrinter.Run(bnd, _parent.Verb));
         }

@@ -1,0 +1,127 @@
+**** New globals: {M:M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}, QM:M{param A:i8, msr S:i8}?, QR:{A:i8}?, R:{A:i8}, b:b}
+
+> Module.Maximize(M, S)
+Module.Maximize(M, S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> M->Maximize(S)
+M->Maximize(S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> M->Minimize(S)
+M->Minimize(S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Minimize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", false)
+###
+> QM->Minimize(S)
+QM->Minimize(S) : M{param A:i8, msr S:i8}?
+Binder : Guard(?1: QM, Module.Minimize*(!2: ?1, ModToRec(!2).S))
+Reducer: Guard(?1: QM, Module.Opt(?1, "S", false))
+###
+> Module.Optimize(M, S, b)
+Module.Optimize(M, S, b) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, b)
+Reducer: Module.Opt(M, "S", b)
+###
+> QM->Optimize(S, b)
+QM->Optimize(S, b) : M{param A:i8, msr S:i8}?
+Binder : Guard(?1: QM, Module.Optimize*(!2: ?1, ModToRec(!2).S, b))
+Reducer: Guard(?1: QM, Module.Opt(?1, "S", b))
+###
+> Module.Maximize(M, s) // Error.
+Corrected by binder: [Module.Maximize(M, S) // Error.]
+Module.Maximize(M, s) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (19,20) Node: s, Tok: 's', Message: Unknown field, did you intend 'S' in type: '{A:i8, B:i8, S:i8, T:s, X:i8}'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S)
+Reducer: Module.Opt(M, "S", true)
+###
+> Module.Maximize(M, A) // Error.
+Module.Maximize(M, A) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: Unknown measure: 'A'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).A)
+###
+> M->Maximize(X) // Error.
+M->Maximize(X) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: Unknown measure: 'X'
+Binder : Module.Maximize*(!1: M, ModToRec(!1).X)
+###
+> Module.Maximize(R, A) // Error.
+Module.Maximize(R, A) : M{}?
+*** Error: (16,17) Node: R, Message: Operand must be a module
+*** Error: (16,17) Node: R, Message: Invalid operand type for scope slot: given type '{A:i8}', need type 'M{}'
+Binder : Module.Maximize*(!1: R, !1.A)
+###
+> Module.Maximize(QR, A) // Error.
+Module.Maximize(QR, A) : M{}?
+*** Error: (16,18) Node: QR, Message: Operand must be a module
+*** Error: (16,18) Node: QR, Message: Invalid operand type for scope slot: given type '{A:i8}', need type 'M{}'
+Binder : Guard(?1: QR, Module.Maximize*(!2: ?1, !2.A))
+###
+> M->Maximize(S, "GLPK")
+M->Maximize(S, "GLPK") : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S, "GLPK")
+Reducer: Module.Opt(M, "S", true, "GLPK")
+###
+> Module.Maximize(M, 0) // Error.
+Module.Maximize(M, 0) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, 0)
+###
+> Module.Maximize(M, 2 * S) // Error.
+Module.Maximize(M, 2 * S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, Mul(2, ModToRec(!1).S))
+Reducer: Module.Maximize*(!1: M, Mul(ModToRec(!1).S, 2))
+###
+> Module.Minimize(M, -S) // Error.
+Module.Minimize(M, -S) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Minimize*(!1: M, Add([-] ModToRec(!1).S))
+###
+> Module.Minimize(M, T) // Error.
+Module.Minimize(M, T) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (19,20) Node: T, Message: Invalid operand type: cannot convert type 's' to 'r8'
+Binder : Module.Minimize*(!1: M, Error(ErrBadType_Src_Dst))
+###
+> M->Optimize(S, A > 10) // Error.
+M->Optimize(S, A $> 10) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+*** Error: (15,16) Node: A, Message: Name does not exist in the current context
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, Unit<i8>(Error(ErrNameDoesNotExist)) @> 10)
+Reducer: Module.Opt(M, "S", false)
+###
+> M->Optimize(S, b, "highs")
+M->Optimize(S, b, "highs") : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, b, "highs")
+Reducer: Module.Opt(M, "S", b, "highs")
+###
+> Range(10)->ForEach(as n, Module.Maximize(M with { A : R.A * R.A * n }, S))
+Range(10)->ForEach(as n, Module.Maximize(M=>{ A : R.A * R.A * n }, S)) : M{param A:i8, const B:i8, msr S:i8, msr T:s, var X:i8}?*
+Binder : ForEach(*1: Range(10), Module.Maximize*(!3: ModuleProjection(!2: M, {A:Mul(R.A, R.A, *1)}), ModToRec(!3).S))
+Reducer: ForEach(*1: Range(10), Module.Opt(ModuleProjection(!2: M, {A:Mul(R.A, R.A, *1)}), "S", true))
+Hoister: With(!1: Mul(R.A, R.A), ForEach(*2: Range(10), Module.Opt(ModuleProjection(!3: M, {A:Mul(!1, *2)}), "S", true)))
+###
+
+**** New globals: {A:i8, M:M{param P:i8, msr S:i8}}
+
+> Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
+Module.Maximize(With(r : { P : 3 }, M=>(r)=>(r)), S) : M{param P:i8, msr S:i8}?
+Binder : Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S)
+Reducer: With(!1: {P:3}, Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true))
+###
+> M->Maximize(With(x:Wrap(A), x * x * S))
+M->Maximize(With(x : Wrap(A), x * x * S)) : M{param P:i8, msr S:i8}?
+*** Error: The objective for an optimize function must be a measure in the module
+Binder : Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S)))
+###
+> M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
+M->Optimize(S, With(x : Wrap(A), x * x * x $> 100)) : M{param P:i8, msr S:i8}?
+Binder : Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100))
+Reducer: With(!1: Test.Wrap(A), Module.Opt(M, "S", Mul(!1, !1, !1) @> 100))
+###
+> M->Maximize(S, With(x:ToText(A), x & x & x))
+M->Maximize(S, With(x : ToText(A), x & x & x)) : M{param P:i8, msr S:i8}?
+Binder : Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2)))
+Reducer: With(!1: ToText(A), Module.Opt(M, "S", true, StrConcat(!1, !1, !1)))
+###

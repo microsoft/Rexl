@@ -14,9 +14,15 @@ public sealed class SolverFunctions : OperationRegistry
 
     private SolverFunctions()
     {
+        // Sat functions.
         AddOne(SatSolveFunc.Instance);
         AddOne(SatAtMostOneFunc.Instance);
         AddOne(SatNotFunc.Instance);
+
+        // Module functions.
+        AddOne(ModuleOptimizeFunc.Optimize);
+        AddOne(ModuleOptimizeFunc.Minimize);
+        AddOne(ModuleOptimizeFunc.Maximize);
     }
 }
 
@@ -29,5 +35,7 @@ public sealed class SolverGenerators : GeneratorRegistry
         Add(SatSolveFunc.MakeGen());
         Add(SatAtMostOneFunc.MakeGen());
         Add(SatNotFunc.MakeGen());
+
+        Add(ModuleOptimizeGen.Instance);
     }
 }

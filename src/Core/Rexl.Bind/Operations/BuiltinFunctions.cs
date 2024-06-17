@@ -713,11 +713,6 @@ public class BuiltinFunctions : OperationRegistry
             AddOne(LinkProp.FuncPath, new Sig(S.AboutLinkPath, arg));
         }
 
-        // Module functions.
-        AddOne(ModuleOptimizeFunc.Optimize);
-        AddOne(ModuleOptimizeFunc.Minimize);
-        AddOne(ModuleOptimizeFunc.Maximize);
-
         // Read functions.
         AddOne(ReadBytesFunc.ReadAll);
     }

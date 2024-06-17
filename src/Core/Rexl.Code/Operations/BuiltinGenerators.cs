@@ -108,8 +108,6 @@ public sealed class BuiltinGenerators : GeneratorRegistry
         Add(LinkGen.Instance);
         Add(LinkPropGen.Instance);
 
-        Add(ModuleOptimizeGen.Instance);
-
         Add(ReadBytesGen.Instance);
 
         // Procedures.

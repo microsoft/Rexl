@@ -1,4 +1,4 @@
-**** New globals: {A:i8, B:i8, C:i8, M:M{param P:i8, msr S:i8}, QA:i8?, T:{A:i8}, Txt:s, b:b, si8:i8*, si8_2:i8*}
+**** New globals: {A:i8, B:i8, C:i8, QA:i8?, T:{A:i8}, Txt:s, b:b, si8:i8*, si8_2:i8*}
 
 > ForEach(With (s: Wrap(si8), s ++ s), it^3)
 ForEach(With(s : Wrap(si8), s ++ s), it^3) : i8*
@@ -584,33 +584,6 @@ Binder : SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Ad
 Reducer: With(!1: Mul(A, 3), SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4))))
 Tupled : (SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Add(!2, !3, !2, !3)), SeqConcat(!4, !4))), SetFields(!1: T, B : With(!2: Mul(A, 3), !3: Mul(!1.A, 3), !4: Range(Add(!2, !3, !2, !3)), SeqConcat(!4, !4))))
 Reducer: With(!1: Mul(A, 3), (SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4))), SetFields(!2: T, B : With(!3: Mul(!2.A, 3), !4: Range(Add(!1, !3, !1, !3)), SeqConcat(!4, !4)))))
-###
-> Module.Maximize(With(r:{P:3}, M=>(r)=>(r)), S)
-Module.Maximize(With(r : { P : 3 }, M=>(r)=>(r)), S) : M{param P:i8, msr S:i8}?
-Binder : Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S)
-Reducer: With(!1: {P:3}, Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true))
-Tupled : (Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S), Module.Maximize*(!4: With(!1: {P:3}, ModuleProjection(!3: ModuleProjection(!2: M, !1), !1)), ModToRec(!4).S))
-Reducer: With(!1: {P:3}, (Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true), Module.Opt(ModuleProjection(!3: ModuleProjection(!2: M, !1), !1), "S", true)))
-###
-> M->Maximize(With(x:Wrap(A), x * x * S))
-M->Maximize(With(x : Wrap(A), x * x * S)) : M{param P:i8, msr S:i8}?
-*** Error: The objective for an optimize function must be a measure in the module
-Binder : Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S)))
-Tupled : (Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S))), Module.Maximize*(!1: M, With(!2: Test.Wrap(A), Mul(!2, !2, ModToRec(!1).S))))
-###
-> M->Optimize(S, With(x:Wrap(A), x * x * x > 100))
-M->Optimize(S, With(x : Wrap(A), x * x * x $> 100)) : M{param P:i8, msr S:i8}?
-Binder : Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100))
-Reducer: With(!1: Test.Wrap(A), Module.Opt(M, "S", Mul(!1, !1, !1) @> 100))
-Tupled : (Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100)), Module.Optimize*(!1: M, ModToRec(!1).S, With(!2: Test.Wrap(A), Mul(!2, !2, !2) @> 100)))
-Reducer: With(!1: Test.Wrap(A), (Module.Opt(M, "S", Mul(!1, !1, !1) @> 100), Module.Opt(M, "S", Mul(!1, !1, !1) @> 100)))
-###
-> M->Maximize(S, With(x:ToText(A), x & x & x))
-M->Maximize(S, With(x : ToText(A), x & x & x)) : M{param P:i8, msr S:i8}?
-Binder : Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2)))
-Reducer: With(!1: ToText(A), Module.Opt(M, "S", true, StrConcat(!1, !1, !1)))
-Tupled : (Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2))), Module.Maximize*(!1: M, ModToRec(!1).S, With(!2: ToText(A), StrConcat(!2, !2, !2))))
-Reducer: With(!1: ToText(A), (Module.Opt(M, "S", true, StrConcat(!1, !1, !1)), Module.Opt(M, "S", true, StrConcat(!1, !1, !1))))
 ###
 > { A: Guard([with]  s: si8 ++ si8, [with]  t: s ++ s, [with]  u: [t, t, s], u ++ u) }
 { A : Guard([with] s : si8 ++ si8, [with] t : s ++ s, [with] u : [t, t, s], u ++ u) } : {A:i8**}

@@ -24,7 +24,7 @@ namespace RexlTest;
 /// Baseline test options.
 /// </summary>
 [Flags]
-public enum TestOptions
+public enum TestCodeOptions
 {
     None = 0x0000,
 
@@ -52,7 +52,7 @@ public enum TestOptions
 /// <summary>
 /// Base class for codegen-level baseline tests.
 /// </summary>
-public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOptions>
+public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestCodeOptions>
 {
     private sealed class SinkImpl : SbSysTypeSink
     {
@@ -126,22 +126,22 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
         CodeGenCaching = new CachingEnumerableCodeGenerator(TypeManager, gens);
     }
 
-    protected override bool UseBlock(TestOptions testOpts)
+    protected override bool UseBlock(TestCodeOptions testOpts)
     {
-        return (testOpts & TestOptions.SplitBlocks) != 0;
+        return (testOpts & TestCodeOptions.SplitBlocks) != 0;
     }
 
-    protected override BindOptions TestOptsToBindOpts(TestOptions testOpts)
+    protected override BindOptions TestOptsToBindOpts(TestCodeOptions testOpts)
     {
         BindOptions options = default;
 
-        if ((testOpts & TestOptions.AllowVolatile) != 0)
+        if ((testOpts & TestCodeOptions.AllowVolatile) != 0)
             options |= BindOptions.AllowVolatile;
-        if ((testOpts & TestOptions.AllowProcedure) != 0)
+        if ((testOpts & TestCodeOptions.AllowProcedure) != 0)
             options |= BindOptions.AllowProc;
-        if ((testOpts & TestOptions.ProhibitModule) != 0)
+        if ((testOpts & TestCodeOptions.ProhibitModule) != 0)
             options |= BindOptions.ProhibitModule;
-        if ((testOpts & TestOptions.AllowGeneral) != 0)
+        if ((testOpts & TestCodeOptions.AllowGeneral) != 0)
             options |= BindOptions.AllowGeneral;
 
         return options;
@@ -203,7 +203,7 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
         return base.GetGlobalType(full);
     }
 
-    protected override void ProcessScript(string script, TestOptions testOpts)
+    protected override void ProcessScript(string script, TestCodeOptions testOpts)
     {
         // An initial '#' means don't do code gen, just binding.
         bool gen = true;
@@ -219,7 +219,7 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
         var fma = RexlFormula.Create(SourceContext.Create(script));
         ValidateScript(fma);
 
-        bool streaming = (testOpts & TestOptions.Streaming) != 0;
+        bool streaming = (testOpts & TestCodeOptions.Streaming) != 0;
         var host = new BindHostImpl(this, streaming);
         var options = BindOptions.AllowVolatile | TestOptsToBindOpts(testOpts);
         if (streaming)
@@ -231,7 +231,7 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
 
         Sink.WriteLine("{0} : {1}", fma.ParseTree, res.Type);
         Sink.WriteLine("BndKind:{0}, Type:{1}, Bnd:({2})", res.Kind, res.Type, res);
-        if ((testOpts & TestOptions.ShowBndKinds) != 0)
+        if ((testOpts & TestCodeOptions.ShowBndKinds) != 0)
             Sink.WriteLine("AllKinds: {0}", res.AllKinds);
 
         if (fma.HasDiagnostics)
@@ -272,7 +272,7 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
             // Note: we are reusing the same type manager for each line. So inserting/re-ordering scripts may
             // affect the output of others. Across different script files, the type manager is re-initialized.
             // REVIEW: Which code generator should we use for IL tests?
-            if ((testOpts & TestOptions.WithIL) == 0)
+            if ((testOpts & TestCodeOptions.WithIL) == 0)
                 resCodeGen = CodeGenDirect.Run(res, Host);
             else
             {
@@ -393,10 +393,10 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
             Sink.TWrite("Type: ").TWriteRawType(val?.GetType()).Write(", Value: ");
 
         int maxPrev = Config.Max;
-        if ((testOpts & TestOptions.WithBytes) != 0)
+        if ((testOpts & TestCodeOptions.WithBytes) != 0)
             Config.Max = 2;
         bool tupPrev = Config.TupleNewLine;
-        Config.TupleNewLine = (testOpts & TestOptions.TupNewLine) != 0;
+        Config.TupleNewLine = (testOpts & TestCodeOptions.TupNewLine) != 0;
         ValueWriter.WriteValue(type, val);
         Config.Max = maxPrev;
         Config.TupleNewLine = tupPrev;
@@ -451,7 +451,7 @@ public abstract class CodeGenTestBase : RexlLineTestsBase<SbSysTypeSink, TestOpt
                 strm.Write(bytesPre);
                 bool tmp = TypeManager.TryWrite(strm, type, val);
                 Assert.IsTrue(tmp);
-                if ((testOpts & TestOptions.WithBytes) != 0)
+                if ((testOpts & TestCodeOptions.WithBytes) != 0)
                     Sink.WriteLine("Total blob size: {0} bytes", strm.Length - 3);
                 strm.Write(bytesPost);
 

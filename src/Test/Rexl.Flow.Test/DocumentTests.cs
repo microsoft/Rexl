@@ -3160,7 +3160,7 @@ public sealed partial class DocumentTests : RexlTestsBaseType<bool>
             {
                 if (!user)
                 {
-                    info = TestOperations.Instance.GetInfo(name);
+                    info = TestFunctions.Instance.GetInfo(name);
                     Validation.Assert(info is null || info.Oper is not null);
                     return info != null;
                 }
@@ -3182,7 +3182,7 @@ public sealed partial class DocumentTests : RexlTestsBaseType<bool>
                     if (_lowerPathToFin == null)
                     {
                         _lowerPathToFin = new Dictionary<string, OperInfo>();
-                        foreach (var item in TestOperations.Instance.GetInfos(includeHidden: true, includeDeprecated: true))
+                        foreach (var item in TestFunctions.Instance.GetInfos(includeHidden: true, includeDeprecated: true))
                             _lowerPathToFin[item.Path.ToDottedSyntax().ToLowerInvariant()] = item;
                     }
                     return _lowerPathToFin.TryGetValue(key, out info);
