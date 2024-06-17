@@ -82,7 +82,7 @@ To build in Linux and WSL (Windows Subsystem for Linux):
 Similarly the tests can be run in the standard ways using Microsoft Visual Studio or the `dotnet`
 command line application:
 * `cd` to the `src` directory.
-* Run `dotnet test RexlCrossPlat.sln -c Debug` to run the tests for the debug configuration.
+* Run `dotnet test Rexl.sln -c Debug` to run the tests for the debug configuration.
 * Run `dotnet test Rexl.sln -c Release` to run the tests for the release configuration.
 
 To run tests under Linux or WSL, specify `RexlCrossPlat.sln` instead of `Rexl.sln`.
