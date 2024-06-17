@@ -74,8 +74,8 @@ prompt:
 
 To build in Linux and WSL (Windows Subsystem for Linux):
 * `cd` to the `src` directory.
-* Run `dotnet build Rexl.sln -c Debug -p:EnableWindowsTargeting=true` to build the debug configuration.
-* Run `dotnet build Rexl.sln -c Release -p:EnableWindowsTargeting=true` to build the release configuration.
+* Run `dotnet build RexlCrossPlat.sln -c Debug` to build the debug configuration.
+* Run `dotnet build RexlCrossPlat.sln -c Release` to build the release configuration.
 
 ### Running Tests
 
@@ -85,7 +85,7 @@ command line application:
 * Run `dotnet test Rexl.sln -c Debug` to run the tests for the debug configuration.
 * Run `dotnet test Rexl.sln -c Release` to run the tests for the release configuration.
 
-To run tests under Linux or WSL, include the `-p:EnableWindowsTargeting=true` option.
+To run tests under Linux or WSL, specify `RexlCrossPlat.sln` instead of `Rexl.sln`.
 
 ### Running Jupyter
 
