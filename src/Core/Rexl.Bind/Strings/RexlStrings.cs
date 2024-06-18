@@ -348,6 +348,8 @@ static partial class RexlStrings
 
     public static readonly StringId AboutEndsWith = new(nameof(AboutEndsWith), "Tests whether the end of the source text matches the lookup text.");
 
+    public static readonly StringId AboutPadLeft = new(nameof(AboutPadLeft), "Returns a new string with the provided number of spaces/specified characters added to the left.");
+    public static readonly StringId AboutPadLeft_Source = new(nameof(AboutPadLeft), "The text to convert to lowercase.");
     public static readonly StringId AboutStrLen = new(nameof(AboutStrLen), "Returns the number of characters in the text value.");
     public static readonly StringId AboutStrLen_Source = new(nameof(AboutStrLen_Source), "The text in which to count the characters.");
 
