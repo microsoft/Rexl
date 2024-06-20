@@ -679,43 +679,6 @@ public sealed partial class TextTrimFunc : TextFuncOne
     }
 }
 
-public sealed partial class TextPadLeftFunc: TextFuncOne
-{
-    public static readonly TextPadLeftFunc Instance = new TextPadLeftFunc();
-
-    private TextPadLeftFunc()
-        : base(new DName("PadLeft"), BindUtil.TextNs, 1, 2)
-    {
-    }
-
-    protected override ArgTraits GetArgTraitsCore(int carg)
-    {
-        Validation.Assert(SupportsArity(carg));
-        return ArgTraitsSimple.Create(this, eager: true, carg);
-    }
-
-    protected override bool CertifyCore(BndCallNode call, ref bool full)
-    {
-        if (call.Type != DType.Text)
-            return false;
-        // var args = call.Args;
-        // if (args[0].Type != DType.I8Req)
-        //     return false;
-        // if (args[1].Type != DType.Text)
-        //     return false;
-        return true;
-    }
-
-    public static string Exec(string src, int padding_len)
-    {
-        if (string.IsNullOrEmpty(src))
-            return src;
-        if (padding_len == 0)
-            return src;
-        return src.PadLeft(padding_len);
-    }
-}
-
 public sealed partial class TextReplaceFunc : RexlOper
 {
     public static readonly TextReplaceFunc Instance = new TextReplaceFunc();
@@ -793,5 +756,44 @@ public sealed partial class TextReplaceFunc : RexlOper
         if (string.IsNullOrEmpty(remove))
             return src;
         return src.Replace(remove, insert);
+    }
+}
+
+public sealed partial class TextPadLeftFunc: RexlOper
+{
+    public static readonly TextPadLeftFunc Instance = new TextPadLeftFunc();
+
+    private TextPadLeftFunc()
+        : base(isFunc: true, new DName("PadLeft"), BindUtil.TextNs, 1, 2)
+    {
+    }
+
+    public Func<string, string> Map { get; }
+
+    protected override ArgTraits GetArgTraitsCore(int carg)
+    {
+        Validation.Assert(SupportsArity(carg));
+        return ArgTraitsSimple.Create(this, eager: true, carg);
+    }
+
+    protected override bool CertifyCore(BndCallNode call, ref bool full)
+    {
+        if (call.Type != DType.Text)
+            return false;
+        // var args = call.Args;
+        // if (args[0].Type != DType.I8Req)
+        //     return false;
+        // if (args[1].Type != DType.Text)
+        //     return false;
+        return true;
+    }
+
+    public static string Exec(string src, int padding_len)
+    {
+        if (string.IsNullOrEmpty(src))
+            return src;
+        if (padding_len == 0)
+            return src;
+        return src.PadLeft(padding_len);
     }
 }
