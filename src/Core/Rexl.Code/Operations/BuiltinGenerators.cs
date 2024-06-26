@@ -59,7 +59,7 @@ public sealed class BuiltinGenerators : GeneratorRegistry
         Add(TextPartGen.Instance);
         Add(TextTrimGen.Instance);
         Add(TextReplaceGen.Instance);
-        Add(TextPadLeftGen.Instance);
+        Add(TextPadGen.Instance);
 
         Add(typeof(SumFunc), SumBaseGen.Instance);
         Add(typeof(MeanFunc), SumBaseGen.Instance);

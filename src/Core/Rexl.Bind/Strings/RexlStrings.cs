@@ -342,14 +342,16 @@ static partial class RexlStrings
     public static readonly StringId AboutUpper = new(nameof(AboutUpper), "Converts text to uppercase.");
     public static readonly StringId AboutUpper_Source = new(nameof(AboutUpper_Source), "The text to convert to uppercase.");
 
+    public static readonly StringId AboutPadLeft = new(nameof(AboutPadLeft), "Adds characters to the left of a string.");
+    public static readonly StringId AboutPadRight = new(nameof(AboutPadRight), "Adds characters to the right of a string.");
+    public static readonly StringId AboutPad_Source = new(nameof(AboutPad_Source), "The text to add padding to.");
+
     public static readonly StringId AboutStartsWith = new(nameof(AboutStartsWith), "Tests whether the beginning of the source text matches the lookup text.");
     public static readonly StringId AboutStartsWith_Source = new(nameof(AboutStartsWith_Source), "The text to look in.");
     public static readonly StringId AboutStartsWith_LookUp = new(nameof(AboutStartsWith_LookUp), "The text to look for.");
 
     public static readonly StringId AboutEndsWith = new(nameof(AboutEndsWith), "Tests whether the end of the source text matches the lookup text.");
 
-    public static readonly StringId AboutPadLeft = new(nameof(AboutPadLeft), "Returns a new string with the provided number of spaces/specified characters added to the left.");
-    public static readonly StringId AboutPadLeft_Source = new(nameof(AboutPadLeft), "The text to convert to lowercase.");
     public static readonly StringId AboutStrLen = new(nameof(AboutStrLen), "Returns the number of characters in the text value.");
     public static readonly StringId AboutStrLen_Source = new(nameof(AboutStrLen_Source), "The text in which to count the characters.");
 

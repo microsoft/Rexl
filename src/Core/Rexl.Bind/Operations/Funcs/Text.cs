@@ -759,41 +759,65 @@ public sealed partial class TextReplaceFunc : RexlOper
     }
 }
 
-public sealed partial class TextPadLeftFunc: RexlOper
+public sealed partial class TextPadFunc : RexlOper
 {
-    public static readonly TextPadLeftFunc Instance = new TextPadLeftFunc();
+    public static readonly TextPadFunc Left = new TextPadFunc(isLeft: true);
+    public static readonly TextPadFunc Right = new TextPadFunc(isLeft: false);
 
-    private TextPadLeftFunc()
-        : base(isFunc: true, new DName("PadLeft"), BindUtil.TextNs, 1, 2)
+    public readonly bool IsLeft;
+
+    private TextPadFunc(bool isLeft)
+        : base(isFunc: true, new DName(isLeft ? "PadLeft" : "PadRight"), BindUtil.TextNs, 2, 2)
     {
+        IsLeft = isLeft;
     }
-
-    public Func<string, string> Map { get; }
 
     protected override ArgTraits GetArgTraitsCore(int carg)
     {
         Validation.Assert(SupportsArity(carg));
-        return ArgTraitsSimple.Create(this, eager: true, carg);
+        var maskAll = BitSet.GetMask(carg);
+        var maskOpt = maskAll.ClearBit(0);
+        return ArgTraitsLifting.Create(this, carg, maskLiftSeq: maskAll, maskLiftTen: maskAll, maskLiftOpt: maskOpt);
+    }
+
+    protected override (DType, Immutable.Array<DType>) SpecializeTypesCore(InvocationInfo info)
+    {
+        Validation.AssertValue(info);
+        Validation.Assert(SupportsArity(info.Arity));
+        Validation.Assert(info.Arity == 2);
+
+        return (DType.Text, Immutable.Array.Create(DType.Text, DType.I8Req));
     }
 
     protected override bool CertifyCore(BndCallNode call, ref bool full)
     {
         if (call.Type != DType.Text)
             return false;
-        // var args = call.Args;
-        // if (args[0].Type != DType.I8Req)
-        //     return false;
-        // if (args[1].Type != DType.Text)
-        //     return false;
+        var args = call.Args;
+        if (args[0].Type != DType.Text)
+            return false;
+        if (args[1].Type != DType.I8Req)
+            return false;
         return true;
     }
 
-    public static string Exec(string src, int padding_len)
+    public static string ExecLeft(string src, long padTo)
     {
+        if (padTo <= 0)
+            return src;
+        int count = (int)Math.Min(padTo, int.MaxValue);
         if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadLeft(count);
+    }
+
+    public static string ExecRight(string src, long padTo)
+    {
+        if (padTo <= 0)
             return src;
-        if (padding_len == 0)
-            return src;
-        return src.PadLeft(padding_len);
+        int count = (int)Math.Min(padTo, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadRight(count);
     }
 }
