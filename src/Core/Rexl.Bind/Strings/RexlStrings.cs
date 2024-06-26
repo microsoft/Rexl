@@ -342,6 +342,10 @@ static partial class RexlStrings
     public static readonly StringId AboutUpper = new(nameof(AboutUpper), "Converts text to uppercase.");
     public static readonly StringId AboutUpper_Source = new(nameof(AboutUpper_Source), "The text to convert to uppercase.");
 
+    public static readonly StringId AboutPadLeft = new(nameof(AboutPadLeft), "Adds characters to the left of a string.");
+    public static readonly StringId AboutPadRight = new(nameof(AboutPadRight), "Adds characters to the right of a string.");
+    public static readonly StringId AboutPad_Source = new(nameof(AboutPad_Source), "The text to add padding to.");
+
     public static readonly StringId AboutStartsWith = new(nameof(AboutStartsWith), "Tests whether the beginning of the source text matches the lookup text.");
     public static readonly StringId AboutStartsWith_Source = new(nameof(AboutStartsWith_Source), "The text to look in.");
     public static readonly StringId AboutStartsWith_LookUp = new(nameof(AboutStartsWith_LookUp), "The text to look for.");

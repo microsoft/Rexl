@@ -293,3 +293,27 @@ public sealed class TextReplaceGen : GetMethGen<TextReplaceFunc>
         return true;
     }
 }
+
+public sealed class TextPadGen : GetMethGen<TextPadFunc>
+{
+    public static readonly TextPadGen Instance = new TextPadGen();
+
+    private readonly MethodInfo _methLeft;
+    private readonly MethodInfo _methRight;
+
+    private TextPadGen()
+    {
+        _methLeft = new Func<string, long, string>(TextPadFunc.ExecLeft).Method;
+        _methRight = new Func<string, long, string>(TextPadFunc.ExecRight).Method;
+    }
+
+    protected override bool TryGetMeth(ICodeGen codeGen, BndCallNode call, out MethodInfo meth)
+    {
+        Validation.AssertValue(codeGen);
+        Validation.Assert(IsValidCall(call, true));
+
+        var fn = GetOper(call);
+        meth = fn.IsLeft ? _methLeft : _methRight;
+        return true;
+    }
+}

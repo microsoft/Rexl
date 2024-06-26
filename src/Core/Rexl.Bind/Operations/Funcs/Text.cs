@@ -758,3 +758,66 @@ public sealed partial class TextReplaceFunc : RexlOper
         return src.Replace(remove, insert);
     }
 }
+
+public sealed partial class TextPadFunc : RexlOper
+{
+    public static readonly TextPadFunc Left = new TextPadFunc(isLeft: true);
+    public static readonly TextPadFunc Right = new TextPadFunc(isLeft: false);
+
+    public readonly bool IsLeft;
+
+    private TextPadFunc(bool isLeft)
+        : base(isFunc: true, new DName(isLeft ? "PadLeft" : "PadRight"), BindUtil.TextNs, 2, 2)
+    {
+        IsLeft = isLeft;
+    }
+
+    protected override ArgTraits GetArgTraitsCore(int carg)
+    {
+        Validation.Assert(SupportsArity(carg));
+        var maskAll = BitSet.GetMask(carg);
+        var maskOpt = maskAll.ClearBit(0);
+        return ArgTraitsLifting.Create(this, carg, maskLiftSeq: maskAll, maskLiftTen: maskAll, maskLiftOpt: maskOpt);
+    }
+
+    protected override (DType, Immutable.Array<DType>) SpecializeTypesCore(InvocationInfo info)
+    {
+        Validation.AssertValue(info);
+        Validation.Assert(SupportsArity(info.Arity));
+        Validation.Assert(info.Arity == 2);
+
+        return (DType.Text, Immutable.Array.Create(DType.Text, DType.I8Req));
+    }
+
+    protected override bool CertifyCore(BndCallNode call, ref bool full)
+    {
+        if (call.Type != DType.Text)
+            return false;
+        var args = call.Args;
+        if (args[0].Type != DType.Text)
+            return false;
+        if (args[1].Type != DType.I8Req)
+            return false;
+        return true;
+    }
+
+    public static string ExecLeft(string src, long padTo)
+    {
+        if (padTo <= 0)
+            return src;
+        int count = (int)Math.Min(padTo, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadLeft(count);
+    }
+
+    public static string ExecRight(string src, long padTo)
+    {
+        if (padTo <= 0)
+            return src;
+        int count = (int)Math.Min(padTo, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadRight(count);
+    }
+}
