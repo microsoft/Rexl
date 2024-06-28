@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Microsoft.Rexl.Bind;
@@ -60,12 +61,51 @@ public sealed class ModuleOptimizeGen : RexlOperationGenerator<ModuleOptimizeFun
         Validation.Assert(solver is null || DName.IsValidDName(solver));
         Validation.AssertValue(ctx);
 
-        // REVIEW: Going through the exec ctx is a temporary hack.
-        var res = ctx.Optimize(id, src, new DName(measure), isMax, solver is null ? default : new DName(solver));
-        if (res is null)
+        if (!ctx.TryGetSink(out var sink))
+        {
+            ctx.Log(id, "Optimization not supported");
             return null;
+        }
 
-        Validation.Assert(res is RuntimeModule<TRec>);
-        return (RuntimeModule<TRec>)res;
+        if (!ctx.TryGetCodeGen(out var codeGen))
+        {
+            ctx.Log(id, "Optimization not supported");
+            return null;
+        }
+
+        src.Bnd.NameToIndex.TryGetValue(new DName(measure), out int imsr).Verify();
+        Validation.AssertIndex(imsr, src.Bnd.Symbols.Length);
+        Validation.Assert(src.Bnd.Symbols[imsr].IsMeasureSym);
+
+        if (!Solve.MipSolver.TryOptimize(sink, codeGen, isMax, src, imsr,
+                solver is null ? default : new DName(solver), out var score, out var symValues))
+        {
+            return null;
+        }
+
+#if false
+        // REVIEW: This should be code-gened somewhere and passed in as a Func<List<...>, TRec>.
+        var typeRec = src.Bnd.TypeRec;
+        var fact = codeGen.TypeManager.CreateRecordFactory(typeRec);
+        var bldr = fact.Create().Open(partial: true);
+        var names = new HashSet<DName>();
+        foreach (var pair in symValues)
+        {
+            names.Add(pair.name).Verify();
+            if (pair.value is null)
+                continue;
+            var setter = fact.GetFieldSetter(pair.name, out _, out var stFld);
+            Validation.Assert(stFld.IsAssignableFrom(pair.value.GetType()));
+            setter(bldr, pair.value);
+        }
+        var rec = bldr.Close();
+        Validation.Assert(rec is TRec);
+
+        var modDst = src.Update((TRec)rec, names);
+        Validation.Assert(modDst is RuntimeModule<TRec>);
+        return (RuntimeModule<TRec>)modDst;
+#else
+        return src.Update(symValues);
+#endif
     }
 }

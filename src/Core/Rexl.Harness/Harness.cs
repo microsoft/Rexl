@@ -198,4 +198,40 @@ public abstract partial class HarnessBase
         if (diag is not null)
             Sink.PostDiagnostic(src, diag, nodeCtx);
     }
+
+    protected class HarnessExecCtx<THarness> : ExecCtx
+        where THarness : HarnessBase
+    {
+        protected readonly THarness _harness;
+        protected readonly Link _linkCtx;
+
+        public HarnessExecCtx(THarness harness, Link linkCtx)
+            : base()
+        {
+            Validation.AssertValue(harness);
+            Validation.AssertValueOrNull(linkCtx);
+            _harness = harness;
+            _linkCtx = linkCtx;
+        }
+
+        public override void Log(int id, string msg)
+        {
+        }
+
+        public override void Log(int id, string fmt, params object[] args)
+        {
+        }
+
+        public override bool TryGetSink(out EvalSink sink)
+        {
+            sink = _harness.Sink;
+            return true;
+        }
+
+        public override bool TryGetCodeGen(out CodeGeneratorBase codeGen)
+        {
+            codeGen = _harness._codeGen;
+            return true;
+        }
+    }
 }

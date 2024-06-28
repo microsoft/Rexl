@@ -231,12 +231,6 @@ partial class SimpleHarnessBase
             }
 
             #endregion From Harness.Handlers.cs
-
-            protected override bool TryOptimizeMip(bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-                out double score, out List<(DName name, object value)> symValues)
-            {
-                return _outer.TryOptimizeMip(isMax, modSrc, imsr, solver, out score, out symValues);
-            }
         }
 
         private sealed class InnerSink : BlankEvalSink

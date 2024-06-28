@@ -144,7 +144,7 @@ partial class CodeGeneratorBase
                 // For item ifma:
                 // * If ifma is the value for symbol isym and the symbol is "settable" (parameter or free variable)
                 //   and flags[citem + isym] is true, then the value comes from rec.
-                // * Otherwise, if flags[csym + ifma] is true, then the item slot is not set (assumed to be valid).
+                // * Otherwise, if flags[ifma] is true, then the item slot is not set (assumed to be valid).
                 // * Otherwise, the value is computed from its formula.
                 int isym = 0;
                 for (int ifma = 0; ifma < citem; ifma++)

@@ -49,7 +49,7 @@ public abstract partial class SimpleHarnessBase : HarnessBase
 
     protected override ExecCtx CreateExecCtx(CodeGenResult resCodeGen)
     {
-        return new OptExecCtx(this, SourceCur?.LinkCtx);
+        return new SimpleHarnessExecCtx<SimpleHarnessBase>(this, SourceCur?.LinkCtx);
     }
 
     /// <summary>
@@ -138,35 +138,12 @@ public abstract partial class SimpleHarnessBase : HarnessBase
         return _storage.LoadStreamAsync(linkCtx, link);
     }
 
-    protected class OptExecCtx : ExecCtx
+    protected class SimpleHarnessExecCtx<THarness> : HarnessExecCtx<THarness>
+        where THarness : SimpleHarnessBase
     {
-        protected readonly SimpleHarnessBase _harness;
-        protected readonly Link _linkCtx;
-
-        public OptExecCtx(SimpleHarnessBase harness, Link linkCtx)
-            : base()
+        public SimpleHarnessExecCtx(THarness harness, Link linkCtx)
+            : base(harness, linkCtx)
         {
-            Validation.AssertValue(harness);
-            Validation.AssertValueOrNull(linkCtx);
-            _harness = harness;
-            _linkCtx = linkCtx;
-        }
-
-        public override void Log(int id, string msg)
-        {
-        }
-
-        public override void Log(int id, string fmt, params object[] args)
-        {
-        }
-
-        /// <summary>
-        /// Optimize the given measure in the given module.
-        /// REVIEW: This is a temporary hack. Optimization should really use a task.
-        /// </summary>
-        public override RuntimeModule Optimize(int id, RuntimeModule src, DName measure, bool isMax, DName solver)
-        {
-            return _harness.Optimize(id, src, measure, isMax, solver);
         }
 
         public override Stream LoadStream(Link link, int id)

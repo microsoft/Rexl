@@ -3,6 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Runtime.Intrinsics.X86;
 using System.Threading;
 
 using Microsoft.Rexl.Bind;
@@ -76,6 +78,8 @@ public abstract class RuntimeModule<TRec> : RuntimeModule
     }
 
     public abstract RuntimeModule<TRec> Update(TRec values, HashSet<DName> names);
+
+    public abstract RuntimeModule<TRec> Update(List<(DName name, object value)> symValues);
 }
 
 /// <summary>
@@ -163,6 +167,13 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
             }
         }
 
+        CloseFlags(flags, locked);
+        return flags;
+    }
+
+    private void CloseFlags(bool[] flags, BitSet locked)
+    {
+        int citem = Bnd.Items.Length;
         var chgs = new BitSet(flags.AsSpan(0, citem));
         var deps = Bnd.GetItemDependencies();
         for (int i = 0; i < citem; i++)
@@ -180,8 +191,74 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
             else
                 flags[i] = true;
         }
+    }
 
+    protected bool[] SetSlots(List<(DName name, object value)> symValues,
+        out TItems items, out BitSet locked, out int count)
+    {
+        int citem = Bnd.Items.Length;
+        var flags = new bool[Bnd.Items.Length + Bnd.Symbols.Length];
+        var sets = new List<(int ifma, object value)>();
+        locked = _locked;
+        count = 0;
+        foreach (var (name, value) in symValues)
+        {
+            if (!Bnd.NameToIndex.TryGetValue(name, out int isym))
+            {
+                // Bad name.
+                Validation.Assert(false);
+                continue;
+            }
+
+            Validation.AssertIndex(isym, Bnd.Symbols.Length);
+            var sym = Bnd.Symbols[isym];
+            int ifma = sym.IfmaValue;
+            Validation.AssertIndex(ifma, Bnd.Items.Length);
+
+            if (flags[ifma])
+            {
+                // Duplicate entry.
+                continue;
+            }
+
+            switch (sym.SymKind)
+            {
+            case ModSymKind.Parameter:
+            case ModSymKind.FreeVariable:
+                flags[ifma] = true;
+                locked = locked.SetBit(ifma);
+                count++;
+                break;
+            default:
+                // Not settable.
+                Validation.Assert(false);
+                continue;
+            }
+
+            sets.Add((ifma, value));
+        }
+
+        if (count == 0)
+        {
+            items = _items;
+            return flags;
+        }
+
+        items = (TItems)_items.Clone();
+        SetSlotsCore(items, sets);
+
+        CloseFlags(flags, locked);
         return flags;
+    }
+
+    // REVIEW: SetSlotsCore should be code-gened somewhere and passed in as a delegate.
+    private void SetSlotsCore(TItems items, IEnumerable<(int ifma, object value)> symValues)
+    {
+        foreach (var (ifma, value) in symValues)
+        {
+            var fin = typeof(TItems).GetField("_F" + ifma).VerifyValue();
+            fin.SetValue(items, value);
+        }
     }
 }
 
@@ -225,8 +302,21 @@ public sealed class RuntimeModule<TRec, TItems> : RuntimeModuleBase<TRec, TItems
     {
         Validation.AssertValue(recVals);
         Validation.AssertValue(names);
+
         var flags = GetFlags(names, out var locked);
         var items = _setItems(flags, (TItems)_items.Clone(), recVals);
+        return new RuntimeModule<TRec, TItems>(_setItems, items, locked, _makeRec, Bnd);
+    }
+
+    public override RuntimeModule<TRec, TItems> Update(List<(DName name, object value)> symValues)
+    {
+        Validation.AssertValue(symValues);
+
+        var flags = SetSlots(symValues, out var items, out var locked, out int count);
+        if (count == 0)
+            return this;
+
+        items = _setItems(flags, items, null);
         return new RuntimeModule<TRec, TItems>(_setItems, items, locked, _makeRec, Bnd);
     }
 }
@@ -275,6 +365,18 @@ public sealed class RuntimeModule<TRec, TItems, TExt> : RuntimeModuleBase<TRec, 
         Validation.AssertValue(names);
         var flags = GetFlags(names, out var locked);
         var items = _setItems(flags, (TItems)_items.Clone(), recVals, Externals);
+        return new RuntimeModule<TRec, TItems, TExt>(_setItems, items, locked, _makeRec, Bnd, Externals);
+    }
+
+    public override RuntimeModule<TRec, TItems, TExt> Update(List<(DName name, object value)> symValues)
+    {
+        Validation.AssertValue(symValues);
+
+        var flags = SetSlots(symValues, out var items, out var locked, out int count);
+        if (count == 0)
+            return this;
+
+        items = _setItems(flags, items, null, Externals);
         return new RuntimeModule<TRec, TItems, TExt>(_setItems, items, locked, _makeRec, Bnd, Externals);
     }
 }

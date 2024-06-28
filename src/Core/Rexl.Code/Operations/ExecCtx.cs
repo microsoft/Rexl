@@ -7,6 +7,7 @@ using System.Threading;
 
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Private;
+using Microsoft.Rexl.Sink;
 
 namespace Microsoft.Rexl.Code;
 
@@ -183,16 +184,21 @@ public abstract class ExecCtx
     public abstract void Log(int id, string fmt, params object[] args);
 
     /// <summary>
-    /// Optimize the given measure in the given module.
-    /// REVIEW: This is a temporary hack. Optimization should really use a task.
+    /// Produces an <see cref="EvalSink"/> if one is available to the context.
     /// </summary>
-    public virtual RuntimeModule Optimize(int id, RuntimeModule src, DName measure, bool isMax, DName solver)
+    public virtual bool TryGetSink(out EvalSink sink)
     {
-        if (src is null)
-            return null;
+        sink = null;
+        return false;
+    }
 
-        Log(id, "Optimization not supported");
-        return null;
+    /// <summary>
+    /// Produces a <see cref="CodeGeneratorBase"/> if one is available to the context.
+    /// </summary>
+    public virtual bool TryGetCodeGen(out CodeGeneratorBase codeGen)
+    {
+        codeGen = null;
+        return false;
     }
 
     /// <summary>
