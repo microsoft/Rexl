@@ -759,17 +759,22 @@ public sealed partial class TextReplaceFunc : RexlOper
     }
 }
 
+/// <summary>
+/// Functions to add padding to either end of a string.
+/// The left version (PadLeft) will add spaces to the left of the given string.
+/// The right version (PadRight) will add spaces to the right of the given string.
+/// </summary>
 public sealed partial class TextPadFunc : RexlOper
 {
-    public static readonly TextPadFunc Left = new TextPadFunc(isLeft: true);
-    public static readonly TextPadFunc Right = new TextPadFunc(isLeft: false);
+    public static readonly TextPadFunc Start = new TextPadFunc(atStart: true);
+    public static readonly TextPadFunc End = new TextPadFunc(atStart: false);
 
-    public readonly bool IsLeft;
+    public readonly bool AtStart;
 
-    private TextPadFunc(bool isLeft)
-        : base(isFunc: true, new DName(isLeft ? "PadLeft" : "PadRight"), BindUtil.TextNs, 2, 2)
+    private TextPadFunc(bool atStart)
+        : base(isFunc: true, new DName(atStart ? "PadStart" : "PadEnd"), BindUtil.TextNs, 2, 2)
     {
-        IsLeft = isLeft;
+        AtStart = atStart;
     }
 
     protected override ArgTraits GetArgTraitsCore(int carg)
@@ -801,21 +806,21 @@ public sealed partial class TextPadFunc : RexlOper
         return true;
     }
 
-    public static string ExecLeft(string src, long padTo)
+    public static string ExecStart(string src, long len)
     {
-        if (padTo <= 0)
+        if (len <= 0)
             return src;
-        int count = (int)Math.Min(padTo, int.MaxValue);
+        int count = (int)Math.Min(len, int.MaxValue);
         if (string.IsNullOrEmpty(src))
             return new string(' ', count);
         return src.PadLeft(count);
     }
 
-    public static string ExecRight(string src, long padTo)
+    public static string ExecEnd(string src, long len)
     {
-        if (padTo <= 0)
+        if (len <= 0)
             return src;
-        int count = (int)Math.Min(padTo, int.MaxValue);
+        int count = (int)Math.Min(len, int.MaxValue);
         if (string.IsNullOrEmpty(src))
             return new string(' ', count);
         return src.PadRight(count);

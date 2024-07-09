@@ -303,8 +303,8 @@ public sealed class TextPadGen : GetMethGen<TextPadFunc>
 
     private TextPadGen()
     {
-        _methLeft = new Func<string, long, string>(TextPadFunc.ExecLeft).Method;
-        _methRight = new Func<string, long, string>(TextPadFunc.ExecRight).Method;
+        _methLeft = new Func<string, long, string>(TextPadFunc.ExecStart).Method;
+        _methRight = new Func<string, long, string>(TextPadFunc.ExecEnd).Method;
     }
 
     protected override bool TryGetMeth(ICodeGen codeGen, BndCallNode call, out MethodInfo meth)
