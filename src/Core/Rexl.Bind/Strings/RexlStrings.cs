@@ -3,6 +3,8 @@
 
 // WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
 
+using System;
+
 namespace Microsoft.Rexl;
 
 static partial class RexlStrings
@@ -342,8 +344,9 @@ static partial class RexlStrings
     public static readonly StringId AboutUpper = new(nameof(AboutUpper), "Converts text to uppercase.");
     public static readonly StringId AboutUpper_Source = new(nameof(AboutUpper_Source), "The text to convert to uppercase.");
 
-    public static readonly StringId AboutPadLeft = new(nameof(AboutPadLeft), "Adds characters to the left of a string.");
-    public static readonly StringId AboutPadRight = new(nameof(AboutPadRight), "Adds characters to the right of a string.");
+    public static readonly StringId AboutPadCenter = new(nameof(AboutPadCenter), "Adds the specified number of spaces to both ends of a string.");
+    public static readonly StringId AboutPadStart = new(nameof(AboutPadStart), "Adds the specified number of spaces to the start of a string.");
+    public static readonly StringId AboutPadEnd = new(nameof(AboutPadEnd), "Adds the specified number of spaces to the end of a string.");
     public static readonly StringId AboutPad_Source = new(nameof(AboutPad_Source), "The text to add padding to.");
     public static readonly StringId AboutPad_Len = new(nameof(AboutPad_Len), "The number of spaces to add to the string.");
 

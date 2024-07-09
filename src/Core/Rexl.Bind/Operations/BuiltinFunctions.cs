@@ -378,8 +378,9 @@ public class BuiltinFunctions : OperationRegistry
         AddOne(TextTrimFunc.TrimStart, new Sig(S.AboutTrimStart, A.Create(S.ArgSource, S.AboutTrimStart_Source)));
         AddOne(TextTrimFunc.TrimEnd, new Sig(S.AboutTrimEnd, A.Create(S.ArgSource, S.AboutTrimEnd_Source)));
 
-        AddOne(TextPadFunc.Start, new Sig(S.AboutPadLeft, A.Create(S.ArgSource, S.AboutPad_Source), A.Create(S.ArgSource, S.AboutPad_Len)));
-        AddOne(TextPadFunc.End, new Sig(S.AboutPadRight, A.Create(S.ArgSource, S.AboutPad_Source), A.Create(S.ArgSource, S.AboutPad_Len)));
+        AddOne(TextPadFunc.PadCenter, new Sig(S.AboutPadCenter, A.Create(S.ArgSource, S.AboutPad_Source), A.Create(S.ArgSource, S.AboutPad_Len)));
+        AddOne(TextPadFunc.PadStart, new Sig(S.AboutPadStart, A.Create(S.ArgSource, S.AboutPad_Source), A.Create(S.ArgSource, S.AboutPad_Len)));
+        AddOne(TextPadFunc.PadEnd, new Sig(S.AboutPadEnd, A.Create(S.ArgSource, S.AboutPad_Source), A.Create(S.ArgSource, S.AboutPad_Len)));
 
         AddOne(TextReplaceFunc.Instance, new Sig(S.AboutTextReplace,
             A.Create(S.ArgSource, S.AboutTextReplace_Source),

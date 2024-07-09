@@ -766,15 +766,41 @@ public sealed partial class TextReplaceFunc : RexlOper
 /// </summary>
 public sealed partial class TextPadFunc : RexlOper
 {
-    public static readonly TextPadFunc Start = new TextPadFunc(atStart: true);
-    public static readonly TextPadFunc End = new TextPadFunc(atStart: false);
-
-    public readonly bool AtStart;
-
-    private TextPadFunc(bool atStart)
-        : base(isFunc: true, new DName(atStart ? "PadStart" : "PadEnd"), BindUtil.TextNs, 2, 2)
+    public enum PadKind : byte
     {
-        AtStart = atStart;
+        // Trim both leading and trailing whitespace.
+        Center,
+        // Trim only leading whitespace.
+        Start,
+        // Trim only trailing whitespace.
+        End
+    }
+
+    public static readonly TextPadFunc PadCenter = new TextPadFunc(PadKind.Center, "PadCenter");
+    public static readonly TextPadFunc PadStart = new TextPadFunc(PadKind.Start, "PadStart");
+    public static readonly TextPadFunc PadEnd = new TextPadFunc(PadKind.End, "PadEnd");
+
+    public PadKind Kind { get; }
+
+    public Func<string, long, string> Map { get; }
+
+    private TextPadFunc(PadKind kind, string name)
+        : base(isFunc: true, new DName(name), BindUtil.TextNs, 2, 2)
+    {
+        switch(kind) {
+        case PadKind.Start:
+            Map = ExecStart;
+            break;
+        case PadKind.End:
+            Map = ExecEnd;
+            break;
+        case PadKind.Center:
+        default:
+            Map = ExecCenter;
+            break;
+        }
+
+        Kind = kind;
     }
 
     protected override ArgTraits GetArgTraitsCore(int carg)
@@ -804,6 +830,32 @@ public sealed partial class TextPadFunc : RexlOper
         if (args[1].Type != DType.I8Req)
             return false;
         return true;
+    }
+
+    protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
+    {
+        Validation.AssertValue(reducer);
+        Validation.Assert(IsValidCall(call));
+
+        var srcArg = call.Args[0];
+        var lenArg = call.Args[1];
+        if (srcArg.TryGetString(out var str) && lenArg.TryGetI8(out var len ))
+        {
+            if (string.IsNullOrEmpty(str) || len == 0)
+                return srcArg;
+            return BndStrNode.Create(Map(str, len));
+        }
+
+        return call;
+    }
+
+    public static string ExecCenter(string src, long len) {
+        if (len <= 0)
+            return src;
+        int count = (int)Math.Min(len, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadLeft(count).PadLeft(count);
     }
 
     public static string ExecStart(string src, long len)
