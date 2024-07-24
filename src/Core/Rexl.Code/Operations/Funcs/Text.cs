@@ -298,13 +298,8 @@ public sealed class TextPadGen : GetMethGen<TextPadFunc>
 {
     public static readonly TextPadGen Instance = new TextPadGen();
 
-    // private readonly MethodInfo _methStart;
-    // private readonly MethodInfo _methEnd;
-
     private TextPadGen()
     {
-        // _methStart = new Func<string, long, string>(TextPadFunc.ExecStart).Method;
-        // _methEnd = new Func<string, long, string>(TextPadFunc.ExecEnd).Method;
     }
 
     protected override bool TryGetMeth(ICodeGen codeGen, BndCallNode call, out MethodInfo meth)

@@ -3,8 +3,6 @@
 
 // WARNING: This .cs file is generated from the corresponding .tt file. DO NOT edit this .cs directly.
 
-using System;
-
 namespace Microsoft.Rexl;
 
 static partial class RexlStrings
@@ -31,6 +29,7 @@ static partial class RexlStrings
     public static readonly StringId ArgX = new(nameof(ArgX), "x");
     public static readonly StringId ArgY = new(nameof(ArgY), "y");
     public static readonly StringId ArgAngle = new(nameof(ArgAngle), "angle");
+    public static readonly StringId ArgLength = new(nameof(ArgLength), "length");
 
     public static readonly StringId AboutArgSeqSource = new(nameof(AboutArgSeqSource), "The source sequence.");
     public static readonly StringId AboutArgPredicate = new(nameof(AboutArgPredicate), "The condition with which to test an item.");
@@ -344,11 +343,11 @@ static partial class RexlStrings
     public static readonly StringId AboutUpper = new(nameof(AboutUpper), "Converts text to uppercase.");
     public static readonly StringId AboutUpper_Source = new(nameof(AboutUpper_Source), "The text to convert to uppercase.");
 
-    public static readonly StringId AboutPadCenter = new(nameof(AboutPadCenter), "Adds the specified number of spaces to both ends of a string.");
-    public static readonly StringId AboutPadStart = new(nameof(AboutPadStart), "Adds the specified number of spaces to the start of a string.");
-    public static readonly StringId AboutPadEnd = new(nameof(AboutPadEnd), "Adds the specified number of spaces to the end of a string.");
+    public static readonly StringId AboutPadCenter = new(nameof(AboutPadCenter), "Adds spaces to both ends of the given string so the result is at least the given length.");
+    public static readonly StringId AboutPadStart = new(nameof(AboutPadStart), "Adds spaces to the start of the given string so the result is at least the given length.");
+    public static readonly StringId AboutPadEnd = new(nameof(AboutPadEnd), "Adds spaces to the end of the given string so the result is at least the given length.");
     public static readonly StringId AboutPad_Source = new(nameof(AboutPad_Source), "The text to add padding to.");
-    public static readonly StringId AboutPad_Len = new(nameof(AboutPad_Len), "The number of spaces to add to the string.");
+    public static readonly StringId AboutPad_Len = new(nameof(AboutPad_Len), "The minimum length of the string after adding the padding.");
 
     public static readonly StringId AboutStartsWith = new(nameof(AboutStartsWith), "Tests whether the beginning of the source text matches the lookup text.");
     public static readonly StringId AboutStartsWith_Source = new(nameof(AboutStartsWith_Source), "The text to look in.");

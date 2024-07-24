@@ -761,18 +761,19 @@ public sealed partial class TextReplaceFunc : RexlOper
 
 /// <summary>
 /// Functions to add padding to either end of a string.
-/// The left version (PadLeft) will add spaces to the left of the given string.
-/// The right version (PadRight) will add spaces to the right of the given string.
+/// The center version (PadCenter) will add spaces to both ends of the given string.
+/// The left version (PadStart) will add spaces to the left of the given string.
+/// The right version (PadEnd) will add spaces to the right of the given string.
 /// </summary>
 public sealed partial class TextPadFunc : RexlOper
 {
     public enum PadKind : byte
     {
-        // Trim both leading and trailing whitespace.
+        // Center justification, pad both ends of the string
         Center,
-        // Trim only leading whitespace.
+        // Pad the start of the string.
         Start,
-        // Trim only trailing whitespace.
+        // Pad the end of the string.
         End
     }
 
@@ -787,7 +788,8 @@ public sealed partial class TextPadFunc : RexlOper
     private TextPadFunc(PadKind kind, string name)
         : base(isFunc: true, new DName(name), BindUtil.TextNs, 2, 2)
     {
-        switch(kind) {
+        switch (kind)
+        {
         case PadKind.Start:
             Map = ExecStart;
             break;
@@ -839,23 +841,38 @@ public sealed partial class TextPadFunc : RexlOper
 
         var srcArg = call.Args[0];
         var lenArg = call.Args[1];
-        if (srcArg.TryGetString(out var str) && lenArg.TryGetI8(out var len ))
+        if (lenArg.TryGetI8(out var len))
         {
-            if (string.IsNullOrEmpty(str) || len == 0)
+            if (len <= 0)
                 return srcArg;
-            return BndStrNode.Create(Map(str, len));
+            if (srcArg.TryGetString(out var str))
+            {
+                if (Util.Size(str) >= len)
+                    return srcArg;
+                return BndStrNode.Create(Map(str, len));
+            }
         }
 
         return call;
     }
 
-    public static string ExecCenter(string src, long len) {
-        if (len <= 0)
+    public static string ExecCenter(string src, long len)
+    {
+        if (len <= 0 || len < src.Length)
             return src;
         int count = (int)Math.Min(len, int.MaxValue);
         if (string.IsNullOrEmpty(src))
             return new string(' ', count);
-        return src.PadLeft(count).PadLeft(count);
+        return string.Create(count, src, (dst, src) =>
+        {
+            int spaces = (count - src.Length) / 2;
+            for (int i = 0; i < count; i++)
+            {
+                if (i < spaces || i > src.Length + spaces - 1)
+                    dst[i] = ' ';
+                else dst[i] = src[i - spaces];
+            }
+        });
     }
 
     public static string ExecStart(string src, long len)
