@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Microsoft.Rexl.Bind;
@@ -60,12 +61,28 @@ public sealed class ModuleOptimizeGen : RexlOperationGenerator<ModuleOptimizeFun
         Validation.Assert(solver is null || DName.IsValidDName(solver));
         Validation.AssertValue(ctx);
 
-        // REVIEW: Going through the exec ctx is a temporary hack.
-        var res = ctx.Optimize(id, src, new DName(measure), isMax, solver is null ? default : new DName(solver));
-        if (res is null)
+        if (!ctx.TryGetSink(out var sink))
+        {
+            ctx.Log(id, "Optimization not supported");
             return null;
+        }
 
-        Validation.Assert(res is RuntimeModule<TRec>);
-        return (RuntimeModule<TRec>)res;
+        if (!ctx.TryGetCodeGen(out var codeGen))
+        {
+            ctx.Log(id, "Optimization not supported");
+            return null;
+        }
+
+        src.Bnd.NameToIndex.TryGetValue(new DName(measure), out int imsr).Verify();
+        Validation.AssertIndex(imsr, src.Bnd.Symbols.Length);
+        Validation.Assert(src.Bnd.Symbols[imsr].IsMeasureSym);
+
+        if (!Solve.MipSolver.TryOptimize(sink, codeGen, isMax, src, imsr,
+                solver is null ? default : new DName(solver), out var score, out var symValues))
+        {
+            return null;
+        }
+
+        return src.Update(symValues);
     }
 }

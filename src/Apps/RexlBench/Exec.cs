@@ -7,9 +7,11 @@ using System.Text;
 using Microsoft.Rexl;
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Code;
+using Microsoft.Rexl.Onnx;
 using Microsoft.Rexl.Parse;
 using Microsoft.Rexl.Private;
 using Microsoft.Rexl.Sink;
+using Microsoft.Rexl.Solve;
 
 namespace Microsoft.Rexl.RexlBench;
 
@@ -65,14 +67,9 @@ sealed class SinkImpl : FlushEvalSink
 sealed class Operations : OperationRegistry
 {
     public Operations()
-        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance, FlowProcs.Instance)
+        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance, FlowProcs.Instance,
+            SolverFunctions.Instance, ModelFunctions.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverFunctions.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFunctions.Instance);
-#endif
         AddOne(WrapFunc.Instance);
     }
 }
@@ -80,14 +77,8 @@ sealed class Operations : OperationRegistry
 sealed class Generators : GeneratorRegistry
 {
     public Generators()
-        : base(BuiltinGenerators.Instance)
+        : base(BuiltinGenerators.Instance, SolverGenerators.Instance, ModelFuncGenerators.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverGenerators.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFuncGenerators.Instance);
-#endif
         Add(WrapFunc.MakeGenerator());
     }
 }

@@ -192,16 +192,4 @@ public sealed class SimpleHarness : SimpleHarnessWithSinkStack
         : base(config, opers, codeGen, storage)
     {
     }
-
-#if WITH_SOLVE
-    protected override bool TryOptimizeMip(bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-        out double score, out List<(DName name, object value)> symValues)
-    {
-        Validation.AssertValue(modSrc);
-        Validation.AssertIndex(imsr, modSrc.Bnd.Symbols.Length);
-        Validation.Assert(modSrc.Bnd.Symbols[imsr].IsMeasureSym);
-
-        return Solve.MipSolver.TryOptimize(Sink, _codeGen, isMax, modSrc, imsr, solver, out score, out symValues);
-    }
-#endif
 }

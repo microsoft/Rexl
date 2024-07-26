@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using Microsoft.Rexl.Code;
+using Microsoft.Rexl.Onnx;
+using Microsoft.Rexl.Solve;
 
 namespace Microsoft.Rexl.RexlRun;
 
@@ -11,27 +13,16 @@ namespace Microsoft.Rexl.RexlRun;
 internal sealed class RexlRunOperations : OperationRegistry
 {
     public RexlRunOperations()
-        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance)
+        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance,
+            SolverFunctions.Instance, ModelFunctions.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverFunctions.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFunctions.Instance);
-#endif
     }
 }
 
 internal sealed class RexlRunGenerators : GeneratorRegistry
 {
     public RexlRunGenerators()
-        : base(BuiltinGenerators.Instance)
+        : base(BuiltinGenerators.Instance, SolverGenerators.Instance, ModelFuncGenerators.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverGenerators.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFuncGenerators.Instance);
-#endif
     }
 }

@@ -349,9 +349,16 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
             {
             }
 
-            public override RuntimeModule Optimize(int id, RuntimeModule src, DName measure, bool isMax, DName solver)
+            public override bool TryGetSink(out EvalSink sink)
             {
-                return _harness.Optimize(id, src, measure, isMax, solver);
+                sink = _harness.Sink;
+                return true;
+            }
+
+            public override bool TryGetCodeGen(out CodeGeneratorBase codeGen)
+            {
+                codeGen = _harness._codeGen;
+                return true;
             }
 
             public override Stream LoadStream(Link link, int id)
@@ -569,16 +576,6 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
             return new DateTimeOffset(2022, 9, 21, 22, 25, 34, 877, new TimeSpan(3, 15, 0));
         }
 
-        protected override bool TryOptimizeMip(bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-            out double score, out List<(DName name, object value)> symValues)
-        {
-            Validation.AssertValue(modSrc);
-            Validation.AssertIndex(imsr, modSrc.Bnd.Symbols.Length);
-            Validation.Assert(modSrc.Bnd.Symbols[imsr].IsMeasureSym);
-
-            return _parent.TryOptimizeMip(Sink, _codeGen, isMax, modSrc, imsr, solver, out score, out symValues);
-        }
-
         private sealed class SinkImpl : FlushEvalSink
         {
             private readonly TestHarness _parent;
@@ -673,23 +670,6 @@ public abstract class BlockTestsBase<TOpts> : RexlTestsBaseType<TOpts>
     protected virtual bool TryHandleValue(EvalSink sink, CodeGeneratorBase codeGen, TOpts options,
         DType type, BoundNode bnd, object value, ExecCtx ctx)
     {
-        return false;
-    }
-
-    protected virtual bool TryOptimizeMip(EvalSink sink, CodeGeneratorBase codeGen,
-        bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-        out double score, out List<(DName name, object value)> symValues)
-    {
-        Validation.AssertValue(sink);
-        Validation.AssertValue(codeGen);
-        Validation.AssertValue(modSrc);
-        Validation.AssertIndex(imsr, modSrc.Bnd.Symbols.Length);
-        Validation.Assert(modSrc.Bnd.Symbols[imsr].IsMeasureSym);
-
-        var strSolver = solver.IsValid ? solver.Value : "<default>";
-        sink.PostDiagnostic(DiagSource.Solver, MessageDiag.Error(ErrorStrings.ErrSolverUnkown_Name, strSolver));
-        score = double.NaN;
-        symValues = null;
         return false;
     }
 

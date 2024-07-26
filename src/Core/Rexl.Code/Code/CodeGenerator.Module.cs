@@ -144,7 +144,7 @@ partial class CodeGeneratorBase
                 // For item ifma:
                 // * If ifma is the value for symbol isym and the symbol is "settable" (parameter or free variable)
                 //   and flags[citem + isym] is true, then the value comes from rec.
-                // * Otherwise, if flags[csym + ifma] is true, then the item slot is not set (assumed to be valid).
+                // * Otherwise, if flags[ifma] is true, then the item slot is not set (assumed to be valid).
                 // * Otherwise, the value is computed from its formula.
                 int isym = 0;
                 for (int ifma = 0; ifma < citem; ifma++)
@@ -291,6 +291,77 @@ partial class CodeGeneratorBase
             }
             PopType(stMakeRec);
 
+            // Get the set_module_value_item function. The function takes an items tuple (being built),
+            // item index (for the value item of a parameter or free variable), and the value to be
+            // set (as an object).
+            frame = StartFunctionDisjoint("set_module_value_item", stItems, stItems, typeof(int), typeof(object));
+            Type stSetValueItem = frame.DelegateType;
+
+            {
+                var laiItems = LocArgInfo.FromArg(1, stItems);
+
+                // Do this first so the default label has the smallest index in IL dumps.
+                var labDef = IL.DefineLabel();
+
+                var labels = new Label[bmod.Items.Length];
+                for (int isym = 0; isym < bmod.Symbols.Length; isym++)
+                {
+                    var sym = bmod.Symbols[isym];
+                    switch (sym.SymKind)
+                    {
+                    case ModSymKind.Parameter:
+                    case ModSymKind.FreeVariable:
+                        labels[sym.IfmaValue] = IL.DefineLabel();
+                        break;
+                    }
+                }
+
+                for (int ifma = 0; ifma < labels.Length; ifma++)
+                {
+                    if (labels[ifma] == default)
+                        labels[ifma] = labDef;
+                }
+
+                IL
+                    .Ldarg(2)
+                    .Switch(labels);
+
+                for (int isym = 0; isym < bmod.Symbols.Length; isym++)
+                {
+                    var sym = bmod.Symbols[isym];
+                    switch (sym.SymKind)
+                    {
+                    default:
+                        continue;
+                    case ModSymKind.Parameter:
+                    case ModSymKind.FreeVariable:
+                        break;
+                    }
+
+                    // REVIEW: TypeManager should support emitting the proper instructions
+                    // to set the field. This code shouldn't know about the field layout of
+                    // the tuple system type.
+                    int ifma = sym.IfmaValue;
+                    Validation.Assert(labels[ifma] != labDef);
+                    var fld = stItems.GetField("_F" + ifma).VerifyValue();
+
+                    IL
+                        .Br_Non(labDef)
+                        .MarkLabel(labels[ifma])
+                        .Ldarg(1)
+                        .Ldarg(3)
+                        .Unbox_Any(fld.FieldType)
+                        .Stfld(fld);
+                }
+
+                IL
+                    .MarkLabel(labDef)
+                    .Ldarg(1);
+                PushType(stItems);
+                EndFunctionCore();
+            }
+            PopType(stSetValueItem);
+
             GenLoadConst(bmod);
 
             // Instantiate the runtime module.
@@ -299,7 +370,8 @@ partial class CodeGeneratorBase
             {
                 IL.Ldloc(locExt);
                 Type stModImpl = typeof(RuntimeModule<,,>).MakeGenericType(stRec, stItems, stExt);
-                ctor = stModImpl.GetConstructor(new Type[] { stSetItems, stItems, stMakeRec, typeof(BndModuleNode), stExt });
+                ctor = stModImpl.GetConstructor(
+                    new Type[] { stSetItems, stItems, stMakeRec, stSetValueItem, typeof(BndModuleNode), stExt });
                 if (ctor is null)
                     throw Unexpected("Ctor for runtime module with externals");
             }
@@ -307,7 +379,8 @@ partial class CodeGeneratorBase
             {
                 // Construct the module instance.
                 Type stModImpl = typeof(RuntimeModule<,>).MakeGenericType(stRec, stItems);
-                ctor = stModImpl.GetConstructor(new Type[] { stSetItems, stItems, stMakeRec, typeof(BndModuleNode) });
+                ctor = stModImpl.GetConstructor(
+                    new Type[] { stSetItems, stItems, stMakeRec, stSetValueItem, typeof(BndModuleNode) });
                 if (ctor is null)
                     throw Unexpected("Ctor for runtime module");
             }

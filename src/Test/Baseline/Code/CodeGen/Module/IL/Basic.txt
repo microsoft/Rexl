@@ -64,6 +64,20 @@ make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (i8,i8), i4, obj):(i8,i8)
+      1) ldarg.2 [i4]
+     13) switch [1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(i8,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8)::_F0:i8
+  Label [0]:
+      1) ldarg.1 [(i8,i8)]
+      1) ret
+  Total Size: 33
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -79,10 +93,13 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(i8,i8),{i8,i8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(i8,i8),i4,obj,(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, Func<(i8,i8),i4,obj,(i8,i8)>, BndModuleNode)
       1) ret
-  Total Size: 45
+  Total Size: 52
 
 Func sig: () to M{param A:i8, const B:i8}
 Type: RuntimeModule<{i8,i8},(i8,i8)>, Value: module symbols:
@@ -277,6 +294,32 @@ make_module_record(Arr<obj>, (i8,i8,i8,i8,i8,i8,i8,i8,bool)):{i8,i8,bool,i8,i8,i
       1) ret
   Total Size: 113
 
+set_module_value_item(Arr<obj>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), i4, obj):(i8,i8,i8,i8,i8,i8,i8,i8,bool)
+      1) ldarg.2 [i4]
+     41) switch [1,2,0,0,0,3,0,0,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F0:i8
+      5) br [0]
+  Label [2]:
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F1:i8
+      5) br [0]
+  Label [3]:
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8,i8,i8,i8,i8,i8,i8,bool)::_F5:i8
+  Label [0]:
+      1) ldarg.1 [(i8,i8,i8,i8,i8,i8,i8,i8,bool)]
+      1) ret
+  Total Size: 95
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -292,10 +335,13 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),i4,obj,(i8,i8,i8,i8,i8,i8,i8,i8,bool)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>(Func<Arr<bool>,(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>(Func<Arr<bool>,(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, (i8,i8,i8,i8,i8,i8,i8,i8,bool), Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),{i8,i8,bool,i8,i8,i8,i8}>, Func<(i8,i8,i8,i8,i8,i8,i8,i8,bool),i4,obj,(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, BndModuleNode)
       1) ret
-  Total Size: 46
+  Total Size: 53
 
 Func sig: () to M{param A:i8, param B:i8, con C:b, const K:i8, msr M:i8, var X:i8, let Y:i8}
 Type: RuntimeModule<{i8,i8,bool,i8,i8,i8,i8},(i8,i8,i8,i8,i8,i8,i8,i8,bool)>, Value: module symbols:
@@ -382,6 +428,20 @@ make_module_record(Arr<obj>, (Seq<i8>,Seq<i8>,i8)):{i8,Seq<i8>}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (Seq<i8>,Seq<i8>,i8), i4, obj):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.2 [i4]
+     17) switch [0,1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [Seq<i8>]
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      1) ret
+  Total Size: 37
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.1 [Arr<obj>]
       1) ldc.i4.0
@@ -411,12 +471,15 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),i4,obj,(Seq<i8>,Seq<i8>,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, Func<(Seq<i8>,Seq<i8>,i8),i4,obj,(Seq<i8>,Seq<i8>,i8)>, BndModuleNode)
       5) callvirt RuntimeModule<{i8,Seq<i8>}>::GetRecord():{i8,Seq<i8>}
       5) ldfld {i8,Seq<i8>}::_F1:Seq<i8>
       1) ret
-  Total Size: 93
+  Total Size: 100
 
 Func sig: (<ctx>:x) to i8*
 Sequence: Seq<i8>
@@ -507,6 +570,20 @@ make_module_record(Arr<obj>, (Seq<i8>,Seq<i8>,i8)):{i8,Seq<i8>}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (Seq<i8>,Seq<i8>,i8), i4, obj):(Seq<i8>,Seq<i8>,i8)
+      1) ldarg.2 [i4]
+     17) switch [0,1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [Seq<i8>]
+      5) stfld (Seq<i8>,Seq<i8>,i8)::_F1:Seq<i8>
+  Label [0]:
+      1) ldarg.1 [(Seq<i8>,Seq<i8>,i8)]
+      1) ret
+  Total Size: 37
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.1 [Arr<obj>]
       1) ldc.i4.0
@@ -536,8 +613,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(Seq<i8>,Seq<i8>,i8),i4,obj,(Seq<i8>,Seq<i8>,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>},(Seq<i8>,Seq<i8>,i8)>, (Seq<i8>,Seq<i8>,i8), Func<(Seq<i8>,Seq<i8>,i8),{i8,Seq<i8>}>, Func<(Seq<i8>,Seq<i8>,i8),i4,obj,(Seq<i8>,Seq<i8>,i8)>, BndModuleNode)
       1) stloc.1 [RuntimeModule<{i8,Seq<i8>}>]
       5) newobj (Seq<i8>,i8)()
       1) dup
@@ -551,7 +631,7 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldfld {i8,Seq<i8>}::_F0:i8
       5) stfld (Seq<i8>,i8)::_F1:i8
       1) ret
-  Total Size: 123
+  Total Size: 130
 
 Func sig: (<ctx>:x) to (i8*, i8)
 Type: (Seq<i8>,i8), Value: (Sequence: Seq<i8>
@@ -644,6 +724,20 @@ make_module_record(Arr<obj>, (Seq<i8>,i8,i8)):{i8,i8}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (Seq<i8>,i8,i8), i4, obj):(Seq<i8>,i8,i8)
+      1) ldarg.2 [i4]
+     17) switch [0,1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(Seq<i8>,i8,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (Seq<i8>,i8,i8)::_F1:i8
+  Label [0]:
+      1) ldarg.1 [(Seq<i8>,i8,i8)]
+      1) ret
+  Total Size: 37
+
 set_module_items(Arr<obj>, Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
       1) ldarg.1 [Arr<bool>]
       1) ldc.i4.2
@@ -703,6 +797,20 @@ make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (i8,i8), i4, obj):(i8,i8)
+      1) ldarg.2 [i4]
+     13) switch [1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(i8,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8)::_F0:i8
+  Label [0]:
+      1) ldarg.1 [(i8,i8)]
+      1) ret
+  Total Size: 33
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -718,11 +826,14 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(Seq<i8>,i8,i8),{i8,i8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
-      5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8},(Seq<i8>,i8,i8)>(Func<Arr<bool>,(Seq<i8>,i8,i8),{i8,i8},(Seq<i8>,i8,i8)>, (Seq<i8>,i8,i8), Func<(Seq<i8>,i8,i8),{i8,i8}>, BndModuleNode)
-      1) stloc.0 [RuntimeModule<{i8,i8}>]
+      5) ldelem [Func<(Seq<i8>,i8,i8),i4,obj,(Seq<i8>,i8,i8)>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.3
+      5) ldelem [BndModuleNode]
+      5) newobj RuntimeModule<{i8,i8},(Seq<i8>,i8,i8)>(Func<Arr<bool>,(Seq<i8>,i8,i8),{i8,i8},(Seq<i8>,i8,i8)>, (Seq<i8>,i8,i8), Func<(Seq<i8>,i8,i8),{i8,i8}>, Func<(Seq<i8>,i8,i8),i4,obj,(Seq<i8>,i8,i8)>, BndModuleNode)
+      1) stloc.0 [RuntimeModule<{i8,i8}>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.4
       5) ldelem [Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>]
       1) dup
       1) ldc.i4.4
@@ -731,12 +842,15 @@ top(Arr<obj>, Arr<obj>):obj
       1) ldnull
       5) callvirt Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>::Invoke(Arr<bool>, (i8,i8), {i8,i8}):(i8,i8)
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.4
+      1) ldc.i4.5
       5) ldelem [Func<(i8,i8),{i8,i8}>]
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.5
+      1) ldc.i4.6
+      5) ldelem [Func<(i8,i8),i4,obj,(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.7
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, Func<(i8,i8),i4,obj,(i8,i8)>, BndModuleNode)
       1) stloc.1 [RuntimeModule<{i8,i8}>]
       5) newobj (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)()
       1) dup
@@ -758,7 +872,7 @@ top(Arr<obj>, Arr<obj>):obj
       5) stelem [RuntimeModule<{i8,i8}>]
       5) stfld (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>)::_F2:Seq<RuntimeModule<{i8,i8}>>
       1) ret
-  Total Size: 138
+  Total Size: 152
 
 Func sig: () to (M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}, M{var X:i8, let Y:i8}*)
 Type: (RuntimeModule<{i8,i8}>,RuntimeModule<{i8,i8}>,Seq<RuntimeModule<{i8,i8}>>), Value: (module symbols:
@@ -861,6 +975,20 @@ make_module_record(Arr<obj>, (Seq<i8>,i8)):{i8}
       1) ret
   Total Size: 40
 
+set_module_value_item(Arr<obj>, (Seq<i8>,i8), i4, obj):(Seq<i8>,i8)
+      1) ldarg.2 [i4]
+     13) switch [0,1]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(Seq<i8>,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (Seq<i8>,i8)::_F1:i8
+  Label [0]:
+      1) ldarg.1 [(Seq<i8>,i8)]
+      1) ret
+  Total Size: 33
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -876,8 +1004,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(Seq<i8>,i8),{i8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(Seq<i8>,i8),i4,obj,(Seq<i8>,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8},(Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,i8),{i8},(Seq<i8>,i8)>, (Seq<i8>,i8), Func<(Seq<i8>,i8),{i8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8},(Seq<i8>,i8)>(Func<Arr<bool>,(Seq<i8>,i8),{i8},(Seq<i8>,i8)>, (Seq<i8>,i8), Func<(Seq<i8>,i8),{i8}>, Func<(Seq<i8>,i8),i4,obj,(Seq<i8>,i8)>, BndModuleNode)
       1) stloc.0 [RuntimeModule<{i8}>]
       5) newobj {i8}()
       1) dup
@@ -891,7 +1022,7 @@ top(Arr<obj>, Arr<obj>):obj
       1) ldloc.1 [{i8}]
       1) dup
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.3
+      1) ldc.i4.4
       5) ldelem [RecordRuntimeTypeInfo]
       5) stfld {}::_rrti:RecordRuntimeTypeInfo
       1) stloc.1 [{i8}]
@@ -916,7 +1047,7 @@ top(Arr<obj>, Arr<obj>):obj
       5) stelem [{i8}]
       5) stfld (RuntimeModule<{i8}>,{i8},Seq<{i8}>)::_F2:Seq<{i8}>
       1) ret
-  Total Size: 135
+  Total Size: 142
 
 Func sig: () to (M{var X:i8}, {X:i8}, {X:i8}*)
 Type: (RuntimeModule<{i8}>,{i8},Seq<{i8}>), Value: (module symbols:
@@ -1040,6 +1171,26 @@ make_module_record(Arr<obj>, (Seq<i8>,i8,r8,r8,r8)):{i8,r8}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (Seq<i8>,i8,r8,r8,r8), i4, obj):(Seq<i8>,i8,r8,r8,r8)
+      1) ldarg.2 [i4]
+     25) switch [0,1,0,0,2]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F1:i8
+      5) br [0]
+  Label [2]:
+      1) ldarg.1 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [r8]
+      5) stfld (Seq<i8>,i8,r8,r8,r8)::_F4:r8
+  Label [0]:
+      1) ldarg.1 [(Seq<i8>,i8,r8,r8,r8)]
+      1) ret
+  Total Size: 62
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -1055,8 +1206,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(Seq<i8>,i8,r8,r8,r8),{i8,r8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(Seq<i8>,i8,r8,r8,r8),i4,obj,(Seq<i8>,i8,r8,r8,r8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,r8},(Seq<i8>,i8,r8,r8,r8)>(Func<Arr<bool>,(Seq<i8>,i8,r8,r8,r8),{i8,r8},(Seq<i8>,i8,r8,r8,r8)>, (Seq<i8>,i8,r8,r8,r8), Func<(Seq<i8>,i8,r8,r8,r8),{i8,r8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,r8},(Seq<i8>,i8,r8,r8,r8)>(Func<Arr<bool>,(Seq<i8>,i8,r8,r8,r8),{i8,r8},(Seq<i8>,i8,r8,r8,r8)>, (Seq<i8>,i8,r8,r8,r8), Func<(Seq<i8>,i8,r8,r8,r8),{i8,r8}>, Func<(Seq<i8>,i8,r8,r8,r8),i4,obj,(Seq<i8>,i8,r8,r8,r8)>, BndModuleNode)
       1) stloc.0 [RuntimeModule<{i8,r8}>]
       5) newobj {i8,str}()
       1) dup
@@ -1073,7 +1227,7 @@ top(Arr<obj>, Arr<obj>):obj
       1) ldloc.1 [{i8,str}]
       1) dup
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.3
+      1) ldc.i4.4
       5) ldelem [RecordRuntimeTypeInfo]
       5) stfld {}::_rrti:RecordRuntimeTypeInfo
       1) stloc.1 [{i8,str}]
@@ -1114,7 +1268,7 @@ top(Arr<obj>, Arr<obj>):obj
       1) ldloc.3 [{i8,str,r8}]
       1) dup
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.4
+      1) ldc.i4.5
       5) ldelem [RecordRuntimeTypeInfo]
       5) stfld {}::_rrti:RecordRuntimeTypeInfo
       5) stelem [{i8,str,r8}]
@@ -1136,13 +1290,13 @@ top(Arr<obj>, Arr<obj>):obj
       1) ldloc.3 [{i8,str,r8}]
       1) dup
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.4
+      1) ldc.i4.5
       5) ldelem [RecordRuntimeTypeInfo]
       5) stfld {}::_rrti:RecordRuntimeTypeInfo
       5) stelem [{i8,str,r8}]
       5) stfld (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>)::_F2:Seq<{i8,str,r8}>
       1) ret
-  Total Size: 262
+  Total Size: 269
 
 Func sig: () to (M{var X:i8, var Z:r8}, {X:i8, Y:s}, {X:i8, Y:s, Z:r8?}*)
 Type: (RuntimeModule<{i8,r8}>,{i8,str},Seq<{i8,str,r8}>), Value: (module symbols:
@@ -1230,6 +1384,20 @@ make_module_record(Arr<obj>, (i8,i8)):{i8,i8}
       1) ret
   Total Size: 52
 
+set_module_value_item(Arr<obj>, (i8,i8), i4, obj):(i8,i8)
+      1) ldarg.2 [i4]
+     13) switch [1,0]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(i8,i8)]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8)::_F0:i8
+  Label [0]:
+      1) ldarg.1 [(i8,i8)]
+      1) ret
+  Total Size: 33
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -1245,8 +1413,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(i8,i8),{i8,i8}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(i8,i8),i4,obj,(i8,i8)>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,i8},(i8,i8)>(Func<Arr<bool>,(i8,i8),{i8,i8},(i8,i8)>, (i8,i8), Func<(i8,i8),{i8,i8}>, Func<(i8,i8),i4,obj,(i8,i8)>, BndModuleNode)
       1) stloc.0 [RuntimeModule<{i8,i8}>]
       1) ldloc.0 [RuntimeModule<{i8,i8}>]
       5) newobj {i8,i8}()
@@ -1260,11 +1431,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) stfld {i8,i8}::_F0:i8
       1) ldloc.1 [{i8,i8}]
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.3
+      1) ldc.i4.4
       5) ldelem [HashSet<DName>]
       5) callvirt RuntimeModule<{i8,i8}>::Update({i8,i8}, HashSet<DName>):RuntimeModule<{i8,i8}>
       1) ret
-  Total Size: 82
+  Total Size: 89
 
 Func sig: () to M{param A:i8, const B:i8}
 Type: RuntimeModule<{i8,i8},(i8,i8)>, Value: module symbols:
@@ -1384,6 +1555,26 @@ make_module_record(Arr<obj>, (i8,i8,{bool})):{i8,i8,{bool}}
       1) ret
   Total Size: 91
 
+set_module_value_item(Arr<obj>, (i8,i8,{bool}), i4, obj):(i8,i8,{bool})
+      1) ldarg.2 [i4]
+     17) switch [1,0,2]
+      5) br [0]
+  Label [1]:
+      1) ldarg.1 [(i8,i8,{bool})]
+      1) ldarg.3 [obj]
+      5) unbox.any [i8]
+      5) stfld (i8,i8,{bool})::_F0:i8
+      5) br [0]
+  Label [2]:
+      1) ldarg.1 [(i8,i8,{bool})]
+      1) ldarg.3 [obj]
+      5) unbox.any [{bool}]
+      5) stfld (i8,i8,{bool})::_F2:{bool}
+  Label [0]:
+      1) ldarg.1 [(i8,i8,{bool})]
+      1) ret
+  Total Size: 54
+
 top(Arr<obj>, Arr<obj>):obj
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.0
@@ -1399,8 +1590,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) ldelem [Func<(i8,i8,{bool}),{i8,i8,{bool}}>]
       1) ldarg.0 [Arr<obj>]
       1) ldc.i4.2
+      5) ldelem [Func<(i8,i8,{bool}),i4,obj,(i8,i8,{bool})>]
+      1) ldarg.0 [Arr<obj>]
+      1) ldc.i4.3
       5) ldelem [BndModuleNode]
-      5) newobj RuntimeModule<{i8,i8,{bool}},(i8,i8,{bool})>(Func<Arr<bool>,(i8,i8,{bool}),{i8,i8,{bool}},(i8,i8,{bool})>, (i8,i8,{bool}), Func<(i8,i8,{bool}),{i8,i8,{bool}}>, BndModuleNode)
+      5) newobj RuntimeModule<{i8,i8,{bool}},(i8,i8,{bool})>(Func<Arr<bool>,(i8,i8,{bool}),{i8,i8,{bool}},(i8,i8,{bool})>, (i8,i8,{bool}), Func<(i8,i8,{bool}),{i8,i8,{bool}}>, Func<(i8,i8,{bool}),i4,obj,(i8,i8,{bool})>, BndModuleNode)
       1) stloc.0 [RuntimeModule<{i8,i8,{bool}}>]
       1) ldloc.0 [RuntimeModule<{i8,i8,{bool}}>]
       5) newobj {i8,i8,{bool}}()
@@ -1414,11 +1608,11 @@ top(Arr<obj>, Arr<obj>):obj
       5) stfld {i8,i8,{bool}}::_F0:i8
       1) ldloc.1 [{i8,i8,{bool}}]
       1) ldarg.0 [Arr<obj>]
-      1) ldc.i4.3
+      1) ldc.i4.4
       5) ldelem [HashSet<DName>]
       5) callvirt RuntimeModule<{i8,i8,{bool}}>::Update({i8,i8,{bool}}, HashSet<DName>):RuntimeModule<{i8,i8,{bool}}>
       1) ret
-  Total Size: 82
+  Total Size: 89
 
 Func sig: () to M{param A:i8, const B:i8, param C:{X:b}}
 Type: RuntimeModule<{i8,i8,{bool}},(i8,i8,{bool})>, Value: module symbols:

@@ -6,21 +6,18 @@ using System.Reflection;
 
 using Microsoft.Rexl.Bind;
 using Microsoft.Rexl.Code;
+using Microsoft.Rexl.Onnx;
 using Microsoft.Rexl.Private;
+using Microsoft.Rexl.Solve;
 
 namespace Microsoft.Rexl.Kernel;
 
 internal sealed class KernelBuiltins : OperationRegistry
 {
     public KernelBuiltins(Func<bool, bool> setShowIL = null)
-        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance, FlowProcs.Instance)
+        : base(BuiltinFunctions.Instance, BuiltinProcedures.Instance, FlowProcs.Instance,
+            SolverFunctions.Instance, ModelFunctions.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverFunctions.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFunctions.Instance);
-#endif
         if (setShowIL != null)
             AddOne(new ShowILFunc(setShowIL));
     }
@@ -29,14 +26,8 @@ internal sealed class KernelBuiltins : OperationRegistry
 internal sealed class KernelGenerators : GeneratorRegistry
 {
     public KernelGenerators()
-        : base(BuiltinGenerators.Instance)
+        : base(BuiltinGenerators.Instance, SolverGenerators.Instance, ModelFuncGenerators.Instance)
     {
-#if WITH_SOLVE
-        AddParent(Solve.SolverGenerators.Instance);
-#endif
-#if WITH_ONNX
-        AddParent(Onnx.ModelFuncGenerators.Instance);
-#endif
         Add(ShowILFunc.MakeGen());
     }
 }

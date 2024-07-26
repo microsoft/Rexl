@@ -78,18 +78,6 @@ internal sealed class Executor : SimpleHarnessWithSinkStack
         }
     }
 
-#if WITH_SOLVE
-    protected override bool TryOptimizeMip(bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-        out double score, out List<(DName name, object value)> symValues)
-    {
-        Validation.AssertValue(modSrc);
-        Validation.AssertIndex(imsr, modSrc.Bnd.Symbols.Length);
-        Validation.Assert(modSrc.Bnd.Symbols[imsr].IsMeasureSym);
-
-        return Solve.MipSolver.TryOptimize(Sink, _codeGen, isMax, modSrc, imsr, solver, out score, out symValues);
-    }
-#endif
-
     private void PublishText(ExecuteMessage msg, string text)
     {
         Validation.AssertValue(msg);

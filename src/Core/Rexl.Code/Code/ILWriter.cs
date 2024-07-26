@@ -498,8 +498,20 @@ public sealed class ILWriter
     [Conditional("LOG_IL")]
     private void Log(OpCode op, Label[] arg)
     {
-        // REVIEW: Should do something better, if we ever use switch.
-        Log(op, (object)arg);
+#if LOG_IL
+        if (_lines != null)
+        {
+            var sink = StartLine().TWrite("{0,5}) {1} [", LogPrefix(), op);
+            var pre = "";
+            foreach (var lab in arg)
+            {
+                sink.TWrite(pre).TWrite(lab.GetHashCode() - 1);
+                pre = ",";
+            }
+            sink.Write("]");
+            AddLine(sink);
+        }
+#endif
     }
 
     private void Emit(OpCode op, Type arg)

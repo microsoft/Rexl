@@ -76,6 +76,8 @@ public abstract class RuntimeModule<TRec> : RuntimeModule
     }
 
     public abstract RuntimeModule<TRec> Update(TRec values, HashSet<DName> names);
+
+    public abstract RuntimeModule<TRec> Update(List<(DName name, object value)> symValues);
 }
 
 /// <summary>
@@ -89,6 +91,12 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
     /// This makes the record value from the items tuple.
     /// </summary>
     protected readonly Func<TItems, TRec> _makeRec;
+
+    /// <summary>
+    /// Sets a single item in the items tuple. The item index (2nd arg) will be for the
+    /// value slot of a parameter or free variable.
+    /// </summary>
+    protected readonly Func<TItems, int, object, TItems> _setValueItem;
 
     /// <summary>
     /// The items tuple.
@@ -105,12 +113,16 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
     /// </summary>
     private volatile TRec _rec;
 
-    private protected RuntimeModuleBase(BndModuleNode bnd, Func<TItems, TRec> makeRec, TItems items, BitSet locked)
+    private protected RuntimeModuleBase(BndModuleNode bnd,
+            Func<TItems, TRec> makeRec, Func<TItems, int, object, TItems> setValueItem, TItems items, BitSet locked)
         : base(bnd)
     {
         Validation.AssertValue(makeRec);
+        Validation.AssertValue(setValueItem);
         Validation.AssertValue(items);
+
         _makeRec = makeRec;
+        _setValueItem = setValueItem;
         _items = items;
         _locked = locked;
     }
@@ -163,6 +175,13 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
             }
         }
 
+        CloseFlags(flags, locked);
+        return flags;
+    }
+
+    private void CloseFlags(bool[] flags, BitSet locked)
+    {
+        int citem = Bnd.Items.Length;
         var chgs = new BitSet(flags.AsSpan(0, citem));
         var deps = Bnd.GetItemDependencies();
         for (int i = 0; i < citem; i++)
@@ -180,7 +199,61 @@ public abstract class RuntimeModuleBase<TRec, TItems> : RuntimeModule<TRec>
             else
                 flags[i] = true;
         }
+    }
 
+    protected bool[] SetSlots(List<(DName name, object value)> symValues,
+        out TItems items, out BitSet locked, out int count)
+    {
+        int citem = Bnd.Items.Length;
+        var flags = new bool[Bnd.Items.Length + Bnd.Symbols.Length];
+
+        items = (TItems)_items.Clone();
+        locked = _locked;
+        count = 0;
+        foreach (var (name, value) in symValues)
+        {
+            if (!Bnd.NameToIndex.TryGetValue(name, out int isym))
+            {
+                // Bad name.
+                Validation.Assert(false);
+                continue;
+            }
+
+            Validation.AssertIndex(isym, Bnd.Symbols.Length);
+            var sym = Bnd.Symbols[isym];
+            int ifma = sym.IfmaValue;
+            Validation.AssertIndex(ifma, Bnd.Items.Length);
+
+            if (flags[ifma])
+            {
+                // Duplicate entry.
+                continue;
+            }
+
+            switch (sym.SymKind)
+            {
+            case ModSymKind.Parameter:
+            case ModSymKind.FreeVariable:
+                flags[ifma] = true;
+                locked = locked.SetBit(ifma);
+                count++;
+                break;
+            default:
+                // Not settable.
+                Validation.Assert(false);
+                continue;
+            }
+
+            _setValueItem(items, ifma, value);
+        }
+
+        if (count == 0)
+        {
+            items = _items;
+            return flags;
+        }
+
+        CloseFlags(flags, locked);
         return flags;
     }
 }
@@ -205,15 +278,15 @@ public sealed class RuntimeModule<TRec, TItems> : RuntimeModuleBase<TRec, TItems
     // Code generation depends on this signature. Do not delete it!
     public RuntimeModule(
             Func<bool[], TItems, TRec, TItems> setItems, TItems items,
-            Func<TItems, TRec> makeRec, BndModuleNode bnd)
-        : this(setItems, items, default, makeRec, bnd)
+            Func<TItems, TRec> makeRec, Func<TItems, int, object, TItems> setValueItem, BndModuleNode bnd)
+        : this(setItems, items, default, makeRec, setValueItem, bnd)
     {
     }
 
     private RuntimeModule(
             Func<bool[], TItems, TRec, TItems> setItems, TItems items, BitSet locked,
-            Func<TItems, TRec> makeRec, BndModuleNode bnd)
-        : base(bnd, makeRec, items, locked)
+            Func<TItems, TRec> makeRec, Func<TItems, int, object, TItems> setValueItem, BndModuleNode bnd)
+        : base(bnd, makeRec, setValueItem, items, locked)
     {
         Validation.AssertValue(setItems);
         _setItems = setItems;
@@ -225,9 +298,22 @@ public sealed class RuntimeModule<TRec, TItems> : RuntimeModuleBase<TRec, TItems
     {
         Validation.AssertValue(recVals);
         Validation.AssertValue(names);
+
         var flags = GetFlags(names, out var locked);
         var items = _setItems(flags, (TItems)_items.Clone(), recVals);
-        return new RuntimeModule<TRec, TItems>(_setItems, items, locked, _makeRec, Bnd);
+        return new RuntimeModule<TRec, TItems>(_setItems, items, locked, _makeRec, _setValueItem, Bnd);
+    }
+
+    public override RuntimeModule<TRec, TItems> Update(List<(DName name, object value)> symValues)
+    {
+        Validation.AssertValue(symValues);
+
+        var flags = SetSlots(symValues, out var items, out var locked, out int count);
+        if (count == 0)
+            return this;
+
+        items = _setItems(flags, items, null);
+        return new RuntimeModule<TRec, TItems>(_setItems, items, locked, _makeRec, _setValueItem, Bnd);
     }
 }
 
@@ -251,15 +337,15 @@ public sealed class RuntimeModule<TRec, TItems, TExt> : RuntimeModuleBase<TRec, 
     // Code generation depends on this signature. Do not delete it!
     public RuntimeModule(
             Func<bool[], TItems, TRec, TExt, TItems> setItems, TItems items,
-            Func<TItems, TRec> makeRec, BndModuleNode bnd, TExt ext)
-        : this(setItems, items, default, makeRec, bnd, ext)
+            Func<TItems, TRec> makeRec, Func<TItems, int, object, TItems> setValueItem, BndModuleNode bnd, TExt ext)
+        : this(setItems, items, default, makeRec, setValueItem, bnd, ext)
     {
     }
 
     private RuntimeModule(
             Func<bool[], TItems, TRec, TExt, TItems> setItems, TItems items, BitSet locked,
-            Func<TItems, TRec> makeRec, BndModuleNode bnd, TExt ext)
-        : base(bnd, makeRec, items, locked)
+            Func<TItems, TRec> makeRec, Func<TItems, int, object, TItems> setValueItem, BndModuleNode bnd, TExt ext)
+        : base(bnd, makeRec, setValueItem, items, locked)
     {
         Validation.AssertValue(setItems);
         Validation.AssertValue(ext);
@@ -275,6 +361,18 @@ public sealed class RuntimeModule<TRec, TItems, TExt> : RuntimeModuleBase<TRec, 
         Validation.AssertValue(names);
         var flags = GetFlags(names, out var locked);
         var items = _setItems(flags, (TItems)_items.Clone(), recVals, Externals);
-        return new RuntimeModule<TRec, TItems, TExt>(_setItems, items, locked, _makeRec, Bnd, Externals);
+        return new RuntimeModule<TRec, TItems, TExt>(_setItems, items, locked, _makeRec, _setValueItem, Bnd, Externals);
+    }
+
+    public override RuntimeModule<TRec, TItems, TExt> Update(List<(DName name, object value)> symValues)
+    {
+        Validation.AssertValue(symValues);
+
+        var flags = SetSlots(symValues, out var items, out var locked, out int count);
+        if (count == 0)
+            return this;
+
+        items = _setItems(flags, items, null, Externals);
+        return new RuntimeModule<TRec, TItems, TExt>(_setItems, items, locked, _makeRec, _setValueItem, Bnd, Externals);
     }
 }

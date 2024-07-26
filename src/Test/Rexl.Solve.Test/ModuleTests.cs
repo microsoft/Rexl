@@ -107,19 +107,6 @@ public sealed class ModuleTests : BlockTestsBase<bool>
         }
     }
 
-    protected override bool TryOptimizeMip(EvalSink sink, CodeGeneratorBase codeGen,
-        bool isMax, RuntimeModule modSrc, int imsr, DName solver,
-        out double score, out List<(DName name, object value)> symValues)
-    {
-        Validation.AssertValue(sink);
-        Validation.AssertValue(codeGen);
-        Validation.AssertValue(modSrc);
-        Validation.AssertIndex(imsr, modSrc.Bnd.Symbols.Length);
-        Validation.Assert(modSrc.Bnd.Symbols[imsr].IsMeasureSym);
-
-        return MipSolver.TryOptimize(sink, codeGen, isMax, modSrc, imsr, solver, out score, out symValues);
-    }
-
     [TestMethod]
     public async Task ModuleReduceBaselineTests()
     {
