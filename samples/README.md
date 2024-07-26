@@ -1,6 +1,6 @@
 # Samples
 
-This directory contains samples for Rexl and RexlScript. It comtains the directories
+This directory contains samples for Rexl and RexlScript. It contains the directories
 * [notebooks](#notebooks)
 * [data](#data)
 

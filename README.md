@@ -124,7 +124,7 @@ supported operating system / architecture configurations. Each zip is self-conta
 and use:
 * Ensure that Python and Jupyter are installed. The latter can be accomplished with
   `pip install jupyter`.
-* Download the appropiate `RexlKernel_<OS>_<Arch>_Release.zip` file.
+* Download the appropriate `RexlKernel_<OS>_<Arch>_Release.zip` file.
 * Extract the contents of the `.zip` to a folder.
 * Open a command line shell and `cd` into the extracted folder.
 * Run `RexlKernel register`.
@@ -140,6 +140,9 @@ The [samples](/samples) directory contents may be dowloaded and used as a launch
 Documentation for this project is in the [docs](/docs) directory.
 
 ## Samples
+
+Note: Sample Jupyter notebooks and associated data are being moved to the
+[Rexl Sample Notebooks project](https://github.com/microsoft/Rexl-sample-notebooks).
 
 There is a [samples](/samples) directory containing sample data, scripts,
 and notebooks. More will be added over time. To run sample scripts, use either `RexlBench` or `RexlRun`. To run
