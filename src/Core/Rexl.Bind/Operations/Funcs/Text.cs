@@ -762,8 +762,8 @@ public sealed partial class TextReplaceFunc : RexlOper
 /// <summary>
 /// Functions to add padding to either end of a string.
 /// The center version (PadCenter) will add spaces to both ends of the given string.
-/// The left version (PadStart) will add spaces to the left of the given string.
-/// The right version (PadEnd) will add spaces to the right of the given string.
+/// The start version (PadStart) will add spaces to the start of the given string.
+/// The end version (PadEnd) will add spaces to the end of the given string.
 /// </summary>
 public sealed partial class TextPadFunc : RexlOper
 {
@@ -777,7 +777,7 @@ public sealed partial class TextPadFunc : RexlOper
         End
     }
 
-    public static readonly TextPadFunc PadCenter = new TextPadFunc(PadKind.Center, "PadCenter");
+    public static readonly TextPadFunc PadCenter = new TextPadFunc(PadKind.Center, "Pad");
     public static readonly TextPadFunc PadStart = new TextPadFunc(PadKind.Start, "PadStart");
     public static readonly TextPadFunc PadEnd = new TextPadFunc(PadKind.End, "PadEnd");
 
@@ -796,8 +796,8 @@ public sealed partial class TextPadFunc : RexlOper
         case PadKind.End:
             Map = ExecEnd;
             break;
-        case PadKind.Center:
         default:
+            Validation.Assert(kind == PadKind.Center);
             Map = ExecCenter;
             break;
         }
@@ -839,10 +839,10 @@ public sealed partial class TextPadFunc : RexlOper
         Validation.AssertValue(reducer);
         Validation.Assert(IsValidCall(call));
 
-        var srcArg = call.Args[0];
         var lenArg = call.Args[1];
         if (lenArg.TryGetI8(out var len))
         {
+            var srcArg = call.Args[0];
             if (len <= 0)
                 return srcArg;
             if (srcArg.TryGetString(out var str))
@@ -858,20 +858,21 @@ public sealed partial class TextPadFunc : RexlOper
 
     public static string ExecCenter(string src, long len)
     {
-        if (len <= 0 || len < src.Length)
+        if (len <= 0)
             return src;
         int count = (int)Math.Min(len, int.MaxValue);
         if (string.IsNullOrEmpty(src))
             return new string(' ', count);
-        return string.Create(count, src, (dst, src) =>
+        if (count <= src.Length)
+            return src;
+        return string.Create(count, src.AsMemory(), static (dst, mem) =>
         {
-            int spaces = (count - src.Length) / 2;
-            for (int i = 0; i < count; i++)
-            {
-                if (i < spaces || i > src.Length + spaces - 1)
-                    dst[i] = ' ';
-                else dst[i] = src[i - spaces];
-            }
+            int spaces = (dst.Length - mem.Length) / 2;
+            
+            if (spaces > 0)
+                dst.Slice(0, spaces).Fill(' ');
+            mem.Span.CopyTo(dst.Slice(spaces, mem.Length));
+            dst.Slice(spaces + mem.Length).Fill(' ');
         });
     }
 

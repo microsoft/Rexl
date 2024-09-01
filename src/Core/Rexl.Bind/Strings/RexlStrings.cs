@@ -343,11 +343,11 @@ static partial class RexlStrings
     public static readonly StringId AboutUpper = new(nameof(AboutUpper), "Converts text to uppercase.");
     public static readonly StringId AboutUpper_Source = new(nameof(AboutUpper_Source), "The text to convert to uppercase.");
 
-    public static readonly StringId AboutPadCenter = new(nameof(AboutPadCenter), "Adds spaces to both ends of the given string so the result is at least the given length.");
-    public static readonly StringId AboutPadStart = new(nameof(AboutPadStart), "Adds spaces to the start of the given string so the result is at least the given length.");
-    public static readonly StringId AboutPadEnd = new(nameof(AboutPadEnd), "Adds spaces to the end of the given string so the result is at least the given length.");
+    public static readonly StringId AboutPadCenter = new(nameof(AboutPadCenter), "Adds spaces to both ends of the given text so the result is of the given length.");
+    public static readonly StringId AboutPadStart = new(nameof(AboutPadStart), "Adds spaces to the start of the given text so the result is of the given length.");
+    public static readonly StringId AboutPadEnd = new(nameof(AboutPadEnd), "Adds spaces to the end of the given text so the result is of the given length.");
     public static readonly StringId AboutPad_Source = new(nameof(AboutPad_Source), "The text to add padding to.");
-    public static readonly StringId AboutPad_Len = new(nameof(AboutPad_Len), "The minimum length of the string after adding the padding.");
+    public static readonly StringId AboutPad_Len = new(nameof(AboutPad_Len), "The minimum length of the text after padding.");
 
     public static readonly StringId AboutStartsWith = new(nameof(AboutStartsWith), "Tests whether the beginning of the source text matches the lookup text.");
     public static readonly StringId AboutStartsWith_Source = new(nameof(AboutStartsWith_Source), "The text to look in.");
