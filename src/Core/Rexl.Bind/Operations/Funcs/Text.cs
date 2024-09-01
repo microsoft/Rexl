@@ -758,3 +758,141 @@ public sealed partial class TextReplaceFunc : RexlOper
         return src.Replace(remove, insert);
     }
 }
+
+/// <summary>
+/// Functions to add padding to either end of a string.
+/// The center version (PadCenter) will add spaces to both ends of the given string.
+/// The start version (PadStart) will add spaces to the start of the given string.
+/// The end version (PadEnd) will add spaces to the end of the given string.
+/// </summary>
+public sealed partial class TextPadFunc : RexlOper
+{
+    public enum PadKind : byte
+    {
+        // Center justification, pad both ends of the string
+        Center,
+        // Pad the start of the string.
+        Start,
+        // Pad the end of the string.
+        End
+    }
+
+    public static readonly TextPadFunc PadCenter = new TextPadFunc(PadKind.Center, "Pad");
+    public static readonly TextPadFunc PadStart = new TextPadFunc(PadKind.Start, "PadStart");
+    public static readonly TextPadFunc PadEnd = new TextPadFunc(PadKind.End, "PadEnd");
+
+    public PadKind Kind { get; }
+
+    public Func<string, long, string> Map { get; }
+
+    private TextPadFunc(PadKind kind, string name)
+        : base(isFunc: true, new DName(name), BindUtil.TextNs, 2, 2)
+    {
+        switch (kind)
+        {
+        case PadKind.Start:
+            Map = ExecStart;
+            break;
+        case PadKind.End:
+            Map = ExecEnd;
+            break;
+        default:
+            Validation.Assert(kind == PadKind.Center);
+            Map = ExecCenter;
+            break;
+        }
+
+        Kind = kind;
+    }
+
+    protected override ArgTraits GetArgTraitsCore(int carg)
+    {
+        Validation.Assert(SupportsArity(carg));
+        var maskAll = BitSet.GetMask(carg);
+        var maskOpt = maskAll.ClearBit(0);
+        return ArgTraitsLifting.Create(this, carg, maskLiftSeq: maskAll, maskLiftTen: maskAll, maskLiftOpt: maskOpt);
+    }
+
+    protected override (DType, Immutable.Array<DType>) SpecializeTypesCore(InvocationInfo info)
+    {
+        Validation.AssertValue(info);
+        Validation.Assert(SupportsArity(info.Arity));
+        Validation.Assert(info.Arity == 2);
+
+        return (DType.Text, Immutable.Array.Create(DType.Text, DType.I8Req));
+    }
+
+    protected override bool CertifyCore(BndCallNode call, ref bool full)
+    {
+        if (call.Type != DType.Text)
+            return false;
+        var args = call.Args;
+        if (args[0].Type != DType.Text)
+            return false;
+        if (args[1].Type != DType.I8Req)
+            return false;
+        return true;
+    }
+
+    protected override BoundNode ReduceCore(IReducer reducer, BndCallNode call)
+    {
+        Validation.AssertValue(reducer);
+        Validation.Assert(IsValidCall(call));
+
+        var lenArg = call.Args[1];
+        if (lenArg.TryGetI8(out var len))
+        {
+            var srcArg = call.Args[0];
+            if (len <= 0)
+                return srcArg;
+            if (srcArg.TryGetString(out var str))
+            {
+                if (Util.Size(str) >= len)
+                    return srcArg;
+                return BndStrNode.Create(Map(str, len));
+            }
+        }
+
+        return call;
+    }
+
+    public static string ExecCenter(string src, long len)
+    {
+        if (len <= 0)
+            return src;
+        int count = (int)Math.Min(len, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        if (count <= src.Length)
+            return src;
+        return string.Create(count, src.AsMemory(), static (dst, mem) =>
+        {
+            int spaces = (dst.Length - mem.Length) / 2;
+            
+            if (spaces > 0)
+                dst.Slice(0, spaces).Fill(' ');
+            mem.Span.CopyTo(dst.Slice(spaces, mem.Length));
+            dst.Slice(spaces + mem.Length).Fill(' ');
+        });
+    }
+
+    public static string ExecStart(string src, long len)
+    {
+        if (len <= 0)
+            return src;
+        int count = (int)Math.Min(len, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadLeft(count);
+    }
+
+    public static string ExecEnd(string src, long len)
+    {
+        if (len <= 0)
+            return src;
+        int count = (int)Math.Min(len, int.MaxValue);
+        if (string.IsNullOrEmpty(src))
+            return new string(' ', count);
+        return src.PadRight(count);
+    }
+}
