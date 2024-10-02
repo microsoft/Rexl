@@ -108,12 +108,12 @@ Packages are published to [nuget.org](https://www.nuget.org/packages?q=Microsoft
 The published packages include:
 | Name                                     | Released Package |
 |------------------------------------------|------------------|
-| `Microsoft.Rexl.Base`                  | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Base?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Base/) |
-| `Microsoft.Rexl.Bind`             | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Bind?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Bind/) |
-| `Microsoft.Rexl.Code`                  | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Code?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Code/) |
-| `Microsoft.Rexl.Flow`            | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Flow?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Flow/) |
-| `Microsoft.Rexl.Harness`            | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.Rexl.Harness?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.Rexl.Harness/) |
-| `Microsoft.RexlKernel.Base` | [![BotBuilder Badge](https://buildstats.info/nuget/Microsoft.RexlKernel.Base?includePreReleases=true&dWidth=70)](https://www.nuget.org/packages/Microsoft.RexlKernel.Base/) |
+| `Microsoft.Rexl.Base`                  | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.Rexl.Base?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.Rexl.Base/) |
+| `Microsoft.Rexl.Bind`             | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.Rexl.Bind?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.Rexl.Bind/) |
+| `Microsoft.Rexl.Code`                  | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.Rexl.Code?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.Rexl.Code/) |
+| `Microsoft.Rexl.Flow`            | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.Rexl.Flow?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.Rexl.Flow/) |
+| `Microsoft.Rexl.Harness`            | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.Rexl.Harness?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.Rexl.Harness/) |
+| `Microsoft.RexlKernel.Base` | [![BotBuilder Badge](https://img.shields.io/nuget/vpre/Microsoft.RexlKernel.Base?label=Latest&logo=nuget)](https://www.nuget.org/packages/Microsoft.RexlKernel.Base/) |
 
 There will be more in the future, for example, `Microsoft.Rexl.Onnx` and `Microsoft.Rexl.Solve`.
 
