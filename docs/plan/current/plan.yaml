@@ -1,0 +1,248 @@
+plan_id: cycle-1
+cycle_id: cycle-1
+created_at: "2026-05-22T21:50:00Z"
+created_by: gem-planner
+strategy_source: STRATEGY.md
+summary: >
+  Cycle 1 warms up the autonomous loop with a batch of low-risk
+  documentation gardening PRs that fix concrete stale references in
+  README.md, samples/README.md, and the docs index, then lays foundation
+  work for the two larger strategic goals: closing the published-package
+  gap for Microsoft.Rexl.Onnx and Microsoft.Rexl.Solve (Goal 4), and
+  expanding the user guide to cover RexlScript (Goal 2). Every task is
+  scoped to a single small PR, cites a specific goal in STRATEGY.md, and
+  avoids any change to language semantics, grammar, or legal/brand files.
+
+# Each task must be small enough for one PR (~1-3 files, under ~400 LOC).
+# Ordered by dependency. Waves run sequentially; tasks within a wave can
+# run in parallel.
+tasks:
+  - task_id: T01-fix-readme-flow-link
+    name: Fix stale README link for Rexl.Flow and minor typos
+    wave: 1
+    status: pending
+    priority: high
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 6 ("Keep README.md, docs/, and samples/README.md
+      in lockstep with the code") and the success metric "no TBD or TODO
+      markers remain in published docs" demand that README links resolve
+      correctly. README.md line 56 currently links Rexl.Flow to
+      /src/Core/Rexl.Code (clearly wrong), and line 135 contains the
+      typo "dowloaded". This is a high-confidence Wave 1 warm-up that
+      validates the agent loop end-to-end without touching code.
+    acceptance_criteria:
+      - README.md line that introduces Rexl.Flow links to /src/Core/Rexl.Flow (not /src/Core/Rexl.Code).
+      - The word "dowloaded" no longer appears in README.md (replaced with "downloaded").
+      - No other lines in README.md are modified; LICENSE/NOTICE/trademark sections are untouched.
+      - `git diff --stat` for the PR shows only README.md changed.
+    touches:
+      - README.md
+    deps: []
+    estimate: small
+    risk: low
+    security_sensitive: false
+
+  - task_id: T02-fix-samples-readme-typos
+    name: Fix typos and broken notebook link in samples/README.md
+    wave: 1
+    status: pending
+    priority: high
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 6 (docs in lockstep with code) and PR #31
+      precedent. samples/README.md line 3 says "It comtains the
+      directories" ("comtains" -> "contains"), and line 31 links
+      SudokuMipEq to "notebooks/SudokuMipEq.ipynb.ipynb" which does not
+      exist; the real file is samples/notebooks/SudokuMipEq.ipynb. Both
+      are concrete, mechanical fixes.
+    acceptance_criteria:
+      - "comtains" no longer appears in samples/README.md (replaced with "contains").
+      - The link target for SudokuMipEq resolves to notebooks/SudokuMipEq.ipynb (no doubled .ipynb extension).
+      - All notebook links in samples/README.md point to files that exist under samples/notebooks/.
+      - No content is removed; only the typo and the broken link target are corrected.
+    touches:
+      - samples/README.md
+    deps: []
+    estimate: small
+    risk: low
+    security_sensitive: false
+
+  - task_id: T03-expand-docs-index
+    name: Expand docs/README.md to cover the current docs tree
+    wave: 1
+    status: pending
+    priority: medium
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 6 and the "Documentation surface area" success
+      metric. docs/README.md is a 12-line stub that only lists
+      Grammars.md and the User Guide. It omits docs/activity-log.md
+      (added by the commander) and provides no navigational structure.
+      Bringing the index in line with the directory contents is a small,
+      content-only change that also makes future doc PRs (T04, T06)
+      easier to slot in.
+    acceptance_criteria:
+      - docs/README.md links to each top-level .md file currently in docs/ (Grammars.md, UserGuide/RexlUserGuide.md, activity-log.md).
+      - The Rexl User Guide entry continues to point at UserGuide/RexlUserGuide.md.
+      - The file remains valid CommonMark + GFM (passes the markdown.instructions.md checklist; ATX headings, fenced lists, no H1 reuse below the title).
+      - No file outside docs/README.md is modified.
+    touches:
+      - docs/README.md
+    deps: []
+    estimate: small
+    risk: low
+    security_sensitive: false
+
+  - task_id: T04-add-architecture-md
+    name: Add ARCHITECTURE.md skeleton at repo root
+    wave: 1
+    status: pending
+    priority: medium
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 2 ("Expand the user guide... and fill core gaps")
+      and Goal 6 (docs in lockstep). The repo currently lacks any
+      narrative summary of how src/Core, src/Apps, src/Test,
+      src/Benchmark, pipelines/, nuget/, docs/, and samples/ fit
+      together. STRATEGY.md already describes this layout; mirroring it
+      into an ARCHITECTURE.md gives contributors and future agent
+      cycles a single entry point without changing code or grammar.
+    acceptance_criteria:
+      - A new file ARCHITECTURE.md exists at the repository root.
+      - The file has H2 sections covering at minimum: Core libraries (src/Core), Sample apps (src/Apps), Tests (src/Test), Benchmarks (src/Benchmark), Pipelines (pipelines/), NuGet packaging (nuget/), Documentation (docs/), and Samples (samples/).
+      - Every directory referenced in the file actually exists in the repository (no dead paths).
+      - File contains no TBD/TODO markers and passes markdown.instructions.md and markdown-gfm.instructions.md validation checklists.
+      - File is under 400 lines.
+    touches:
+      - ARCHITECTURE.md
+    deps: []
+    estimate: small
+    risk: low
+    security_sensitive: false
+
+  - task_id: T05-package-onnx-solve-metadata
+    name: Wire NuGet packaging metadata into Rexl.Onnx and Rexl.Solve csprojs
+    wave: 2
+    status: pending
+    priority: high
+    type: feature
+    rationale: |
+      STRATEGY.md Goal 4 ("Close the published-package gap: ship
+      Microsoft.Rexl.Onnx and Microsoft.Rexl.Solve") explicitly calls
+      out these two projects. Inspection confirms neither
+      src/Core/Rexl.Onnx/Rexl.Onnx.csproj nor
+      src/Core/Rexl.Solve/Rexl.Solve.csproj currently imports
+      nuget/nuget-package.props, while the six already-published
+      packages do. Adding the import plus Title/Description -- mirroring
+      the pattern used in Rexl.Base.csproj and Rexl.Bind.csproj -- is the
+      minimal first step to producing pre-release .nupkg artifacts from
+      CI. This task only modifies project metadata; it does not change
+      any C# source or native bindings.
+    acceptance_criteria:
+      - src/Core/Rexl.Onnx/Rexl.Onnx.csproj imports ..\..\..\nuget\nuget-package.props.
+      - src/Core/Rexl.Solve/Rexl.Solve.csproj imports ..\..\..\nuget\nuget-package.props.
+      - Each csproj sets a <Title> (e.g. "REXL Onnx", "REXL Solve") and a one-sentence <Description> matching the style in Rexl.Base.csproj.
+      - `dotnet build src/Rexl.sln -c Debug` and `dotnet build src/RexlCrossPlat.sln -c Debug` both succeed locally with the change (CI must stay green on the PR).
+      - No C# source file under src/Core/Rexl.Onnx/ or src/Core/Rexl.Solve/ is modified; no native binding code, no test, no analyzer is touched.
+      - The PR description explicitly flags that this is packaging metadata only and requests human review per the non-goal on native interop.
+    touches:
+      - src/Core/Rexl.Onnx/Rexl.Onnx.csproj
+      - src/Core/Rexl.Solve/Rexl.Solve.csproj
+    deps:
+      - T01-fix-readme-flow-link
+    estimate: small
+    risk: medium
+    security_sensitive: true
+
+  - task_id: T06-userguide-rexlscript-skeleton
+    name: Add RexlScript skeleton section to the User Guide
+    wave: 2
+    status: pending
+    priority: high
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 2 explicitly states that the User Guide "covers
+      core Rexl, not RexlScript" and that RexlScript narrative
+      documentation is a top priority. docs/UserGuide/RexlUserGuide.md
+      currently lists five sections (01-AboutRexl through 05-Functions).
+      Adding a new 06-RexlScript.md skeleton -- introduction, "How it
+      differs from core Rexl", "Statements vs. expressions" placeholders
+      backed by existing grammar references in docs/Grammars.md -- gives
+      future cycles a concrete file to grow without touching grammar or
+      semantics. This is purely additive documentation.
+    acceptance_criteria:
+      - A new file docs/UserGuide/Sections/06-RexlScript.md exists with H1 "RexlScript".
+      - The file contains at least four H2 subsections (e.g. "Overview", "Statements vs Expressions", "Tasks and Parallelism", "Hosts and Tooling"), each with at least one paragraph of prose.
+      - docs/UserGuide/RexlUserGuide.md is updated to add a "RexlScript" bullet linking to Sections/06-RexlScript.md.
+      - The new file contains no TBD/TODO markers; placeholders are written as forward-looking prose (e.g. "Detailed task semantics are covered in a future section").
+      - File passes markdown.instructions.md and markdown-gfm.instructions.md validation checklists and is under 400 lines.
+      - No file outside docs/UserGuide/ is modified.
+    touches:
+      - docs/UserGuide/RexlUserGuide.md
+      - docs/UserGuide/Sections/06-RexlScript.md
+    deps:
+      - T03-expand-docs-index
+    estimate: medium
+    risk: low
+    security_sensitive: false
+
+  - task_id: T07-xml-doc-rexl-base-dname
+    name: Add XML doc comments to public members of DName
+    wave: 2
+    status: pending
+    priority: medium
+    type: refactor
+    rationale: |
+      STRATEGY.md Goal 5 ("Improve test coverage and reduce
+      baseline-script churn") and Goal 2 (fill core gaps) both benefit
+      from a richer public-API doc surface in Rexl.Base. DName
+      (src/Core/Rexl.Base/Name/DName.cs) is a single, well-bounded type
+      that is reachable from every consumer of the type system, so
+      documenting its public surface area pays off broadly. This task
+      scopes XML documentation to a single file, with no behavioural
+      change, no test removal, and no analyzer weakening -- staying
+      well within the .editorconfig and stylecop.ruleset constraints.
+    acceptance_criteria:
+      - Every public type, member, property, and method declared in src/Core/Rexl.Base/Name/DName.cs has an XML doc comment (`/// <summary>...</summary>`) that describes its purpose in one or two sentences.
+      - No public member is renamed, moved, removed, or has its signature changed; the diff is comments-only plus any required `<param>`/`<returns>` tags.
+      - `dotnet build src/Rexl.sln -c Debug` and `dotnet build src/RexlCrossPlat.sln -c Debug` both succeed with zero new warnings introduced by the change.
+      - All existing tests under src/Test/Rexl.Base.Test/ continue to pass.
+      - The PR touches only src/Core/Rexl.Base/Name/DName.cs.
+    touches:
+      - src/Core/Rexl.Base/Name/DName.cs
+    deps: []
+    estimate: medium
+    risk: low
+    security_sensitive: false
+
+  - task_id: T08-readme-package-table-coming-soon
+    name: Reflect upcoming Onnx and Solve packages in README package table
+    wave: 3
+    status: pending
+    priority: medium
+    type: docs
+    rationale: |
+      STRATEGY.md Goal 4 (close the published-package gap) plus Goal 6
+      (docs in lockstep). Once T05 wires the packaging plumbing for
+      Microsoft.Rexl.Onnx and Microsoft.Rexl.Solve, the README package
+      table -- which today ends with a single sentence "There will be
+      more in the future, for example, Microsoft.Rexl.Onnx and
+      Microsoft.Rexl.Solve." -- should give them explicit rows marked as
+      forthcoming. This keeps README in sync with the build outputs and
+      makes the next CI-publication cycle a one-line edit instead of a
+      table-shape change.
+    acceptance_criteria:
+      - README.md package table contains a row for Microsoft.Rexl.Onnx and a row for Microsoft.Rexl.Solve, each clearly marked as not yet published (e.g. "Coming soon" instead of a NuGet badge).
+      - The existing six package rows are not reordered, renamed, or stripped of their badges.
+      - The free-text sentence about future packages is updated or removed so it no longer contradicts the new rows.
+      - No file other than README.md is modified.
+      - Trademarks/Contributing/Releases sections of README.md are unchanged.
+    touches:
+      - README.md
+    deps:
+      - T01-fix-readme-flow-link
+      - T05-package-onnx-solve-metadata
+    estimate: small
+    risk: low
+    security_sensitive: false
